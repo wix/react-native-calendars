@@ -1,0 +1,32 @@
+{
+  "name": "wix-react-native-calendar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": ":",
+    "lint": ":",
+    "build": ":",
+    "release": "wnpm-release"
+  },
+  "publishConfig": {
+    "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
+  },
+  "dependencies": {
+    "hotels-common": "3.0.104",
+    "xdate": "^0.8.0"
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "presets": [
+          "react-native"
+        ],
+        "retainLines": true
+      }
+    }
+  }
+}
