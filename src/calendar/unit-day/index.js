@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 
 import style from './style';
-//import ReservationModel from '../../../models/reservation';
 
 class Day extends Component {
   constructor(props) {
@@ -59,8 +58,7 @@ class Day extends Component {
         return prev;
       }
 
-      //const color = ReservationModel(next).getStatusColor();
-      const color = 'red';
+      const color = next.color;
       if (next.status === 'NotAvailable') {
         prev.textStyle = style.naText;
       }
