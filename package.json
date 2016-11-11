@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "hotels-common": "3.0.104",
-    "xdate": "^0.8.0"
+    "xdate": "^0.8.0",
+    "react-autobind": "*"
   },
   "peerDependencies": {
   },

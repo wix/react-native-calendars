@@ -9,45 +9,65 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  ScrollView
 } from 'react-native';
+import {Calendar, CalendarList} from 'wix-react-native-calendar';
 
 export default class CalendarExample extends Component {
+  constructor() {
+    super();
+    this.state = {};
+    this.onDayPress = this.onDayPress.bind(this);
+  }
+
+  onDayPress(day) {
+    this.setState({
+      selected: day
+    });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <Calendar
+          onDayPress={this.onDayPress}
+          style={styles.calendar}
+          hideExtraDays
+          selected={[this.state.selected]}
+        />
+        <Calendar
+          style={styles.calendar}
+          current={'2012-05-16'}
+          minDate={'2012-05-10'}
+          selected={['2012-05-16']}
+          markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
+          hideArrows={true}
+          />
+        <Calendar
+          style={styles.calendar}
+          current={'2012-05-16'}
+          minDate={'2012-05-10'}
+          displayLoadingIndicator
+          markingType={'interactive'}
+          markedDates={{'2012-05-24': [{startingDay: true, color: 'gray'}], '2012-05-25': [{endingDay: true, color: 'gray'}]}}
+          hideArrows={true}
+          />
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  calendar: {
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    height: 350
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    backgroundColor: 'gray',
+    marginTop: 30
+  }
 });
 
 AppRegistry.registerComponent('CalendarExample', () => CalendarExample);

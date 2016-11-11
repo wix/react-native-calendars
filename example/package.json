@@ -8,7 +8,8 @@
 	},
 	"dependencies": {
 		"react": "~15.3.1",
-		"react-native": "0.37.0"
+		"react-native": "0.37.0",
+		"wix-react-native-calendar": "*"
 	},
 	"devDependencies": {
 		"babel-jest": "17.0.0",

@@ -18,9 +18,9 @@ class Calendar extends Component {
 
     let currentMonth;
     if (props.current) {
-      currentMonth = props.current.clone();
+      currentMonth = this.parseDate(props.current);
     } else {
-      currentMonth = props.selected && props.selected[0] ? props.selected[0].clone() : XDate();
+      currentMonth = props.selected && props.selected[0] ? this.parseDate(props.selected[0]) : XDate();
     }
     this.state = {
       currentMonth
@@ -32,7 +32,7 @@ class Calendar extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = (nextProps.selected || []).reduce((prev, next, i) => {
       const currentSelected = (this.props.selected || [])[i];
-      if (!currentSelected || !next || currentSelected.getTime() !== next.getTime()) {
+      if (!currentSelected || !next || this.parseDate(currentSelected).getTime() !== this.parseDate(next).getTime()) {
         return {
           update: true,
           field: 'selected'
@@ -52,8 +52,8 @@ class Calendar extends Component {
     }, shouldUpdate);
 
     shouldUpdate = ['minDate', 'current'].reduce((prev, next) => {
-      const prevDate = this.props[next];
-      const nextDate = nextProps[next];
+      const prevDate = this.parseDate(this.props[next]);
+      const nextDate = this.parseDate(nextProps[next]);
       if (prev.update) {
         return prev;
       } else if (prevDate !== nextDate) {
@@ -79,10 +79,17 @@ class Calendar extends Component {
     return shouldUpdate.update;
   }
 
+  parseDate(d) {
+    if (d) {
+      return XDate(d);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.current && nextProps.current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
+    const current= this.parseDate(nextProps.current);
+    if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
-        currentMonth: nextProps.current.clone()
+        currentMonth: current.clone()
       });
     }
   }
@@ -107,7 +114,8 @@ class Calendar extends Component {
   }
 
   pressDay(day) {
-    if (!this.props.minDate || calendar.calutils.isGTE(day, this.props.minDate)) {
+    const minDate = this.parseDate(this.props.minDate);
+    if (!minDate || calendar.calutils.isGTE(day, minDate)) {
       this.updateMonth(day);
       if (this.props.onDayPress) {
         this.props.onDayPress(day.clone());
@@ -125,7 +133,7 @@ class Calendar extends Component {
       selectedDays = this.props.selected;
     }
     for (let i = 0; i < selectedDays.length; i++) {
-      if (calendar.calutils.sameDate(day, selectedDays[i])) {
+      if (calendar.calutils.sameDate(day, this.parseDate(selectedDays[i]))) {
         return true;
       }
     }
@@ -133,10 +141,11 @@ class Calendar extends Component {
   }
 
   renderDay(day, id) {
+    const minDate = this.parseDate(this.props.minDate);
     let state = '';
     if (this.isSelected(day)) {
       state = 'selected';
-    } else if (this.props.minDate && !calendar.calutils.isGTE(day, this.props.minDate)) {
+    } else if (minDate && !calendar.calutils.isGTE(day, minDate)) {
       state = 'disabled';
     } else if (!calendar.calutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
@@ -194,8 +203,9 @@ class Calendar extends Component {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
     let indicator;
-    if (this.props.current) {
-      const lastMonthOfDay = this.props.current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
+    const current = this.parseDate(this.props.current);
+    if (current) {
+      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
           !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
