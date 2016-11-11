@@ -2,12 +2,19 @@
   "name": "wix-react-native-calendar",
   "version": "1.0.0",
   "main": "index.js",
+  "description": "Wix React Native Calendar Components",
   "scripts": {
     "test": ":",
     "lint": ":",
     "build": ":",
     "release": "wnpm-release"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wix-private/wix-react-native-calendar"
+  },
+  "author": "Wix",
+  "license": "Wix.com",
   "publishConfig": {
     "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
   },
