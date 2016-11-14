@@ -72,6 +72,10 @@ ansicolors@~0.2.1:
   version "0.2.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/ansicolors/-/ansicolors-0.2.1.tgz#be089599097b74a5c9c4a84a0cdbcdb62bd87aef"
 
+any-promise@^1.0.0:
+  version "1.3.0"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/any-promise/-/any-promise-1.3.0.tgz#abc6afeedcea52e809cdc0376aed3ce39635d17f"
+
 append-transform@^0.3.0:
   version "0.3.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/append-transform/-/append-transform-0.3.0.tgz#d6933ce4a85f09445d9ccc4cc119051b7381a813"
@@ -2209,6 +2213,12 @@ hosted-git-info@^2.1.4:
   version "2.1.5"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/hosted-git-info/-/hosted-git-info-2.1.5.tgz#0ba81d90da2e25ab34a332e6ec77936e1598118b"
 
+hotels-common@3.0.104:
+  version "3.0.104"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/hotels-common/-/hotels-common-3.0.104.tgz#7a40b102c5da11a801f892d55f957ab12f7615da"
+  dependencies:
+    lodash "^4.10.0"
+
 html-encoding-sniffer@^1.0.1:
   version "1.0.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/html-encoding-sniffer/-/html-encoding-sniffer-1.0.1.tgz#79bf7a785ea495fe66165e734153f363ff5437da"
@@ -3139,6 +3149,10 @@ lodash@^3.1.0, lodash@^3.10.1, lodash@^3.2.0, lodash@^3.3.1, lodash@^3.5.0, loda
   version "3.10.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
+lodash@^4.10.0:
+  version "4.17.0"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-4.17.0.tgz#93f4466e5ab73e5a1f1216c34eea11535f0a8df5"
+
 lodash@^4.14.0, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
   version "4.16.6"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-4.16.6.tgz#d22c9ac660288f3843e16ba7d2b5d06cca27d777"
@@ -3803,6 +3817,10 @@ rc@^1.1.2:
     minimist "^1.2.0"
     strip-json-comments "~1.0.4"
 
+react-autobind@^1.0.0:
+  version "1.0.6"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/react-autobind/-/react-autobind-1.0.6.tgz#936bb58edf6b89b619c50f82f0e617159fdfd4f1"
+
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
@@ -4251,7 +4269,7 @@ set-immediate-shim@^1.0.0:
   version "1.0.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz#4b2b1b27eb808a9f8dcc481a58e5e56f599f3f61"
 
-shelljs@^0.5.0:
+shelljs@^0.5.0, shelljs@^0.5.3:
   version "0.5.3"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/shelljs/-/shelljs-0.5.3.tgz#c54982b996c76ef0c1e6b59fbdc5825f5b713113"
 
@@ -4536,6 +4554,12 @@ text-table@^0.2.0:
 textextensions@~1.0.0:
   version "1.0.2"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/textextensions/-/textextensions-1.0.2.tgz#65486393ee1f2bb039a60cbba05b0b68bd9501d2"
+
+thenify@^3.2.0:
+  version "3.2.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/thenify/-/thenify-3.2.1.tgz#251fd1c80aff6e5cf57cb179ab1fcb724269bd11"
+  dependencies:
+    any-promise "^1.0.0"
 
 throat@^3.0.0:
   version "3.0.0"
@@ -4904,6 +4928,22 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
+wix-react-native-calendar@*:
+  version "1.0.2"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wix-react-native-calendar/-/wix-react-native-calendar-1.0.2.tgz#ecee4a5a640b33acc74f16670aada77470496349"
+  dependencies:
+    hotels-common "3.0.104"
+    react-autobind "^1.0.0"
+    wnpm-ci "^6.1.0"
+    xdate "^0.8.0"
+
+wnpm-ci@^6.1.0:
+  version "6.2.36"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wnpm-ci/-/wnpm-ci-6.2.36.tgz#a2972bd3de4700fb48f2fa83b25892ab83b94388"
+  dependencies:
+    shelljs "^0.5.3"
+    thenify "^3.2.0"
+
 wordwrap@^1.0.0, wordwrap@~1.0.0:
   version "1.0.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
@@ -4953,6 +4993,10 @@ xcode@^0.8.9:
     node-uuid "1.4.7"
     pegjs "0.9.0"
     simple-plist "0.1.4"
+
+xdate@^0.8.0:
+  version "0.8.0"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/xdate/-/xdate-0.8.0.tgz#9a36d651aca7bb4fa2713d533694ce2e820587ce"
 
 xdg-basedir@^2.0.0:
   version "2.0.0"

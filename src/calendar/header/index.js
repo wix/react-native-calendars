@@ -7,13 +7,13 @@ import {
   Image
 } from 'react-native';
 
-import autobind from 'react-autobind';
 import style from './style';
 
 class CalendarHeader extends Component {
   constructor(props) {
     super(props);
-    autobind(this);
+    this.addMonth = this.addMonth.bind(this);
+    this.substractMonth = this.substractMonth.bind(this);
   }
 
   addMonth() {

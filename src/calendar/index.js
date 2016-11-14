@@ -3,8 +3,6 @@ import {
   View
 } from 'react-native';
 
-import autobind from 'react-autobind';
-
 import XDate from 'xdate';
 import {calendar} from 'hotels-common';
 import style from './style';
@@ -26,7 +24,10 @@ class Calendar extends Component {
       currentMonth
     };
 
-    autobind(this);
+    this.parseDate = this.parseDate.bind(this);
+    this.updateMonth = this.updateMonth.bind(this);
+    this.addMonth = this.addMonth.bind(this);
+    this.isSelected = this.isSelected.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -174,8 +175,7 @@ class Calendar extends Component {
     }
     return dayComp;
   }
-
-  getDateMarking(day) {
+getDateMarking(day) {
     if (!this.props.markedDates) {
       return false;
     }
