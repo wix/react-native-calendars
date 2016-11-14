@@ -327,7 +327,7 @@ babel-helpers@^6.16.0:
     babel-runtime "^6.0.0"
     babel-template "^6.16.0"
 
-babel-jest, babel-jest@^17.0.0:
+babel-jest@^17.0.0, babel-jest@17.0.0:
   version "17.0.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/babel-jest/-/babel-jest-17.0.0.tgz#4dbee762eb2f2ca77c4dacc17eb61f38157b0f01"
   dependencies:
@@ -694,7 +694,7 @@ babel-preset-jest@^16.0.0:
   dependencies:
     babel-plugin-jest-hoist "^16.0.0"
 
-babel-preset-react-native, babel-preset-react-native@^1.9.0:
+babel-preset-react-native@^1.9.0, babel-preset-react-native@1.9.0:
   version "1.9.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/babel-preset-react-native/-/babel-preset-react-native-1.9.0.tgz#035fc06c65f4f2a02d0336a100b2da142f36dab1"
   dependencies:
@@ -789,8 +789,8 @@ balanced-match@^0.4.1:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
 
 base62@^1.1.0:
-  version "1.1.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/base62/-/base62-1.1.1.tgz#974e82c11bd5e00816b508a7ed9c7b9086c9db6b"
+  version "1.1.2"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/base62/-/base62-1.1.2.tgz#22ced6a49913565bc0b8d9a11563a465c084124c"
 
 base64-js@^1.1.2:
   version "1.2.0"
@@ -804,9 +804,9 @@ base64-url@1.2.1:
   version "1.2.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/base64-url/-/base64-url-1.2.1.tgz#199fd661702a0e7b7dcae6e0698bb089c52f6d78"
 
-base64-url@1.2.2:
-  version "1.2.2"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/base64-url/-/base64-url-1.2.2.tgz#90af26ef8b0b67bc801b05eccf943345649008b3"
+base64-url@1.3.3:
+  version "1.3.3"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/base64-url/-/base64-url-1.3.3.tgz#f8b6c537f09a4fc58c99cb86e0b0e9c61461a20f"
 
 basic-auth-connect@1.0.0:
   version "1.0.0"
@@ -1277,13 +1277,13 @@ cryptiles@2.x.x:
     boom "2.x.x"
 
 csrf@~3.0.0:
-  version "3.0.3"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/csrf/-/csrf-3.0.3.tgz#69d13220de95762808bb120f7533a994fc4293b5"
+  version "3.0.4"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/csrf/-/csrf-3.0.4.tgz#ba01423e5b5bea7b655e38b0bdd1323954cbdaa5"
   dependencies:
-    base64-url "1.2.2"
+    base64-url "1.3.3"
     rndm "1.2.0"
     tsscmp "1.0.5"
-    uid-safe "2.1.1"
+    uid-safe "2.1.3"
 
 css-select@~1.0.0:
   version "1.0.0"
@@ -1773,11 +1773,10 @@ fbjs-scripts@^0.7.0:
     through2 "^2.0.0"
 
 fbjs@^0.8.3, fbjs@^0.8.4:
-  version "0.8.5"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/fbjs/-/fbjs-0.8.5.tgz#f69ba8a876096cb1b9bffe4d7c1e71c19d39d008"
+  version "0.8.6"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/fbjs/-/fbjs-0.8.6.tgz#7eb67d6986b2d5007a9b6e92e0e7cb6f75cad290"
   dependencies:
     core-js "^1.0.0"
-    immutable "^3.7.6"
     isomorphic-fetch "^2.1.1"
     loose-envify "^1.0.0"
     object-assign "^4.1.0"
@@ -2151,8 +2150,8 @@ gulplog@^1.0.0:
     glogg "^1.0.0"
 
 handlebars@^4.0.1, handlebars@^4.0.3:
-  version "4.0.5"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/handlebars/-/handlebars-4.0.5.tgz#92c6ed6bb164110c50d4d8d0fbddc70806c6f8e7"
+  version "4.0.6"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/handlebars/-/handlebars-4.0.6.tgz#2ce4484850537f9c97a8026d5399b935c4ed4ed7"
   dependencies:
     async "^1.4.0"
     optimist "^0.6.1"
@@ -2268,10 +2267,6 @@ iconv-lite@0.4.11:
 image-size@^0.3.5:
   version "0.3.5"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/image-size/-/image-size-0.3.5.tgz#83240eab2fb5b00b04aab8c74b0471e9cba7ad8c"
-
-immutable@^3.7.6:
-  version "3.8.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
 immutable@~3.7.6:
   version "3.7.6"
@@ -2633,19 +2628,13 @@ jasmine-check@^0.1.4:
   dependencies:
     testcheck "^0.1.0"
 
-jest:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest/-/jest-17.0.0.tgz#ebceb910c4e32cdea2adf44aba304d1ed4ad369e"
-  dependencies:
-    jest-cli "^17.0.0"
-
 jest-changed-files@^16.0.0:
   version "16.0.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-changed-files/-/jest-changed-files-16.0.0.tgz#7931deff4424182b8173d80e06800d7363b19c45"
 
 jest-cli@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-cli/-/jest-cli-17.0.0.tgz#c2e16575546d2fe875345e40fbf3d1d914bdd7cb"
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-cli/-/jest-cli-17.0.1.tgz#b706750959eec5ff59e197c9a3d8ecff5c001223"
   dependencies:
     ansi-escapes "^1.4.0"
     callsites "^2.0.0"
@@ -2656,16 +2645,16 @@ jest-cli@^17.0.0:
     istanbul-lib-coverage "^1.0.0"
     istanbul-lib-instrument "^1.1.1"
     jest-changed-files "^16.0.0"
-    jest-config "^17.0.0"
+    jest-config "^17.0.1"
     jest-environment-jsdom "^17.0.0"
     jest-file-exists "^17.0.0"
     jest-haste-map "^17.0.0"
-    jest-jasmine2 "^17.0.0"
+    jest-jasmine2 "^17.0.1"
     jest-mock "^17.0.0"
-    jest-resolve "^17.0.0"
-    jest-resolve-dependencies "^17.0.0"
-    jest-runtime "^17.0.0"
-    jest-snapshot "^17.0.0"
+    jest-resolve "^17.0.1"
+    jest-resolve-dependencies "^17.0.1"
+    jest-runtime "^17.0.1"
+    jest-snapshot "^17.0.1"
     jest-util "^17.0.0"
     json-stable-stringify "^1.0.0"
     node-notifier "^4.6.1"
@@ -2676,27 +2665,27 @@ jest-cli@^17.0.0:
     worker-farm "^1.3.1"
     yargs "^6.3.0"
 
-jest-config@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-config/-/jest-config-17.0.0.tgz#6474051f00aed3ef050e1342bb753ee672485313"
+jest-config@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-config/-/jest-config-17.0.1.tgz#ee578619c38c36511a7779eda9f87571fff96151"
   dependencies:
     chalk "^1.1.1"
     istanbul "^0.4.5"
     jest-environment-jsdom "^17.0.0"
     jest-environment-node "^17.0.0"
-    jest-jasmine2 "^17.0.0"
+    jest-jasmine2 "^17.0.1"
     jest-mock "^17.0.0"
-    jest-resolve "^17.0.0"
+    jest-resolve "^17.0.1"
     jest-util "^17.0.0"
     json-stable-stringify "^1.0.0"
 
-jest-diff@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-diff/-/jest-diff-17.0.0.tgz#d3288d6f28b9db4f78f93e718af5e61cd636bd71"
+jest-diff@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-diff/-/jest-diff-17.0.1.tgz#08a62b429b31fed9f141190232919a09d0a381cc"
   dependencies:
     chalk "^1.1.3"
     diff "^3.0.0"
-    jest-matcher-utils "^17.0.0"
+    jest-matcher-utils "^17.0.1"
     pretty-format "~4.2.1"
 
 jest-environment-jsdom@^17.0.0:
@@ -2737,82 +2726,82 @@ jest-haste-map@15.0.1:
     multimatch "^2.1.0"
     worker-farm "^1.3.1"
 
-jest-jasmine2@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-jasmine2/-/jest-jasmine2-17.0.0.tgz#811e493b1df968f34b08f9c4573f77b9d9319624"
+jest-jasmine2@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-jasmine2/-/jest-jasmine2-17.0.1.tgz#674f0d9af558687926e087f3547f74ab2338ffb2"
   dependencies:
     graceful-fs "^4.1.6"
     jasmine-check "^0.1.4"
-    jest-matchers "^17.0.0"
-    jest-snapshot "^17.0.0"
+    jest-matchers "^17.0.1"
+    jest-snapshot "^17.0.1"
     jest-util "^17.0.0"
 
-jest-matcher-utils@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-matcher-utils/-/jest-matcher-utils-17.0.0.tgz#d7c5609312a555a747d7938b1d560a2e320bc1a6"
+jest-matcher-utils@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-matcher-utils/-/jest-matcher-utils-17.0.1.tgz#0c56874301b5c8ace086dd6f8b84a6d87887dfab"
   dependencies:
     chalk "^1.1.3"
     pretty-format "~4.2.1"
 
-jest-matchers@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-matchers/-/jest-matchers-17.0.0.tgz#75b8dc7431e9b7afb15e7424b7869ea3d88e6af4"
+jest-matchers@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-matchers/-/jest-matchers-17.0.1.tgz#1558a185017eaf1a8d0bcbc0b7d9dbe665dc7a1e"
   dependencies:
-    jest-diff "^17.0.0"
-    jest-matcher-utils "^17.0.0"
+    jest-diff "^17.0.1"
+    jest-matcher-utils "^17.0.1"
     jest-util "^17.0.0"
 
 jest-mock@^17.0.0:
   version "17.0.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-mock/-/jest-mock-17.0.0.tgz#2475c3fec5d3ac117e2f59d40e1f6311ab9aae40"
 
-jest-react-native:
+jest-react-native@17.0.0:
   version "17.0.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-react-native/-/jest-react-native-17.0.0.tgz#a253e9e01bdf8717456d12b2f09032c0d637405d"
 
-jest-resolve-dependencies@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-resolve-dependencies/-/jest-resolve-dependencies-17.0.0.tgz#5b9ead58af2c7be7d3a4f49ba28265d4d6db1213"
+jest-resolve-dependencies@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-resolve-dependencies/-/jest-resolve-dependencies-17.0.1.tgz#b1f0470c391b4daa5e6e1e078146dbeb72305a8a"
   dependencies:
     jest-file-exists "^17.0.0"
-    jest-resolve "^17.0.0"
+    jest-resolve "^17.0.1"
 
-jest-resolve@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-resolve/-/jest-resolve-17.0.0.tgz#6a2b53ba5080c9d9a96a63bdfc4bd6ac2c3e4628"
+jest-resolve@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-resolve/-/jest-resolve-17.0.1.tgz#096dc8d93757db5e25da48a46bd5f065ad02c691"
   dependencies:
     browser-resolve "^1.11.2"
     jest-file-exists "^17.0.0"
     jest-haste-map "^17.0.0"
     resolve "^1.1.6"
 
-jest-runtime@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-runtime/-/jest-runtime-17.0.0.tgz#cac76b26ed5bd6f018fa1741087ce1c70632eddd"
+jest-runtime@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-runtime/-/jest-runtime-17.0.1.tgz#c37145d38afd0d0caf4ce0343d548fa7c1d32772"
   dependencies:
     babel-core "^6.0.0"
     babel-jest "^17.0.0"
     babel-plugin-istanbul "^2.0.0"
     chalk "^1.1.3"
     graceful-fs "^4.1.6"
-    jest-config "^17.0.0"
+    jest-config "^17.0.1"
     jest-file-exists "^17.0.0"
     jest-haste-map "^17.0.0"
     jest-mock "^17.0.0"
-    jest-resolve "^17.0.0"
-    jest-snapshot "^17.0.0"
+    jest-resolve "^17.0.1"
+    jest-snapshot "^17.0.1"
     jest-util "^17.0.0"
     json-stable-stringify "^1.0.0"
     multimatch "^2.1.0"
     yargs "^6.3.0"
 
-jest-snapshot@^17.0.0:
-  version "17.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-snapshot/-/jest-snapshot-17.0.0.tgz#0601cdc610470ed5e11d9c29f7d753401659d855"
+jest-snapshot@^17.0.1:
+  version "17.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest-snapshot/-/jest-snapshot-17.0.1.tgz#469a60dfec65c39d429e2232e1671cfab380b51a"
   dependencies:
-    jest-diff "^17.0.0"
+    jest-diff "^17.0.1"
     jest-file-exists "^17.0.0"
-    jest-matcher-utils "^17.0.0"
+    jest-matcher-utils "^17.0.1"
     jest-util "^17.0.0"
     natural-compare "^1.4.0"
     pretty-format "~4.2.1"
@@ -2827,6 +2816,12 @@ jest-util@^17.0.0:
     jest-file-exists "^17.0.0"
     jest-mock "^17.0.0"
     mkdirp "^0.5.1"
+
+jest@17.0.0:
+  version "17.0.0"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/jest/-/jest-17.0.0.tgz#ebceb910c4e32cdea2adf44aba304d1ed4ad369e"
+  dependencies:
+    jest-cli "^17.0.0"
 
 jodid25519@^1.0.0:
   version "1.0.2"
@@ -2848,8 +2843,8 @@ js-tokens@^2.0.0:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
 
 js-yaml@3.x:
-  version "3.6.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/js-yaml/-/js-yaml-3.6.1.tgz#6e5fe67d8b205ce4d22fad05b7781e8dadcc4b30"
+  version "3.7.0"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/js-yaml/-/js-yaml-3.7.0.tgz#5c967ddd837a9bfdca5f2de84253abe8a1c03b80"
   dependencies:
     argparse "^1.0.7"
     esprima "^2.6.0"
@@ -3149,13 +3144,9 @@ lodash@^3.1.0, lodash@^3.10.1, lodash@^3.2.0, lodash@^3.3.1, lodash@^3.5.0, loda
   version "3.10.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.10.0:
+lodash@^4.10.0, lodash@^4.14.0, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-4.17.0.tgz#93f4466e5ab73e5a1f1216c34eea11535f0a8df5"
-
-lodash@^4.14.0, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
-  version "4.16.6"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-4.16.6.tgz#d22c9ac660288f3843e16ba7d2b5d06cca27d777"
 
 log-symbols@^1.0.1:
   version "1.0.2"
@@ -3302,13 +3293,17 @@ micromatch@^2.3.11, micromatch@^2.3.7:
     parse-glob "^3.0.4"
     regex-cache "^0.4.2"
 
-"mime-db@>= 1.24.0 < 2", mime-db@~1.24.0:
-  version "1.24.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/mime-db/-/mime-db-1.24.0.tgz#e2d13f939f0016c6e4e9ad25a8652f126c467f0c"
+"mime-db@>= 1.24.0 < 2":
+  version "1.25.0"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/mime-db/-/mime-db-1.25.0.tgz#c18dbd7c73a5dbf6f44a024dc0d165a1e7b1c392"
 
 mime-db@~1.23.0:
   version "1.23.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/mime-db/-/mime-db-1.23.0.tgz#a31b4070adaea27d732ea333740a64d0ec9a6659"
+
+mime-db@~1.24.0:
+  version "1.24.0"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/mime-db/-/mime-db-1.24.0.tgz#e2d13f939f0016c6e4e9ad25a8652f126c467f0c"
 
 mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.6, mime-types@~2.1.7, mime-types@~2.1.9:
   version "2.1.12"
@@ -3817,10 +3812,6 @@ rc@^1.1.2:
     minimist "^1.2.0"
     strip-json-comments "~1.0.4"
 
-react-autobind@^1.0.0:
-  version "1.0.6"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/react-autobind/-/react-autobind-1.0.6.tgz#936bb58edf6b89b619c50f82f0e617159fdfd4f1"
-
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
@@ -3829,7 +3820,7 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-native:
+react-native@0.37.0:
   version "0.37.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/react-native/-/react-native-0.37.0.tgz#d871c752b4d87e46b569fd8be2921d4f9248c87d"
   dependencies:
@@ -3972,8 +3963,8 @@ readable-stream@^1.1.13, "readable-stream@>=1.1.13-1 <1.2.0-0", readable-stream@
     string_decoder "~0.10.x"
 
 readable-stream@^2.0.0, "readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.5:
-  version "2.2.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/readable-stream/-/readable-stream-2.2.1.tgz#c459a6687ad6195f936b959870776edef27a7655"
+  version "2.2.2"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/readable-stream/-/readable-stream-2.2.2.tgz#a9e6fec3c7dda85f8bb1b3ba7028604556fc825e"
   dependencies:
     buffer-shims "^1.0.0"
     core-util-is "~1.0.0"
@@ -4047,8 +4038,8 @@ redeyed@~1.0.0:
     esprima "~3.0.0"
 
 regenerate@^1.2.1:
-  version "1.3.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/regenerate/-/regenerate-1.3.1.tgz#0300203a5d2fdcf89116dce84275d011f5903f33"
+  version "1.3.2"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
 
 regenerator-runtime@^0.9.5:
   version "0.9.6"
@@ -4387,8 +4378,8 @@ statuses@~1.2.1:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/statuses/-/statuses-1.2.1.tgz#dded45cc18256d51ed40aec142489d5c61026d28"
 
 statuses@1:
-  version "1.3.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/statuses/-/statuses-1.3.0.tgz#8e55758cb20e7682c1f4fce8dcab30bf01d1e07a"
+  version "1.3.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
 
 stream-buffers@~0.2.3:
   version "0.2.6"
@@ -4686,8 +4677,8 @@ typedarray@~0.0.5:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 ua-parser-js@^0.7.9:
-  version "0.7.11"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/ua-parser-js/-/ua-parser-js-0.7.11.tgz#3741e2dd2fb09251a960f9ef076cd0cc72eaf6a0"
+  version "0.7.12"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
 
 uglify-js@^2.6, uglify-js@^2.6.2:
   version "2.7.4"
@@ -4708,11 +4699,11 @@ uid-safe@~2.0.0:
   dependencies:
     base64-url "1.2.1"
 
-uid-safe@2.1.1:
-  version "2.1.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/uid-safe/-/uid-safe-2.1.1.tgz#3dbf9436b528be9f52882c05a6216c3763db3666"
+uid-safe@2.1.3:
+  version "2.1.3"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/uid-safe/-/uid-safe-2.1.3.tgz#077e264a00b3187936b270bb7376a26473631071"
   dependencies:
-    base64-url "1.2.2"
+    base64-url "1.3.3"
     random-bytes "~1.0.0"
 
 ultron@1.0.x:
@@ -4911,8 +4902,8 @@ which-module@^1.0.0:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/which-module/-/which-module-1.0.0.tgz#bba63ca861948994ff307736089e3b96026c2a4f"
 
 which@^1.0.5, which@^1.1.1, which@^1.2.8, which@^1.2.9:
-  version "1.2.11"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/which/-/which-1.2.11.tgz#c8b2eeea6b8c1659fa7c1dd4fdaabe9533dc5e8b"
+  version "1.2.12"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/which/-/which-1.2.12.tgz#de67b5e450269f194909ef23ece4ebe416fa1192"
   dependencies:
     isexe "^1.1.1"
 
@@ -4929,11 +4920,10 @@ window-size@0.1.0:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
 wix-react-native-calendar@*:
-  version "1.0.2"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wix-react-native-calendar/-/wix-react-native-calendar-1.0.2.tgz#ecee4a5a640b33acc74f16670aada77470496349"
+  version "1.0.3"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wix-react-native-calendar/-/wix-react-native-calendar-1.0.3.tgz#2ab02f24e8372c78261a1240adbe48e1a84f53f2"
   dependencies:
     hotels-common "3.0.104"
-    react-autobind "^1.0.0"
     wnpm-ci "^6.1.0"
     xdate "^0.8.0"
 
