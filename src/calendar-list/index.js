@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import XDate from 'xdate';
+import {xdateToData, parseDate} from '../utils';
 import style from './style';
 import {calendar} from 'hotels-common';
 import Calendar from '../calendar';
@@ -67,7 +68,8 @@ class CalendarList extends Component {
     }
   }
 
-  scrollToDay(day, offset, animated) {
+  scrollToDay(d, offset, animated) {
+    const day = parseDate(d);
     const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(day.clone().setDate(1)));
     let scrollAmount = (calendarHeight * 50) + (diffMonths * calendarHeight) + (offset || 0);
     let week = 0;
@@ -82,7 +84,8 @@ class CalendarList extends Component {
     this.listView.scrollTo({x: 0, y: scrollAmount, animated});
   }
 
-  scrollToMonth(month) {
+  scrollToMonth(m) {
+    const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
     let diffMonths = this.state.openDate.diffMonths(scrollTo);
     diffMonths = diffMonths < 0 ? Math.ceil(diffMonths) : Math.floor(diffMonths);
@@ -145,7 +148,7 @@ class CalendarList extends Component {
       }
       newrows.push(val);
       if (visibleRows.s1[i]) {
-        visibleMonths.push(val);
+        visibleMonths.push(xdateToData(val));
       }
     }
     if (this.props.onVisibleMonthsChange) {
@@ -185,7 +188,7 @@ class CalendarList extends Component {
         if (val.getTime) {
           visibleMonths.push(val);
         }
-        newrows.push(val);
+        newrows.push(xdateToData(val));
       }
       if (this.props.onVisibleMonthsChange) {
         this.props.onVisibleMonthsChange(visibleMonths);

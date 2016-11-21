@@ -5,6 +5,7 @@ import {
 
 import XDate from 'xdate';
 import {calendar} from 'hotels-common';
+import {xdateToData, parseDate} from '../utils';
 import style from './style';
 import Day from './day';
 import UnitDay from './unit-day';
@@ -16,15 +17,14 @@ class Calendar extends Component {
 
     let currentMonth;
     if (props.current) {
-      currentMonth = this.parseDate(props.current);
+      currentMonth = parseDate(props.current);
     } else {
-      currentMonth = props.selected && props.selected[0] ? this.parseDate(props.selected[0]) : XDate();
+      currentMonth = props.selected && props.selected[0] ? parseDate(props.selected[0]) : XDate();
     }
     this.state = {
       currentMonth
     };
 
-    this.parseDate = this.parseDate.bind(this);
     this.updateMonth = this.updateMonth.bind(this);
     this.addMonth = this.addMonth.bind(this);
     this.isSelected = this.isSelected.bind(this);
@@ -33,7 +33,7 @@ class Calendar extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = (nextProps.selected || []).reduce((prev, next, i) => {
       const currentSelected = (this.props.selected || [])[i];
-      if (!currentSelected || !next || this.parseDate(currentSelected).getTime() !== this.parseDate(next).getTime()) {
+      if (!currentSelected || !next || parseDate(currentSelected).getTime() !== parseDate(next).getTime()) {
         return {
           update: true,
           field: 'selected'
@@ -53,8 +53,8 @@ class Calendar extends Component {
     }, shouldUpdate);
 
     shouldUpdate = ['minDate', 'current'].reduce((prev, next) => {
-      const prevDate = this.parseDate(this.props[next]);
-      const nextDate = this.parseDate(nextProps[next]);
+      const prevDate = parseDate(this.props[next]);
+      const nextDate = parseDate(nextProps[next]);
       if (prev.update) {
         return prev;
       } else if (prevDate !== nextDate) {
@@ -80,14 +80,8 @@ class Calendar extends Component {
     return shouldUpdate.update;
   }
 
-  parseDate(d) {
-    if (d) {
-      return XDate(d);
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
-    const current= this.parseDate(nextProps.current);
+    const current= parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
         currentMonth: current.clone()
@@ -105,21 +99,21 @@ class Calendar extends Component {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
         if (this.props.onMonthChange) {
-          this.props.onMonthChange(currMont);
+          this.props.onMonthChange(xdateToData(currMont));
         }
         if (this.props.onVisibleMonthsChange) {
-          this.props.onVisibleMonthsChange([currMont]);
+          this.props.onVisibleMonthsChange([xdateToData(currMont)]);
         }
       }
     });
   }
 
   pressDay(day) {
-    const minDate = this.parseDate(this.props.minDate);
+    const minDate = parseDate(this.props.minDate);
     if (!minDate || calendar.calutils.isGTE(day, minDate)) {
       this.updateMonth(day);
       if (this.props.onDayPress) {
-        this.props.onDayPress(day.clone());
+        this.props.onDayPress(xdateToData(day));
       }
     }
   }
@@ -134,7 +128,7 @@ class Calendar extends Component {
       selectedDays = this.props.selected;
     }
     for (let i = 0; i < selectedDays.length; i++) {
-      if (calendar.calutils.sameDate(day, this.parseDate(selectedDays[i]))) {
+      if (calendar.calutils.sameDate(day, parseDate(selectedDays[i]))) {
         return true;
       }
     }
@@ -142,7 +136,7 @@ class Calendar extends Component {
   }
 
   renderDay(day, id) {
-    const minDate = this.parseDate(this.props.minDate);
+    const minDate = parseDate(this.props.minDate);
     let state = '';
     if (this.isSelected(day)) {
       state = 'selected';
@@ -175,7 +169,8 @@ class Calendar extends Component {
     }
     return dayComp;
   }
-getDateMarking(day) {
+
+  getDateMarking(day) {
     if (!this.props.markedDates) {
       return false;
     }
@@ -203,7 +198,7 @@ getDateMarking(day) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
     let indicator;
-    const current = this.parseDate(this.props.current);
+    const current = parseDate(this.props.current);
     if (current) {
       const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
