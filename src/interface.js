@@ -3,9 +3,9 @@ const XDate = require('xdate');
 function xdateToData(xdate) {
   return {
     year: xdate.getFullYear(),
-    month: xdate.getMonth(),
+    month: xdate.getMonth() + 1,
     day: xdate.getDate(),
-    timestamp: XDate(xdate.toISOString().split('T')[0], true).getTime()
+    timestamp: XDate(xdate.toString('yyyy-MM-dd'), true).getTime()
   }
 }
 
