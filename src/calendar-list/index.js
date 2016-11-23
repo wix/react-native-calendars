@@ -23,7 +23,7 @@ class CalendarList extends Component {
     });
     const rows = [];
     const texts = [];
-    const date = props.current || XDate();
+    const date = parseDate(props.current) || XDate();
     for (let i = 0; i < 100; i++) {
       const text = date.clone().addMonths(i - 50).toString('MMM yyyy');
       rows.push(text);

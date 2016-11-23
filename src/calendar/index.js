@@ -10,6 +10,7 @@ import style from './style';
 import Day from './day';
 import UnitDay from './unit-day';
 import CalendarHeader from './header';
+import shouldComponentUpdate from './updater';
 
 class Calendar extends Component {
   constructor(props) {
@@ -28,56 +29,7 @@ class Calendar extends Component {
     this.updateMonth = this.updateMonth.bind(this);
     this.addMonth = this.addMonth.bind(this);
     this.isSelected = this.isSelected.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    let shouldUpdate = (nextProps.selected || []).reduce((prev, next, i) => {
-      const currentSelected = (this.props.selected || [])[i];
-      if (!currentSelected || !next || parseDate(currentSelected).getTime() !== parseDate(next).getTime()) {
-        return {
-          update: true,
-          field: 'selected'
-        };
-      }
-      return prev;
-    }, {update: false});
-
-    shouldUpdate = ['markedDates'].reduce((prev, next) => {
-      if (!prev.update && nextProps[next] !== this.props[next]) {
-        return {
-          update: true,
-          field: next
-        };
-      }
-      return prev;
-    }, shouldUpdate);
-
-    shouldUpdate = ['minDate', 'current'].reduce((prev, next) => {
-      const prevDate = parseDate(this.props[next]);
-      const nextDate = parseDate(nextProps[next]);
-      if (prev.update) {
-        return prev;
-      } else if (prevDate !== nextDate) {
-        if (prevDate && nextDate && prevDate.getTime() === nextDate.getTime()) {
-          return prev;
-        } else {
-          return {
-            update: true,
-            field: next
-          };
-        }
-      }
-      return prev;
-    }, shouldUpdate);
-
-    if (nextState.currentMonth !== this.state.currentMonth) {
-      shouldUpdate = {
-        update: true,
-        field: 'current'
-      };
-    }
-    //console.log(shouldUpdate.field, shouldUpdate.update);
-    return shouldUpdate.update;
+    this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
   componentWillReceiveProps(nextProps) {
