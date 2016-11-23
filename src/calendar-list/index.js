@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 import XDate from 'xdate';
-import {xdateToData, parseDate} from '../utils';
+import {xdateToData, parseDate} from '../interface';
 import style from './style';
 import {calendar} from 'hotels-common';
 import Calendar from '../calendar';

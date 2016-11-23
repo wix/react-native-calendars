@@ -5,7 +5,7 @@ import {
 
 import XDate from 'xdate';
 import {calendar} from 'hotels-common';
-import {xdateToData, parseDate} from '../utils';
+import {xdateToData, parseDate} from '../interface';
 import style from './style';
 import Day from './day';
 import UnitDay from './unit-day';

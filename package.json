@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "description": "Wix React Native Calendar Components",
   "scripts": {
-    "test": ":",
+    "test": "jasmine src/*.spec.js",
     "lint": ":",
     "build": ":",
     "release": "wnpm-release"
@@ -23,8 +23,8 @@
     "xdate": "^0.8.0",
     "wnpm-ci": "^6.1.0"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {
+    "jasmine": "^2.5.2"
   }
 }
