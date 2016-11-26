@@ -9,16 +9,32 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  View,
   ScrollView,
   Navigator,
   TouchableOpacity
 } from 'react-native';
-import {Calendar, CalendarList} from 'wix-react-native-calendar';
+import {Calendar, CalendarList, Agenda} from 'wix-react-native-calendar';
 
 export default class CalendarExample extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      items: {
+        '2012-05-16': [{name: 'item1'}],
+        '2012-05-17': [{name: 'item2'}, {name: 'item3'}],
+        '2012-05-18': [],
+        '2012-05-19': [],
+        '2012-05-20': [{name: 'item4'}],
+        '2012-05-21': [{name: 'item5'}, {name: 'item6'}],
+        '2012-05-22': [{name: 'item7'}, {name: 'item8'}],
+        '2012-05-23': [{name: 'item10'}, {name: 'item9'}],
+        '2012-05-24': [{name: 'item10'}, {name: 'item9'}],
+        '2012-05-25': [{name: 'item10'}, {name: 'item9'}],
+        '2012-05-26': [{name: 'item10'}, {name: 'item9'}],
+        '2012-05-27': [{name: 'item10'}, {name: 'item9'}],
+      }
+    };
     this.onDayPress = this.onDayPress.bind(this);
   }
 
@@ -41,6 +57,9 @@ export default class CalendarExample extends Component {
         <TouchableOpacity style={styles.menu} onPress={this.navigate.bind(this, 'List', navigator)}>
           <Text style={styles.menuText}>Calendar List</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.menu} onPress={this.navigate.bind(this, 'Agenda', navigator)}>
+          <Text style={styles.menuText}>Agenda</Text>
+        </TouchableOpacity>
       </ScrollView>
     );
   }
@@ -49,6 +68,41 @@ export default class CalendarExample extends Component {
     return (
       <CalendarList current={'2012-05-16'} style={{marginTop: 50}}/>
     )
+  }
+
+  loadItems() {
+    return {
+      '2012-05-16': {name: 'item1'},
+      '2012-05-17': [{name: 'item2'}, {name: 'item3'}],
+      '2012-05-18': [],
+      '2012-05-19': [],
+    }
+  }
+
+  renderItem(item) {
+    return (
+      <View style={{backgroundColor: 'white', height: 75, marginTop: 12, flex:1}}><Text>{item.name}</Text></View>
+    )
+  }
+
+  renderEmptyDate(item) {
+    return (
+      <View style={{backgroundColor: 'white', height: 75, marginTop: 12, flex:1}}><Text>This is empty date!</Text></View>
+    )
+  }
+
+  renderAgenda() {
+    return (
+      <Agenda
+        style={{marginTop: 50}}
+        items={this.state.items}
+        loadItemsForMonth={this.loadItems.bind(this)}
+        selected={'2012-05-16'}
+        renderItem={this.renderItem.bind(this)}
+        renderEmptyDate={this.renderEmptyDate.bind(this)}
+        rowComparator={() => true}
+      />
+    );
   }
 
   renderCalendars() {
@@ -88,6 +142,8 @@ export default class CalendarExample extends Component {
       return this.renderCalendars(navigator);
     } else if(route.name == 'List') {
       return this.renderList(navigator);
+    } else if(route.name == 'Agenda') {
+      return this.renderAgenda(navigator);
     }
   }
 
