@@ -70,13 +70,9 @@ export default class CalendarExample extends Component {
     )
   }
 
-  loadItems() {
-    return {
-      '2012-05-16': {name: 'item1'},
-      '2012-05-17': [{name: 'item2'}, {name: 'item3'}],
-      '2012-05-18': [],
-      '2012-05-19': [],
-    }
+  loadItems(day) {
+    console.log(`Load Items for ${day.year}-${day.month}`);
+    return this.state.items
   }
 
   renderItem(item) {
