@@ -19,9 +19,8 @@ import {Calendar, CalendarList, Agenda} from 'wix-react-native-calendar';
 export default class CalendarExample extends Component {
   constructor() {
     super();
-    this.state = {
-      items: {
-        '2012-05-16': [{name: 'item1'}],
+    items = {
+      '2012-05-16': [{name: 'item1'}],
         '2012-05-17': [{name: 'item2'}, {name: 'item3'}],
         '2012-05-18': [],
         '2012-05-19': [],
@@ -33,7 +32,14 @@ export default class CalendarExample extends Component {
         '2012-05-25': [{name: 'item10'}, {name: 'item9'}],
         '2012-05-26': [{name: 'item10'}, {name: 'item9'}],
         '2012-05-27': [{name: 'item10'}, {name: 'item9'}],
-      }
+    };
+    Object.keys(items).forEach((key) => {
+      items[key].forEach((item) => {
+        item.height =  Math.min(Math.random() * 200, 75);
+      });
+    });
+    this.state = {
+      items
     };
     this.onDayPress = this.onDayPress.bind(this);
   }
@@ -71,13 +77,15 @@ export default class CalendarExample extends Component {
   }
 
   loadItems(day) {
+    this.setState({
+      items: this.state.items
+    });
     console.log(`Load Items for ${day.year}-${day.month}`);
-    return this.state.items
   }
 
   renderItem(item) {
     return (
-      <View style={{backgroundColor: 'white', height: 75, marginTop: 12, flex:1}}><Text>{item.name}</Text></View>
+      <View style={{backgroundColor: 'white', height: item.height, marginTop: 12, flex:1}}><Text>{item.name}</Text></View>
     )
   }
 
@@ -85,6 +93,10 @@ export default class CalendarExample extends Component {
     return (
       <View style={{backgroundColor: 'white', height: 75, marginTop: 12, flex:1}}><Text>This is empty date!</Text></View>
     )
+  }
+
+  rowHasChanged(r1, r2) {
+    return r1.name !== r2.name;
   }
 
   renderAgenda() {
@@ -96,7 +108,7 @@ export default class CalendarExample extends Component {
         selected={'2012-05-16'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
-        rowComparator={() => true}
+        rowHasChanged={this.rowHasChanged.bind(this)}
       />
     );
   }
