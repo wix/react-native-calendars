@@ -108,7 +108,7 @@ export default class AgendaView extends Component {
   renderReservations() {
     return (
       <ReservationsList
-        rowComparator={this.props.rowComparator}
+        rowHasChanged={this.props.rowHasChanged}
         renderItem={this.props.renderItem}
         renderEmptyDate={this.props.renderEmptyDate}
         reservations={this.props.items}

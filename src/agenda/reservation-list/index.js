@@ -15,7 +15,23 @@ class ReactComp extends Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({
-      rowHasChanged: this.props.rowComparator
+      rowHasChanged: (r1, r2) => {
+        let changed = true;
+        if (!r1 && !r2) {
+          changed = false;
+        } else if (r1 && r2) {
+          if (!r1.reservation && !r2.reservation) {
+            changed = false;
+          } else if (r1.reservation && r2.reservation) {
+            if (r1.day.getTime() !== r2.day.getTime()) {
+              changed = true;
+            } else if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
+              changed = this.props.rowHasChanged(r1.reservation, r2.reservation);
+            }
+          }
+        }
+        return changed;
+      }
     });
     this.state = {
       reservationsSource: ds.cloneWithRows([]),

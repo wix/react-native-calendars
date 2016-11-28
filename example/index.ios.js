@@ -93,6 +93,10 @@ export default class CalendarExample extends Component {
     )
   }
 
+  rowHasChanged(r1, r2) {
+    return r1.name !== r2.name;
+  }
+
   renderAgenda() {
     return (
       <Agenda
@@ -102,7 +106,7 @@ export default class CalendarExample extends Component {
         selected={'2012-05-16'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
-        rowComparator={() => true}
+        rowHasChanged={this.rowHasChanged.bind(this)}
       />
     );
   }
