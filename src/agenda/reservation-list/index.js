@@ -11,8 +11,6 @@ import dateutils from '../../dateutils';
 
 import styles from './style';
 
-const RESERVATION_HEIGHT = 87;
-
 class ReactComp extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +21,7 @@ class ReactComp extends Component {
       reservationsSource: ds.cloneWithRows([]),
       reservations: []
     };
+    this.heights=[];
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
   }
@@ -41,8 +40,12 @@ class ReactComp extends Component {
   componentWillReceiveProps(props) {
     const reservations = this.getReservations(props);
     if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
+      let scrollPosition = 0;
+      for (let i = 0; i < reservations.scrollPosition; i++) {
+        scrollPosition += this.heights[i] || 0;
+      }
       this.scrollOver = false;
-      this.list.scrollTo({x: 0, y: RESERVATION_HEIGHT * reservations.scrollPosition, animated: true});
+      this.list.scrollTo({x: 0, y: scrollPosition, animated: true});
     }
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
@@ -60,7 +63,14 @@ class ReactComp extends Component {
 
   onScroll(event) {
     const yOffset = event.nativeEvent.contentOffset.y;
-    const topRow = Math.max(Math.round(yOffset / RESERVATION_HEIGHT), 0);
+    let topRowOffset = 0;
+    let topRow;
+    for (topRow = 0; topRow < this.heights.length; topRow++) {
+      if (topRowOffset + this.heights[topRow] >= yOffset) {
+        break;
+      }
+      topRowOffset += this.heights[topRow];
+    }
     const day = this.state.reservations[topRow].day;
     const sameDate = dateutils.sameDate(day, this.selectedDay);
     if (!sameDate && this.scrollOver) {
@@ -73,7 +83,11 @@ class ReactComp extends Component {
     return (<ActivityIndicator style={styles.loader}/>);
   }
 
-  renderRow(row) {
+  onRowLayoutChange(ind, event) {
+    this.heights[ind] = event.nativeEvent.layout.height;
+  }
+
+  renderRow(row, section, ind) {
     const {reservation, date} = row;
     let content;
     if (reservation) {
@@ -83,7 +97,7 @@ class ReactComp extends Component {
     }
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={this.onRowLayoutChange.bind(this, ind)}>
         {this.renderDate(date)}
         {content}
       </View>

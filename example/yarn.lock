@@ -2239,12 +2239,6 @@ hosted-git-info@^2.1.4:
   version "2.1.5"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/hosted-git-info/-/hosted-git-info-2.1.5.tgz#0ba81d90da2e25ab34a332e6ec77936e1598118b"
 
-hotels-common@3.0.104:
-  version "3.0.104"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/hotels-common/-/hotels-common-3.0.104.tgz#7a40b102c5da11a801f892d55f957ab12f7615da"
-  dependencies:
-    lodash "^4.10.0"
-
 html-encoding-sniffer@^1.0.1:
   version "1.0.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/html-encoding-sniffer/-/html-encoding-sniffer-1.0.1.tgz#79bf7a785ea495fe66165e734153f363ff5437da"
@@ -3161,7 +3155,7 @@ lodash@^3.1.0, lodash@^3.10.1, lodash@^3.2.0, lodash@^3.3.1, lodash@^3.5.0, loda
   version "3.10.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.10.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.14.0, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.2"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -3318,13 +3312,13 @@ mime-db@~1.23.0:
   version "1.23.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/mime-db/-/mime-db-1.23.0.tgz#a31b4070adaea27d732ea333740a64d0ec9a6659"
 
-mime-types@2.1.11, mime-types@~2.1.7:
+mime-types@2.1.11, mime-types@~2.1.9:
   version "2.1.11"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/mime-types/-/mime-types-2.1.11.tgz#c259c471bda808a85d6cd193b430a5fae4473b3c"
   dependencies:
     mime-db "~1.23.0"
 
-mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.13, mime-types@~2.1.6, mime-types@~2.1.9:
+mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.13, mime-types@~2.1.6, mime-types@~2.1.7:
   version "2.1.13"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/mime-types/-/mime-types-2.1.13.tgz#e07aaa9c6c6b9a7ca3012c69003ad25a39e92a88"
   dependencies:
@@ -4184,11 +4178,7 @@ sane@~1.4.1:
     walker "~1.0.5"
     watch "~0.10.0"
 
-sax@^1.1.4:
-  version "1.2.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
-
-sax@~1.1.1:
+sax@^1.1.4, sax@~1.1.1:
   version "1.1.6"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/sax/-/sax-1.1.6.tgz#5d616be8a5e607d54e114afae55b7eaf2fcc3240"
 
@@ -4882,11 +4872,7 @@ whatwg-encoding@^1.0.1:
   dependencies:
     iconv-lite "0.4.13"
 
-whatwg-fetch@>=0.10.0:
-  version "2.0.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/whatwg-fetch/-/whatwg-fetch-2.0.1.tgz#078b9461bbe91cea73cbce8bb122a05f9e92b772"
-
-whatwg-fetch@^1.0.0:
+whatwg-fetch@>=0.10.0, whatwg-fetch@^1.0.0:
   version "1.1.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/whatwg-fetch/-/whatwg-fetch-1.1.1.tgz#ac3c9d39f320c6dce5339969d054ef43dd333319"
 
@@ -4920,10 +4906,9 @@ window-size@^0.2.0:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/window-size/-/window-size-0.2.0.tgz#b4315bb4214a3d7058ebeee892e13fa24d98b075"
 
 wix-react-native-calendar@*:
-  version "1.0.24"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wix-react-native-calendar/-/wix-react-native-calendar-1.0.24.tgz#200210f8bb86bf5c7e8c78147ebdd4febf04c319"
+  version "1.0.26"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wix-react-native-calendar/-/wix-react-native-calendar-1.0.26.tgz#342bf49872ac70ffd07e6b84d8384c6649a42946"
   dependencies:
-    hotels-common "3.0.104"
     wnpm-ci "^6.1.0"
     xdate "^0.8.0"
 
