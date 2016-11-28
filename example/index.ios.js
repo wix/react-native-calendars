@@ -80,7 +80,7 @@ export default class CalendarExample extends Component {
       }
       //console.log(this.state.items);
       this.setState({
-        items: this.state.items
+        items: {...this.state.items}
       });
     }, 1000);
     console.log(`Load Items for ${day.year}-${day.month}`);
