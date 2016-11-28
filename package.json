@@ -19,11 +19,11 @@
     "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
   },
   "dependencies": {
-    "xdate": "^0.8.0",
-    "wnpm-ci": "^6.1.0"
+    "xdate": "^0.8.0"
   },
   "peerDependencies": {},
   "devDependencies": {
-    "jasmine": "^2.5.2"
+    "jasmine": "^2.5.2",
+    "wnpm-ci": "^6.1.0"
   }
 }
