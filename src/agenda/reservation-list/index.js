@@ -66,7 +66,7 @@ class ReactComp extends Component {
     let topRowOffset = 0;
     let topRow;
     for (topRow = 0; topRow < this.heights.length; topRow++) {
-      if (topRowOffset + this.heights[topRow] >= yOffset) {
+      if (topRowOffset + this.heights[topRow] / 2 >= yOffset) {
         break;
       }
       topRowOffset += this.heights[topRow];

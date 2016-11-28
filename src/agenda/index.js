@@ -84,16 +84,14 @@ export default class AgendaView extends Component {
 
   chooseDay(d) {
     const day = parseDate(d);
-    if (this.state.calendarScrollable) {
-      this.setState({
-        calendarScrollable: false,
-        selectedDay: day.clone()
-      });
-      Animated.timing(this.state.openAnimation, {
-        toValue: 0,
-        duration: 200
-      }).start();
-    }
+    this.setState({
+      calendarScrollable: false,
+      selectedDay: day.clone()
+    });
+    Animated.timing(this.state.openAnimation, {
+      toValue: 0,
+      duration: 200
+    }).start();
     this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
     this.props.loadItemsForMonth(d);
     if (this.props.onDayPress) {

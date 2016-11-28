@@ -20,7 +20,7 @@ export default StyleSheet.create({
   day: {
     width: 63,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     marginTop: 7
   },
   today: {
