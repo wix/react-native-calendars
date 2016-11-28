@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import XDate from 'xdate';
 
-import {calendar} from 'hotels-common';
+import dateutils from '../../dateutils';
 
 import styles from './style';
 
@@ -40,7 +40,7 @@ class ReactComp extends Component {
 
   componentWillReceiveProps(props) {
     const reservations = this.getReservations(props);
-    if (this.list && !calendar.calutils.sameDate(props.selectedDay, this.selectedDay)) {
+    if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
       this.scrollOver = false;
       this.list.scrollTo({x: 0, y: RESERVATION_HEIGHT * reservations.scrollPosition, animated: true});
     }
@@ -62,7 +62,7 @@ class ReactComp extends Component {
     const yOffset = event.nativeEvent.contentOffset.y;
     const topRow = Math.max(Math.round(yOffset / RESERVATION_HEIGHT), 0);
     const day = this.state.reservations[topRow].day;
-    const sameDate = calendar.calutils.sameDate(day, this.selectedDay);
+    const sameDate = dateutils.sameDate(day, this.selectedDay);
     if (!sameDate && this.scrollOver) {
       this.selectedDay = day.clone();
       this.props.onDayChange(day.clone());
@@ -91,7 +91,7 @@ class ReactComp extends Component {
   }
 
   renderDate(date) {
-    const today = calendar.calutils.sameDate(date, XDate()) ? styles.today : undefined;
+    const today = dateutils.sameDate(date, XDate()) ? styles.today : undefined;
     if (date) {
       return (
         <View style={styles.day}>

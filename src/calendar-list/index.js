@@ -9,7 +9,7 @@ import {
 import XDate from 'xdate';
 import {xdateToData, parseDate} from '../interface';
 import style from './style';
-import {calendar} from 'hotels-common';
+import dateutils from '../dateutils';
 import Calendar from '../calendar';
 
 const calendarHeight = 360;
@@ -73,10 +73,10 @@ class CalendarList extends Component {
     const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(day.clone().setDate(1)));
     let scrollAmount = (calendarHeight * 50) + (diffMonths * calendarHeight) + (offset || 0);
     let week = 0;
-    const days = calendar.calutils.page(day);
+    const days = dateutils.page(day);
     for (let i = 0; i < days.length; i++) {
       week = Math.floor(i / 7);
-      if (calendar.calutils.sameDate(days[i], day)) {
+      if (dateutils.sameDate(days[i], day)) {
         scrollAmount += 45 * week;
         break;
       }

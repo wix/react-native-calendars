@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import XDate from 'xdate';
-import {calendar} from 'hotels-common';
+import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
 import style from './style';
 import Day from './day';
@@ -62,7 +62,7 @@ class Calendar extends Component {
 
   pressDay(day) {
     const minDate = parseDate(this.props.minDate);
-    if (!minDate || calendar.calutils.isGTE(day, minDate)) {
+    if (!minDate || dateutils.isGTE(day, minDate)) {
       this.updateMonth(day);
       if (this.props.onDayPress) {
         this.props.onDayPress(xdateToData(day));
@@ -80,7 +80,7 @@ class Calendar extends Component {
       selectedDays = this.props.selected;
     }
     for (let i = 0; i < selectedDays.length; i++) {
-      if (calendar.calutils.sameDate(day, parseDate(selectedDays[i]))) {
+      if (dateutils.sameDate(day, parseDate(selectedDays[i]))) {
         return true;
       }
     }
@@ -92,15 +92,15 @@ class Calendar extends Component {
     let state = '';
     if (this.isSelected(day)) {
       state = 'selected';
-    } else if (minDate && !calendar.calutils.isGTE(day, minDate)) {
+    } else if (minDate && !dateutils.isGTE(day, minDate)) {
       state = 'disabled';
-    } else if (!calendar.calutils.sameMonth(day, this.state.currentMonth)) {
+    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
-    } else if (calendar.calutils.sameDate(day, XDate())) {
+    } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
     let dayComp;
-    if (!calendar.calutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
+    if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
       if (this.props.markingType === 'interactive') {
         dayComp = (<View key={id} style={{flex: 1}}/>);
       } else {
@@ -144,7 +144,7 @@ class Calendar extends Component {
 
   render() {
     //console.log('render calendar ' + this.props.current.toString('yyyy-MM'));
-    const days = calendar.calutils.page(this.state.currentMonth);
+    const days = dateutils.page(this.state.currentMonth);
     const weeks = [];
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));

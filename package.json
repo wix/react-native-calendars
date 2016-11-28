@@ -19,7 +19,6 @@
     "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
   },
   "dependencies": {
-    "hotels-common": "3.0.104",
     "xdate": "^0.8.0",
     "wnpm-ci": "^6.1.0"
   },
