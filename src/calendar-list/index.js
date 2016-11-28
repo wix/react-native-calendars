@@ -50,7 +50,7 @@ class CalendarList extends Component {
           style={[{height: calendarHeight}, style.calendar]}
           current={row}
           hideArrows
-          hideExtraDays
+          hideExtraDays={this.props.hideExtraDays === undefined ? true : this.props.hideExtraDays}
           disableMonthChange
           markedDates={this.props.markedDates}
           markingType={this.props.markingType}

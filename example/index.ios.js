@@ -87,13 +87,13 @@ export default class CalendarExample extends Component {
 
   renderItem(item) {
     return (
-      <View style={{backgroundColor: 'white', height: item.height, marginTop: 12, flex:1}}><Text>{item.name}</Text></View>
+      <View style={{backgroundColor: 'white', height: item.height, flex:1}}><Text>{item.name}</Text></View>
     )
   }
 
   renderEmptyDate(item) {
     return (
-      <View style={{backgroundColor: 'white', height: 75, marginTop: 12, flex:1}}><Text>This is empty date!</Text></View>
+      <View style={{backgroundColor: 'white', height: 75, flex:1}}><Text>This is empty date!</Text></View>
     )
   }
 

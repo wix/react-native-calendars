@@ -10,6 +10,7 @@ import {
 import XDate from 'xdate';
 
 import {parseDate, xdateToData} from '../interface';
+import dateutils from '../dateutils';
 import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
 import styles from './style';
@@ -99,12 +100,6 @@ export default class AgendaView extends Component {
     }
   }
 
-  changeMonth(d) {
-    if (this.props.loadItemsForMonth) {
-      this.props.loadItemsForMonth(d);
-    }
-  }
-
   renderReservations() {
     return (
       <ReservationsList
@@ -119,7 +114,9 @@ export default class AgendaView extends Component {
   }
 
   onDayChange(day) {
-    this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
+    const newDate = parseDate(day);
+    const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
+    this.calendar.scrollToDay(day, CALENDAR_OFFSET, withAnimation);
     this.setState({
       selectedDay: parseDate(day) 
     });
@@ -149,6 +146,7 @@ export default class AgendaView extends Component {
             markedDates={this.props.items}
             onDayPress={this.chooseDay.bind(this)}
             scrollingEnabled={this.state.calendarScrollable}
+            hideExtraDays={false}
           />
           <View style={styles.knobContainer}>
             <TouchableOpacity onPress={this.expandCalendar.bind(this)}>

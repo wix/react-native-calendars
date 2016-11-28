@@ -115,7 +115,9 @@ class ReactComp extends Component {
     return (
       <View style={styles.container} onLayout={this.onRowLayoutChange.bind(this, ind)}>
         {this.renderDate(date)}
-        {content}
+        <View style={{marginTop: 12, flex:1}}>
+          {content}
+        </View>
       </View>
     );
   }
@@ -193,7 +195,7 @@ class ReactComp extends Component {
 
   render() {
     //console.log('render list');
-    if (!this.state.reservations.length) {
+    if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
     return (
