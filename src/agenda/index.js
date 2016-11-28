@@ -84,6 +84,9 @@ export default class AgendaView extends Component {
   }
 
   chooseDay(d) {
+    if (this.state.calendarScrollable) {
+      this.list.resetItems();
+    }
     const day = parseDate(d);
     this.setState({
       calendarScrollable: false,
@@ -109,6 +112,7 @@ export default class AgendaView extends Component {
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
         onDayChange={this.onDayChange.bind(this)}
+        ref={(c) => this.list = c}
       />
     );
   }

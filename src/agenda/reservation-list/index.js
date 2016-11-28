@@ -163,6 +163,12 @@ class ReactComp extends Component {
     this.scrollOver = true;
   }
 
+  resetItems() {
+    this.setState({
+      reservations: {}
+    });
+  }
+
   getReservations(props) {
     if (!props.reservations || !props.selectedDay) {
       return {reservations: [], scrollPosition: 0};

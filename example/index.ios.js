@@ -78,6 +78,7 @@ export default class CalendarExample extends Component {
           }
         }
       }
+      //console.log(this.state.items);
       this.setState({
         items: this.state.items
       });

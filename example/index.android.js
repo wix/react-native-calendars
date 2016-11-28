@@ -19,27 +19,8 @@ import {Calendar, CalendarList, Agenda} from 'wix-react-native-calendar';
 export default class CalendarExample extends Component {
   constructor() {
     super();
-    items = {
-      '2012-05-16': [{name: 'item1'}],
-        '2012-05-17': [{name: 'item2'}, {name: 'item3'}],
-        '2012-05-18': [],
-        '2012-05-19': [],
-        '2012-05-20': [{name: 'item4'}],
-        '2012-05-21': [{name: 'item5'}, {name: 'item6'}],
-        '2012-05-22': [{name: 'item7'}, {name: 'item8'}],
-        '2012-05-23': [{name: 'item10'}, {name: 'item9'}],
-        '2012-05-24': [{name: 'item10'}, {name: 'item9'}],
-        '2012-05-25': [{name: 'item10'}, {name: 'item9'}],
-        '2012-05-26': [{name: 'item10'}, {name: 'item9'}],
-        '2012-05-27': [{name: 'item10'}, {name: 'item9'}],
-    };
-    Object.keys(items).forEach((key) => {
-      items[key].forEach((item) => {
-        item.height =  Math.min(Math.random() * 200, 75);
-      });
-    });
     this.state = {
-      items
+      items: {}
     };
     this.onDayPress = this.onDayPress.bind(this);
   }
@@ -76,22 +57,44 @@ export default class CalendarExample extends Component {
     )
   }
 
+  timeToString(time) {
+    const date = new Date(time);
+    return date.toISOString().split('T')[0];
+  }
+
   loadItems(day) {
-    this.setState({
-      items: this.state.items
-    });
+    setTimeout(() => {
+      for (let i = -15; i < 45; i++) {
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strtime = this.timeToString(time);
+        if (!this.state.items[strtime]) {
+          this.state.items[strtime] = [];
+          const numItems = Math.floor(Math.random() * 5);
+          for (let j = 0; j < numItems; j++) {
+            this.state.items[strtime].push({
+              name: 'Item for ' + strtime,
+              height: Math.max(50, Math.floor(Math.random() * 150))
+            });
+          }
+        }
+      }
+      //console.log(this.state.items);
+      this.setState({
+        items: this.state.items
+      });
+    }, 1000);
     console.log(`Load Items for ${day.year}-${day.month}`);
   }
 
   renderItem(item) {
     return (
-      <View style={{backgroundColor: 'white', height: item.height, marginTop: 12, flex:1}}><Text>{item.name}</Text></View>
+      <View style={{backgroundColor: 'white', height: item.height, flex:1}}><Text>{item.name}</Text></View>
     )
   }
 
   renderEmptyDate(item) {
     return (
-      <View style={{backgroundColor: 'white', height: 75, marginTop: 12, flex:1}}><Text>This is empty date!</Text></View>
+      <View style={{backgroundColor: 'white', height: 75, flex:1}}><Text>This is empty date!</Text></View>
     )
   }
 
