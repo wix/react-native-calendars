@@ -87,10 +87,6 @@ ansicolors@~0.2.1:
   version "0.2.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/ansicolors/-/ansicolors-0.2.1.tgz#be089599097b74a5c9c4a84a0cdbcdb62bd87aef"
 
-any-promise@^1.0.0:
-  version "1.3.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/any-promise/-/any-promise-1.3.0.tgz#abc6afeedcea52e809cdc0376aed3ce39635d17f"
-
 append-transform@^0.3.0:
   version "0.3.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/append-transform/-/append-transform-0.3.0.tgz#d6933ce4a85f09445d9ccc4cc119051b7381a813"
@@ -1605,8 +1601,8 @@ ee-first@1.1.1:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
 ejs@^2.3.1:
-  version "2.5.2"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/ejs/-/ejs-2.5.2.tgz#21444ba09386f0c65b6eafb96a3d51bcb3be80d1"
+  version "2.5.3"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/ejs/-/ejs-2.5.3.tgz#bfeae1e2f7fa51c4527769fcaa14c5ca73eb5e47"
 
 encoding@^0.1.11:
   version "0.1.12"
@@ -4010,8 +4006,8 @@ rebound@^0.0.13:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/rebound/-/rebound-0.0.13.tgz#4a225254caf7da756797b19c5817bf7a7941fac1"
 
 recast@^0.11.17:
-  version "0.11.17"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/recast/-/recast-0.11.17.tgz#67e829df49ef8ea822381cc516d305411e60bad8"
+  version "0.11.18"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/recast/-/recast-0.11.18.tgz#07af6257ca769868815209401d4d60eef1b5b947"
   dependencies:
     ast-types "0.9.2"
     esprima "~3.1.0"
@@ -4246,7 +4242,7 @@ set-immediate-shim@^1.0.0:
   version "1.0.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz#4b2b1b27eb808a9f8dcc481a58e5e56f599f3f61"
 
-shelljs@^0.5.0, shelljs@^0.5.3:
+shelljs@^0.5.0:
   version "0.5.3"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/shelljs/-/shelljs-0.5.3.tgz#c54982b996c76ef0c1e6b59fbdc5825f5b713113"
 
@@ -4528,12 +4524,6 @@ textextensions@~1.0.0:
   version "1.0.2"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/textextensions/-/textextensions-1.0.2.tgz#65486393ee1f2bb039a60cbba05b0b68bd9501d2"
 
-thenify@^3.2.0:
-  version "3.2.1"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/thenify/-/thenify-3.2.1.tgz#251fd1c80aff6e5cf57cb179ab1fcb724269bd11"
-  dependencies:
-    any-promise "^1.0.0"
-
 throat@^3.0.0:
   version "3.0.0"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/throat/-/throat-3.0.0.tgz#e7c64c867cbb3845f10877642f7b60055b8ec0d6"
@@ -4560,8 +4550,8 @@ through2@^1.0.0:
     xtend ">=4.0.0 <4.1.0-0"
 
 through2@^2.0.0, through2@~2.0.0:
-  version "2.0.2"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/through2/-/through2-2.0.2.tgz#316d3a4f444af641496aa7f45a713be72576baf4"
+  version "2.0.3"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:
     readable-stream "^2.1.5"
     xtend "~4.0.1"
@@ -4751,8 +4741,8 @@ uuid@^2.0.1:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
 uuid@^3.0.0:
-  version "3.0.0"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/uuid/-/uuid-3.0.0.tgz#6728fc0459c450d796a99c31837569bdf672d728"
+  version "3.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
 vali-date@^1.0.0:
   version "1.0.0"
@@ -4872,7 +4862,11 @@ whatwg-encoding@^1.0.1:
   dependencies:
     iconv-lite "0.4.13"
 
-whatwg-fetch@>=0.10.0, whatwg-fetch@^1.0.0:
+whatwg-fetch@>=0.10.0:
+  version "2.0.1"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/whatwg-fetch/-/whatwg-fetch-2.0.1.tgz#078b9461bbe91cea73cbce8bb122a05f9e92b772"
+
+whatwg-fetch@^1.0.0:
   version "1.1.1"
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/whatwg-fetch/-/whatwg-fetch-1.1.1.tgz#ac3c9d39f320c6dce5339969d054ef43dd333319"
 
@@ -4906,18 +4900,10 @@ window-size@^0.2.0:
   resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/window-size/-/window-size-0.2.0.tgz#b4315bb4214a3d7058ebeee892e13fa24d98b075"
 
 wix-react-native-calendar@*:
-  version "1.0.26"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wix-react-native-calendar/-/wix-react-native-calendar-1.0.26.tgz#342bf49872ac70ffd07e6b84d8384c6649a42946"
+  version "1.0.33"
+  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wix-react-native-calendar/-/wix-react-native-calendar-1.0.33.tgz#59dbe7d1fc0ff61d1ef43bef833a40fe4c3fb0f5"
   dependencies:
-    wnpm-ci "^6.1.0"
     xdate "^0.8.0"
-
-wnpm-ci@^6.1.0:
-  version "6.2.36"
-  resolved "http://repo.dev.wix/artifactory/api/npm/npm-repos/wnpm-ci/-/wnpm-ci-6.2.36.tgz#a2972bd3de4700fb48f2fa83b25892ab83b94388"
-  dependencies:
-    shelljs "^0.5.3"
-    thenify "^3.2.0"
 
 wordwrap@0.0.2:
   version "0.0.2"

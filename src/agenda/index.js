@@ -150,7 +150,7 @@ export default class AgendaView extends Component {
             markedDates={this.props.items}
             onDayPress={this.chooseDay.bind(this)}
             scrollingEnabled={this.state.calendarScrollable}
-            hideExtraDays={false}
+            hideExtraDays={this.state.calendarScrollable}
           />
           <View style={styles.knobContainer}>
             <TouchableOpacity onPress={this.expandCalendar.bind(this)}>
