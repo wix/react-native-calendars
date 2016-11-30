@@ -20,12 +20,12 @@ class ReactComp extends Component {
         if (!r1 && !r2) {
           changed = false;
         } else if (r1 && r2) {
-          if (!r1.reservation && !r2.reservation) {
+          if (r1.day.getTime() !== r2.day.getTime()) {
+            changed = true;
+          } else if (!r1.reservation && !r2.reservation) {
             changed = false;
           } else if (r1.reservation && r2.reservation) {
-            if (r1.day.getTime() !== r2.day.getTime()) {
-              changed = true;
-            } else if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
+            if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
               changed = this.props.rowHasChanged(r1.reservation, r2.reservation);
             }
           }
@@ -77,16 +77,6 @@ class ReactComp extends Component {
     } else {
       this.updateReservations(props);
     }
-  }
-
-  showReservation({reservationBasicInfo: {reservationNo, reservationId}}) {
-    const title = reservationNo ? 'Reservation #' + reservationNo : 'Reservation';
-    this.props.navigator.showModal({
-      screen: 'hotels.Reservation',
-      title,
-      animationType: 'slide-up',
-      passProps: {id: reservationId}
-    });
   }
 
   onScroll(event) {
@@ -199,6 +189,7 @@ class ReactComp extends Component {
       }
       iterator.addDays(1);
     }
+
     return {reservations, scrollPosition};
   }
 
