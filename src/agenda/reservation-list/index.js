@@ -53,7 +53,7 @@ class ReactComp extends Component {
     });
   }
 
-  componentWillReceiveProps(props) {
+  updateReservations(props) {
     const reservations = this.getReservations(props);
     if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
@@ -65,6 +65,18 @@ class ReactComp extends Component {
     }
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
+  }
+
+  componentWillReceiveProps(props) {
+    if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
+      this.setState({
+        reservations: []
+      }, () => {
+        this.updateReservations(props);
+      });
+    } else {
+      this.updateReservations(props);
+    }
   }
 
   showReservation({reservationBasicInfo: {reservationNo, reservationId}}) {
@@ -79,6 +91,7 @@ class ReactComp extends Component {
 
   onScroll(event) {
     const yOffset = event.nativeEvent.contentOffset.y;
+    this.props.onScroll(yOffset);
     let topRowOffset = 0;
     let topRow;
     for (topRow = 0; topRow < this.heights.length; topRow++) {
@@ -93,10 +106,6 @@ class ReactComp extends Component {
       this.selectedDay = day.clone();
       this.props.onDayChange(day.clone());
     }
-  }
-
-  renderLoader() {
-    return (<ActivityIndicator style={styles.loader}/>);
   }
 
   onRowLayoutChange(ind, event) {
@@ -161,12 +170,6 @@ class ReactComp extends Component {
 
   onListTouch() {
     this.scrollOver = true;
-  }
-
-  resetItems() {
-    this.setState({
-      reservations: {}
-    });
   }
 
   getReservations(props) {

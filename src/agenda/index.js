@@ -27,7 +27,8 @@ export default class AgendaView extends Component {
       openAnimation: new Animated.Value(0),
       calendarScrollable: false,
       firstResevationLoad: false,
-      selectedDay: parseDate(this.props.selected) || XDate(true)
+      selectedDay: parseDate(this.props.selected) || XDate(true),
+      topDay: parseDate(this.props.selected) || XDate(true),
     };
     this.currentMonth = this.state.selectedDay.clone();
   }
@@ -84,14 +85,16 @@ export default class AgendaView extends Component {
   }
 
   chooseDay(d) {
-    if (this.state.calendarScrollable) {
-      this.list.resetItems();
-    }
     const day = parseDate(d);
     this.setState({
       calendarScrollable: false,
       selectedDay: day.clone()
     });
+    if (this.state.calendarScrollable) {
+      this.setState({
+        topDay: day.clone()
+      });
+    }
     Animated.timing(this.state.openAnimation, {
       toValue: 0,
       duration: 200
@@ -111,7 +114,11 @@ export default class AgendaView extends Component {
         renderEmptyDate={this.props.renderEmptyDate}
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
+        topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
+        onScroll={(y) => {
+          if (y < -15) this.expandCalendar();
+        }}
         ref={(c) => this.list = c}
       />
     );
