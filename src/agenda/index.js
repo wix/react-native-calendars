@@ -116,9 +116,7 @@ export default class AgendaView extends Component {
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
-        onScroll={(y) => {
-          if (y < -15) this.expandCalendar();
-        }}
+        onScroll={(y) => {}}
         ref={(c) => this.list = c}
       />
     );
