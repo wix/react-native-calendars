@@ -8,12 +8,12 @@ export default StyleSheet.create({
   dayNum: {
     fontSize: 28,
     fontWeight: '200',
-    color: '#b6c1cd'
+    color: '#7a92a5'
   },
   dayText: {
     fontSize: 14,
     fontWeight: '300',
-    color: '#b6c1cd',
+    color: '#7a92a5',
     marginTop: -5,
     backgroundColor: 'rgba(0,0,0,0)'
   },
@@ -21,7 +21,7 @@ export default StyleSheet.create({
     width: 63,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: 7
+    marginTop: 32
   },
   today: {
     color: appStyle.text.linkColor

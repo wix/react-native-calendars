@@ -127,7 +127,7 @@ class ReactComp extends Component {
       return (
         <View style={styles.day}>
           <Text style={[styles.dayNum, today]}>{date.getDate()}</Text>
-          <Text style={[styles.dayText, today]}>{['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][date.getDay()]}</Text>
+          <Text style={[styles.dayText, today]}>{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()]}</Text>
         </View>
       );
     } else {
