@@ -186,9 +186,9 @@ class CalendarList extends Component {
           val = this.state.texts[i];
         }
         if (val.getTime) {
-          visibleMonths.push(val);
+          visibleMonths.push(xdateToData(val));
         }
-        newrows.push(xdateToData(val));
+        newrows.push(val);
       }
       if (this.props.onVisibleMonthsChange) {
         this.props.onVisibleMonthsChange(visibleMonths);
