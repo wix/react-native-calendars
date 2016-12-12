@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import * as appStyle from '../../../common/style';
+import * as appStyle from '../../style';
 
 export default StyleSheet.create({
   base: {
