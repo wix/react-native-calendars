@@ -11,26 +11,26 @@ export default StyleSheet.create({
     marginTop: 4,
     fontSize: 16,
     fontWeight: '300',
-    color: '#2d4150',
+    color: '#ffffff',
     backgroundColor: 'rgba(255, 255, 255, 0)'
   },
   selected: {
-    backgroundColor: appStyle.text.linkColor,
+    backgroundColor: 'white',
     borderRadius: 16
   },
   todayText: {
-    color: appStyle.text.linkColor
+    color: appStyle.text.color
   },
   selectedText: {
-    color: 'white'
+    color: appStyle.foregroundColor
   },
   disabledText: {
-    color: appStyle.text.disabledText
+    color: 'rgba(255, 255, 255, 0.5)'
   },
   dot: {
     width: 4,
     height: 4,
-    marginTop: 0,
+    marginTop: 1,
     borderRadius: 2,
     opacity: 0
   },
@@ -39,7 +39,7 @@ export default StyleSheet.create({
     backgroundColor: appStyle.text.linkColor
   },
   selectedDot: {
-    backgroundColor: appStyle.backgroundColor
+    backgroundColor: appStyle.foregroundColor
   }
 });
 

@@ -11,12 +11,21 @@ export default StyleSheet.create({
     borderColor: appStyle.separatorColor
   },
   knobContainer: {
+    flex: 1,
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: -7,
+    height: 24,
+    bottom: 0,
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0)'
+    backgroundColor: appStyle.foregroundColor
+  },
+  knob: {
+    width: 38,
+    height: 7,
+    marginTop: 10,
+    borderRadius: 3,
+    backgroundColor: '#4ac4f7'
   },
   weekdays: {
     position: 'absolute',
@@ -27,20 +36,20 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 24,
     paddingRight: 24,
-    paddingTop: 10,
-    paddingBottom: 2,
+    paddingTop: 15,
+    paddingBottom: 7,
     backgroundColor: appStyle.foregroundColor
   },
   weekday: {
     width: 32,
     textAlign: 'center',
-    fontSize: 12,
-    color: '#b6c1cd',
+    fontSize: 13,
+    color: appStyle.text.sectionTitleColor,
   },
   reservations: {
     flex: 1,
-    marginTop: 71,
-    backgroundColor: '#f4f4f4'
+    marginTop: 104,
+    backgroundColor: appStyle.backgroundColor
   },
 });
 

@@ -15,7 +15,7 @@ import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
 import styles from './style';
 
-const CALENDAR_OFFSET = 50;
+const CALENDAR_OFFSET = 38;
 
 export default class AgendaView extends Component {
 
@@ -135,14 +135,14 @@ export default class AgendaView extends Component {
     const maxCalHeight = this.screenHeight + 20;
     const calendarStyle = [styles.calendar, {height: this.state.openAnimation.interpolate({
       inputRange: [0, 1],
-      outputRange: [72, maxCalHeight]
+      outputRange: [104, maxCalHeight]
     })}];
     const weekdaysStyle = [styles.weekdays, {opacity: this.state.openAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 0]
     })}];
     return (
-      <View style={{flex: 1}} onLayout={this.onLayout.bind(this)} style={[this.props.style, {flex: 1}]}>
+      <View onLayout={this.onLayout.bind(this)} style={[this.props.style, {flex: 1}]}>
         <View style={styles.reservations}>
           {this.renderReservations()}
         </View>
@@ -159,7 +159,7 @@ export default class AgendaView extends Component {
           />
           <View style={styles.knobContainer}>
             <TouchableOpacity onPress={this.expandCalendar.bind(this)}>
-              <Image source={require('./img/knob.png')}/>
+              <View style={styles.knob}/>
             </TouchableOpacity>
           </View>
         </Animated.View>

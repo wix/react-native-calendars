@@ -24,7 +24,7 @@ export default StyleSheet.create({
     marginTop: 32
   },
   today: {
-    color: appStyle.text.linkColor
+    color: '#00adf5'
   }
 });
 

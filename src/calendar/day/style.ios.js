@@ -22,7 +22,7 @@ export default StyleSheet.create({
     color: appStyle.text.linkColor
   },
   selectedText: {
-    color: 'white'
+    color: appStyle.foregroundColor
   },
   disabledText: {
     color: appStyle.text.disabledText
@@ -39,7 +39,7 @@ export default StyleSheet.create({
     backgroundColor: appStyle.text.linkColor
   },
   selectedDot: {
-    backgroundColor: appStyle.backgroundColor
+    backgroundColor: appStyle.foregroundColor
   }
 });
 

@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
+import * as appStyle from '../style';
 
 export default StyleSheet.create({
   container: {
     paddingLeft: 5,
     paddingRight: 5,
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: appStyle.foregroundColor
   },
   week: {
     marginTop: 7,
@@ -21,7 +22,7 @@ export default StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 10,
     fontSize: 12,
-    color: '#b6c1cd'
+    color: appStyle.text.sectionTitleColor
   }
 });
 

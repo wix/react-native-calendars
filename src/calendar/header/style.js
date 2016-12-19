@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import * as appStyle from '../../style';
 
 export default StyleSheet.create({
   header: {
@@ -11,7 +12,7 @@ export default StyleSheet.create({
   monthText: {
     fontSize: 16,
     fontWeight: '300',
-    color: '#2d4150',
+    color: appStyle.text.defaultColor,
     margin: 10
   },
   arrow: {
@@ -28,7 +29,7 @@ export default StyleSheet.create({
     width: 32,
     textAlign: 'center',
     fontSize: 12,
-    color: '#b6c1cd'
+    color: appStyle.text.sectionTitleColor
   }
 });
 
