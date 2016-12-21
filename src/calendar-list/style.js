@@ -3,7 +3,7 @@ import * as appStyle from '../style';
 
 export default StyleSheet.create({
   placeholder: {
-    backgroundColor: appStyle.text.linkColor,
+    backgroundColor: appStyle.foregroundColor,
     alignItems: 'center',
     justifyContent: 'center'
   },
