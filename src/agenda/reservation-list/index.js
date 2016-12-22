@@ -194,7 +194,6 @@ class ReactComp extends Component {
   }
 
   render() {
-    //console.log('render list');
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
@@ -207,7 +206,7 @@ class ReactComp extends Component {
         onScroll={this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
-        onResponderMove={this.onListTouch.bind(this)}
+        onMoveShouldSetResponderCapture={(evt) => {this.onListTouch(); return false;}}
       />
     );
   }
