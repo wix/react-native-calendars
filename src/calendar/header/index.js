@@ -40,11 +40,11 @@ class CalendarHeader extends Component {
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity onPress={this.substractMonth} style={style.arrow}>
-          <Image source={require('../img/previous.png')}/></TouchableOpacity>
+          <Image source={require('../img/previous.png')} style={style.arrowImage}/></TouchableOpacity>
       );
       rightArrow = (
         <TouchableOpacity onPress={this.addMonth} style={style.arrow}>
-          <Image source={require('../img/next.png')}/></TouchableOpacity>
+          <Image source={require('../img/next.png')} style={style.arrowImage}/></TouchableOpacity>
       );
     }
     let indicator;

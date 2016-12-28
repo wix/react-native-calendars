@@ -18,6 +18,9 @@ export default StyleSheet.create({
   arrow: {
     padding: 10
   },
+  arrowImage: {
+    tintColor: appStyle.text.linkColor
+  },
   week: {
     marginTop: 7,
     flexDirection: 'row',
