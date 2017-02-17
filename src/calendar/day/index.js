@@ -13,7 +13,7 @@ class Day extends Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    return ['state', 'children', 'marked'].reduce((prev, next) => {
+    return ['state', 'children', 'marked', 'onPress'].reduce((prev, next) => {
       if (prev || nextProps[next] !== this.props[next]) {
         return true;
       }
