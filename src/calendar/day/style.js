@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../style';
 
-export default function styleConstructor(theme) {
+export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     base: {
@@ -13,18 +13,18 @@ export default function styleConstructor(theme) {
       marginTop: 4,
       fontSize: 16,
       fontWeight: '300',
-      color: appStyle.defaultColor,
+      color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)'
     },
     selected: {
-      backgroundColor: appStyle.textLinkColor,
+      backgroundColor: appStyle.selectedDayBackgroundColor,
       borderRadius: 16
     },
     todayText: {
-      color: appStyle.textLinkColor
+      color: appStyle.todayTextColor
     },
     selectedText: {
-      color: appStyle.foregroundColor
+      color: appStyle.selectedDayTextColor
     },
     disabledText: {
       color: appStyle.textDisabledColor
@@ -38,10 +38,10 @@ export default function styleConstructor(theme) {
     },
     visibleDot: {
       opacity: 1,
-      backgroundColor: appStyle.textLinkColor
+      backgroundColor: appStyle.dotColor
     },
     selectedDot: {
-      backgroundColor: appStyle.foregroundColor
+      backgroundColor: appStyle.selectedDotColor
     }
   });
 };

@@ -8,14 +8,17 @@ import {
 
 import XDate from 'xdate';
 import {xdateToData, parseDate} from '../interface';
-import style from './style';
+import styleConstructor from './style';
 import dateutils from '../dateutils';
 import Calendar from '../calendar';
+
+let style ={};
 
 const calendarHeight = 360;
 class CalendarList extends Component {
   constructor(props) {
     super(props);
+    style = styleConstructor(props.theme);
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
         return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || (r2.propbump && r2.propbump !== r1.propbump);
@@ -46,6 +49,7 @@ class CalendarList extends Component {
     if (row.getTime) {
       return (
         <Calendar
+          theme={this.props.theme}
           selected={this.props.selected}
           style={[{height: calendarHeight}, style.calendar]}
           current={row}

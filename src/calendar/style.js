@@ -8,7 +8,7 @@ export default function getStyle(theme={}) {
       paddingLeft: 5,
       paddingRight: 5,
       flex: 1,
-      backgroundColor: appStyle.foregroundColor
+      backgroundColor: appStyle.calendarBackground
     },
     week: {
       marginTop: 7,

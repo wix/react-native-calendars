@@ -7,11 +7,13 @@ import {
   Image
 } from 'react-native';
 
-import style from './style';
+import styleConstructor from './style';
+let style = {};
 
 class CalendarHeader extends Component {
   constructor(props) {
     super(props);
+    style = styleConstructor(props.theme);
     this.addMonth = this.addMonth.bind(this);
     this.substractMonth = this.substractMonth.bind(this);
   }

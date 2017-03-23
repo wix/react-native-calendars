@@ -13,14 +13,16 @@ import {parseDate, xdateToData} from '../interface';
 import dateutils from '../dateutils';
 import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
-import styles from './style';
+import styleConstructor from './style';
 
 const CALENDAR_OFFSET = 38;
+let styles = {};
 
 export default class AgendaView extends Component {
 
   constructor(props) {
     super(props);
+    styles = styleConstructor(props.theme);
     this.screenHeight = Dimensions.get('window').height;
     this.scrollTimeout = undefined;
     this.state = {
@@ -148,6 +150,7 @@ export default class AgendaView extends Component {
         </View>
         <Animated.View style={calendarStyle}>
           <CalendarList
+            theme={this.props.theme}
             onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
             ref={(c) => this.calendar = c}
             selected={[this.state.selectedDay]}

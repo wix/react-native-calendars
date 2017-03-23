@@ -1,20 +1,22 @@
 import {StyleSheet} from 'react-native';
-import * as appStyle from '../style';
+import * as defaultStyle from '../style';
 
-export default StyleSheet.create({
-  placeholder: {
-    backgroundColor: appStyle.foregroundColor,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  placeholderText: {
-    fontSize: 30,
-    fontWeight: '200',
-    color: appStyle.textDefaultColor
-  },
-  calendar: {
-    paddingLeft: 15,
-    paddingRight: 15
-  }
-});
-
+export default function getStyle(theme={}) {
+  const appStyle = {...defaultStyle, ...theme};
+  return StyleSheet.create({
+    placeholder: {
+      backgroundColor: appStyle.calendarBackground,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    placeholderText: {
+      fontSize: 30,
+      fontWeight: '200',
+      color: appStyle.dayTextColor
+    },
+    calendar: {
+      paddingLeft: 15,
+      paddingRight: 15
+    }
+  });
+}

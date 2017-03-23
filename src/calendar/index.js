@@ -164,6 +164,7 @@ renderDay(day, id) {
     return (
       <View style={[style.container, this.props.style]}>
         <CalendarHeader
+          theme={this.props.theme}
           hideArrows={this.props.hideArrows}
           month={this.state.currentMonth}
           addMonth={this.addMonth}

@@ -10,5 +10,13 @@ export const textDefaultColor = '#2d4150';
 export const textColor = '#43515c';
 export const textLinkColor = '#00adf5';
 export const textSecondaryColor = '#7a92a5';
+
+export const calendarBackground = foregroundColor;
 export const textSectionTitleColor = '#b6c1cd';
-export const textDisabledColor = '#d9e1e8'
+export const selectedDayBackgroundColor = textLinkColor;
+export const selectedDayTextColor = foregroundColor;
+export const todayTextColor = textLinkColor;
+export const dayTextColor = textDefaultColor;
+export const textDisabledColor = '#d9e1e8';
+export const dotColor = textLinkColor;
+export const selectedDotColor = foregroundColor;
