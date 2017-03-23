@@ -40,10 +40,10 @@ export default StyleSheet.create({
   },
   todayText: {
     fontWeight: '500',
-    //color: appStyle.text.linkColor
+    //color: appStyle.textLinkColor
   },
   disabledText: {
-    color: appStyle.text.disabledText
+    color: appStyle.textDisabledColor
   },
   quickAction: {
     backgroundColor: 'white',
@@ -52,10 +52,10 @@ export default StyleSheet.create({
   },
   quickActionText: {
     marginTop: 6,
-    color: appStyle.text.color
+    color: appStyle.textColor
   },
   firstQuickAction: {
-    backgroundColor: appStyle.text.linkColor
+    backgroundColor: appStyle.textLinkColor
   },
   firstQuickActionText: {
     color: 'white'

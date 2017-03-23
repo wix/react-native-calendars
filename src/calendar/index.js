@@ -6,16 +6,18 @@ import {
 import XDate from 'xdate';
 import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
-import style from './style';
+import styleConstructor from './style';
 import Day from './day';
 import UnitDay from './unit-day';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
+let style = {};
+
 class Calendar extends Component {
   constructor(props) {
     super(props);
-
+    style = styleConstructor(this.props.theme);
     let currentMonth;
     if (props.current) {
       currentMonth = parseDate(props.current);
@@ -46,72 +48,73 @@ class Calendar extends Component {
       return;
     }
     this.setState({
-      currentMonth: day.clone()
-    }, () => {
-      if (!doNotTriggerListeners) {
-        const currMont = this.state.currentMonth.clone();
-        if (this.props.onMonthChange) {
-          this.props.onMonthChange(xdateToData(currMont));
-        }
-        if (this.props.onVisibleMonthsChange) {
-          this.props.onVisibleMonthsChange([xdateToData(currMont)]);
-        }
+    currentMonth: day.clone()
+  }, () => {
+    if (!doNotTriggerListeners) {
+      const currMont = this.state.currentMonth.clone();
+      if (this.props.onMonthChange) {
+        this.props.onMonthChange(xdateToData(currMont));
       }
-    });
-  }
-
-  pressDay(day) {
-    const minDate = parseDate(this.props.minDate);
-    if (!minDate || dateutils.isGTE(day, minDate)) {
-      this.updateMonth(day);
-      if (this.props.onDayPress) {
-        this.props.onDayPress(xdateToData(day));
+      if (this.props.onVisibleMonthsChange) {
+        this.props.onVisibleMonthsChange([xdateToData(currMont)]);
       }
     }
-  }
+  });
+}
 
-  addMonth(count) {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+pressDay(day) {
+  const minDate = parseDate(this.props.minDate);
+  if (!minDate || dateutils.isGTE(day, minDate)) {
+    this.updateMonth(day);
+    if (this.props.onDayPress) {
+      this.props.onDayPress(xdateToData(day));
+    }
   }
+}
 
-  isSelected(day) {
-    let selectedDays = [];
-    if (this.props.selected) {
-      selectedDays = this.props.selected;
-    }
-    for (let i = 0; i < selectedDays.length; i++) {
-      if (dateutils.sameDate(day, parseDate(selectedDays[i]))) {
-        return true;
-      }
-    }
-    return false;
+addMonth(count) {
+  this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+}
+
+isSelected(day) {
+  let selectedDays = [];
+  if (this.props.selected) {
+    selectedDays = this.props.selected;
   }
-
-  renderDay(day, id) {
-    const minDate = parseDate(this.props.minDate);
-    let state = '';
-    if (this.isSelected(day)) {
-      state = 'selected';
-    } else if (minDate && !dateutils.isGTE(day, minDate)) {
-      state = 'disabled';
-    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
-      state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
-      state = 'today';
+  for (let i = 0; i < selectedDays.length; i++) {
+    if (dateutils.sameDate(day, parseDate(selectedDays[i]))) {
+      return true;
     }
-    let dayComp;
-    if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      if (this.props.markingType === 'interactive') {
-        dayComp = (<View key={id} style={{flex: 1}}/>);
-      } else {
-        dayComp = (<View key={id} style={{width: 32}}/>);
-      }
+  }
+  return false;
+}
+
+renderDay(day, id) {
+  const minDate = parseDate(this.props.minDate);
+  let state = '';
+  if (this.isSelected(day)) {
+    state = 'selected';
+  } else if (minDate && !dateutils.isGTE(day, minDate)) {
+    state = 'disabled';
+  } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
+    state = 'disabled';
+  } else if (dateutils.sameDate(day, XDate())) {
+    state = 'today';
+  }
+  let dayComp;
+  if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
+    if (this.props.markingType === 'interactive') {
+      dayComp = (<View key={id} style={{flex: 1}}/>);
     } else {
-      const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
-      dayComp = (
-        <DayComp
+      dayComp = (<View key={id} style={{width: 32}}/>);
+    }
+  } else {
+    const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+    dayComp = (
+      <DayComp
           key={id}
           state={state}
+          theme={this.props.theme}
           onPress={this.pressDay.bind(this, day)}
           marked={this.getDateMarking(day)}
         >

@@ -12,14 +12,14 @@ export default StyleSheet.create({
   monthText: {
     fontSize: 16,
     fontWeight: '300',
-    color: appStyle.text.defaultColor,
+    color: appStyle.textDefaultColor,
     margin: 10
   },
   arrow: {
     padding: 10
   },
   arrowImage: {
-    tintColor: appStyle.text.linkColor
+    tintColor: appStyle.textLinkColor
   },
   week: {
     marginTop: 7,
@@ -32,7 +32,7 @@ export default StyleSheet.create({
     width: 32,
     textAlign: 'center',
     fontSize: 12,
-    color: appStyle.text.sectionTitleColor
+    color: appStyle.textSectionTitleColor
   }
 });
 

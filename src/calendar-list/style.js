@@ -10,7 +10,7 @@ export default StyleSheet.create({
   placeholderText: {
     fontSize: 30,
     fontWeight: '200',
-    color: appStyle.text.defaultColor
+    color: appStyle.textDefaultColor
   },
   calendar: {
     paddingLeft: 15,

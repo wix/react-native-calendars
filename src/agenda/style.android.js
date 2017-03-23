@@ -44,7 +44,7 @@ export default StyleSheet.create({
     width: 32,
     textAlign: 'center',
     fontSize: 13,
-    color: appStyle.text.sectionTitleColor,
+    color: appStyle.textSectionTitleColor,
   },
   reservations: {
     flex: 1,

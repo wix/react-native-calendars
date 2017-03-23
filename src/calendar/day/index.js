@@ -5,9 +5,15 @@ import {
   View
 } from 'react-native';
 
-import style from './style';
+let style = {};
+import styleConstructor from './style';
 
 class Day extends Component {
+  constructor(props) {
+    super(props);
+    style = styleConstructor(props.theme);
+  }
+
   static propTypes = {
     state: React.PropTypes.oneOf(['selected', 'disabled', 'today', ''])
   };
