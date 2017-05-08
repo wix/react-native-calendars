@@ -1,14 +1,31 @@
-# wix-react-native-calendar
+# React Native Calendar Components ✨🗓️📆
 
-This module includes two components:
+This module includes various customizeable react native calendar components. The module is both android and ios compatible. Tested with react-native 0.44.0.
 
-`<Calendar />` - embedded calendar, months can be navigated using arrows
+## Demo
 
-`<CalendarList />` - scrollable infinite calendar composed of months
+You can check demo usage in [example module screens](https://github.com/wix-private/wix-react-native-calendar/tree/master/example/src/screens)
 
-You can check demo usage in [example/index.ios.js](https://github.com/wix-private/wix-react-native-calendar/blob/master/example/index.ios.js)
+You can also run example module by performing these steps:
 
-Calendar components accept these parameters:
+```
+$ git clone git@github.com:wix-private/wix-react-native-calendar.git
+$ cd wix-react-native-calendar/example
+$ npm install
+$ react-native run-ios
+```
+
+## Installation
+
+```
+$ npm install --save-dev wix-react-native-calendar
+```
+
+## Usage
+
+### Calendar
+
+`<Calendar />` - single page calendar, months can be navigated using arrows
 
 * selected - selected day
 * current - current visible month
@@ -24,4 +41,9 @@ Calendar components accept these parameters:
 * onVisibleMonthsChange - visible months change listener (for `<CalendarList />`)
 * disableMonthChange - do not change month when touching day from another mont in cal view (when arrows enabled)
 
-if parameter value type is date, then valilla JS date, XDate objects and String in format '2012-08-12' are accepted.
+### CalendarList
+
+`<CalendarList />` - scrollable semi-infinite calendar composed of `<Calendar />` components
+
+### Agenda
+
