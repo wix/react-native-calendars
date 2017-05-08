@@ -29,7 +29,7 @@ $ npm install --save-dev wix-react-native-calendar
 
 All parameters are optional. By default the month of current local date will be displayed.
 
-Parameters that require date types accept YYYY-MM-DD formated datestrings and JavaScript date objects
+Parameters that require date types accept YYYY-MM-DD formated datestrings and JavaScript date objects.
 
 #### Basic parameters
 
@@ -39,17 +39,17 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
   current={'2012-03-01'}
   // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
   minDate={'2012-05-10'}
-  // Hide month navigation arrows. Default = false
-  hideArrows={true}
   // Handler which gets executed on day press. Default = undefined
   onDayPress={(day) => {console.log('selected day', day)}}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
   onMonthChange={(month) => {console.log('month changed', month)}
-  // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
-  // day from another month that is visible in calendar page
-  disableMonthChange
+  // Hide month navigation arrows. Default = false
+  hideArrows={true}
   // Do not show days of other months in month page. Default = false
   hideExtraDays={true}
+  // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
+  // day from another month that is visible in calendar page. Default = false
+  disableMonthChange={true}
 />
 ```
 
@@ -66,7 +66,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
 />
 ```
 
-#### Data data loading indicator
+#### Displaying data loading indicator
 
 ```
   // Loading spinner will be displayed if markedDays is set and at least one day of
