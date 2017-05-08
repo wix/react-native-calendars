@@ -1,8 +1,8 @@
-# React Native Calendar Components ✨🗓️📆
+# React Native Calendar Components ✨ 🗓️ 📆
 
-This module includes various customizeable react native calendar components. The module is both android and ios compatible. Tested with react-native 0.44.0.
+This module includes various customizeable react native calendar components. The package is both android and ios compatible. Last tested with react-native 0.44.0.
 
-## Demo
+## Try it out
 
 You can check demo usage in [example module screens](https://github.com/wix-private/wix-react-native-calendar/tree/master/example/src/screens)
 
