@@ -27,8 +27,6 @@ $ npm install --save-dev wix-react-native-calendar
 
 ### Calendar
 
-![Calendar demo](https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/calendar.gif?raw=true)
-
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/calendar.gif?raw=true">
 </kbd>
