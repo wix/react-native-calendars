@@ -27,6 +27,8 @@ $ npm install --save-dev wix-react-native-calendar
 
 ### Calendar
 
+![Calendar demo](https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/calendar.gif?raw=true)
+
 All parameters are optional. By default the month of current local date will be displayed.
 
 Parameters that require date types accept YYYY-MM-DD formated datestrings and JavaScript date objects.
