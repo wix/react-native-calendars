@@ -48,8 +48,8 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
   // Do not show days of other months in month page. Default = false
   hideExtraDays={true}
   // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
-  // day from another month that is visible in calendar page
-  disableMonthChange
+  // day from another month that is visible in calendar page. Default = false
+  disableMonthChange={true}
 />
 ```
 
