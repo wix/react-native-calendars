@@ -27,21 +27,40 @@ $ npm install --save-dev wix-react-native-calendar
 
 ### Calendar
 
-`<Calendar />` - single page calendar, months can be navigated using arrows
+All parameters are optional. By default the month of current local date will be displayed.
 
-* selected - selected day
-* current - current visible month
-* minDate - minimum date that can be selected, dates before minDate will be grayed out
+```javascript
+<Calendar 
+  // Array of dates that should be marked as selected (round circle). Default = []
+  selected={['2012-05-16', Date()]}
+  // Initially visible month. Default = Date()
+  current={'2012-03-01'}
+  // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+  minDate={'2012-05-10'}
+  // Hide month navigation arrows. Default = false
+  hideArrows={true}
+  // Handler which gets executed on day press. Default = undefined
+  onDayPress={(day) => {console.log('selected day', day)}}
+  // Handler which gets executed when visible month changes in calendar. Default = undefined
+  onMonthChange={(month) => {console.log('month changed', month)}
+  // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
+  // day from another month that is visible in calendar page
+  disableMonthChange
+  // Do not show days of other months in month page. Default = false
+  hideExtraDays={true}
+  // Collection of dates that have to be colored in a special way. Default = []
+  markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
+  // Date marking style [normal/interactive]. Default = 'normal'
+  markingType={'interactive'}
+  // Loading spinner will be displayed if markedDays is set and at least one day of
+  // displayed month does not have a matching key in markedDays hash map
+  displayLoadingIndicator
+/>
+```
+
 * style - calendar container style
-* hideArrows - hide month navigation arrows (for `<Calendar />`)
-* onDayPress - on day press handler which get passed day that was pressed
-* hideExtraDays - do not show days of other months in month view
 * markedDays - collection of dates that have to be marked in calendar
-* markingType - date marking style (normal/interactive)
-* displayLoadingIndicator - use only with markedDays. indicator will displayed if some days do not have key in markedDays
-* onMonthChange - month change listener (for `<Calendar />`)
 * onVisibleMonthsChange - visible months change listener (for `<CalendarList />`)
-* disableMonthChange - do not change month when touching day from another mont in cal view (when arrows enabled)
 
 ### CalendarList
 
