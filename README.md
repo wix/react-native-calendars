@@ -29,7 +29,7 @@ $ npm install --save-dev wix-react-native-calendar
 
 All parameters are optional. By default the month of current local date will be displayed.
 
-Parameters that require date types accept YYYY-MM-DD formated datestrings and JavaScript date objects
+Parameters that require date types accept YYYY-MM-DD formated datestrings and JavaScript date objects.
 
 #### Basic parameters
 
@@ -66,7 +66,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
 />
 ```
 
-#### Data data loading indicator
+#### Displaying data loading indicator
 
 ```
   // Loading spinner will be displayed if markedDays is set and at least one day of
