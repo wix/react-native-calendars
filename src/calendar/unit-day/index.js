@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import _ from 'lodash';
+//import _ from 'lodash';
 import {
   TouchableWithoutFeedback,
   Text,
@@ -21,10 +21,13 @@ class Day extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marked);
 
+    /*
     if (!_.isEqual(this.markingStyle, newMarkingStyle)) {
       this.markingStyle = newMarkingStyle;
       return true;
     }
+    */
+    return true;
 
     return ['state', 'children'].reduce((prev, next) => {
       if (prev || nextProps[next] !== this.props[next]) {

@@ -21,8 +21,13 @@
   "dependencies": {
     "xdate": "^0.8.0"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.44.0"
+  },
   "devDependencies": {
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.44.0",
     "jasmine": "^2.5.2",
     "wnpm-ci": "^6.1.0"
   }

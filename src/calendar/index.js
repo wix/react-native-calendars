@@ -146,7 +146,7 @@ renderDay(day, id) {
   }
 
   render() {
-    //console.log('render calendar ' + this.props.current.toString('yyyy-MM'));
+    //console.log('render calendar ');
     const days = dateutils.page(this.state.currentMonth);
     const weeks = [];
     while (days.length) {

@@ -7,19 +7,18 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"react": "~15.3.1",
-		"react-native": "0.42.0",
-		"react-native-navigation": "next",
+		"react": "16.0.0-alpha.6",
+		"react-native": "0.44.0",
+		"react-native-navigation": "latest",
 		"wix-react-native-calendar": "*"
 	},
 	"devDependencies": {
-		"babel-jest": "17.0.0",
-		"babel-preset-react-native": "1.9.0",
-		"jest": "17.0.0",
-		"jest-react-native": "17.0.0",
-		"react-test-renderer": "~15.3.1"
+		"babel-jest": "20.0.0",
+		"babel-preset-react-native": "1.9.1",
+		"jest": "20.0.0",
+		"react-test-renderer": "16.0.0-alpha.6"
 	},
 	"jest": {
-		"preset": "jest-react-native"
+		"preset": "react-native"
 	}
 }
