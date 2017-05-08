@@ -39,17 +39,17 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
   current={'2012-03-01'}
   // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
   minDate={'2012-05-10'}
-  // Hide month navigation arrows. Default = false
-  hideArrows={true}
   // Handler which gets executed on day press. Default = undefined
   onDayPress={(day) => {console.log('selected day', day)}}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
   onMonthChange={(month) => {console.log('month changed', month)}
+  // Hide month navigation arrows. Default = false
+  hideArrows={true}
+  // Do not show days of other months in month page. Default = false
+  hideExtraDays={true}
   // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
   // day from another month that is visible in calendar page
   disableMonthChange
-  // Do not show days of other months in month page. Default = false
-  hideExtraDays={true}
 />
 ```
 
