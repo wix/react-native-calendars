@@ -18,7 +18,7 @@ class Day extends Component {
     state: React.PropTypes.oneOf(['selected', 'disabled', 'today', ''])
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     return ['state', 'children', 'marked', 'onPress'].reduce((prev, next) => {
       if (prev || nextProps[next] !== this.props[next]) {
         return true;

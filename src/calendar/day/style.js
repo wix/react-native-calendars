@@ -44,4 +44,4 @@ export default function styleConstructor(theme={}) {
       backgroundColor: appStyle.selectedDotColor
     }
   });
-};
+}

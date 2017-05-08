@@ -29,7 +29,6 @@ describe('calendar interface', () => {
     it('should accept XDate as argument', () => {
       const testDate = XDate('2016-11-22 00:00:00+3');
       expect(testDate.toISOString()).toEqual('2016-11-21T21:00:00Z');
-      const date = iface.parseDate(testDate);
       const time = 1479772800000;
       expect(XDate(time, true).toISOString()).toEqual('2016-11-22T00:00:00Z');
     });

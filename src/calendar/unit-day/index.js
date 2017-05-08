@@ -18,16 +18,13 @@ class Day extends Component {
     state: React.PropTypes.oneOf(['selected', 'disabled', 'today', ''])
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marked);
 
-    /*
-    if (!_.isEqual(this.markingStyle, newMarkingStyle)) {
+    if (JSON.stringify(this.markingStyle) !== JSON.stringify(newMarkingStyle)) {
       this.markingStyle = newMarkingStyle;
       return true;
     }
-    */
-    return true;
 
     return ['state', 'children'].reduce((prev, next) => {
       if (prev || nextProps[next] !== this.props[next]) {

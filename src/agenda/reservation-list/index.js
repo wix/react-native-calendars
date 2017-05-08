@@ -206,7 +206,7 @@ class ReactComp extends Component {
         onScroll={this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
-        onMoveShouldSetResponderCapture={(evt) => {this.onListTouch(); return false;}}
+        onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
       />
     );
   }

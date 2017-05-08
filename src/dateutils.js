@@ -78,4 +78,4 @@ module.exports = {
   fromTo,
   isLTE,
   isGTE
-}
+};

@@ -6,7 +6,7 @@ function xdateToData(xdate) {
     month: xdate.getMonth() + 1,
     day: xdate.getDate(),
     timestamp: XDate(xdate.toString('yyyy-MM-dd'), true).getTime()
-  }
+  };
 }
 
 function padNumber(n) {

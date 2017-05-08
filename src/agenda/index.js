@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {
-  Image,
   Text,
   TouchableOpacity,
   View,
@@ -118,7 +117,7 @@ export default class AgendaView extends Component {
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
-        onScroll={(y) => {}}
+        onScroll={() => {}}
         ref={(c) => this.list = c}
       />
     );

@@ -54,4 +54,4 @@ export default function styleConstructor(theme = {}) {
       backgroundColor: appStyle.backgroundColor
     },
   });
-};
+}

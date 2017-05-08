@@ -48,79 +48,79 @@ class Calendar extends Component {
       return;
     }
     this.setState({
-    currentMonth: day.clone()
-  }, () => {
-    if (!doNotTriggerListeners) {
-      const currMont = this.state.currentMonth.clone();
-      if (this.props.onMonthChange) {
-        this.props.onMonthChange(xdateToData(currMont));
+      currentMonth: day.clone()
+    }, () => {
+      if (!doNotTriggerListeners) {
+        const currMont = this.state.currentMonth.clone();
+        if (this.props.onMonthChange) {
+          this.props.onMonthChange(xdateToData(currMont));
+        }
+        if (this.props.onVisibleMonthsChange) {
+          this.props.onVisibleMonthsChange([xdateToData(currMont)]);
+        }
       }
-      if (this.props.onVisibleMonthsChange) {
-        this.props.onVisibleMonthsChange([xdateToData(currMont)]);
+    });
+  }
+
+  pressDay(day) {
+    const minDate = parseDate(this.props.minDate);
+    if (!minDate || dateutils.isGTE(day, minDate)) {
+      this.updateMonth(day);
+      if (this.props.onDayPress) {
+        this.props.onDayPress(xdateToData(day));
       }
     }
-  });
-}
+  }
 
-pressDay(day) {
-  const minDate = parseDate(this.props.minDate);
-  if (!minDate || dateutils.isGTE(day, minDate)) {
-    this.updateMonth(day);
-    if (this.props.onDayPress) {
-      this.props.onDayPress(xdateToData(day));
+  addMonth(count) {
+    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+  }
+
+  isSelected(day) {
+    let selectedDays = [];
+    if (this.props.selected) {
+      selectedDays = this.props.selected;
     }
-  }
-}
-
-addMonth(count) {
-  this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
-}
-
-isSelected(day) {
-  let selectedDays = [];
-  if (this.props.selected) {
-    selectedDays = this.props.selected;
-  }
-  for (let i = 0; i < selectedDays.length; i++) {
-    if (dateutils.sameDate(day, parseDate(selectedDays[i]))) {
-      return true;
+    for (let i = 0; i < selectedDays.length; i++) {
+      if (dateutils.sameDate(day, parseDate(selectedDays[i]))) {
+        return true;
+      }
     }
+    return false;
   }
-  return false;
-}
 
-renderDay(day, id) {
-  const minDate = parseDate(this.props.minDate);
-  let state = '';
-  if (this.isSelected(day)) {
-    state = 'selected';
-  } else if (minDate && !dateutils.isGTE(day, minDate)) {
-    state = 'disabled';
-  } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
-    state = 'disabled';
-  } else if (dateutils.sameDate(day, XDate())) {
-    state = 'today';
-  }
-  let dayComp;
-  if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-    if (this.props.markingType === 'interactive') {
-      dayComp = (<View key={id} style={{flex: 1}}/>);
+  renderDay(day, id) {
+    const minDate = parseDate(this.props.minDate);
+    let state = '';
+    if (this.isSelected(day)) {
+      state = 'selected';
+    } else if (minDate && !dateutils.isGTE(day, minDate)) {
+      state = 'disabled';
+    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
+      state = 'disabled';
+    } else if (dateutils.sameDate(day, XDate())) {
+      state = 'today';
+    }
+    let dayComp;
+    if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
+      if (this.props.markingType === 'interactive') {
+        dayComp = (<View key={id} style={{flex: 1}}/>);
+      } else {
+        dayComp = (<View key={id} style={{width: 32}}/>);
+      }
     } else {
-      dayComp = (<View key={id} style={{width: 32}}/>);
-    }
-  } else {
-    const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
-    dayComp = (
-      <DayComp
-          key={id}
-          state={state}
-          theme={this.props.theme}
-          onPress={this.pressDay.bind(this, day)}
-          marked={this.getDateMarking(day)}
-        >
-          {day.getDate()}
-        </DayComp>
-      );
+      const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      dayComp = (
+        <DayComp
+            key={id}
+            state={state}
+            theme={this.props.theme}
+            onPress={this.pressDay.bind(this, day)}
+            marked={this.getDateMarking(day)}
+          >
+            {day.getDate()}
+          </DayComp>
+        );
     }
     return dayComp;
   }

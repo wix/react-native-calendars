@@ -45,7 +45,7 @@ class CalendarList extends Component {
     this.lastScrollPosition = -1000;
   }
 
-  renderCalendar(row, x, y, z) {
+  renderCalendar(row) {
     if (row.getTime) {
       return (
         <Calendar

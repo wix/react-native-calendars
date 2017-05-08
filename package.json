@@ -5,7 +5,7 @@
   "description": "Wix React Native Calendar Components",
   "scripts": {
     "test": "jasmine src/*.spec.js",
-    "lint": ":",
+    "lint": "eslint src/",
     "build": ":",
     "release": "wnpm-release"
   },
@@ -26,9 +26,12 @@
     "react-native": "0.44.0"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^7.0.0",
+    "jasmine": "^2.5.2",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
-    "jasmine": "^2.5.2",
     "wnpm-ci": "^6.1.0"
   }
 }
