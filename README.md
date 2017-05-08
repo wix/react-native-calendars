@@ -23,6 +23,10 @@ $ npm install --save-dev wix-react-native-calendar
 
 ## Usage
 
+There are three basic calendar types that can be imported:
+
+`import {`[Calendar](https://github.com/wix-private/wix-react-native-calendar#calendar)`, `[CalendarList](https://github.com/wix-private/wix-react-native-calendar#calendarlist)`, `[Agenda](https://github.com/wix-private/wix-react-native-calendar#agenda)}` from 'wix-react-native-calendar';`
+
 ### Calendar
 
 `<Calendar />` - single page calendar, months can be navigated using arrows
