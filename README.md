@@ -31,7 +31,7 @@ All parameters are optional. By default the month of current local date will be 
 
 Parameters that require date types accept YYYY-MM-DD formated datestrings and JavaScript date objects
 
-### Basic parameters
+#### Basic parameters
 
 ```javascript
 <Calendar 
@@ -53,7 +53,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
 />
 ```
 
-### Date marking
+#### Date marking
 
 ```javascript
 <Calendar 
@@ -66,7 +66,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
 />
 ```
 
-### Data data loading indicator
+#### Data data loading indicator
 
 ```
   // Loading spinner will be displayed if markedDays is set and at least one day of
@@ -74,7 +74,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings and Ja
   displayLoadingIndicator
 ```
 
-### Customizing look & feel
+#### Customizing look & feel
 
 * style - calendar container style
 
