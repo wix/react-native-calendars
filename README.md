@@ -23,8 +23,6 @@ $ npm install --save-dev wix-react-native-calendar
 
 ## Usage
 
-There are three basic calendar types that can be imported:
-
 `import {` [Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)} `from 'wix-react-native-calendar';`
 
 ### Calendar
