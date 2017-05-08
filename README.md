@@ -23,7 +23,7 @@ $ npm install --save-dev wix-react-native-calendar
 
 ## Usage
 
-`import {` [Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)} `from 'wix-react-native-calendar';`
+`import {` [Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda) `} from 'wix-react-native-calendar';`
 
 ### Calendar
 
