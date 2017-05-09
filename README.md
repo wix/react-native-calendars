@@ -40,7 +40,7 @@ Event handler callbacks are called with `calendar objects` like this:
 }
 ```
 
-Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaScript date objects, calendar objects and UTC timestamps.
+Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaScript date objects, `calendar objects` and UTC timestamps.
 
 ### Calendar
 
@@ -78,7 +78,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 
 ```javascript
 <Calendar 
-  // Collection of dates that have to be marked. Default = []
+  // Collection of dates that have to be marked. Default = {}
   markedDates={{'2012-05-16': [true], '2012-05-17': [true]}}
   // Array of dates that should be marked as selected (round circle). Default = []
   selected={['2012-05-16', Date()]}
@@ -95,9 +95,13 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 
 ```javascript
 <Calendar 
-  // Collection of dates that have to be colored in a special way. Default = []
-   markedDates={{'2012-05-24': [{startingDay: true, color: 'gray'}], '2012-05-25': [{endingDay: true, color: 'gray'}]}}
-  // Date marking style [normal/interactive]. Default = 'normal'
+  // Collection of dates that have to be colored in a special way. Default = {}
+   markedDates={
+    {'2012-05-22': [{startingDay: true, color: 'green'}],
+     '2012-05-23': [{endingDay: true, color: 'green'}],
+     '2012-05-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
+    }}
+  // Date marking style [simple/interactive]. Default = 'simple'
   markingType={'interactive'}
 />
 ```
@@ -108,15 +112,34 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/loader.png?raw=true">
 </kbd>
 
-```
-  // Loading spinner will be displayed if markedDays is set and at least one day of
-  // displayed month does not have a matching key in markedDays hash map
-  displayLoadingIndicator
-```
+The loading indicator next to month name will be displayed if `<Calendar />` has `displayLoadingIndicator` property and `markedDays` collection does not have a value for every day of the month in question. When you load data for days, just set `[]` or special marking value to all days in `markedDates` collection.
 
 #### Customizing look & feel
 
-* style - calendar container style
+```javascript
+<Calendar 
+  // Specify style for calendar container element. Default = {}
+  style={{
+    borderWidth: 1,
+    borderColor: 'gray',
+    height: 350
+  }}
+  // Specify theme properties to override specific styles for calendar parts. Default = {}
+  theme={{
+    calendarBackground: '#ffffff',
+    textSectionTitleColor: '#b6c1cd',
+    selectedDayBackgroundColor: '#00adf5',
+    selectedDayTextColor: '#ffffff',
+    todayTextColor: '#00adf5',
+    dayTextColor: '#2d4150',
+    textDisabledColor: '#d9e1e8',
+    dotColor: '#00adf5',
+    selectedDotColor: '#ffffff',
+    arrowColor: 'orange',
+    monthTextColor: 'blue'
+  }}
+/>
+```
 
 ### CalendarList
 
