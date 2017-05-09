@@ -126,15 +126,15 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   }}
   // Specify theme properties to override specific styles for calendar parts. Default = {}
   theme={{
-      calendarBackground = '#ffffff',
-      textSectionTitleColor = '#b6c1cd',
-      electedDayBackgroundColor = '#00adf5',
-      selectedDayTextColor = '#ffffff',
-      todayTextColor = '#00adf5',
-      dayTextColor = '#2d4150',
-      textDisabledColor = '#d9e1e8',
-      dotColor = '#00adf5',
-      selectedDotColor = '#ffffff'
+      calendarBackground: '#ffffff',
+      textSectionTitleColor: '#b6c1cd',
+      selectedDayBackgroundColor: '#00adf5',
+      selectedDayTextColor: '#ffffff',
+      todayTextColor: '#00adf5',
+      dayTextColor: '#2d4150',
+      textDisabledColor: '#d9e1e8',
+      dotColor: '#00adf5',
+      selectedDotColor: '#ffffff'
   }}
 />
 ```
