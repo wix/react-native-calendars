@@ -1,4 +1,4 @@
-# React Native Calendar Components ✨ 🗓️ 📆
+# React Native Calendars ✨ 🗓️ 📆
 
 This module includes various customizable react native calendar components.
 
