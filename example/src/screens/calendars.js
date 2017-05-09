@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import {
   Text,
-  View,
-  TouchableOpacity,
   StyleSheet,
   ScrollView
 } from 'react-native';
-import {Navigation} from 'react-native-navigation';
 import {Calendar} from 'react-native-calendars';
 
 export default class CalendarsScreen extends Component {
@@ -19,12 +16,14 @@ export default class CalendarsScreen extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
+        <Text style={styles.text}>Calendar with selectable date and arrows</Text>
         <Calendar
           onDayPress={this.onDayPress}
           style={styles.calendar}
           hideExtraDays
           selected={[this.state.selected]}
         />
+        <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
           current={'2012-05-16'}
@@ -33,6 +32,7 @@ export default class CalendarsScreen extends Component {
           markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
           hideArrows={true}
         />
+        <Text style={styles.text}>Calendar with marked dates and spinner</Text>
         <Calendar
           style={styles.calendar}
           current={'2012-05-16'}
@@ -55,9 +55,16 @@ export default class CalendarsScreen extends Component {
 
 const styles = StyleSheet.create({
   calendar: {
+    borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#eee',
     height: 350
+  },
+  text: {
+    textAlign: 'center',
+    borderColor: '#bbb',
+    padding: 10,
+    backgroundColor: '#eee'
   },
   container: {
     flex: 1,

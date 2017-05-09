@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import {Navigation} from 'react-native-navigation';
 
 export default class MenuScreen extends Component {
 

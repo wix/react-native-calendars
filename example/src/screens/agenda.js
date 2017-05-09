@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
   Text,
-  View,
-  ScrollView,
-  Navigator,
-  TouchableOpacity
+  View
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 
 export default class AgendaScreen extends Component {
-  static navigatorStyle = {
-    topBarElevationShadowEnabled: false
-  };
   constructor(props) {
     super(props);
     this.state = {
@@ -55,19 +47,19 @@ export default class AgendaScreen extends Component {
         items: this.state.items
       });
     }, 1000);
-    console.log(`Load Items for ${day.year}-${day.month}`);
+    //console.log(`Load Items for ${day.year}-${day.month}`);
   }
 
   renderItem(item) {
     return (
       <View style={{backgroundColor: 'white', height: item.height, flex:1, borderRadius: 5, padding: 10, marginRight: 10, marginTop: 5}}><Text>{item.name}</Text></View>
-    )
+    );
   }
 
-  renderEmptyDate(item) {
+  renderEmptyDate() {
     return (
       <View style={{height: 15, flex:1, paddingTop: 30}}><Text>This is empty date!</Text></View>
-    )
+    );
   }
 
   rowHasChanged(r1, r2) {

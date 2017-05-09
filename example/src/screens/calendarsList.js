@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import {Navigation} from 'react-native-navigation';
+
 import {CalendarList} from 'react-native-calendars';
 
 export default class CalendarsList extends Component {
