@@ -72,18 +72,41 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 
 #### Date marking
 
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking1.png?raw=true">
+</kbd>
+
 ```javascript
 <Calendar 
+  // Collection of dates that have to be marked. Default = []
+  markedDates={{'2012-05-16': [true], '2012-05-17': [true]}}
   // Array of dates that should be marked as selected (round circle). Default = []
   selected={['2012-05-16', Date()]}
+/>
+```
+
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
+</kbd>
+
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking3.png?raw=true">
+</kbd>
+
+```javascript
+<Calendar 
   // Collection of dates that have to be colored in a special way. Default = []
-  markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
+   markedDates={{'2012-05-24': [{startingDay: true, color: 'gray'}], '2012-05-25': [{endingDay: true, color: 'gray'}]}}
   // Date marking style [normal/interactive]. Default = 'normal'
   markingType={'interactive'}
 />
 ```
 
 #### Displaying data loading indicator
+
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/loader.png?raw=true">
+</kbd>
 
 ```
   // Loading spinner will be displayed if markedDays is set and at least one day of
@@ -96,6 +119,10 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 * style - calendar container style
 
 ### CalendarList
+
+<kbd>
+  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/calendar-list.gif?raw=true">
+</kbd>
 
 `<CalendarList />` - scrollable semi-infinite calendar composed of `<Calendar />` components
 
