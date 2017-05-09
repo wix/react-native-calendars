@@ -1,4 +1,5 @@
 # React Native Calendars ✨ 🗓️ 📆
+[![NPM Version](https://img.shields.io/npm/v/react-native-calendars.svg?style=flat)](https://www.npmjs.com/package/react-native-calendars)
 
 This module includes various customizable react native calendar components.
 
@@ -20,7 +21,7 @@ You can check example screens source code in [example module screens](https://gi
 ## Installation
 
 ```
-$ npm install --save-dev react-native-calendars
+$ npm install --save react-native-calendars
 ```
 
 ## Usage
