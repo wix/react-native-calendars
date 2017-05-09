@@ -40,7 +40,7 @@ Event handler callbacks are called with `calendar objects` like this:
 }
 ```
 
-Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaScript date objects, calendar objects and UTC timestamps.
+Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaScript date objects, `calendar objects` and UTC timestamps.
 
 ### Calendar
 
