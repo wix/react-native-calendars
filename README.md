@@ -126,7 +126,6 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   }}
   // Specify theme properties to override specific styles for calendar parts. Default = {}
   theme={{
-    textDefaultColor: 'black',
     calendarBackground: '#ffffff',
     textSectionTitleColor: '#b6c1cd',
     selectedDayBackgroundColor: '#00adf5',
@@ -135,7 +134,9 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
     dayTextColor: '#2d4150',
     textDisabledColor: '#d9e1e8',
     dotColor: '#00adf5',
-    selectedDotColor: '#ffffff'
+    selectedDotColor: '#ffffff',
+    arrowColor: 'orange',
+    monthTextColor: 'blue'
   }}
 />
 ```
