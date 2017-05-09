@@ -172,3 +172,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 * Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
 
 See also the list of [contributors](https://github.com/wix/react-native-calendar-components/contributors) who participated in this project.
+
+## Contributing
+
+Pull requests are welcome. `npm run test` and `npm run lint` before push.
