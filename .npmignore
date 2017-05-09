@@ -1,3 +1,5 @@
+.DS_Store
+.idea
 src/**/*.spec.js
 example/
 demo/
