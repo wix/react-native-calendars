@@ -14,14 +14,14 @@ export default function(theme={}) {
     monthText: {
       fontSize: 16,
       fontWeight: '300',
-      color: appStyle.textDefaultColor,
+      color: appStyle.monthTextColor,
       margin: 10
     },
     arrow: {
       padding: 10
     },
     arrowImage: {
-      tintColor: appStyle.textLinkColor
+      tintColor: appStyle.arrowColor
     },
     week: {
       marginTop: 7,

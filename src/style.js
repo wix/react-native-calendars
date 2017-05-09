@@ -20,3 +20,5 @@ export const dayTextColor = textDefaultColor;
 export const textDisabledColor = '#d9e1e8';
 export const dotColor = textLinkColor;
 export const selectedDotColor = foregroundColor;
+export const arrowColor = textLinkColor;
+export const monthTextColor = textDefaultColor;
