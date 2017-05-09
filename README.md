@@ -6,7 +6,7 @@ The package is both **Android** and **iOS** compatible.
 
 ## Try it out
 
-You can also run example module by performing these steps:
+You can run example module by performing these steps:
 
 ```
 $ git clone git@github.com:wix-private/wix-react-native-calendar.git
