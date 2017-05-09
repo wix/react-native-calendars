@@ -76,6 +76,22 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking1.png?raw=true">
 </kbd>
 
+```javascript
+<Calendar 
+  // Array of dates that should be marked as selected (round circle). Default = []
+  selected={['2012-05-16', Date()]}
+/>
+```
+
+```
+<Calendar 
+  // Collection of dates that have to be marked. Default = []
+  markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
+  // Array of dates that should be marked as selected (round circle). Default = []
+  selected={['2012-05-16', Date()]}
+/>
+```
+
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
 </kbd>
@@ -84,16 +100,13 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking3.png?raw=true">
 </kbd>
 
-```javascript
+```
 <Calendar 
-  // Array of dates that should be marked as selected (round circle). Default = []
-  selected={['2012-05-16', Date()]}
   // Collection of dates that have to be colored in a special way. Default = []
-  markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
+   markedDates={{'2012-05-24': [{startingDay: true, color: 'gray'}], '2012-05-25': [{endingDay: true, color: 'gray'}]}}
   // Date marking style [normal/interactive]. Default = 'normal'
   markingType={'interactive'}
 />
-```
 
 #### Displaying data loading indicator
 
