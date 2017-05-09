@@ -25,6 +25,8 @@ You can check example screens source code in [example module screens](https://gi
 $ npm install --save react-native-calendars
 ```
 
+The solution is implemented in JavaScript so no native module linking is required.
+
 ## Usage
 
 `import {` [Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda) `} from 'react-native-calendars';`
