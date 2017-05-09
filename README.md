@@ -147,9 +147,17 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/calendar-list.gif?raw=true">
 </kbd>
 
-`<CalendarList />` - scrollable semi-infinite calendar composed of `<Calendar />` components
+`<CalendarList />` - scrollable semi-infinite calendar composed of `<Calendar />` components. Currently it is possible to scroll 4 years back and 4 years to the future. All paramters that are available for `<Calendar />` are also available for this component. There are also some additional params that can be used:
 
-* onVisibleMonthsChange - visible months change listener (for `<CalendarList />`)
+```javascript
+<CalendarList
+  // Callback which gets executed when visible months change in scroll view. Default = undefined
+  onVisibleMonthsChange={(visibleMonths) => {console.log('now these months are visible', visibleMonths);}
+  // Enable or disable scrolling of calendar list
+  scrollEnabled={true}
+  ...calendarParams
+/>
+```
 
 ### Agenda
 
