@@ -161,7 +161,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 />
 ```
 
-### Agenda
+### Agenda [Work in progress]
 
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/agenda.gif?raw=true">
