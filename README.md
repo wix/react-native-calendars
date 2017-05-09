@@ -1,6 +1,8 @@
 # React Native Calendar Components ✨ 🗓️ 📆
 
-This module includes various customizeable react native calendar components. The package is both android and ios compatible. Last tested with react-native 0.44.0.
+This module includes various customizeable react native calendar components.
+
+The package is both android and ios compatible.
 
 ## Try it out
 
