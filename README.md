@@ -25,15 +25,26 @@ $ npm install --save-dev wix-react-native-calendar
 
 `import {` [Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda) `} from 'wix-react-native-calendar';`
 
+All parameters for components are optional. By default the month of current local date will be displayed.
+
+Event handlers are called with `calendar objects` like this:
+
+```javasctipt
+{
+  day: 1,     // day of month (1-31)
+  month: 1,   // month of year (1-12)
+  year: 2017, // year
+  timestamp   // UTC timestamp representing 00:00 AM of this date
+}
+```
+
+Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaScript date objects, calendar objects and UTC timestamps.
+
 ### Calendar
 
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/calendar.gif?raw=true">
 </kbd>
-
-All parameters are optional. By default the month of current local date will be displayed.
-
-Parameters that require date types accept YYYY-MM-DD formated datestrings and JavaScript date objects.
 
 #### Basic parameters
 
