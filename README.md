@@ -79,7 +79,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 ```javascript
 <Calendar 
   // Collection of dates that have to be marked. Default = []
-  markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
+  markedDates={{'2012-05-16': [true], '2012-05-17': [true]}}
   // Array of dates that should be marked as selected (round circle). Default = []
   selected={['2012-05-16', Date()]}
 />
@@ -103,6 +103,10 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 ```
 
 #### Displaying data loading indicator
+
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/loader.png?raw=true">
+</kbd>
 
 ```
   // Loading spinner will be displayed if markedDays is set and at least one day of
