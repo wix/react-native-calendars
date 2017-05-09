@@ -165,7 +165,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/agenda.gif?raw=true">
 </kbd>
 
-An advanced agenda component that can display listings for calendar day items.
+An advanced agenda component that can display interactive listings for calendar day items.
 
 ```javascript
 <Agenda
