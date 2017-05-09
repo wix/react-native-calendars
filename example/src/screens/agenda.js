@@ -8,7 +8,7 @@ import {
   Navigator,
   TouchableOpacity
 } from 'react-native';
-import {Agenda} from 'wix-react-native-calendar';
+import {Agenda} from 'react-native-calendars';
 
 export default class AgendaScreen extends Component {
   static navigatorStyle = {

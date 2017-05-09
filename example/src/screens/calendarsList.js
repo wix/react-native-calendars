@@ -6,7 +6,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import {CalendarList} from 'wix-react-native-calendar';
+import {CalendarList} from 'react-native-calendars';
 
 export default class CalendarsList extends Component {
   constructor(props) {

@@ -7,7 +7,7 @@ import {
   ScrollView
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import {Calendar} from 'wix-react-native-calendar';
+import {Calendar} from 'react-native-calendars';
 
 export default class CalendarsScreen extends Component {
   constructor(props) {
