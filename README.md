@@ -165,6 +165,26 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/agenda.gif?raw=true">
 </kbd>
 
+```javascript
+<Agenda
+  // the list of items that have to be displayed in agend
+  items={
+    {'2012-05-22': [{text: 'any js object'}],
+     '2012-05-23': [{text: 'any js object'}]],
+     '2012-05-04': [{text: 'any js object'}], {text: 'any js object'}]]
+    }}
+  // callback that gets called when items for a certain month should be loaded (month became visible)
+  loadItemsForMonth={(mongh) => {console.log('trigger items loading')}
+  // initially selected day
+  selected={'2012-05-16'}
+  // specify how each item should be rendered in agenda
+  renderItem={(item) => {return (<View />);}}
+  // specify how empty date content with no items should be rendered
+  renderEmptyDate={() => {return (View />);}}
+  // specify your item comparison function for increased performance
+  rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
+/>
+```
 
 ## Authors
 
