@@ -164,3 +164,10 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/agenda.gif?raw=true">
 </kbd>
+
+
+## Authors
+
+* **[Tautvilas Mecinskas](https://github.com/tautvilas/)** - *Initial work* - [@tautvilas](https://twitter.com/TautviIas)
+
+See also the list of [contributors](https://github.com/wix/react-native-calendar-components/contributors) who participated in this project.
