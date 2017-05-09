@@ -10,7 +10,7 @@
 		"react": "16.0.0-alpha.6",
 		"react-native": "0.44.0",
 		"react-native-navigation": "latest",
-		"wix-react-native-calendar": "*"
+		"react-native-calendars": "*"
 	},
 	"devDependencies": {
 		"babel-jest": "20.0.0",
