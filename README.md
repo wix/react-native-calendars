@@ -152,7 +152,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 ```javascript
 <CalendarList
   // Callback which gets executed when visible months change in scroll view. Default = undefined
-  onVisibleMonthsChange={(visibleMonths) => {console.log('now these months are visible', visibleMonths);}
+  onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}
   // Enable or disable scrolling of calendar list
   scrollEnabled={true}
   ...calendarParams
