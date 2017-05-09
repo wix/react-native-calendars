@@ -28,7 +28,7 @@ export default class AgendaScreen extends Component {
 
   loadItems(day) {
     setTimeout(() => {
-      for (let i = -15; i < 45; i++) {
+      for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strtime = this.timeToString(time);
         if (!this.state.items[strtime]) {
@@ -43,11 +43,13 @@ export default class AgendaScreen extends Component {
         }
       }
       //console.log(this.state.items);
+      const newItems = {};
+      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
-        items: this.state.items
+        items: newItems
       });
     }, 1000);
-    //console.log(`Load Items for ${day.year}-${day.month}`);
+    // console.log(`Load Items for ${day.year}-${day.month}`);
   }
 
   renderItem(item) {
