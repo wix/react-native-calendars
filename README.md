@@ -98,7 +98,9 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
   // Collection of dates that have to be colored in a special way. Default = []
    markedDates={
     {'2012-05-22': [{startingDay: true, color: 'green'}],
-     '2012-05-23': [{endingDay: true, color: 'green'}]}}
+     '2012-05-23': [{endingDay: true, color: 'green'}],
+     '2012-05-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
+    }}
   // Date marking style [normal/interactive]. Default = 'normal'
   markingType={'interactive'}
 />
@@ -107,7 +109,7 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 #### Displaying data loading indicator
 
 <kbd>
-  <img height=50 style="marginBottom: 20px" src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/loader.png?raw=true">
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/loader.png?raw=true">
 </kbd>
 
 The loading indicator next to month name will be displayed if `<Calendar />` has `displayLoadingIndicator` property and `markedDays` collections does not have a value for every day of the month in question.
