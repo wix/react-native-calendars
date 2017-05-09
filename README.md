@@ -29,7 +29,7 @@ $ npm install --save-dev wix-react-native-calendar
 
 All parameters for components are optional. By default the month of current local date will be displayed.
 
-Event handlers are called with `calendar objects` like this:
+Event handler callbacks are called with `calendar objects` like this:
 
 ```javasctipt
 {
