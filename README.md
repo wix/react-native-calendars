@@ -6,8 +6,6 @@ The package is both **Android** and **iOS** compatible.
 
 ## Try it out
 
-You can check demo usage in [example module screens](https://github.com/wix-private/wix-react-native-calendar/tree/master/example/src/screens)
-
 You can also run example module by performing these steps:
 
 ```
@@ -16,6 +14,8 @@ $ cd wix-react-native-calendar/example
 $ npm install
 $ react-native run-ios
 ```
+
+You can check example screens source code in [example module screens](https://github.com/wix-private/wix-react-native-calendar/tree/master/example/src/screens)
 
 ## Installation
 
