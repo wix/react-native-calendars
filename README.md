@@ -1,4 +1,4 @@
-# React Native Calendar Components ✨ 🗓️ 📆
+# React Native Calendars ✨ 🗓️ 📆
 
 This module includes various customizable react native calendar components.
 
@@ -161,3 +161,46 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 
 ### Agenda
 
+<kbd>
+  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/agenda.gif?raw=true">
+</kbd>
+
+An advanced agenda component that can display interactive listings for calendar day items.
+
+```javascript
+<Agenda
+  // the list of items that have to be displayed in agenda
+  items={
+    {'2012-05-22': [{text: 'item 1 - any js object'}],
+     '2012-05-23': [{text: 'item 2 - any js object'}]],
+     '2012-05-04': [{text: 'item 3 - any js object'}], {text: 'any js object'}]]
+    }}
+  // callback that gets called when items for a certain month should be loaded (month became visible)
+  loadItemsForMonth={(mongh) => {console.log('trigger items loading')}
+  // callback that gets called on day press
+  onDayPress={(day)=>{console.log('day pressed'}}
+  // initially selected day
+  selected={'2012-05-16'}
+  // specify how each item should be rendered in agenda
+  renderItem={(item) => {return (<View />);}}
+  // specify how empty date content with no items should be rendered
+  renderEmptyDate={() => {return (View />);}}
+  // specify your item comparison function for increased performance
+  rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
+  // agenda theme
+  theme = {{}}
+  // agenda container style
+  style = {{}} 
+/>
+```
+
+## Authors
+
+* [Tautvilas Mecinskas](https://github.com/tautvilas/) - Initial code - [@tautvilas](https://twitter.com/TautviIas)
+* Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
+
+See also the list of [contributors](https://github.com/wix/react-native-calendar-components/contributors) who participated in this project.
+
+## Contributing
+
+Pull requests are welcome. `npm run test` and `npm run lint` before push.
