@@ -73,15 +73,15 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
 #### Date marking
 
 <kbd>
-  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking1.png?raw=true">
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking1.png?raw=true">
 </kbd>
 
 <kbd>
-  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
 </kbd>
 
 <kbd>
-  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking3.png?raw=true">
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking3.png?raw=true">
 </kbd>
 
 ```javascript
