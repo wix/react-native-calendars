@@ -76,6 +76,14 @@ Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaS
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking1.png?raw=true">
 </kbd>
 
+<kbd>
+  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
+</kbd>
+
+<kbd>
+  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking3.png?raw=true">
+</kbd>
+
 ```javascript
 <Calendar 
   // Array of dates that should be marked as selected (round circle). Default = []
