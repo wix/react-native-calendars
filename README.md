@@ -20,7 +20,7 @@ You can check example screens source code in [example module screens](https://gi
 ## Installation
 
 ```
-$ npm install --save-dev react-native-calendars
+$ npm install --save react-native-calendars
 ```
 
 ## Usage
