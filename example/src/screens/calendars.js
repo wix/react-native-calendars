@@ -56,6 +56,7 @@ export default class CalendarsScreen extends Component {
 const styles = StyleSheet.create({
   calendar: {
     borderTopWidth: 1,
+    paddingTop: 5,
     borderBottomWidth: 1,
     borderColor: '#eee',
     height: 350
