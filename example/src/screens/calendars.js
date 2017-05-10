@@ -28,7 +28,7 @@ export default class CalendarsScreen extends Component {
           style={styles.calendar}
           current={'2012-05-16'}
           minDate={'2012-05-10'}
-          selected={['2012-05-16']}
+          selected={['2012-05-24']}
           markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
           hideArrows={true}
         />

@@ -19,7 +19,7 @@ class Day extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return ['state', 'children', 'marked', 'onPress'].reduce((prev, next) => {
+    return ['state', 'children', 'marked', 'onPress', 'markingExists'].reduce((prev, next) => {
       if (prev || nextProps[next] !== this.props[next]) {
         return true;
       }
@@ -35,7 +35,10 @@ class Day extends Component {
     if (this.props.marked) {
       dotStyle.push(style.visibleDot);
       dot = (<View style={dotStyle}/>);
+    } else if (!this.props.markingExists) {
+      textStyle.push(style.alignedText);
     }
+
     if (this.props.state === 'selected') {
       containerStyle.push(style.selected);
       dotStyle.push(style.selectedDot);

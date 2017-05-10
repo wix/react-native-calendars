@@ -110,6 +110,7 @@ class Calendar extends Component {
       }
     } else {
       const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      const markingExists = this.props.markedDates ? true : false;
       dayComp = (
         <DayComp
             key={id}
@@ -117,6 +118,7 @@ class Calendar extends Component {
             theme={this.props.theme}
             onPress={this.pressDay.bind(this, day)}
             marked={this.getDateMarking(day)}
+            markingExists={markingExists}
           >
             {day.getDate()}
           </DayComp>
