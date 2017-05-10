@@ -191,6 +191,8 @@ An advanced agenda component that can display interactive listings for calendar 
   selected={'2012-05-16'}
   // specify how each item should be rendered in agenda
   renderItem={(item) => {return (<View />);}}
+  // specify how each date should be rendered. day can be undefined if the item is not first in that day.
+  renderDay={(day, item) => {return (<View />);}}
   // specify how empty date content with no items should be rendered
   renderEmptyDate={() => {return (View />);}}
   // specify your item comparison function for increased performance
