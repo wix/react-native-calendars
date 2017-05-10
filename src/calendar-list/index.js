@@ -18,11 +18,8 @@ const calendarHeight = 360;
 class CalendarList extends Component {
   constructor(props) {
     super(props);
-    if (props.maxScrollRange) {
-      this.maxScrollRange = props.maxScrollRange;
-    } else {
-      this.maxScrollRange = 50;
-    }
+    this.pastScrollRange = props.pastScrollRange === undefined ? 50 : props.pastScrollRange;
+    this.futureScrollRange = props.futureScrollRange === undefined ? 50 : props.futureScrollRange;
     style = styleConstructor(props.theme);
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
@@ -32,14 +29,18 @@ class CalendarList extends Component {
     const rows = [];
     const texts = [];
     const date = parseDate(props.current) || XDate();
-    for (let i = 0; i <= this.maxScrollRange * 2; i++) {
-      const text = date.clone().addMonths(i - this.maxScrollRange).toString('MMM yyyy');
+    for (let i = 0; i <= this.pastScrollRange + this.futureScrollRange; i++) {
+      const text = date.clone().addMonths(i - this.pastScrollRange).toString('MMM yyyy');
       rows.push(text);
       texts.push(text);
     }
-    rows[this.maxScrollRange] = date;
-    rows[this.maxScrollRange + 1] = date.clone().addMonths(1, true);
-    rows[this.maxScrollRange - 1] = date.clone().addMonths(-1, true);
+    rows[this.pastScrollRange] = date;
+    rows[this.pastScrollRange + 1] = date.clone().addMonths(1, true);
+    if (this.pastScrollRange) {
+      rows[this.pastScrollRange - 1] = date.clone().addMonths(-1, true);
+    } else {
+      rows[this.pastScrollRange + 2] = date.clone().addMonths(2, true);
+    }
     this.state = {
       rows,
       texts,
@@ -80,7 +81,7 @@ class CalendarList extends Component {
   scrollToDay(d, offset, animated) {
     const day = parseDate(d);
     const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(day.clone().setDate(1)));
-    let scrollAmount = (calendarHeight * this.maxScrollRange) + (diffMonths * calendarHeight) + (offset || 0);
+    let scrollAmount = (calendarHeight * this.pastScrollRange) + (diffMonths * calendarHeight) + (offset || 0);
     let week = 0;
     const days = dateutils.page(day);
     for (let i = 0; i < days.length; i++) {
@@ -98,7 +99,7 @@ class CalendarList extends Component {
     const scrollTo = month || this.state.openDate;
     let diffMonths = this.state.openDate.diffMonths(scrollTo);
     diffMonths = diffMonths < 0 ? Math.ceil(diffMonths) : Math.floor(diffMonths);
-    const scrollAmount = (calendarHeight * this.maxScrollRange) + (diffMonths * calendarHeight);
+    const scrollAmount = (calendarHeight * this.pastScrollRange) + (diffMonths * calendarHeight);
     //console.log(month, this.state.openDate);
     //console.log(scrollAmount, diffMonths);
     this.listView.scrollTo({x: 0, y: scrollAmount, animated: false});
@@ -151,7 +152,7 @@ class CalendarList extends Component {
         visibleRows.s1[i - 1] ||
         visibleRows.s1[i + 1];
       if (rowShouldBeRendered && !rowclone[i].getTime) {
-        val = this.state.openDate.clone().addMonths(i - this.maxScrollRange, true);
+        val = this.state.openDate.clone().addMonths(i - this.pastScrollRange, true);
       } else if (!rowShouldBeRendered) {
         val = this.state.texts[i];
       }
@@ -189,7 +190,7 @@ class CalendarList extends Component {
         const rowStart = i * calendarHeight;
         const rowShouldBeRendered = Math.abs(rowStart - yOffset) < calendarHeight * 2;
         if (rowShouldBeRendered && !val.getTime) {
-          val = this.state.openDate.clone().addMonths(i - this.maxScrollRange, true);
+          val = this.state.openDate.clone().addMonths(i - this.pastScrollRange, true);
           //console.log(val, i);
         } else if (!rowShouldBeRendered) {
           val = this.state.texts[i];
@@ -229,7 +230,7 @@ class CalendarList extends Component {
         onScroll={this.onScroll.bind(this)}
         //scrollEventThrottle={1000} // does not work on droid, need to recheck on newer react verions
         style={this.props.style}
-        initialListSize={this.maxScrollRange * 2 + 1}
+        initialListSize={this.pastScrollRange * this.futureScrollRange + 1}
         dataSource={this.state.dataSource}
         scrollRenderAheadDistance={calendarHeight}
                 //snapToAlignment='start'
