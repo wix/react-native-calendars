@@ -8,7 +8,7 @@ import {
 import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
-
+import {xdateToData} from '../../interface';
 import styles from './style';
 
 class ReactComp extends Component {
@@ -113,7 +113,7 @@ class ReactComp extends Component {
 
     return (
       <View style={styles.container} onLayout={this.onRowLayoutChange.bind(this, ind)}>
-        {this.renderDate(date)}
+        {this.renderDate(date, reservation)}
         <View style={{marginTop: 12, flex:1}}>
           {content}
         </View>
@@ -121,7 +121,10 @@ class ReactComp extends Component {
     );
   }
 
-  renderDate(date) {
+  renderDate(date, item) {
+    if (this.props.renderDay) {
+      return this.props.renderDay(date ? xdateToData(date) : undefined, item);
+    }
     const today = dateutils.sameDate(date, XDate()) ? styles.today : undefined;
     if (date) {
       return (
