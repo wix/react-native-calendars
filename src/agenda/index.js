@@ -15,13 +15,12 @@ import ReservationsList from './reservation-list';
 import styleConstructor from './style';
 
 const CALENDAR_OFFSET = 38;
-let styles = {};
 
 export default class AgendaView extends Component {
 
   constructor(props) {
     super(props);
-    styles = styleConstructor(props.theme);
+    this.styles = styleConstructor(props.theme);
     this.screenHeight = Dimensions.get('window').height;
     this.scrollTimeout = undefined;
     this.state = {
@@ -135,17 +134,17 @@ export default class AgendaView extends Component {
 
   render() {
     const maxCalHeight = this.screenHeight + 20;
-    const calendarStyle = [styles.calendar, {height: this.state.openAnimation.interpolate({
+    const calendarStyle = [this.styles.calendar, {height: this.state.openAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [104, maxCalHeight]
     })}];
-    const weekdaysStyle = [styles.weekdays, {opacity: this.state.openAnimation.interpolate({
+    const weekdaysStyle = [this.styles.weekdays, {opacity: this.state.openAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 0]
     })}];
     return (
       <View onLayout={this.onLayout.bind(this)} style={[this.props.style, {flex: 1}]}>
-        <View style={styles.reservations}>
+        <View style={this.styles.reservations}>
           {this.renderReservations()}
         </View>
         <Animated.View style={calendarStyle}>
@@ -160,20 +159,20 @@ export default class AgendaView extends Component {
             scrollingEnabled={this.state.calendarScrollable}
             hideExtraDays={this.state.calendarScrollable}
           />
-          <View style={styles.knobContainer}>
+          <View style={this.styles.knobContainer}>
             <TouchableOpacity onPress={this.expandCalendar.bind(this)}>
-              <View style={styles.knob}/>
+              <View style={this.styles.knob}/>
             </TouchableOpacity>
           </View>
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
-          <Text style={styles.weekday}>Sun</Text>
-          <Text style={styles.weekday}>Mon</Text>
-          <Text style={styles.weekday}>Tue</Text>
-          <Text style={styles.weekday}>Wed</Text>
-          <Text style={styles.weekday}>Thu</Text>
-          <Text style={styles.weekday}>Fri</Text>
-          <Text style={styles.weekday}>Sat</Text>
+          <Text style={this.styles.weekday}>Sun</Text>
+          <Text style={this.styles.weekday}>Mon</Text>
+          <Text style={this.styles.weekday}>Tue</Text>
+          <Text style={this.styles.weekday}>Wed</Text>
+          <Text style={this.styles.weekday}>Thu</Text>
+          <Text style={this.styles.weekday}>Fri</Text>
+          <Text style={this.styles.weekday}>Sat</Text>
         </Animated.View>
       </View>
     );

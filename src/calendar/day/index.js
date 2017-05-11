@@ -5,13 +5,12 @@ import {
   View
 } from 'react-native';
 
-let style = {};
 import styleConstructor from './style';
 
 class Day extends Component {
   constructor(props) {
     super(props);
-    style = styleConstructor(props.theme);
+    this.style = styleConstructor(props.theme);
   }
 
   static propTypes = {
@@ -28,25 +27,25 @@ class Day extends Component {
   }
 
   render() {
-    const containerStyle = [style.base];
-    const textStyle = [style.text];
-    const dotStyle = [style.dot];
+    const containerStyle = [this.style.base];
+    const textStyle = [this.style.text];
+    const dotStyle = [this.style.dot];
     let dot;
     if (this.props.marked) {
-      dotStyle.push(style.visibleDot);
+      dotStyle.push(this.style.visibleDot);
       dot = (<View style={dotStyle}/>);
     } else if (!this.props.markingExists) {
-      textStyle.push(style.alignedText);
+      textStyle.push(this.style.alignedText);
     }
 
     if (this.props.state === 'selected') {
-      containerStyle.push(style.selected);
-      dotStyle.push(style.selectedDot);
-      textStyle.push(style.selectedText);
+      containerStyle.push(this.style.selected);
+      dotStyle.push(this.style.selectedDot);
+      textStyle.push(this.style.selectedText);
     } else if (this.props.state === 'disabled') {
-      textStyle.push(style.disabledText);
+      textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
-      textStyle.push(style.todayText);
+      textStyle.push(this.style.todayText);
     }
     return (
       <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>

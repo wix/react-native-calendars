@@ -12,12 +12,10 @@ import UnitDay from './unit-day';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
-let style = {};
-
 class Calendar extends Component {
   constructor(props) {
     super(props);
-    style = styleConstructor(this.props.theme);
+    this.style = styleConstructor(this.props.theme);
     let currentMonth;
     if (props.current) {
       currentMonth = parseDate(props.current);
@@ -144,7 +142,7 @@ class Calendar extends Component {
     days.forEach((day, id2) => {
       week.push(this.renderDay(day, id2));
     }, this);
-    return (<View style={style.week} key={id}>{week}</View>);
+    return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
   render() {
@@ -164,7 +162,7 @@ class Calendar extends Component {
       }
     }
     return (
-      <View style={[style.container, this.props.style]}>
+      <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
