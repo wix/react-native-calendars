@@ -42,7 +42,7 @@ export default function styleConstructor(theme={}) {
     },
     todayText: {
       fontWeight: '500',
-      color: appStyle.todayTextColor || '#2d4150',
+      color: theme.todayTextColor || appStyle.dayTextColor,
       //color: appStyle.textLinkColor
     },
     disabledText: {
