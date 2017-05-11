@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-
+import XDate from "xdate";
 import styleConstructor from './style';
 
 class CalendarHeader extends Component {
@@ -38,6 +38,7 @@ class CalendarHeader extends Component {
   render() {
     let leftArrow = (<View/>);
     let rightArrow = (<View/>);
+    const weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity onPress={this.substractMonth} style={this.style.arrow}>
@@ -63,13 +64,9 @@ class CalendarHeader extends Component {
           {rightArrow}
         </View>
         <View style={this.style.week}>
-          <Text style={this.style.dayHeader}>Sun</Text>
-          <Text style={this.style.dayHeader}>Mon</Text>
-          <Text style={this.style.dayHeader}>Tue</Text>
-          <Text style={this.style.dayHeader}>Wed</Text>
-          <Text style={this.style.dayHeader}>Thu</Text>
-          <Text style={this.style.dayHeader}>Fri</Text>
-          <Text style={this.style.dayHeader}>Sat</Text>
+          {weekDaysNames.map((day) => (
+            <Text key={day} style={this.style.dayHeader}>{day}</Text>
+          ))}
         </View>
       </View>
     );
