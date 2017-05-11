@@ -6,11 +6,14 @@ import {
   View
 } from 'react-native';
 
-import style from './style';
+import * as defaultStyle from '../style';
+import styleConstructor from './style';
 
 class Day extends Component {
   constructor(props) {
     super(props);
+    this.theme = {...defaultStyle, ...(props.theme || {})};
+    this.style = styleConstructor(props.theme);
     this.markingStyle = this.getDrawingStyle(props.marked);
   }
 
@@ -41,16 +44,16 @@ class Day extends Component {
     return marking.reduce((prev, next) => {
       if (next.quickAction) {
         if (next.first || next.last) {
-          prev.containerStyle = style.firstQuickAction;
-          prev.textStyle = style.firstQuickActionText;
+          prev.containerStyle = this.style.firstQuickAction;
+          prev.textStyle = this.style.firstQuickActionText;
           if (next.endSelected && next.first && !next.last) {
             prev.rightFillerStyle = '#c1e4fe';
           } else if (next.endSelected && next.last && !next.first) {
             prev.leftFillerStyle = '#c1e4fe';
           }
         } else if (!next.endSelected) {
-          prev.containerStyle = style.quickAction;
-          prev.textStyle = style.quickActionText;
+          prev.containerStyle = this.style.quickAction;
+          prev.textStyle = this.style.quickActionText;
         } else if (next.endSelected) {
           prev.leftFillerStyle = '#c1e4fe';
           prev.rightFillerStyle = '#c1e4fe';
@@ -60,7 +63,7 @@ class Day extends Component {
 
       const color = next.color;
       if (next.status === 'NotAvailable') {
-        prev.textStyle = style.naText;
+        prev.textStyle = this.style.naText;
       }
       if (next.startingDay) {
         prev.startingDay = {
@@ -82,16 +85,16 @@ class Day extends Component {
   }
 
   render() {
-    const containerStyle = [style.base];
-    const textStyle = [style.text];
+    const containerStyle = [this.style.base];
+    const textStyle = [this.style.text];
     let leftFillerStyle = {};
     let rightFillerStyle = {};
     let fillers;
 
     if (this.props.state === 'disabled') {
-      textStyle.push(style.disabledText);
+      textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
-      textStyle.push(style.todayText);
+      textStyle.push(this.style.todayText);
     }
 
     if (this.props.marked) {
@@ -115,7 +118,7 @@ class Day extends Component {
 
       if (flags.startingDay && !flags.endingDay) {
         leftFillerStyle = {
-          backgroundColor: 'white'
+          backgroundColor: this.theme.calendarBackground
         };
         rightFillerStyle = {
           backgroundColor: flags.startingDay.color
@@ -125,7 +128,7 @@ class Day extends Component {
         });
       } else if (flags.endingDay && !flags.startingDay) {
         rightFillerStyle = {
-          backgroundColor: 'white'
+          backgroundColor: this.theme.calendarBackground
         };
         leftFillerStyle = {
           backgroundColor: flags.endingDay.color
@@ -138,10 +141,10 @@ class Day extends Component {
         rightFillerStyle = {backgroundColor: flags.day.color};
       } else if (flags.endingDay && flags.startingDay) {
         rightFillerStyle = {
-          backgroundColor: 'white'
+          backgroundColor: this.theme.calendarBackground
         };
         leftFillerStyle = {
-          backgroundColor: 'white'
+          backgroundColor: this.theme.calendarBackground
         };
         containerStyle.push({
           backgroundColor: flags.endingDay.color
@@ -149,16 +152,16 @@ class Day extends Component {
       }
 
       fillers = (
-        <View style={style.fillers}>
-          <View style={[style.leftFiller, leftFillerStyle]}/>
-          <View style={[style.rightFiller, rightFillerStyle]}/>
+        <View style={this.style.fillers}>
+          <View style={[this.style.leftFiller, leftFillerStyle]}/>
+          <View style={[this.style.rightFiller, rightFillerStyle]}/>
         </View>
       );
     }
 
     return (
       <TouchableWithoutFeedback onPress={this.props.onPress}>
-        <View style={style.wrapper}>
+        <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
             <Text style={textStyle}>{this.props.children}</Text>

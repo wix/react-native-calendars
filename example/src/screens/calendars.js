@@ -39,7 +39,18 @@ export default class CalendarsScreen extends Component {
           minDate={'2012-05-10'}
           displayLoadingIndicator
           markingType={'interactive'}
-          markedDates={{'2012-05-24': [{startingDay: true, color: 'gray'}], '2012-05-25': [{endingDay: true, color: 'gray'}]}}
+          theme={{
+            calendarBackground: '#333248',
+            textSectionTitleColor: 'white',
+            dayTextColor: 'white',
+            todayTextColor: 'white',
+            selectedDayTextColor: 'white',
+            monthTextColor: 'white',
+            selectedDayBackgroundColor: '#333248'
+          }}
+          markedDates={{
+            '2012-05-24': [{startingDay: true, color: 'gray'}],
+            '2012-05-25': [{endingDay: true, color: 'gray'}]}}
           hideArrows={true}
         />
       </ScrollView>
