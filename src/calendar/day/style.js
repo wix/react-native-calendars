@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 
 export default function styleConstructor(theme={}) {
@@ -17,7 +17,7 @@ export default function styleConstructor(theme={}) {
       backgroundColor: 'rgba(255, 255, 255, 0)'
     },
     alignedText: {
-      marginTop: 6
+      marginTop: Platform.OS === 'android' ? 4 : 6
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
