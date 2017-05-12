@@ -149,7 +149,7 @@ export default class AgendaView extends Component {
     if (!this.props.hideKnob) {
       knob = (
         <View style={this.styles.knobContainer}>
-          <TouchableOpacity onPress={this.expandCalendar.bind(this)}>
+          <TouchableOpacity onPress={this.expandCalendar}>
             <View style={this.styles.knob}/>
           </TouchableOpacity>
         </View>
