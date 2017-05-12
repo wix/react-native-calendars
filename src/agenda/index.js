@@ -142,6 +142,19 @@ export default class AgendaView extends Component {
       inputRange: [0, 1],
       outputRange: [1, 0]
     })}];
+
+    let knob = (<View />);
+
+    if (!this.props.hideKnob) {
+      knob = (
+        <View style={this.styles.knobContainer}>
+          <TouchableOpacity onPress={this.expandCalendar.bind(this)}>
+            <View style={this.styles.knob}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
     return (
       <View onLayout={this.onLayout.bind(this)} style={[this.props.style, {flex: 1}]}>
         <View style={this.styles.reservations}>
@@ -159,11 +172,7 @@ export default class AgendaView extends Component {
             scrollingEnabled={this.state.calendarScrollable}
             hideExtraDays={this.state.calendarScrollable}
           />
-          <View style={this.styles.knobContainer}>
-            <TouchableOpacity onPress={this.expandCalendar.bind(this)}>
-              <View style={this.styles.knob}/>
-            </TouchableOpacity>
-          </View>
+          {knob}
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
           <Text style={this.styles.weekday}>Sun</Text>
