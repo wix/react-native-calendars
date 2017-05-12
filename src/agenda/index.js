@@ -134,6 +134,7 @@ export default class AgendaView extends Component {
   }
 
   render() {
+    const weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
     const maxCalHeight = this.screenHeight + 20;
     const calendarStyle = [this.styles.calendar, {height: this.state.openAnimation.interpolate({
       inputRange: [0, 1],
@@ -176,13 +177,9 @@ export default class AgendaView extends Component {
           {knob}
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
-          <Text style={this.styles.weekday}>Sun</Text>
-          <Text style={this.styles.weekday}>Mon</Text>
-          <Text style={this.styles.weekday}>Tue</Text>
-          <Text style={this.styles.weekday}>Wed</Text>
-          <Text style={this.styles.weekday}>Thu</Text>
-          <Text style={this.styles.weekday}>Fri</Text>
-          <Text style={this.styles.weekday}>Sat</Text>
+          {weekDaysNames.map((day) => (
+            <Text key={day} style={this.styles.weekday}>{day}</Text>
+          ))}
         </Animated.View>
       </View>
     );
