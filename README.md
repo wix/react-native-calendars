@@ -196,10 +196,12 @@ An advanced agenda component that can display interactive listings for calendar 
   renderEmptyDate={() => {return (View />);}}
   // specify your item comparison function for increased performance
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
+  // Hide knob button. Default = false
+  hideKnob={true}
   // agenda theme
   theme = {{}}
   // agenda container style
-  style = {{}} 
+  style = {{}}
 />
 ```
 
