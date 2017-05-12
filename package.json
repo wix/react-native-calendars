@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
-    "test": "jasmine src/*.spec.js",
+    "test": "jasmine src/*.spec.js && npm run lint",
     "lint": "eslint src/ example/src",
     "build": ":",
     "release": "wnpm-release"

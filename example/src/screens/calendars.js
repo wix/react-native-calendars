@@ -46,12 +46,13 @@ export default class CalendarsScreen extends Component {
             todayTextColor: 'white',
             selectedDayTextColor: 'white',
             monthTextColor: 'white',
-            selectedDayBackgroundColor: '#333248'
+            selectedDayBackgroundColor: '#333248',
+            arrowColor: 'white'
           }}
           markedDates={{
             '2012-05-24': [{startingDay: true, color: 'gray'}],
             '2012-05-25': [{endingDay: true, color: 'gray'}]}}
-          hideArrows={true}
+          hideArrows={false}
         />
       </ScrollView>
     );

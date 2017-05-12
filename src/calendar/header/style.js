@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 
 export default function(theme={}) {
@@ -21,7 +21,14 @@ export default function(theme={}) {
       padding: 10
     },
     arrowImage: {
-      tintColor: appStyle.arrowColor
+      ...Platform.select({
+        ios: {
+          tintColor: appStyle.arrowColor
+        },
+        android: {
+          tintColor: appStyle.arrowColor
+        }
+      })
     },
     week: {
       marginTop: 7,

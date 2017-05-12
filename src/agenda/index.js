@@ -154,7 +154,7 @@ export default class AgendaView extends Component {
             <View style={this.styles.knob}/>
           </TouchableOpacity>
         </View>
-      )
+      );
     }
 
     return (

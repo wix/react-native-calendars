@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-import XDate from "xdate";
+import XDate from 'xdate';
 import styleConstructor from './style';
 
 class CalendarHeader extends Component {
