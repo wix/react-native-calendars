@@ -144,7 +144,7 @@ export default class AgendaView extends Component {
       outputRange: [1, 0]
     })}];
 
-    let knob = (<View />);
+    let knob = (<View style={this.styles.knobContainer}/>);
 
     if (!this.props.hideKnob) {
       knob = (
