@@ -31,6 +31,7 @@ export default class AgendaView extends Component {
       topDay: parseDate(this.props.selected) || XDate(true),
     };
     this.currentMonth = this.state.selectedDay.clone();
+    this.expandCalendar = this.expandCalendar.bind(this);
   }
 
   onLayout(event) {
@@ -128,7 +129,7 @@ export default class AgendaView extends Component {
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
     this.calendar.scrollToDay(day, CALENDAR_OFFSET, withAnimation);
     this.setState({
-      selectedDay: parseDate(day) 
+      selectedDay: parseDate(day)
     });
   }
 
