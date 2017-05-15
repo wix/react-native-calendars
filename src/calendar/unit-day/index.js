@@ -42,6 +42,7 @@ class Day extends Component {
       return {};
     }
     return marking.reduce((prev, next) => {
+      prev.textStyle = {};
       if (next.quickAction) {
         if (next.first || next.last) {
           prev.containerStyle = this.style.firstQuickAction;
@@ -79,6 +80,9 @@ class Day extends Component {
         prev.day = {
           color
         };
+      }
+      if (next.textColor) {
+        prev.textStyle.color = next.textColor;
       }
       return prev;
     }, {});

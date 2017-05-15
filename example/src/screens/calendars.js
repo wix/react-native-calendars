@@ -50,6 +50,8 @@ export default class CalendarsScreen extends Component {
             arrowColor: 'white'
           }}
           markedDates={{
+            '2012-05-08': [{textColor: '#666'}],
+            '2012-05-09': [{textColor: '#666'}],
             '2012-05-24': [{startingDay: true, color: 'gray'}],
             '2012-05-25': [{endingDay: true, color: 'gray'}]}}
           hideArrows={false}
