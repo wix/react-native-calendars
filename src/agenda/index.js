@@ -173,6 +173,7 @@ export default class AgendaView extends Component {
             onDayPress={this.chooseDay.bind(this)}
             scrollingEnabled={this.state.calendarScrollable}
             hideExtraDays={this.state.calendarScrollable}
+            firstDay={this.props.firstDay}
           />
           {knob}
         </Animated.View>

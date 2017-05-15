@@ -65,6 +65,7 @@ class CalendarList extends Component {
           onDayPress={this.props.onDayPress}
           displayLoadingIndicator={this.props.displayLoadingIndicator}
           minDate={this.props.minDate}
+          firstDay={this.props.firstDay}
         />);
     } else {
       const text = row.toString();

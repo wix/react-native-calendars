@@ -86,6 +86,8 @@ LocaleConfig.defaultLocale = 'fr';
   // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
   // day from another month that is visible in calendar page. Default = false
   disableMonthChange={true}
+  // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+  firstDay={1}
 />
 ```
 

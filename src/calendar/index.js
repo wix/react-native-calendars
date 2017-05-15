@@ -147,7 +147,7 @@ class Calendar extends Component {
 
   render() {
     //console.log('render calendar ');
-    const days = dateutils.page(this.state.currentMonth);
+    const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
@@ -169,6 +169,7 @@ class Calendar extends Component {
           month={this.state.currentMonth}
           addMonth={this.addMonth}
           showIndicator={indicator}
+          firstDay={this.props.firstDay}
         />
         {weeks}
       </View>);
