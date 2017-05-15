@@ -62,7 +62,8 @@ class Calendar extends Component {
 
   pressDay(day) {
     const minDate = parseDate(this.props.minDate);
-    if (!minDate || dateutils.isGTE(day, minDate)) {
+    const maxDate = parseDate(this.props.maxDate);
+    if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
       this.updateMonth(day);
       if (this.props.onDayPress) {
         this.props.onDayPress(xdateToData(day));
@@ -89,10 +90,11 @@ class Calendar extends Component {
 
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
+    const maxDate = parseDate(this.props.maxDate);
     let state = '';
     if (this.isSelected(day)) {
       state = 'selected';
-    } else if (minDate && !dateutils.isGTE(day, minDate)) {
+    } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
