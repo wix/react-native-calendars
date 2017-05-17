@@ -54,9 +54,10 @@ export default class CalendarsScreen extends Component {
             '2012-05-09': [{textColor: '#666'}],
             '2012-05-14': [{startingDay: true, color: 'blue'}, {endingDay: true, color: 'blue'}],
             '2012-05-21': [{startingDay: true, color: 'blue'}],
-            '2012-05-22': [{endingDay: true, color: 'blue'}, {endingDay: true, color: 'gray'}],
+            '2012-05-22': [{endingDay: true, color: 'gray'}],
             '2012-05-24': [{startingDay: true, color: 'gray'}],
-            '2012-05-25': [{endingDay: true, color: 'gray'}]}}
+            '2012-05-25': [{color: 'gray'}],
+            '2012-05-26': [{endingDay: true, color: 'gray'}]}}
           hideArrows={false}
         />
       </ScrollView>
