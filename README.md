@@ -116,8 +116,9 @@ LocaleConfig.defaultLocale = 'fr';
 <Calendar 
   // Collection of dates that have to be colored in a special way. Default = {}
    markedDates={
-    {'2012-05-22': [{startingDay: true, color: 'green'}],
-     '2012-05-23': [{endingDay: true, color: 'green'}],
+    {'2012-05-20': [{textColor: 'green'}],
+     '2012-05-22': [{startingDay: true, color: 'green'}],
+     '2012-05-23': [{endingDay: true, color: 'green', textColor: 'gray'}],
      '2012-05-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
     }}
   // Date marking style [simple/interactive]. Default = 'simple'
