@@ -90,7 +90,9 @@ class ReactComp extends Component {
       }
       topRowOffset += this.heights[topRow];
     }
-    const day = this.state.reservations[topRow].day;
+    const row = this.state.reservations[topRow];
+    if (!row) return;
+    const day = row.day;
     const sameDate = dateutils.sameDate(day, this.selectedDay);
     if (!sameDate && this.scrollOver) {
       this.selectedDay = day.clone();
