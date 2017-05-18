@@ -22,7 +22,7 @@ export default function shouldComponentUpdate(nextProps, nextState) {
     return prev;
   }, shouldUpdate);
 
-  shouldUpdate = ['minDate', 'current'].reduce((prev, next) => {
+  shouldUpdate = ['minDate', 'maxDate', 'current'].reduce((prev, next) => {
     const prevDate = parseDate(this.props[next]);
     const nextDate = parseDate(nextProps[next]);
     if (prev.update) {
