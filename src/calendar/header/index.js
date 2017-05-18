@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-import XDate from 'xdate';
 import styleConstructor from './style';
+import {weekDayNames} from '../../dateutils';
 
 class CalendarHeader extends Component {
   constructor(props) {
@@ -38,11 +38,7 @@ class CalendarHeader extends Component {
   render() {
     let leftArrow = (<View/>);
     let rightArrow = (<View/>);
-    let weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
-    const dayShift = this.props.firstDay % 7;
-    if (dayShift) {
-      weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));
-    }
+    let weekDaysNames = weekDayNames(this.props.firstDay);
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity onPress={this.substractMonth} style={this.style.arrow}>

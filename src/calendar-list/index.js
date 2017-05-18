@@ -83,7 +83,7 @@ class CalendarList extends Component {
     const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(day.clone().setDate(1)));
     let scrollAmount = (calendarHeight * this.pastScrollRange) + (diffMonths * calendarHeight) + (offset || 0);
     let week = 0;
-    const days = dateutils.page(day);
+    const days = dateutils.page(day, this.props.firstDay);
     for (let i = 0; i < days.length; i++) {
       week = Math.floor(i / 7);
       if (dateutils.sameDate(days[i], day)) {

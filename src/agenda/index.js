@@ -134,7 +134,7 @@ export default class AgendaView extends Component {
   }
 
   render() {
-    const weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
     const maxCalHeight = this.screenHeight + 20;
     const calendarStyle = [this.styles.calendar, {height: this.state.openAnimation.interpolate({
       inputRange: [0, 1],

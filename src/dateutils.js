@@ -40,6 +40,15 @@ function month(xd) {
   return fromTo(firstDay, lastDay);
 }
 
+function weekDayNames(firstDayOfWeek = 0) {
+  let weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+  const dayShift = firstDayOfWeek % 7;
+  if (dayShift) {
+    weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));
+  }
+  return weekDaysNames;
+}
+
 function page(xd, firstDayOfWeek) {
   var days = month(xd), before = [], after = [];
 
@@ -71,6 +80,7 @@ function page(xd, firstDayOfWeek) {
 }
 
 module.exports = {
+  weekDayNames,
   sameMonth,
   sameDate,
   month,
