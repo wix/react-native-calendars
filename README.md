@@ -196,7 +196,9 @@ An advanced agenda component that can display interactive listings for calendar 
 
 ```javascript
 <Agenda
-  // the list of items that have to be displayed in agenda
+  // the list of items that have to be displayed in agenda. If you want to render item as empty date
+  // the value of date key kas to be an empty array []. If there exists no value for date key it is
+  // considered that the date in question is not yet loaded
   items={
     {'2012-05-22': [{text: 'item 1 - any js object'}],
      '2012-05-23': [{text: 'item 2 - any js object'}]],
