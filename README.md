@@ -202,7 +202,8 @@ An advanced agenda component that can display interactive listings for calendar 
   items={
     {'2012-05-22': [{text: 'item 1 - any js object'}],
      '2012-05-23': [{text: 'item 2 - any js object'}]],
-     '2012-05-04': [{text: 'item 3 - any js object'}], {text: 'any js object'}]]
+     '2012-05-24': [],
+     '2012-05-25': [{text: 'item 3 - any js object'}], {text: 'any js object'}]]
     }}
   // callback that gets called when items for a certain month should be loaded (month became visible)
   loadItemsForMonth={(mongh) => {console.log('trigger items loading')}
