@@ -55,7 +55,9 @@ export default class AgendaView extends Component {
       this.setState({
         firstResevationLoad: true
       }, () => {
-        this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
+        if (this.props.loadItemsForMonth) {
+          this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
+        }
       });
     }
   }
@@ -101,7 +103,9 @@ export default class AgendaView extends Component {
       duration: 200
     }).start();
     this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
-    this.props.loadItemsForMonth(d);
+    if (this.props.loadItemsForMonth) {
+      this.props.loadItemsForMonth(d);
+    }
     if (this.props.onDayPress) {
       this.props.onDayPress(d);
     }
