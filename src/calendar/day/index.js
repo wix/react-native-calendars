@@ -49,7 +49,7 @@ class Day extends Component {
     }
     return (
       <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
-        <Text style={textStyle}>{this.props.children}</Text>
+        <Text style={textStyle}>{String(this.props.children)}</Text>
         {dot}
       </TouchableOpacity>
     );

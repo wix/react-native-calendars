@@ -168,7 +168,7 @@ class Day extends Component {
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            <Text style={textStyle}>{this.props.children}</Text>
+            <Text style={textStyle}>{String(this.props.children)}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
