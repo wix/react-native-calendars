@@ -27,13 +27,13 @@ class Day extends Component {
   }
 
   render() {
-    const containerStyle = [this.style.base];
-    const textStyle = [this.style.text];
-    const dotStyle = [this.style.dot];
+    const containerStyle = [this.style.base, this.props.theme.base];
+    const textStyle = [this.style.text, this.props.theme.text];
+    const dotStyle = [this.style.dot, this.props.theme.dot];
     let dot;
     if (this.props.marked) {
       dotStyle.push(this.style.visibleDot);
-      dot = (<View style={dotStyle}/>);
+      dot = (<View style={dotStyle} />);
     } else if (!this.props.markingExists) {
       textStyle.push(this.style.alignedText);
     }

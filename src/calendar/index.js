@@ -104,9 +104,9 @@ class Calendar extends Component {
     let dayComp;
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
       if (this.props.markingType === 'interactive') {
-        dayComp = (<View key={id} style={{flex: 1}}/>);
+        dayComp = (<View key={id} style={{flex: 1}} />);
       } else {
-        dayComp = (<View key={id} style={{width: 32}}/>);
+        dayComp = (<View key={id} style={[{width: this.props.theme.base && this.props.theme.base.width || 32}, ]}/>);
       }
     } else {
       const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
