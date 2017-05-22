@@ -229,7 +229,7 @@ class CalendarList extends Component {
         ref={(c) => this.listView = c}
         onScroll={this.onScroll.bind(this)}
         //scrollEventThrottle={1000} // does not work on droid, need to recheck on newer react verions
-        style={this.props.style}
+        style={[this.style.container, this.props.style]}
         initialListSize={this.pastScrollRange * this.futureScrollRange + 1}
         dataSource={this.state.dataSource}
         scrollRenderAheadDistance={calendarHeight}
