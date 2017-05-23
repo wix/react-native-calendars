@@ -7,8 +7,8 @@ import XDate from 'xdate';
 import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
-import Day from './day';
-import UnitDay from './unit-day';
+import Day from './day/basic';
+import UnitDay from './day/interactive';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 

@@ -6,7 +6,7 @@ import {
   View
 } from 'react-native';
 
-import * as defaultStyle from '../style';
+import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 
 class Day extends Component {

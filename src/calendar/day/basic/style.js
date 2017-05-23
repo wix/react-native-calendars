@@ -1,5 +1,5 @@
 import {StyleSheet, Platform} from 'react-native';
-import * as defaultStyle from '../../style';
+import * as defaultStyle from '../../../style';
 
 export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
