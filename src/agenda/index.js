@@ -104,10 +104,10 @@ export default class AgendaView extends Component {
     }).start();
     this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
     if (this.props.loadItemsForMonth) {
-      this.props.loadItemsForMonth(d);
+      this.props.loadItemsForMonth(xdateToData(day));
     }
     if (this.props.onDayPress) {
-      this.props.onDayPress(d);
+      this.props.onDayPress(xdateToData(day));
     }
   }
 
