@@ -32,13 +32,13 @@ export default class AgendaScreen extends Component {
     setTimeout(() => {
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const starTime = this.timeToString(time);
-        if (!this.state.items[starTime]) {
-          this.state.items[starTime] = [];
+        const strTime = this.timeToString(time);
+        if (!this.state.items[strTime]) {
+          this.state.items[strTime] = [];
           const numItems = Math.floor(Math.random() * 5);
           for (let j = 0; j < numItems; j++) {
-            this.state.items[starTime].push({
-              name: 'Item for ' + starTime,
+            this.state.items[strTime].push({
+              name: 'Item for ' + strTime,
               height: Math.max(50, Math.floor(Math.random() * 150))
             });
           }
