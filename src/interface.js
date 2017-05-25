@@ -1,4 +1,4 @@
-import XDate = from 'xdate';
+import XDate from 'xdate';
 
 function padNumber(n) {
   if (n < 10) {
