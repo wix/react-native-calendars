@@ -174,6 +174,7 @@ export default class AgendaView extends Component {
             selected={[this.state.selectedDay]}
             current={this.currentMonth}
             markedDates={this.props.items}
+            markingType={this.props.markingType}
             onDayPress={this.chooseDay.bind(this)}
             scrollingEnabled={this.state.calendarScrollable}
             hideExtraDays={this.state.calendarScrollable}

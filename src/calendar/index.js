@@ -9,6 +9,7 @@ import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/interactive';
+import ClearDay from './day/clear';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
@@ -33,7 +34,7 @@ class Calendar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const current= parseDate(nextProps.current);
+    const current = parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
         currentMonth: current.clone()
@@ -109,7 +110,7 @@ class Calendar extends Component {
         dayComp = (<View key={id} style={{width: 32}}/>);
       }
     } else {
-      const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      const DayComp = this.getDayComponent();
       const markingExists = this.props.markedDates ? true : false;
       dayComp = (
         <DayComp
@@ -125,6 +126,16 @@ class Calendar extends Component {
         );
     }
     return dayComp;
+  }
+
+  getDayComponent() {
+    if (this.props.markingType === 'interactive') {
+      return UnitDay;
+    }
+    if (this.props.markingType === 'clear') {
+      return ClearDay;
+    }
+    return Day; // Default is simple
   }
 
   getDateMarking(day) {
