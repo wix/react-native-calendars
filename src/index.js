@@ -1,13 +1,4 @@
-import Calendar from './calendar';
-import CalendarList from './calendar-list';
-import Agenda from './agenda';
-import XDate from 'xdate';
-
-const LocaleConfig = XDate;
-
-module.exports = {
-  Calendar,
-  CalendarList,
-  Agenda,
-  LocaleConfig
-};
+export { default as Calendar } from './calendar';
+export { default as CalendarList } from './calendar-list';
+export { default as Agenda } from './agenda';
+export { default as LocaleConfig } from 'xdate';

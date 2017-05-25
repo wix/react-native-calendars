@@ -119,6 +119,8 @@ class Calendar extends Component {
             onPress={this.pressDay.bind(this, day)}
             marked={this.getDateMarking(day)}
             markingExists={markingExists}
+            leftArrow={this.props.leftArrow}
+            rightArrow={this.props.rightArrow}
           >
             {day.getDate()}
           </DayComp>

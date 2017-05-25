@@ -42,11 +42,17 @@ class CalendarHeader extends Component {
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity onPress={this.substractMonth} style={this.style.arrow}>
-          <Image source={require('../img/previous.png')} style={this.style.arrowImage}/></TouchableOpacity>
+          {this.props.leftArrow
+            ? React.cloneElement(this.props.leftArrow)
+            : <Image source={require('../img/previous.png')} style={this.style.arrowImage} />}
+        </TouchableOpacity>
       );
       rightArrow = (
         <TouchableOpacity onPress={this.addMonth} style={this.style.arrow}>
-          <Image source={require('../img/next.png')} style={this.style.arrowImage}/></TouchableOpacity>
+          {this.props.rightArrow
+            ? React.cloneElement(this.props.rightArrow)
+            : <Image source={require('../img/next.png')} style={this.style.arrowImage} />}
+        </TouchableOpacity>
       );
     }
     let indicator;
