@@ -119,8 +119,6 @@ class Calendar extends Component {
             onPress={this.pressDay.bind(this, day)}
             marked={this.getDateMarking(day)}
             markingExists={markingExists}
-            leftArrow={this.props.leftArrow}
-            rightArrow={this.props.rightArrow}
           >
             {day.getDate()}
           </DayComp>
@@ -174,6 +172,7 @@ class Calendar extends Component {
           addMonth={this.addMonth}
           showIndicator={indicator}
           firstDay={this.props.firstDay}
+          renderArrow={this.props.renderArrow}
         />
         {weeks}
       </View>);
