@@ -17,7 +17,8 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
-    "xdate": "^0.8.0"
+    "xdate": "^0.8.0",
+    "react-native-ui-lib": "latest"
   },
   "peerDependencies": {
     "react": "16.0.0-alpha.6",
