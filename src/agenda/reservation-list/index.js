@@ -9,11 +9,12 @@ import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
 import {xdateToData} from '../../interface';
-import styles from './style';
+import styleConstructor from './style';
 
 class ReactComp extends Component {
   constructor(props) {
     super(props);
+    this.styles = styleConstructor(props.theme);
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
         let changed = true;
@@ -114,7 +115,7 @@ class ReactComp extends Component {
     }
 
     return (
-      <View style={styles.container} onLayout={this.onRowLayoutChange.bind(this, ind)}>
+      <View style={this.styles.container} onLayout={this.onRowLayoutChange.bind(this, ind)}>
         {this.renderDate(date, reservation)}
         <View style={{marginTop: 12, flex:1}}>
           {content}
@@ -127,17 +128,17 @@ class ReactComp extends Component {
     if (this.props.renderDay) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
-    const today = dateutils.sameDate(date, XDate()) ? styles.today : undefined;
+    const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
     if (date) {
       return (
-        <View style={styles.day}>
-          <Text style={[styles.dayNum, today]}>{date.getDate()}</Text>
-          <Text style={[styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
+        <View style={this.styles.day}>
+          <Text style={[this.styles.dayNum, today]}>{date.getDate()}</Text>
+          <Text style={[this.styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
         </View>
       );
     } else {
       return (
-        <View style={styles.day}/>
+        <View style={this.styles.day}/>
       );
     }
   }
