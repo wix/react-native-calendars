@@ -23,4 +23,5 @@ export const selectedDotColor = foregroundColor;
 export const arrowColor = textLinkColor;
 export const monthTextColor = textDefaultColor;
 export const reservationListDayTextColor = textDefaultColor;
+export const reservationListDayNumColor = textDefaultColor;
 export const reservationListTodayColor = textLinkColor;
