@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
-    "test": "jasmine src/*.spec.js && npm run lint",
+    "test": "babel-node spec/runner.js && npm run lint",
     "lint": "eslint src/ example/src"
   },
   "repository": {
@@ -24,7 +24,9 @@
     "react-native": "0.44.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
