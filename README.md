@@ -80,7 +80,7 @@ LocaleConfig.defaultLocale = 'fr';
   // Handler which gets executed on day press. Default = undefined
   onDayPress={(day) => {console.log('selected day', day)}}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
-  onMonthChange={(month) => {console.log('month changed', month)}
+  onMonthChange={(month) => {console.log('month changed', month)}}
   // Hide month navigation arrows. Default = false
   hideArrows={true}
   // Replace default arrows with custom ones (direction can be 'left' or 'right')
@@ -178,7 +178,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 ```javascript
 <CalendarList
   // Callback which gets executed when visible months change in scroll view. Default = undefined
-  onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}
+  onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}}
   // Max amount of months allowed to scroll to the past. Default = 50
   pastScrollRange={50}
   // Max amount of months allowed to scroll to the future. Default = 50
@@ -203,16 +203,16 @@ An advanced agenda component that can display interactive listings for calendar 
   // considered that the date in question is not yet loaded
   items={
     {'2012-05-22': [{text: 'item 1 - any js object'}],
-     '2012-05-23': [{text: 'item 2 - any js object'}]],
+     '2012-05-23': [{text: 'item 2 - any js object'}],
      '2012-05-24': [],
-     '2012-05-25': [{text: 'item 3 - any js object'}], {text: 'any js object'}]]
+     '2012-05-25': [{text: 'item 3 - any js object'},{text: 'any js object'}],
     }}
   // callback that gets called when items for a certain month should be loaded (month became visible)
-  loadItemsForMonth={(mongh) => {console.log('trigger items loading')}
+  loadItemsForMonth={(mongh) => {console.log('trigger items loading')}}
   // callback that gets called on day press
-  onDayPress={(day)=>{console.log('day pressed'}}
+  onDayPress={(day)=>{console.log('day pressed')}}
   // callback that gets called when day changes while scrolling agenda list
-  onDayChange={(day)=>{console.log('day changed'}}
+  onDayChange={(day)=>{console.log('day changed')}}
   // initially selected day
   selected={'2012-05-16'}
   // specify how each item should be rendered in agenda
@@ -220,7 +220,7 @@ An advanced agenda component that can display interactive listings for calendar 
   // specify how each date should be rendered. day can be undefined if the item is not first in that day.
   renderDay={(day, item) => {return (<View />);}}
   // specify how empty date content with no items should be rendered
-  renderEmptyDate={() => {return (View />);}}
+  renderEmptyDate={() => {return (<View />);}}
   // specify your item comparison function for increased performance
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
