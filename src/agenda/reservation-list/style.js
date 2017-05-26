@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import * as defaultStyle from '../style';
 
 export default StyleSheet.create({
   container: {
@@ -7,12 +8,12 @@ export default StyleSheet.create({
   dayNum: {
     fontSize: 28,
     fontWeight: '200',
-    color: '#7a92a5'
+    color: defaultStyle.reservationListDayNumColor
   },
   dayText: {
     fontSize: 14,
     fontWeight: '300',
-    color: '#7a92a5',
+    color: defaultStyle.reservationListDayTextColor,
     marginTop: -5,
     backgroundColor: 'rgba(0,0,0,0)'
   },
@@ -23,7 +24,7 @@ export default StyleSheet.create({
     marginTop: 32
   },
   today: {
-    color: '#00adf5'
+    color: defaultStyle.reservationListTodayColor
   }
 });
 
