@@ -15,16 +15,6 @@ export default function getStyle(theme={}) {
       marginBottom: 7,
       flexDirection: 'row',
       justifyContent: 'space-around'
-    },
-    dayHeader: {
-      marginTop: 3,
-      marginBottom: 8,
-      width: 32,
-      textAlign: 'center',
-      paddingTop: 0,
-      paddingBottom: 10,
-      fontSize: 12,
-      color: appStyle.textSectionTitleColor
     }
   });
 }

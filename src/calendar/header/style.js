@@ -40,7 +40,7 @@ export default function(theme={}) {
       marginBottom: 7,
       width: 32,
       textAlign: 'center',
-      fontSize: 12,
+      fontSize: 13,
       color: appStyle.textSectionTitleColor
     }
   });

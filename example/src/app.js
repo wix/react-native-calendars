@@ -2,6 +2,9 @@ import {Navigation} from 'react-native-navigation';
 import {registerScreens} from './screens';
 registerScreens();
 
+// eslint-disable-next-line no-console
+console.ignoredYellowBox = ['Remote debugger'];
+
 /*
 import {LocaleConfig} from 'react-native-calendars';
 

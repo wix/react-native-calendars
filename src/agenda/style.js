@@ -35,9 +35,9 @@ export default function styleConstructor(theme = {}) {
       right: 0,
       top: 0,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingLeft: 24,
-      paddingRight: 24,
+      justifyContent: 'space-around',
+      marginLeft: 15,
+      marginRight: 15,
       paddingTop: 15,
       paddingBottom: 7,
       backgroundColor: appStyle.foregroundColor
