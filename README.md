@@ -211,6 +211,8 @@ An advanced agenda component that can display interactive listings for calendar 
   loadItemsForMonth={(mongh) => {console.log('trigger items loading')}
   // callback that gets called on day press
   onDayPress={(day)=>{console.log('day pressed'}}
+  // callback that gets called when day changes while scrolling agenda list
+  onDayChange={(day)=>{console.log('day changed'}}
   // initially selected day
   selected={'2012-05-16'}
   // specify how each item should be rendered in agenda
