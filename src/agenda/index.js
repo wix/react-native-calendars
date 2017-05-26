@@ -135,6 +135,10 @@ export default class AgendaView extends Component {
     this.setState({
       selectedDay: parseDate(day)
     });
+
+    if (this.props.onDayChange) {
+      this.props.onDayChange(xdateToData(newDate));
+    }
   }
 
   render() {
