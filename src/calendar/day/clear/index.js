@@ -45,13 +45,16 @@ class ClearDay extends Component {
     } else if (this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
+      containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
     return (
-      <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
-        <Text style={textStyle}>{String(this.props.children)}</Text>
+      <View style={{alignItems: 'center'}}>
+        <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
+          <Text style={textStyle}>{String(this.props.children)}</Text>
+        </TouchableOpacity>
         {dot}
-      </TouchableOpacity>
+      </View>
     );
   }
 }
