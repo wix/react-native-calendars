@@ -184,7 +184,7 @@ export default class AgendaView extends Component {
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
           {weekDaysNames.map((day) => (
-            <Text key={day} style={this.styles.weekday}>{day}</Text>
+            <Text key={day} style={this.styles.weekday}>{day[0]}</Text>
           ))}
         </Animated.View>
       </View>
