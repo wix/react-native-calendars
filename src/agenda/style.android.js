@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../style';
+import {Typography} from 'react-native-ui-lib'
 
 export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -38,14 +39,14 @@ export default function styleConstructor(theme = {}) {
       justifyContent: 'space-between',
       paddingLeft: 24,
       paddingRight: 24,
-      paddingTop: 15,
-      paddingBottom: 7,
+      paddingTop: 11,
+      paddingBottom: 5,
       backgroundColor: appStyle.calendarBackground
     },
     weekday: {
       width: 32,
       textAlign: 'center',
-      fontSize: 13,
+      ...Typography.text90,
       color: appStyle.textSectionTitleColor,
     },
     reservations: {

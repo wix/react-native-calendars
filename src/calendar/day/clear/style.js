@@ -38,10 +38,11 @@ export default function styleConstructor(theme = {}) {
       color: appStyle.textDisabledColor
     },
     dot: {
-      width: 4,
-      height: 4,
-      marginTop: 1,
-      borderRadius: 2,
+      width: 6,
+      height: 6,
+      marginTop: 4,
+      marginBottom: -0.5,
+      borderRadius: 3,
       opacity: 0
     },
     visibleDot: {
@@ -49,7 +50,7 @@ export default function styleConstructor(theme = {}) {
       backgroundColor: appStyle.dotColor
     },
     selectedDot: {
-      backgroundColor: appStyle.selectedDotColor
+      backgroundColor: appStyle.selectedDotColor === appStyle.foregroundColor ? appStyle.dotColor : appStyle.selectedDotColor
     }
   });
 }

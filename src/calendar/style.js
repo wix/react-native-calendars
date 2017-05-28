@@ -12,7 +12,7 @@ export default function getStyle(theme={}) {
     },
     week: {
       marginTop: 3,
-      marginBottom: 7,
+      marginBottom: 0,
       flexDirection: 'row',
       justifyContent: 'space-around'
     },

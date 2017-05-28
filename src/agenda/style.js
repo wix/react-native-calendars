@@ -38,15 +38,15 @@ export default function styleConstructor(theme = {}) {
       justifyContent: 'space-between',
       paddingLeft: 24,
       paddingRight: 24,
-      paddingTop: 15,
-      paddingBottom: 7,
+      paddingTop: 10,
+      paddingBottom: 5,
       backgroundColor: appStyle.foregroundColor
     },
     weekday: {
       width: 32,
       textAlign: 'center',
       fontSize: 13,
-      color: appStyle.textSectionTitleColor,
+      color: appStyle.textSectionTitleColor
     },
     reservations: {
       flex: 1,
