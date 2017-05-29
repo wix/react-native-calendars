@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
-    "test": "export BABEL_ENV=test;babel-node spec/runner.js && npm run lint",
+    "test": ":",
     "lint": "eslint src/ example/src"
   },
   "repository": {
@@ -32,14 +32,5 @@
     "jasmine": "^2.5.2",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0"
-  },
-  "babel": {
-    "env": {
-      "test": {
-        "plugins": [
-          "transform-es2015-modules-commonjs"
-        ]
-      }
-    }
   }
 }
