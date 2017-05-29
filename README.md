@@ -40,7 +40,8 @@ Event handler callbacks are called with `calendar objects` like this:
   day: 1,     // day of month (1-31)
   month: 1,   // month of year (1-12)
   year: 2017, // year
-  timestamp   // UTC timestamp representing 00:00 AM of this date
+  timestamp,   // UTC timestamp representing 00:00 AM of this date
+  dateString: '2016-05-13' // date formatted as 'YYYY-MM-DD' string
 }
 ```
 
@@ -104,9 +105,11 @@ LocaleConfig.defaultLocale = 'fr';
 ```javascript
 <Calendar 
   // Collection of dates that have to be marked. Default = {}
-  markedDates={{'2012-05-16': [true], '2012-05-17': [true]}}
-  // Array of dates that should be marked as selected (round circle). Default = []
-  selected={['2012-05-16', Date()]}
+  markedDates={{
+    '2012-05-16': {selected: true, marked: true},
+    '2012-05-17': {marked: true},
+    '2012-05-18': {disabled: true}
+  }}
 />
 ```
 
