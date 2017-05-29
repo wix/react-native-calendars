@@ -13,6 +13,7 @@ class Day extends Component {
     this.style = styleConstructor(props.theme);
   }
 
+  // TODO: selected + disbled props should be removed
   static propTypes = {
     state: React.PropTypes.oneOf(['selected', 'disabled', 'today', ''])
   };
@@ -30,19 +31,26 @@ class Day extends Component {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
+
+    let marked = this.props.marked || {};
+    if (marked && marked.constructor === Array && marked.length) {
+      marked = {
+        marked: true
+      };
+    }
     let dot;
-    if (this.props.marked) {
+    if (marked.marked) {
       dotStyle.push(this.style.visibleDot);
       dot = (<View style={dotStyle}/>);
     } else if (!this.props.markingExists) {
       textStyle.push(this.style.alignedText);
     }
 
-    if (this.props.state === 'selected') {
+    if (this.props.state === 'selected' || marked.selected) {
       containerStyle.push(this.style.selected);
       dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
-    } else if (this.props.state === 'disabled') {
+    } else if (this.props.state === 'disabled' || marked.disabled) {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       textStyle.push(this.style.todayText);

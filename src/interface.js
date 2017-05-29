@@ -8,11 +8,13 @@ function padNumber(n) {
 }
 
 export function xdateToData(xdate) {
+  const dateString = xdate.toString('yyyy-MM-dd');
   return {
     year: xdate.getFullYear(),
     month: xdate.getMonth() + 1,
     day: xdate.getDate(),
-    timestamp: XDate(xdate.toString('yyyy-MM-dd'), true).getTime()
+    timestamp: XDate(dateString, true).getTime(),
+    dateString: dateString
   };
 }
 

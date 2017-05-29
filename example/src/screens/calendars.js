@@ -21,7 +21,7 @@ export default class CalendarsScreen extends Component {
           onDayPress={this.onDayPress}
           style={styles.calendar}
           hideExtraDays
-          selected={[this.state.selected]}
+          markedDates={{[this.state.selected]: {selected: true}}}
         />
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
@@ -30,8 +30,11 @@ export default class CalendarsScreen extends Component {
           minDate={'2012-05-10'}
           maxDate={'2012-05-29'}
           firstDay={1}
-          selected={['2012-05-24']}
-          markedDates={{'2012-05-24': [true], '2012-05-25': [true]}}
+          markedDates={{
+            '2012-05-24': {selected: true, marked: true},
+            '2012-05-25': {marked: true},
+            '2012-05-26': {disabled: true}
+          }}
           hideArrows={true}
         />
         <Text style={styles.text}>Calendar with marked dates and spinner</Text>
@@ -68,7 +71,7 @@ export default class CalendarsScreen extends Component {
 
   onDayPress(day) {
     this.setState({
-      selected: day
+      selected: day.dateString
     });
   }
 }

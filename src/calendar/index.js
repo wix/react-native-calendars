@@ -132,7 +132,7 @@ class Calendar extends Component {
       return false;
     }
     const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || [];
-    if (dates.length) {
+    if (dates.length || dates) {
       return dates;
     } else {
       return false;
