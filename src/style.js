@@ -14,7 +14,7 @@ export const textLinkColor = '#00adf5';
 export const textSecondaryColor = '#7a92a5';
 
 export const calendarBackground = foregroundColor;
-export const textSectionTitleColor = '#b6c1cd';
+export const textSectionTitleColor = Colors.dark10; //'#b6c1cd'
 export const selectedDayBackgroundColor = textLinkColor;
 export const todayBorderColor = Colors.blue40;
 export const selectedDayTextColor = foregroundColor;
