@@ -173,6 +173,7 @@ class Calendar extends Component {
           showIndicator={indicator}
           firstDay={this.props.firstDay}
           renderArrow={this.props.renderArrow}
+          monthFormat={this.props.monthFormat}
         />
         {weeks}
       </View>);
