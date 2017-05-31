@@ -182,7 +182,7 @@ export default class AgendaView extends Component {
             scrollingEnabled={this.state.calendarScrollable}
             hideExtraDays={this.state.calendarScrollable}
             firstDay={this.props.firstDay}
-            ...this.props
+            {...this.props}
           />
           {knob}
         </Animated.View>
