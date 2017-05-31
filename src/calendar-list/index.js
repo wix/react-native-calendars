@@ -21,7 +21,7 @@ class CalendarList extends Component {
     this.style = styleConstructor(props.theme);
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
-        return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || (r2.propbump && r2.propbump !== r1.propbump);
+        return r2 === undefined || r1.toString('yyyy MM') !== r2.toString('yyyy MM') || (r2.propbump && r2.propbump !== r1.propbump);
       }
     });
     const rows = [];
