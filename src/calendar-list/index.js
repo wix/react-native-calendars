@@ -5,8 +5,9 @@ import {
   Platform,
   Text
 } from 'react-native';
-
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
+
 import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import dateutils from '../dateutils';
@@ -14,6 +15,19 @@ import Calendar from '../calendar';
 
 const calendarHeight = 360;
 class CalendarList extends Component {
+  static propTypes = {
+    ...Calendar.propTypes,
+
+    // Max amount of months allowed to scroll to the past. Default = 50
+    pastScrollRange: PropTypes.number,
+
+    // Max amount of months allowed to scroll to the future. Default = 50
+    futureScrollRange: PropTypes.number,
+
+    // Enable or disable scrolling of calendar list
+    scrollEnabled: PropTypes.bool,
+  };
+
   constructor(props) {
     super(props);
     this.pastScrollRange = props.pastScrollRange === undefined ? 50 : props.pastScrollRange;

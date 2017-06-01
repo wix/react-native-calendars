@@ -4,8 +4,10 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
-  Animated
+  Animated,
+  ViewPropTypes,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import {parseDate, xdateToData} from '../interface';
@@ -17,6 +19,39 @@ import styleConstructor from './style';
 const CALENDAR_OFFSET = 38;
 
 export default class AgendaView extends Component {
+  static propTypes = {
+    // Specify theme properties to override specific styles for calendar parts. Default = {}
+    theme: PropTypes.object,
+
+    // agenda container style
+    style: ViewPropTypes.style,
+
+    // the list of items that have to be displayed in agenda. If you want to render item as empty date
+    // the value of date key kas to be an empty array []. If there exists no value for date key it is
+    // considered that the date in question is not yet loaded
+    items: PropTypes.object,
+
+    // callback that gets called when items for a certain month should be loaded (month became visible)
+    loadItemsForMonth: PropTypes.func,
+    // callback that gets called on day press
+    onDayPress: PropTypes.func,
+    // callback that gets called when day changes while scrolling agenda list
+    onDaychange: PropTypes.func,
+    // specify how each item should be rendered in agenda
+    renderItem: PropTypes.func,
+    // specify how each date should be rendered. day can be undefined if the item is not first in that day.
+    renderDay: PropTypes.func,
+    // specify how empty date content with no items should be rendered
+    renderEmptyDay: PropTypes.func,
+    // specify your item comparison function for increased performance
+    rowHasChanged: PropTypes.func,
+
+    // initially selected day
+    selected: PropTypes.any,
+
+    // Hide knob button. Default = false
+    hideKnob: PropTypes.bool,
+  };
 
   constructor(props) {
     super(props);

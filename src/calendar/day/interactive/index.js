@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 //import _ from 'lodash';
 import {
   TouchableWithoutFeedback,
@@ -10,16 +11,25 @@ import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 
 class Day extends Component {
+  static propTypes = {
+    // TODO: selected + disabled props should be removed
+    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+
+    // Specify theme properties to override specific styles for calendar parts. Default = {}
+    theme: PropTypes.object,
+    marked: PropTypes.object,
+
+    onPress: PropTypes.func,
+
+    markingExists: PropTypes.bool,
+  };
+
   constructor(props) {
     super(props);
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
     this.markingStyle = this.getDrawingStyle(props.marked);
   }
-
-  static propTypes = {
-    state: React.PropTypes.oneOf(['selected', 'disabled', 'today', ''])
-  };
 
   shouldComponentUpdate(nextProps) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marked);

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {
-  View
+  View,
+  ViewPropTypes,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import XDate from 'xdate';
 import dateutils from '../dateutils';
@@ -13,6 +15,46 @@ import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
 class Calendar extends Component {
+  static propTypes = {
+    // Specify theme properties to override specific styles for calendar parts. Default = {}
+    theme: PropTypes.object,
+    // Collection of dates that have to be marked. Default = {}
+    markedDates: PropTypes.object,
+
+    // Specify style for calendar container element. Default = {}
+    style: ViewPropTypes.style,
+
+    selected: PropTypes.array,
+
+    // Initially visible month. Default = Date()
+    current: PropTypes.any,
+    // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+    minDate: PropTypes.any,
+    // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+    maxDate: PropTypes.any,
+
+    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+    firstDay: PropTypes.number,
+
+    // Date marking style [simple/interactive]. Default = 'simple'
+    markingType: PropTypes.string,
+
+    // Hide month navigation arrows. Default = false
+    hideArrows: PropTypes.bool,
+    // Display loading indicador. Default = false
+    displayLoadingIndicator: PropTypes.bool,
+    // Do not show days of other months in month page. Default = false
+    hideExtraDays: PropTypes.bool,
+
+    // Handler which gets executed on day press. Default = undefined
+    onDayPress: PropTypes.func,
+    // Handler which gets executed when visible month changes in calendar. Default = undefined
+    onMonthChange: PropTypes.func,
+    onVisibleMonthsChange: PropTypes.func,
+    // Replace default arrows with custom ones (direction can be 'left' or 'right')
+    renderArrow: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
     this.style = styleConstructor(this.props.theme);

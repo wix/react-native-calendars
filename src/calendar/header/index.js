@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
+import XDate from 'xdate';
+import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import { weekDayNames } from '../../dateutils';
 
 class CalendarHeader extends Component {
+  static propTypes = {
+    theme: PropTypes.object,
+    hideArrows: PropTypes.bool,
+    month: PropTypes.instanceOf(XDate),
+    addMonth: PropTypes.func,
+    showIndicator: PropTypes.bool,
+    firstDay: PropTypes.number,
+    renderArrow: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
