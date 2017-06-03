@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "eslint": "^3.19.0",
+    "babel-eslint": "^7.2.3",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
     "react": "16.0.0-alpha.6",
