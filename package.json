@@ -17,6 +17,7 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
+    "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
   "peerDependencies": {

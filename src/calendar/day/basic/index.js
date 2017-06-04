@@ -4,19 +4,28 @@ import {
   Text,
   View
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import styleConstructor from './style';
 
 class Day extends Component {
+  static propTypes = {
+    // TODO: selected + disabled props should be removed
+    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+
+    // Specify theme properties to override specific styles for calendar parts. Default = {}
+    theme: PropTypes.object,
+    marked: PropTypes.object,
+
+    onPress: PropTypes.func,
+
+    markingExists: PropTypes.bool,
+  };
+
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
   }
-
-  // TODO: selected + disbled props should be removed
-  static propTypes = {
-    state: React.PropTypes.oneOf(['selected', 'disabled', 'today', ''])
-  };
 
   shouldComponentUpdate(nextProps) {
     return ['state', 'children', 'marked', 'onPress', 'markingExists'].reduce((prev, next) => {
