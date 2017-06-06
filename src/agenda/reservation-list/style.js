@@ -10,12 +10,12 @@ export default function styleConstructor(theme = {}) {
     dayNum: {
       fontSize: 28,
       fontWeight: '200',
-      color: appStyle.reservationListDayNumColor
+      color: appStyle.agendaDayNumColor
     },
     dayText: {
       fontSize: 14,
       fontWeight: '300',
-      color: appStyle.reservationListDayTextColor,
+      color: appStyle.agendaDayTextColor,
       marginTop: -5,
       backgroundColor: 'rgba(0,0,0,0)'
     },
@@ -26,7 +26,7 @@ export default function styleConstructor(theme = {}) {
       marginTop: 32
     },
     today: {
-      color: appStyle.reservationListTodayColor
+      color: appStyle.agendaTodayColor
     }
   });
 }
