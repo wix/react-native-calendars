@@ -229,7 +229,12 @@ An advanced agenda component that can display interactive listings for calendar 
   // Hide knob button. Default = false
   hideKnob={true}
   // agenda theme
-  theme = {{}}
+  theme = {{
+    ...calendarTheme,
+    agendaDayTextColor = 'yellow',
+    agendaDayNumColor = 'green',
+    agendaTodayColor = 'red'
+  }}
   // agenda container style
   style = {{}}
 />
