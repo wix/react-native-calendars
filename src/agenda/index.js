@@ -159,6 +159,7 @@ export default class AgendaView extends Component {
         onDayChange={this.onDayChange.bind(this)}
         onScroll={() => {}}
         ref={(c) => this.list = c}
+        theme={this.props.theme}
       />
     );
   }

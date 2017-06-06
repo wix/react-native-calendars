@@ -22,3 +22,6 @@ export const dotColor = textLinkColor;
 export const selectedDotColor = foregroundColor;
 export const arrowColor = textLinkColor;
 export const monthTextColor = textDefaultColor;
+export const agendaDayTextColor = textDefaultColor;
+export const agendaDayNumColor = textDefaultColor;
+export const agendaTodayColor = textLinkColor;
