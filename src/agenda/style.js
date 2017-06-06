@@ -20,7 +20,7 @@ export default function styleConstructor(theme = {}) {
       height: 24,
       bottom: 0,
       alignItems: 'center',
-      backgroundColor: appStyle.foregroundColor
+      backgroundColor: appStyle.calendarBackground
     },
     knob: {
       width: 38,
@@ -40,7 +40,7 @@ export default function styleConstructor(theme = {}) {
       marginRight: 15,
       paddingTop: 15,
       paddingBottom: 7,
-      backgroundColor: appStyle.foregroundColor
+      backgroundColor: appStyle.calendarBackground
     },
     weekday: {
       width: 32,

@@ -19,10 +19,11 @@ export default class AgendaScreen extends Component {
       <Agenda
         items={this.state.items}
         loadItemsForMonth={this.loadItems.bind(this)}
-        selected={'2012-05-16'}
+        selected={'2017-05-16'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
+        //theme={{calendarBackground: 'red'}}
         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
       />
     );
