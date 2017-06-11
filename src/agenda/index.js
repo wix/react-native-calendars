@@ -23,6 +23,7 @@ const Screen = {
 }
 
 const CALENDAR_OFFSET = 38;
+let firstRender = true;
 
 export default class AgendaView extends Component {
   static propTypes = {
@@ -179,14 +180,13 @@ export default class AgendaView extends Component {
     } else if (!this.props.draggable) {
       this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
     }
-  
     
-    if (this.props.loadItemsForMonth) {
-      this.props.loadItemsForMonth(xdateToData(day));
-    }
-    if (this.props.onDayPress) {
-      this.props.onDayPress(xdateToData(day));
-    }
+    // if (this.props.loadItemsForMonth) {
+    //   this.props.loadItemsForMonth(xdateToData(day));
+    // }
+    // if (this.props.onDayPress) {
+    //   this.props.onDayPress(xdateToData(day));
+    // }
   }
 
   renderReservations() {
@@ -264,6 +264,10 @@ export default class AgendaView extends Component {
   renderDraggable(wrappedComponent) {
     setTimeout(() => {
       this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
+      if (firstRender) {
+        firstRender = false;
+        this.dropDown.snapTo({index: 1})
+      }
     }, 0);
     const maxHeight = this.screenHeight - 75;
     return (
@@ -272,7 +276,8 @@ export default class AgendaView extends Component {
       top: 0,
       bottom: 0,
       left: 0,
-      right: 0
+      right: 0,
+      opacity: (firstRender) ? 0 : 1,
     }}>
       <Interactable.View
         verticalOnly={true}
