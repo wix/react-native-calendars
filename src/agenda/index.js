@@ -183,12 +183,12 @@ export default class AgendaView extends Component {
       this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
     }
     
-    // if (this.props.loadItemsForMonth) {
-    //   this.props.loadItemsForMonth(xdateToData(day));
-    // }
-    // if (this.props.onDayPress) {
-    //   this.props.onDayPress(xdateToData(day));
-    // }
+    if (this.props.loadItemsForMonth) {
+      this.props.loadItemsForMonth(xdateToData(day));
+    }
+    if (this.props.onDayPress) {
+      this.props.onDayPress(xdateToData(day));
+    }
   }
 
   renderReservations() {
