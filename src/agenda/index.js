@@ -20,7 +20,7 @@ import Interactable from 'react-native-interactable';
 const Screen = {
   width: Dimensions.get('window').width,
   height: Dimensions.get('window').height - 75
-}
+};
 
 const CALENDAR_OFFSET = 38;
 // For some reason the only way to make the scrollToDay work on the first render
@@ -158,8 +158,8 @@ export default class AgendaView extends Component {
     });
     if(!this.props.draggable) {
       Animated.timing(this._openAnimation, {
-      toValue: 1,
-      duration: 300
+        toValue: 1,
+        duration: 300
       }).start();
       this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
     } else {
@@ -251,8 +251,8 @@ export default class AgendaView extends Component {
       : [this.styles.weekdays, {
         bottom: 25,
         opacity: this._deltaY.interpolate({
-            inputRange: [-0.75*Screen.height, -0.3*Screen.height],
-            outputRange: [1, 0]
+          inputRange: [-0.75*Screen.height, -0.3*Screen.height],
+          outputRange: [1, 0]
         }),
         transform: [{
           translateY: this._deltaY.interpolate({
@@ -269,12 +269,11 @@ export default class AgendaView extends Component {
     setTimeout(() => {
       if (firstDraggableRender) {
         firstDraggableRender = false;
-        this.dropDown.snapTo({index: 1})
+        this.dropDown.snapTo({index: 1});
       } else {
         this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
       }
     }, 0);
-    const maxHeight = this.screenHeight - 75;
     return (
     <View style={{
       position: 'absolute',
@@ -308,7 +307,7 @@ export default class AgendaView extends Component {
           <TouchableOpacity onPress={() => this.state.calendarExpanded ? this.retractCalendar():this.expandCalendar()}>
             <View style={this.styles.knob}/>
           </TouchableOpacity>
-        </View>
+        </View>;
 
     const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
     const calendarListView = (
