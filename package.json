@@ -18,6 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "prop-types": "^15.5.10",
+    "react-native-interactable": "0.0.9",
     "xdate": "^0.8.0"
   },
   "peerDependencies": {

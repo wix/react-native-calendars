@@ -56,7 +56,7 @@ export default function styleConstructor(theme = {}) {
     },
     reservations: {
       flex: 1,
-      marginTop: 104,
+      marginTop: 100,
       backgroundColor: appStyle.backgroundColor
     },
   });

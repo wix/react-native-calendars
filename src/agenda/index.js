@@ -23,7 +23,9 @@ const Screen = {
 }
 
 const CALENDAR_OFFSET = 38;
-let firstRender = true;
+// For some reason the only way to make the scrollToDay work on the first render
+// is to trigger a snapTo. Therefore, we need to track the firstDraggable render.
+let firstDraggableRender = true;
 
 export default class AgendaView extends Component {
   static propTypes = {
@@ -262,11 +264,14 @@ export default class AgendaView extends Component {
   }
   
   renderDraggable(wrappedComponent) {
+    // We use setTimeout, otherwise the dropDown and calendar reference are not
+    // yet defined
     setTimeout(() => {
-      this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
-      if (firstRender) {
-        firstRender = false;
+      if (firstDraggableRender) {
+        firstDraggableRender = false;
         this.dropDown.snapTo({index: 1})
+      } else {
+        this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
       }
     }, 0);
     const maxHeight = this.screenHeight - 75;
@@ -277,7 +282,7 @@ export default class AgendaView extends Component {
       bottom: 0,
       left: 0,
       right: 0,
-      opacity: (firstRender) ? 0 : 1,
+      opacity: (firstDraggableRender) ? 0 : 1,
     }}>
       <Interactable.View
         verticalOnly={true}
