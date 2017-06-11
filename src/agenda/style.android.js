@@ -12,6 +12,12 @@ export default function styleConstructor(theme = {}) {
       borderBottomWidth: 1,
       borderColor: appStyle.separatorColor
     },
+    calendarContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0
+    },
     knobContainer: {
       flex: 1,
       position: 'absolute',
@@ -33,7 +39,6 @@ export default function styleConstructor(theme = {}) {
       position: 'absolute',
       left: 0,
       right: 0,
-      top: 0,
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingLeft: 24,

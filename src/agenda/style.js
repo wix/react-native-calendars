@@ -12,6 +12,12 @@ export default function styleConstructor(theme = {}) {
       borderBottomWidth: 1,
       borderColor: appStyle.separatorColor
     },
+    calendarContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0
+    },
     knobContainer: {
       flex: 1,
       position: 'absolute',
