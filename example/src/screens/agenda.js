@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 5
+    marginTop: 17
   },
   emptyDate: {
     height: 15,
