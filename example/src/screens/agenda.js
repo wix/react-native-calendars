@@ -23,7 +23,7 @@ export default class AgendaScreen extends Component {
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
-        monthFormat={'yyyy'}
+        // monthFormat={'yyyy'}
         //theme={{calendarBackground: 'red'}}
         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
       />

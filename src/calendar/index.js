@@ -53,6 +53,8 @@ class Calendar extends Component {
     onVisibleMonthsChange: PropTypes.func,
     // Replace default arrows with custom ones (direction can be 'left' or 'right')
     renderArrow: PropTypes.func,
+    // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+    monthFormat: PropTypes.string
   };
 
   constructor(props) {
