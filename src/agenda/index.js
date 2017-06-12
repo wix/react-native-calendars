@@ -15,8 +15,17 @@ import dateutils from '../dateutils';
 import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
 import styleConstructor from './style';
+import Interactable from 'react-native-interactable';
+
+const Screen = {
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height - 75
+};
 
 const CALENDAR_OFFSET = 38;
+// For some reason the only way to make the scrollToDay work on the first render
+// is to trigger a snapTo. Therefore, we need to track the firstDraggable render.
+let firstDraggableRender = true;
 
 export default class AgendaView extends Component {
   static propTypes = {
@@ -51,6 +60,9 @@ export default class AgendaView extends Component {
 
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
+
+    // Make the calendar natively draggable
+    draggable: PropTypes.bool,
   };
 
   constructor(props) {
@@ -59,19 +71,33 @@ export default class AgendaView extends Component {
     this.screenHeight = Dimensions.get('window').height;
     this.scrollTimeout = undefined;
     this.state = {
-      openAnimation: new Animated.Value(0),
-      calendarScrollable: false,
+      calendarExpanded: false,
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true),
     };
     this.currentMonth = this.state.selectedDay.clone();
+
+    this.retractCalendar = this.retractCalendar.bind(this);
     this.expandCalendar = this.expandCalendar.bind(this);
+
+    this.getCalendaryStyle = this.getCalendaryStyle.bind(this);
+    this.getWeedaysStyle = this.getWeedaysStyle.bind(this);
+
+    if (this.props.draggable) {
+      this._deltaY = new Animated.Value(0);
+      this.renderDraggable = this.renderDraggable.bind(this);
+      this.onDrawerSnap = this.onDrawerSnap.bind(this);
+    } else {
+      this._openAnimation = new Animated.Value(0);
+    }
   }
 
   onLayout(event) {
     this.screenHeight = event.nativeEvent.layout.height;
-    this.calendar.scrollToDay(this.state.selectedDay.clone(), CALENDAR_OFFSET, false);
+    if (this.calendar) {
+      this.calendar.scrollToDay(this.state.selectedDay.clone(), CALENDAR_OFFSET, false);
+    }
   }
 
   onVisibleMonthsChange(months) {
@@ -111,33 +137,52 @@ export default class AgendaView extends Component {
     }
   }
 
+  retractCalendar(day) {
+    this.setState({
+      calendarExpanded: false
+    });
+    if(this.props.draggable) {
+      this.dropDown.snapTo({index: 1});
+    } else {
+      Animated.timing(this._openAnimation, {
+        toValue: 0,
+        duration: 200
+      }).start();
+      this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
+    }
+  }
+
   expandCalendar() {
     this.setState({
-      calendarScrollable: true
+      calendarExpanded: true
     });
-    Animated.timing(this.state.openAnimation, {
-      toValue: 1,
-      duration: 300
-    }).start();
-    this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
+    if(!this.props.draggable) {
+      Animated.timing(this._openAnimation, {
+        toValue: 1,
+        duration: 300
+      }).start();
+      this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
+    } else {
+      this.dropDown.setVelocity({y: 2000});
+      this.dropDown.snapTo({index: 0});
+    }
   }
 
   chooseDay(d) {
     const day = parseDate(d);
     this.setState({
-      calendarScrollable: false,
+      calendarExpanded: false,
       selectedDay: day.clone()
     });
-    if (this.state.calendarScrollable) {
-      this.setState({
-        topDay: day.clone()
-      });
+    this.setState({
+      topDay: day.clone()
+    });
+    if (this.state.calendarExpanded) {
+      this.retractCalendar(day);
+    } else if (!this.props.draggable) {
+      this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
     }
-    Animated.timing(this.state.openAnimation, {
-      toValue: 0,
-      duration: 200
-    }).start();
-    this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
+    
     if (this.props.loadItemsForMonth) {
       this.props.loadItemsForMonth(xdateToData(day));
     }
@@ -177,36 +222,97 @@ export default class AgendaView extends Component {
     }
   }
 
+  onDrawerSnap(event) {
+    this.setState({
+      calendarExpanded: event.nativeEvent.id === 'top',
+    });
+  }
+
+  getCalendaryStyle() {
+    return !this.props.draggable
+      ? [this.styles.calendar, {height: this._openAnimation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [104, this.screenHeight + 20]
+      })}]
+      : [this.styles.calendar, {height: this.screenHeight, transform: [{
+        translateY: this._deltaY.interpolate({
+          inputRange: [-this.screenHeight , 0],
+          outputRange: [0.62*(this.screenHeight - 75), 0]
+        })
+      }]}];
+  }
+
+  getWeedaysStyle() {
+    return !this.props.draggable
+      ? [this.styles.weekdays, {top: 0}, {opacity: this._openAnimation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0]
+      })}]
+      : [this.styles.weekdays, {
+        bottom: 25,
+        opacity: this._deltaY.interpolate({
+          inputRange: [-0.75*Screen.height, -0.3*Screen.height],
+          outputRange: [1, 0]
+        }),
+        transform: [{
+          translateY: this._deltaY.interpolate({
+            inputRange: [-Screen.height, 0],
+            outputRange: [0, -0.75*Screen.height]
+          }) 
+        }]
+      }];
+  }
+  
+  renderDraggable(wrappedComponent) {
+    // We use setTimeout, otherwise the dropDown and calendar reference are not
+    // yet defined
+    setTimeout(() => {
+      if (firstDraggableRender) {
+        firstDraggableRender = false;
+        this.dropDown.snapTo({index: 1});
+      } else {
+        this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
+      }
+    }, 0);
+    return (
+    <View style={{
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      opacity: (firstDraggableRender) ? 0 : 1,
+    }}>
+      <Interactable.View
+        verticalOnly={true}
+        snapPoints={[{y: 0, tension: 0, damping: 1, id:'top'}, {y: -Screen.height + 50, id:'bottom'}]}
+        gravityPoints={[{y: 0, strength: 200, falloff: Screen.height*8, damping: 0.7, influenceArea: {top: (-Screen.height + 50) * 0.5}}]}
+        initialPosition={{y: -Screen.height + 50}}
+        boundaries={{top: -Screen.height, bottom: 0, bounce: 2, haptics: true}}
+        animatedValueY={this._deltaY}
+        onSnap={this.onDrawerSnap}
+        ref={c => { this.dropDown = c;}}
+        animatedNativeDriver={true}>
+        <View style={{height: this.screenHeight}}>
+          {wrappedComponent}
+        </View>
+      </Interactable.View>
+    </View>);
+  }
+
   render() {
-    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
-    const maxCalHeight = this.screenHeight + 20;
-    const calendarStyle = [this.styles.calendar, {height: this.state.openAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: [104, maxCalHeight]
-    })}];
-    const weekdaysStyle = [this.styles.weekdays, {opacity: this.state.openAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: [1, 0]
-    })}];
-
-    let knob = (<View style={this.styles.knobContainer}/>);
-
-    if (!this.props.hideKnob) {
-      knob = (
-        <View style={this.styles.knobContainer}>
-          <TouchableOpacity onPress={this.expandCalendar}>
+    const knob = this.props.hideKnob
+      ? <View style={this.styles.knobContainer}/>
+      : <View style={this.styles.knobContainer}>
+          <TouchableOpacity onPress={() => this.state.calendarExpanded ? this.retractCalendar():this.expandCalendar()}>
             <View style={this.styles.knob}/>
           </TouchableOpacity>
-        </View>
-      );
-    }
+        </View>;
 
-    return (
-      <View onLayout={this.onLayout.bind(this)} style={[this.props.style, {flex: 1}]}>
-        <View style={this.styles.reservations}>
-          {this.renderReservations()}
-        </View>
-        <Animated.View style={calendarStyle}>
+    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
+    const calendarListView = (
+      <View style={[this.styles.calendarContainer, {height: this.screenHeight}]}>
+        <Animated.View style={this.getCalendaryStyle()}>
           <CalendarList
             theme={this.props.theme}
             onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
@@ -215,19 +321,31 @@ export default class AgendaView extends Component {
             current={this.currentMonth}
             markedDates={this.props.items}
             onDayPress={this.chooseDay.bind(this)}
-            scrollingEnabled={this.state.calendarScrollable}
-            hideExtraDays={this.state.calendarScrollable}
+            scrollingEnabled={this.state.calendarExpanded}
+            hideExtraDays={this.state.calendarExpanded}
             firstDay={this.props.firstDay}
             theme={this.props.theme}
             monthFormat={this.props.monthFormat}
           />
-          {knob}
+          {!this.props.draggable ? knob : null}
         </Animated.View>
-        <Animated.View style={weekdaysStyle}>
+        {this.props.draggable ? knob : null}
+        <Animated.View style={this.getWeedaysStyle()} pointerEvents="none">
           {weekDaysNames.map((day) => (
             <Text key={day} style={this.styles.weekday}>{day}</Text>
           ))}
         </Animated.View>
+      </View>
+    );
+
+    return (
+      <View onLayout={this.onLayout.bind(this)} style={[this.props.style, {flex: 1}]}>
+        <View style={this.styles.reservations}>
+          {this.renderReservations()}
+        </View>
+        {this.props.draggable
+          ? this.renderDraggable(calendarListView)
+          : calendarListView}
       </View>
     );
   }
