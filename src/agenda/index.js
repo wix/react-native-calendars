@@ -19,10 +19,14 @@ import Interactable from 'react-native-interactable';
 
 const Screen = {
   width: Dimensions.get('window').width,
-  height: Dimensions.get('window').height - 75
+  height: Dimensions.get('window').height,
 };
 
-const CALENDAR_OFFSET = 38;
+const TAB_HEIGHT = 104;
+const WEEKDAYS_HEIGHT = 39;
+const KNOB_HEIGHT = 24;
+const CALENDAR_OFFSET = WEEKDAYS_HEIGHT;
+
 // For some reason the only way to make the scrollToDay work on the first render
 // is to trigger a snapTo. Therefore, we need to track the firstDraggable render.
 let firstDraggableRender = true;
@@ -68,7 +72,6 @@ export default class AgendaView extends Component {
   constructor(props) {
     super(props);
     this.styles = styleConstructor(props.theme);
-    this.screenHeight = Dimensions.get('window').height;
     this.scrollTimeout = undefined;
     this.state = {
       calendarExpanded: false,
@@ -94,7 +97,6 @@ export default class AgendaView extends Component {
   }
 
   onLayout(event) {
-    this.screenHeight = event.nativeEvent.layout.height;
     if (this.calendar) {
       this.calendar.scrollToDay(this.state.selectedDay.clone(), CALENDAR_OFFSET, false);
     }
@@ -146,26 +148,32 @@ export default class AgendaView extends Component {
     } else {
       Animated.timing(this._openAnimation, {
         toValue: 0,
-        duration: 200
+        duration: 300,
+        useNativeDriver: true,
       }).start();
-      this.calendar.scrollToDay(day, CALENDAR_OFFSET, true);
+      this.calendar.scrollToDay(this.state.selectedDay, -Screen.height + TAB_HEIGHT, true);
     }
   }
 
   expandCalendar() {
-    this.setState({
-      calendarExpanded: true
-    });
     if(!this.props.draggable) {
-      Animated.timing(this._openAnimation, {
-        toValue: 1,
-        duration: 300
-      }).start();
-      this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
+      if (!this.state.calendarExpanded) {
+        Animated.timing(this._openAnimation, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+        this.calendar.scrollToDay(this.state.selectedDay, -0.2*(Screen.height), true);
+      } else {
+        this.calendar.scrollToDay(this.state.selectedDay, 0, true);
+      }      
     } else {
       this.dropDown.setVelocity({y: 2000});
       this.dropDown.snapTo({index: 0});
     }
+    this.setState({
+      calendarExpanded: true
+    });
   }
 
   chooseDay(d) {
@@ -212,7 +220,7 @@ export default class AgendaView extends Component {
   onDayChange(day) {
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
-    this.calendar.scrollToDay(day, CALENDAR_OFFSET, withAnimation);
+    // this.calendar.scrollToDay(day, CALENDAR_OFFSET, withAnimation);
     this.setState({
       selectedDay: parseDate(day)
     });
@@ -230,14 +238,16 @@ export default class AgendaView extends Component {
 
   getCalendaryStyle() {
     return !this.props.draggable
-      ? [this.styles.calendar, {height: this._openAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [104, this.screenHeight + 20]
-      })}]
-      : [this.styles.calendar, {height: this.screenHeight, transform: [{
+      ? [this.styles.calendar, {height: Screen.height, transform: [{
+        translateY: this._openAnimation.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-(Screen.height - TAB_HEIGHT), 0],
+         })
+      }]}]
+      : [this.styles.calendar, {height: Screen.height, transform: [{
         translateY: this._deltaY.interpolate({
-          inputRange: [-this.screenHeight , 0],
-          outputRange: [0.62*(this.screenHeight - 75), 0]
+          inputRange: [-Screen.height, 0].map(x => x + TAB_HEIGHT),
+          outputRange: [0.5*(Screen.height), -TAB_HEIGHT -KNOB_HEIGHT]
         })
       }]}];
   }
@@ -249,14 +259,14 @@ export default class AgendaView extends Component {
         outputRange: [1, 0]
       })}]
       : [this.styles.weekdays, {
-        bottom: 25,
+        bottom: TAB_HEIGHT - WEEKDAYS_HEIGHT,
         opacity: this._deltaY.interpolate({
           inputRange: [-0.75*Screen.height, -0.3*Screen.height],
           outputRange: [1, 0]
         }),
         transform: [{
           translateY: this._deltaY.interpolate({
-            inputRange: [-Screen.height, 0],
+            inputRange: [-Screen.height, 0].map(x => x + TAB_HEIGHT),
             outputRange: [0, -0.75*Screen.height]
           }) 
         }]
@@ -271,34 +281,27 @@ export default class AgendaView extends Component {
         firstDraggableRender = false;
         this.dropDown.snapTo({index: 1});
       } else {
-        this.calendar.scrollToDay(this.state.selectedDay, 100 - ((this.screenHeight / 2) - 16), true);
+        this.calendar.scrollToDay(this.state.selectedDay, WEEKDAYS_HEIGHT + TAB_HEIGHT - 0.5*(Screen.height), true);
       }
     }, 0);
     return (
-    <View style={{
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      opacity: (firstDraggableRender) ? 0 : 1,
-    }}>
       <Interactable.View
+        style={{position: 'absolute', top: 0, left: 0, right: 0}}
         verticalOnly={true}
-        snapPoints={[{y: 0, tension: 0, damping: 1, id:'top'}, {y: -Screen.height + 50, id:'bottom'}]}
-        gravityPoints={[{y: 0, strength: 200, falloff: Screen.height*8, damping: 0.7, influenceArea: {top: (-Screen.height + 50) * 0.5}}]}
-        initialPosition={{y: -Screen.height + 50}}
+        snapPoints={[{y: 0, tension: 0, damping: 1, id:'top'}, {y: -Screen.height + TAB_HEIGHT, id:'bottom'}]}
+        gravityPoints={[{y: 0, strength: 200, falloff: Screen.height*8, damping: 0.7, influenceArea: {top: (-Screen.height + TAB_HEIGHT) * 0.5}}]}
+        initialPosition={{y: -Screen.height + TAB_HEIGHT}}
         boundaries={{top: -Screen.height, bottom: 0, bounce: 2, haptics: true}}
         animatedValueY={this._deltaY}
         onSnap={this.onDrawerSnap}
         ref={c => { this.dropDown = c;}}
         animatedNativeDriver={true}>
-        <View style={{height: this.screenHeight}}>
+        <View style={{height: Screen.height}}>
           {wrappedComponent}
         </View>
-      </Interactable.View>
-    </View>);
+      </Interactable.View>);
   }
+
 
   render() {
     const knob = this.props.hideKnob
@@ -311,7 +314,7 @@ export default class AgendaView extends Component {
 
     const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
     const calendarListView = (
-      <View style={[this.styles.calendarContainer, {height: this.screenHeight}]}>
+      <View style={this.styles.calendarContainer}>    
         <Animated.View style={this.getCalendaryStyle()}>
           <CalendarList
             theme={this.props.theme}
@@ -327,7 +330,7 @@ export default class AgendaView extends Component {
             theme={this.props.theme}
           />
           {!this.props.draggable ? knob : null}
-        </Animated.View>
+        </Animated.View> 
         {this.props.draggable ? knob : null}
         <Animated.View style={this.getWeedaysStyle()} pointerEvents="none">
           {weekDaysNames.map((day) => (

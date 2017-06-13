@@ -9,21 +9,22 @@ export default function styleConstructor(theme = {}) {
       top: 0,
       left: 0,
       right: 0,
-      borderBottomWidth: 1,
-      borderColor: appStyle.separatorColor
+      // borderBottomWidth: 1,
+      // borderColor: appStyle.separatorColor
     },
     calendarContainer: {
       position: 'absolute',
       top: 0,
       left: 0,
-      right: 0
+      right: 0,
+      bottom: 0,
     },
     knobContainer: {
       flex: 1,
       position: 'absolute',
       left: 0,
       right: 0,
-      height: 24,
+      height: 25,
       bottom: 0,
       alignItems: 'center',
       backgroundColor: appStyle.calendarBackground
@@ -55,7 +56,7 @@ export default function styleConstructor(theme = {}) {
     },
     reservations: {
       flex: 1,
-      marginTop: 100,
+      marginTop: 92,
       backgroundColor: appStyle.backgroundColor
     },
   });

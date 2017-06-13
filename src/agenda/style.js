@@ -16,7 +16,8 @@ export default function styleConstructor(theme = {}) {
       position: 'absolute',
       top: 0,
       left: 0,
-      right: 0
+      right: 0,
+      bottom: 0,
     },
     knobContainer: {
       flex: 1,
@@ -39,7 +40,6 @@ export default function styleConstructor(theme = {}) {
       position: 'absolute',
       left: 0,
       right: 0,
-      top: 0,
       flexDirection: 'row',
       justifyContent: 'space-around',
       marginLeft: 15,
@@ -56,7 +56,7 @@ export default function styleConstructor(theme = {}) {
     },
     reservations: {
       flex: 1,
-      marginTop: 100,
+      marginTop: 90,
       backgroundColor: appStyle.backgroundColor
     },
   });
