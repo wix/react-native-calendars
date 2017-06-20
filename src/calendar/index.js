@@ -21,6 +21,12 @@ class Calendar extends Component {
     // Collection of dates that have to be marked. Default = {}
     markedDates: PropTypes.object,
 
+    // Collection of dates that should be enabled. Default = {}
+    enabledDates: PropTypes.array,
+
+    // Disable dates by default. Default = false
+    disabledByDefault: PropTypes.bool,
+
     // Specify style for calendar container element. Default = {}
     style: ViewPropTypes.style,
 
@@ -107,6 +113,13 @@ class Calendar extends Component {
   pressDay(day) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
+
+    if(this.props.enabledDates && this.props.disabledByDefault) {
+      if(!this.props.enabledDates.includes(day.toString("yyyy-MM-dd"))) {
+        return;
+      }
+    }
+
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
       this.updateMonth(day);
       if (this.props.onDayPress) {
@@ -135,7 +148,7 @@ class Calendar extends Component {
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
-    let state = '';
+    let state = this.props.disabledByDefault ? 'disabled' : '';
     if (this.isSelected(day)) {
       state = 'selected';
     } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
@@ -144,7 +157,12 @@ class Calendar extends Component {
       state = 'disabled';
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
+    } else if (this.props.enabledDates && this.props.disabledByDefault) {
+      if(this.props.enabledDates.includes(day.toString("yyyy-MM-dd"))) {
+        state = '';
+      }
     }
+
     let dayComp;
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
       if (this.props.markingType === 'interactive') {
