@@ -16,9 +16,9 @@ export const textMonthFontFamily = "System";
 export const textDayHeaderFontFamily = "System";
 export const textTodayFontFamily = "System";
 
-export const textDayFontSize = 16
-export const textMonthFontSize = 16
-export const textDayHeaderFontSize = 13
+export const textDayFontSize = 16;
+export const textMonthFontSize = 16;
+export const textDayHeaderFontSize = 13;
 
 export const calendarBackground = foregroundColor;
 export const textSectionTitleColor = '#b6c1cd';
