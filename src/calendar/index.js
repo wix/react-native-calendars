@@ -115,7 +115,7 @@ class Calendar extends Component {
     const maxDate = parseDate(this.props.maxDate);
 
     if(this.props.enabledDates && this.props.disabledByDefault) {
-      if(!this.props.enabledDates.includes(day.toString("yyyy-MM-dd"))) {
+      if(!this.props.enabledDates.includes(day.toString('yyyy-MM-dd'))) {
         return;
       }
     }
@@ -158,7 +158,7 @@ class Calendar extends Component {
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     } else if (this.props.enabledDates && this.props.disabledByDefault) {
-      if(this.props.enabledDates.includes(day.toString("yyyy-MM-dd"))) {
+      if(this.props.enabledDates.includes(day.toString('yyyy-MM-dd'))) {
         state = '';
       }
     }
