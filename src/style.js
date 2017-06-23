@@ -11,10 +11,10 @@ export const textColor = '#43515c';
 export const textLinkColor = '#00adf5';
 export const textSecondaryColor = '#7a92a5';
 
-export const textDayFontFamily = "System";
-export const textMonthFontFamily = "System";
-export const textDayHeaderFontFamily = "System";
-export const textTodayFontFamily = "System";
+export const textDayFontFamily = 'System';
+export const textMonthFontFamily = 'System';
+export const textDayHeaderFontFamily = 'System';
+export const textTodayFontFamily = 'System';
 
 export const textDayFontSize = 16;
 export const textMonthFontSize = 16;
