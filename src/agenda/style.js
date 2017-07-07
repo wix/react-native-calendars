@@ -8,11 +8,15 @@ export default function styleConstructor(theme = {}) {
   return StyleSheet.create({
     knob,
     weekdays,
+    header: {
+      overflow: 'hidden',
+      justifyContent: 'flex-end',
+      position:'absolute',
+      height:'100%',
+      width:'100%',
+    },
     calendar: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
+      flex: 1,
       borderBottomWidth: 1,
       borderColor: appStyle.separatorColor
     },
