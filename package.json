@@ -20,10 +20,6 @@
     "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
-  "peerDependencies": {
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.44.0"
-  },
   "devDependencies": {
     "eslint": "^3.19.0",
     "babel-eslint": "^7.2.3",
