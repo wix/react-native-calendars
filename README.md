@@ -19,6 +19,8 @@ $ react-native run-ios
 
 You can check example screens source code in [example module screens](https://github.com/wix-private/wix-react-native-calendar/tree/master/example/src/screens)
 
+This project is compatible with Expo/CRNA (without ejecting), and the examples have been [published on Expo](https://expo.io/@community/react-native-calendars-example) 
+
 ## Installation
 
 ```
@@ -213,7 +215,7 @@ An advanced agenda component that can display interactive listings for calendar 
      '2012-05-25': [{text: 'item 3 - any js object'},{text: 'any js object'}],
     }}
   // callback that gets called when items for a certain month should be loaded (month became visible)
-  loadItemsForMonth={(mongh) => {console.log('trigger items loading')}}
+  loadItemsForMonth={(month) => {console.log('trigger items loading')}}
   // callback that gets called on day press
   onDayPress={(day)=>{console.log('day pressed')}}
   // callback that gets called when day changes while scrolling agenda list
@@ -231,14 +233,14 @@ An advanced agenda component that can display interactive listings for calendar 
   // Hide knob button. Default = false
   hideKnob={true}
   // agenda theme
-  theme = {{
+  theme={{
     ...calendarTheme,
-    agendaDayTextColor = 'yellow',
-    agendaDayNumColor = 'green',
-    agendaTodayColor = 'red'
+    agendaDayTextColor: 'yellow',
+    agendaDayNumColor: 'green',
+    agendaTodayColor: 'red'
   }}
   // agenda container style
-  style = {{}}
+  style={{}}
 />
 ```
 
