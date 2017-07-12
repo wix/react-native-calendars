@@ -86,7 +86,7 @@ export default class AgendaView extends Component {
   }
 
   initialScrollPadPosition() {
-    return this.viewHeight - HEADER_HEIGHT;
+    return Math.max(0, this.viewHeight - HEADER_HEIGHT);
   }
 
   setScrollPadPosition(y, animated) {
@@ -244,7 +244,7 @@ export default class AgendaView extends Component {
   }
 
   render() {
-    const agendaHeight = this.viewHeight - HEADER_HEIGHT;
+    const agendaHeight = Math.max(0, this.viewHeight - HEADER_HEIGHT);
     const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
     const weekdaysStyle = [this.styles.weekdays, {
       opacity: this.state.scrollY.interpolate({
@@ -253,7 +253,7 @@ export default class AgendaView extends Component {
         extrapolate: 'clamp',
       }),
       transform: [{ translateY: this.state.scrollY.interpolate({
-        inputRange: [agendaHeight - HEADER_HEIGHT, agendaHeight],
+        inputRange: [Math.max(0, agendaHeight - HEADER_HEIGHT), agendaHeight],
         outputRange: [-HEADER_HEIGHT, 0],
         extrapolate: 'clamp',
       })}]
