@@ -35,7 +35,8 @@ export default function styleConstructor(theme={}) {
     },
     text: {
       marginTop: 7,
-      fontSize: 16,
+      fontSize: appStyle.textDayFontSize,
+      fontFamily: appStyle.textDayFontFamily,
       fontWeight: '300',
       color: appStyle.dayTextColor || '#2d4150',
       backgroundColor: 'rgba(255, 255, 255, 0)'
@@ -68,4 +69,3 @@ export default function styleConstructor(theme={}) {
     }
   });
 }
-
