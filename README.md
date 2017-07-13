@@ -169,7 +169,13 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
     dotColor: '#00adf5',
     selectedDotColor: '#ffffff',
     arrowColor: 'orange',
-    monthTextColor: 'blue'
+    monthTextColor: 'blue',
+    textDayFontFamily: 'monospace',
+    textMonthFontFamily: 'monospace',
+    textDayHeaderFontFamily: 'monospace',
+    textDayFontSize: 16,
+    textMonthFontSize: 16,
+    textDayHeaderFontSize: 16
   }}
 />
 ```
