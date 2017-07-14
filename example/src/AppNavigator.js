@@ -5,7 +5,7 @@ import {
   CalendarScreen,
   AgendaScreen,
   CalendarsListScreen,
-} from './Screens';
+} from './screens';
 
 const routes = {
   Menu: {
