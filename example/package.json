@@ -1,7 +1,7 @@
 {
   "name": "example",
-  "version": "0.1.0",
-  "private": true,
+  "name": "CalendarExample",
+  "version": "0.2.0",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^4.2.0",
