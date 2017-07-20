@@ -188,7 +188,7 @@ export default class AgendaView extends Component {
     // The problem is caused by overflow: 'hidden' style, which we need for dragging
     // to be performant.
     // Another working solution for this bug would be to set removeClippedSubviews={false}
-    // in CalendarList listView, but that might impact performance when scrolling
+    // in CalendarList FlatList, but that might impact performance when scrolling
     // month list in expanded CalendarList.
     // Further info https://github.com/facebook/react-native/issues/1831
     this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
