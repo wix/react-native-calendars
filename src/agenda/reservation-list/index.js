@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {
   FlatList,
   ActivityIndicator,
@@ -12,7 +12,7 @@ import dateutils from '../../dateutils';
 import {xdateToData} from '../../interface';
 import styleConstructor from './style';
 
-class ReactComp extends Component {
+class ReactComp extends PureComponent {
   static propTypes = {
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
@@ -211,8 +211,6 @@ class ReactComp extends Component {
     return {reservations, scrollPosition};
   }
 
-  keyExtractor = (item, index) => `${item}_${index}`;
-
   render() {
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
       return (<ActivityIndicator style={{marginTop: 80}}/>);
@@ -223,10 +221,10 @@ class ReactComp extends Component {
         style={this.props.style}
         renderItem={this.renderItem}
         data={this.state.reservations}
-        keyExtractor={this.keyExtractor}
+        keyExtractor={this.props.keyExtractor}
         onScroll={this.onScroll}
         showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
+        scrollEventThrottle={100}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
       />
     );

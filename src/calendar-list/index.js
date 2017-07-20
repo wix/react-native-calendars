@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {
   FlatList,
   View,
@@ -14,7 +14,7 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 
 const calendarHeight = 360;
-class CalendarList extends Component {
+class CalendarList extends PureComponent {
   static propTypes = {
     ...Calendar.propTypes,
 
@@ -233,7 +233,13 @@ class CalendarList extends Component {
     }
   }
 
-  keyExtractor = (item, index) => `${item.data}_${index}`;
+  keyExtractor = (item, index) => {
+    if (item.getTime) {
+      return `${item.toString()}_${index}`;
+    } else {
+      return `${item}_${index}`
+    }
+  };
 
   render() {
     //console.log('render calendar');
