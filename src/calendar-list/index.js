@@ -237,7 +237,7 @@ class CalendarList extends PureComponent {
     if (item.getTime) {
       return `${item.toString()}_${index}`;
     } else {
-      return `${item}_${index}`
+      return `${item}_${index}`;
     }
   };
 
