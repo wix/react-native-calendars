@@ -73,6 +73,7 @@ export default class AgendaView extends Component {
     };
     this.currentMonth = this.state.selectedDay.clone();
     this.onLayout = this.onLayout.bind(this);
+    this.onScrollPadLayout = this.onScrollPadLayout.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onStartDrag = this.onStartDrag.bind(this);
@@ -93,13 +94,16 @@ export default class AgendaView extends Component {
     this.scrollPad._component.scrollTo({x: 0, y, animated});
   }
 
-  onLayout(event) {
-    this.viewHeight = event.nativeEvent.layout.height;
-    this.viewWidth = event.nativeEvent.layout.width;
+  onScrollPadLayout() {
     // When user touches knob, the actual component that receives touch events is a ScrollView.
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
     this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+  }
+
+  onLayout(event) {
+    this.viewHeight = event.nativeEvent.layout.height;
+    this.viewWidth = event.nativeEvent.layout.width;
     this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
     this.forceUpdate();
   }
@@ -344,7 +348,7 @@ export default class AgendaView extends Component {
             { useNativeDriver: true },
           )}
         >
-          <View style={{height: agendaHeight + KNOB_HEIGHT}}/>
+          <View style={{height: agendaHeight + KNOB_HEIGHT}} onLayout={this.onScrollPadLayout} />
         </Animated.ScrollView>
       </View>
     );
