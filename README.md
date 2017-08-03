@@ -102,7 +102,7 @@ LocaleConfig.defaultLocale = 'fr';
 
 #### Date marking
 
-**Dot marking**
+Dot marking
 
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking1.png?raw=true">
@@ -119,7 +119,7 @@ LocaleConfig.defaultLocale = 'fr';
 />
 ```
 
-**Interval marking**
+Interval marking
 
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
