@@ -139,6 +139,8 @@ LocaleConfig.defaultLocale = 'fr';
 />
 ```
 
+Keep in mind that different marking types are not compatible. You can use just one marking style for calendar.
+
 #### Displaying data loading indicator
 
 <kbd>
