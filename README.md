@@ -244,6 +244,8 @@ An advanced agenda component that can display interactive listings for calendar 
   renderDay={(day, item) => {return (<View />);}}
   // specify how empty date content with no items should be rendered
   renderEmptyDate={() => {return (<View />);}}
+  // specify how agenda knob should look like
+  renderKnob={() => {return (<View />);}}
   // specify your item comparison function for increased performance
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
@@ -253,7 +255,8 @@ An advanced agenda component that can display interactive listings for calendar 
     ...calendarTheme,
     agendaDayTextColor: 'yellow',
     agendaDayNumColor: 'green',
-    agendaTodayColor: 'red'
+    agendaTodayColor: 'red',
+    agendaKnobColor: 'blue'
   }}
   // agenda container style
   style={{}}

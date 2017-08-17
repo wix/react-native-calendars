@@ -45,6 +45,8 @@ export default class AgendaView extends Component {
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
     renderDay: PropTypes.func,
+    // specify how agenda knob should look like
+    renderKnob: PropTypes.func,
     // specify how empty date content with no items should be rendered
     renderEmptyDay: PropTypes.func,
     // specify your item comparison function for increased performance
@@ -308,9 +310,10 @@ export default class AgendaView extends Component {
     let knob = (<View style={this.styles.knobContainer}/>);
 
     if (!this.props.hideKnob) {
+      const knobView = this.props.renderKnob ? this.props.renderKnob() : (<View style={this.styles.knob}/>);
       knob = this.state.calendarScrollable ? null : (
         <View style={this.styles.knobContainer}>
-          <View style={this.styles.knob} ref={(c) => this.knob = c}/>
+          <View ref={(c) => this.knob = c}>{knobView}</View>
         </View>
       );
     }
