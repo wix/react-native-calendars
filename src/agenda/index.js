@@ -205,13 +205,17 @@ export default class AgendaView extends Component {
     this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
   }
 
-  chooseDay(d) {
+  _chooseDayFromCalendar(d) {
+    this.chooseDay(d, !this.state.calendarScrollable);
+  }
+
+  chooseDay(d, optimisticScroll) {
     const day = parseDate(d);
     this.setState({
       calendarScrollable: false,
       selectedDay: day.clone()
     });
-    if (this.state.calendarScrollable) {
+    if (!optimisticScroll) {
       this.setState({
         topDay: day.clone()
       });
@@ -327,7 +331,7 @@ export default class AgendaView extends Component {
               selected={[this.state.selectedDay]}
               current={this.currentMonth}
               markedDates={this.props.items}
-              onDayPress={this.chooseDay.bind(this)}
+              onDayPress={this._chooseDayFromCalendar.bind(this)}
               scrollingEnabled={this.state.calendarScrollable}
               hideExtraDays={this.state.calendarScrollable}
               firstDay={this.props.firstDay}
