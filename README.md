@@ -102,6 +102,8 @@ LocaleConfig.defaultLocale = 'fr';
 
 #### Date marking
 
+!Disclaimer! make sure that `markedDates` param is immutable. If you change `markedDates` object content but the reference to it does not change calendar update will not be triggered.
+
 Dot marking
 
 <kbd>
