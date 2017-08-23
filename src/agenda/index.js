@@ -58,6 +58,9 @@ export default class AgendaView extends Component {
     minDate: PropTypes.any,
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
     maxDate: PropTypes.any,
+    
+    // Collection of dates that have to be marked. Default = items
+    markedDates: PropTypes.object,
 
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
@@ -333,7 +336,7 @@ export default class AgendaView extends Component {
               maxDate={this.props.maxDate}
               selected={[this.state.selectedDay]}
               current={this.currentMonth}
-              markedDates={this.props.items}
+              markedDates={this.props.markedDates || this.props.items}
               onDayPress={this._chooseDayFromCalendar.bind(this)}
               scrollingEnabled={this.state.calendarScrollable}
               hideExtraDays={this.state.calendarScrollable}
