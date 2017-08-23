@@ -51,6 +51,12 @@ export default class AgendaView extends Component {
     renderEmptyDay: PropTypes.func,
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
+    
+    // Max amount of months allowed to scroll to the past. Default = 50
+    pastScrollRange: PropTypes.number,
+
+    // Max amount of months allowed to scroll to the future. Default = 50
+    futureScrollRange: PropTypes.number,
 
     // initially selected day
     selected: PropTypes.any,
@@ -339,6 +345,8 @@ export default class AgendaView extends Component {
               hideExtraDays={this.state.calendarScrollable}
               firstDay={this.props.firstDay}
               monthFormat={this.props.monthFormat}
+              pastScrollRange={this.props.pastScrollRange}
+              futureScrollRange={this.props.futureScrollRange}
             />
           </Animated.View>
           {knob}
