@@ -53,7 +53,7 @@ class Day extends Component {
       textStyle.push(this.style.alignedText);
     }
 
-    if (typeof marked.selected !== 'undefined' ? marked.selected : this.props.state === 'selected' || ) {
+    if (typeof marked.selected !== 'undefined' ? marked.selected : this.props.state === 'selected') {
       containerStyle.push(this.style.selected);
       dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
