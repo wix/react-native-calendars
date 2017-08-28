@@ -82,6 +82,7 @@ class CalendarList extends Component {
           maxDate={this.props.maxDate}
           firstDay={this.props.firstDay}
           monthFormat={this.props.monthFormat}
+          hideDayNames={this.props.hideDayNames}
         />);
     } else {
       const text = row.toString();

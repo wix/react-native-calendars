@@ -57,7 +57,10 @@ class Calendar extends Component {
     // Replace default arrows with custom ones (direction can be 'left' or 'right')
     renderArrow: PropTypes.func,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+
+    //Hide day names. Default = false
+    hideDayNames: PropTypes.bool
   };
 
   constructor(props) {
@@ -221,6 +224,7 @@ class Calendar extends Component {
           firstDay={this.props.firstDay}
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
+          hideDayNames={this.props.hideDayNames}
         />
         {weeks}
       </View>);
