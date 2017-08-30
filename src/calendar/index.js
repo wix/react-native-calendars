@@ -46,6 +46,10 @@ class Calendar extends Component {
     hideArrows: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+
+    // Render single letter for days instead of shortened form (eg. M for Mon, T for Tues etc)
+    oneLetterDays: PropTypes.bool,
+
     // Do not show days of other months in month page. Default = false
     hideExtraDays: PropTypes.bool,
 
@@ -221,6 +225,7 @@ class Calendar extends Component {
           firstDay={this.props.firstDay}
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
+          oneLetterDays={this.props.oneLetterDays}
         />
         {weeks}
       </View>);

@@ -15,6 +15,7 @@ class CalendarHeader extends Component {
     showIndicator: PropTypes.bool,
     firstDay: PropTypes.number,
     renderArrow: PropTypes.func,
+    oneLetterDays: PropTypes.bool
   };
 
   constructor(props) {
@@ -92,7 +93,7 @@ class CalendarHeader extends Component {
         </View>
         <View style={this.style.week}>
           {weekDaysNames.map((day, idx) => (
-            <Text key={idx} style={this.style.dayHeader}>{day}</Text>
+            <Text key={idx} style={this.style.dayHeader}>{ this.props.oneLetterDays ? day[0] : day }</Text>
           ))}
         </View>
       </View>
