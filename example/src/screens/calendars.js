@@ -23,6 +23,14 @@ export default class CalendarsScreen extends Component {
           hideExtraDays
           markedDates={{[this.state.selected]: {selected: true}}}
         />
+        <Text style={styles.text}>Calendar with 1 letter days, selectable date and arrows</Text>
+        <Calendar
+          onDayPress={this.onDayPress}
+          style={styles.calendar}
+          oneLetterDays={true}
+          hideExtraDays
+          markedDates={{ [this.state.selected]: { selected: true } }}
+        />
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
