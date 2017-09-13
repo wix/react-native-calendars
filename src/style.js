@@ -21,6 +21,18 @@ export const textDayFontSize = 16;
 export const textMonthFontSize = 16;
 export const textDayHeaderFontSize = 13;
 
+export const textMonthFontWeight = 300;
+
+export const textMonthJustifyContent = 'space-between';
+
+export const textMonthPaddingLeft = 10;
+export const textMonthPaddingRight = 10;
+
+export const textMonthMarginTop = 10;
+export const textMonthMarginLeft = 10;
+export const textMonthMarginBottom = 10;
+export const textMonthMarginRight = 10;
+
 export const calendarBackground = foregroundColor;
 export const textSectionTitleColor = '#b6c1cd';
 export const selectedDayBackgroundColor = textLinkColor;
