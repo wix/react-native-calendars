@@ -58,7 +58,8 @@ class Calendar extends Component {
     renderArrow: PropTypes.func,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
     monthFormat: PropTypes.string,
-
+    // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
+    disableMonthChange: PropTypes.bool,
     //Hide day names. Default = false
     hideDayNames: PropTypes.bool
   };
@@ -114,7 +115,10 @@ class Calendar extends Component {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
-      this.updateMonth(day);
+      const shouldUpdateMonth = this.props.disableMonthChange === undefined || !this.props.disableMonthChange;
+      if (shouldUpdateMonth) {
+        this.updateMonth(day);
+      }
       if (this.props.onDayPress) {
         this.props.onDayPress(xdateToData(day));
       }
