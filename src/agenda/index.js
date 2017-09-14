@@ -91,7 +91,6 @@ export default class AgendaView extends Component {
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true),
     };
-    this.currentMonth = this.state.selectedDay.clone();
     this.onLayout = this.onLayout.bind(this);
     this.onScrollPadLayout = this.onScrollPadLayout.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
@@ -170,7 +169,7 @@ export default class AgendaView extends Component {
     if (this.props.items && !this.state.firstResevationLoad) {
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(() => {
-        if (this.props.loadItemsForMonth) {
+        if (this.props.loadItemsForMonth && this._isMounted) {
           this.props.loadItemsForMonth(months[0]);
         }
       }, 200);
@@ -190,7 +189,12 @@ export default class AgendaView extends Component {
   }
 
   componentWillMount() {
+    this._isMounted = true;
     this.loadReservations(this.props);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   componentWillReceiveProps(props) {
@@ -340,10 +344,9 @@ export default class AgendaView extends Component {
               theme={this.props.theme}
               onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
               ref={(c) => this.calendar = c}
-              minDate={this.props.minDate} 
+              minDate={this.props.minDate}
               maxDate={this.props.maxDate}
               selected={[this.state.selectedDay]}
-              current={this.currentMonth}
               markedDates={this.props.markedDates || this.props.items}
               markingType={this.props.markingType}
               onDayPress={this._chooseDayFromCalendar.bind(this)}

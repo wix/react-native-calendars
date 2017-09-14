@@ -1,7 +1,6 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {
-  FlatList,
-  Platform
+  FlatList
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -13,7 +12,7 @@ import Calendar from '../calendar';
 import CalendarListItem from './item';
 
 const calendarHeight = 360;
-class CalendarList extends PureComponent {
+class CalendarList extends Component {
   static propTypes = {
     ...Calendar.propTypes,
 
@@ -83,12 +82,6 @@ class CalendarList extends PureComponent {
     this.listView.scrollToOffset({offset: scrollAmount, animated: false});
   }
 
-  componentDidMount() {
-    //InteractionManager.runAfterInteractions(() => { // fix for Android, but this breaks calendar-list on iphone after site switch
-    this.scrollToMonth(this.props.current);
-    //});
-  }
-
   componentWillReceiveProps(props) {
     const current = parseDate(this.props.current);
     const nextCurrent = parseDate(props.current);
@@ -150,41 +143,38 @@ class CalendarList extends PureComponent {
     });
   }
 
-  onLayout() {
-    if (Platform.OS !== 'android') {
-      return;
-    }
-    if (!this.state.scrolled) {
-      //InteractionManager.runAfterInteractions(() => { // this code is never executed in one app
-      this.scrollToMonth(this.props.current);
-      //});
-    }
-  }
-
   renderCalendar({item}) {
     return (<CalendarListItem item={item} calendarHeight={calendarHeight} {...this.props} />);
   }
 
+  onLayout() {
+    if (!this.state.initialScroll && this.props.current) {
+      this.setState({
+        initialScroll: true
+      }, () => {
+        this.scrollToMonth(this.props.current);
+      });
+    }
+  }
+
   render() {
-    //console.log('render calendar');
     return (
       <FlatList
         ref={(c) => this.listView = c}
-        //scrollEventThrottle={1000} // does not work on droid, need to recheck on newer react verions
+        //scrollEventThrottle={1000}
         style={[this.style.container, this.props.style]}
         initialListSize={this.pastScrollRange * this.futureScrollRange + 1}
         data={this.state.rows}
-        scrollRenderAheadDistance={calendarHeight}
         //snapToAlignment='start'
         //snapToInterval={calendarHeight}
+        removeClippedSubviews={true}
         pageSize={1}
-        removeClippedSubviews
         onViewableItemsChanged={this.onViewableItemsChanged.bind(this)}
         renderItem={this.renderCalendar.bind(this)}
         showsVerticalScrollIndicator={false}
-        onLayout={this.onLayout.bind(this)}
         scrollEnabled={this.props.scrollingEnabled !== undefined ? this.props.scrollingEnabled : true}
         keyExtractor={(item, index) => index}
+        onLayout={this.onLayout.bind(this)}
       />
     );
   }
