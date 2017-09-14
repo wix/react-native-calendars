@@ -97,6 +97,8 @@ LocaleConfig.defaultLocale = 'fr';
   disableMonthChange={true}
   // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
   firstDay={1}
+  // Hide day names. Default = false
+  hideDayNames={true}
 />
 ```
 
