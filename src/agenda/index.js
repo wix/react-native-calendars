@@ -51,6 +51,12 @@ export default class AgendaView extends Component {
     renderEmptyDay: PropTypes.func,
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
+    
+    // Max amount of months allowed to scroll to the past. Default = 50
+    pastScrollRange: PropTypes.number,
+
+    // Max amount of months allowed to scroll to the future. Default = 50
+    futureScrollRange: PropTypes.number,
 
     // initially selected day
     selected: PropTypes.any,
@@ -58,6 +64,11 @@ export default class AgendaView extends Component {
     minDate: PropTypes.any,
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
     maxDate: PropTypes.any,
+    
+    // Collection of dates that have to be marked. Default = items
+    markedDates: PropTypes.object,
+    // Optional marking type if custom markedDates are provided
+    markingType: PropTypes.string,
 
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
@@ -333,12 +344,15 @@ export default class AgendaView extends Component {
               maxDate={this.props.maxDate}
               selected={[this.state.selectedDay]}
               current={this.currentMonth}
-              markedDates={this.props.items}
+              markedDates={this.props.markedDates || this.props.items}
+              markingType={this.props.markingType}
               onDayPress={this._chooseDayFromCalendar.bind(this)}
               scrollingEnabled={this.state.calendarScrollable}
               hideExtraDays={this.state.calendarScrollable}
               firstDay={this.props.firstDay}
               monthFormat={this.props.monthFormat}
+              pastScrollRange={this.props.pastScrollRange}
+              futureScrollRange={this.props.futureScrollRange}
             />
           </Animated.View>
           {knob}

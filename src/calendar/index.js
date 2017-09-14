@@ -60,6 +60,8 @@ class Calendar extends Component {
     monthFormat: PropTypes.string,
     // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
     disableMonthChange: PropTypes.bool,
+    //Hide day names. Default = false
+    hideDayNames: PropTypes.bool
   };
 
   constructor(props) {
@@ -226,6 +228,7 @@ class Calendar extends Component {
           firstDay={this.props.firstDay}
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
+          hideDayNames={this.props.hideDayNames}
         />
         {weeks}
       </View>);
