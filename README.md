@@ -241,6 +241,10 @@ An advanced agenda component that can display interactive listings for calendar 
   minDate={'2012-05-10'}
   // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
   maxDate={'2012-05-30'}
+  // Max amount of months allowed to scroll to the past. Default = 50
+  pastScrollRange={50}
+  // Max amount of months allowed to scroll to the future. Default = 50
+  futureScrollRange={50}
   // specify how each item should be rendered in agenda
   renderItem={(item, firstItemInDay) => {return (<View />);}}
   // specify how each date should be rendered. day can be undefined if the item is not first in that day.
