@@ -67,6 +67,8 @@ export default class AgendaView extends Component {
     
     // Collection of dates that have to be marked. Default = items
     markedDates: PropTypes.object,
+    // Optional marking type if custom markedDates are provided
+    markingType: PropTypes.string,
 
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
@@ -343,6 +345,7 @@ export default class AgendaView extends Component {
               selected={[this.state.selectedDay]}
               current={this.currentMonth}
               markedDates={this.props.markedDates || this.props.items}
+              markingType={this.props.markingType}
               onDayPress={this._chooseDayFromCalendar.bind(this)}
               scrollingEnabled={this.state.calendarScrollable}
               hideExtraDays={this.state.calendarScrollable}
