@@ -184,6 +184,7 @@ class CalendarList extends PureComponent {
         showsVerticalScrollIndicator={false}
         onLayout={this.onLayout.bind(this)}
         scrollEnabled={this.props.scrollingEnabled !== undefined ? this.props.scrollingEnabled : true}
+        keyExtractor={(item, index) => index}
       />
     );
   }

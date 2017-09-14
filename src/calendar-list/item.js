@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
-class CalendarListItem extends PureComponent {
+class CalendarListItem extends Component {
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
