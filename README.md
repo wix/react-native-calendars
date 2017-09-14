@@ -257,6 +257,12 @@ An advanced agenda component that can display interactive listings for calendar 
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
   hideKnob={true}
+  // By default, agenda dates are marked if they have at least one item, but you can override this if needed
+  markedDates={{
+    '2012-05-16': {selected: true, marked: true},
+    '2012-05-17': {marked: true},
+    '2012-05-18': {disabled: true}
+  }}
   // agenda theme
   theme={{
     ...calendarTheme,
