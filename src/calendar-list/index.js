@@ -189,7 +189,7 @@ class CalendarList extends Component {
   }
 
   onScroll(event) {
-    if (Platform.OS !== 'android') {
+    if (Platform.OS !== 'android' && Platform.OS !== 'web') {
       return;
     }
     if (!this.state.scrolled) {
@@ -251,8 +251,8 @@ class CalendarList extends Component {
         initialListSize={this.pastScrollRange * this.futureScrollRange + 1}
         dataSource={this.state.dataSource}
         scrollRenderAheadDistance={calendarHeight}
-                //snapToAlignment='start'
-                //snapToInterval={calendarHeight}
+        //snapToAlignment='start'
+        //snapToInterval={calendarHeight}
         pageSize={1}
         removeClippedSubviews
         onChangeVisibleRows={this.visibleRowsChange.bind(this)}
