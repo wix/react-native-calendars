@@ -14,6 +14,9 @@ import UnitDay from './day/interactive';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
+//Fallback when RN version is < 0.44
+const viewPropTypes = ViewPropTypes || View.propTypes;
+
 class Calendar extends Component {
   static propTypes = {
     // Specify theme properties to override specific styles for calendar parts. Default = {}
@@ -22,7 +25,7 @@ class Calendar extends Component {
     markedDates: PropTypes.object,
 
     // Specify style for calendar container element. Default = {}
-    style: ViewPropTypes.style,
+    style: viewPropTypes.style,
 
     selected: PropTypes.array,
 
@@ -54,7 +57,11 @@ class Calendar extends Component {
     // Replace default arrows with custom ones (direction can be 'left' or 'right')
     renderArrow: PropTypes.func,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+    // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
+    disableMonthChange: PropTypes.bool,
+    //Hide day names. Default = false
+    hideDayNames: PropTypes.bool
   };
 
   constructor(props) {
@@ -108,7 +115,10 @@ class Calendar extends Component {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
-      this.updateMonth(day);
+      const shouldUpdateMonth = this.props.disableMonthChange === undefined || !this.props.disableMonthChange;
+      if (shouldUpdateMonth) {
+        this.updateMonth(day);
+      }
       if (this.props.onDayPress) {
         this.props.onDayPress(xdateToData(day));
       }
@@ -218,6 +228,7 @@ class Calendar extends Component {
           firstDay={this.props.firstDay}
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
+          hideDayNames={this.props.hideDayNames}
         />
         {weeks}
       </View>);
