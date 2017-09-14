@@ -1,13 +1,4 @@
-import {Navigation} from 'react-native-navigation';
-
-import MenuScreen from './menu';
-import CalendarsScreen from './calendars';
-import AgendaScreen from './agenda';
-import CalendarsList from './calendarsList';
-
-export function registerScreens() {
-  Navigation.registerComponent('Menu', () => MenuScreen);
-  Navigation.registerComponent('Calendars', () => CalendarsScreen);
-  Navigation.registerComponent('Agenda', () => AgendaScreen);
-  Navigation.registerComponent('CalendarsList', () => CalendarsList);
-}
+export { default as MenuScreen } from './menu';
+export { default as CalendarScreen } from './calendars';
+export { default as AgendaScreen } from './agenda';
+export { default as CalendarsListScreen } from './calendarsList';
