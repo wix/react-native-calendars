@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  FlatList
+  FlatList, Platform
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -161,7 +161,7 @@ class CalendarList extends Component {
         data={this.state.rows}
         //snapToAlignment='start'
         //snapToInterval={calendarHeight}
-        removeClippedSubviews={true}
+        removeClippedSubviews={Platform.OS === 'android' ? false : true}
         pageSize={1}
         onViewableItemsChanged={this.onViewableItemsChanged.bind(this)}
         renderItem={this.renderCalendar.bind(this)}
