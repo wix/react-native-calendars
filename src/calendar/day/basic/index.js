@@ -17,12 +17,18 @@ class Day extends Component {
     theme: PropTypes.object,
     marked: PropTypes.any,
     onPress: PropTypes.func,
+    day: PropTypes.object,
     markingExists: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
+    this.onDayPress = this.onDayPress.bind(this);
+  }
+
+  onDayPress() {
+    this.props.onPress(this.props.day);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -63,7 +69,7 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
     return (
-      <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
+      <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
         <Text style={textStyle}>{String(this.props.children)}</Text>
         {dot}
       </TouchableOpacity>

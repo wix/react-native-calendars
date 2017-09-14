@@ -17,6 +17,8 @@ import shouldComponentUpdate from './updater';
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
 
+const EmptyArray = [];
+
 class Calendar extends Component {
   static propTypes = {
     // Specify theme properties to override specific styles for calendar parts. Default = {}
@@ -80,6 +82,7 @@ class Calendar extends Component {
     this.updateMonth = this.updateMonth.bind(this);
     this.addMonth = this.addMonth.bind(this);
     this.isSelected = this.isSelected.bind(this);
+    this.pressDay = this.pressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
@@ -170,7 +173,8 @@ class Calendar extends Component {
             key={id}
             state={state}
             theme={this.props.theme}
-            onPress={this.pressDay.bind(this, day)}
+            onPress={this.pressDay}
+            day={day}
             marked={this.getDateMarking(day)}
             markingExists={markingExists}
           >
@@ -185,7 +189,7 @@ class Calendar extends Component {
     if (!this.props.markedDates) {
       return false;
     }
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || [];
+    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
