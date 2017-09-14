@@ -91,6 +91,7 @@ export default class AgendaView extends Component {
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true),
     };
+    this.currentMonth = this.state.selectedDay.clone();
     this.onLayout = this.onLayout.bind(this);
     this.onScrollPadLayout = this.onScrollPadLayout.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
@@ -347,6 +348,7 @@ export default class AgendaView extends Component {
               minDate={this.props.minDate}
               maxDate={this.props.maxDate}
               selected={[this.state.selectedDay]}
+              current={this.currentMonth}
               markedDates={this.props.markedDates || this.props.items}
               markingType={this.props.markingType}
               onDayPress={this._chooseDayFromCalendar.bind(this)}

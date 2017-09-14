@@ -113,12 +113,7 @@ class CalendarList extends Component {
       }
       return false;
     }
-    if (!this.state.initialized) {
-      this.setState({
-        initialized: true
-      });
-      return;
-    }
+
     const rowclone = this.state.rows;
     const newrows = [];
     const visibleMonths = [];
@@ -147,14 +142,13 @@ class CalendarList extends Component {
     return (<CalendarListItem item={item} calendarHeight={calendarHeight} {...this.props} />);
   }
 
-  onLayout() {
-    if (!this.state.initialScroll && this.props.current) {
-      this.setState({
-        initialScroll: true
-      }, () => {
-        this.scrollToMonth(this.props.current);
-      });
-    }
+  getItemLayout(data, index) {
+    return {length: calendarHeight, offset: calendarHeight * index, index};
+  }
+
+  getMonthIndex(month) {
+    let diffMonths = this.state.openDate.diffMonths(month) + this.pastScrollRange;
+    return diffMonths;
   }
 
   render() {
@@ -174,7 +168,8 @@ class CalendarList extends Component {
         showsVerticalScrollIndicator={false}
         scrollEnabled={this.props.scrollingEnabled !== undefined ? this.props.scrollingEnabled : true}
         keyExtractor={(item, index) => index}
-        onLayout={this.onLayout.bind(this)}
+        initialScrollIndex={this.props.current ? this.getMonthIndex(this.props.current) : false}
+        getItemLayout={this.getItemLayout}
       />
     );
   }
