@@ -95,7 +95,7 @@ class CalendarHeader extends Component {
           !this.props.hideDayNames &&
           <View style={this.style.week}>
             {weekDaysNames.map((day, idx) => (
-              <Text key={idx} style={this.style.dayHeader}>{day}</Text>
+              <Text key={idx} style={this.style.dayHeader} numberOfLines={1}>{day}</Text>
             ))}
           </View>
         }
