@@ -99,6 +99,8 @@ LocaleConfig.defaultLocale = 'fr';
   firstDay={1}
   // Hide day names. Default = false
   hideDayNames={true}
+  // Replace default day rendering with a custom one (only if markingType is 'interactive')
+  // renderDay={(textStyle, xDate) => (<Text style={textStyle}>{String(xDate.getDate())}</Text>)}
 />
 ```
 

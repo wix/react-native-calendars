@@ -63,7 +63,9 @@ class Calendar extends Component {
     // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
     disableMonthChange: PropTypes.bool,
     //Hide day names. Default = false
-    hideDayNames: PropTypes.bool
+    hideDayNames: PropTypes.bool,
+    // Replace default day with custom one
+    renderDay: PropTypes.func
   };
 
   constructor(props) {
@@ -177,6 +179,7 @@ class Calendar extends Component {
             day={day}
             marked={this.getDateMarking(day)}
             markingExists={markingExists}
+            renderDay={this.props.renderDay}
           >
             {day.getDate()}
           </DayComp>
