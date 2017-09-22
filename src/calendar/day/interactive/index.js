@@ -195,7 +195,7 @@ class Day extends Component {
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            { this.renderDay(textStyle) }
+            {this.renderDay(textStyle)}
           </View>
         </View>
       </TouchableWithoutFeedback>
