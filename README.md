@@ -92,7 +92,7 @@ LocaleConfig.defaultLocale = 'fr';
   renderArrow={(direction) => (<Arrow />)}
   // Do not show days of other months in month page. Default = false
   hideExtraDays={true}
-  // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
+  // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
   // day from another month that is visible in calendar page. Default = false
   disableMonthChange={true}
   // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
