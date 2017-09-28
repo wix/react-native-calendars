@@ -17,8 +17,6 @@ import shouldComponentUpdate from './updater';
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
 
-const DATE_FORMAT = 'yyyy-MM-dd'
-
 const EmptyArray = [];
 
 class Calendar extends Component {
@@ -191,7 +189,7 @@ class Calendar extends Component {
     if (!this.props.markedDates) {
       return false;
     }
-    const dates = this.props.markedDates[day.toString(DATE_FORMAT)] || EmptyArray;
+    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
@@ -217,9 +215,9 @@ class Calendar extends Component {
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
-      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString(DATE_FORMAT);
+      const lastDayOfMonth = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
-          !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
+          !(this.props.markedDates && this.props.markedDates[lastDayOfMonth])) {
         indicator = true;
       }
     }
