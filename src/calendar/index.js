@@ -63,7 +63,9 @@ class Calendar extends Component {
     // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
     disableMonthChange: PropTypes.bool,
     //Hide day names. Default = false
-    hideDayNames: PropTypes.bool
+    hideDayNames: PropTypes.bool,
+    // Disables all days but the ones with explicit default flag to false. Default = false
+    disabledByDefault: PropTypes.bool
   };
 
   constructor(props) {
@@ -146,6 +148,7 @@ class Calendar extends Component {
   }
 
   renderDay(day, id) {
+    const markingExists = this.props.markedDates ? true : false;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
@@ -158,6 +161,17 @@ class Calendar extends Component {
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
+
+    if (this.props.disabledByDefault && markingExists) {
+      const markings = Array.from(this.getDateMarking(day));
+
+      const isEnabled = markings.filter((marking) => {
+        return marking.disabled === false;
+      });
+
+      state = isEnabled.length > 0 ? state : 'disabled';
+    }
+
     let dayComp;
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
       if (this.props.markingType === 'interactive') {
@@ -167,7 +181,6 @@ class Calendar extends Component {
       }
     } else {
       const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
-      const markingExists = this.props.markedDates ? true : false;
       dayComp = (
         <DayComp
             key={id}
