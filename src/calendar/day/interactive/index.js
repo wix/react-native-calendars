@@ -109,6 +109,7 @@ class Day extends Component {
     const textStyle = [this.style.text];
     let leftFillerStyle = {};
     let rightFillerStyle = {};
+    let fillerStyle = {};
     let fillers;
 
     if (this.props.state === 'disabled') {
@@ -159,6 +160,8 @@ class Day extends Component {
       } else if (flags.day) {
         leftFillerStyle = {backgroundColor: flags.day.color};
         rightFillerStyle = {backgroundColor: flags.day.color};
+        // #177 bug
+        fillerStyle = {backgroundColor: flags.day.color};
       } else if (flags.endingDay && flags.startingDay) {
         rightFillerStyle = {
           backgroundColor: this.theme.calendarBackground
@@ -172,7 +175,7 @@ class Day extends Component {
       }
 
       fillers = (
-        <View style={this.style.fillers}>
+        <View style={[this.style.fillers, fillerStyle]}>
           <View style={[this.style.leftFiller, leftFillerStyle]}/>
           <View style={[this.style.rightFiller, rightFillerStyle]}/>
         </View>
