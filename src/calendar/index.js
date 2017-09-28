@@ -17,6 +17,8 @@ import shouldComponentUpdate from './updater';
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
 
+const DATE_FORMAT = 'yyyy-MM-dd'
+
 const EmptyArray = [];
 
 class Calendar extends Component {
@@ -62,7 +64,7 @@ class Calendar extends Component {
     monthFormat: PropTypes.string,
     // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
     disableMonthChange: PropTypes.bool,
-    //Hide day names. Default = false
+    // Hide day names. Default = false
     hideDayNames: PropTypes.bool
   };
 
@@ -189,7 +191,7 @@ class Calendar extends Component {
     if (!this.props.markedDates) {
       return false;
     }
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
+    const dates = this.props.markedDates[day.toString(DATE_FORMAT)] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
@@ -215,7 +217,7 @@ class Calendar extends Component {
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
-      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
+      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString(DATE_FORMAT);
       if (this.props.displayLoadingIndicator &&
           !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
