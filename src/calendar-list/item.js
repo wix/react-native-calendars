@@ -29,6 +29,7 @@ class CalendarListItem extends Component {
           disableMonthChange
           markedDates={this.props.markedDates}
           markingType={this.props.markingType}
+          hideDayNames={this.props.hideDayNames}
           onDayPress={this.props.onDayPress}
           displayLoadingIndicator={this.props.displayLoadingIndicator}
           minDate={this.props.minDate}
