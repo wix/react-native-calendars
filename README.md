@@ -214,7 +214,7 @@ theme={{
 }}
 ```
 
-Disclaimer: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk. 
+**Disclaimer**: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk. 
 
 ### CalendarList
 
