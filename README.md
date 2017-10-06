@@ -191,6 +191,31 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 />
 ```
 
+#### Advanced styling
+
+If you want to have complete control over calendar styles you can do it by overriding default style.js files. For example, if you want to override calendar header style first you have to find stylesheet id for this file:
+
+https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/style.js#L4
+
+In this case it is 'stylesheet.calendar.header'. Next you can add overriding stylesheet to your theme with this id.
+
+https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js#L56
+
+```javascript
+theme={{
+  arrowColor: 'white',
+  'stylesheet.calendar.header': {
+    week: {
+      marginTop: 5,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    }
+  }
+}}
+```
+
+Disclaimer: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk. 
+
 ### CalendarList
 
 <kbd>
