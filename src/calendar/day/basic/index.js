@@ -59,11 +59,11 @@ class Day extends Component {
       textStyle.push(this.style.alignedText);
     }
 
-    if (this.props.state === 'selected' || marked.selected) {
+    if (typeof marked.selected !== 'undefined' ? marked.selected : this.props.state === 'selected') {
       containerStyle.push(this.style.selected);
       dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
-    } else if (this.props.state === 'disabled' || marked.disabled) {
+    } else if (typeof marked.disabled !== 'undefined' ? marked.disabled : this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       textStyle.push(this.style.todayText);
