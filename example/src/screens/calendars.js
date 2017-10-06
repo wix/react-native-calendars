@@ -52,7 +52,14 @@ export default class CalendarsScreen extends Component {
             selectedDayTextColor: 'white',
             monthTextColor: 'white',
             selectedDayBackgroundColor: '#333248',
-            arrowColor: 'white'
+            arrowColor: 'white',
+            'stylesheet.calendar.header': {
+              week: {
+                marginTop: 5,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }
+            }
           }}
           markedDates={{
             '2012-05-08': [{textColor: '#666'}],

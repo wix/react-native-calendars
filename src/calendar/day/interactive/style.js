@@ -1,6 +1,8 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
 
+const STYLESHEET_ID = 'stylesheet.day.interactive';
+
 const FILLER_HEIGHT = 34;
 
 export default function styleConstructor(theme={}) {
@@ -66,6 +68,7 @@ export default function styleConstructor(theme={}) {
     },
     naText: {
       color: '#b6c1cd'
-    }
+    },
+    ...(theme[STYLESHEET_ID] || {})
   });
 }
