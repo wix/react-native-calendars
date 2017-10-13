@@ -99,6 +99,8 @@ LocaleConfig.defaultLocale = 'fr';
   firstDay={1}
   // Hide day names. Default = false
   hideDayNames={true}
+  // Show up to the number of letters on the day. Default = 3
+  showOnlyDayLetter={3}
 />
 ```
 
