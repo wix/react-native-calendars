@@ -221,7 +221,7 @@ export default class AgendaView extends Component {
     this.setState({
       calendarScrollable: true
     });
-    this.onHeaderViewChange('agenda');
+    this.onHeaderViewChange('calendarList');
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
     // Otherwise the month after current one or before current one remains invisible.
     // The problem is caused by overflow: 'hidden' style, which we need for dragging
@@ -243,7 +243,7 @@ export default class AgendaView extends Component {
       calendarScrollable: false,
       selectedDay: day.clone()
     });
-    this.onHeaderViewChange('calendarList');
+    this.onHeaderViewChange('agenda');
     if (!optimisticScroll) {
       this.setState({
         topDay: day.clone()
