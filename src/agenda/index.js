@@ -34,6 +34,9 @@ export default class AgendaView extends Component {
     // the value of date key has to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
     items: PropTypes.object,
+    
+    //callback to check Agent View or Calendar List
+    onHeaderViewChange: PropTypes.func, 
 
     // callback that gets called when items for a certain month should be loaded (month became visible)
     loadItemsForMonth: PropTypes.func,
@@ -119,6 +122,12 @@ export default class AgendaView extends Component {
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
     this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+  }
+
+  onHeaderViewChange(status){
+    if(this.props.onHeaderViewChange){
+      this.props.onHeaderViewChange(status);
+    }
   }
 
   onLayout(event) {
@@ -212,6 +221,7 @@ export default class AgendaView extends Component {
     this.setState({
       calendarScrollable: true
     });
+    this.onHeaderViewChange('agenda');
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
     // Otherwise the month after current one or before current one remains invisible.
     // The problem is caused by overflow: 'hidden' style, which we need for dragging
@@ -233,6 +243,7 @@ export default class AgendaView extends Component {
       calendarScrollable: false,
       selectedDay: day.clone()
     });
+    this.onHeaderViewChange('calendarList');
     if (!optimisticScroll) {
       this.setState({
         topDay: day.clone()
