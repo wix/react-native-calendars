@@ -28,17 +28,11 @@ class CalendarList extends Component {
     const texts = [];
     const date = parseDate(props.current) || XDate();
     for (let i = 0; i <= this.pastScrollRange + this.futureScrollRange; i++) {
-      const text = date.clone().addMonths(i - this.pastScrollRange).toString('MMM yyyy');
-      rows.push(text);
-      texts.push(text);
+      const rangeDate = date.clone().addMonths(i - this.pastScrollRange);
+      rows.push(rangeDate);
+      texts.push(rangeDate.toString('MMM yyyy'));
     }
-    rows[this.pastScrollRange] = date;
-    rows[this.pastScrollRange + 1] = date.clone().addMonths(1, true);
-    if (this.pastScrollRange) {
-      rows[this.pastScrollRange - 1] = date.clone().addMonths(-1, true);
-    } else {
-      rows[this.pastScrollRange + 2] = date.clone().addMonths(2, true);
-    }
+
     this.state = {
       rows,
       texts,
