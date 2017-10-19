@@ -29,8 +29,17 @@ class CalendarList extends Component {
     const date = parseDate(props.current) || XDate();
     for (let i = 0; i <= this.pastScrollRange + this.futureScrollRange; i++) {
       const rangeDate = date.clone().addMonths(i - this.pastScrollRange, true);
-      rows.push(rangeDate);
-      texts.push(rangeDate.toString('MMM yyyy'));
+      const rangeDateStr = rangeDate.toString('MMM yyyy');
+      texts.push(rangeDateStr);
+      /*
+       * This selects range around current shown month [-0, +2] or [-1, +1] month for detail calendar rendering.
+       * If `this.pastScrollRange` is `undefined` it's equal to `false` or 0 in next condition.
+       */
+      if (this.pastScrollRange - 1 <= i && i <= this.pastScrollRange + 1 || !this.pastScrollRange && i <= this.pastScrollRange + 2) {
+        rows.push(rangeDate);
+      } else {
+        rows.push(rangeDateStr);
+      }
     }
 
     this.state = {
