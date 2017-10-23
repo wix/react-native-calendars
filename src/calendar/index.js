@@ -220,7 +220,7 @@ class Calendar extends Component {
     }, this);
 
     if (this.props.markingType === 'pet') {
-      return (<View style={id == 4 ? [this.style.weekPet, this.style.borderRadiusBottom] :this.style.weekPet} key={id}>{week}</View>);
+      return (<View style={id === 4 ? [this.style.weekPet, this.style.borderRadiusBottom] :this.style.weekPet} key={id}>{week}</View>);
     }
 
     return (<View style={this.style.week} key={id}>{week}</View>);

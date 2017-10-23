@@ -51,14 +51,14 @@ export default function(theme={}) {
     //PET Style
     monthText: {
       fontSize: 100 / 3,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       color: appStyle.primaryColor,
       // marginVertical: 23 / 3,
       marginLeft: 23 / 3
     },
     yearText: {
       fontSize: 10,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       color: appStyle.primaryColor,
       // marginVertical: 23 / 3,
       marginRight: 23 / 3,
@@ -76,7 +76,6 @@ export default function(theme={}) {
     dayHeader: {
       marginTop: 4,
       marginBottom: 6,
-      width: 32,
       textAlign: 'center',
       fontSize: 10,
       fontWeight: 'bold',

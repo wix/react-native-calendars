@@ -108,8 +108,8 @@ class CalendarHeader extends Component {
               //<Text key={idx} style={this.style.dayHeader} numberOfLines={1}>{day}</Text>
 
               //PET Style
-              <View key={idx} style={idx == 6 ? [this.style.viewDay, this.style.noRightBorder] : this.style.viewDay}>
-                <Text key={idx} style={idx == 0 || idx == 6 ? [this.style.dayHeader, this.style.dayHeaderWeekend] : this.style.dayHeader} numberOfLines={1}>{day}</Text>
+              <View key={idx} style={idx === 6 ? [this.style.viewDay, this.style.noRightBorder] : this.style.viewDay}>
+                <Text key={idx} style={idx === 0 || idx === 6 ? [this.style.dayHeader, this.style.dayHeaderWeekend] : this.style.dayHeader} numberOfLines={1}>{day}</Text>
               </View>
               //End PET Style
             ))}

@@ -1,4 +1,5 @@
 import {Platform} from 'react-native';
+import { Dimensions } from 'react-native';
 
 export const foregroundColor = '#ffffff';
 export const backgroundColor = '#f4f4f4';
@@ -43,5 +44,5 @@ export const borderColor = '#7de4c3';
 export const specialColor = '#fd4242';
 export const bgDayColor = '#aafbde';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 export const heightCalendar = (width - 18 - 8) / (1051 / 921);

@@ -63,7 +63,7 @@ class Day extends Component {
 
     let typeDay;
     if (marked.typeDay) {
-      typeDay = marked.typeDay
+      typeDay = marked.typeDay;
     }
 
     //End PET Style
@@ -100,11 +100,11 @@ class Day extends Component {
     }
 
     //PET Style
-    if (this.props.index == 6) {
+    if (this.props.index === 6) {
       containerStyle.push(this.style.noRightBorder);
     }
-    if (this.props.state !== 'disabled' && (this.props.index == 0 || this.props.index == 6)) {
-      textStyle.push(this.style.specialText)
+    if (this.props.state !== 'disabled' && (this.props.index === 0 || this.props.index === 6)) {
+      textStyle.push(this.style.specialText);
     }
     //End PET Style
 
