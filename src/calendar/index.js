@@ -11,6 +11,7 @@ import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/interactive';
+import PetDay from './day/pet';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
@@ -166,7 +167,21 @@ class Calendar extends Component {
         dayComp = (<View key={id} style={{width: 32}}/>);
       }
     } else {
-      const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      // const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      let dayType;
+      switch (this.props.markingType) {
+      case 'interactive':
+        dayType = UnitDay;
+        break;
+      case 'pet':
+        dayType = PetDay;
+        break;
+      default:
+        dayType = Day;
+        break;
+      }
+      const DayComp = dayType;
+
       const markingExists = this.props.markedDates ? true : false;
       dayComp = (
         <DayComp
@@ -177,6 +192,7 @@ class Calendar extends Component {
             day={day}
             marked={this.getDateMarking(day)}
             markingExists={markingExists}
+            index={id} //Pet Style
           >
             {day.getDate()}
           </DayComp>
@@ -202,6 +218,11 @@ class Calendar extends Component {
     days.forEach((day, id2) => {
       week.push(this.renderDay(day, id2));
     }, this);
+
+    if (this.props.markingType === 'pet') {
+      return (<View style={id == 4 ? [this.style.weekPet, this.style.borderRadiusBottom] :this.style.weekPet} key={id}>{week}</View>);
+    }
+
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 

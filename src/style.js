@@ -36,3 +36,12 @@ export const agendaDayTextColor = '#7a92a5';
 export const agendaDayNumColor = '#7a92a5';
 export const agendaTodayColor = textLinkColor;
 export const agendaKnobColor = Platform.OS === 'ios' ? '#f2F4f5' : '#4ac4f7';
+
+//Pet Style
+export const primaryColor = '#0cc287';
+export const borderColor = '#7de4c3';
+export const specialColor = '#fd4242';
+export const bgDayColor = '#aafbde';
+
+const { width } = Dimensions.get("window");
+export const heightCalendar = (width - 18 - 8) / (1051 / 921);
