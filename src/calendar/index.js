@@ -13,6 +13,7 @@ import Day from './day/basic';
 import UnitDay from './day/interactive';
 import PetDay from './day/pet';
 import CalendarHeader from './header';
+import PetHeader from './header/pet';
 import shouldComponentUpdate from './updater';
 
 //Fallback when RN version is < 0.44
@@ -244,7 +245,7 @@ class Calendar extends Component {
     }
     return (
       <View style={[this.style.container, this.props.style]}>
-        <CalendarHeader
+        {this.props.markingType === 'pet' ? (<PetHeader
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
           month={this.state.currentMonth}
@@ -254,7 +255,18 @@ class Calendar extends Component {
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
           hideDayNames={this.props.hideDayNames}
-        />
+        />) : (
+          <CalendarHeader
+            theme={this.props.theme}
+            hideArrows={this.props.hideArrows}
+            month={this.state.currentMonth}
+            addMonth={this.addMonth}
+            showIndicator={indicator}
+            firstDay={this.props.firstDay}
+            renderArrow={this.props.renderArrow}
+            monthFormat={this.props.monthFormat}
+            hideDayNames={this.props.hideDayNames}
+          />)}
         {weeks}
       </View>);
   }
