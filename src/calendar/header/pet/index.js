@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import XDate from 'xdate';
 import PropTypes from 'prop-types';
 import styleConstructor from './style';
-import { weekDayNames } from '../../dateutils';
+import { weekDayNames } from '../../../dateutils';
 
 class CalendarHeader extends Component {
   static propTypes = {
@@ -59,7 +59,7 @@ class CalendarHeader extends Component {
           {this.props.renderArrow
             ? this.props.renderArrow('left')
             : <Image
-                source={require('../img/previous.png')}
+                source={require('../../img/previous.png')}
                 style={this.style.arrowImage}
               />}
         </TouchableOpacity>
@@ -69,7 +69,7 @@ class CalendarHeader extends Component {
           {this.props.renderArrow
             ? this.props.renderArrow('right')
             : <Image
-                source={require('../img/next.png')}
+                source={require('../../img/next.png')}
                 style={this.style.arrowImage}
               />}
         </TouchableOpacity>
