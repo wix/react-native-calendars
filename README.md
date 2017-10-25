@@ -127,7 +127,9 @@ Multiple dots marking
 
 ![Screen shot of multiple dots](demo/marking4.png "Multiple dots marking")
 
-Both the Calendar and CalendarList controls support multiple dots by using 'dots' array in markedDates and the property 'dotTypes'. If a marked date contains a 'dots' array then the dot name will be looked up in dotTypes prop in order to display the corresponding dot color. If the date has no 'dots' array and 'marked' is true then a single dot is displayed.
+Both the Calendar and CalendarList controls support multiple dots by using 'dots' array in markedDates and the property 'dotTypes'. If a marked date contains a 'dots' array then the dot name will be looked up in dotTypes prop in order to display the corresponding dot color. If the date has no 'dots' array and 'marked' is true then a single dot is displayed. 
+
+If selectedColor in dotTypes is omitted then dotColor will be used for selected dates.
 ```javascript
 <Calendar
   // Collection of dates that have either multiple dots or single dot. The items in 'dots' will be looked up in dotTypes.
@@ -140,7 +142,7 @@ Both the Calendar and CalendarList controls support multiple dots by using 'dots
   dotTypes={{
     vacation: { dotColor: '#DD429A', selectedDotColor: '#000000' },
     massage: { dotColor: '#5158B2', selectedDotColor: '#808080' },
-    workout: { dotColor: '#00ff00', selectedDotColor: '#20ff20' }
+    workout: { dotColor: '#00ff00' }
   }}
 />
 ```

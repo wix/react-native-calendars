@@ -51,7 +51,8 @@ class Day extends Component {
         return showDots.map(dot => {
           return (
             <View key={dot} style={[baseDotStyle, 
-              { backgroundColor: isSelected ? dotTypes[dot].selectedDotColor : dotTypes[dot].dotColor}]}/>
+              { backgroundColor: isSelected && dotTypes[dot].selectedDotColor ? 
+                  dotTypes[dot].selectedDotColor : dotTypes[dot].dotColor}]}/>
           );
         });
       }
