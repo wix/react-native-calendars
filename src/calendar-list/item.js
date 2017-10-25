@@ -36,6 +36,7 @@ class CalendarListItem extends Component {
           maxDate={this.props.maxDate}
           firstDay={this.props.firstDay}
           monthFormat={this.props.monthFormat}
+          dotTypes={this.props.dotTypes}
         />);
     } else {
       const text = row.toString();
