@@ -19,6 +19,7 @@ class Day extends Component {
     onPress: PropTypes.func,
     day: PropTypes.object,
     markingExists: PropTypes.bool,
+    dotTypes: PropTypes.object
   };
 
   constructor(props) {
@@ -40,10 +41,30 @@ class Day extends Component {
     }, false);
   }
 
+  renderDots(marked) {
+    const dotTypes = this.props.dotTypes;
+    const baseDotStyle = [this.style.dot, this.style.visibleDot];
+    const isSelected = this.props.state === 'selected' || marked.selected;
+    if (dotTypes && marked.dots && marked.dots.length > 0) {
+      const showDots = marked.dots.filter(dot => (dotTypes[dot]));
+      if (showDots.length > 0) {
+        return showDots.map(dot => {
+          return (
+            <View key={dot} style={[baseDotStyle, 
+              { backgroundColor: isSelected ? dotTypes[dot].selectedDotColor : dotTypes[dot].dotColor}]}/>
+          );
+        });
+      }
+    }
+    if (isSelected) {
+      baseDotStyle.push(this.style.selectedDot);
+    }
+    return (<View style={ baseDotStyle }/>);
+  }
+
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-    const dotStyle = [this.style.dot];
 
     let marked = this.props.marked || {};
     if (marked && marked.constructor === Array && marked.length) {
@@ -53,15 +74,13 @@ class Day extends Component {
     }
     let dot;
     if (marked.marked) {
-      dotStyle.push(this.style.visibleDot);
-      dot = (<View style={dotStyle}/>);
+      dot = this.renderDots(marked);
     } else if (!this.props.markingExists) {
       textStyle.push(this.style.alignedText);
     }
 
     if (this.props.state === 'selected' || marked.selected) {
       containerStyle.push(this.style.selected);
-      dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
     } else if (this.props.state === 'disabled' || marked.disabled) {
       textStyle.push(this.style.disabledText);
@@ -71,7 +90,7 @@ class Day extends Component {
     return (
       <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
         <Text style={textStyle}>{String(this.props.children)}</Text>
-        {dot}
+        <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>
     );
   }
