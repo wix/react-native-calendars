@@ -125,9 +125,7 @@ Dot marking
 
 Multiple dots marking
 
-<kbd>
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking4.png?raw=true">
-</kbd>
+![Screen shot of multiple dots](demo/marking4.png "Multiple dots marking")
 
 Both the Calendar and CalendarList controls support multiple dots by using 'dots' array in markedDates and the property 'dotTypes'. If a marked date contains a 'dots' array then the dot name will be looked up in dotTypes prop in order to display the corresponding dot color. If the date has no 'dots' array and 'marked' is true then a single dot is displayed.
 ```javascript
