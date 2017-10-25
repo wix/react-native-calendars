@@ -54,7 +54,11 @@ class Day extends Component {
     let dot;
     if (marked.marked) {
       dotStyle.push(this.style.visibleDot);
-      dot = (<View style={dotStyle}/>);
+      let backgroundColor = {};
+      if (marked.color) {
+        backgroundColor = {backgroundColor: marked.color};
+      }
+      dot = (<View style={[dotStyle, backgroundColor]}/>);
     } else if (!this.props.markingExists) {
       textStyle.push(this.style.alignedText);
     }
