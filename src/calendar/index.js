@@ -60,7 +60,9 @@ class Calendar extends Component {
     // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
     disableMonthChange: PropTypes.bool,
     //Hide day names. Default = false
-    hideDayNames: PropTypes.bool
+    hideDayNames: PropTypes.bool,
+    //Disable days by default. Default = false
+    disabledByDefault: PropTypes.bool
   };
 
   constructor(props) {
@@ -132,7 +134,9 @@ class Calendar extends Component {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
-    if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
+    if (this.props.disabledByDefault) {
+      state = 'disabled';
+    } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
