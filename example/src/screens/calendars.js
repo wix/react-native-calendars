@@ -35,6 +35,7 @@ export default class CalendarsScreen extends Component {
             '2012-05-25': {marked: true},
             '2012-05-26': {disabled: true}
           }}
+          // disabledByDefault={true}
           hideArrows={true}
         />
         <Text style={styles.text}>Calendar with marked dates and spinner</Text>

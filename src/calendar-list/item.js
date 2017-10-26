@@ -21,7 +21,6 @@ class CalendarListItem extends Component {
       return (
         <Calendar
           theme={this.props.theme}
-          selected={this.props.selected}
           style={[{height: this.props.calendarHeight}, this.style.calendar]}
           current={row}
           hideArrows
@@ -37,6 +36,7 @@ class CalendarListItem extends Component {
           firstDay={this.props.firstDay}
           monthFormat={this.props.monthFormat}
           dotTypes={this.props.dotTypes}
+          disabledByDefault={this.props.disabledByDefault}
         />);
     } else {
       const text = row.toString();

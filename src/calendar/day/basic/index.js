@@ -10,15 +10,14 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static propTypes = {
-    // TODO: selected + disabled props should be removed
-    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+    // TODO: disabled props should be removed
+    state: PropTypes.oneOf(['disabled', 'today', '']),
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     marked: PropTypes.any,
     onPress: PropTypes.func,
     day: PropTypes.object,
-    markingExists: PropTypes.bool,
     dotTypes: PropTypes.object
   };
 
@@ -33,12 +32,30 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return ['state', 'children', 'marked', 'onPress', 'markingExists'].reduce((prev, next) => {
-      if (prev || nextProps[next] !== this.props[next]) {
-        return true;
+    const changed = ['state', 'children', 'marked', 'onPress'].reduce((prev, next) => {
+      if (prev) {
+        return prev;
+      } else if (nextProps[next] !== this.props[next]) {
+        return next;
       }
       return prev;
     }, false);
+    if (changed === 'marked') {
+      let markedChanged = false;
+      if (this.props.marked && nextProps.marked) {
+        markedChanged = (!(
+          this.props.marked.marked === nextProps.marked.marked
+          && this.props.marked.selected === nextProps.marked.selected
+          && this.props.marked.disabled === nextProps.marked.disabled));
+      } else {
+        markedChanged = true;
+      }
+      // console.log('marked changed', markedChanged);
+      return markedChanged;
+    } else {
+      // console.log('changed', changed);
+      return !!changed;
+    }
   }
 
   renderDots(marked) {
@@ -76,14 +93,12 @@ class Day extends Component {
     let dot;
     if (marked.marked) {
       dot = this.renderDots(marked);
-    } else if (!this.props.markingExists) {
-      textStyle.push(this.style.alignedText);
     }
 
-    if (this.props.state === 'selected' || marked.selected) {
+    if (marked.selected) {
       containerStyle.push(this.style.selected);
       textStyle.push(this.style.selectedText);
-    } else if (this.props.state === 'disabled' || marked.disabled) {
+    } else if (typeof marked.disabled !== 'undefined' ? marked.disabled : this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       textStyle.push(this.style.todayText);

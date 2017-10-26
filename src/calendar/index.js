@@ -28,9 +28,6 @@ class Calendar extends Component {
 
     // Specify style for calendar container element. Default = {}
     style: viewPropTypes.style,
-
-    selected: PropTypes.array,
-
     // Initially visible month. Default = Date()
     current: PropTypes.any,
     // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
@@ -65,7 +62,9 @@ class Calendar extends Component {
     //Hide day names. Default = false
     hideDayNames: PropTypes.bool,
     // Dot types for multiple markers. This prop is used in conjunctioned with the 'dots' property in markedDates.
-    dotTypes: PropTypes.object
+    dotTypes: PropTypes.object,
+    //Disable days by default. Default = false
+    disabledByDefault: PropTypes.bool
   };
 
   constructor(props) {
@@ -75,7 +74,7 @@ class Calendar extends Component {
     if (props.current) {
       currentMonth = parseDate(props.current);
     } else {
-      currentMonth = props.selected && props.selected[0] ? parseDate(props.selected[0]) : XDate();
+      currentMonth = XDate();
     }
     this.state = {
       currentMonth
@@ -83,7 +82,6 @@ class Calendar extends Component {
 
     this.updateMonth = this.updateMonth.bind(this);
     this.addMonth = this.addMonth.bind(this);
-    this.isSelected = this.isSelected.bind(this);
     this.pressDay = this.pressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
@@ -134,25 +132,12 @@ class Calendar extends Component {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   }
 
-  isSelected(day) {
-    let selectedDays = [];
-    if (this.props.selected) {
-      selectedDays = this.props.selected;
-    }
-    for (let i = 0; i < selectedDays.length; i++) {
-      if (dateutils.sameDate(day, parseDate(selectedDays[i]))) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
-    if (this.isSelected(day)) {
-      state = 'selected';
+    if (this.props.disabledByDefault) {
+      state = 'disabled';
     } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
@@ -169,7 +154,6 @@ class Calendar extends Component {
       }
     } else {
       const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
-      const markingExists = this.props.markedDates ? true : false;
       dayComp = (
         <DayComp
             key={id}
@@ -178,7 +162,6 @@ class Calendar extends Component {
             onPress={this.pressDay}
             day={day}
             marked={this.getDateMarking(day)}
-            markingExists={markingExists}
             dotTypes={this.props.dotTypes}
           >
             {day.getDate()}
