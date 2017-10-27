@@ -157,29 +157,29 @@ class Calendar extends Component {
       const DayComp = this.getDayComponent();
       dayComp = (
         <DayComp
-            key={id}
-            state={state}
-            theme={this.props.theme}
-            onPress={this.pressDay}
-            day={day}
-            marked={this.getDateMarking(day)}
-            dotTypes={this.props.dotTypes}
-          >
-            {day.getDate()}
-          </DayComp>
-        );
+          key={id}
+          state={state}
+          theme={this.props.theme}
+          onPress={this.pressDay}
+          day={day}
+          marked={this.getDateMarking(day)}
+          dotTypes={this.props.dotTypes}
+        >
+          {day.getDate()}
+        </DayComp>
+      );
     }
     return dayComp;
   }
 
   getDayComponent() {
     switch (this.props.markingType) {
-      case 'interactive':
-        return UnitDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      default:
-        return Day;
+    case 'interactive':
+      return UnitDay;
+    case 'multi-dot':
+      return MultiDotDay;
+    default:
+      return Day;
     }
   }
 

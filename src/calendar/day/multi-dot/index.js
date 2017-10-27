@@ -73,7 +73,7 @@ class Day extends Component {
           return (
             <View key={dot} style={[baseDotStyle, 
               { backgroundColor: marked.selected && dotTypes[dot].selectedDotColor ? 
-                  dotTypes[dot].selectedDotColor : dotTypes[dot].dotColor}]}/>
+                dotTypes[dot].selectedDotColor : dotTypes[dot].dotColor}]}/>
           );
         } else {
           return (<View key={dot} style={ baseDotStyle }/>);
