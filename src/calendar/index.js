@@ -63,7 +63,7 @@ class Calendar extends Component {
     //Hide day names. Default = false
     hideDayNames: PropTypes.bool,
     //Disable days by default. Default = false
-    disabledByDefault: PropTypes.bool,
+    disabledByDefault: PropTypes.bool
   };
 
   constructor(props) {
