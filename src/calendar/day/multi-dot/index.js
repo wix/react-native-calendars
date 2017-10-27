@@ -17,8 +17,7 @@ class Day extends Component {
     theme: PropTypes.object,
     marked: PropTypes.any,
     onPress: PropTypes.func,
-    day: PropTypes.object,
-    dotTypes: PropTypes.object
+    day: PropTypes.object
   };
 
   constructor(props) {
@@ -59,28 +58,18 @@ class Day extends Component {
   }
 
   renderDots(marked) {
-    const dotTypes = this.props.dotTypes;
     const baseDotStyle = [this.style.dot, this.style.visibleDot];
-
-    if (marked.selected) {
-      baseDotStyle.push(this.style.selectedDot);
-    }
-
-    if (dotTypes && marked.dots && marked.dots.length > 0) {
-      return marked.dots.map(dot => {
-        // If dot type cannot be found, use the default style for single marker
-        if (dotTypes[dot]) {
-          return (
-            <View key={dot} style={[baseDotStyle, 
-              { backgroundColor: marked.selected && dotTypes[dot].selectedDotColor ? 
-                dotTypes[dot].selectedDotColor : dotTypes[dot].dotColor}]}/>
-          );
-        } else {
-          return (<View key={dot} style={ baseDotStyle }/>);
-        }
+    if (marked.dots && Array.isArray(marked.dots) && marked.dots.length > 0) {
+      // Filter out dots so that we we process only those items which have key and color property
+      const validDots = marked.dots.filter(d => (d && d.key && d.color));
+      return validDots.map(dot => {
+        return (
+          <View key={dot.key} style={[baseDotStyle, 
+            { backgroundColor: marked.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
+        );
       });
     }
-    return (<View style={ baseDotStyle }/>);
+    return;
   }
 
   render() {
@@ -88,10 +77,7 @@ class Day extends Component {
     const textStyle = [this.style.text];
 
     const marked = this.props.marked || {};
-    let dot;
-    if (marked.marked === true || (marked.marked !== false && marked.dots && marked.dots.length > 0)) {
-      dot = this.renderDots(marked);
-    }
+    const dot = this.renderDots(marked);
 
     if (marked.selected) {
       containerStyle.push(this.style.selected);

@@ -64,8 +64,6 @@ class Calendar extends Component {
     hideDayNames: PropTypes.bool,
     //Disable days by default. Default = false
     disabledByDefault: PropTypes.bool,
-    // Dot types for multiple markers. This prop is used in conjunctioned with the 'dots' property in markedDates.
-    dotTypes: PropTypes.object
   };
 
   constructor(props) {
@@ -163,7 +161,6 @@ class Calendar extends Component {
           onPress={this.pressDay}
           day={day}
           marked={this.getDateMarking(day)}
-          dotTypes={this.props.dotTypes}
         >
           {day.getDate()}
         </DayComp>
