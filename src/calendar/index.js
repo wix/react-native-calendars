@@ -11,6 +11,7 @@ import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/interactive';
+import MultiDotDay from './day/multi-dot';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
@@ -61,10 +62,10 @@ class Calendar extends Component {
     disableMonthChange: PropTypes.bool,
     //Hide day names. Default = false
     hideDayNames: PropTypes.bool,
-    // Dot types for multiple markers. This prop is used in conjunctioned with the 'dots' property in markedDates.
-    dotTypes: PropTypes.object,
     //Disable days by default. Default = false
-    disabledByDefault: PropTypes.bool
+    disabledByDefault: PropTypes.bool,
+    // Dot types for multiple markers. This prop is used in conjunctioned with the 'dots' property in markedDates.
+    dotTypes: PropTypes.object
   };
 
   constructor(props) {
@@ -153,7 +154,7 @@ class Calendar extends Component {
         dayComp = (<View key={id} style={{width: 32}}/>);
       }
     } else {
-      const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      const DayComp = this.getDayComponent();
       dayComp = (
         <DayComp
             key={id}
@@ -169,6 +170,17 @@ class Calendar extends Component {
         );
     }
     return dayComp;
+  }
+
+  getDayComponent() {
+    switch (this.props.markingType) {
+      case 'interactive':
+        return UnitDay;
+      case 'multi-dot':
+        return MultiDotDay;
+      default:
+        return Day;
+    }
   }
 
   getDateMarking(day) {

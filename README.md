@@ -123,27 +123,34 @@ Dot marking
 />
 ```
 
-Multiple dots marking
+Multi-Dot marking
 
 ![Screen shot of multiple dots](demo/marking4.png "Multiple dots marking")
 
-Both the Calendar and CalendarList controls support multiple dots by using 'dots' array in markedDates and the property 'dotTypes'. If a marked date contains a 'dots' array then the dot name will be looked up in dotTypes prop in order to display the corresponding dot color. If the date has no 'dots' array and 'marked' is true then a single dot is displayed. 
+Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates and the property 'dotTypes'. If a marked date contains a 'dots' array then the dot name will be looked up in dotTypes prop in order to display the corresponding dot color. If the date has no 'dots' array and 'marked' is true then a single dot is displayed. 
 
-If selectedColor in dotTypes is omitted then dotColor will be used for selected dates.
+If selectedColor in dotTypes is omitted then the dot color for selected dates will be the same as dotColor.
 ```javascript
 <Calendar
   // Collection of dates that have either multiple dots or single dot. The items in 'dots' will be looked up in dotTypes.
   markedDates={{
-    '2017-10-25': {marked: true, dots: ['vacation','massage','workout']},
-    '2017-10-26': {marked: true, dots: ['massage','workout'},
-    '2017-10-27': {marked: true}
+    // Display 3 dots: vacation, massage and workout
+    '2017-10-25': {dots: ['vacation','massage','workout']},
+    // Dispaly 2 dots: massage and workout
+    '2017-10-26': {dots: ['massage','workout'},
+    // Display 1 dot using default dotColor and selectedDotColor. Omitting 'dots' property will display a single dot if marked = true.
+    '2017-10-27': {marked: true} 
+    // Display 2 dots using default dotColor and selectedDotColor. Using dot names that don't exist in dotTypes will still render the dots and use default colors.
+    '2017-10-28': {dots: ['foobar','xyz']}
   }},
   // Dot type definitions containing dot colors and selected dot colors.
   dotTypes={{
     vacation: { dotColor: '#DD429A', selectedDotColor: '#000000' },
     massage: { dotColor: '#5158B2', selectedDotColor: '#808080' },
     workout: { dotColor: '#00ff00' }
-  }}
+  }},
+  // Use multi-dot marking type
+  markingType={'multi-dot'}
 />
 ```
 
@@ -169,7 +176,7 @@ Interval marking
      '2012-05-23': [{endingDay: true, color: 'green', textColor: 'gray'}],
      '2012-05-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
     }}
-  // Date marking style [simple/interactive]. Default = 'simple'
+  // Date marking style [simple/interactive/multi-dot]. Default = 'simple'
   markingType={'interactive'}
 />
 ```

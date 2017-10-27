@@ -17,7 +17,8 @@ class Day extends Component {
     theme: PropTypes.object,
     marked: PropTypes.any,
     onPress: PropTypes.func,
-    day: PropTypes.object
+    day: PropTypes.object,
+    dotTypes: PropTypes.object
   };
 
   constructor(props) {
@@ -57,26 +58,43 @@ class Day extends Component {
     }
   }
 
+  renderDots(marked) {
+    const dotTypes = this.props.dotTypes;
+    const baseDotStyle = [this.style.dot, this.style.visibleDot];
+
+    if (marked.selected) {
+      baseDotStyle.push(this.style.selectedDot);
+    }
+
+    if (dotTypes && marked.dots && marked.dots.length > 0) {
+      return marked.dots.map(dot => {
+        // If dot type cannot be found, use the default style for single marker
+        if (dotTypes[dot]) {
+          return (
+            <View key={dot} style={[baseDotStyle, 
+              { backgroundColor: marked.selected && dotTypes[dot].selectedDotColor ? 
+                  dotTypes[dot].selectedDotColor : dotTypes[dot].dotColor}]}/>
+          );
+        } else {
+          return (<View key={dot} style={ baseDotStyle }/>);
+        }
+      });
+    }
+    return (<View style={ baseDotStyle }/>);
+  }
+
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-    const dotStyle = [this.style.dot];
 
-    let marked = this.props.marked || {};
-    if (marked && marked.constructor === Array && marked.length) {
-      marked = {
-        marked: true
-      };
-    }
+    const marked = this.props.marked || {};
     let dot;
-    if (marked.marked) {
-      dotStyle.push(this.style.visibleDot);
-      dot = (<View style={dotStyle}/>);
+    if (marked.marked === true || (marked.marked !== false && marked.dots && marked.dots.length > 0)) {
+      dot = this.renderDots(marked);
     }
 
     if (marked.selected) {
       containerStyle.push(this.style.selected);
-      dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
     } else if (typeof marked.disabled !== 'undefined' ? marked.disabled : this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
@@ -86,7 +104,7 @@ class Day extends Component {
     return (
       <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
         <Text style={textStyle}>{String(this.props.children)}</Text>
-        {dot}
+        <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>
     );
   }
