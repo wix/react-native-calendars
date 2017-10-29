@@ -285,7 +285,9 @@ export default class AgendaView extends Component {
     if (!markings) {
       markings = {};
       Object.keys(this.props.items  || {}).forEach(key => {
-        markings[key] = {marked: true};
+        if (this.props.items[key] && this.props.items[key].length) {
+          markings[key] = {marked: true};
+        }
       });
     }
     const key = this.state.selectedDay.toString('yyyy-MM-dd');
