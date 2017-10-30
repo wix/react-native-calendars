@@ -135,14 +135,12 @@ const workout = {key:'workout', color: 'green'};
 
 <Calendar
   markedDates={{
-    '2017-10-25': {dots: [vacation, massage, workout]},
-    '2017-10-26': {dots: [massage, workout},
+    '2017-10-25': {dots: [vacation, massage, workout], selected: true},
+    '2017-10-26': {dots: [massage, workout], disabled: true},
   }},
   markingType={'multi-dot'}
 />
 ```
-
-
 
 
 Interval marking
