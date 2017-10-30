@@ -11,6 +11,7 @@ import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/interactive';
+import MultiDotDay from './day/multi-dot';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
@@ -151,21 +152,32 @@ class Calendar extends Component {
         dayComp = (<View key={id} style={{width: 32}}/>);
       }
     } else {
-      const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
+      const DayComp = this.getDayComponent();
       dayComp = (
         <DayComp
-            key={id}
-            state={state}
-            theme={this.props.theme}
-            onPress={this.pressDay}
-            day={day}
-            marked={this.getDateMarking(day)}
-          >
-            {day.getDate()}
-          </DayComp>
-        );
+          key={id}
+          state={state}
+          theme={this.props.theme}
+          onPress={this.pressDay}
+          day={day}
+          marked={this.getDateMarking(day)}
+        >
+          {day.getDate()}
+        </DayComp>
+      );
     }
     return dayComp;
+  }
+
+  getDayComponent() {
+    switch (this.props.markingType) {
+    case 'interactive':
+      return UnitDay;
+    case 'multi-dot':
+      return MultiDotDay;
+    default:
+      return Day;
+    }
   }
 
   getDateMarking(day) {
