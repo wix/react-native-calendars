@@ -126,7 +126,7 @@ Dot marking
 Multi-Dot marking
 
 <kbd>
- ![Screen shot of multiple dots](demo/marking4.png "Multiple dots marking")
+ <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking4.png?raw=true">
 </kbd>
 
 Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates. The properties 'key' and 'color' are mandatory while 'selectedColor' is optional. If selectedColor is omitted then 'color' will be used for selected dates.
