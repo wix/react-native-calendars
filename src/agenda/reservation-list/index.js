@@ -91,7 +91,6 @@ class ReactComp extends Component {
       if (this.scrollOver) {
           const yOffset = event.nativeEvent.contentOffset.y;
           this.props.onScroll(yOffset);
-          console.log("in scroll", yOffset); 
           //let isScroll = true;  
           //let topRowOffset = 0;
           //let topRow;
@@ -194,14 +193,11 @@ class ReactComp extends Component {
       if (dateutils.sameDate(iterator, props.selectedDay)) {
           this.scrollPosition = reservations.length;
       }  
-    }
-    console.log("in get reservation ", this.scrollPosition);
-    console.log("total reservations", reservations.length);  
+    }  
     return {reservations, scrollPosition: this.scrollPosition};
   }
 
   render() {
-      console.log("in render", this.scrollPosition);
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
