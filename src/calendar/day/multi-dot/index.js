@@ -57,30 +57,30 @@ class Day extends Component {
     }
   }
 
+  renderDots(marked) {
+    const baseDotStyle = [this.style.dot, this.style.visibleDot];
+    if (marked.dots && Array.isArray(marked.dots) && marked.dots.length > 0) {
+      // Filter out dots so that we we process only those items which have key and color property
+      const validDots = marked.dots.filter(d => (d && d.key && d.color));
+      return validDots.map(dot => {
+        return (
+          <View key={dot.key} style={[baseDotStyle, 
+            { backgroundColor: marked.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
+        );
+      });
+    }
+    return;
+  }
+
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-    const dotStyle = [this.style.dot];
 
-    let marked = this.props.marked || {};
-    if (marked && marked.constructor === Array && marked.length) {
-      marked = {
-        marked: true
-      };
-    }
-    let dot;
-    if (marked.marked) {
-      dotStyle.push(this.style.visibleDot);
-      let backgroundColor = {};
-      if (marked.color) {
-        backgroundColor = {backgroundColor: marked.color};
-      }
-      dot = (<View style={[dotStyle, backgroundColor]}/>);
-    }
+    const marked = this.props.marked || {};
+    const dot = this.renderDots(marked);
 
     if (marked.selected) {
       containerStyle.push(this.style.selected);
-      dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
     } else if (typeof marked.disabled !== 'undefined' ? marked.disabled : this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
@@ -90,7 +90,7 @@ class Day extends Component {
     return (
       <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
         <Text style={textStyle}>{String(this.props.children)}</Text>
-        {dot}
+        <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>
     );
   }
