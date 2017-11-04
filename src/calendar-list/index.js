@@ -54,7 +54,7 @@ class CalendarList extends Component {
     };
     this.lastScrollPosition = -1000;
     
-    this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this)
+    this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
     this.renderCalendarBound = this.renderCalendar.bind(this);
   }
 
