@@ -45,7 +45,8 @@ class Day extends Component {
         markedChanged = (!(
           this.props.marked.marked === nextProps.marked.marked
           && this.props.marked.selected === nextProps.marked.selected
-          && this.props.marked.disabled === nextProps.marked.disabled));
+          && this.props.marked.disabled === nextProps.marked.disabled
+          && this.props.marked.dots === nextProps.marked.dots));
       } else {
         markedChanged = true;
       }
