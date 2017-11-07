@@ -216,7 +216,7 @@ export default class AgendaView extends Component {
       calendarScrollable: true
     });
     if (this.props.calendarToggled) {
-      this.props.calendarToggled(this.state.calendarScrollable);
+      this.props.calendarToggled(true);
     }
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
     // Otherwise the month after current one or before current one remains invisible.
@@ -240,7 +240,7 @@ export default class AgendaView extends Component {
       selectedDay: day.clone()
     });
     if (this.props.calendarToggled) {
-      this.props.calendarToggled(this.state.calendarScrollable);
+      this.props.calendarToggled(false);
     }
     if (!optimisticScroll) {
       this.setState({
