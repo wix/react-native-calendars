@@ -280,6 +280,8 @@ An advanced agenda component that can display interactive listings for calendar 
     }}
   // callback that gets called when items for a certain month should be loaded (month became visible)
   loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+  // callback that fires when the calendar is opened or closed
+  calendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
   // callback that gets called on day press
   onDayPress={(day)=>{console.log('day pressed')}}
   // callback that gets called when day changes while scrolling agenda list
