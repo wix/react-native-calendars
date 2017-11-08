@@ -38,7 +38,7 @@ export default class AgendaView extends Component {
     // callback that gets called when items for a certain month should be loaded (month became visible)
     loadItemsForMonth: PropTypes.func,
     // callback that fires when the calendar is opened or closed
-    calendarToggled: PropTypes.func,
+    onCalendarToggled: PropTypes.func,
     // callback that gets called on day press
     onDayPress: PropTypes.func,
     // callback that gets called when day changes while scrolling agenda list
@@ -215,8 +215,8 @@ export default class AgendaView extends Component {
     this.setState({
       calendarScrollable: true
     });
-    if (this.props.calendarToggled) {
-      this.props.calendarToggled(true);
+    if (this.props.onCalendarToggled) {
+      this.props.onCalendarToggled(true);
     }
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
     // Otherwise the month after current one or before current one remains invisible.
@@ -239,8 +239,8 @@ export default class AgendaView extends Component {
       calendarScrollable: false,
       selectedDay: day.clone()
     });
-    if (this.props.calendarToggled) {
-      this.props.calendarToggled(false);
+    if (this.props.onCalendarToggled) {
+      this.props.onCalendarToggled(false);
     }
     if (!optimisticScroll) {
       this.setState({
