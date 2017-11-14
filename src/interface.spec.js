@@ -60,7 +60,8 @@ describe('calendar interface', () => {
         year: 2016,
         month: 11,
         day: 22,
-        timestamp: 1479772800000
+        timestamp: 1479772800000,
+        dateString: '2016-11-22'
       });
     });
   });

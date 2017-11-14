@@ -1,13 +1,11 @@
 {
   "name": "react-native-calendars",
-  "version": "1.2.12",
+  "version": "1.9.3",
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
     "test": "jasmine src/*.spec.js && npm run lint",
-    "lint": "eslint src/ example/src",
-    "build": ":",
-    "release": "wnpm-release"
+    "lint": "eslint src/ example/src"
   },
   "repository": {
     "type": "git",
@@ -19,19 +17,15 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
+    "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
-  "peerDependencies": {
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.44.0"
-  },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
+    "babel-eslint": "^7.2.3",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.44.0",
-    "wnpm-ci": "^6.1.0"
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.47.2"
   }
 }

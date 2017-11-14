@@ -1,40 +1,43 @@
 import React, {Component} from 'react';
 import {
-  ListView,
+  FlatList,
   ActivityIndicator,
-  View,
-  Text
+  View
 } from 'react-native';
+import Reservation from './reservation';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
-import {xdateToData} from '../../interface';
-import styles from './style';
+import styleConstructor from './style';
 
 class ReactComp extends Component {
+  static propTypes = {
+    // specify your item comparison function for increased performance
+    rowHasChanged: PropTypes.func,
+    // specify how each item should be rendered in agenda
+    renderItem: PropTypes.func,
+    // specify how each date should be rendered. day can be undefined if the item is not first in that day.
+    renderDay: PropTypes.func,
+    // specify how empty date content with no items should be rendered
+    renderEmptyDate: PropTypes.func,
+    // callback that gets called when day changes while scrolling agenda list
+    onDayChange: PropTypes.func,
+    // onScroll ListView event
+    onScroll: PropTypes.func,
+    // the list of items that have to be displayed in agenda. If you want to render item as empty date
+    // the value of date key kas to be an empty array []. If there exists no value for date key it is
+    // considered that the date in question is not yet loaded
+    reservations: PropTypes.object,
+
+    selectedDay: PropTypes.instanceOf(XDate),
+    topDay: PropTypes.instanceOf(XDate),
+  };
+
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => {
-        let changed = true;
-        if (!r1 && !r2) {
-          changed = false;
-        } else if (r1 && r2) {
-          if (r1.day.getTime() !== r2.day.getTime()) {
-            changed = true;
-          } else if (!r1.reservation && !r2.reservation) {
-            changed = false;
-          } else if (r1.reservation && r2.reservation) {
-            if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
-              changed = this.props.rowHasChanged(r1.reservation, r2.reservation);
-            }
-          }
-        }
-        return changed;
-      }
-    });
+    this.styles = styleConstructor(props.theme);
     this.state = {
-      reservationsSource: ds.cloneWithRows([]),
       reservations: []
     };
     this.heights=[];
@@ -48,8 +51,7 @@ class ReactComp extends Component {
 
   updateDataSource(reservations) {
     this.setState({
-      reservations,
-      reservationsSource: this.state.reservationsSource.cloneWithRows(reservations)
+      reservations
     });
   }
 
@@ -61,7 +63,7 @@ class ReactComp extends Component {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.scrollTo({x: 0, y: scrollPosition, animated: true});
+      this.list.scrollToOffset({offset: scrollPosition, animated: true});
     }
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
@@ -90,7 +92,9 @@ class ReactComp extends Component {
       }
       topRowOffset += this.heights[topRow];
     }
-    const day = this.state.reservations[topRow].day;
+    const row = this.state.reservations[topRow];
+    if (!row) return;
+    const day = row.day;
     const sameDate = dateutils.sameDate(day, this.selectedDay);
     if (!sameDate && this.scrollOver) {
       this.selectedDay = day.clone();
@@ -102,42 +106,19 @@ class ReactComp extends Component {
     this.heights[ind] = event.nativeEvent.layout.height;
   }
 
-  renderRow(row, section, ind) {
-    const {reservation, date} = row;
-    let content;
-    if (reservation) {
-      content = this.props.renderItem(reservation);
-    } else {
-      content = this.props.renderEmptyDate();
-    }
-
+  renderRow({item, index}) {
     return (
-      <View style={styles.container} onLayout={this.onRowLayoutChange.bind(this, ind)}>
-        {this.renderDate(date, reservation)}
-        <View style={{marginTop: 12, flex:1}}>
-          {content}
-        </View>
+      <View onLayout={this.onRowLayoutChange.bind(this, index)}>
+        <Reservation
+          item={item}
+          renderItem={this.props.renderItem}
+          renderDay={this.props.renderDay}
+          renderEmptyDate={this.props.renderEmptyDate}
+          theme={this.props.theme}
+          rowHasChanged={this.props.rowHasChanged}
+        />
       </View>
     );
-  }
-
-  renderDate(date, item) {
-    if (this.props.renderDay) {
-      return this.props.renderDay(date ? xdateToData(date) : undefined, item);
-    }
-    const today = dateutils.sameDate(date, XDate()) ? styles.today : undefined;
-    if (date) {
-      return (
-        <View style={styles.day}>
-          <Text style={[styles.dayNum, today]}>{date.getDate()}</Text>
-          <Text style={[styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.day}/>
-      );
-    }
   }
 
   getReservationsForDay(iterator, props) {
@@ -201,15 +182,16 @@ class ReactComp extends Component {
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
     return (
-      <ListView
+      <FlatList
         ref={(c) => this.list = c}
         style={this.props.style}
-        renderRow={this.renderRow.bind(this)}
-        dataSource={this.state.reservationsSource}
+        renderItem={this.renderRow.bind(this)}
+        data={this.state.reservations}
         onScroll={this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
+        keyExtractor={(item, index) => index}
       />
     );
   }

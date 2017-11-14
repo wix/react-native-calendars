@@ -1,6 +1,8 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../style';
 
+const STYLESHEET_ID = 'stylesheet.calendar.main';
+
 export default function getStyle(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
@@ -16,16 +18,7 @@ export default function getStyle(theme={}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
-    dayHeader: {
-      marginTop: 3,
-      marginBottom: 8,
-      width: 32,
-      textAlign: 'center',
-      paddingTop: 0,
-      paddingBottom: 10,
-      fontSize: 12,
-      color: appStyle.textSectionTitleColor
-    }
+    ...(theme[STYLESHEET_ID] || {})
   });
 }
 

@@ -1,19 +1,21 @@
 const XDate = require('xdate');
 
-function xdateToData(xdate) {
-  return {
-    year: xdate.getFullYear(),
-    month: xdate.getMonth() + 1,
-    day: xdate.getDate(),
-    timestamp: XDate(xdate.toString('yyyy-MM-dd'), true).getTime()
-  };
-}
-
 function padNumber(n) {
   if (n < 10) {
     return '0' + n;
   }
   return n;
+}
+
+function xdateToData(xdate) {
+  const dateString = xdate.toString('yyyy-MM-dd');
+  return {
+    year: xdate.getFullYear(),
+    month: xdate.getMonth() + 1,
+    day: xdate.getDate(),
+    timestamp: XDate(dateString, true).getTime(),
+    dateString: dateString
+  };
 }
 
 function parseDate(d) {
@@ -38,3 +40,4 @@ module.exports = {
   xdateToData,
   parseDate
 };
+
