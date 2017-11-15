@@ -100,6 +100,12 @@ class Day extends Component {
       if (next.textColor) {
         prev.textStyle.color = next.textColor;
       }
+      if (next.fontWeight) {
+        prev.textStyle.fontWeight = next.fontWeight;
+      }
+      if (next.fontSize) {
+        prev.textStyle.fontSize = next.fontSize;
+      }
       return prev;
     }, {});
   }
