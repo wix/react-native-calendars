@@ -161,7 +161,7 @@ Period marking
    markedDates={
     {'2012-05-20': {periods: [{textColor: 'green'}]},
      '2012-05-22': {periods: [{startingDay: true, color: 'green'}]},
-     '2012-05-23': {periods: [{endingDay: true, color: 'green', textColor: 'gray'}]},
+     '2012-05-23': {selected: true, periods: [{endingDay: true, color: 'green', textColor: 'gray'}]},
      '2012-05-04': {disabled: true, periods: [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]}
     }}
   // Date marking style [simple/period/multi-dot]. Default = 'simple'
