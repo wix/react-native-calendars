@@ -29,7 +29,7 @@ class Day extends Component {
     super(props);
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
-    this.markingStyle = this.getDrawingStyle(props.marked);
+    this.markingStyle = this.getDrawingStyle(props.marked || []);
     this.onDayPress = this.onDayPress.bind(this);
   }
 
@@ -54,11 +54,14 @@ class Day extends Component {
   }
 
   getDrawingStyle(marking) {
+    const defaultStyle = {textStyle: {}};
     if (!marking) {
-      return {};
+      return defaultStyle;
     }
-    return marking.reduce((prev, next) => {
-      prev.textStyle = {};
+    if (this.props.marked.disabled) {
+      defaultStyle.textStyle.color = this.theme.textDisabledColor;
+    }
+    const resultStyle = (marking.periods || []).reduce((prev, next) => {
       if (next.quickAction) {
         if (next.first || next.last) {
           prev.containerStyle = this.style.firstQuickAction;
@@ -101,7 +104,8 @@ class Day extends Component {
         prev.textStyle.color = next.textColor;
       }
       return prev;
-    }, {});
+    }, defaultStyle);
+    return resultStyle;
   }
 
   render() {

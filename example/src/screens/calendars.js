@@ -44,16 +44,17 @@ export default class CalendarsScreen extends Component {
           current={'2012-05-16'}
           minDate={'2012-05-10'}
           displayLoadingIndicator
-          markingType={'interactive'}
+          markingType={'period'}
           theme={{
             calendarBackground: '#333248',
             textSectionTitleColor: 'white',
-            dayTextColor: 'white',
+            dayTextColor: 'red',
             todayTextColor: 'white',
             selectedDayTextColor: 'white',
             monthTextColor: 'white',
             selectedDayBackgroundColor: '#333248',
             arrowColor: 'white',
+            // textDisabledColor: 'red',
             'stylesheet.calendar.header': {
               week: {
                 marginTop: 5,
@@ -63,14 +64,15 @@ export default class CalendarsScreen extends Component {
             }
           }}
           markedDates={{
-            '2012-05-08': [{textColor: '#666'}],
-            '2012-05-09': [{textColor: '#666'}],
-            '2012-05-14': [{startingDay: true, color: 'blue'}, {endingDay: true, color: 'blue'}],
-            '2012-05-21': [{startingDay: true, color: 'blue'}],
-            '2012-05-22': [{endingDay: true, color: 'gray'}],
-            '2012-05-24': [{startingDay: true, color: 'gray'}],
-            '2012-05-25': [{color: 'gray'}],
-            '2012-05-26': [{endingDay: true, color: 'gray'}]}}
+            '2012-05-17': {disabled: true},
+            '2012-05-08': {periods: [{textColor: '#666'}]},
+            '2012-05-09': {periods: [{textColor: '#666'}]},
+            '2012-05-14': {periods: [{startingDay: true, color: 'blue'}, {endingDay: true, color: 'blue'}]},
+            '2012-05-21': {periods: [{startingDay: true, color: 'blue'}]},
+            '2012-05-22': {periods: [{endingDay: true, color: 'gray'}]},
+            '2012-05-24': {periods: [{startingDay: true, color: 'gray'}]},
+            '2012-05-25': {periods: [{color: 'gray'}]},
+            '2012-05-26': {periods: [{endingDay: true, color: 'gray'}]}}}
           hideArrows={false}
         />
         <Calendar
