@@ -60,6 +60,8 @@ class Day extends Component {
     }
     if (this.props.marked.disabled) {
       defaultStyle.textStyle.color = this.theme.textDisabledColor;
+    } else if (this.props.marked.selected) {
+      defaultStyle.textStyle.color = this.theme.selectedDayTextColor;
     }
     const resultStyle = (marking.periods || []).reduce((prev, next) => {
       if (next.quickAction) {

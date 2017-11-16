@@ -297,8 +297,6 @@ export default class AgendaView extends Component {
           markings[key] = {marked: true};
         }
       });
-    } else {
-      return markings;
     }
     const key = this.state.selectedDay.toString('yyyy-MM-dd');
     return {...markings, [key]: {...(markings[key] || {}), ...{selected: true}}};
