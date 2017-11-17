@@ -159,10 +159,10 @@ Period marking
 <Calendar
   // Collection of dates that have to be colored in a special way. Default = {}
    markedDates={
-    {'2012-05-20': {periods: [{textColor: 'green'}]},
-     '2012-05-22': {periods: [{startingDay: true, color: 'green'}]},
-     '2012-05-23': {selected: true, periods: [{endingDay: true, color: 'green', textColor: 'gray'}]},
-     '2012-05-04': {disabled: true, periods: [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]}
+    {'2012-05-20': {textColor: 'green'},
+     '2012-05-22': {startingDay: true, color: 'green'},
+     '2012-05-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
+     '2012-05-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
     }}
   // Date marking style [simple/period/multi-dot]. Default = 'simple'
   markingType={'period'}

@@ -25,14 +25,14 @@ export default class AgendaScreen extends Component {
         rowHasChanged={this.rowHasChanged.bind(this)}
         // markingType={'period'}
         // markedDates={{
-        //   '2017-05-08': {periods: [{textColor: '#666'}]},
-        //   '2017-05-09': {periods: [{textColor: '#666'}]},
-        //   '2017-05-14': {periods: [{startingDay: true, color: 'blue'}, {endingDay: true, color: 'blue'}]},
-        //   '2017-05-21': {periods: [{startingDay: true, color: 'blue'}]},
-        //   '2017-05-22': {periods: [{endingDay: true, color: 'gray'}]},
-        //   '2017-05-24': {periods: [{startingDay: true, color: 'gray'}]},
-        //   '2017-05-25': {periods: [{color: 'gray'}]},
-        //   '2017-05-26': {periods: [{endingDay: true, color: 'gray'}]}}}
+        //    '2017-05-08': {textColor: '#666'},
+        //    '2017-05-09': {textColor: '#666'},
+        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+        //    '2017-05-21': {startingDay: true, color: 'blue'},
+        //    '2017-05-22': {endingDay: true, color: 'gray'},
+        //    '2017-05-24': {startingDay: true, color: 'gray'},
+        //    '2017-05-25': {color: 'gray'},
+        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
          // monthFormat={'yyyy'}
          // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
