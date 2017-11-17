@@ -36,12 +36,16 @@ export default function getStyle(theme={}) {
       borderWidth: 1,
       borderTopWidth: 0
     },
+    noBorderBottom: {
+      borderBottomWidth: 0
+    },
     borderRadiusBottom: {
+      borderTopWidth: 1,
       borderBottomLeftRadius: 5,
       borderBottomRightRadius: 5
     },
     scrollView: {
-      marginBottom: 18
+      marginBottom: 10
     },
     //End PET Style
 

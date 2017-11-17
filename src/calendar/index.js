@@ -222,7 +222,16 @@ class Calendar extends Component {
     }, this);
 
     if (this.props.markingType === 'pet') {
-      return (<View style={(id === totalWeekRow - 1) ? [this.style.weekPet, this.style.borderRadiusBottom] :this.style.weekPet} key={id}>{week}</View>);
+      let styleWeek = this.style.weekPet;
+      if (id === totalWeekRow - 1) {
+        styleWeek = [this.style.weekPet, this.style.borderRadiusBottom];
+      }
+
+      if (id === totalWeekRow - 2) {
+        styleWeek = [this.style.weekPet, this.style.noBorderBottom];
+      }
+      // return (<View style={(id === totalWeekRow - 1) ? [this.style.weekPet, this.style.borderRadiusBottom] : this.style.weekPet} key={id}>{week}</View>);
+      return (<View style={styleWeek} key={id}>{week}</View>);
     }
 
     return (<View style={this.style.week} key={id}>{week}</View>);
