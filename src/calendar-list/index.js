@@ -24,6 +24,9 @@ class CalendarList extends Component {
 
     // Enable or disable scrolling of calendar list
     scrollEnabled: PropTypes.bool,
+
+    // Enable or disable vertical scroll indicator
+    showScrollIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -168,7 +171,7 @@ class CalendarList extends Component {
         pageSize={1}
         onViewableItemsChanged={this.onViewableItemsChangedBound}
         renderItem={this.renderCalendarBound}
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={this.props.showScrollIndicator !== undefined ? this.props.showScrollIndicator : false}
         scrollEnabled={this.props.scrollingEnabled !== undefined ? this.props.scrollingEnabled : true}
         keyExtractor={(item, index) => index}
         initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
