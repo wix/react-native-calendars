@@ -25,7 +25,7 @@ class CalendarList extends Component {
     // Enable or disable scrolling of calendar list
     scrollEnabled: PropTypes.bool,
 
-    // Enable or disable vertical scroll indicator
+    // Enable or disable vertical scroll indicator. Default = false
     showScrollIndicator: PropTypes.bool,
   };
 

@@ -256,6 +256,8 @@ theme={{
   futureScrollRange={50}
   // Enable or disable scrolling of calendar list
   scrollEnabled={true}
+  // Enable or disable vertical scroll indicator. Default = false
+  showScrollIndicator={true}
   ...calendarParams
 />
 ```
