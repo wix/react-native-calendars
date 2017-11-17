@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   View,
   ViewPropTypes,
+  ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -171,33 +172,33 @@ class Calendar extends Component {
       // const DayComp = this.props.markingType === 'interactive' ? UnitDay : Day;
       let dayType;
       switch (this.props.markingType) {
-      case 'interactive':
-        dayType = UnitDay;
-        break;
-      case 'pet':
-        dayType = PetDay;
-        break;
-      default:
-        dayType = Day;
-        break;
+        case 'interactive':
+          dayType = UnitDay;
+          break;
+        case 'pet':
+          dayType = PetDay;
+          break;
+        default:
+          dayType = Day;
+          break;
       }
       const DayComp = dayType;
 
       const markingExists = this.props.markedDates ? true : false;
       dayComp = (
         <DayComp
-            key={id}
-            state={state}
-            theme={this.props.theme}
-            onPress={this.pressDay}
-            day={day}
-            marked={this.getDateMarking(day)}
-            markingExists={markingExists}
-            index={id} //Pet Style
-          >
-            {day.getDate()}
-          </DayComp>
-        );
+          key={id}
+          state={state}
+          theme={this.props.theme}
+          onPress={this.pressDay}
+          day={day}
+          marked={this.getDateMarking(day)}
+          markingExists={markingExists}
+          index={id} //Pet Style
+        >
+          {day.getDate()}
+        </DayComp>
+      );
     }
     return dayComp;
   }
@@ -214,14 +215,14 @@ class Calendar extends Component {
     }
   }
 
-  renderWeek(days, id) {
+  renderWeek(days, id, totalWeekRow) {
     const week = [];
     days.forEach((day, id2) => {
       week.push(this.renderDay(day, id2));
     }, this);
 
     if (this.props.markingType === 'pet') {
-      return (<View style={id === 4 ? [this.style.weekPet, this.style.borderRadiusBottom] :this.style.weekPet} key={id}>{week}</View>);
+      return (<View style={(id === totalWeekRow - 1) ? [this.style.weekPet, this.style.borderRadiusBottom] :this.style.weekPet} key={id}>{week}</View>);
     }
 
     return (<View style={this.style.week} key={id}>{week}</View>);
@@ -231,15 +232,17 @@ class Calendar extends Component {
     //console.log('render calendar ');
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
+    const totalWeekRow = Math.ceil(days.length / 7);
+
     while (days.length) {
-      weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
+      weeks.push(this.renderWeek(days.splice(0, 7), weeks.length, totalWeekRow));
     }
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
       const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
-          !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
+        !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
       }
     }
@@ -267,7 +270,7 @@ class Calendar extends Component {
             monthFormat={this.props.monthFormat}
             hideDayNames={this.props.hideDayNames}
           />)}
-        {weeks}
+        {totalWeekRow <= 5 ? weeks : (<ScrollView style={this.style.scrollView}>{weeks}</ScrollView>)}
       </View>);
   }
 }

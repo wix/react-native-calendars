@@ -40,6 +40,9 @@ export default function getStyle(theme={}) {
       borderBottomLeftRadius: 5,
       borderBottomRightRadius: 5
     },
+    scrollView: {
+      marginBottom: 18
+    },
     //End PET Style
 
     ...(theme[STYLESHEET_ID] || {})
