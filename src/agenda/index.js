@@ -37,6 +37,8 @@ export default class AgendaView extends Component {
 
     // callback that gets called when items for a certain month should be loaded (month became visible)
     loadItemsForMonth: PropTypes.func,
+    // callback that fires when the calendar is opened or closed
+    onCalendarToggled: PropTypes.func,
     // callback that gets called on day press
     onDayPress: PropTypes.func,
     // callback that gets called when day changes while scrolling agenda list
@@ -213,6 +215,9 @@ export default class AgendaView extends Component {
     this.setState({
       calendarScrollable: true
     });
+    if (this.props.onCalendarToggled) {
+      this.props.onCalendarToggled(true);
+    }
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
     // Otherwise the month after current one or before current one remains invisible.
     // The problem is caused by overflow: 'hidden' style, which we need for dragging
@@ -234,6 +239,9 @@ export default class AgendaView extends Component {
       calendarScrollable: false,
       selectedDay: day.clone()
     });
+    if (this.props.onCalendarToggled) {
+      this.props.onCalendarToggled(false);
+    }
     if (!optimisticScroll) {
       this.setState({
         topDay: day.clone()

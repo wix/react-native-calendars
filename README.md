@@ -145,7 +145,7 @@ const workout = {key:'workout', color: 'green'};
 ```
 
 
-Interval marking
+Period marking
 
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
@@ -159,13 +159,13 @@ Interval marking
 <Calendar
   // Collection of dates that have to be colored in a special way. Default = {}
    markedDates={
-    {'2012-05-20': [{textColor: 'green'}],
-     '2012-05-22': [{startingDay: true, color: 'green'}],
-     '2012-05-23': [{endingDay: true, color: 'green', textColor: 'gray'}],
-     '2012-05-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
+    {'2012-05-20': {periods: [{textColor: 'green'}]},
+     '2012-05-22': {periods: [{startingDay: true, color: 'green'}]},
+     '2012-05-23': {selected: true, periods: [{endingDay: true, color: 'green', textColor: 'gray'}]},
+     '2012-05-04': {disabled: true, periods: [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]}
     }}
-  // Date marking style [simple/interactive/multi-dot]. Default = 'simple'
-  markingType={'interactive'}
+  // Date marking style [simple/period/multi-dot]. Default = 'simple'
+  markingType={'period'}
 />
 ```
 
@@ -236,7 +236,7 @@ theme={{
 }}
 ```
 
-**Disclaimer**: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk. 
+**Disclaimer**: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
 
 ### CalendarList
 
@@ -280,6 +280,8 @@ An advanced agenda component that can display interactive listings for calendar 
     }}
   // callback that gets called when items for a certain month should be loaded (month became visible)
   loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+  // callback that fires when the calendar is opened or closed
+  onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
   // callback that gets called on day press
   onDayPress={(day)=>{console.log('day pressed')}}
   // callback that gets called when day changes while scrolling agenda list
