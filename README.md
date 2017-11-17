@@ -118,10 +118,13 @@ Dot marking
   markedDates={{
     '2012-05-16': {selected: true, marked: true},
     '2012-05-17': {marked: true},
-    '2012-05-18': {disabled: true}
+    '2012-05-18': {marked: true, dotColor: 'red'},
+    '2012-05-19': {disabled: true}
   }}
 />
 ```
+
+You can customise a dot color for each day independently.
 
 Multi-Dot marking
 
