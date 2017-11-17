@@ -179,7 +179,7 @@ class ReactComp extends Component {
 
   render() {
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
-      return (<ActivityIndicator style={{marginTop: 80}}/>);
+      return this.props.renderEmptyData();
     }
     return (
       <FlatList
