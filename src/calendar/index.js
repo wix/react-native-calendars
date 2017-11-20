@@ -195,7 +195,7 @@ class Calendar extends Component {
 
   renderWeekNumber (weekNumber) {
     return (
-      <View style={{
+      <View key={`week-${weekNumber}`} style={{
         width: 32,
         height: 32,
         alignItems: 'center',
