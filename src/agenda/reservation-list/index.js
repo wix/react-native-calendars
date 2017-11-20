@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {
   FlatList,
-  ActivityIndicator,
   View
 } from 'react-native';
 import Reservation from './reservation';
