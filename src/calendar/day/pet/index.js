@@ -88,7 +88,7 @@ class Day extends Component {
       textStyle.push(this.style.selectedText);
 
       //PET Style
-      containerStyle.push(this.style.selectedView);
+      // containerStyle.push(this.style.selectedView);
       //End PET Style
     } else if (this.props.state === 'disabled' || marked.disabled) {
       textStyle.push(this.style.disabledText);
@@ -113,12 +113,14 @@ class Day extends Component {
         {/*<Text style={textStyle}>{String(this.props.children)}</Text>*/}
 
         {/*PET Style*/}
-        <View style={this.style.dayView}>
-          <Text style={textStyle}>{String(this.props.children)}</Text>
-          <Text style={this.style.typeDayText} numberOfLines={1}>{typeDay}</Text>
-        </View>
+        <View style={(this.props.state === 'selected' || marked.selected) ? [this.style.viewBound, this.style.selectedView] : this.style.viewBound}>
+          <View style={ this.style.dayView }>
+            <Text style={ textStyle }>{ String(this.props.children) }</Text>
+            <Text style={ this.style.typeDayText } numberOfLines={ 1 }>{ typeDay }</Text>
+          </View>
         {/*End PET Style*/}
         {dot}
+        </View>
       </TouchableOpacity>
     );
   }

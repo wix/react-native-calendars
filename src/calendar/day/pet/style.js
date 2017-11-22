@@ -98,8 +98,14 @@ export default function styleConstructor(theme={}) {
     selectedText: {
       // color: appStyle.selectedDayTextColor
     },
+    viewBound: {
+      height: "100%",
+      width: "100%",
+    },
     selectedView: {
-      backgroundColor: appStyle.bgDayColor
+      // backgroundColor: appStyle.bgDayColor
+      borderWidth: 1,
+      borderColor: "#0cc287"
     },
     dayView: {
       flexDirection: 'row',
