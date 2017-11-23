@@ -115,7 +115,8 @@ class Calendar extends Component {
     });
   }
 
-  pressDay(day) {
+  pressDay(date) {
+    const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
@@ -162,9 +163,8 @@ class Calendar extends Component {
           state={state}
           theme={this.props.theme}
           onPress={this.pressDay}
-          day={day}
-          dateString={date}
-          marked={this.getDateMarking(day)}
+          date={xdateToData(day)}
+          marking={this.getDateMarking(day)}
         >
           {date}
         </DayComp>
