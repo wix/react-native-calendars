@@ -390,6 +390,7 @@ export default class AgendaView extends Component {
               monthFormat={this.props.monthFormat}
               pastScrollRange={this.props.pastScrollRange}
               futureScrollRange={this.props.futureScrollRange}
+              dayComponent={this.props.dayComponent}
             />
           </Animated.View>
           {knob}
