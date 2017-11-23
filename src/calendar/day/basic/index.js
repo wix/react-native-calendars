@@ -71,11 +71,10 @@ class Day extends Component {
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
-      let backgroundColor = {};
-      if (marked.dotColor) {
-        backgroundColor = {backgroundColor: marked.dotColor};
+      if (marking.dotColor) {
+        dotStyle.push({backgroundColor: marking.dotColor});
       }
-      dot = (<View style={[dotStyle, backgroundColor]}/>);
+      dot = (<View style={dotStyle}/>);
     }
 
     if (marking.selected) {
