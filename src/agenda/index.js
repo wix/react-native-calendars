@@ -340,7 +340,7 @@ export default class AgendaView extends Component {
 
     if (!this.state.calendarIsReady) {
       // limit header height until everything is setup for calendar dragging
-      headerStyle.push({height: HEADER_HEIGHT});
+      headerStyle.push({height: 0});
       // fill header with appStyle.calendarBackground background to reduce flickering
       weekdaysStyle.push({height: HEADER_HEIGHT});
     }
