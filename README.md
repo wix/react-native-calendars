@@ -280,6 +280,8 @@ If you implement an awesome day component please make a PR so that other people 
   futureScrollRange={50}
   // Enable or disable scrolling of calendar list
   scrollEnabled={true}
+  // Enable or disable vertical scroll indicator. Default = false
+  showScrollIndicator={true}
   ...calendarParams
 />
 ```
