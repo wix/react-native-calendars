@@ -249,8 +249,8 @@ component to the calendar.
 ```javascript
 <Calendar
   style={[styles.calendar, {height: 300}]}
-  dayComponent={({dateString, state}) => {
-    return (<View style={{flex: 1}}><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{dateString}</Text></View>);
+  dayComponent={({date, state}) => {
+    return (<View style={{flex: 1}}><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
   }}
 />
 ```
