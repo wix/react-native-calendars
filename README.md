@@ -259,6 +259,7 @@ The dayComponent prop has to receive a RN component or function that receive pro
 * date - the date object representing this day
 
 **Tip** Don't forget to implement shouldComponentUpdate for your custom day component to make calendar perform better
+
 **Tip2** If you implement an awesome day component please make a PR so that other people could use it :)
 
 ### CalendarList
