@@ -88,6 +88,7 @@ export default class AgendaView extends Component {
     this.headerState = 'idle';
     this.state = {
       scrollY: new Animated.Value(0),
+      calendarIsReady: false,
       calendarScrollable: false,
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
@@ -122,6 +123,8 @@ export default class AgendaView extends Component {
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
     this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+    // delay rendering calendar in full height because otherwise it still flickers sometimes
+    setTimeout(() => this.setState({calendarIsReady: true}), 0);
   }
 
   onLayout(event) {
@@ -334,6 +337,13 @@ export default class AgendaView extends Component {
       this.styles.header,
       { bottom: agendaHeight, transform: [{ translateY: headerTranslate }] },
     ];
+
+    if (!this.state.calendarIsReady) {
+      // limit header height until everything is setup for calendar dragging
+      headerStyle.push({height: HEADER_HEIGHT});
+      // fill header with appStyle.calendarBackground background to reduce flickering
+      weekdaysStyle.push({height: HEADER_HEIGHT});
+    }
 
     const shouldAllowDragging = !this.props.hideKnob && !this.state.calendarScrollable;
     const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT  : 0) - KNOB_HEIGHT;
