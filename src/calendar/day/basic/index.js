@@ -88,7 +88,15 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
     return (
-      <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
+      <TouchableOpacity
+        style={containerStyle}
+        onPress={this.onDayPress}
+        disabled={
+          typeof marking.disabled !== 'undefined'
+            ? marking.disabled
+            : this.props.state === 'disabled'
+        }
+      >
         <Text style={textStyle}>{String(this.props.children)}</Text>
         {dot}
       </TouchableOpacity>
