@@ -15,9 +15,9 @@ class Day extends Component {
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
-    marked: PropTypes.any,
+    marking: PropTypes.any,
     onPress: PropTypes.func,
-    day: PropTypes.object
+    date: PropTypes.object
   };
 
   constructor(props) {
@@ -27,11 +27,11 @@ class Day extends Component {
   }
 
   onDayPress() {
-    this.props.onPress(this.props.day);
+    this.props.onPress(this.props.date);
   }
 
   shouldComponentUpdate(nextProps) {
-    const changed = ['state', 'children', 'marked', 'onPress'].reduce((prev, next) => {
+    const changed = ['state', 'children', 'marking', 'onPress'].reduce((prev, next) => {
       if (prev) {
         return prev;
       } else if (nextProps[next] !== this.props[next]) {
@@ -39,18 +39,19 @@ class Day extends Component {
       }
       return prev;
     }, false);
-    if (changed === 'marked') {
-      let markedChanged = false;
-      if (this.props.marked && nextProps.marked) {
-        markedChanged = (!(
-          this.props.marked.marked === nextProps.marked.marked
-          && this.props.marked.selected === nextProps.marked.selected
-          && this.props.marked.disabled === nextProps.marked.disabled));
+    if (changed === 'marking') {
+      let markingChanged = false;
+      if (this.props.marking && nextProps.marking) {
+        markingChanged = (!(
+          this.props.marking.marked === nextProps.marking.marked
+          && this.props.marking.selected === nextProps.marking.selected
+          && this.props.marking.dotColor === nextProps.marking.dotColor
+          && this.props.marking.disabled === nextProps.marking.disabled));
       } else {
-        markedChanged = true;
+        markingChanged = true;
       }
-      // console.log('marked changed', markedChanged);
-      return markedChanged;
+      // console.log('marking changed', markingChanged);
+      return markingChanged;
     } else {
       // console.log('changed', changed);
       return !!changed;
@@ -62,23 +63,26 @@ class Day extends Component {
     const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
 
-    let marked = this.props.marked || {};
-    if (marked && marked.constructor === Array && marked.length) {
-      marked = {
-        marked: true
+    let marking = this.props.marking || {};
+    if (marking && marking.constructor === Array && marking.length) {
+      marking = {
+        marking: true
       };
     }
     let dot;
-    if (marked.marked) {
+    if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
+      if (marking.dotColor) {
+        dotStyle.push({backgroundColor: marking.dotColor});
+      }
       dot = (<View style={dotStyle}/>);
     }
 
-    if (marked.selected) {
+    if (marking.selected) {
       containerStyle.push(this.style.selected);
       dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
-    } else if (typeof marked.disabled !== 'undefined' ? marked.disabled : this.props.state === 'disabled') {
+    } else if (typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       textStyle.push(this.style.todayText);

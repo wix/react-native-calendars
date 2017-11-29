@@ -118,10 +118,13 @@ Dot marking
   markedDates={{
     '2012-05-16': {selected: true, marked: true},
     '2012-05-17': {marked: true},
-    '2012-05-18': {disabled: true}
+    '2012-05-18': {marked: true, dotColor: 'red'},
+    '2012-05-19': {disabled: true}
   }}
 />
 ```
+
+You can customise a dot color for each day independently.
 
 Multi-Dot marking
 
@@ -237,6 +240,30 @@ theme={{
 ```
 
 **Disclaimer**: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
+
+#### Overriding day component
+
+If you need custom functionality not supported by current day component implementations you can pass your own custom day
+component to the calendar.
+
+```javascript
+<Calendar
+  style={[styles.calendar, {height: 300}]}
+  dayComponent={({date, state}) => {
+    return (<View style={{flex: 1}}><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
+  }}
+/>
+```
+
+The dayComponent prop has to receive a RN component or function that receive props. The day component will receive such props:
+
+* state - disabled if the day should be disabled (this is decided by base calendar component)
+* marking - markedDates value for this day
+* date - the date object representing this day
+
+**Tip:** Don't forget to implement shouldComponentUpdate for your custom day component to make calendar perform better
+
+If you implement an awesome day component please make a PR so that other people could use it :)
 
 ### CalendarList
 

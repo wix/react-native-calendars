@@ -35,6 +35,7 @@ class CalendarListItem extends Component {
           maxDate={this.props.maxDate}
           firstDay={this.props.firstDay}
           monthFormat={this.props.monthFormat}
+          dayComponent={this.props.dayComponent}
           disabledByDefault={this.props.disabledByDefault}
         />);
     } else {

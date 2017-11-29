@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
   Text,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  View
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
@@ -31,14 +32,23 @@ export default class CalendarsScreen extends Component {
           maxDate={'2012-05-29'}
           firstDay={1}
           markedDates={{
-            '2012-05-24': {selected: true, marked: true},
-            '2012-05-25': {marked: true},
-            '2012-05-26': {disabled: true}
+            '2012-05-23': {selected: true, marked: true},
+            '2012-05-24': {selected: true, marked: true, dotColor: 'green'},
+            '2012-05-25': {marked: true, dotColor: 'red'},
+            '2012-05-26': {marked: true},
+            '2012-05-27': {disabled: true}
           }}
           // disabledByDefault={true}
           hideArrows={true}
         />
-        <Text style={styles.text}>Calendar with marked dates and spinner</Text>
+        <Text style={styles.text}>Calendar with custom day component</Text>
+        <Calendar
+          style={[styles.calendar, {height: 300}]}
+          dayComponent={({date, state}) => {
+            return (<View style={{flex: 1}}><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
+          }}
+        />
+        <Text style={styles.text}>Calendar with period marking and spinner</Text>
         <Calendar
           style={styles.calendar}
           current={'2012-05-16'}
@@ -75,6 +85,7 @@ export default class CalendarsScreen extends Component {
             '2012-05-26': {endingDay: true, color: 'gray'}}}
           hideArrows={false}
         />
+        <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
           current={'2012-05-16'}
