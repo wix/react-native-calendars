@@ -65,8 +65,11 @@ class ReactComp extends Component {
   updateReservations(props) {
     const reservations = this.getReservations(props);
     if (this.list && this.isScrollEvent) {
-      this.scrollOver = false;  
-      this.list.scrollToIndex({index: reservations.scrollPosition, animated: true});
+      this.scrollOver = false; 
+      if(this.list.props.data.length > reservations.scrollPosition){
+        this.list.scrollToIndex({index: reservations.scrollPosition, animated: true});
+      }
+     
     } else {
         this.isScrollEvent = true;
     }
