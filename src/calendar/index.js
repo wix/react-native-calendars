@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   View,
   ViewPropTypes,
+  Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -200,16 +201,33 @@ class Calendar extends Component {
     }
   }
 
+  renderWeekNumber (weekNumber) {
+    return (
+      <View key={`week-${weekNumber}`} style={{
+        width: 32,
+        height: 32,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Text>{weekNumber}</Text>
+      </View>
+    );
+  }
+
   renderWeek(days, id) {
     const week = [];
     days.forEach((day, id2) => {
       week.push(this.renderDay(day, id2));
     }, this);
+
+    if (this.props.showWeekNumbers) {
+      week.unshift(this.renderWeekNumber(days[0].getWeek()));
+    }
+
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
   render() {
-    //console.log('render calendar ');
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
     while (days.length) {
@@ -236,6 +254,7 @@ class Calendar extends Component {
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
           hideDayNames={this.props.hideDayNames}
+          weekNumbers={this.props.showWeekNumbers}
         />
         {weeks}
       </View>);
