@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {
   View,
-  ViewPropTypes,
-  Text
+  ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -204,7 +203,7 @@ class Calendar extends Component {
   }
 
   renderWeekNumber (weekNumber) {
-    return <Day key={`week-${weekNumber}`} theme={this.props.theme} state='disabled'>{weekNumber}</Day>
+    return <Day key={`week-${weekNumber}`} theme={this.props.theme} state='disabled'>{weekNumber}</Day>;
   }
 
   renderWeek(days, id) {
