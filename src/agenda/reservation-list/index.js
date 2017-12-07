@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {
   FlatList,
-  ActivityIndicator,
   View
 } from 'react-native';
 import Reservation from './reservation';
@@ -179,6 +178,9 @@ class ReactComp extends Component {
 
   render() {
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
+      if (this.props.renderEmptyData) {
+        return this.props.renderEmptyData();
+      }
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
     return (

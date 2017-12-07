@@ -333,6 +333,8 @@ An advanced agenda component that can display interactive listings for calendar 
   renderEmptyDate={() => {return (<View />);}}
   // specify how agenda knob should look like
   renderKnob={() => {return (<View />);}}
+  // specify what should be rendered instead of ActivityIndicator
+  renderEmptyData = {() => {return (<View />);}}
   // specify your item comparison function for increased performance
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
