@@ -99,6 +99,8 @@ LocaleConfig.defaultLocale = 'fr';
   firstDay={1}
   // Hide day names. Default = false
   hideDayNames={true}
+  // Show week numbers to the left. Default = false
+  showWeekNumbers={true}
 />
 ```
 
