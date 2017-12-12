@@ -13,6 +13,7 @@ import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
 import MultiDotDay from './day/multi-dot';
+import TextDay from './day/text';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
@@ -184,6 +185,8 @@ class Calendar extends Component {
       return UnitDay;
     case 'multi-dot':
       return MultiDotDay;
+    case 'text':
+      return TextDay;
     default:
       return Day;
     }
