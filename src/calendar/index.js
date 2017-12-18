@@ -213,7 +213,7 @@ class Calendar extends Component {
     }, this);
 
     if (this.props.showWeekNumbers) {
-      week.unshift(this.renderWeekNumber(days[0].getWeek()));
+      week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
     }
 
     return (<View style={this.style.week} key={id}>{week}</View>);
