@@ -96,6 +96,14 @@ export default class CalendarsScreen extends Component {
           }}
           hideArrows={false}
         />
+        <Text style={styles.text}>Calendar with week numbers</Text>
+        <Calendar
+          onDayPress={this.onDayPress}
+          style={styles.calendar}
+          hideExtraDays
+          showWeekNumbers
+          markedDates={{[this.state.selected]: {selected: true}}}
+        />
       </ScrollView>
     );
   }

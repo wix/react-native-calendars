@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {
   View,
-  ViewPropTypes,
-  Text
+  ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -63,10 +62,12 @@ class Calendar extends Component {
     monthFormat: PropTypes.string,
     // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
     disableMonthChange: PropTypes.bool,
-    //Hide day names. Default = false
+    //  Hide day names. Default = false
     hideDayNames: PropTypes.bool,
-    //Disable days by default. Default = false
-    disabledByDefault: PropTypes.bool
+    // Disable days by default. Default = false
+    disabledByDefault: PropTypes.bool,
+    // Show week numbers. Default = false
+    showWeekNumbers: PropTypes.bool,
   };
 
   constructor(props) {
@@ -202,16 +203,7 @@ class Calendar extends Component {
   }
 
   renderWeekNumber (weekNumber) {
-    return (
-      <View key={`week-${weekNumber}`} style={{
-        width: 32,
-        height: 32,
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Text>{weekNumber}</Text>
-      </View>
-    );
+    return <Day key={`week-${weekNumber}`} theme={this.props.theme} state='disabled'>{weekNumber}</Day>;
   }
 
   renderWeek(days, id) {
@@ -221,7 +213,7 @@ class Calendar extends Component {
     }, this);
 
     if (this.props.showWeekNumbers) {
-      week.unshift(this.renderWeekNumber(days[0].getWeek()));
+      week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
     }
 
     return (<View style={this.style.week} key={id}>{week}</View>);
