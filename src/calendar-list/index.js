@@ -84,7 +84,8 @@ class CalendarList extends Component {
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
     let diffMonths = this.state.openDate.diffMonths(scrollTo);
-    diffMonths = diffMonths < 0 ? Math.ceil(diffMonths) : Math.floor(diffMonths);
+    const isAnotherMonth = this.state.openDate.getMonth() !== scrollTo.getMonth();
+    diffMonths = (diffMonths < 0 || isAnotherMonth) ? Math.ceil(diffMonths) : Math.floor(diffMonths);
     const scrollAmount = (calendarHeight * this.pastScrollRange) + (diffMonths * calendarHeight);
     //console.log(month, this.state.openDate);
     //console.log(scrollAmount, diffMonths);
