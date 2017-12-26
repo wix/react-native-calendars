@@ -185,14 +185,15 @@ class Calendar extends Component {
       const DayComp = dayType;
 
       const markingExists = this.props.markedDates ? true : false;
+      const dateMarking = this.getDateMarking(day);
       dayComp = (
         <DayComp
           key={id}
           state={state}
-          theme={this.props.theme}
+          theme={(dateMarking && dateMarking.style) ? {...this.props.theme, ...dateMarking.style} : this.props.theme}
           onPress={this.pressDay}
           day={day}
-          marked={this.getDateMarking(day)}
+          marked={dateMarking}
           markingExists={markingExists}
           index={id} //Pet Style
         >

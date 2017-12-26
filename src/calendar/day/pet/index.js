@@ -24,7 +24,6 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
-    this.style = styleConstructor(props.theme);
     this.onDayPress = this.onDayPress.bind(this);
   }
 
@@ -42,6 +41,7 @@ class Day extends Component {
   }
 
   render() {
+    this.style = styleConstructor(this.props.theme);
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
