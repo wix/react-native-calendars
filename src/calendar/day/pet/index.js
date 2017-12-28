@@ -45,6 +45,7 @@ class Day extends Component {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
+    const typeDayStyle = [this.style.typeDayText];
 
     let marked = this.props.marked || {};
 
@@ -92,6 +93,7 @@ class Day extends Component {
       //End PET Style
     } else if (this.props.state === 'disabled' || marked.disabled) {
       textStyle.push(this.style.disabledText);
+      typeDayStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       textStyle.push(this.style.todayText);
       //PET Style
@@ -116,7 +118,7 @@ class Day extends Component {
         <View style={(this.props.state === 'selected' || marked.selected) ? [this.style.viewBound, this.style.selectedView] : this.style.viewBound}>
           <View style={ this.style.dayView }>
             <Text style={ textStyle }>{ String(this.props.children) }</Text>
-            <Text style={ this.style.typeDayText } numberOfLines={ 1 }>{ typeDay }</Text>
+            <Text style={ typeDayStyle } numberOfLines={ 1 }>{ typeDay }</Text>
           </View>
         {/*End PET Style*/}
         {dot}
