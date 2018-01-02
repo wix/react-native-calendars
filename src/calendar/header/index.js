@@ -44,6 +44,9 @@ class CalendarHeader extends Component {
     if (nextProps.showIndicator !== this.props.showIndicator) {
       return true;
     }
+    if (nextProps.hideDayNames !== this.props.hideDayNames) {
+      return true;
+    }
     return false;
   }
 
