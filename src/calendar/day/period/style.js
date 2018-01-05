@@ -69,6 +69,10 @@ export default function styleConstructor(theme={}) {
     naText: {
       color: '#b6c1cd'
     },
+    subTitle: {
+      fontSize: appStyle.textSubTitleFontSize,
+      color: appStyle.subTitleTextColor
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }

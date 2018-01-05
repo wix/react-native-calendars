@@ -176,6 +176,29 @@ Period marking
 
 Keep in mind that different marking types are not compatible. You can use just one marking style for calendar.
 
+#### Displaying sub title for date
+
+<kbd>
+  <img src="https://github.com/wix/react-native-calendars/blob/master/demo/sub-title.png?raw=true">
+</kbd>
+
+```javascript
+<CalendarList 
+  markingType={'period'} 
+  current={'2012-05-16'} 
+  pastScrollRange={24} 
+  futureScrollRange={24} 
+  theme={{subTitleTextColor: 'orange',}}
+  subTitleForDate={(date)=>{
+    if(date.month === 5) {
+      return `$1.${date.day}`;
+    }
+    return null;
+  }}/>
+```
+
+*Note that this feature now only works with `Period marking`*
+
 #### Displaying data loading indicator
 
 <kbd>

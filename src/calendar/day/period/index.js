@@ -188,6 +188,17 @@ class Day extends Component {
       );
     }
 
+    let subTitleView;
+    if(this.props.subTitleForDate)
+    {
+      let subTitleText = this.props.subTitleForDate(this.props.date);
+      let subTitleStyle = {
+        fontSize: this.theme.textSubTitleFontSize,
+        color: this.theme.subTitleTextColor
+      };
+      subTitleView = <Text style={[this.style.subTitle, subTitleStyle]}>{subTitleText}</Text>;
+    }
+
     return (
       <TouchableWithoutFeedback onPress={this.onDayPress}>
         <View style={this.style.wrapper}>
@@ -195,6 +206,7 @@ class Day extends Component {
           <View style={containerStyle}>
             <Text style={textStyle}>{String(this.props.children)}</Text>
           </View>
+          {subTitleView}
         </View>
       </TouchableWithoutFeedback>
     );
