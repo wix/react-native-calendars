@@ -20,6 +20,7 @@ export const textDayHeaderFontFamily = 'System';
 export const textDayFontSize = 16;
 export const textMonthFontSize = 16;
 export const textDayHeaderFontSize = 13;
+export const textSubTitleFontSize = 11;
 
 export const calendarBackground = foregroundColor;
 export const textSectionTitleColor = '#b6c1cd';
@@ -36,3 +37,4 @@ export const agendaDayTextColor = '#7a92a5';
 export const agendaDayNumColor = '#7a92a5';
 export const agendaTodayColor = textLinkColor;
 export const agendaKnobColor = Platform.OS === 'ios' ? '#f2F4f5' : '#4ac4f7';
+export const subTitleTextColor = '#999999';

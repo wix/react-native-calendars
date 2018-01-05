@@ -62,6 +62,8 @@ class CalendarList extends Component {
     
     this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
     this.renderCalendarBound = this.renderCalendar.bind(this);
+
+    calendarHeight = this.props.subTitleForDate ? (calendarHeight + 20) : calendarHeight;
   }
 
   scrollToDay(d, offset, animated) {

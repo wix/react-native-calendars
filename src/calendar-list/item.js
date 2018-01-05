@@ -37,6 +37,7 @@ class CalendarListItem extends Component {
           monthFormat={this.props.monthFormat}
           dayComponent={this.props.dayComponent}
           disabledByDefault={this.props.disabledByDefault}
+          subTitleForDate={this.props.subTitleForDate}
         />);
     } else {
       const text = row.toString();
