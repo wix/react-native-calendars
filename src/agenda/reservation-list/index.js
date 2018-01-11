@@ -12,7 +12,7 @@ import XDate from 'xdate';
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
 const window = Dimensions.get('window');
-const visibleHeight = window.height - 170; 
+const visibleHeight = window.height - 170 - 50; 
 
 class ReactComp extends Component {
   static propTypes = {
@@ -48,7 +48,7 @@ class ReactComp extends Component {
         this.heights = [];
         this.selectedDay = this.props.selectedDay;
         this.scrollOver = false;
-        this.isScrollEvent = true;
+        this.updateScroll = false;
         this.scrollPosition = 0;  
   }
 
@@ -64,18 +64,20 @@ class ReactComp extends Component {
 
   updateReservations(props) {
     const reservations = this.getReservations(props);
-    if (this.list && this.isScrollEvent) {
-      this.scrollOver = false; 
+    if (this.list && this.updateScroll) {
+      this.updateScroll = false; 
       if(this.list.props.data.length > reservations.scrollPosition){
+        this.scrollOver = false;
         this.list.scrollToIndex({index: reservations.scrollPosition, animated: true});
       }
-     
-    } else {
-        this.isScrollEvent = true;
     }
    
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
+  }
+
+  scrollToIndex(){
+    this.updateScroll = true;
   }
 
   componentWillReceiveProps(props) {

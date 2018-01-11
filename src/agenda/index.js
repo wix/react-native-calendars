@@ -78,6 +78,10 @@ export default class AgendaView extends Component {
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
     monthFormat: PropTypes.string,
     itemHeight: PropTypes.number,
+<<<<<<< HEAD
+=======
+    agendaItemClick: PropTypes.boolean,
+>>>>>>> upstream-release
   };
 
   constructor(props) {
@@ -139,10 +143,10 @@ export default class AgendaView extends Component {
   }
 
   onTouchStart() {
-    this.headerState = 'touched';
-    if (this.knob) {
-      this.knob.setNativeProps({style: { opacity: 0.5 }});
-    }
+        this.headerState = 'touched';
+        if (this.knob) {
+          this.knob.setNativeProps({style: { opacity: 0.5 }});
+        }
   }
 
   onTouchEnd() {
@@ -252,6 +256,9 @@ export default class AgendaView extends Component {
     }
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
     this.calendar.scrollToDay(day, this.calendarOffset(), true);
+    if(this.list){
+      this.list.scrollToIndex();
+    }
     if (this.props.loadItemsForMonth) {
       this.props.loadItemsForMonth(xdateToData(day));
     }
@@ -283,7 +290,7 @@ export default class AgendaView extends Component {
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
     if (isScroll) {
-       this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation); 
+      //this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation); 
     }  
     
     this.setState({
@@ -398,7 +405,7 @@ export default class AgendaView extends Component {
           onScrollEndDrag={this.onSnapAfterDrag}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
-            { useNativeDriver: true },
+            { useNativeDriver: false },
           )} 
             >        
           <View style={{height: agendaHeight + KNOB_HEIGHT}} onLayout={this.onScrollPadLayout} />
