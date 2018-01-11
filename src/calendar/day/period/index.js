@@ -17,10 +17,10 @@ class Day extends Component {
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
-    marked: PropTypes.any,
+    marking: PropTypes.any,
 
     onPress: PropTypes.func,
-    day: PropTypes.object,
+    date: PropTypes.object,
 
     markingExists: PropTypes.bool,
   };
@@ -29,16 +29,16 @@ class Day extends Component {
     super(props);
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
-    this.markingStyle = this.getDrawingStyle(props.marked);
+    this.markingStyle = this.getDrawingStyle(props.marking || []);
     this.onDayPress = this.onDayPress.bind(this);
   }
 
   onDayPress() {
-    this.props.onPress(this.props.day);
+    this.props.onPress(this.props.date);
   }
 
   shouldComponentUpdate(nextProps) {
-    const newMarkingStyle = this.getDrawingStyle(nextProps.marked);
+    const newMarkingStyle = this.getDrawingStyle(nextProps.marking);
 
     if (JSON.stringify(this.markingStyle) !== JSON.stringify(newMarkingStyle)) {
       this.markingStyle = newMarkingStyle;
@@ -54,11 +54,16 @@ class Day extends Component {
   }
 
   getDrawingStyle(marking) {
+    const defaultStyle = {textStyle: {}};
     if (!marking) {
-      return {};
+      return defaultStyle;
     }
-    return marking.reduce((prev, next) => {
-      prev.textStyle = {};
+    if (this.props.marking.disabled) {
+      defaultStyle.textStyle.color = this.theme.textDisabledColor;
+    } else if (this.props.marking.selected) {
+      defaultStyle.textStyle.color = this.theme.selectedDayTextColor;
+    }
+    const resultStyle = ([marking]).reduce((prev, next) => {
       if (next.quickAction) {
         if (next.first || next.last) {
           prev.containerStyle = this.style.firstQuickAction;
@@ -101,7 +106,8 @@ class Day extends Component {
         prev.textStyle.color = next.textColor;
       }
       return prev;
-    }, {});
+    }, defaultStyle);
+    return resultStyle;
   }
 
   render() {
@@ -118,7 +124,7 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
 
-    if (this.props.marked) {
+    if (this.props.marking) {
       containerStyle.push({
         borderRadius: 17
       });

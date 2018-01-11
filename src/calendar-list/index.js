@@ -24,6 +24,9 @@ class CalendarList extends Component {
 
     // Enable or disable scrolling of calendar list
     scrollEnabled: PropTypes.bool,
+
+    // Enable or disable vertical scroll indicator. Default = false
+    showScrollIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -35,17 +38,20 @@ class CalendarList extends Component {
     const texts = [];
     const date = parseDate(props.current) || XDate();
     for (let i = 0; i <= this.pastScrollRange + this.futureScrollRange; i++) {
-      const text = date.clone().addMonths(i - this.pastScrollRange).toString('MMM yyyy');
-      rows.push(text);
-      texts.push(text);
+      const rangeDate = date.clone().addMonths(i - this.pastScrollRange, true);
+      const rangeDateStr = rangeDate.toString('MMM yyyy');
+      texts.push(rangeDateStr);
+      /*
+       * This selects range around current shown month [-0, +2] or [-1, +1] month for detail calendar rendering.
+       * If `this.pastScrollRange` is `undefined` it's equal to `false` or 0 in next condition.
+       */
+      if (this.pastScrollRange - 1 <= i && i <= this.pastScrollRange + 1 || !this.pastScrollRange && i <= this.pastScrollRange + 2) {
+        rows.push(rangeDate);
+      } else {
+        rows.push(rangeDateStr);
+      }
     }
-    rows[this.pastScrollRange] = date;
-    rows[this.pastScrollRange + 1] = date.clone().addMonths(1, true);
-    if (this.pastScrollRange) {
-      rows[this.pastScrollRange - 1] = date.clone().addMonths(-1, true);
-    } else {
-      rows[this.pastScrollRange + 2] = date.clone().addMonths(2, true);
-    }
+
     this.state = {
       rows,
       texts,
@@ -54,10 +60,8 @@ class CalendarList extends Component {
     };
     this.lastScrollPosition = -1000;
 
-
     this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this)
     this.renderCalendarBound = this.renderCalendar.bind(this);
-    
   }
 
   scrollToDay(d, offset, animated) {
@@ -79,8 +83,7 @@ class CalendarList extends Component {
   scrollToMonth(m) {
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
-    let diffMonths = this.state.openDate.diffMonths(scrollTo);
-    diffMonths = diffMonths < 0 ? Math.ceil(diffMonths) : Math.floor(diffMonths);
+    let diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
     const scrollAmount = (calendarHeight * this.pastScrollRange) + (diffMonths * calendarHeight);
     //console.log(month, this.state.openDate);
     //console.log(scrollAmount, diffMonths);
