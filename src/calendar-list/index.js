@@ -59,8 +59,8 @@ class CalendarList extends Component {
       initialized: false
     };
     this.lastScrollPosition = -1000;
-    
-    this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
+
+    this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this)
     this.renderCalendarBound = this.renderCalendar.bind(this);
   }
 
@@ -173,7 +173,7 @@ class CalendarList extends Component {
         pageSize={1}
         onViewableItemsChanged={this.onViewableItemsChangedBound}
         renderItem={this.renderCalendarBound}
-        showsVerticalScrollIndicator={this.props.showScrollIndicator !== undefined ? this.props.showScrollIndicator : false}
+        showsVerticalScrollIndicator={false}
         scrollEnabled={this.props.scrollingEnabled !== undefined ? this.props.scrollingEnabled : true}
         keyExtractor={(item, index) => index}
         initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
