@@ -11,7 +11,7 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 
-const calendarHeight = 360;
+calendarHeight = 360;
 class CalendarList extends Component {
   static propTypes = {
     ...Calendar.propTypes,
@@ -27,10 +27,15 @@ class CalendarList extends Component {
 
     // Enable or disable vertical scroll indicator. Default = false
     showScrollIndicator: PropTypes.bool,
+
+    // Height of Calendar in CalendarList
+    calendarHeight: PropTypes.number,
   };
 
   constructor(props) {
     super(props);
+    if(props.calendarHeight != undefined)
+      calendarHeight = props.calendarHeight;
     this.pastScrollRange = props.pastScrollRange === undefined ? 50 : props.pastScrollRange;
     this.futureScrollRange = props.futureScrollRange === undefined ? 50 : props.futureScrollRange;
     this.style = styleConstructor(props.theme);
