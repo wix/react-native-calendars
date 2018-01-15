@@ -97,7 +97,7 @@ class Day extends Component {
             : this.props.state === 'disabled'
         }
       >
-        <Text style={textStyle}>{String(this.props.children)}</Text>
+        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
         {dot}
       </TouchableOpacity>
     );

@@ -401,7 +401,7 @@ export default class AgendaView extends Component {
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
           {weekDaysNames.map((day) => (
-            <Text key={day} style={this.styles.weekday} numberOfLines={1}>{day}</Text>
+            <Text allowFontScaling={false} key={day} style={this.styles.weekday} numberOfLines={1}>{day}</Text>
           ))}
         </Animated.View>
         <Animated.ScrollView
