@@ -42,6 +42,8 @@ class Calendar extends Component {
     // Date marking style [simple/period]. Default = 'simple'
     markingType: PropTypes.string,
 
+    // Hide header. Default = false
+    hideHeader: PropTypes.bool,
     // Hide month navigation arrows. Default = false
     hideArrows: PropTypes.bool,
     // Display loading indicador. Default = false
@@ -236,18 +238,21 @@ class Calendar extends Component {
     }
     return (
       <View style={[this.style.container, this.props.style]}>
-        <CalendarHeader
-          theme={this.props.theme}
-          hideArrows={this.props.hideArrows}
-          month={this.state.currentMonth}
-          addMonth={this.addMonth}
-          showIndicator={indicator}
-          firstDay={this.props.firstDay}
-          renderArrow={this.props.renderArrow}
-          monthFormat={this.props.monthFormat}
-          hideDayNames={this.props.hideDayNames}
-          weekNumbers={this.props.showWeekNumbers}
-        />
+        {
+          !(this.props.hideHeader != undefined && this.props.hideHeader == true) &&
+          <CalendarHeader
+            theme={this.props.theme}
+            hideArrows={this.props.hideArrows}
+            month={this.state.currentMonth}
+            addMonth={this.addMonth}
+            showIndicator={indicator}
+            firstDay={this.props.firstDay}
+            renderArrow={this.props.renderArrow}
+            monthFormat={this.props.monthFormat}
+            hideDayNames={this.props.hideDayNames}
+            weekNumbers={this.props.showWeekNumbers}
+          />
+        }
         {weeks}
       </View>);
   }
