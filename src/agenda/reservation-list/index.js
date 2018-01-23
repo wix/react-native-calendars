@@ -158,9 +158,11 @@ class ReactComp extends Component {
       const iterator = this.state.reservations[0].day.clone();
       while (iterator.getTime() < props.selectedDay.getTime()) {
         const res = this.getReservationsForDay(iterator, props);
-        if (!res && !chaining) {
-          reservations = [];
-          break;
+        if (!res) {
+          if (!chaining){
+            reservations = [];
+            break;
+          }          
         } else {
           reservations = reservations.concat(res);
         }
@@ -183,7 +185,7 @@ class ReactComp extends Component {
   render() {
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
       if (this.props.renderEmptyData) {
-        return this.props.renderEmptyData();
+        return this.props.renderEmptyData(this.props.selectedDay.toString('yyyy-MM-dd'));
       }
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
