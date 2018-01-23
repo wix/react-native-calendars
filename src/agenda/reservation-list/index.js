@@ -150,12 +150,15 @@ class ReactComp extends Component {
     if (!props.reservations || !props.selectedDay) {
       return {reservations: [], scrollPosition: 0};
     }
+
+    const chaining = props.chaining
+
     let reservations = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
       while (iterator.getTime() < props.selectedDay.getTime()) {
         const res = this.getReservationsForDay(iterator, props);
-        if (!res) {
+        if (!res && !chaining) {
           reservations = [];
           break;
         } else {

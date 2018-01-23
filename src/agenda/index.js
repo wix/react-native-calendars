@@ -77,7 +77,9 @@ export default class AgendaView extends Component {
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+    // Block to cut off list
+    chaining: PropTypes.bool
   };
 
   constructor(props) {
@@ -277,6 +279,7 @@ export default class AgendaView extends Component {
         onScroll={() => {}}
         ref={(c) => this.list = c}
         theme={this.props.theme}
+        chaining={this.props.chaining}
       />
     );
   }
