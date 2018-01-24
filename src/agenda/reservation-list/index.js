@@ -150,14 +150,19 @@ class ReactComp extends Component {
     if (!props.reservations || !props.selectedDay) {
       return {reservations: [], scrollPosition: 0};
     }
+
+    const chaining = props.chaining
+
     let reservations = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
       while (iterator.getTime() < props.selectedDay.getTime()) {
         const res = this.getReservationsForDay(iterator, props);
         if (!res) {
-          reservations = [];
-          break;
+          if (!chaining){
+            reservations = [];
+            break;
+          }          
         } else {
           reservations = reservations.concat(res);
         }
@@ -180,7 +185,7 @@ class ReactComp extends Component {
   render() {
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
       if (this.props.renderEmptyData) {
-        return this.props.renderEmptyData();
+        return this.props.renderEmptyData(this.props.selectedDay.toString('yyyy-MM-dd'));
       }
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }

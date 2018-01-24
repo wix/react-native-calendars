@@ -5,6 +5,7 @@ import {
   Dimensions,
   Animated,
   ViewPropTypes,
+  TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -77,7 +78,9 @@ export default class AgendaView extends Component {
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+    // Block to cut off list
+    chaining: PropTypes.bool
   };
 
   constructor(props) {
@@ -106,6 +109,7 @@ export default class AgendaView extends Component {
     this.generateMarkings = this.generateMarkings.bind(this);
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
+    this.padFolded = true
   }
 
   calendarOffset() {
@@ -149,8 +153,10 @@ export default class AgendaView extends Component {
     }
 
     if (this.headerState === 'touched') {
-      this.setScrollPadPosition(0, true);
-      this.enableCalendarScrolling();
+      if (this.padFolded)
+        this.expandScrollPad()
+      else
+        this.foldScrollPad()
     }
     this.headerState = 'idle';
   }
@@ -207,6 +213,9 @@ export default class AgendaView extends Component {
   }
 
   componentWillReceiveProps(props) {
+    if (props.selectedDay)
+      this.selectedDay
+
     if (props.items) {
       this.setState({
         firstResevationLoad: false
@@ -252,14 +261,34 @@ export default class AgendaView extends Component {
         topDay: day.clone()
       });
     }
-    this.setScrollPadPosition(this.initialScrollPadPosition(), true);
-    this.calendar.scrollToDay(day, this.calendarOffset(), true);
+    this.foldScrollPad(day)
+    //this.calendar.scrollToDay(day, this.calendarOffset(), true);
     if (this.props.loadItemsForMonth) {
       this.props.loadItemsForMonth(xdateToData(day));
     }
     if (this.props.onDayPress) {
       this.props.onDayPress(xdateToData(day));
     }
+  }
+
+  expandScrollPad(){
+    if (!this.padFolded) return
+
+    this.padFolded = false
+    this.setScrollPadPosition(0, true);
+    this.enableCalendarScrolling();
+  }
+
+  foldScrollPad(day){
+    if (this.padFolded) return
+
+    this.padFolded = true
+    this.setScrollPadPosition(this.initialScrollPadPosition(), true);
+
+    if (day)
+      this.calendar.scrollToDay(day, this.calendarOffset(), true);
+    else if (this.state.selectedDay)
+      this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset(), true);
   }
 
   renderReservations() {
@@ -277,6 +306,7 @@ export default class AgendaView extends Component {
         onScroll={() => {}}
         ref={(c) => this.list = c}
         theme={this.props.theme}
+        chaining={this.props.chaining}
       />
     );
   }
@@ -363,10 +393,14 @@ export default class AgendaView extends Component {
 
     if (!this.props.hideKnob) {
       const knobView = this.props.renderKnob ? this.props.renderKnob() : (<View style={this.styles.knob}/>);
-      knob = this.state.calendarScrollable ? null : (
+      knob = (
+        
         <View style={this.styles.knobContainer}>
+          <TouchableOpacity onPressIn={this.onTouchStart} onPressOut={this.onTouchEnd}>
           <View ref={(c) => this.knob = c}>{knobView}</View>
+          </TouchableOpacity>
         </View>
+        
       );
     }
 
