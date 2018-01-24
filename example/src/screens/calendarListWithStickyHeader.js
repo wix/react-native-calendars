@@ -71,13 +71,6 @@ export default class calendarListWithStickyHeader extends Component {
 }
 
 const styles = StyleSheet.create({
-  calendar: {
-    borderTopWidth: 1,
-    paddingTop: 5,
-    borderBottomWidth: 1,
-    borderColor: 'green',
-    height: 350
-  },
   text: {
     textAlign: 'center',
     borderColor: 'red',
