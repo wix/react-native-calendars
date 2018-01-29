@@ -127,8 +127,6 @@ class Day extends Component {
         </TouchableOpacity>
         <View
           style={{
-            flex: 1,
-            alignItems: "stretch",
             alignSelf: "stretch",
           }}>
           {periods}
