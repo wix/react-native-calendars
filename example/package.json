@@ -1,24 +1,24 @@
 {
-  "name": "CalendarExample",
-  "version": "0.0.1",
-  "dependencies": {
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.44.0",
-    "react-native-calendars": "*",
-    "react-native-navigation": "latest"
-  },
-  "devDependencies": {
-    "babel-jest": "20.0.0",
-    "babel-preset-react-native": "1.9.1",
-    "jest": "20.0.0",
-    "react-test-renderer": "16.0.0-alpha.6"
-  },
-  "jest": {
-    "preset": "react-native"
-  },
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
-  }
+	"name": "CalendarsExample",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"react": "16.0.0-alpha.12",
+		"react-native": "0.47.2",
+		"react-native-calendars": "^1.5.8",
+		"react-native-navigation": "^1.1.205"
+	},
+	"devDependencies": {
+		"babel-jest": "20.0.3",
+		"babel-preset-react-native": "3.0.1",
+		"jest": "20.0.4",
+		"react-test-renderer": "16.0.0-alpha.12"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
 }

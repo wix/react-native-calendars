@@ -1,6 +1,8 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../style';
 
+const STYLESHEET_ID = 'stylesheet.agenda.list';
+
 export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return  StyleSheet.create({
@@ -27,6 +29,7 @@ export default function styleConstructor(theme = {}) {
     },
     today: {
       color: appStyle.agendaTodayColor
-    }
+    },
+    ...(theme[STYLESHEET_ID] || {})
   });
 }

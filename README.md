@@ -92,15 +92,21 @@ LocaleConfig.defaultLocale = 'fr';
   renderArrow={(direction) => (<Arrow />)}
   // Do not show days of other months in month page. Default = false
   hideExtraDays={true}
-  // If hideArrows=false and hideExtraDays=false do not swich month when tapping on greyed out
+  // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
   // day from another month that is visible in calendar page. Default = false
   disableMonthChange={true}
   // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
   firstDay={1}
+  // Hide day names. Default = false
+  hideDayNames={true}
+  // Show week numbers to the left. Default = false
+  showWeekNumbers={true}
 />
 ```
 
 #### Date marking
+
+**!Disclaimer!** Make sure that `markedDates` param is immutable. If you change `markedDates` object content but the reference to it does not change calendar update will not be triggered.
 
 Dot marking
 
@@ -114,12 +120,37 @@ Dot marking
   markedDates={{
     '2012-05-16': {selected: true, marked: true},
     '2012-05-17': {marked: true},
-    '2012-05-18': {disabled: true}
+    '2012-05-18': {marked: true, dotColor: 'red'},
+    '2012-05-19': {disabled: true}
   }}
 />
 ```
 
-Interval marking
+You can customise a dot color for each day independently.
+
+Multi-Dot marking
+
+<kbd>
+ <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking4.png?raw=true">
+</kbd>
+
+Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates. The properties 'key' and 'color' are mandatory while 'selectedColor' is optional. If selectedColor is omitted then 'color' will be used for selected dates.
+```javascript
+const vacation = {key:'vacation', color: 'red', selectedColor: 'blue'};
+const massage = {key:'massage', color: 'blue', selectedColor: 'blue'};
+const workout = {key:'workout', color: 'green'};
+
+<Calendar
+  markedDates={{
+    '2017-10-25': {dots: [vacation, massage, workout], selected: true},
+    '2017-10-26': {dots: [massage, workout], disabled: true},
+  }},
+  markingType={'multi-dot'}
+/>
+```
+
+
+Period marking
 
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking2.png?raw=true">
@@ -133,13 +164,13 @@ Interval marking
 <Calendar
   // Collection of dates that have to be colored in a special way. Default = {}
    markedDates={
-    {'2012-05-20': [{textColor: 'green'}],
-     '2012-05-22': [{startingDay: true, color: 'green'}],
-     '2012-05-23': [{endingDay: true, color: 'green', textColor: 'gray'}],
-     '2012-05-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
+    {'2012-05-20': {textColor: 'green'},
+     '2012-05-22': {startingDay: true, color: 'green'},
+     '2012-05-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
+     '2012-05-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
     }}
-  // Date marking style [simple/interactive]. Default = 'simple'
-  markingType={'interactive'}
+  // Date marking style [simple/period/multi-dot]. Default = 'simple'
+  markingType={'period'}
 />
 ```
 
@@ -165,6 +196,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   }}
   // Specify theme properties to override specific styles for calendar parts. Default = {}
   theme={{
+    backgroundColor: '#ffffff',
     calendarBackground: '#ffffff',
     textSectionTitleColor: '#b6c1cd',
     selectedDayBackgroundColor: '#00adf5',
@@ -186,6 +218,55 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 />
 ```
 
+#### Advanced styling
+
+If you want to have complete control over calendar styles you can do it by overriding default style.js files. For example, if you want to override calendar header style first you have to find stylesheet id for this file:
+
+https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/style.js#L4
+
+In this case it is 'stylesheet.calendar.header'. Next you can add overriding stylesheet to your theme with this id.
+
+https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js#L56
+
+```javascript
+theme={{
+  arrowColor: 'white',
+  'stylesheet.calendar.header': {
+    week: {
+      marginTop: 5,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    }
+  }
+}}
+```
+
+**Disclaimer**: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
+
+#### Overriding day component
+
+If you need custom functionality not supported by current day component implementations you can pass your own custom day
+component to the calendar.
+
+```javascript
+<Calendar
+  style={[styles.calendar, {height: 300}]}
+  dayComponent={({date, state}) => {
+    return (<View style={{flex: 1}}><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
+  }}
+/>
+```
+
+The dayComponent prop has to receive a RN component or function that receive props. The day component will receive such props:
+
+* state - disabled if the day should be disabled (this is decided by base calendar component)
+* marking - markedDates value for this day
+* date - the date object representing this day
+
+**Tip:** Don't forget to implement shouldComponentUpdate for your custom day component to make calendar perform better
+
+If you implement an awesome day component please make a PR so that other people could use it :)
+
 ### CalendarList
 
 <kbd>
@@ -204,6 +285,8 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   futureScrollRange={50}
   // Enable or disable scrolling of calendar list
   scrollEnabled={true}
+  // Enable or disable vertical scroll indicator. Default = false
+  showScrollIndicator={true}
   ...calendarParams
 />
 ```
@@ -228,6 +311,8 @@ An advanced agenda component that can display interactive listings for calendar 
     }}
   // callback that gets called when items for a certain month should be loaded (month became visible)
   loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+  // callback that fires when the calendar is opened or closed
+  onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
   // callback that gets called on day press
   onDayPress={(day)=>{console.log('day pressed')}}
   // callback that gets called when day changes while scrolling agenda list
@@ -238,22 +323,37 @@ An advanced agenda component that can display interactive listings for calendar 
   minDate={'2012-05-10'}
   // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
   maxDate={'2012-05-30'}
+  // Max amount of months allowed to scroll to the past. Default = 50
+  pastScrollRange={50}
+  // Max amount of months allowed to scroll to the future. Default = 50
+  futureScrollRange={50}
   // specify how each item should be rendered in agenda
   renderItem={(item, firstItemInDay) => {return (<View />);}}
   // specify how each date should be rendered. day can be undefined if the item is not first in that day.
   renderDay={(day, item) => {return (<View />);}}
   // specify how empty date content with no items should be rendered
   renderEmptyDate={() => {return (<View />);}}
+  // specify how agenda knob should look like
+  renderKnob={() => {return (<View />);}}
+  // specify what should be rendered instead of ActivityIndicator
+  renderEmptyData = {() => {return (<View />);}}
   // specify your item comparison function for increased performance
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
   hideKnob={true}
+  // By default, agenda dates are marked if they have at least one item, but you can override this if needed
+  markedDates={{
+    '2012-05-16': {selected: true, marked: true},
+    '2012-05-17': {marked: true},
+    '2012-05-18': {disabled: true}
+  }}
   // agenda theme
   theme={{
     ...calendarTheme,
     agendaDayTextColor: 'yellow',
     agendaDayNumColor: 'green',
-    agendaTodayColor: 'red'
+    agendaTodayColor: 'red',
+    agendaKnobColor: 'blue'
   }}
   // agenda container style
   style={{}}

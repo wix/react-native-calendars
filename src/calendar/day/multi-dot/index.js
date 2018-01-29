@@ -43,10 +43,10 @@ class Day extends Component {
       let markingChanged = false;
       if (this.props.marking && nextProps.marking) {
         markingChanged = (!(
-          this.props.marking.marked === nextProps.marking.marked
+          this.props.marking.marking === nextProps.marking.marking
           && this.props.marking.selected === nextProps.marking.selected
-          && this.props.marking.dotColor === nextProps.marking.dotColor
-          && this.props.marking.disabled === nextProps.marking.disabled));
+          && this.props.marking.disabled === nextProps.marking.disabled
+          && this.props.marking.dots === nextProps.marking.dots));
       } else {
         markingChanged = true;
       }
@@ -58,29 +58,30 @@ class Day extends Component {
     }
   }
 
+  renderDots(marking) {
+    const baseDotStyle = [this.style.dot, this.style.visibleDot];
+    if (marking.dots && Array.isArray(marking.dots) && marking.dots.length > 0) {
+      // Filter out dots so that we we process only those items which have key and color property
+      const validDots = marking.dots.filter(d => (d && d.key && d.color));
+      return validDots.map(dot => {
+        return (
+          <View key={dot.key} style={[baseDotStyle, 
+            { backgroundColor: marking.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
+        );
+      });
+    }
+    return;
+  }
+
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-    const dotStyle = [this.style.dot];
 
-    let marking = this.props.marking || {};
-    if (marking && marking.constructor === Array && marking.length) {
-      marking = {
-        marking: true
-      };
-    }
-    let dot;
-    if (marking.marked) {
-      dotStyle.push(this.style.visibleDot);
-      if (marking.dotColor) {
-        dotStyle.push({backgroundColor: marking.dotColor});
-      }
-      dot = (<View style={dotStyle}/>);
-    }
+    const marking = this.props.marking || {};
+    const dot = this.renderDots(marking);
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
-      dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
     } else if (typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
@@ -88,17 +89,9 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
     return (
-      <TouchableOpacity
-        style={containerStyle}
-        onPress={this.onDayPress}
-        disabled={
-          typeof marking.disabled !== 'undefined'
-            ? marking.disabled
-            : this.props.state === 'disabled'
-        }
-      >
+      <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        {dot}
+        <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>
     );
   }

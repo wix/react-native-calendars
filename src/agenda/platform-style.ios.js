@@ -5,7 +5,7 @@ export default function platformStyles(appStyle) {
       height: 7,
       marginTop: 10,
       borderRadius: 3,
-      backgroundColor: '#f2F4f5'
+      backgroundColor: appStyle.agendaKnobColor
     },
     weekdays: {
       position: 'absolute',

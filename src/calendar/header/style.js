@@ -1,6 +1,8 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 
+const STYLESHEET_ID = 'stylesheet.calendar.header';
+
 export default function(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
@@ -44,6 +46,7 @@ export default function(theme={}) {
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
       color: appStyle.textSectionTitleColor
-    }
+    },
+    ...(theme[STYLESHEET_ID] || {})
   });
 }
