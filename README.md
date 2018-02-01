@@ -120,8 +120,8 @@ Dot marking
   markedDates={{
     '2012-05-16': {selected: true, marked: true},
     '2012-05-17': {marked: true},
-    '2012-05-18': {marked: true, dotColor: 'red'},
-    '2012-05-19': {disabled: true}
+    '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
+    '2012-05-19': {disabled: true, disableTouchEvent: true}
   }}
 />
 ```
