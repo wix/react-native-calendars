@@ -103,6 +103,24 @@ LocaleConfig.defaultLocale = 'fr';
   showWeekNumbers={true}
 />
 ```
+#### Multi Date Selection
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/multi-select.png?raw=true">
+</kbd>
+
+```javascript
+<Calendar
+  // Collection of dates that have to be marked. Default = {}
+  markedDates={{
+      '2018-01-16': {selected: true, selectedColor:'red'},
+      '2018-01-17': {selected: true, selectedColor:'green'},
+      '2018-01-18': {selected: true},
+      '2018-01-19': {selected: true, selectedColor:'yellow'}
+  }}
+/>
+```
+You can customise a selected day background color for each day independently. If `selectedColor` property not available, it will take the default background color.
+
 
 #### Date marking
 
