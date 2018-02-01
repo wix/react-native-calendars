@@ -1,7 +1,7 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../../style';
 
-const STYLESHEET_ID = 'stylesheet.day.basic';
+const STYLESHEET_ID = 'stylesheet.day.multiDot';
 
 export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
