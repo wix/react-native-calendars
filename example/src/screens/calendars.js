@@ -22,7 +22,7 @@ export default class CalendarsScreen extends Component {
           onDayPress={this.onDayPress}
           style={styles.calendar}
           hideExtraDays
-          markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true}}}
+          markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedColor: 'orange'}}}
         />
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
