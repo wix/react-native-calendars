@@ -27,6 +27,9 @@ class CalendarList extends Component {
 
     // Enable or disable vertical scroll indicator. Default = false
     showScrollIndicator: PropTypes.bool,
+
+    // When true, the calendar list scrolls to top when the status bar is tapped. Default = true
+    scrollsToTop: PropTypes.bool
   };
 
   constructor(props) {
@@ -178,6 +181,7 @@ class CalendarList extends Component {
         keyExtractor={(item, index) => index}
         initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
         getItemLayout={this.getItemLayout}
+        scrollsToTop={this.props.scrollsToTop !== undefined ? this.props.scrollsToTop : true}
       />
     );
   }
