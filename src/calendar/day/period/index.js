@@ -58,9 +58,9 @@ class Day extends Component {
     if (!marking) {
       return defaultStyle;
     }
-    if (this.props.marking.disabled) {
+    if (marking.disabled) {
       defaultStyle.textStyle.color = this.theme.textDisabledColor;
-    } else if (this.props.marking.selected) {
+    } else if (marking.selected) {
       defaultStyle.textStyle.color = this.theme.selectedDayTextColor;
     }
     const resultStyle = ([marking]).reduce((prev, next) => {
