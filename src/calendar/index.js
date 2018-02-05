@@ -68,6 +68,10 @@ class Calendar extends Component {
     disabledByDefault: PropTypes.bool,
     // Show week numbers. Default = false
     showWeekNumbers: PropTypes.bool,
+    // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+    onPressArrowLeft: PropTypes.func,
+    // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+    onPressArrowRight: PropTypes.func
   };
 
   constructor(props) {
@@ -247,6 +251,8 @@ class Calendar extends Component {
           monthFormat={this.props.monthFormat}
           hideDayNames={this.props.hideDayNames}
           weekNumbers={this.props.showWeekNumbers}
+          onPressArrowLeft={this.props.onPressArrowLeft}
+          onPressArrowRight={this.props.onPressArrowRight}
         />
         {weeks}
       </View>);

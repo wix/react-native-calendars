@@ -16,7 +16,9 @@ class CalendarHeader extends Component {
     firstDay: PropTypes.number,
     renderArrow: PropTypes.func,
     hideDayNames: PropTypes.bool,
-    weekNumbers: PropTypes.bool
+    weekNumbers: PropTypes.bool,
+    onPressArrowLeft: PropTypes.func,
+    onPressArrowRight: PropTypes.func
   };
 
   constructor(props) {
@@ -24,6 +26,8 @@ class CalendarHeader extends Component {
     this.style = styleConstructor(props.theme);
     this.addMonth = this.addMonth.bind(this);
     this.substractMonth = this.substractMonth.bind(this);
+    this.onPressLeft = this.onPressLeft.bind(this);
+    this.onPressRight = this.onPressRight.bind(this);
   }
 
   addMonth() {
@@ -50,6 +54,22 @@ class CalendarHeader extends Component {
     return false;
   }
 
+  onPressLeft() {
+    const {onPressArrowLeft} = this.props;
+    if(typeof onPressArrowLeft === 'function') {
+      return onPressArrowLeft(this.substractMonth);
+    }
+    return this.substractMonth();
+  }
+
+  onPressRight() {
+    const {onPressArrowRight} = this.props;
+    if(typeof onPressArrowRight === 'function') {
+      return onPressArrowRight(this.substractMonth);
+    }
+    return this.addMonth();
+  }
+
   render() {
     let leftArrow = <View />;
     let rightArrow = <View />;
@@ -57,7 +77,7 @@ class CalendarHeader extends Component {
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity
-          onPress={this.substractMonth}
+          onPress={this.onPressLeft}
           style={this.style.arrow}
         >
           {this.props.renderArrow
@@ -69,7 +89,7 @@ class CalendarHeader extends Component {
         </TouchableOpacity>
       );
       rightArrow = (
-        <TouchableOpacity onPress={this.addMonth} style={this.style.arrow}>
+        <TouchableOpacity onPress={this.onPressRight} style={this.style.arrow}>
           {this.props.renderArrow
             ? this.props.renderArrow('right')
             : <Image
