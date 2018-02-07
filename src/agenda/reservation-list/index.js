@@ -188,6 +188,7 @@ class ReactComp extends Component {
       <FlatList
         ref={(c) => this.list = c}
         style={this.props.style}
+        contentContainerStyle={this.styles.content}
         renderItem={this.renderRow.bind(this)}
         data={this.state.reservations}
         onScroll={this.onScroll.bind(this)}
