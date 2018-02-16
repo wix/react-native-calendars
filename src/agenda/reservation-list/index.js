@@ -194,7 +194,7 @@ class ReactComp extends Component {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => String(index)}
       />
     );
   }
