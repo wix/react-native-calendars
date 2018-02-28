@@ -27,6 +27,7 @@ Navigation.startSingleScreenApp({
     navBarBackgroundColor: '#00adf5',
     navBarTextColor: 'white',
     navBarButtonColor: '#ffffff',
-    statusBarTextColorScheme: 'light'
+    statusBarTextColorScheme: 'light',
+    autoAdjustScrollViewInsets: true
   }
 });
