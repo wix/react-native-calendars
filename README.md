@@ -101,6 +101,10 @@ LocaleConfig.defaultLocale = 'fr';
   hideDayNames={true}
   // Show week numbers to the left. Default = false
   showWeekNumbers={true}
+  // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+  onPressArrowLeft={substractMonth => substractMonth()}
+  // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+  onPressArrowRight={addMonth => addMonth()}
 />
 ```
 
