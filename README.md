@@ -101,6 +101,10 @@ LocaleConfig.defaultLocale = 'fr';
   hideDayNames={true}
   // Show week numbers to the left. Default = false
   showWeekNumbers={true}
+  // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+  onPressArrowLeft={substractMonth => substractMonth()}
+  // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+  onPressArrowRight={addMonth => addMonth()}
 />
 ```
 
@@ -118,10 +122,10 @@ Dot marking
 <Calendar
   // Collection of dates that have to be marked. Default = {}
   markedDates={{
-    '2012-05-16': {selected: true, marked: true},
+    '2012-05-16': {selected: true, marked: true, selectedColor: 'blue'},
     '2012-05-17': {marked: true},
-    '2012-05-18': {marked: true, dotColor: 'red'},
-    '2012-05-19': {disabled: true}
+    '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
+    '2012-05-19': {disabled: true, disableTouchEvent: true}
   }}
 />
 ```
@@ -134,7 +138,7 @@ Multi-Dot marking
  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking4.png?raw=true">
 </kbd>
 
-Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates. The properties 'key' and 'color' are mandatory while 'selectedColor' is optional. If selectedColor is omitted then 'color' will be used for selected dates.
+Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates. The property 'color' is mandatory while 'key' and 'selectedColor' are optional. If key is omitted then the array index is used as key. If selectedColor is omitted then 'color' will be used for selected dates.
 ```javascript
 const vacation = {key:'vacation', color: 'red', selectedColor: 'blue'};
 const massage = {key:'massage', color: 'blue', selectedColor: 'blue'};
