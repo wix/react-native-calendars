@@ -17,6 +17,8 @@ export default function styleConstructor(theme={}) {
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: '300',
       color: appStyle.dayTextColor,
+      width: 35,
+      textAlign: 'center',
       backgroundColor: 'rgba(255, 255, 255, 0)'
     },
     alignedText: {
@@ -55,6 +57,7 @@ export default function styleConstructor(theme={}) {
     weekNumberContainer: {
       alignItems: 'center',
       justifyContent: 'center',
+      marginRight: 8,
     },
     ...(theme[STYLESHEET_ID] || {})
   });
