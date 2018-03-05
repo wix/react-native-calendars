@@ -49,6 +49,13 @@ export default function styleConstructor(theme={}) {
     selectedDot: {
       backgroundColor: appStyle.selectedDotColor
     },
+    weekNumber: {
+      fontSize: 11,
+    },
+    weekNumberContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }

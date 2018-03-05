@@ -17,6 +17,7 @@ class Day extends Component {
     theme: PropTypes.object,
     marking: PropTypes.any,
     onPress: PropTypes.func,
+    isWeekNumber: PropTypes.bool,
     date: PropTypes.object
   };
 
@@ -70,6 +71,13 @@ class Day extends Component {
       };
     }
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
+    const isWeekNumber = this.props.isWeekNumber;
+
+    if (isWeekNumber) {
+      textStyle.push(this.style.weekNumber);
+      containerStyle.push(this.style.weekNumberContainer);
+    }
+
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
