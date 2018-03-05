@@ -49,6 +49,15 @@ function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
+function shortWeekDayNames(firstDayOfWeek = 0) {
+  let weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+  const dayShift = firstDayOfWeek % 7;
+  if (dayShift) {
+    weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift)).map(day => day[0]);
+  }
+  return weekDaysNames;
+}
+
 function page(xd, firstDayOfWeek) {
   const days = month(xd);
   let before = [], after = [];
@@ -82,6 +91,7 @@ function page(xd, firstDayOfWeek) {
 
 module.exports = {
   weekDayNames,
+  shortWeekDayNames,
   sameMonth,
   sameDate,
   month,
