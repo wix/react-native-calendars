@@ -9,11 +9,10 @@ export default function getStyle(theme={}) {
     container: {
       paddingLeft: 10,
       paddingRight: 10,
+      marginBottom: 7,
       backgroundColor: appStyle.calendarBackground
     },
     week: {
-      marginTop: 7,
-      marginBottom: 7,
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
