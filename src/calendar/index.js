@@ -64,6 +64,8 @@ class Calendar extends Component {
     disableMonthChange: PropTypes.bool,
     //  Hide day names. Default = false
     hideDayNames: PropTypes.bool,
+    //  Short day names. Default = false
+    shortDayNames: PropTypes.bool,
     // Disable days by default. Default = false
     disabledByDefault: PropTypes.bool,
     // Show week numbers. Default = false
@@ -207,7 +209,7 @@ class Calendar extends Component {
   }
 
   renderWeekNumber (weekNumber) {
-    return <Day key={`week-${weekNumber}`} theme={this.props.theme} state='disabled'>{weekNumber}</Day>;
+    return <Day key={`week-${weekNumber}`} theme={this.props.theme} state='disabled' isWeekNumber>{weekNumber}</Day>;
   }
 
   renderWeek(days, id) {
@@ -250,6 +252,7 @@ class Calendar extends Component {
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
           hideDayNames={this.props.hideDayNames}
+          shortDayNames={this.props.shortDayNames}
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}

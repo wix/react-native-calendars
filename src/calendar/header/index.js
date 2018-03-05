@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import XDate from 'xdate';
 import PropTypes from 'prop-types';
 import styleConstructor from './style';
-import { weekDayNames } from '../../dateutils';
+import { weekDayNames, shortWeekDayNames } from '../../dateutils';
 
 class CalendarHeader extends Component {
   static propTypes = {
@@ -16,6 +16,7 @@ class CalendarHeader extends Component {
     firstDay: PropTypes.number,
     renderArrow: PropTypes.func,
     hideDayNames: PropTypes.bool,
+    shortDayNames: PropTypes.bool,
     weekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func
@@ -71,9 +72,10 @@ class CalendarHeader extends Component {
   }
 
   render() {
+    const { shortDayNames } = this.props;
     let leftArrow = <View />;
     let rightArrow = <View />;
-    let weekDaysNames = weekDayNames(this.props.firstDay);
+    let weekDaysNames = (shortDayNames) ? shortWeekDayNames(this.props.firstDay) : weekDayNames(this.props.firstDay);
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity
