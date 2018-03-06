@@ -93,6 +93,13 @@ class Calendar extends Component {
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
+  componentDidMount() {
+    this.props.onRef(this)
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
   componentWillReceiveProps(nextProps) {
     const current= parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
