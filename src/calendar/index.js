@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
   View,
-  ViewPropTypes
+  ViewPropTypes,
+  Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -19,6 +20,8 @@ import shouldComponentUpdate from './updater';
 const viewPropTypes = ViewPropTypes || View.propTypes;
 
 const EmptyArray = [];
+
+const { width } = Dimensions.get('window');
 
 class Calendar extends Component {
   static propTypes = {
@@ -71,7 +74,9 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    //  Whether its horizontal scroll
+    isHorizontal: PropTypes.bool,
   };
 
   constructor(props) {
@@ -239,7 +244,7 @@ class Calendar extends Component {
       }
     }
     return (
-      <View style={[this.style.container, this.props.style]}>
+      <View style={[this.style.container, this.props.style]} >
         <CalendarHeader
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
