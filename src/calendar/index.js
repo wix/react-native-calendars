@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
   View,
-  ViewPropTypes,
+  ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -71,7 +71,7 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func,
+    onPressArrowRight: PropTypes.func
   };
 
   constructor(props) {
@@ -239,7 +239,7 @@ class Calendar extends Component {
       }
     }
     return (
-      <View style={[this.style.container, this.props.style]} >
+      <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
