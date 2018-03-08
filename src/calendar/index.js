@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   View,
   ViewPropTypes,
-  Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -20,8 +19,6 @@ import shouldComponentUpdate from './updater';
 const viewPropTypes = ViewPropTypes || View.propTypes;
 
 const EmptyArray = [];
-
-const { width } = Dimensions.get('window');
 
 class Calendar extends Component {
   static propTypes = {
@@ -75,8 +72,6 @@ class Calendar extends Component {
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
     onPressArrowRight: PropTypes.func,
-    //  Whether its horizontal scroll
-    isHorizontal: PropTypes.bool,
   };
 
   constructor(props) {
