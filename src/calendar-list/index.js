@@ -49,6 +49,7 @@ class CalendarList extends Component {
     this.pastScrollRange = props.pastScrollRange === undefined ? 50 : props.pastScrollRange;
     this.futureScrollRange = props.futureScrollRange === undefined ? 50 : props.futureScrollRange;
     this.style = styleConstructor(props.theme);
+    this.calendarWidth = this.props.calendarWidth || width;
     const rows = [];
     const texts = [];
     const date = parseDate(props.current) || XDate();
@@ -163,11 +164,11 @@ class CalendarList extends Component {
   }
 
   renderCalendar({item}) {
-    return (<CalendarListItem item={item} calendarHeight={calendarHeight} calendarWidth={this.props.horizontal && this.props.pagingEnabled ? this.props.calendarWidth || width : undefined  } {...this.props} />);
+    return (<CalendarListItem item={item} calendarHeight={calendarHeight} calendarWidth={this.props.horizontal && this.props.pagingEnabled ? this.calendarWidth : undefined  } {...this.props} />);
   }
 
   getItemLayout(data, index) {
-    return {length: this.props.horizontal ? this.props.calendarWidth || width : calendarHeight, offset: (this.props.horizontal ? this.props.calendarWidth || width : calendarHeight) * index, index};
+    return {length: this.props.horizontal ? this.props.calendarWidth || this.calendarWidth : calendarHeight, offset: (this.props.horizontal ? this.props.calendarWidth || this.calendarWidth : calendarHeight) * index, index};
   }
 
   getMonthIndex(month) {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Dimensions} from 'react-native';
+import {Text, View} from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
