@@ -20,6 +20,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>
         <Calendar
           onDayPress={this.onDayPress}
+          onDayLongPress={(day) => console.log('you have long pressed', day)}
           style={styles.calendar}
           hideExtraDays
           markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedColor: 'orange'}}}
@@ -27,9 +28,11 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
+          onDayLongPress={(day) => console.log('you have long pressed', day)}
           current={'2012-05-16'}
           minDate={'2012-05-10'}
           maxDate={'2012-05-29'}
+
           firstDay={1}
           markedDates={{
             '2012-05-23': {selected: true, marked: true},
@@ -51,6 +54,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
         <Calendar
           style={styles.calendar}
+          onDayLongPress={(day) => console.log('you have long pressed', day)}
           current={'2012-05-16'}
           minDate={'2012-05-10'}
           displayLoadingIndicator
@@ -88,6 +92,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
+          onDayLongPress={(day) => console.log('you have long pressed', day)}
           current={'2012-05-16'}
           markingType={'multi-dot'}
           markedDates={{
@@ -99,6 +104,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with week numbers</Text>
         <Calendar
           onDayPress={this.onDayPress}
+          onDayLongPress={(day) => console.log('you have long pressed', day)}
           style={styles.calendar}
           hideExtraDays
           showWeekNumbers
@@ -107,6 +113,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Custom calendar with single marking type</Text>
         <Calendar
           style={styles.calendar}
+          onDayLongPress={(day) => console.log('you have long pressed', day)}
           hideExtraDays
           current={'2018-03-01'}
           minDate={'2018-03-01'}
