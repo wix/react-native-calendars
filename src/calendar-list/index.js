@@ -32,11 +32,8 @@ class CalendarList extends Component {
     // When true, the calendar list scrolls to top when the status bar is tapped. Default = true
     scrollsToTop: PropTypes.bool,
 
-    // Dynamic calendar height, mainly used in horizontal scroll
+    // Dynamic calendar height
     calendarHeight: PropTypes.number,
-
-    // Whether the scroll is horizontal
-    horizontal: PropTypes.bool,
   };
 
   constructor(props) {
