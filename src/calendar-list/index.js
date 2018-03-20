@@ -11,7 +11,6 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 
-const calendarHeight = 360;
 class CalendarList extends Component {
   static propTypes = {
     ...Calendar.propTypes,
@@ -29,7 +28,10 @@ class CalendarList extends Component {
     showScrollIndicator: PropTypes.bool,
 
     // When true, the calendar list scrolls to top when the status bar is tapped. Default = true
-    scrollsToTop: PropTypes.bool
+    scrollsToTop: PropTypes.bool,
+
+    // If you've styled the Calendar component to have a different height, specify this here to correct getItemLayout
+    calendarHeight: PropTypes.number
   };
 
   constructor(props) {
@@ -62,12 +64,14 @@ class CalendarList extends Component {
       initialized: false
     };
     this.lastScrollPosition = -1000;
-    
+
     this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
     this.renderCalendarBound = this.renderCalendar.bind(this);
+    this.getItemLayout = this.getItemLayout.bind(this);
   }
 
   scrollToDay(d, offset, animated) {
+    const { calendarHeight } = this.props;
     const day = parseDate(d);
     const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(day.clone().setDate(1)));
     let scrollAmount = (calendarHeight * this.pastScrollRange) + (diffMonths * calendarHeight) + (offset || 0);
@@ -84,6 +88,7 @@ class CalendarList extends Component {
   }
 
   scrollToMonth(m) {
+    const { calendarHeight } = this.props;
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
     let diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
@@ -150,10 +155,12 @@ class CalendarList extends Component {
   }
 
   renderCalendar({item}) {
+    const { calendarHeight } = this.props;
     return (<CalendarListItem item={item} calendarHeight={calendarHeight} {...this.props} />);
   }
 
   getItemLayout(data, index) {
+    const { calendarHeight } = this.props;
     return {length: calendarHeight, offset: calendarHeight * index, index};
   }
 
@@ -186,5 +193,8 @@ class CalendarList extends Component {
     );
   }
 }
+CalendarList.defaultProps = {
+  calendarHeight: 360
+};
 
 export default CalendarList;
