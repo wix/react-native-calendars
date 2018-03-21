@@ -31,6 +31,7 @@ class CalendarListItem extends Component {
           hideDayNames={this.props.hideDayNames}
           onDayPress={this.props.onDayPress}
           displayLoadingIndicator={this.props.displayLoadingIndicator}
+          showLoadingIndicator={this.props.showLoadingIndicator}
           minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           firstDay={this.props.firstDay}
