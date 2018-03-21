@@ -22,7 +22,7 @@ export default function getStyle(theme={}) {
     },
     hiddenExtraDays: {
       width: 32
-    }
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
