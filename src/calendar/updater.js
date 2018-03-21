@@ -46,6 +46,13 @@ export default function shouldComponentUpdate(nextProps, nextState) {
       field: 'current'
     };
   }
+
+  if (nextProps.showLoadingIndicator !== this.props.showLoadingIndicator) {
+    shouldUpdate = {
+      update: true,
+      field: 'showLoadingIndicator'
+    };
+  }
   //console.log(shouldUpdate.field, shouldUpdate.update);
   return shouldUpdate.update;
 }
