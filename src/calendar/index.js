@@ -71,7 +71,9 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    // Show/hide month indicator
+    showLoadingIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -231,12 +233,15 @@ class Calendar extends Component {
     }
     let indicator;
     const current = parseDate(this.props.current);
-    if (current) {
+    if (current && this.props.displayLoadingIndicator) {
       const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
           !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
       }
+    }
+    else if (this.props.showLoadingIndicator) {
+      indicator = this.props.showLoadingIndicator;
     }
     return (
       <View style={[this.style.container, this.props.style]}>
