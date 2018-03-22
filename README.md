@@ -140,13 +140,13 @@ Multi-Dot marking
 
 Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates. The property 'color' is mandatory while 'key' and 'selectedColor' are optional. If key is omitted then the array index is used as key. If selectedColor is omitted then 'color' will be used for selected dates.
 ```javascript
-const vacation = {key:'vacation', color: 'red', selectedColor: 'blue'};
-const massage = {key:'massage', color: 'blue', selectedColor: 'blue'};
+const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
+const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
 const workout = {key:'workout', color: 'green'};
 
 <Calendar
   markedDates={{
-    '2017-10-25': {dots: [vacation, massage, workout], selected: true},
+    '2017-10-25': {dots: [vacation, massage, workout], selected: true, selectedColor: 'red'},
     '2017-10-26': {dots: [massage, workout], disabled: true},
   }},
   markingType={'multi-dot'}
