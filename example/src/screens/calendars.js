@@ -12,6 +12,7 @@ export default class CalendarsScreen extends Component {
     super(props);
     this.state = {};
     this.onDayPress = this.onDayPress.bind(this);
+    this.onDayLongPress = this.onDayLongPress.bind(this);
   }
 
   render() {
@@ -20,6 +21,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>
         <Calendar
           onDayPress={this.onDayPress}
+          onDayLongPress={this.onDayLongPress}
           style={styles.calendar}
           hideExtraDays
           markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedColor: 'orange'}}}
@@ -27,9 +29,11 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
+          onDayLongPress={this.onDayLongPress}
           current={'2012-05-16'}
           minDate={'2012-05-10'}
           maxDate={'2012-05-29'}
+
           firstDay={1}
           markedDates={{
             '2012-05-23': {selected: true, marked: true},
@@ -51,6 +55,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
         <Calendar
           style={styles.calendar}
+          onDayLongPress={this.onDayLongPress}
           current={'2012-05-16'}
           minDate={'2012-05-10'}
           displayLoadingIndicator
@@ -88,6 +93,7 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
+          onDayLongPress={this.onDayLongPress}
           current={'2012-05-16'}
           markingType={'multi-dot'}
           markedDates={{
@@ -99,16 +105,138 @@ export default class CalendarsScreen extends Component {
         <Text style={styles.text}>Calendar with week numbers</Text>
         <Calendar
           onDayPress={this.onDayPress}
+          onDayLongPress={this.onDayLongPress}
           style={styles.calendar}
           hideExtraDays
           showWeekNumbers
           markedDates={{[this.state.selected]: {selected: true}}}
+        />
+        <Text style={styles.text}>Custom calendar with single marking type</Text>
+        <Calendar
+          style={styles.calendar}
+          onDayLongPress={this.onDayLongPress}
+          hideExtraDays
+          current={'2018-03-01'}
+          minDate={'2018-03-01'}
+          markingType={'single'}
+          markedDates={{
+            '2018-03-01': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'white',
+                  elevation: 2
+                },
+                text: {
+                  color: 'blue',
+                },
+              }
+            },
+            '2018-03-08': {selected: true},
+            '2018-03-09': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'red',
+                  elevation: 4,
+                },
+                text: {
+                  color: 'white',
+                },
+              }
+            },
+            '2018-03-10': {disabled: true},
+            '2018-03-14': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'green',
+                },
+                text: {
+                  color: 'white',
+                },
+              },
+            },
+            '2018-03-15': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'black',
+                  elevation: 2
+                },
+                text: {
+                  color: 'yellow',
+                },
+              }
+            },
+            '2018-03-20': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'pink',
+                  elevation: 4,
+                },
+                text: {
+                  color: 'blue',
+                },
+              }
+            },
+            '2018-03-21': {disabled: true},
+            '2018-03-28': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'green',
+                },
+                text: {
+                  color: 'black',
+                  fontWeight: 'bold'
+                },
+              },
+            },
+            '2018-03-29': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'white',
+                  elevation: 2
+                },
+                text: {
+                  color: 'blue',
+                },
+              }
+            },
+            '2018-03-30': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'violet',
+                  elevation: 4,
+                  borderColor: 'red',
+                  borderWidth: 5,
+                },
+                text: {
+                  marginTop: 3,
+                  fontSize: 11,
+                  color: 'yellow',
+                },
+              }
+            },
+            '2018-03-31': {
+              customStyles: {
+                container: {
+                  backgroundColor: 'green',
+                  borderRadius: 0,
+                },
+                text: {
+                  color: 'white',
+                },
+              },
+            }}}
+          hideArrows={false}
         />
       </ScrollView>
     );
   }
 
   onDayPress(day) {
+    this.setState({
+      selected: day.dateString
+    });
+  }
+  onDayLongPress(day) {
     this.setState({
       selected: day.dateString
     });
