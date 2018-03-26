@@ -295,6 +295,36 @@ If you implement an awesome day component please make a PR so that other people 
 />
 ```
 
+#### Horizontal CalendarList
+
+<kbd>
+  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/horizontal-calendar-list.gif?raw=true">
+</kbd>
+
+You can also make the `CalendarList` scroll horizontally. To do that you need to pass specific props to the `CalendarList`:
+
+```javascript
+<CalendarList
+  // Callback which gets executed when visible months change in scroll view. Default = undefined
+  onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}}
+  // Max amount of months allowed to scroll to the past. Default = 50
+  pastScrollRange={50}
+  // Max amount of months allowed to scroll to the future. Default = 50
+  futureScrollRange={50}
+  // Enable or disable scrolling of calendar list
+  scrollEnabled={true}
+  // Enable or disable vertical scroll indicator. Default = false
+  showScrollIndicator={true}
+  // Enable horizontal scrolling
+  horizontal={true}
+  // Enable paging on horizontal
+  pagingEnabled={true}
+  // Optional: `pagingEnabled` should be set to false for this to take effect.
+  calendarWidth={320}
+  ...calendarParams
+/>
+```
+
 ### Agenda
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/agenda.gif?raw=true">
