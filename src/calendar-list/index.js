@@ -94,7 +94,7 @@ class CalendarList extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.listView.scrollToIndex({index: this.getMonthIndex(this.state.openDate), animated: true}))
+    setTimeout(() => this.listView.scrollToIndex({index: this.getMonthIndex(this.state.openDate), animated: true}));
   }
 
   componentWillReceiveProps(props) {
