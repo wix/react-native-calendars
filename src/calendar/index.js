@@ -158,7 +158,7 @@ class Calendar extends Component {
       if (this.props.markingType === 'period') {
         dayComp = (<View key={id} style={{flex: 1}}/>);
       } else {
-        dayComp = (<View key={id} style={{width: 32}}/>);
+        dayComp = (<View key={id} style={this.style.hiddenExtraDays}/>);
       }
     } else {
       const DayComp = this.getDayComponent();

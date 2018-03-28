@@ -17,6 +17,9 @@ export default function getStyle(theme={}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+    hiddenExtraDays: {
+      width: 32
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
