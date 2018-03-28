@@ -173,8 +173,68 @@ Period marking
      '2012-05-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
      '2012-05-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
     }}
-  // Date marking style [simple/period/multi-dot]. Default = 'simple'
+  // Date marking style [simple/period/multi-dot/single]. Default = 'simple'
   markingType={'period'}
+/>
+```
+
+You can customize each marker with custom styles.
+
+Single marking
+
+```javascript
+<Calendar
+  // Date marking style [simple/period/multi-dot/single]. Default = 'simple'
+  markingType={'single'}
+  markedDates={{
+    '2018-03-28': {
+      customStyles: {
+        container: {
+          backgroundColor: 'green',
+        },
+        text: {
+          color: 'black',
+          fontWeight: 'bold'
+        },
+      },
+    },
+    '2018-03-29': {
+      customStyles: {
+        container: {
+          backgroundColor: 'white',
+          elevation: 2
+        },
+        text: {
+          color: 'blue',
+        },
+      }
+    },
+    '2018-03-30': {
+      customStyles: {
+        container: {
+          backgroundColor: 'violet',
+          elevation: 4,
+          borderColor: 'red',
+          borderWidth: 5,
+        },
+        text: {
+          marginTop: 3,
+          fontSize: 11,
+          color: 'yellow',
+        },
+      }
+    },
+    '2018-03-31': {
+      customStyles: {
+        container: {
+          backgroundColor: 'green',
+          borderRadius: 0,
+        },
+        text: {
+          color: 'white',
+        },
+      },
+    }}}
 />
 ```
 
