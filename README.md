@@ -82,6 +82,8 @@ LocaleConfig.defaultLocale = 'fr';
   maxDate={'2012-05-30'}
   // Handler which gets executed on day press. Default = undefined
   onDayPress={(day) => {console.log('selected day', day)}}
+  // Handler which gets executed on day long press. Default = undefined
+  onDayLongPress={(day) => {console.log('selected day', day)}}
   // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
   monthFormat={'yyyy MM'}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
