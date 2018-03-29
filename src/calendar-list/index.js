@@ -66,8 +66,8 @@ class CalendarList extends Component {
       openDate: date,
       initialized: false
     };
-    this.lastScrollPosition = -1000;
-    
+
+    this.getItemLayout = this.getItemLayout.bind(this);
     this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
     this.renderCalendarBound = this.renderCalendar.bind(this);
   }
