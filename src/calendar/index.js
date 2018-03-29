@@ -124,7 +124,7 @@ class Calendar extends Component {
     });
   }
 
-  pressDay(date) {
+  _handleDayInteraction(date, interaction) {
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
@@ -133,25 +133,18 @@ class Calendar extends Component {
       if (shouldUpdateMonth) {
         this.updateMonth(day);
       }
-      if (this.props.onDayPress) {
-        this.props.onDayPress(xdateToData(day));
+      if (interaction) {
+        interaction(xdateToData(day));
       }
     }
   }
 
+  pressDay(date) {
+    this._handleDayInteraction(date, this.props.onDayPress);
+  }
+
   longPressDay(date) {
-    const day = parseDate(date);
-    const minDate = parseDate(this.props.minDate);
-    const maxDate = parseDate(this.props.maxDate);
-    if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
-      const shouldUpdateMonth = this.props.disableMonthChange === undefined || !this.props.disableMonthChange;
-      if (shouldUpdateMonth) {
-        this.updateMonth(day);
-      }
-      if (this.props.onDayLongPress) {
-        this.props.onDayLongPress(xdateToData(day));
-      }
-    }
+    this._handleDayInteraction(date, this.props.onDayLongPress);
   }
 
   addMonth(count) {
