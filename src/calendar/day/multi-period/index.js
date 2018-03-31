@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { TouchableOpacity, Text, View } from "react-native";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
+import PropTypes from 'prop-types';
 
-import styleConstructor from "./style";
+import styleConstructor from './style';
 
 class Day extends Component {
   static propTypes = {
     // TODO: disabled props should be removed
-    state: PropTypes.oneOf(["disabled", "today", ""]),
+    state: PropTypes.oneOf(['disabled', 'today', '']),
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
@@ -27,7 +27,7 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const changed = ["state", "children", "marking", "onPress"].reduce(
+    const changed = ['state', 'children', 'marking', 'onPress'].reduce(
       (prev, next) => {
         if (prev) {
           return prev;
@@ -38,7 +38,7 @@ class Day extends Component {
       },
       false
     );
-    if (changed === "marking") {
+    if (changed === 'marking') {
       let markingChanged = false;
       if (this.props.marking && nextProps.marking) {
         markingChanged = !(
@@ -105,20 +105,20 @@ class Day extends Component {
       containerStyle.push(this.style.selected);
       textStyle.push(this.style.selectedText);
     } else if (
-      typeof marking.disabled !== "undefined"
+      typeof marking.disabled !== 'undefined'
         ? marking.disabled
-        : this.props.state === "disabled"
+        : this.props.state === 'disabled'
     ) {
       textStyle.push(this.style.disabledText);
-    } else if (this.props.state === "today") {
+    } else if (this.props.state === 'today') {
       textStyle.push(this.style.todayText);
     }
     return (
       <View
         style={{
           flex: 1,
-          alignItems: "center",
-          alignSelf: "stretch",
+          alignItems: 'center',
+          alignSelf: 'stretch',
         }}>
         <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
           <Text allowFontScaling={false} style={textStyle}>
@@ -127,7 +127,7 @@ class Day extends Component {
         </TouchableOpacity>
         <View
           style={{
-            alignSelf: "stretch",
+            alignSelf: 'stretch',
           }}>
           {periods}
         </View>
