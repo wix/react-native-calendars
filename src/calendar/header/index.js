@@ -65,7 +65,7 @@ class CalendarHeader extends Component {
   onPressRight() {
     const {onPressArrowRight} = this.props;
     if(typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.substractMonth);
+      return onPressArrowRight(this.addMonth);
     }
     return this.addMonth();
   }
@@ -108,7 +108,7 @@ class CalendarHeader extends Component {
         <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
-            <Text allowFontScaling={false} style={this.style.monthText}>
+            <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
               {this.props.month.toString(this.props.monthFormat ? this.props.monthFormat : 'MMMM yyyy')}
             </Text>
             {indicator}
@@ -120,7 +120,7 @@ class CalendarHeader extends Component {
           <View style={this.style.week}>
             {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
             {weekDaysNames.map((day, idx) => (
-              <Text allowFontScaling={false} key={idx} style={this.style.dayHeader} numberOfLines={1}>{day}</Text>
+              <Text allowFontScaling={false} key={idx} accessible={false} style={this.style.dayHeader} numberOfLines={1} importantForAccessibility='no'>{day}</Text>
             ))}
           </View>
         }
