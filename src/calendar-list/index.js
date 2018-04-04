@@ -172,7 +172,7 @@ class CalendarList extends Component {
   }
 
   getItemLayout(data, index) {
-    return {length: this.props.horizontal ? this.calendarWidth : calendarHeight, offset: (this.props.horizontal ? this.calendarWidth : calendarHeight) * index, index};
+    return {length: this.props.horizontal ? this.calendarWidth : this.calendarHeight, offset: (this.props.horizontal ? this.calendarWidth : this.calendarHeight) * index, index};
   }
 
   getMonthIndex(month) {
