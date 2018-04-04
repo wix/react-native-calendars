@@ -32,9 +32,11 @@ class ReservationListItem extends Component {
     const {reservation, date} = this.props.item;
     const {previousItem} = this.props;
     const previousReservation = previousItem? previousItem.reservation : undefined;
+    const {nextItem} = this.props;
+    const nextReservation = nextItem? nextItem.reservation : undefined;
     let content;
     if (reservation) {
-      content = this.props.renderItem(reservation, previousReservation);
+      content = this.props.renderItem(reservation, previousReservation, nextReservation);
     } else {
       content = this.props.renderEmptyDate(date);
     }

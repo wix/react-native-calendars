@@ -105,13 +105,15 @@ class ReactComp extends Component {
   }
 
   renderRow({item, index}) {
-    let previousItem = this.state.reservations[index - 1] || {};
+    const previousItem = this.state.reservations[index - 1] || {};
+    const nextItem = this.state.reservations[index + 1] || {};
 
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
         <Reservation
           item={item}
           previousItem={previousItem}
+          nextItem={nextItem}
           renderItem={this.props.renderItem}
           renderEmptyDate={this.props.renderEmptyDate}
           theme={this.props.theme}
