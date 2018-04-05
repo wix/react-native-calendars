@@ -19,6 +19,9 @@ export default function getStyle(theme={}) {
       fontWeight: '200',
       color: appStyle.dayTextColor
     },
+    loadingSpinner: {
+      color: '#6da1a6'
+    },
     calendar: {
       paddingLeft: 15,
       paddingRight: 15

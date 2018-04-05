@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
@@ -40,10 +40,9 @@ class CalendarListItem extends Component {
           showWeekNumbers={this.props.showWeekNumbers}
         />);
     } else {
-      const text = row.toString();
       return (
-        <View style={[{height: this.props.calendarHeight}, this.style.placeholder]}>
-          <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
+        <View style={[{ height: this.props.calendarHeight }, this.style.placeholder ]}>
+          <ActivityIndicator color={this.style.loadingSpinner.color} />
         </View>
       );
     }
