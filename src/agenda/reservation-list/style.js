@@ -21,6 +21,13 @@ export default function styleConstructor(theme = {}) {
       marginTop: -5,
       backgroundColor: 'rgba(0,0,0,0)'
     },
+    monthText: {
+      fontSize: 12,
+      fontWeight: '300',
+      color: appStyle.agendaDayTextColor,
+      marginBottom: -5,
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
     day: {
       width: 63,
       alignItems: 'center',

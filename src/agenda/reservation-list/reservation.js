@@ -39,6 +39,7 @@ class ReservationListItem extends Component {
     if (date) {
       return (
         <View style={this.styles.day}>
+          <Text allowFontScaling={false} style={[this.styles.monthText, today]}>{XDate.locales[XDate.defaultLocale].monthNamesShort[date.getMonth()]}</Text>
           <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.getDate()}</Text>
           <Text allowFontScaling={false} style={[this.styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
         </View>
