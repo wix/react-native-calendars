@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
-import { Text, View, ActivityIndicator } from "react-native";
 
 class CalendarListItem extends Component {
   constructor(props) {
