@@ -40,7 +40,6 @@ class CalendarListItem extends Component {
           showWeekNumbers={this.props.showWeekNumbers}
         />);
     } else {
-      const text = row.toString();
       return (
         <View style={[{ height: this.props.calendarHeight }, this.style.placeholder ]}>
           <ActivityIndicator color={this.style.loadingSpinner.color} />
