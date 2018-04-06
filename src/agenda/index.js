@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {
+  Animated,
   Text,
   View,
   Dimensions,
-  Animated,
   ViewPropTypes,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -47,6 +47,8 @@ export default class AgendaView extends Component {
     onScroll: PropTypes.func,
     // How often scroll event will be called
     scrollEventThrottle: PropTypes.number,
+    // Animated value changed on ReservationList scrolling
+    scrollAnimatedValue: PropTypes.instanceOf(Animated.Value),
     // specify how each item should be rendered in agenda
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
@@ -280,6 +282,7 @@ export default class AgendaView extends Component {
         onDayChange={this.onDayChange.bind(this)}
         onScroll={this.props.onScroll}
         scrollEventThrottle={this.props.scrollEventThrottle}
+        scrollAnimatedValue={this.props.scrollAnimatedValue}
         ref={(c) => this.list = c}
         theme={this.props.theme}
       />

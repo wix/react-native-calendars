@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  Animated,
   FlatList,
   ActivityIndicator,
   View
@@ -10,6 +11,8 @@ import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 class ReactComp extends Component {
   static propTypes = {
@@ -27,6 +30,8 @@ class ReactComp extends Component {
     onScroll: PropTypes.func,
     // How often scroll event will be called
     scrollEventThrottle: PropTypes.number,
+    // Animated value changed on ReservationList scrolling
+    scrollAnimatedValue: PropTypes.instanceOf(Animated.Value),
     // the list of items that have to be displayed in agenda. If you want to render item as empty date
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
@@ -186,14 +191,20 @@ class ReactComp extends Component {
       }
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
+
+    const FlatListComponent = this.props.scrollAnimatedValue ? AnimatedFlatList : FlatList;
+
     return (
-      <FlatList
+      <FlatListComponent
         ref={(c) => this.list = c}
         style={this.props.style}
         contentContainerStyle={this.styles.content}
         renderItem={this.renderRow.bind(this)}
         data={this.state.reservations}
-        onScroll={this.onScroll.bind(this)}
+        onScroll={this.props.scrollAnimatedValue ? Animated.event(
+          [{ nativeEvent: { contentOffset: { y: this.props.scrollAnimatedValue } } }],
+          { listener: this.onScroll.bind(this), useNativeDriver: true }
+        ) : this.props.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={this.props.scrollEventThrottle || 200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
