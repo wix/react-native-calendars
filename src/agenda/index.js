@@ -132,7 +132,6 @@ export default class AgendaView extends Component {
   onLayout(event) {
     this.viewHeight = event.nativeEvent.layout.height;
     this.viewWidth = event.nativeEvent.layout.width;
-    this.calendar.scrollToDay(this.state.selectedDay.clone().setDate(15), this.calendarOffset(), false);
     this.forceUpdate();
   }
 
@@ -347,6 +346,19 @@ export default class AgendaView extends Component {
       { bottom: agendaHeight, transform: [{ translateY: headerTranslate }] },
     ];
 
+    const borderStyle = {
+      position:'absolute',
+      height: 4,
+      backgroundColor: 'white',
+      width: '100%',
+      bottom: agendaHeight,
+      transform: [{ translateY: headerTranslate }],
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.08,
+      shadowRadius: 2
+    }
+
     if (!this.state.calendarIsReady) {
       // limit header height until everything is setup for calendar dragging
       headerStyle.push({height: 0});
@@ -405,6 +417,7 @@ export default class AgendaView extends Component {
           </Animated.View>
           {knob}
         </Animated.View>
+        {this.state.calendarScrollable ? null : <Animated.View style={borderStyle} />}
         <Animated.View style={weekdaysStyle}>
           {weekDaysNames.map((day) => (
             <Text allowFontScaling={false} key={day} style={this.styles.weekday} numberOfLines={1}>{day}</Text>
