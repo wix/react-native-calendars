@@ -43,6 +43,10 @@ export default class AgendaView extends Component {
     onDayPress: PropTypes.func,
     // callback that gets called when day changes while scrolling agenda list
     onDaychange: PropTypes.func,
+    // callback that called on ReservationList scroll
+    onScroll: PropTypes.func,
+    // How often scroll event will be called
+    scrollEventThrottle: PropTypes.number,
     // specify how each item should be rendered in agenda
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
@@ -274,7 +278,8 @@ export default class AgendaView extends Component {
         renderEmptyData = {this.props.renderEmptyData}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
-        onScroll={() => {}}
+        onScroll={this.props.onScroll}
+        scrollEventThrottle={this.props.scrollEventThrottle}
         ref={(c) => this.list = c}
         theme={this.props.theme}
       />

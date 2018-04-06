@@ -25,6 +25,8 @@ class ReactComp extends Component {
     onDayChange: PropTypes.func,
     // onScroll ListView event
     onScroll: PropTypes.func,
+    // How often scroll event will be called
+    scrollEventThrottle: PropTypes.number,
     // the list of items that have to be displayed in agenda. If you want to render item as empty date
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
@@ -83,7 +85,7 @@ class ReactComp extends Component {
 
   onScroll(event) {
     const yOffset = event.nativeEvent.contentOffset.y;
-    this.props.onScroll(yOffset);
+    this.props.onScroll && this.props.onScroll(yOffset);
     let topRowOffset = 0;
     let topRow;
     for (topRow = 0; topRow < this.heights.length; topRow++) {
@@ -193,7 +195,7 @@ class ReactComp extends Component {
         data={this.state.reservations}
         onScroll={this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
-        scrollEventThrottle={200}
+        scrollEventThrottle={this.props.scrollEventThrottle || 200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
         keyExtractor={(item, index) => String(index)}
       />
