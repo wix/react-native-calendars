@@ -204,7 +204,7 @@ class ReactComp extends Component {
         onScroll={this.props.scrollAnimatedValue ? Animated.event(
           [{ nativeEvent: { contentOffset: { y: this.props.scrollAnimatedValue } } }],
           { listener: this.onScroll.bind(this), useNativeDriver: true }
-        ) : this.props.onScroll.bind(this)}
+        ) : (this.props.onScroll && this.props.onScroll.bind(this))}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={this.props.scrollEventThrottle || 200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
