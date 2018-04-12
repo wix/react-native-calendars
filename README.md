@@ -1,5 +1,6 @@
 # React Native Calendars ✨ 🗓️ 📆
-[![NPM Version](https://img.shields.io/npm/v/react-native-calendars.svg?style=flat)](https://www.npmjs.com/package/react-native-calendars)
+[![NPM Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
+[![Downloads](https://img.shields.io/npm/dm/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
 [![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
 
 This module includes various customizable react native calendar components.
