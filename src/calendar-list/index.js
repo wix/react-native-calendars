@@ -11,8 +11,6 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 
-const calendarHeight = 360;
-
 const {width} = Dimensions.get('window');
 
 class CalendarList extends Component {
@@ -52,7 +50,7 @@ class CalendarList extends Component {
     this.futureScrollRange = props.futureScrollRange === undefined ? 50 : props.futureScrollRange;
     this.style = styleConstructor(props.theme);
     this.calendarWidth = this.props.calendarWidth || width;
-    this.calendarHeight = props.calendarHeight || calendarHeight;
+    this.calendarHeight = props.calendarHeight;
 
     const rows = [];
     const texts = [];
@@ -168,7 +166,7 @@ class CalendarList extends Component {
   }
 
   renderCalendar({item}) {
-    return (<CalendarListItem item={item} calendarHeight={this.calendarHeight} calendarWidth={this.props.horizontal && this.props.pagingEnabled ? this.calendarWidth : undefined  } {...this.props} />);
+    return (<CalendarListItem item={item} calendarHeight={this.calendarHeight} calendarWidth={this.props.horizontal ? this.calendarWidth : undefined  } {...this.props} />);
   }
 
   getItemLayout(data, index) {
@@ -193,7 +191,7 @@ class CalendarList extends Component {
         removeClippedSubviews={Platform.OS === 'android' ? false : true}
         pageSize={1}
         horizontal={this.props.horizontal || false}
-        pagingEnabled={this.props.pagingEnabled && !this.props.calendarWidth || false}
+        pagingEnabled={this.props.pagingEnabled}
         onViewableItemsChanged={this.onViewableItemsChangedBound}
         renderItem={this.renderCalendarBound}
         showsVerticalScrollIndicator={this.props.showScrollIndicator !== undefined ? this.props.showScrollIndicator : false}
@@ -207,5 +205,9 @@ class CalendarList extends Component {
     );
   }
 }
+
+CalendarList.defaultProps = {
+  calendarHeight: 360
+};
 
 export default CalendarList;

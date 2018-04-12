@@ -44,7 +44,7 @@ export default class MenuScreen extends Component {
   onHorizontalCalendarListPress() {
     this.props.navigator.push({
       screen: 'HorizontalCalendarList',
-      title: 'Horizontal Calendar List'
+      title: 'Horizontal Calendars List'
     });
   }
 

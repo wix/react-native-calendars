@@ -307,11 +307,11 @@ You can also make the `CalendarList` scroll horizontally. To do that you need to
 
 ```javascript
 <CalendarList
-  // Enable horizontal scrolling
+  // Enable horizontal scrolling, default = false
   horizontal={true}
-  // Enable paging on horizontal
+  // Enable paging on horizontal, default = false
   pagingEnabled={true}
-  // Optional: `pagingEnabled` should be set to false for this to take effect.
+  // Set custom calendarWidth.
   calendarWidth={320}
   ...calendarListParams
   ...calendarParams
