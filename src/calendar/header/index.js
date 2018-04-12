@@ -79,6 +79,7 @@ class CalendarHeader extends Component {
         <TouchableOpacity
           onPress={this.onPressLeft}
           style={this.style.arrow}
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('left')
