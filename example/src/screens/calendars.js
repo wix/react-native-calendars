@@ -104,14 +104,14 @@ export default class CalendarsScreen extends Component {
           showWeekNumbers
           markedDates={{[this.state.selected]: {selected: true}}}
         />
-        <Text style={styles.text}>Custom calendar with single marking type</Text>
+        <Text style={styles.text}>Custom calendar with custom marking type</Text>
         <Calendar
           style={styles.calendar}
           onDayLongPress={this.onDayLongPress}
           hideExtraDays
           current={'2018-03-01'}
           minDate={'2018-03-01'}
-          markingType={'single'}
+          markingType={'custom'}
           markedDates={{
             '2018-03-01': {
               customStyles: {

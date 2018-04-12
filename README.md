@@ -176,19 +176,21 @@ Period marking
      '2012-05-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
      '2012-05-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
     }}
-  // Date marking style [simple/period/multi-dot/single]. Default = 'simple'
+  // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
   markingType={'period'}
 />
 ```
 
-You can customize each marker with custom styles.
+Custom marking allows you to customize each marker with custom styles.
 
-Single marking
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/custom.png?raw=true">
+</kbd>
 
 ```javascript
 <Calendar
   // Date marking style [simple/period/multi-dot/single]. Default = 'simple'
-  markingType={'single'}
+  markingType={'custom'}
   markedDates={{
     '2018-03-28': {
       customStyles: {
@@ -211,32 +213,6 @@ Single marking
           color: 'blue',
         },
       }
-    },
-    '2018-03-30': {
-      customStyles: {
-        container: {
-          backgroundColor: 'violet',
-          elevation: 4,
-          borderColor: 'red',
-          borderWidth: 5,
-        },
-        text: {
-          marginTop: 3,
-          fontSize: 11,
-          color: 'yellow',
-        },
-      }
-    },
-    '2018-03-31': {
-      customStyles: {
-        container: {
-          backgroundColor: 'green',
-          borderRadius: 0,
-        },
-        text: {
-          color: 'white',
-        },
-      },
     }}}
 />
 ```
