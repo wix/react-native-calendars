@@ -188,7 +188,7 @@ class CalendarList extends Component {
         data={this.state.rows}
         //snapToAlignment='start'
         //snapToInterval={this.calendarHeight}
-        removeClippedSubviews={Platform.OS === 'android' ? false : true}
+        removeClippedSubviews={this.props.removeClippedSubviews != null ? this.props.removeClippedSubviews: (Platform.OS === 'android' ? false : true)}
         pageSize={1}
         horizontal={this.props.horizontal || false}
         pagingEnabled={this.props.pagingEnabled}
