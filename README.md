@@ -1,5 +1,6 @@
 # React Native Calendars ✨ 🗓️ 📆
-[![NPM Version](https://img.shields.io/npm/v/react-native-calendars.svg?style=flat)](https://www.npmjs.com/package/react-native-calendars)
+
+[![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
 [![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
 
 This module includes various customizable react native calendar components.
@@ -82,6 +83,8 @@ LocaleConfig.defaultLocale = 'fr';
   maxDate={'2012-05-30'}
   // Handler which gets executed on day press. Default = undefined
   onDayPress={(day) => {console.log('selected day', day)}}
+  // Handler which gets executed on day long press. Default = undefined
+  onDayLongPress={(day) => {console.log('selected day', day)}}
   // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
   monthFormat={'yyyy MM'}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
@@ -140,13 +143,13 @@ Multi-Dot marking
 
 Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates. The property 'color' is mandatory while 'key' and 'selectedColor' are optional. If key is omitted then the array index is used as key. If selectedColor is omitted then 'color' will be used for selected dates.
 ```javascript
-const vacation = {key:'vacation', color: 'red', selectedColor: 'blue'};
-const massage = {key:'massage', color: 'blue', selectedColor: 'blue'};
+const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
+const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
 const workout = {key:'workout', color: 'green'};
 
 <Calendar
   markedDates={{
-    '2017-10-25': {dots: [vacation, massage, workout], selected: true},
+    '2017-10-25': {dots: [vacation, massage, workout], selected: true, selectedColor: 'red'},
     '2017-10-26': {dots: [massage, workout], disabled: true},
   }},
   markingType={'multi-dot'}
@@ -173,7 +176,7 @@ Period marking
      '2012-05-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
      '2012-05-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
     }}
-  // Date marking style [simple/period/multi-dot]. Default = 'simple'
+  // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
   markingType={'period'}
 />
 ```
@@ -206,6 +209,42 @@ CAUTION: This marking is only fully supported by the `<Calendar />` component be
   }}
   // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
   markingType='multi-period'
+/>
+```
+
+Custom marking allows you to customize each marker with custom styles.
+
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/custom.png?raw=true">
+</kbd>
+
+```javascript
+<Calendar
+  // Date marking style [simple/period/multi-dot/single]. Default = 'simple'
+  markingType={'custom'}
+  markedDates={{
+    '2018-03-28': {
+      customStyles: {
+        container: {
+          backgroundColor: 'green',
+        },
+        text: {
+          color: 'black',
+          fontWeight: 'bold'
+        },
+      },
+    },
+    '2018-03-29': {
+      customStyles: {
+        container: {
+          backgroundColor: 'white',
+          elevation: 2
+        },
+        text: {
+          color: 'blue',
+        },
+      }
+    }}}
 />
 ```
 
@@ -246,6 +285,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
     textDayFontFamily: 'monospace',
     textMonthFontFamily: 'monospace',
     textDayHeaderFontFamily: 'monospace',
+    textMonthFontWeight: 'bold',
     textDayFontSize: 16,
     textMonthFontSize: 16,
     textDayHeaderFontSize: 16
@@ -322,6 +362,27 @@ If you implement an awesome day component please make a PR so that other people 
   scrollEnabled={true}
   // Enable or disable vertical scroll indicator. Default = false
   showScrollIndicator={true}
+  ...calendarParams
+/>
+```
+
+#### Horizontal CalendarList
+
+<kbd>
+  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/horizontal-calendar-list.gif?raw=true">
+</kbd>
+
+You can also make the `CalendarList` scroll horizontally. To do that you need to pass specific props to the `CalendarList`:
+
+```javascript
+<CalendarList
+  // Enable horizontal scrolling, default = false
+  horizontal={true}
+  // Enable paging on horizontal, default = false
+  pagingEnabled={true}
+  // Set custom calendarWidth.
+  calendarWidth={320}
+  ...calendarListParams
   ...calendarParams
 />
 ```
