@@ -17,6 +17,9 @@ export default class MenuScreen extends Component {
         <TouchableOpacity style={styles.menu} onPress={this.onCalendarListPress.bind(this)}>
           <Text style={styles.menuText}>Calendar List</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.menu} onPress={this.onHorizontalCalendarListPress.bind(this)}>
+          <Text style={styles.menuText}>Horizontal Calendar List</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.menu} onPress={this.onAgendaPress.bind(this)}>
           <Text style={styles.menuText}>Agenda</Text>
         </TouchableOpacity>
@@ -35,6 +38,13 @@ export default class MenuScreen extends Component {
     this.props.navigator.push({
       screen: 'CalendarsList',
       title: 'Calendar List'
+    });
+  }
+
+  onHorizontalCalendarListPress() {
+    this.props.navigator.push({
+      screen: 'HorizontalCalendarList',
+      title: 'Horizontal Calendars List'
     });
   }
 

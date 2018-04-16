@@ -8,8 +8,8 @@
 	},
 	"dependencies": {
 		"react": "16.0.0-alpha.12",
-		"react-native": "0.53.3",
-		"react-native-calendars": "^1.5.8",
+		"react-native": "0.54.2",
+		"react-native-calendars": "^1.17.5",
 		"react-native-navigation": "^1.1.205"
 	},
 	"devDependencies": {

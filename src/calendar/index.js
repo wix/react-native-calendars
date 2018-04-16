@@ -12,6 +12,7 @@ import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
 import MultiDotDay from './day/multi-dot';
+import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 
@@ -51,6 +52,8 @@ class Calendar extends Component {
 
     // Handler which gets executed on day press. Default = undefined
     onDayPress: PropTypes.func,
+    // Handler which gets executed on day long press. Default = undefined
+    onDayLongPress: PropTypes.func,
     // Handler which gets executed when visible month changes in calendar. Default = undefined
     onMonthChange: PropTypes.func,
     onVisibleMonthsChange: PropTypes.func,
@@ -92,6 +95,7 @@ class Calendar extends Component {
     this.updateMonth = this.updateMonth.bind(this);
     this.addMonth = this.addMonth.bind(this);
     this.pressDay = this.pressDay.bind(this);
+    this.longPressDay = this.longPressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
@@ -123,7 +127,7 @@ class Calendar extends Component {
     });
   }
 
-  pressDay(date) {
+  _handleDayInteraction(date, interaction) {
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
@@ -132,10 +136,18 @@ class Calendar extends Component {
       if (shouldUpdateMonth) {
         this.updateMonth(day);
       }
-      if (this.props.onDayPress) {
-        this.props.onDayPress(xdateToData(day));
+      if (interaction) {
+        interaction(xdateToData(day));
       }
     }
+  }
+
+  pressDay(date) {
+    this._handleDayInteraction(date, this.props.onDayPress);
+  }
+
+  longPressDay(date) {
+    this._handleDayInteraction(date, this.props.onDayLongPress);
   }
 
   addMonth(count) {
@@ -160,7 +172,7 @@ class Calendar extends Component {
       if (this.props.markingType === 'period') {
         dayComp = (<View key={id} style={{flex: 1}}/>);
       } else {
-        dayComp = (<View key={id} style={{width: 32}}/>);
+        dayComp = (<View key={id} style={this.style.dayContainer}/>);
       }
     } else {
       const DayComp = this.getDayComponent();
@@ -171,6 +183,7 @@ class Calendar extends Component {
           state={state}
           theme={this.props.theme}
           onPress={this.pressDay}
+          onLongPress={this.longPressDay}
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
         >
@@ -191,6 +204,8 @@ class Calendar extends Component {
       return UnitDay;
     case 'multi-dot':
       return MultiDotDay;
+    case 'custom':
+      return SingleDay;
     default:
       return Day;
     }
@@ -209,7 +224,7 @@ class Calendar extends Component {
   }
 
   renderWeekNumber (weekNumber) {
-    return <Day key={`week-${weekNumber}`} theme={this.props.theme} state='disabled'>{weekNumber}</Day>;
+    return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
   }
 
   renderWeek(days, id) {
@@ -259,7 +274,7 @@ class Calendar extends Component {
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
         />
-        {weeks}
+        <View style={this.style.monthView}>{weeks}</View>
       </View>);
   }
 }
