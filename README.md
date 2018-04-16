@@ -291,6 +291,8 @@ If you implement an awesome day component please make a PR so that other people 
   scrollEnabled={true}
   // Enable or disable vertical scroll indicator. Default = false
   showScrollIndicator={true}
+  // Show or hide loading indicator
+  showLoadingIndicator={true}
   ...calendarParams
 />
 ```
