@@ -333,8 +333,6 @@ If you implement an awesome day component please make a PR so that other people 
   showScrollIndicator={true}
   // Show or hide loading indicator
   showLoadingIndicator={true}
-  // Set viewabilityConfig defined by viewabilityHelper.js. Default: viewAreaCoveragePercentThreshold=100
-  viewabilityConfig={viewabilityConfigObject}
   ...calendarParams
 />
 ```
