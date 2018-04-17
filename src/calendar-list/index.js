@@ -73,8 +73,7 @@ class CalendarList extends Component {
     this.state = {
       rows,
       texts,
-      openDate: date,
-      initialized: false
+      openDate: date
     };
 
     this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
