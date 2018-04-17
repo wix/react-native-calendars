@@ -183,7 +183,7 @@ class CalendarList extends Component {
         ref={(c) => this.listView = c}
         //scrollEventThrottle={1000}
         style={[this.style.container, this.props.style]}
-        initialListSize={this.pastScrollRange * this.futureScrollRange + 1}
+        initialListSize={this.pastScrollRange + this.futureScrollRange + 1}
         data={this.state.rows}
         //snapToAlignment='start'
         //snapToInterval={this.calendarHeight}
