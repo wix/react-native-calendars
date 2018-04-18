@@ -36,11 +36,13 @@ export default function styleConstructor(theme={}) {
       color: appStyle.textDisabledColor
     },
     dot: {
-      width: 4,
-      height: 4,
-      marginTop: 1,
-      borderRadius: 2,
-      opacity: 0
+      position: 'absolute',
+      top: 3,
+      right: 3,
+      width: 6,
+      height: 6,
+      backgroundColor: '#fff',
+      borderRadius: 3
     },
     visibleDot: {
       opacity: 1,
