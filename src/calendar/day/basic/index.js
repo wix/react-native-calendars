@@ -1,9 +1,5 @@
-import React, {Component} from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  View
-} from 'react-native';
+import React, { Component } from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import styleConstructor from './style';
@@ -36,23 +32,28 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const changed = ['state', 'children', 'marking', 'onPress'].reduce((prev, next) => {
-      if (prev) {
+    const changed = ['state', 'children', 'marking', 'onPress'].reduce(
+      (prev, next) => {
+        if (prev) {
+          return prev;
+        } else if (nextProps[next] !== this.props[next]) {
+          return next;
+        }
         return prev;
-      } else if (nextProps[next] !== this.props[next]) {
-        return next;
-      }
-      return prev;
-    }, false);
+      },
+      false
+    );
     if (changed === 'marking') {
       let markingChanged = false;
       if (this.props.marking && nextProps.marking) {
-        markingChanged = (!(
-          this.props.marking.marked === nextProps.marking.marked
-          && this.props.marking.selected === nextProps.marking.selected
-          && this.props.marking.selectedColor === nextProps.marking.selectedColor
-          && this.props.marking.dotColor === nextProps.marking.dotColor
-          && this.props.marking.disabled === nextProps.marking.disabled));
+        markingChanged = !(
+          this.props.marking.marked === nextProps.marking.marked &&
+          this.props.marking.selected === nextProps.marking.selected &&
+          this.props.marking.selectedColor ===
+          nextProps.marking.selectedColor &&
+          this.props.marking.dotColor === nextProps.marking.dotColor &&
+          this.props.marking.disabled === nextProps.marking.disabled
+        );
       } else {
         markingChanged = true;
       }
@@ -75,20 +76,23 @@ class Day extends Component {
         marking: true
       };
     }
-    const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
+    const isDisabled =
+      typeof marking.disabled !== 'undefined'
+        ? marking.disabled
+        : this.props.state === 'disabled';
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
       if (marking.dotColor) {
-        dotStyle.push({backgroundColor: marking.dotColor});
+        dotStyle.push({ backgroundColor: marking.dotColor });
       }
-      dot = (<View style={dotStyle}/>);
+      dot = <View style={dotStyle} />;
     }
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       if (marking.selectedColor) {
-        containerStyle.push({backgroundColor: marking.selectedColor});
+        containerStyle.push({ backgroundColor: marking.selectedColor });
       }
       dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
@@ -106,7 +110,9 @@ class Day extends Component {
         activeOpacity={marking.activeOpacity}
         disabled={marking.disableTouchEvent}
       >
-        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+        <Text allowFontScaling={false} style={textStyle}>
+          {String(this.props.children)}
+        </Text>
         {dot}
       </TouchableOpacity>
     );
