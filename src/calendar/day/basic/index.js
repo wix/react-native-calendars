@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { TouchableOpacity, Text, View } from "react-native";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
+import PropTypes from 'prop-types';
 
-import styleConstructor from "./style";
+import styleConstructor from './style';
 
 class Day extends Component {
   static propTypes = {
     // TODO: disabled props should be removed
-    state: PropTypes.oneOf(["disabled", "today", ""]),
+    state: PropTypes.oneOf(['disabled', 'today', '']),
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
@@ -32,7 +32,7 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const changed = ["state", "children", "marking", "onPress"].reduce(
+    const changed = ['state', 'children', 'marking', 'onPress'].reduce(
       (prev, next) => {
         if (prev) {
           return prev;
@@ -43,14 +43,14 @@ class Day extends Component {
       },
       false
     );
-    if (changed === "marking") {
+    if (changed === 'marking') {
       let markingChanged = false;
       if (this.props.marking && nextProps.marking) {
         markingChanged = !(
           this.props.marking.marked === nextProps.marking.marked &&
           this.props.marking.selected === nextProps.marking.selected &&
           this.props.marking.selectedColor ===
-            nextProps.marking.selectedColor &&
+          nextProps.marking.selectedColor &&
           this.props.marking.dotColor === nextProps.marking.dotColor &&
           this.props.marking.disabled === nextProps.marking.disabled
         );
@@ -77,9 +77,9 @@ class Day extends Component {
       };
     }
     const isDisabled =
-      typeof marking.disabled !== "undefined"
+      typeof marking.disabled !== 'undefined'
         ? marking.disabled
-        : this.props.state === "disabled";
+        : this.props.state === 'disabled';
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
@@ -98,7 +98,7 @@ class Day extends Component {
       textStyle.push(this.style.selectedText);
     } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
-    } else if (this.props.state === "today") {
+    } else if (this.props.state === 'today') {
       textStyle.push(this.style.todayText);
     }
 
