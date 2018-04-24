@@ -86,18 +86,7 @@ class Day extends Component {
       if (marking.dotColor) {
         dotStyle.push({ backgroundColor: marking.dotColor });
       }
-      dot = (
-        <View style={dotStyle}>
-          <View
-            style={{
-              width: 6,
-              height: 6,
-              backgroundColor: 'orange',
-              borderRadius: 3
-            }}
-          />
-        </View>
-      );
+      dot = <View style={dotStyle} />;
     }
 
     if (marking.selected) {

@@ -1,26 +1,26 @@
-import {StyleSheet, Platform} from 'react-native';
-import * as defaultStyle from '../../../style';
+import { StyleSheet, Platform } from "react-native";
+import * as defaultStyle from "../../../style";
 
-const STYLESHEET_ID = 'stylesheet.day.basic';
+const STYLESHEET_ID = "stylesheet.day.basic";
 
-export default function styleConstructor(theme={}) {
-  const appStyle = {...defaultStyle, ...theme};
+export default function styleConstructor(theme = {}) {
+  const appStyle = { ...defaultStyle, ...theme };
   return StyleSheet.create({
     base: {
       width: 32,
       height: 32,
-      alignItems: 'center'
+      alignItems: "center"
     },
     text: {
-      marginTop: Platform.OS === 'android' ? 4 : 6,
+      marginTop: Platform.OS === "android" ? 4 : 6,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
-      fontWeight: '300',
+      fontWeight: "300",
       color: appStyle.dayTextColor,
-      backgroundColor: 'rgba(255, 255, 255, 0)'
+      backgroundColor: "rgba(255, 255, 255, 0)"
     },
     alignedText: {
-      marginTop: Platform.OS === 'android' ? 4 : 6
+      marginTop: Platform.OS === "android" ? 4 : 6
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
@@ -36,13 +36,13 @@ export default function styleConstructor(theme={}) {
       color: appStyle.textDisabledColor
     },
     dot: {
-      position: 'absolute',
-      top: 3,
-      right: 3,
-      width: 6,
-      height: 6,
-      backgroundColor: '#fff',
-      borderRadius: 3
+      position: "absolute",
+      top: 1,
+      right: 1,
+      width: 8,
+      height: 8,
+      backgroundColor: "#fff",
+      borderRadius: 4
     },
     visibleDot: {
       opacity: 1,
