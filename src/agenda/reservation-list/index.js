@@ -70,7 +70,7 @@ class ReactComp extends Component {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.getNode().scrollToOffset({offset: scrollPosition, animated: true});
+      (this.list.getNode ? this.list.getNode() : this.list).scrollToOffset({offset: scrollPosition, animated: true});
     }
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
