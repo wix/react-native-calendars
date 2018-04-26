@@ -17,8 +17,6 @@ class ReactComp extends Component {
     rowHasChanged: PropTypes.func,
     // specify how each item should be rendered in agenda
     renderItem: PropTypes.func,
-    // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-    renderDay: PropTypes.func,
     // specify how empty date content with no items should be rendered
     renderEmptyDate: PropTypes.func,
     // callback that gets called when day changes while scrolling agenda list
@@ -107,12 +105,16 @@ class ReactComp extends Component {
   }
 
   renderRow({item, index}) {
+    const previousItem = this.state.reservations[index - 1] || {};
+    const nextItem = this.state.reservations[index + 1] || {};
+
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
         <Reservation
           item={item}
+          previousItem={previousItem}
+          nextItem={nextItem}
           renderItem={this.props.renderItem}
-          renderDay={this.props.renderDay}
           renderEmptyDate={this.props.renderEmptyDate}
           theme={this.props.theme}
           rowHasChanged={this.props.rowHasChanged}
