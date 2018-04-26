@@ -8,7 +8,7 @@ import XDate from 'xdate';
 import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import dateutils from '../dateutils';
-import Calendar from '../calendar';
+import Calendar, {viewPropTypes} from '../calendar';
 import CalendarListItem from './item';
 
 const {width} = Dimensions.get('window');
@@ -16,6 +16,9 @@ const {width} = Dimensions.get('window');
 class CalendarList extends Component {
   static propTypes = {
     ...Calendar.propTypes,
+
+    // Specify style for calendarList container element. Default = {}
+    contentContainerStyle: viewPropTypes.style,
 
     // Max amount of months allowed to scroll to the past. Default = 50
     pastScrollRange: PropTypes.number,
@@ -49,6 +52,7 @@ class CalendarList extends Component {
     this.pastScrollRange = props.pastScrollRange === undefined ? 50 : props.pastScrollRange;
     this.futureScrollRange = props.futureScrollRange === undefined ? 50 : props.futureScrollRange;
     this.style = styleConstructor(props.theme);
+    this.contentContainerStyle = {};
     this.calendarWidth = this.props.calendarWidth || width;
     this.calendarHeight = props.calendarHeight;
 
@@ -183,6 +187,7 @@ class CalendarList extends Component {
         ref={(c) => this.listView = c}
         //scrollEventThrottle={1000}
         style={[this.style.container, this.props.style]}
+        contentContainerStyle={this.props.contentContainerStyle}
         initialListSize={this.pastScrollRange + this.futureScrollRange + 1}
         data={this.state.rows}
         //snapToAlignment='start'
