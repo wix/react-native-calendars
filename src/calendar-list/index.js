@@ -79,6 +79,13 @@ class CalendarList extends Component {
     this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
     this.renderCalendarBound = this.renderCalendar.bind(this);
     this.getItemLayout = this.getItemLayout.bind(this);
+    this.onLayout = this.onLayout.bind(this);
+  }
+
+  onLayout(event) {
+    if (this.props.onLayout) {
+      this.props.onLayout(event);
+    }
   }
 
   scrollToDay(d, offset, animated) {
@@ -179,6 +186,7 @@ class CalendarList extends Component {
   render() {
     return (
       <FlatList
+        onLayout={this.onLayout}
         ref={(c) => this.listView = c}
         //scrollEventThrottle={1000}
         style={[this.style.container, this.props.style]}
