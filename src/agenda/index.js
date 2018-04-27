@@ -49,6 +49,8 @@ export default class AgendaView extends Component {
     scrollEventThrottle: PropTypes.number,
     // Animated value changed on ReservationList scrolling
     scrollAnimatedValue: PropTypes.instanceOf(Animated.Value),
+    // Is scroll enabled?
+    scrollEnabled: PropTypes.bool,
     // specify how each item should be rendered in agenda
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
@@ -84,6 +86,10 @@ export default class AgendaView extends Component {
     hideKnob: PropTypes.bool,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
     monthFormat: PropTypes.string
+  };
+
+  static defaultProps = {
+    scrollEnabled: true,
   };
 
   constructor(props) {
@@ -283,6 +289,7 @@ export default class AgendaView extends Component {
         onScroll={this.props.onScroll}
         scrollEventThrottle={this.props.scrollEventThrottle}
         scrollAnimatedValue={this.props.scrollAnimatedValue}
+        scrollEnabled={this.props.scrollEnabled}
         ref={(c) => this.list = c}
         theme={this.props.theme}
       />

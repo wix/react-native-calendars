@@ -32,6 +32,8 @@ class ReactComp extends Component {
     scrollEventThrottle: PropTypes.number,
     // Animated value changed on ReservationList scrolling
     scrollAnimatedValue: PropTypes.instanceOf(Animated.Value),
+    // Is scroll enabled?
+    scrollEnabled: PropTypes.bool,
     // the list of items that have to be displayed in agenda. If you want to render item as empty date
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
@@ -39,6 +41,10 @@ class ReactComp extends Component {
 
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
+  };
+
+  static defaultProps = {
+    scrollEnabled: true,
   };
 
   constructor(props) {
@@ -209,6 +215,7 @@ class ReactComp extends Component {
         scrollEventThrottle={this.props.scrollEventThrottle || 200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
         keyExtractor={(item, index) => String(index)}
+        scrollEnabled={this.props.scrollEnabled}
       />
     );
   }
