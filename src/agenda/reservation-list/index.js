@@ -28,6 +28,8 @@ class ReactComp extends Component {
     onDayChange: PropTypes.func,
     // onScroll ListView event
     onScroll: PropTypes.func,
+    // callback that called when the momentum scroll ends
+    onMomentumScrollEnd: PropTypes.func,
     // How often scroll event will be called
     scrollEventThrottle: PropTypes.number,
     // Animated value changed on ReservationList scrolling
@@ -44,6 +46,7 @@ class ReactComp extends Component {
   };
 
   static defaultProps = {
+    onMomentumScrollEnd: () => {},
     scrollEnabled: true,
   };
 
@@ -211,6 +214,7 @@ class ReactComp extends Component {
           [{ nativeEvent: { contentOffset: { y: this.props.scrollAnimatedValue } } }],
           { listener: this.onScroll.bind(this), useNativeDriver: true }
         ) : (this.props.onScroll && this.props.onScroll.bind(this))}
+        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={this.props.scrollEventThrottle || 200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}

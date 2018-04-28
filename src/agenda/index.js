@@ -45,6 +45,8 @@ export default class AgendaView extends Component {
     onDaychange: PropTypes.func,
     // callback that called on ReservationList scroll
     onScroll: PropTypes.func,
+    // callback that called when the momentum scroll ends
+    onMomentumScrollEnd: PropTypes.func,
     // How often scroll event will be called
     scrollEventThrottle: PropTypes.number,
     // Animated value changed on ReservationList scrolling
@@ -89,6 +91,7 @@ export default class AgendaView extends Component {
   };
 
   static defaultProps = {
+    onMomentumScrollEnd: () => {},
     scrollEnabled: true,
   };
 
@@ -287,6 +290,7 @@ export default class AgendaView extends Component {
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
         onScroll={this.props.onScroll}
+        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
         scrollEventThrottle={this.props.scrollEventThrottle}
         scrollAnimatedValue={this.props.scrollAnimatedValue}
         scrollEnabled={this.props.scrollEnabled}
