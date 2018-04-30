@@ -12,6 +12,7 @@ import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
 import MultiDotDay from './day/multi-dot';
+import MultiPeriodDay from './day/multi-period';
 import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
@@ -40,7 +41,7 @@ class Calendar extends Component {
     // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
     firstDay: PropTypes.number,
 
-    // Date marking style [simple/period]. Default = 'simple'
+    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' 
     markingType: PropTypes.string,
 
     // Hide month navigation arrows. Default = false
@@ -167,7 +168,7 @@ class Calendar extends Component {
     }
     let dayComp;
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      if (this.props.markingType === 'period') {
+      if (['period', 'multi-period'].includes(this.props.markingType)) {
         dayComp = (<View key={id} style={{flex: 1}}/>);
       } else {
         dayComp = (<View key={id} style={this.style.dayContainer}/>);
@@ -202,6 +203,8 @@ class Calendar extends Component {
       return UnitDay;
     case 'multi-dot':
       return MultiDotDay;
+    case 'multi-period':
+      return MultiPeriodDay;
     case 'custom':
       return SingleDay;
     default:
