@@ -68,7 +68,7 @@ class CalendarList extends Component {
     this.futureScrollRange = props.futureScrollRange === undefined ? 50 : props.futureScrollRange;
     this.style = styleConstructor(props.theme);
     this.calendarWidth = props.calendarWidth || width;
-    this.calendarHeight = props.calendarHeight || 360;
+    this.calendarHeight = props.calendarHeight;
 
     const rows = [];
     const texts = [];
