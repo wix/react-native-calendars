@@ -100,7 +100,7 @@ class CalendarList extends Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const current = parseDate(prevProps.current);
     const nextCurrent = parseDate(this.props.current);
 
