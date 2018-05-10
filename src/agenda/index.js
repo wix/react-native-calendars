@@ -55,7 +55,7 @@ export default class AgendaView extends Component {
     renderEmptyData: PropTypes.func,
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
-    
+
     // Max amount of months allowed to scroll to the past. Default = 50
     pastScrollRange: PropTypes.number,
 
@@ -68,7 +68,7 @@ export default class AgendaView extends Component {
     minDate: PropTypes.any,
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
     maxDate: PropTypes.any,
-    
+
     // Collection of dates that have to be marked. Default = items
     markedDates: PropTypes.object,
     // Optional marking type if custom markedDates are provided
@@ -77,7 +77,10 @@ export default class AgendaView extends Component {
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+
+    // Display loading indicador. Default = false
+    displayLoadingIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -398,6 +401,7 @@ export default class AgendaView extends Component {
               futureScrollRange={this.props.futureScrollRange}
               dayComponent={this.props.dayComponent}
               disabledByDefault={this.props.disabledByDefault}
+              displayLoadingIndicator={this.props.displayLoadingIndicator}
             />
           </Animated.View>
           {knob}
