@@ -109,6 +109,14 @@ class CalendarList extends Component {
     }
   }
 
+  get initialScrollIndex() {
+    if (!this.state.openDate || !this.props.shouldInitiallyScrollToMonth) {
+      return undefined;
+    }
+
+    return this.getMonthIndex(this.state.openDate);
+  }
+
   onLayout(event) {
     if (this.props.onLayout) {
       this.props.onLayout(event);
@@ -224,6 +232,7 @@ class CalendarList extends Component {
         scrollEnabled={this.props.scrollingEnabled !== undefined ? this.props.scrollingEnabled : true}
         keyExtractor={(item, index) => String(index)}
         getItemLayout={this.getItemLayout}
+        initialScrollIndex={this.initialScrollIndex}
         scrollsToTop={this.props.scrollsToTop !== undefined ? this.props.scrollsToTop : false}
       />
     );
@@ -231,7 +240,8 @@ class CalendarList extends Component {
 }
 
 CalendarList.defaultProps = {
-  calendarHeight: 360
+  calendarHeight: 360,
+  shouldInitiallyScrollToMonth: true
 };
 
 export default CalendarList;
