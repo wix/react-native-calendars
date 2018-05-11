@@ -114,7 +114,7 @@ class CalendarList extends Component {
       return undefined;
     }
 
-    return this.getMonthIndex(this.state.openDate);
+    return this.state.openDate.diffMonths(this.state.openDate) + this.pastScrollRange;
   }
 
   onLayout(event) {
