@@ -191,13 +191,13 @@ class Day extends Component {
     }
 
     return (
-      <TouchableWithoutFeedback 
+      <TouchableWithoutFeedback
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}>
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+            <Text allowFontScaling={false} style={[textStyle, this.props.marking.style]}>{String(this.props.children)}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
