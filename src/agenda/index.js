@@ -81,6 +81,8 @@ export default class AgendaView extends Component {
 
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+    // show Only Day Selected. Default = false
+    showOnlyDaySelected: PropTypes.bool,
   };
 
   constructor(props) {
@@ -278,6 +280,7 @@ export default class AgendaView extends Component {
         onDayChange={this.onDayChange.bind(this)}
         onScroll={() => {}}
         ref={(c) => this.list = c}
+        showOnlyDaySelected={this.props.showOnlyDaySelected}
         theme={this.props.theme}
       />
     );
