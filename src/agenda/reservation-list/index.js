@@ -29,6 +29,7 @@ class ReactComp extends Component {
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
     reservations: PropTypes.object,
+    showOnlyDaySelected: PropTypes.bool,
 
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
@@ -166,10 +167,18 @@ class ReactComp extends Component {
     }
     const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
+    if(!props.showOnlyDaySelected){
+      for (let i = 0; i < 31; i++) {
+        const res = this.getReservationsForDay(iterator, props);
+        if (res) {
+          reservations = reservations.concat(res);
+        }
+        iterator.addDays(1);
+      }
+    }else{
       const res = this.getReservationsForDay(iterator, props);
       if (res) {
-        reservations = reservations.concat(res);
+        reservations = res;
       }
       iterator.addDays(1);
     }
