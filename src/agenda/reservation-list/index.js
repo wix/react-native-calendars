@@ -64,7 +64,9 @@ class ReactComp extends Component {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.scrollToOffset({offset: scrollPosition, animated: true});
+      if (!this.props.showOnlyDaySelected) {
+        this.list.scrollToOffset({offset: scrollPosition, animated: true});
+      }
     }
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
