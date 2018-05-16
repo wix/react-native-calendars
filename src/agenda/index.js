@@ -114,7 +114,7 @@ export default class AgendaView extends Component {
     this.generateMarkings = this.generateMarkings.bind(this);
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
-    this.lastSelectedDay = this.getDayPosition(this.state.selectedDay)
+    this.lastSelectedDay = this.getDayPosition(this.state.selectedDay);
   }
 
   calendarOffset() {
@@ -297,13 +297,13 @@ export default class AgendaView extends Component {
       selectedDay: parseDate(day)
     });
 
-    const newDay = this.getDayPosition(newDate)
+    const newDay = this.getDayPosition(newDate);
     if (this.isWeekChange(newDay)) {
       if (this.props.onWeekChange) {
-        this.onWeekChange(newDate, newDay)
+        this.onWeekChange(newDate, newDay);
       }
     }
-    this.lastSelectedDay = this.getDayPosition(newDate)
+    this.lastSelectedDay = this.getDayPosition(newDate);
 
     if (this.props.onDayChange) {
       this.props.onDayChange(xdateToData(newDate));
@@ -311,20 +311,20 @@ export default class AgendaView extends Component {
   }
 
   getDayPosition(day) {
-    let dayOfWeek = (day.getDay() - this.props.firstDay) % 7
-    return dayOfWeek >= 0 ? dayOfWeek : dayOfWeek + 7
+    let dayOfWeek = (day.getDay() - this.props.firstDay) % 7;
+    return dayOfWeek >= 0 ? dayOfWeek : dayOfWeek + 7;
   }
 
   isWeekChange(newDay) {
-    return newDay === 0 && this.lastSelectedDay === 6 || newDay === 6 && this.lastSelectedDay === 0
+    return newDay === 0 && this.lastSelectedDay === 6 || newDay === 6 && this.lastSelectedDay === 0;
   }
 
   onWeekChange(newDate, newDay) {
-    const isFirstDayInWeek = newDay === 0
+    const isFirstDayInWeek = newDay === 0;
     var dates = {
       firstDay: isFirstDayInWeek ? newDate : newDate.clone().addDays(-6),
       lastDay: isFirstDayInWeek ? newDate.clone().addDays(6) : newDate 
-    }
+    };
     if (this.props.onWeekChange) {
       this.props.onWeekChange(xdateToData(dates.firstDay), xdateToData(dates.lastDay));
     }
