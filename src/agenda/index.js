@@ -81,6 +81,9 @@ export default class AgendaView extends Component {
 
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+
+    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+    firstDay: PropTypes.number,
   };
 
   constructor(props) {
