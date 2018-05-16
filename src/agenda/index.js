@@ -298,10 +298,8 @@ export default class AgendaView extends Component {
     });
 
     const newDay = this.getDayPosition(newDate);
-    if (this.isWeekChange(newDay)) {
-      if (this.props.onWeekChange) {
-        this.onWeekChange(newDate, newDay);
-      }
+    if (this.props.onWeekChange && this.isWeekChange(newDay)) {
+      this.onWeekChange(newDate, newDay);
     }
     this.lastSelectedDay = this.getDayPosition(newDate);
 
@@ -325,9 +323,7 @@ export default class AgendaView extends Component {
       firstDay: isFirstDayInWeek ? newDate : newDate.clone().addDays(-6),
       lastDay: isFirstDayInWeek ? newDate.clone().addDays(6) : newDate 
     };
-    if (this.props.onWeekChange) {
-      this.props.onWeekChange(xdateToData(dates.firstDay), xdateToData(dates.lastDay));
-    }
+    this.props.onWeekChange(xdateToData(dates.firstDay), xdateToData(dates.lastDay));
   }
 
   generateMarkings() {
