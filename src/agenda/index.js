@@ -77,7 +77,13 @@ export default class AgendaView extends Component {
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+    // A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
+    refreshControl: PropTypes.element,
+    // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
+    onRefresh: PropTypes.func,
+    // Set this true while waiting for new data from a refresh.
+    refreshing: PropTypes.bool,
   };
 
   constructor(props) {
@@ -265,13 +271,16 @@ export default class AgendaView extends Component {
   renderReservations() {
     return (
       <ReservationsList
+        refreshControl={this.props.refreshControl}
+        refreshing={this.props.refreshing}
+        onRefresh={this.props.onRefresh}
         rowHasChanged={this.props.rowHasChanged}
         renderItem={this.props.renderItem}
         renderDay={this.props.renderDay}
         renderEmptyDate={this.props.renderEmptyDate}
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
-        renderEmptyData = {this.props.renderEmptyData}
+        renderEmptyData={this.props.renderEmptyData}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
         onScroll={() => {}}
