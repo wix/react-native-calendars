@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-//import _ from 'lodash';
 import {
   TouchableWithoutFeedback,
   Text,
   View
 } from 'react-native';
+import {shouldUpdate} from '../../../component-updater';
+import isEqual from 'lodash.isequal';
 
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
@@ -46,17 +47,12 @@ class Day extends Component {
   shouldComponentUpdate(nextProps) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marking);
 
-    if (JSON.stringify(this.markingStyle) !== JSON.stringify(newMarkingStyle)) {
+    if (!isEqual(this.markingStyle, newMarkingStyle)) {
       this.markingStyle = newMarkingStyle;
       return true;
     }
 
-    return ['state', 'children'].reduce((prev, next) => {
-      if (prev || nextProps[next] !== this.props[next]) {
-        return true;
-      }
-      return prev;
-    }, false);
+    return shouldUpdate(this.props, nextProps, ['state', 'children', 'onPress', 'onLongPress']);
   }
 
   getDrawingStyle(marking) {

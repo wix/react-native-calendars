@@ -55,7 +55,7 @@ export default class AgendaView extends Component {
     renderEmptyData: PropTypes.func,
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
-    
+
     // Max amount of months allowed to scroll to the past. Default = 50
     pastScrollRange: PropTypes.number,
 
@@ -68,7 +68,7 @@ export default class AgendaView extends Component {
     minDate: PropTypes.any,
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
     maxDate: PropTypes.any,
-    
+
     // Collection of dates that have to be marked. Default = items
     markedDates: PropTypes.object,
     // Optional marking type if custom markedDates are provided
@@ -84,6 +84,8 @@ export default class AgendaView extends Component {
     onRefresh: PropTypes.func,
     // Set this true while waiting for new data from a refresh.
     refreshing: PropTypes.bool,
+    // Display loading indicador. Default = false
+    displayLoadingIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -138,7 +140,6 @@ export default class AgendaView extends Component {
   onLayout(event) {
     this.viewHeight = event.nativeEvent.layout.height;
     this.viewWidth = event.nativeEvent.layout.width;
-    this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
     this.forceUpdate();
   }
 
@@ -387,6 +388,9 @@ export default class AgendaView extends Component {
         <Animated.View style={headerStyle}>
           <Animated.View style={{flex:1, transform: [{ translateY: contentTranslate }]}}>
             <CalendarList
+              onLayout={() => {
+                this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+              }}
               theme={this.props.theme}
               onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
               ref={(c) => this.calendar = c}
@@ -395,6 +399,7 @@ export default class AgendaView extends Component {
               current={this.currentMonth}
               markedDates={this.generateMarkings()}
               markingType={this.props.markingType}
+              removeClippedSubviews={this.props.removeClippedSubviews}
               onDayPress={this._chooseDayFromCalendar.bind(this)}
               scrollingEnabled={this.state.calendarScrollable}
               hideExtraDays={this.state.calendarScrollable}
@@ -404,6 +409,7 @@ export default class AgendaView extends Component {
               futureScrollRange={this.props.futureScrollRange}
               dayComponent={this.props.dayComponent}
               disabledByDefault={this.props.disabledByDefault}
+              displayLoadingIndicator={this.props.displayLoadingIndicator}
             />
           </Animated.View>
           {knob}
