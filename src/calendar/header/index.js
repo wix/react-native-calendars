@@ -21,6 +21,10 @@ class CalendarHeader extends Component {
     onPressArrowRight: PropTypes.func
   };
 
+  static defaultProps = {
+    monthFormat: 'MMMM yyyy',
+  };
+
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
@@ -114,7 +118,7 @@ class CalendarHeader extends Component {
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
             <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
-              {this.props.month.toString(this.props.monthFormat ? this.props.monthFormat : 'MMMM yyyy')}
+              {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
           </View>
