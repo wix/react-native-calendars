@@ -62,6 +62,8 @@ class Calendar extends Component {
     renderArrow: PropTypes.func,
     // Provide custom day rendering component
     dayComponent: PropTypes.any,
+    // Provide custom weekdays rendering component
+    weekdaysComponent: PropTypes.any,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
     monthFormat: PropTypes.string,
     // Disables changing month when click on days of other months (when hideExtraDays is false). Default = false
@@ -269,6 +271,7 @@ class Calendar extends Component {
           monthFormat={this.props.monthFormat}
           hideDayNames={this.props.hideDayNames}
           weekNumbers={this.props.showWeekNumbers}
+          weekdaysComponent={this.props.weekdaysComponent }
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
         />

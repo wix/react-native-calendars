@@ -17,6 +17,7 @@ class CalendarHeader extends Component {
     renderArrow: PropTypes.func,
     hideDayNames: PropTypes.bool,
     weekNumbers: PropTypes.bool,
+    weekdaysComponent: PropTypes.any,
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func
   };
@@ -70,10 +71,17 @@ class CalendarHeader extends Component {
     return this.addMonth();
   }
 
+  getWeekDaysComponent() {
+    if (this.props.weekdaysComponent) {
+      return this.props.weekdaysComponent;
+    }
+  }
+
   render() {
     let leftArrow = <View />;
     let rightArrow = <View />;
     let weekDaysNames = weekDayNames(this.props.firstDay);
+    let WeekdaysComponent = this.getWeekDaysComponent();
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity
@@ -124,7 +132,9 @@ class CalendarHeader extends Component {
           !this.props.hideDayNames &&
           <View style={this.style.week}>
             {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
-            {weekDaysNames.map((day, idx) => (
+            {weekDaysNames.map((day, idx) => WeekdaysComponent ? (
+              <WeekdaysComponent key={idx} day={day} />
+              ) : (
               <Text allowFontScaling={false} key={idx} accessible={false} style={this.style.dayHeader} numberOfLines={1} importantForAccessibility='no'>{day}</Text>
             ))}
           </View>
