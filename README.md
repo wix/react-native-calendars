@@ -108,6 +108,10 @@ LocaleConfig.defaultLocale = 'fr';
   onPressArrowLeft={substractMonth => substractMonth()}
   // Handler which gets executed when press arrow icon left. It receive a callback can go next month
   onPressArrowRight={addMonth => addMonth()}
+  // Disable left arrow. Default = false
+  disableArrowLeft={true}
+  // Disable right arrow. Default = false
+  disableArrowRight={true}
 />
 ```
 
@@ -191,16 +195,16 @@ CAUTION: This marking is only fully supported by the `<Calendar />` component be
 
 ```javascript
 <Calendar
-  markedDates={{  
-    '2017-12-14': {  
-      periods: [  
+  markedDates={{
+    '2017-12-14': {
+      periods: [
         { startingDay: false, endingDay: true, color: '#5f9ea0' },
         { startingDay: false, endingDay: true, color: '#ffa500' },
         { startingDay: true, endingDay: false, color: '#f0e68c' },
       ]
     },
-    '2017-12-15': {  
-      periods: [  
+    '2017-12-15': {
+      periods: [
         { startingDay: true, endingDay: false, color: '#ffa500' },
         { color: 'transparent' },
         { startingDay: false, endingDay: false, color: '#f0e68c' },
@@ -281,6 +285,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
     dotColor: '#00adf5',
     selectedDotColor: '#ffffff',
     arrowColor: 'orange',
+    disabledArrowColor: '#d9e1e8',
     monthTextColor: 'blue',
     textDayFontFamily: 'monospace',
     textMonthFontFamily: 'monospace',
