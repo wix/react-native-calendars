@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 export const foregroundColor = '#ffffff';
 export const backgroundColor = '#f4f4f4';
@@ -33,6 +33,7 @@ export const textDisabledColor = '#d9e1e8';
 export const dotColor = textLinkColor;
 export const selectedDotColor = foregroundColor;
 export const arrowColor = textLinkColor;
+export const disabledArrowColor = '#d9e1e8';
 export const monthTextColor = textDefaultColor;
 export const agendaDayTextColor = '#7a92a5';
 export const agendaDayNumColor = '#7a92a5';
