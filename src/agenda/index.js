@@ -402,6 +402,7 @@ export default class AgendaView extends Component {
               dayComponent={this.props.dayComponent}
               disabledByDefault={this.props.disabledByDefault}
               displayLoadingIndicator={this.props.displayLoadingIndicator}
+              showWeekNumbers={this.props.showWeekNumbers}
             />
           </Animated.View>
           {knob}
