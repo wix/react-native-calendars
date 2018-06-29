@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  Animated,
   FlatList,
   ActivityIndicator,
   View
@@ -10,6 +11,8 @@ import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 class ReactComp extends Component {
   static propTypes = {
@@ -25,6 +28,14 @@ class ReactComp extends Component {
     onDayChange: PropTypes.func,
     // onScroll ListView event
     onScroll: PropTypes.func,
+    // callback that called when the momentum scroll ends
+    onMomentumScrollEnd: PropTypes.func,
+    // How often scroll event will be called
+    scrollEventThrottle: PropTypes.number,
+    // Animated value changed on ReservationList scrolling
+    scrollAnimatedValue: PropTypes.instanceOf(Animated.Value),
+    // Is scroll enabled?
+    scrollEnabled: PropTypes.bool,
     // the list of items that have to be displayed in agenda. If you want to render item as empty date
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
@@ -32,6 +43,11 @@ class ReactComp extends Component {
 
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
+  };
+
+  static defaultProps = {
+    onMomentumScrollEnd: () => {},
+    scrollEnabled: true,
   };
 
   constructor(props) {
@@ -63,7 +79,7 @@ class ReactComp extends Component {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.scrollToOffset({offset: scrollPosition, animated: true});
+      (this.list.getNode ? this.list.getNode() : this.list).scrollToOffset({offset: scrollPosition, animated: true});
     }
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
@@ -83,7 +99,7 @@ class ReactComp extends Component {
 
   onScroll(event) {
     const yOffset = event.nativeEvent.contentOffset.y;
-    this.props.onScroll(yOffset);
+    this.props.onScroll && this.props.onScroll(yOffset);
     let topRowOffset = 0;
     let topRow;
     for (topRow = 0; topRow < this.heights.length; topRow++) {
@@ -184,18 +200,26 @@ class ReactComp extends Component {
       }
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
+
+    const FlatListComponent = this.props.scrollAnimatedValue ? AnimatedFlatList : FlatList;
+
     return (
-      <FlatList
+      <FlatListComponent
         ref={(c) => this.list = c}
         style={this.props.style}
         contentContainerStyle={this.styles.content}
         renderItem={this.renderRow.bind(this)}
         data={this.state.reservations}
-        onScroll={this.onScroll.bind(this)}
+        onScroll={this.props.scrollAnimatedValue ? Animated.event(
+          [{ nativeEvent: { contentOffset: { y: this.props.scrollAnimatedValue } } }],
+          { listener: this.onScroll.bind(this), useNativeDriver: true }
+        ) : (this.props.onScroll && this.props.onScroll.bind(this))}
+        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
         showsVerticalScrollIndicator={false}
-        scrollEventThrottle={200}
+        scrollEventThrottle={this.props.scrollEventThrottle || 200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
         keyExtractor={(item, index) => String(index)}
+        scrollEnabled={this.props.scrollEnabled}
       />
     );
   }

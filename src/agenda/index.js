@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {
+  Animated,
   Text,
   View,
   Dimensions,
-  Animated,
   ViewPropTypes,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ import ReservationsList from './reservation-list';
 import styleConstructor from './style';
 import { VelocityTracker } from '../input';
 
-const HEADER_HEIGHT = 104;
+const HEADER_HEIGHT = 90;
 const KNOB_HEIGHT = 24;
 
 //Fallback when RN version is < 0.44
@@ -43,6 +43,16 @@ export default class AgendaView extends Component {
     onDayPress: PropTypes.func,
     // callback that gets called when day changes while scrolling agenda list
     onDaychange: PropTypes.func,
+    // callback that called on ReservationList scroll
+    onScroll: PropTypes.func,
+    // callback that called when the momentum scroll ends
+    onMomentumScrollEnd: PropTypes.func,
+    // How often scroll event will be called
+    scrollEventThrottle: PropTypes.number,
+    // Animated value changed on ReservationList scrolling
+    scrollAnimatedValue: PropTypes.instanceOf(Animated.Value),
+    // Is scroll enabled?
+    scrollEnabled: PropTypes.bool,
     // specify how each item should be rendered in agenda
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
@@ -81,6 +91,11 @@ export default class AgendaView extends Component {
 
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    onMomentumScrollEnd: () => {},
+    scrollEnabled: true,
   };
 
   constructor(props) {
@@ -276,7 +291,11 @@ export default class AgendaView extends Component {
         renderEmptyData = {this.props.renderEmptyData}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
-        onScroll={() => {}}
+        onScroll={this.props.onScroll}
+        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        scrollEventThrottle={this.props.scrollEventThrottle}
+        scrollAnimatedValue={this.props.scrollAnimatedValue}
+        scrollEnabled={this.props.scrollEnabled}
         ref={(c) => this.list = c}
         theme={this.props.theme}
       />
