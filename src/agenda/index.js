@@ -402,11 +402,13 @@ export default class AgendaView extends Component {
               dayComponent={this.props.dayComponent}
               disabledByDefault={this.props.disabledByDefault}
               displayLoadingIndicator={this.props.displayLoadingIndicator}
+              showWeekNumbers={this.props.showWeekNumbers}
             />
           </Animated.View>
           {knob}
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
+          {this.props.showWeekNumbers && <Text allowFontScaling={false} style={this.styles.weekday} numberOfLines={1}></Text>}
           {weekDaysNames.map((day) => (
             <Text allowFontScaling={false} key={day} style={this.styles.weekday} numberOfLines={1}>{day}</Text>
           ))}
