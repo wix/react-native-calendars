@@ -41,7 +41,7 @@ class Calendar extends Component {
     // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
     firstDay: PropTypes.number,
 
-    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' 
+    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple'
     markingType: PropTypes.string,
 
     // Hide month navigation arrows. Default = false
@@ -93,6 +93,7 @@ class Calendar extends Component {
 
     this.updateMonth = this.updateMonth.bind(this);
     this.addMonth = this.addMonth.bind(this);
+    this.setMonth = this.setMonth.bind(this);
     this.pressDay = this.pressDay.bind(this);
     this.longPressDay = this.longPressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
@@ -151,6 +152,10 @@ class Calendar extends Component {
 
   addMonth(count) {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+  }
+
+  setMonth(month) {
+    this.updateMonth(this.state.currentMonth.clone().setMonth(month, true));
   }
 
   renderDay(day, id) {
@@ -265,6 +270,7 @@ class Calendar extends Component {
             hideArrows: this.props.hideArrows,
             month: this.state.currentMonth,
             addMonth: this.addMonth,
+            setMonth: this.setMonth,
             showIndicator: indicator,
             firstDay: this.props.firstDay,
             renderArrow: this.props.renderArrow,
@@ -279,6 +285,7 @@ class Calendar extends Component {
             hideArrows={this.props.hideArrows}
             month={this.state.currentMonth}
             addMonth={this.addMonth}
+            setMonth={this.setMonth}
             showIndicator={indicator}
             firstDay={this.props.firstDay}
             renderArrow={this.props.renderArrow}
