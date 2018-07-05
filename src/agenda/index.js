@@ -428,6 +428,7 @@ export default class AgendaView extends Component {
           showsVerticalScrollIndicator={false}
           style={scrollPadStyle}
           scrollEventThrottle={1}
+          scrollsToTop={false}
           onTouchStart={this.onTouchStart}
           onTouchEnd={this.onTouchEnd}
           onScrollBeginDrag={this.onStartDrag}
