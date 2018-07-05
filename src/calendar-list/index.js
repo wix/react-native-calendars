@@ -191,7 +191,7 @@ class CalendarList extends Component {
   }
 
   getMonthIndex(month) {
-    let diffMonths = this.state.openDate.diffMonths(month) + this.pastScrollRange;
+    let diffMonths = this.state.openDate.diffMonths(month) + this.props.pastScrollRange;
     return diffMonths;
   }
 
