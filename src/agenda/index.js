@@ -69,6 +69,9 @@ export default class AgendaView extends Component {
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
     maxDate: PropTypes.any,
 
+    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+    firstDay: PropTypes.number,
+
     // Collection of dates that have to be marked. Default = items
     markedDates: PropTypes.object,
     // Optional marking type if custom markedDates are provided
