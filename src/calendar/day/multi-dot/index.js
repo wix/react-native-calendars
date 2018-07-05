@@ -49,7 +49,7 @@ class Day extends Component {
       const validDots = marking.dots.filter(d => (d && d.color));
       return validDots.map((dot, index) => {
         return (
-          <View key={dot.key ? dot.key : index} style={[baseDotStyle, 
+          <View key={dot.key ? dot.key : index} style={[baseDotStyle,
             { backgroundColor: marking.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
         );
       });
@@ -73,11 +73,12 @@ class Day extends Component {
     } else if (typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
+      containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
     return (
-      <TouchableOpacity 
-        style={containerStyle} 
+      <TouchableOpacity
+        style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}>
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
