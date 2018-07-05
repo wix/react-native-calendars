@@ -43,6 +43,8 @@ export default class AgendaView extends Component {
     onDayPress: PropTypes.func,
     // callback that gets called when day changes while scrolling agenda list
     onDaychange: PropTypes.func,
+    // callback that gets called when week changes while scrolling agenda list
+    onWeekChange: PropTypes.func,
     // specify how each item should be rendered in agenda
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
@@ -86,6 +88,9 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+
+    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+    firstDay: PropTypes.number,
   };
 
   constructor(props) {
@@ -114,6 +119,7 @@ export default class AgendaView extends Component {
     this.generateMarkings = this.generateMarkings.bind(this);
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
+    this.lastSelectedDay = this.getDayPosition(this.state.selectedDay);
   }
 
   calendarOffset() {
@@ -299,9 +305,33 @@ export default class AgendaView extends Component {
       selectedDay: parseDate(day)
     });
 
+    const newDay = this.getDayPosition(newDate);
+    if (this.props.onWeekChange && this.isWeekChange(newDay)) {
+      this.onWeekChange(newDate, newDay);
+    }
+    this.lastSelectedDay = this.getDayPosition(newDate);
+
     if (this.props.onDayChange) {
       this.props.onDayChange(xdateToData(newDate));
     }
+  }
+
+  getDayPosition(day) {
+    let dayOfWeek = (day.getDay() - this.props.firstDay) % 7;
+    return dayOfWeek >= 0 ? dayOfWeek : dayOfWeek + 7;
+  }
+
+  isWeekChange(newDay) {
+    return newDay === 0 && this.lastSelectedDay === 6 || newDay === 6 && this.lastSelectedDay === 0;
+  }
+
+  onWeekChange(newDate, newDay) {
+    const isFirstDayInWeek = newDay === 0;
+    var dates = {
+      firstDay: isFirstDayInWeek ? newDate : newDate.clone().addDays(-6),
+      lastDay: isFirstDayInWeek ? newDate.clone().addDays(6) : newDate 
+    };
+    this.props.onWeekChange(xdateToData(dates.firstDay), xdateToData(dates.lastDay));
   }
 
   generateMarkings() {
