@@ -113,7 +113,7 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator />;
     }
     return (
-      <View>
+      <React.Fragment>
         <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
@@ -133,7 +133,7 @@ class CalendarHeader extends Component {
             ))}
           </View>
         }
-      </View>
+      </React.Fragment>
     );
   }
 }
