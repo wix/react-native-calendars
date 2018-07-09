@@ -23,6 +23,10 @@ export default function(theme={}) {
     arrow: {
       padding: 10
     },
+    arrowLeft: {
+    },
+    arrowRight: {
+    },
     arrowImage: {
       ...Platform.select({
         ios: {
@@ -32,6 +36,10 @@ export default function(theme={}) {
           tintColor: appStyle.arrowColor
         }
       })
+    },
+    arrowImageLeft: {
+    },
+    arrowImageRight: {
     },
     week: {
       marginTop: 7,

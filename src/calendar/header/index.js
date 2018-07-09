@@ -82,28 +82,28 @@ class CalendarHeader extends Component {
       leftArrow = (
         <TouchableOpacity
           onPress={this.onPressLeft}
-          style={this.style.arrow}
+          style={[this.style.arrow, this.style.arrowLeft]}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('left')
             : <Image
                 source={require('../img/previous.png')}
-                style={this.style.arrowImage}
+                style={[this.style.arrowImage, this.style.arrowImageLeft]}
               />}
         </TouchableOpacity>
       );
       rightArrow = (
         <TouchableOpacity
           onPress={this.onPressRight}
-          style={this.style.arrow}
+          style={[this.style.arrow, this.style.arrowRight]}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('right')
             : <Image
                 source={require('../img/next.png')}
-                style={this.style.arrowImage}
+                style={[this.style.arrowImage, this.style.arrowImageRight]}
               />}
         </TouchableOpacity>
       );
