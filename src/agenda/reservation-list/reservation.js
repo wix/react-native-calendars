@@ -60,7 +60,7 @@ class ReservationListItem extends Component {
       content = this.props.renderEmptyDate(date);
     }
     return (
-      <View style={[this.styles.container, {flexDirection: (date && this.props.dayColumn) ?  "column": "row"}]}>
+      <View style={[this.styles.container, {flexDirection: (date && this.props.dayColumn) ?  'column': 'row'}]}>
         {this.renderDate(date, reservation)}
         <View style={{flex:1}}>
           {content}
