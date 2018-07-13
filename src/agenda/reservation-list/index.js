@@ -32,6 +32,7 @@ class ReactComp extends Component {
 
     selectedDay: PropTypes.instanceOf(XDate),
     earliestDay: PropTypes.instanceOf(XDate),
+    latestDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
@@ -47,6 +48,7 @@ class ReactComp extends Component {
     this.heights=[];
     this.selectedDay = this.props.selectedDay;
     this.earliestDay = this.props.earliestDay;
+    this.latestDay = this.props.latestDay;
     this.scrollOver = true;
   }
 
@@ -157,8 +159,10 @@ class ReactComp extends Component {
     }
     let reservations = [];
     if (this.state.reservations && this.state.reservations.length) {
-      const iterator = this.state.reservations[0].day.clone();
-      while (iterator.getTime() < props.selectedDay.getTime()) {
+      const reservations = this.state.reservations
+      const iterator = reservations[0].day.clone();
+      const lastIterator = reservations[(reservations.length-1)].day.clone()
+      while (iterator.getTime() <= lastIterator.getTime()) {
         const res = this.getReservationsForDay(iterator, props);
         if (!res) {
           reservations = [];
@@ -171,7 +175,8 @@ class ReactComp extends Component {
     }
 
     const iterator = this.earliestDay.clone();
-    for (let i = 0; i < 31; i++) {
+    const lastIterator = this.latestDay.clone();
+    while (iterator.getTime() <= lastIterator.getTime()) {
       const res = this.getReservationsForDay(iterator, props);
       if (res) {
         reservations = reservations.concat(res);
