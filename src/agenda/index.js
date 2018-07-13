@@ -66,6 +66,8 @@ export default class AgendaView extends Component {
     selected: PropTypes.any,
     // earliest possible day
     earliest: PropTypes.any,
+    // latest possible day
+    latest: PropTypes.any,
     // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
     minDate: PropTypes.any,
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
@@ -107,6 +109,7 @@ export default class AgendaView extends Component {
       calendarScrollable: false,
       firstResevationLoad: false,
       earliestDay: parseDate(this.props.earliest) || XDate(true),
+      latestDay: parseDate(this.props.latest) || XDate(true),
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true),
     };
