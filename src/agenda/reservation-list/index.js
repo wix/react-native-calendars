@@ -31,6 +31,7 @@ class ReactComp extends Component {
     reservations: PropTypes.object,
 
     selectedDay: PropTypes.instanceOf(XDate),
+    earliestDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
@@ -45,6 +46,7 @@ class ReactComp extends Component {
     };
     this.heights=[];
     this.selectedDay = this.props.selectedDay;
+    this.earliestDay = this.props.earliestDay;
     this.scrollOver = true;
   }
 
@@ -59,8 +61,9 @@ class ReactComp extends Component {
   }
 
   updateReservations(props) {
+    this.selectedDay = props.selectedDay;
     const reservations = this.getReservations(props);
-    if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
+    if (this.list) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
@@ -68,7 +71,6 @@ class ReactComp extends Component {
       this.scrollOver = false;
       this.list.scrollToOffset({offset: scrollPosition, animated: true});
     }
-    this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
   }
 
@@ -167,8 +169,8 @@ class ReactComp extends Component {
         iterator.addDays(1);
       }
     }
-    const scrollPosition = reservations.length;
-    const iterator = props.selectedDay.clone();
+
+    const iterator = this.earliestDay.clone();
     for (let i = 0; i < 31; i++) {
       const res = this.getReservationsForDay(iterator, props);
       if (res) {
@@ -176,8 +178,25 @@ class ReactComp extends Component {
       }
       iterator.addDays(1);
     }
-
+    const scrollPosition = this.calculateScrollPosition(reservations);
     return {reservations, scrollPosition};
+  }
+
+  /**
+   * Will iterate thru all reservations to see how
+   * long it takes to get to the selected day. Will
+   * add the height of each day we need to scroll
+   * past to get to the selected day.
+   */
+  calculateScrollPosition(reservations) {
+    let scrollPosition = 0
+    for (reservation of reservations) {
+      if (JSON.stringify(this.selectedDay[0]) === JSON.stringify(reservation.date[0])) {
+        break
+      }
+      scrollPosition++
+    }
+    return scrollPosition
   }
 
   render() {
