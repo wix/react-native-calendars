@@ -189,14 +189,14 @@ class ReactComp extends Component {
    * past to get to the selected day.
    */
   calculateScrollPosition(reservations) {
-    let scrollPosition = 0
+    let scrollPosition = 0;
     for (reservation of reservations) {
       if (JSON.stringify(this.selectedDay[0]) === JSON.stringify(reservation.date[0])) {
-        break
+        break;
       }
-      scrollPosition++
+      scrollPosition++;
     }
-    return scrollPosition
+    return scrollPosition;
   }
 
   render() {
