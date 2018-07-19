@@ -443,6 +443,12 @@ An advanced agenda component that can display interactive listings for calendar 
     '2012-05-17': {marked: true},
     '2012-05-18': {disabled: true}
   }}
+  // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
+  onRefresh={() => console.log('refreshing...')}
+  // Set this true while waiting for new data from a refresh
+  refreshing={false}
+  // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
+  refreshControl={null}
   // agenda theme
   theme={{
     ...calendarTheme,

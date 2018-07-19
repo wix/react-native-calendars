@@ -55,7 +55,7 @@ export default class AgendaView extends Component {
     renderEmptyData: PropTypes.func,
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
-    
+
     // Max amount of months allowed to scroll to the past. Default = 50
     pastScrollRange: PropTypes.number,
 
@@ -68,7 +68,10 @@ export default class AgendaView extends Component {
     minDate: PropTypes.any,
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
     maxDate: PropTypes.any,
-    
+
+    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+    firstDay: PropTypes.number,
+
     // Collection of dates that have to be marked. Default = items
     markedDates: PropTypes.object,
     // Optional marking type if custom markedDates are provided
@@ -77,7 +80,15 @@ export default class AgendaView extends Component {
     // Hide knob button. Default = false
     hideKnob: PropTypes.bool,
     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-    monthFormat: PropTypes.string
+    monthFormat: PropTypes.string,
+    // A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
+    refreshControl: PropTypes.element,
+    // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
+    onRefresh: PropTypes.func,
+    // Set this true while waiting for new data from a refresh.
+    refreshing: PropTypes.bool,
+    // Display loading indicador. Default = false
+    displayLoadingIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -132,7 +143,6 @@ export default class AgendaView extends Component {
   onLayout(event) {
     this.viewHeight = event.nativeEvent.layout.height;
     this.viewWidth = event.nativeEvent.layout.width;
-    this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
     this.forceUpdate();
   }
 
@@ -265,13 +275,16 @@ export default class AgendaView extends Component {
   renderReservations() {
     return (
       <ReservationsList
+        refreshControl={this.props.refreshControl}
+        refreshing={this.props.refreshing}
+        onRefresh={this.props.onRefresh}
         rowHasChanged={this.props.rowHasChanged}
         renderItem={this.props.renderItem}
         renderDay={this.props.renderDay}
         renderEmptyDate={this.props.renderEmptyDate}
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
-        renderEmptyData = {this.props.renderEmptyData}
+        renderEmptyData={this.props.renderEmptyData}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
         onScroll={() => {}}
@@ -378,6 +391,9 @@ export default class AgendaView extends Component {
         <Animated.View style={headerStyle}>
           <Animated.View style={{flex:1, transform: [{ translateY: contentTranslate }]}}>
             <CalendarList
+              onLayout={() => {
+                this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+              }}
               theme={this.props.theme}
               onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
               ref={(c) => this.calendar = c}
@@ -396,11 +412,14 @@ export default class AgendaView extends Component {
               futureScrollRange={this.props.futureScrollRange}
               dayComponent={this.props.dayComponent}
               disabledByDefault={this.props.disabledByDefault}
+              displayLoadingIndicator={this.props.displayLoadingIndicator}
+              showWeekNumbers={this.props.showWeekNumbers}
             />
           </Animated.View>
           {knob}
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
+          {this.props.showWeekNumbers && <Text allowFontScaling={false} style={this.styles.weekday} numberOfLines={1}></Text>}
           {weekDaysNames.map((day) => (
             <Text allowFontScaling={false} key={day} style={this.styles.weekday} numberOfLines={1}>{day}</Text>
           ))}
@@ -412,6 +431,7 @@ export default class AgendaView extends Component {
           showsVerticalScrollIndicator={false}
           style={scrollPadStyle}
           scrollEventThrottle={1}
+          scrollsToTop={false}
           onTouchStart={this.onTouchStart}
           onTouchEnd={this.onTouchEnd}
           onScrollBeginDrag={this.onStartDrag}
