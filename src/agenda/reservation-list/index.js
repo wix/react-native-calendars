@@ -197,6 +197,8 @@ class ReactComp extends Component {
         onScroll={this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
+        scrollsToTop={false}
+        removeClippedSubviews={false}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
         keyExtractor={(item, index) => String(index)}
         refreshControl={this.props.refreshControl}

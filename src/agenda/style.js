@@ -14,7 +14,7 @@ export default function styleConstructor(theme = {}) {
       overflow: 'hidden',
       justifyContent: 'flex-end',
       position:'absolute',
-      height:'100%',
+      // height:'100%',
       width:'100%',
     },
     calendar: {
@@ -40,7 +40,6 @@ export default function styleConstructor(theme = {}) {
     },
     reservations: {
       flex: 1,
-      marginTop: 104,
       backgroundColor: appStyle.backgroundColor
     },
     ...(theme[STYLESHEET_ID] || {})
