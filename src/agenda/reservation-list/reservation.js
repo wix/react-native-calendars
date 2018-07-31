@@ -36,16 +36,23 @@ class ReservationListItem extends Component {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
     const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
-    if (date) {
+    if (date && item) {
       return (
         <View style={this.styles.day}>
-          <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.getDate()}</Text>
-          <Text allowFontScaling={false} style={[this.styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
+         <View style={this.styles.formart}>
+            <Text allowFontScaling={false} style={[this.styles.monthNum, today]}>{date.getMonth()+1}月</Text>
+          </View>
+          <View style={this.styles.formart}>
+            <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.getDate()}日</Text>
+          </View>
+          <View style={this.styles.formart}>
+          <Text allowFontScaling={false} style={[this.styles.dayText, today]}>周{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
+          </View>
         </View>
       );
     } else {
       return (
-        <View style={this.styles.day}/>
+        <View style={[this.styles.day,{marginTop:0}]}/>
       );
     }
   }

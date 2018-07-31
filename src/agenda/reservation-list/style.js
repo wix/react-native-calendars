@@ -7,19 +7,29 @@ export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return  StyleSheet.create({
     container: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+    },
+    monthNum:{
+      fontSize: 12,
+      color:'rgba(0,0,0,0.5)',
+      paddingRight:2,
     },
     dayNum: {
-      fontSize: 28,
-      fontWeight: '200',
-      color: appStyle.agendaDayNumColor
+      fontSize: 20,
+      fontWeight: '300',
+      lineHeight:22,
+      marginTop: 4,
     },
     dayText: {
       fontSize: 14,
       fontWeight: '300',
+      marginTop: 4,
       color: appStyle.agendaDayTextColor,
-      marginTop: -5,
       backgroundColor: 'rgba(0,0,0,0)'
+    },
+    formart:{
+      width:63,
+      alignItems:'flex-end'
     },
     day: {
       width: 63,

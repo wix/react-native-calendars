@@ -28,6 +28,7 @@ class CalendarListItem extends Component {
           theme={this.props.theme}
           style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.calendar]}
           current={row}
+          horizontal={this.props.horizontal}
           hideArrows={this.props.hideArrows}
           hideExtraDays={this.props.hideExtraDays}
           disableMonthChange
@@ -45,14 +46,13 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
         />);
-    } else {
-      const text = row.toString();
-      return (
-        <View style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.placeholder]}>
-          <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
-        </View>
-      );
     }
+    const text = row.toString();
+    return (
+      <View style={[{ height: this.props.calendarHeight, width: this.props.calendarWidth }, this.style.placeholder]}>
+        <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
+      </View>
+    );
   }
 }
 

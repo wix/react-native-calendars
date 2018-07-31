@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  FlatList, Platform, Dimensions,
+  FlatList, Platform, Dimensions,View,TouchableOpacity,Image,Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -65,7 +65,7 @@ class CalendarList extends Component {
     const date = parseDate(props.current) || XDate();
     for (let i = 0; i <= this.props.pastScrollRange + this.props.futureScrollRange; i++) {
       const rangeDate = date.clone().addMonths(i - this.props.pastScrollRange, true);
-      const rangeDateStr = rangeDate.toString('MMM yyyy');
+      const rangeDateStr = rangeDate.toString(props.monthFormat);
       texts.push(rangeDateStr);
       /*
        * This selects range around current shown month [-0, +2] or [-1, +1] month for detail calendar rendering.
@@ -81,7 +81,8 @@ class CalendarList extends Component {
     this.state = {
       rows,
       texts,
-      openDate: date
+      openDate: date,
+      titleDate: date,
     };
 
     this.onViewableItemsChangedBound = this.onViewableItemsChanged.bind(this);
@@ -143,6 +144,7 @@ class CalendarList extends Component {
       }
       newrows.push(val);
     }
+
     this.setState({
       rows: newrows
     });
@@ -180,6 +182,11 @@ class CalendarList extends Component {
     this.setState({
       rows: newrows
     });
+    if (viewableItems.length === 1) {
+      this.setState({
+        titleDate: viewableItems[0].item,
+      });
+    }
   }
 
   renderCalendar({item}) {
@@ -195,31 +202,97 @@ class CalendarList extends Component {
     return diffMonths;
   }
 
+  updateMonth(day) {
+    if (day.toString('yyyy MM') === this.state.titleDate.toString('yyyy MM')) {
+      return;
+    }
+    this.setState({
+      titleDate: day.clone(),
+    });
+    this.scrollToMonth(day.clone());
+  }
+  onPressLeft = () =>
+
+    this.updateMonth(this.state.titleDate.clone().addMonths(-1, true));
+
+
+  onPressRight = () =>
+    this.updateMonth(this.state.titleDate.clone().addMonths(1, true));
+
   render() {
+    let leftArrow = <View />;
+    let rightArrow = <View />;
+    if (!this.props.hideArrows) {
+      leftArrow = (
+        <TouchableOpacity
+          onPress={this.onPressLeft}
+          style={this.style.arrow}
+          hitSlop={{
+          left: 20, right: 20, top: 20, bottom: 20,
+          }}
+        >
+          {this.props.renderArrow
+            ? this.props.renderArrow('left')
+            : <Image
+              source={require('../calendar/img/previous.png')}
+              style={this.style.arrowImage}
+            />}
+        </TouchableOpacity>
+      );
+      rightArrow = (
+        <TouchableOpacity
+          onPress={this.onPressRight}
+          style={this.style.arrow}
+          hitSlop={{
+          left: 20, right: 20, top: 20, bottom: 20,
+          }}
+        >
+          {this.props.renderArrow
+            ? this.props.renderArrow('right')
+            : <Image
+              source={require('../calendar/img/next.png')}
+              style={this.style.arrowImage}
+            />}
+        </TouchableOpacity>
+      );
+    }
     return (
-      <FlatList
-        onLayout={this.onLayout}
-        ref={(c) => this.listView = c}
-        //scrollEventThrottle={1000}
-        style={[this.style.container, this.props.style]}
-        initialListSize={this.pastScrollRange + this.futureScrollRange + 1}
-        data={this.state.rows}
-        //snapToAlignment='start'
-        //snapToInterval={this.calendarHeight}
-        removeClippedSubviews={this.props.removeClippedSubviews}
-        pageSize={1}
-        horizontal={this.props.horizontal}
-        pagingEnabled={this.props.pagingEnabled}
-        onViewableItemsChanged={this.onViewableItemsChangedBound}
-        renderItem={this.renderCalendarBound}
-        showsVerticalScrollIndicator={this.props.showScrollIndicator}
-        showsHorizontalScrollIndicator={this.props.showScrollIndicator}
-        scrollEnabled={this.props.scrollingEnabled}
-        keyExtractor={(item, index) => String(index)}
-        initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
-        getItemLayout={this.getItemLayout}
-        scrollsToTop={this.props.scrollsToTop}
-      />
+      <View>
+        {this.props.horizontal &&
+        <View style={this.style.header}>
+          {leftArrow}
+          <View style={{ flexDirection: 'row' }}>
+            <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits="header">
+              {this.state.titleDate.toString(this.props.monthFormat)}
+            </Text>
+          </View>
+          {rightArrow}
+        </View>
+        }
+        <FlatList
+          onLayout={this.onLayout}
+          ref={c => this.listView = c}
+        // scrollEventThrottle={1000}
+          style={[this.style.container, this.props.style]}
+          initialListSize={this.pastScrollRange + this.futureScrollRange + 1}
+          data={this.state.rows}
+        // snapToAlignment='start'
+        // snapToInterval={this.calendarHeight}
+          removeClippedSubviews={this.props.removeClippedSubviews}
+          pageSize={1}
+          horizontal={this.props.horizontal}
+          pagingEnabled={this.props.pagingEnabled}
+          onViewableItemsChanged={this.onViewableItemsChangedBound}
+          renderItem={this.renderCalendarBound}
+          showsVerticalScrollIndicator={this.props.showScrollIndicator}
+          showsHorizontalScrollIndicator={this.props.showScrollIndicator}
+          scrollEnabled={this.props.scrollingEnabled}
+          keyExtractor={(item, index) => String(index)}
+          initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
+          getItemLayout={this.getItemLayout}
+          scrollsToTop={this.props.scrollsToTop}
+        />
+      </View>
     );
   }
 }
