@@ -15,7 +15,7 @@ export default function styleConstructor(theme = {}) {
       marginTop: Platform.OS === 'android' ? 4 : 6,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
-      fontWeight: appstyle.textDayFontWeight || '300',
+      fontWeight: appStyle.textDayFontWeight || '300',
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)',
     },
