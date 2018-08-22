@@ -36,6 +36,7 @@ export default function styleConstructor(theme = {}) {
       width: 32,
       textAlign: 'center',
       fontSize: 13,
+      fontFamily: appStyle.textSectionFontFamily,
       color: appStyle.textSectionTitleColor,
     },
     reservations: {
