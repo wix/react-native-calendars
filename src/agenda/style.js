@@ -35,7 +35,7 @@ export default function styleConstructor(theme = {}) {
     weekday: {
       width: 32,
       textAlign: 'center',
-      fontSize: 13,
+      fontSize: appStyle.textSectionFontSize || 13,
       fontFamily: appStyle.textSectionFontFamily,
       color: appStyle.textSectionTitleColor,
     },
