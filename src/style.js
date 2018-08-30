@@ -27,6 +27,7 @@ export const calendarBackground = foregroundColor;
 export const textSectionTitleColor = '#b6c1cd';
 export const selectedDayBackgroundColor = textLinkColor;
 export const selectedDayTextColor = foregroundColor;
+export const todayBackgroundColor = undefined;
 export const todayTextColor = textLinkColor;
 export const dayTextColor = textDefaultColor;
 export const textDisabledColor = '#d9e1e8';
