@@ -72,8 +72,18 @@ class Day extends Component {
       }
     }
 
+    let testID;
+    if (this.props.state === 'today') {
+      testID = 'todayDate';
+    } else if (isDisabled) {
+      testID = 'disabledDate';
+    } else {
+      testID = 'selectableDate';
+    }
+
     return (
       <TouchableOpacity
+        testID={testID}
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
