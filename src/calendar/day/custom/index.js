@@ -8,6 +8,12 @@ import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {shouldUpdate} from '../../../component-updater';
 
+import {
+  TODAY_DATE,
+  DISABLED_DATE,
+  SELECTABLE_DATE
+} from '../../../testIDs';
+
 class Day extends Component {
   static propTypes = {
     // TODO: disabled props should be removed
@@ -74,11 +80,11 @@ class Day extends Component {
 
     let testID;
     if (this.props.state === 'today') {
-      testID = 'todayDate';
+      testID = TODAY_DATE;
     } else if (isDisabled) {
-      testID = 'disabledDate';
+      testID = DISABLED_DATE;
     } else {
-      testID = 'selectableDate';
+      testID = SELECTABLE_DATE;
     }
 
     return (
