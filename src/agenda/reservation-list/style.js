@@ -11,6 +11,7 @@ export default function styleConstructor(theme = {}) {
     },
     dayNum: {
       fontSize: 28,
+      marginBottom: 4,
       fontWeight: '200',
       fontFamily: appStyle.textMonthFontFamily,
       color: appStyle.agendaDayNumColor

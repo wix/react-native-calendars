@@ -10,7 +10,7 @@ export const failedColor = 'rgba(246, 126, 126,1)';
 
 export const textDefaultColor = '#485A67';
 export const textColor = '#485A67';
-export const textLinkColor = '#00adf5';
+export const textLinkColor = '#485A67';
 export const textSecondaryColor = '#7a92a5';
 
 export const textDayFontFamily = 'WhitneyHTF-Book';
@@ -19,7 +19,7 @@ export const textDayHeaderFontFamily = 'WhitneyHTF-Book';
 
 export const textMonthFontWeight = '300';
 
-export const textDayFontSize = 16;
+export const textDayFontSize = 14;
 export const textMonthFontSize = 16;
 export const textDayHeaderFontSize = 13;
 
@@ -38,4 +38,4 @@ export const monthTextColor = textDefaultColor;
 export const agendaDayTextColor = '#485A67';
 export const agendaDayNumColor = '#485A67';
 export const agendaTodayColor = textLinkColor;
-export const agendaKnobColor = Platform.OS === 'ios' ? '#f2F4f5' : '#4ac4f7';
+export const agendaKnobColor = '#f2F4f5';
