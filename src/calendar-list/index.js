@@ -42,6 +42,9 @@ class CalendarList extends Component {
     horizontal: PropTypes.bool,
     // Dynamic calendar height
     calendarHeight: PropTypes.number,
+
+    // Should Keyboard persist taps
+    keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled'])
   };
 
   static defaultProps = {
@@ -54,6 +57,7 @@ class CalendarList extends Component {
     scrollEnabled: true,
     scrollsToTop: false,
     removeClippedSubviews: Platform.OS === 'android' ? false : true,
+    keyboardShouldPersistTaps: 'never'
   }
 
   constructor(props) {
@@ -219,6 +223,7 @@ class CalendarList extends Component {
         initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
         getItemLayout={this.getItemLayout}
         scrollsToTop={this.props.scrollsToTop}
+        keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
       />
     );
   }
