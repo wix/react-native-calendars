@@ -41,7 +41,7 @@ class Calendar extends Component {
     // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
     firstDay: PropTypes.number,
 
-    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' 
+    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple'
     markingType: PropTypes.string,
 
     // Hide month navigation arrows. Default = false
@@ -166,31 +166,26 @@ class Calendar extends Component {
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
-    let dayComp;
+
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      if (['period', 'multi-period'].includes(this.props.markingType)) {
-        dayComp = (<View key={id} style={{flex: 1}}/>);
-      } else {
-        dayComp = (<View key={id} style={this.style.dayContainer}/>);
-      }
-    } else {
-      const DayComp = this.getDayComponent();
-      const date = day.getDate();
-      dayComp = (
-        <DayComp
-          key={id}
-          state={state}
-          theme={this.props.theme}
-          onPress={this.pressDay}
-          onLongPress={this.longPressDay}
-          date={xdateToData(day)}
-          marking={this.getDateMarking(day)}
-        >
-          {date}
-        </DayComp>
-      );
+      return (<View key={id} style={{flex: 1}}/>);
     }
-    return dayComp;
+
+    const DayComp = this.getDayComponent();
+    const date = day.getDate();
+    return (
+      <DayComp
+        key={id}
+        state={state}
+        theme={this.props.theme}
+        onPress={this.pressDay}
+        onLongPress={this.longPressDay}
+        date={xdateToData(day)}
+        marking={this.getDateMarking(day)}
+      >
+        {date}
+      </DayComp>
+    );
   }
 
   getDayComponent() {
