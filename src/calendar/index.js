@@ -22,6 +22,8 @@ const viewPropTypes = ViewPropTypes || View.propTypes;
 
 const EmptyArray = [];
 
+const WEEKS_HEIGHT = 72;
+
 class Calendar extends Component {
   static propTypes = {
     // Specify theme properties to override specific styles for calendar parts. Default = {}
@@ -41,7 +43,7 @@ class Calendar extends Component {
     // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
     firstDay: PropTypes.number,
 
-    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' 
+    // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple'
     markingType: PropTypes.string,
 
     // Hide month navigation arrows. Default = false
@@ -75,7 +77,9 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    // Enable dynamic height based on number of weeks
+    dynamicHeight: PropTypes.bool,
   };
 
   constructor(props) {
@@ -242,6 +246,7 @@ class Calendar extends Component {
   }
 
   render() {
+    const { dynamicHeight } = this.props;
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
     while (days.length) {
@@ -256,8 +261,11 @@ class Calendar extends Component {
         indicator = true;
       }
     }
+
+    const customHeightStyle = dynamicHeight ? { height: weeks.length * WEEKS_HEIGHT } : {};
+
     return (
-      <View style={[this.style.container, this.props.style]}>
+      <View style={[this.style.container, this.props.style, customHeightStyle]}>
         <CalendarHeader
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
