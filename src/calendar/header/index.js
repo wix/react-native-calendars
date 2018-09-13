@@ -65,7 +65,7 @@ class CalendarHeader extends Component {
   onPressLeft() {
     const {onPressArrowLeft} = this.props;
     if(typeof onPressArrowLeft === 'function') {
-      return onPressArrowLeft(this.substractMonth);
+      return onPressArrowLeft(this.substractMonth,this.props.month);
     }
     return this.substractMonth();
   }
@@ -73,7 +73,7 @@ class CalendarHeader extends Component {
   onPressRight() {
     const {onPressArrowRight} = this.props;
     if(typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.addMonth);
+      return onPressArrowRight(this.addMonth,this.props.month);
     }
     return this.addMonth();
   }
