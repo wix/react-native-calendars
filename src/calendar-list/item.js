@@ -23,7 +23,7 @@ class CalendarListItem extends Component {
 
   render() {
     const row = this.props.item;
-    
+
     if (row.getTime) {
       return (
         <Calendar
@@ -47,13 +47,21 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
           renderArrow={this.props.renderArrow}
-          onPressArrowLeft={this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.onPressArrowRight}
+          onPressArrowLeft={this.props.onPressArrowLeft ? this.props.onPressArrowLeft : (_,month)=>{
+            month = month.clone()
+            month.addMonths(-1)
+            this.props.calendarListContainer.scrollToMonth(month)
+          }}
+          onPressArrowRight={this.props.onPressArrowRight ? this.props.onPressArrowRight : (_,month)=>{
+            month = month.clone()
+            month.addMonths(1)
+            this.props.calendarListContainer.scrollToMonth(month)
+          }}
           headerStyle={this.props.headerStyle}
         />);
     } else {
       const text = row.toString();
-      
+
       return (
         <View style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.placeholder]}>
           <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
