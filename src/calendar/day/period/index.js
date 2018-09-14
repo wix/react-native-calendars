@@ -115,6 +115,7 @@ class Day extends Component {
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
+    const dotStyle = [this.style.dot];
     let leftFillerStyle = {};
     let rightFillerStyle = {};
     let fillerStyle = {};
@@ -129,7 +130,7 @@ class Day extends Component {
 
     if (this.props.marking) {
       containerStyle.push({
-        borderRadius: 17
+        borderRadius: 18
       });
 
       const flags = this.markingStyle;
@@ -191,6 +192,26 @@ class Day extends Component {
       );
     }
 
+    const marking = this.props.marking || {};
+    let dot;
+    if (marking.marked) {
+      dotStyle.push(this.style.visibleDot);
+      if (marking.selected) {
+        if (marking.selectedDotColor) {
+          dotStyle.push({backgroundColor: marking.selectedDotColor });
+        } else {
+          dotStyle.push({backgroundColor: this.theme.selectedDotColor});
+        }
+      } else {
+        if (marking.dotColor) {
+          dotStyle.push({backgroundColor: marking.dotColor });
+        } else {
+          dotStyle.push({backgroundColor: this.theme.dotColor});
+        }
+      }
+      dot = (<View style={dotStyle}/>);
+    }
+
     return (
       <TouchableWithoutFeedback
         onPress={this.onDayPress}
@@ -199,6 +220,7 @@ class Day extends Component {
           {fillers}
           <View style={containerStyle}>
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+            {dot}
           </View>
         </View>
       </TouchableWithoutFeedback>
