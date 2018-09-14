@@ -182,8 +182,8 @@ class ReactComp extends Component {
 
   render() {
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
-      if (this.props.renderEmptyData) {
-        return this.props.renderEmptyData();
+      if (this.props.renderEmptyDate) {
+        return this.props.renderEmptyDate();
       }
       return (<ActivityIndicator style={{marginTop: 80}}/>);
     }
