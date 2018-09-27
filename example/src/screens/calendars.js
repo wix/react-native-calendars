@@ -45,7 +45,7 @@ export default class CalendarsScreen extends Component {
         <Calendar
           style={[styles.calendar, {height: 300}]}
           dayComponent={({date, state}) => {
-            return (<View style={{flex: 1}}><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
+            return (<View><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
           }}
         />
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
