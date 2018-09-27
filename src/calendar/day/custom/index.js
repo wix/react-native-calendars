@@ -8,6 +8,12 @@ import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {shouldUpdate} from '../../../component-updater';
 
+import {
+  TODAY_DATE,
+  DISABLED_DATE,
+  SELECTABLE_DATE
+} from '../../../testIDs';
+
 class Day extends Component {
   static propTypes = {
     // TODO: disabled props should be removed
@@ -72,8 +78,18 @@ class Day extends Component {
       }
     }
 
+    let testID;
+    if (this.props.state === 'today') {
+      testID = TODAY_DATE;
+    } else if (isDisabled) {
+      testID = DISABLED_DATE;
+    } else {
+      testID = SELECTABLE_DATE;
+    }
+
     return (
       <TouchableOpacity
+        testID={testID}
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
