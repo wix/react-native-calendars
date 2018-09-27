@@ -174,17 +174,18 @@ class Calendar extends Component {
     const DayComp = this.getDayComponent();
     const date = day.getDate();
     return (
-      <DayComp
-        key={id}
-        state={state}
-        theme={this.props.theme}
-        onPress={this.pressDay}
-        onLongPress={this.longPressDay}
-        date={xdateToData(day)}
-        marking={this.getDateMarking(day)}
-      >
-        {date}
-      </DayComp>
+      <View style={{flex: 1, alignItems: 'center'}} key={id}>
+        <DayComp
+          state={state}
+          theme={this.props.theme}
+          onPress={this.pressDay}
+          onLongPress={this.longPressDay}
+          date={xdateToData(day)}
+          marking={this.getDateMarking(day)}
+        >
+          {date}
+        </DayComp>
+      </View>
     );
   }
 
