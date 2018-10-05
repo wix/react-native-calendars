@@ -1,3 +1,4 @@
+import isEqual from 'lodash.isequal';
 import {parseDate} from '../interface';
 
 export default function shouldComponentUpdate(nextProps, nextState) {
@@ -17,6 +18,16 @@ export default function shouldComponentUpdate(nextProps, nextState) {
       return {
         update: true,
         field: next
+      };
+    }
+    return prev;
+  }, shouldUpdate);
+
+  shouldUpdate = ['style'].reduce((prev, next) => {
+    if (!isEqual(!prev.update && nextProps[next], this.props[next])) {
+      return {
+        update: true,
+        field: next,
       };
     }
     return prev;
