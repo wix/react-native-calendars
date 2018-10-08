@@ -6,6 +6,7 @@ const STYLESHEET_ID = 'stylesheet.calendar.header';
 export default function(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
+    continer: {},
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',

@@ -119,7 +119,7 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator />;
     }
     return (
-      <View>
+      <View style={this.style.container}>
         <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
