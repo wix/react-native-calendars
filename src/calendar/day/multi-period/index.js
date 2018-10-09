@@ -21,10 +21,15 @@ class Day extends Component {
     super(props);
     this.style = styleConstructor(props.theme);
     this.onDayPress = this.onDayPress.bind(this);
+    this.onDayLongPress = this.onDayLongPress.bind(this);
   }
 
   onDayPress() {
     this.props.onPress(this.props.date);
+  }
+
+  onDayLongPress() {
+    this.props.onLongPress(this.props.date);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -92,7 +97,11 @@ class Day extends Component {
         style={{
           alignSelf: 'stretch'
         }}>
-        <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
+        <TouchableOpacity 
+        style={containerStyle} 
+        onPress={this.onDayPress}
+        onLongPress={this.onDayLongPress}
+        >
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>
