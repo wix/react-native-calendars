@@ -394,6 +394,7 @@ export default class AgendaView extends Component {
               onLayout={() => {
                 this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
               }}
+              calendarWidth={this.viewWidth}
               theme={this.props.theme}
               onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
               ref={(c) => this.calendar = c}
@@ -420,8 +421,8 @@ export default class AgendaView extends Component {
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
           {this.props.showWeekNumbers && <Text allowFontScaling={false} style={this.styles.weekday} numberOfLines={1}></Text>}
-          {weekDaysNames.map((day) => (
-            <Text allowFontScaling={false} key={day} style={this.styles.weekday} numberOfLines={1}>{day}</Text>
+          {weekDaysNames.map((day, index) => (
+            <Text allowFontScaling={false} key={day+index} style={this.styles.weekday} numberOfLines={1}>{day}</Text>
           ))}
         </Animated.View>
         <Animated.ScrollView

@@ -207,7 +207,7 @@ class CalendarList extends Component {
         //scrollEventThrottle={1000}
         style={[this.style.container, this.props.style]}
         contentContainerStyle={this.props.contentContainerStyle}
-        initialListSize={this.pastScrollRange + this.futureScrollRange + 1}
+        initialListSize={this.props.pastScrollRange + this.props.futureScrollRange + 1}
         data={this.state.rows}
         //snapToAlignment='start'
         //snapToInterval={this.calendarHeight}
