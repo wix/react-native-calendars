@@ -5,6 +5,7 @@ import {
   Dimensions,
   Animated,
   ViewPropTypes,
+  BackHandler
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -210,10 +211,22 @@ export default class AgendaView extends Component {
   componentWillMount() {
     this._isMounted = true;
     this.loadReservations(this.props);
+	
+	BackHandler.addEventListener('hardwareBackPress', function() {
+      if(this.state.calendarScrollable && this.state.selectedDay){
+        this._chooseDayFromCalendar(this.state.selectedDay);
+        return true;
+      }
+      else{
+        return false;
+      }
+    }.bind(this));
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+	
+	BackHandler.removeEventListener('hardwareBackPress');
   }
 
   componentWillReceiveProps(props) {
