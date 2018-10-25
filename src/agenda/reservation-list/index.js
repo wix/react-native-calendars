@@ -12,6 +12,7 @@ import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
 class ReactComp extends Component {
+
   static propTypes = {
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
@@ -46,14 +47,17 @@ class ReactComp extends Component {
       reservations: []
     };
     this.heights=[];
+    this.theHeight=117;
     this.selectedDay = this.props.selectedDay;
     this.earliestDay = this.props.earliestDay;
     this.latestDay = this.props.latestDay;
     this.scrollOver = true;
+    this.firstScroll = true;
   }
 
   componentWillMount() {
-    this.updateDataSource(this.getReservations(this.props).reservations);
+    const response = this.getReservations(this.props)
+    this.updateDataSource(response);
   }
 
   updateDataSource(reservations) {
@@ -67,10 +71,8 @@ class ReactComp extends Component {
     const reservations = this.getReservations(props);
     if (this.list) {
       let scrollPosition = 0;
-      for (let i = 0; i < reservations.scrollPosition; i++) {
-        scrollPosition += this.heights[i] || 0;
-      }
       this.scrollOver = false;
+      scrollPosition = (reservations.scrollPosition * this.theHeight);
       this.list.scrollToOffset({offset: scrollPosition, animated: true});
     }
     this.updateDataSource(reservations.reservations);
@@ -93,12 +95,14 @@ class ReactComp extends Component {
     this.props.onScroll(yOffset);
     let topRowOffset = 0;
     let topRow;
-    for (topRow = 0; topRow < this.heights.length; topRow++) {
-      if (topRowOffset + this.heights[topRow] / 2 >= yOffset) {
+
+    for (topRow = 0; topRow < this.state.reservations.length; topRow++) {
+      if (topRowOffset + this.theHeight / 2 >= yOffset) {
         break;
       }
-      topRowOffset += this.heights[topRow];
+      topRowOffset += this.theHeight;
     }
+
     const row = this.state.reservations[topRow];
     if (!row) return;
     const day = row.day;
@@ -201,6 +205,7 @@ class ReactComp extends Component {
       }
       scrollPosition++;
     }
+    this.startIndex = scrollPosition;
     return scrollPosition;
   }
 
@@ -226,9 +231,14 @@ class ReactComp extends Component {
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing || false}
         onRefresh={this.props.onRefresh}
+        getItemLayout={(data, index) => (
+          {length: this.theHeight, offset: this.theHeight * index, index}
+        )}
+        initialScrollIndex={this.startIndex}
       />
     );
   }
+
 }
 
 export default ReactComp;
