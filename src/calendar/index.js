@@ -110,7 +110,7 @@ class Calendar extends Component {
 
     if (newCurrent && isCurrentChanged) {
       this.setState({
-        currentMonth: current.clone()
+        currentMonth: newCurrent.clone()
       });
     }
   }
