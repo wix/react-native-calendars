@@ -252,8 +252,11 @@ class Calendar extends Component {
         indicator = true;
       }
     }
+    const weeksHeight = 84;
+    const customHeightStyle = { height: weeks.length * weeksHeight };
+
     return (
-      <View style={[this.style.container, this.props.style]}>
+      <View style={[this.style.container, this.props.style, customHeightStyle]}>
         <CalendarHeader
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}

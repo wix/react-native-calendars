@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import {xdateToData, parseDate} from '../interface';
+import {parseDate} from '../interface';
 import styleConstructor from './style';
 import dateutils from '../dateutils';
 import Calendar from '../calendar';
@@ -59,23 +59,17 @@ class CalendarList extends Component {
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
-
     const rows = [];
     const texts = [];
     const date = parseDate(props.current) || XDate();
+
     for (let i = 0; i <= this.props.pastScrollRange + this.props.futureScrollRange; i++) {
       const rangeDate = date.clone().addMonths(i - this.props.pastScrollRange, true);
       const rangeDateStr = rangeDate.toString('MMM yyyy');
       texts.push(rangeDateStr);
-      /*
-       * This selects range around current shown month [-0, +2] or [-1, +1] month for detail calendar rendering.
-       * If `this.pastScrollRange` is `undefined` it's equal to `false` or 0 in next condition.
-       */
-      if (this.props.pastScrollRange - 1 <= i && i <= this.props.pastScrollRange + 1 || !this.props.pastScrollRange && i <= this.props.pastScrollRange + 2) {
-        rows.push(rangeDate);
-      } else {
-        rows.push(rangeDateStr);
-      }
+      const calHeight = this.calcCalendarHeight(rangeDate);
+      const dateCalHeightObj = {rangeDate, calHeight};
+      rows.push(dateCalHeightObj);
     }
 
     this.state = {
@@ -88,6 +82,7 @@ class CalendarList extends Component {
     this.renderCalendarBound = this.renderCalendar.bind(this);
     this.getItemLayout = this.getItemLayout.bind(this);
     this.onLayout = this.onLayout.bind(this);
+    this.calcCalendarHeight = this.calcCalendarHeight.bind(this);
   }
 
   onLayout(event) {
@@ -126,28 +121,6 @@ class CalendarList extends Component {
     this.listView.scrollToOffset({offset: scrollAmount, animated: false});
   }
 
-  componentWillReceiveProps(props) {
-    const current = parseDate(this.props.current);
-    const nextCurrent = parseDate(props.current);
-    if (nextCurrent && current && nextCurrent.getTime() !== current.getTime()) {
-      this.scrollToMonth(nextCurrent);
-    }
-
-    const rowclone = this.state.rows;
-    const newrows = [];
-    for (let i = 0; i < rowclone.length; i++) {
-      let val = this.state.texts[i];
-      if (rowclone[i].getTime) {
-        val = rowclone[i].clone();
-        val.propbump = rowclone[i].propbump ? rowclone[i].propbump + 1 : 1;
-      }
-      newrows.push(val);
-    }
-    this.setState({
-      rows: newrows
-    });
-  }
-
   onViewableItemsChanged({viewableItems}) {
     function rowIsCloseToViewable(index, distance) {
       for (let i = 0; i < viewableItems.length; i++) {
@@ -162,16 +135,13 @@ class CalendarList extends Component {
     const newrows = [];
     const visibleMonths = [];
     for (let i = 0; i < rowclone.length; i++) {
-      let val = rowclone[i];
-      const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
-      if (rowShouldBeRendered && !rowclone[i].getTime) {
-        val = this.state.openDate.clone().addMonths(i - this.props.pastScrollRange, true);
-      } else if (!rowShouldBeRendered) {
-        val = this.state.texts[i];
-      }
-      newrows.push(val);
+      let rowObj = rowclone[i];
+      const rangeDate = this.state.openDate.clone().addMonths(i - this.props.pastScrollRange, true);
+      const calHeight = rowObj.calHeight;
+      rowObj = {rangeDate, calHeight};
+      newrows.push(rowObj);
       if (rowIsCloseToViewable(i, 0)) {
-        visibleMonths.push(xdateToData(val));
+        visibleMonths.push(rowObj.rangeDate);
       }
     }
     if (this.props.onVisibleMonthsChange) {
@@ -182,12 +152,27 @@ class CalendarList extends Component {
     });
   }
 
-  renderCalendar({item}) {
-    return (<CalendarListItem item={item} calendarHeight={this.props.calendarHeight} calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined  } {...this.props} />);
+  calcCalendarHeight(xDate) {
+    const month = xDate.getMonth();
+    const year = xDate.getFullYear();
+    const firstDayOfMonth = XDate(year, month, 1, 0, 0, 0, 0);
+    const firstDayWeekDay = firstDayOfMonth.getDay();
+    const numOfDaysInFirstRow = 7 - firstDayWeekDay + 1;
+    const daysInMonth = XDate.getDaysInMonth(year, month);
+    const remainingWeeks = Math.ceil((daysInMonth - numOfDaysInFirstRow) / 7);
+    const weeks = 1 + remainingWeeks;
+    const numOfWeeks = weeks;
+    const weeksHeight = 84;
+    const calHeight = numOfWeeks * weeksHeight;
+    return calHeight;
+  }
+  
+  renderCalendar(itemObject) {
+    return (<CalendarListItem item={itemObject.item.rangeDate} calendarHeight={itemObject.item.calHeight} calendarWidth={this.props.horizontal ? itemObject.item.calHeight : undefined  } {...this.props} />);
   }
 
   getItemLayout(data, index) {
-    return {length: this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight, offset: (this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight) * index, index};
+    return {length: this.props.horizontal ? this.props.calendarWidth : data[index].calHeight, offset: (this.props.horizontal ? this.props.calendarWidth : data[index].calHeight) * index, index};
   }
 
   getMonthIndex(month) {
@@ -208,6 +193,7 @@ class CalendarList extends Component {
         //snapToInterval={this.calendarHeight}
         removeClippedSubviews={this.props.removeClippedSubviews}
         pageSize={1}
+        initialNumToRender={2}
         horizontal={this.props.horizontal}
         pagingEnabled={this.props.pagingEnabled}
         onViewableItemsChanged={this.onViewableItemsChangedBound}

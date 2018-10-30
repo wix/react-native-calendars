@@ -1,27 +1,40 @@
 {
-  "name": "react-native-calendars",
-  "version": "1.21.0",
-  "main": "src/index.js",
-  "description": "React Native Calendar Components",
-  "scripts": {
-    "test": "jasmine src/*.spec.js && npm run lint",
-    "lint": "eslint src/ example/src"
-  },
-  "repository": {
+  "_from": "github:inFullMobile/react-native-calendars",
+  "_id": "react-native-calendars@1.21.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/react-native-calendars",
+  "_phantomChildren": {},
+  "_requested": {
     "type": "git",
-    "url": "git+https://github.com/wix/react-native-calendars"
+    "raw": "inFullMobile/react-native-calendars",
+    "rawSpec": "inFullMobile/react-native-calendars",
+    "saveSpec": "github:inFullMobile/react-native-calendars",
+    "fetchSpec": null,
+    "gitCommittish": null
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "github:inFullMobile/react-native-calendars#55df6f1bde62cb25327648c25d6cd5d0e228684c",
+  "_spec": "inFullMobile/react-native-calendars",
+  "_where": "/Users/staszek/Developer/ReactNative/ernest-mobile",
+  "author": {
+    "name": "Wix.com"
   },
-  "author": "Wix.com",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wix/react-native-calendars/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
     "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
+  "deprecated": false,
+  "description": "React Native Calendar Components",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
@@ -29,5 +42,21 @@
     "jasmine": "^2.5.2",
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.2"
-  }
+  },
+  "homepage": "https://github.com/wix/react-native-calendars#readme",
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "react-native-calendars",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wix/react-native-calendars.git"
+  },
+  "scripts": {
+    "lint": "eslint src/ example/src",
+    "test": "jasmine src/*.spec.js && npm run lint"
+  },
+  "version": "1.21.0"
 }

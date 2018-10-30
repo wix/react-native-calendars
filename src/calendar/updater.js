@@ -14,8 +14,15 @@ export default function shouldComponentUpdate(nextProps, nextState) {
 
   shouldUpdate = ['markedDates', 'hideExtraDays'].reduce((prev, next) => {
     if (!prev.update && nextProps[next] !== this.props[next]) {
+      const currMonthStr = nextProps.current.toString('yyyy-MM');
+      let updateCurrentMonth = false;
+      Object.keys(nextProps[next]).forEach((item) => {
+        if (item.includes(currMonthStr)) {
+          updateCurrentMonth = true;
+        }
+      });
       return {
-        update: true,
+        update: updateCurrentMonth,
         field: next
       };
     }
