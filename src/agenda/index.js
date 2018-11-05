@@ -205,7 +205,6 @@ export default class AgendaView extends Component {
         firstResevationLoad: true
       }, () => {
         if (this.props.loadItemsForMonth) {
-          console.log('loadReservations', props);
           this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
         }
       });
