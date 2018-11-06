@@ -106,6 +106,7 @@ export default class AgendaView extends Component {
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true),
+      hideExtraDays: false
     };
     this.currentMonth = this.state.selectedDay.clone();
     this.onLayout = this.onLayout.bind(this);
@@ -148,6 +149,7 @@ export default class AgendaView extends Component {
 
   onTouchStart() {
     this.headerState = 'touched';
+    this.setState({hideExtraDays: true});
     if (this.knob) {
       this.knob.setNativeProps({ style: { opacity: 0.5 } });
     }
@@ -186,6 +188,9 @@ export default class AgendaView extends Component {
     this.setScrollPadPosition(snapY, true);
     if (snapY === 0) {
       this.enableCalendarScrolling();
+    }
+    else{
+      this.setState({hideExtraDays: false});
     }
   }
 
@@ -237,7 +242,8 @@ export default class AgendaView extends Component {
 
   enableCalendarScrolling() {
     this.setState({
-      calendarScrollable: true
+      calendarScrollable: true,
+      hideExtraDays: true
     });
     if (this.props.onCalendarToggled) {
       this.props.onCalendarToggled(true);
@@ -416,7 +422,7 @@ export default class AgendaView extends Component {
               removeClippedSubviews={this.props.removeClippedSubviews}
               onDayPress={this._chooseDayFromCalendar.bind(this)}
               scrollingEnabled={this.state.calendarScrollable}
-              hideExtraDays={this.state.calendarScrollable}
+              hideExtraDays={this.state.hideExtraDays}
               firstDay={this.props.firstDay}
               monthFormat={this.props.monthFormat}
               pastScrollRange={this.props.pastScrollRange}
