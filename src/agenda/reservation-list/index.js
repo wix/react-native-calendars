@@ -60,7 +60,7 @@ class ReactComp extends Component {
 
   updateReservations(props) {
     const reservations = this.getReservations(props);
-    if (this.list && dateutils.sameDate(props.selectedDay, this.selectedDay)) {
+    if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
