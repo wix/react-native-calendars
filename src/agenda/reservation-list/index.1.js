@@ -44,15 +44,12 @@ class ReactComp extends Component {
       reservations: []
     };
     this.heights=[];
-    this.theHeight=117;
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
-    this.firstScroll = true;
   }
 
   componentWillMount() {
-    const response = this.getReservations(this.props)
-    this.updateDataSource(response);
+    this.updateDataSource(this.getReservations(this.props).reservations);
   }
 
   updateDataSource(reservations) {
@@ -65,7 +62,9 @@ class ReactComp extends Component {
     const reservations = this.getReservations(props);
     if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
-      scrollPosition = (reservations.scrollPosition * this.theHeight);
+      for (let i = 0; i < reservations.scrollPosition; i++) {
+        scrollPosition += this.heights[i] || 0;
+      }
       this.scrollOver = false;
       this.list.scrollToOffset({offset: scrollPosition, animated: true});
     }
@@ -90,11 +89,11 @@ class ReactComp extends Component {
     this.props.onScroll(yOffset);
     let topRowOffset = 0;
     let topRow;
-    for (topRow = 0; topRow < this.state.reservations.length; topRow++) {
-      if (topRowOffset + this.theHeight / 2 >= yOffset) {
+    for (topRow = 0; topRow < this.heights.length; topRow++) {
+      if (topRowOffset + this.heights[topRow] / 2 >= yOffset) {
         break;
       }
-      topRowOffset += this.theHeight;
+      topRowOffset += this.heights[topRow];
     }
     const row = this.state.reservations[topRow];
     if (!row) return;
@@ -168,7 +167,7 @@ class ReactComp extends Component {
         iterator.addDays(1);
       }
     }
-    //const scrollPosition = reservations.length;
+    const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
     for (let i = 0; i < 31; i++) {
       const res = this.getReservationsForDay(iterator, props);
@@ -177,26 +176,10 @@ class ReactComp extends Component {
       }
       iterator.addDays(1);
     }
-    const scrollPosition = this.calculateScrollPosition(reservations);
+
     return {reservations, scrollPosition};
   }
- /**
-    * Will iterate thru all reservations to see how
-    * long it takes to get to the selected day. Will
-    * add the height of each day we need to scroll
-    * past to get to the selected day.
-    */
-   calculateScrollPosition(reservations) {
-    let scrollPosition = 0;
-    for (reservation of reservations) {
-      if (JSON.stringify(this.selectedDay[0]) === JSON.stringify(reservation.date[0])) {
-        break;
-     }
-     scrollPosition++;
-   }
-   this.startIndex = scrollPosition;
-   return scrollPosition;
- }
+
   render() {
     if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
       if (this.props.renderEmptyData) {
@@ -219,10 +202,6 @@ class ReactComp extends Component {
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing || false}
         onRefresh={this.props.onRefresh}
-        getItemLayout={(data, index) => (
-          {length: this.theHeight, offset: this.theHeight * index, index}
-        )}
-        initialScrollIndex={this.startIndex}
       />
     );
   }
