@@ -13,9 +13,9 @@ export const textColor = '#262626';
 export const textLinkColor = '#262626';
 export const textSecondaryColor = '#262626';
 
-export const textDayFontFamily = 'Avenir-Heavy';
-export const textMonthFontFamily = 'Avenir-Heavy';
-export const textDayHeaderFontFamily = 'Avenir-Heavy';
+export const textDayFontFamily = 'Avenir-Book';
+export const textMonthFontFamily = 'Avenir-Book';
+export const textDayHeaderFontFamily = 'Avenir-Book';
 
 export const textMonthFontWeight = '300';
 
