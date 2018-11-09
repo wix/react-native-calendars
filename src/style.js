@@ -8,14 +8,14 @@ export const processedColor = '#a7e0a3';
 export const processingColor = '#ffce5c';
 export const failedColor = 'rgba(246, 126, 126,1)';
 
-export const textDefaultColor = '#485A67';
-export const textColor = '#485A67';
-export const textLinkColor = '#485A67';
-export const textSecondaryColor = '#7a92a5';
+export const textDefaultColor = '#262626';
+export const textColor = '#262626';
+export const textLinkColor = '#262626';
+export const textSecondaryColor = '#262626';
 
-export const textDayFontFamily = 'WhitneyHTF-Book';
-export const textMonthFontFamily = 'WhitneyHTF-SemiBold';
-export const textDayHeaderFontFamily = 'WhitneyHTF-Book';
+export const textDayFontFamily = 'Avenir-Heavy';
+export const textMonthFontFamily = 'Avenir-Heavy';
+export const textDayHeaderFontFamily = 'Avenir-Heavy';
 
 export const textMonthFontWeight = '300';
 
@@ -24,18 +24,18 @@ export const textMonthFontSize = 16;
 export const textDayHeaderFontSize = 13;
 
 export const calendarBackground = foregroundColor;
-export const textSectionTitleColor = '#b6c1cd';
-export const selectedDayBackgroundColor = '#123A68';
+export const textSectionTitleColor = '#999999';
+export const selectedDayBackgroundColor = '#46B877';
 export const selectedDayTextColor = foregroundColor;
 export const todayBackgroundColor = undefined;
 export const todayTextColor = textLinkColor;
 export const dayTextColor = textDefaultColor;
 export const textDisabledColor = '#d9e1e8';
-export const dotColor = '#123A68';
+export const dotColor = '#46B877';
 export const selectedDotColor = foregroundColor;
 export const arrowColor = textLinkColor;
 export const monthTextColor = textDefaultColor;
-export const agendaDayTextColor = '#485A67';
-export const agendaDayNumColor = '#485A67';
+export const agendaDayTextColor = '#262626';
+export const agendaDayNumColor = '#262626';
 export const agendaTodayColor = textLinkColor;
 export const agendaKnobColor = '#f2F4f5';
