@@ -47,7 +47,7 @@ class ReactComp extends Component {
       reservations: []
     };
     this.heights=[];
-    this.theHeight=117;
+    this.theHeight=142;
     this.selectedDay = this.props.selectedDay;
     this.earliestDay = this.props.earliestDay;
     this.latestDay = this.props.latestDay;
