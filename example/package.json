@@ -7,15 +7,16 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"react": "16.0.0-alpha.12",
-		"react-native": "0.54.2",
+		"react": "16.6.0-alpha.8af6728",
+		"react-native": "0.57.4",
 		"react-native-calendars": "^1.17.5",
 		"react-native-navigation": "^1.1.205"
 	},
 	"devDependencies": {
-		"babel-jest": "20.0.3",
-		"babel-preset-react-native": "3.0.1",
+		"babel-jest": "^23.6.0",
+		"babel-preset-react-native": "^4.0.1",
 		"jest": "20.0.4",
+		"metro-react-native-babel-preset": "^0.49.1",
 		"react-test-renderer": "16.0.0-alpha.12"
 	},
 	"jest": {
