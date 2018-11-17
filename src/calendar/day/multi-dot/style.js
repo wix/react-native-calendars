@@ -5,8 +5,10 @@ const STYLESHEET_ID = 'stylesheet.day.multiDot';
 
 export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
+  const margin = (Platform.OS === 'android') ? 2 : 0
   return StyleSheet.create({
     base: {
+      marginTop: margin,
       width: 32,
       height: 32,
       alignItems: 'center'
