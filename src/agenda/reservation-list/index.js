@@ -234,7 +234,6 @@ class ReactComp extends Component {
         getItemLayout={(data, index) => (
           {length: this.theHeight, offset: this.theHeight * index, index}
         )}
-        initialScrollIndex={this.startIndex}
       />
     );
   }
