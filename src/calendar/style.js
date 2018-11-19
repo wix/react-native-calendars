@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import {
+  StyleSheet
+} from 'react-native';
 import * as defaultStyle from '../style';
 
 const STYLESHEET_ID = 'stylesheet.calendar.main';
@@ -9,6 +11,7 @@ export default function getStyle(theme={}) {
     container: {
       paddingLeft: 5,
       paddingRight: 5,
+      paddingTop: 8,
       backgroundColor: appStyle.calendarBackground
     },
     monthView: {
