@@ -40,9 +40,13 @@ class CalendarList extends Component {
 
     // Whether the scroll is horizontal
     horizontal: PropTypes.bool,
+
     // Dynamic calendar height
     calendarHeight: PropTypes.number,
-  };
+
+    // Initial months to render
+    initialNumToRender: PropTypes.number,
+  }
 
   static defaultProps = {
     horizontal: false,
@@ -54,6 +58,7 @@ class CalendarList extends Component {
     scrollEnabled: true,
     scrollsToTop: false,
     removeClippedSubviews: Platform.OS === 'android' ? false : true,
+    initialNumToRender: 4,
   }
 
   constructor(props) {
@@ -206,6 +211,7 @@ class CalendarList extends Component {
         data={this.state.rows}
         //snapToAlignment='start'
         //snapToInterval={this.calendarHeight}
+        initialNumToRender={this.props.initialNumToRender}
         removeClippedSubviews={this.props.removeClippedSubviews}
         pageSize={1}
         horizontal={this.props.horizontal}
