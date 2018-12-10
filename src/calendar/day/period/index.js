@@ -123,7 +123,8 @@ class Day extends Component {
     if (this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
-      containerStyle.push(this.style.today);
+      // #642 bug
+      // containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
 
@@ -154,7 +155,12 @@ class Day extends Component {
           backgroundColor: flags.startingDay.color
         };
         containerStyle.push({
-          backgroundColor: flags.startingDay.color
+          backgroundColor: flags.startingDay.color,
+          // #642 bug
+          borderBottomLeftRadius: 17,
+          borderTopLeftRadius: 17,
+          borderBottomRightRadius: 17,
+          borderTopRightRadius: 17
         });
       } else if (flags.endingDay && !flags.startingDay) {
         rightFillerStyle = {
@@ -164,7 +170,12 @@ class Day extends Component {
           backgroundColor: flags.endingDay.color
         };
         containerStyle.push({
-          backgroundColor: flags.endingDay.color
+          backgroundColor: flags.endingDay.color,
+          // #642 bug
+          borderBottomLeftRadius: 17,
+          borderTopLeftRadius: 17,
+          borderBottomRightRadius: 17,
+          borderTopRightRadius: 17
         });
       } else if (flags.day) {
         leftFillerStyle = {backgroundColor: flags.day.color};
@@ -179,7 +190,12 @@ class Day extends Component {
           backgroundColor: this.theme.calendarBackground
         };
         containerStyle.push({
-          backgroundColor: flags.endingDay.color
+          backgroundColor: flags.endingDay.color,
+          // #642 bug
+          borderBottomLeftRadius: 17,
+          borderTopLeftRadius: 17,
+          borderBottomRightRadius: 17,
+          borderTopRightRadius: 17
         });
       }
 
