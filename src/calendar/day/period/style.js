@@ -9,7 +9,6 @@ export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     wrapper: {
-      flex: 1,
       alignItems: 'center',
       alignSelf: 'stretch',
       marginLeft: -1

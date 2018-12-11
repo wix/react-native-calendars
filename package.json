@@ -1,6 +1,6 @@
 {
   "name": "react-native-calendars",
-  "version": "1.20.0",
+  "version": "1.22.0",
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
@@ -27,7 +27,7 @@
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
-    "react": "16.0.0-alpha.12",
-    "react-native": "0.47.2"
+    "react": "16.6.0-alpha.8af6728",
+    "react-native": "0.57.4"
   }
 }
