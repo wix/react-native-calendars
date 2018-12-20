@@ -20,6 +20,9 @@ class Day extends Component {
     theme: PropTypes.object,
     marking: PropTypes.any,
 
+    dot: PropTypes.bool,
+    dotColor: PropTypes.string,
+
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     date: PropTypes.object,
@@ -119,6 +122,8 @@ class Day extends Component {
     let rightFillerStyle = {};
     let fillerStyle = {};
     let fillers;
+    let dot;
+    let dotStyle = [{width: 4, height: 4, marginTop: 1, borderRadius: 2, opacity: 0}];
 
     if (this.props.state === 'disabled') {
       textStyle.push(this.style.disabledText);
@@ -131,6 +136,11 @@ class Day extends Component {
       containerStyle.push({
         borderRadius: 17
       });
+
+      if(this.props.marking.dot) {
+        dotStyle.push({opacity: 1, backgroundColor: this.props.marking.dotColor || '#00ffbb'});
+        dot = (<View style={dotStyle} />);
+      }
 
       const flags = this.markingStyle;
       if (flags.textStyle) {
@@ -199,6 +209,7 @@ class Day extends Component {
           {fillers}
           <View style={containerStyle}>
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+            {dot}
           </View>
         </View>
       </TouchableWithoutFeedback>
