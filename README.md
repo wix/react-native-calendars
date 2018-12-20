@@ -256,7 +256,7 @@ Keep in mind that different marking types are not compatible. You can use just o
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/loader.png?raw=true">
 </kbd>
 
-The loading indicator next to month name will be displayed if `<Calendar />` has `displayLoadingIndicator` property and `markedDays` collection does not have a value for every day of the month in question. When you load data for days, just set `[]` or special marking value to all days in `markedDates` collection.
+The loading indicator next to month name will be displayed if `<Calendar />` has `displayLoadingIndicator` property and `markedDates` collection does not have a value for every day of the month in question. When you load data for days, just set `[]` or special marking value to all days in `markedDates` collection.
 
 #### Customizing look & feel
 
