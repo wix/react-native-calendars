@@ -49,7 +49,7 @@ class Day extends Component {
       const validDots = marking.dots.filter(d => (d && d.color));
       return validDots.map((dot, index) => {
         return (
-          <View key={dot.key ? dot.key : index} style={[baseDotStyle,
+          <View key={dot.key ? dot.key : index} style={[baseDotStyle, dot.style,
             { backgroundColor: marking.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
         );
       });
