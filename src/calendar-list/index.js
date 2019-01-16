@@ -54,6 +54,7 @@ class CalendarList extends Component {
     scrollEnabled: true,
     scrollsToTop: false,
     removeClippedSubviews: Platform.OS === 'android' ? false : true,
+    initialNumToRender: 12,
   }
 
   constructor(props) {
@@ -219,6 +220,7 @@ class CalendarList extends Component {
         initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
         getItemLayout={this.getItemLayout}
         scrollsToTop={this.props.scrollsToTop}
+        initialNumToRender={this.props.initialNumToRender}
       />
     );
   }
