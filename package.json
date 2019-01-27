@@ -5,7 +5,8 @@
   "description": "React Native Calendar Components",
   "scripts": {
     "test": "jasmine src/*.spec.js && npm run lint",
-    "lint": "eslint src/ example/src"
+    "lint": "eslint src/ example/src",
+    "release": "node ./scripts/release.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
+    "semver": "5.x.x",
+    "shell-utils": "1.x.x",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4"
   }
