@@ -1,9 +1,9 @@
-import {Navigation} from 'react-native-navigation';
-import {registerScreens} from './screens';
+import { Navigation } from "react-native-navigation";
+import { registerScreens } from "./screens";
 registerScreens();
 
 // eslint-disable-next-line no-console
-console.ignoredYellowBox = ['Remote debugger'];
+console.ignoredYellowBox = ["Remote debugger"];
 
 /*
 import {LocaleConfig} from 'react-native-calendars';
@@ -20,14 +20,14 @@ LocaleConfig.defaultLocale = 'fr';
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'Menu',
-    title: 'WixCal',
+    screen: "Agenda",
+    title: "WixCal"
   },
   appStyle: {
-    navBarBackgroundColor: '#00adf5',
-    navBarTextColor: 'white',
-    navBarButtonColor: '#ffffff',
-    statusBarTextColorScheme: 'light',
+    navBarBackgroundColor: "#00adf5",
+    navBarTextColor: "white",
+    navBarButtonColor: "#ffffff",
+    statusBarTextColorScheme: "light",
     autoAdjustScrollViewInsets: true
   }
 });

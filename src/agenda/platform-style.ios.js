@@ -5,20 +5,20 @@ export default function platformStyles(appStyle) {
       height: 7,
       marginTop: 10,
       borderRadius: 3,
-      backgroundColor: appStyle.agendaKnobColor
+      backgroundColor: appStyle.agendaKnobColor,
     },
     weekdays: {
-      position: 'absolute',
+      position: "absolute",
       left: 0,
       right: 0,
       top: 0,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      marginLeft: 15,
-      marginRight: 15,
+      flexDirection: "row",
+      justifyContent: "space-around",
+      paddingHorizontal: 0,
+      marginHorizontal: 0,
       paddingTop: 15,
-      paddingBottom: 7,
-      backgroundColor: appStyle.calendarBackground
+      paddingBottom: 0,
+      backgroundColor: appStyle.backgroundColor,
     },
-  };
+  }
 }

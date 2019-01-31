@@ -1,42 +1,59 @@
-import {StyleSheet, Platform} from 'react-native';
-import * as defaultStyle from '../../../style';
+import { Platform, StyleSheet } from "react-native"
+import * as defaultStyle from "../../../style"
 
-const STYLESHEET_ID = 'stylesheet.day.multiDot';
+const STYLESHEET_ID = "stylesheet.day.multiDot"
 
-export default function styleConstructor(theme={}) {
-  const appStyle = {...defaultStyle, ...theme};
+export default function styleConstructor(theme = {}) {
+  const appStyle = { ...defaultStyle, ...theme }
   return StyleSheet.create({
     base: {
-      width: 32,
+      width: "100%",
       height: 32,
-      alignItems: 'center'
+      alignItems: "center",
+      borderRadius: 1,
+      borderColor: "transparent",
+      borderWidth: 1,
     },
     text: {
-      marginTop: 4,
+      marginTop: Platform.OS === "android" ? 4 : 5,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
-      fontWeight: '300',
+      fontWeight: "300",
+    },
+    defaultText: {
       color: appStyle.dayTextColor,
-      backgroundColor: 'rgba(255, 255, 255, 0)'
     },
     alignedText: {
-      marginTop: Platform.OS === 'android' ? 4 : 6
+      marginTop: Platform.OS === "android" ? 4 : 5,
     },
     selected: {
-      backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
+      backgroundColor: appStyle.separatorColor,
+      borderRadius: 1,
+      borderColor: "transparent",
+      borderWidth: 1,
     },
     today: {
-      backgroundColor: appStyle.todayBackgroundColor
+      borderRadius: 1,
+      borderColor: appStyle.todayColor,
+      borderWidth: 1,
     },
     todayText: {
-      color: appStyle.todayTextColor
+      color: appStyle.dayTextColor,
+      marginTop: 5,
+    },
+    holidayText: {
+      color: appStyle.holidayColor,
+      marginTop: 5,
+    },
+    saturdayText: {
+      color: appStyle.saturdayColor,
+      marginTop: 5,
     },
     selectedText: {
-      color: appStyle.selectedDayTextColor
+      marginTop: 5,
     },
     disabledText: {
-      color: appStyle.textDisabledColor
+      color: appStyle.textDisabledColor,
     },
     dot: {
       width: 4,
@@ -45,15 +62,20 @@ export default function styleConstructor(theme={}) {
       marginLeft: 1,
       marginRight: 1,
       borderRadius: 2,
-      opacity: 0
+      opacity: 0,
+    },
+    dotText: {
+      margin: 0,
+      padding: 0,
+      top: Platform.OS === "android" ? -10 : -9,
     },
     visibleDot: {
       opacity: 1,
-      backgroundColor: appStyle.dotColor
+      backgroundColor: appStyle.dotColor,
     },
     selectedDot: {
-      backgroundColor: appStyle.selectedDotColor
+      backgroundColor: appStyle.selectedDotColor,
     },
-    ...(theme[STYLESHEET_ID] || {})
-  });
+    ...(theme[STYLESHEET_ID] || {}),
+  })
 }
