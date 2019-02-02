@@ -71,11 +71,11 @@ class CalendarList extends Component {
        * This selects range around current shown month [-0, +2] or [-1, +1] month for detail calendar rendering.
        * If `this.pastScrollRange` is `undefined` it's equal to `false` or 0 in next condition.
        */
-      if (this.props.pastScrollRange - 1 <= i && i <= this.props.pastScrollRange + 1 || !this.props.pastScrollRange && i <= this.props.pastScrollRange + 2) {
+      // if (this.props.pastScrollRange - 1 <= i && i <= this.props.pastScrollRange + 1 || !this.props.pastScrollRange && i <= this.props.pastScrollRange + 2) {
         rows.push(rangeDate);
-      } else {
-        rows.push(rangeDateStr);
-      }
+      // } else {
+      //   rows.push(rangeDateStr);
+      // }
     }
 
     this.state = {
