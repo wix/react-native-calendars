@@ -30,9 +30,13 @@ function fromTo(a, b) {
   return days;
 }
 
+function totalDaysInMonth(year,month) {
+  return [31, (((year%4==0)&&(year%100!=0))||(year%400==0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+}
+
 function month(xd) {
   const year = xd.getFullYear(), month = xd.getMonth();
-  const days = new Date(year, month + 1, 0).getDate();
+  const days = totalDaysInMonth(year,month);
 
   const firstDay = new XDate(year, month, 1, 0, 0, 0, true);
   const lastDay = new XDate(year, month, days, 0, 0, 0, true);
