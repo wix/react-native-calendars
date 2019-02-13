@@ -1,9 +1,9 @@
-import React, { Component } from "react"
-import { StyleSheet, Text, View } from "react-native"
-import XDate from "xdate"
-import dateutils from "../../dateutils"
-import { xdateToData } from "../../interface"
-import styleConstructor from "./style"
+import React, { Component } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import XDate from "xdate";
+import dateutils from "../../dateutils";
+import { xdateToData } from "../../interface";
+import styleConstructor from "./style";
 
 class ReservationListItem extends Component {
   constructor(props) {
@@ -109,7 +109,7 @@ class ReservationListItem extends Component {
         </View>
         <View style={this.styles.container}>
           {this.renderDate(date, reservation, lastItem)}
-          <View style={{ flex: 1 }}>{this.props.renderEmptyDate(date, lastItem)}</View>
+          <View style={{ flex: 1 }}>{this.props.renderEmptyDate(date)}</View>
         </View>
       </View>
     )

@@ -1,8 +1,8 @@
-import PropTypes from "prop-types"
-import React, { Component } from "react"
-import { Text, TouchableOpacity, View } from "react-native"
-import { shouldUpdate } from "../../../component-updater"
-import styleConstructor from "./style"
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { shouldUpdate } from "../../../component-updater";
+import styleConstructor from "./style";
 
 class Day extends Component {
   static propTypes = {
@@ -51,7 +51,11 @@ class Day extends Component {
         if (index > 6) return
         if (index === 6) {
           return (
-            <Text style={this.style.dotText} allowFontScaling={false}>
+            <Text 
+              key={dot.key ? `${dot.key}-${index}` : index}
+              style={this.style.dotText} 
+              allowFontScaling={false}
+            >
               ...
             </Text>
           )
