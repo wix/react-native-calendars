@@ -1,23 +1,25 @@
-import PropTypes from "prop-types"
-import React, { Component } from "react"
-import { View, ViewPropTypes } from "react-native"
-import GestureRecognizer, { swipeDirections } from "react-native-swipe-gestures"
-import XDate from "xdate"
-import dateutils from "../dateutils"
-import { parseDate, xdateToData } from "../interface"
-import Day from "./day/basic"
-import SingleDay from "./day/custom"
-import MultiDotDay from "./day/multi-dot"
-import MultiPeriodDay from "./day/multi-period"
-import UnitDay from "./day/period"
-import CalendarHeader from "./header"
-import styleConstructor from "./style"
-import shouldComponentUpdate from "./updater"
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { View, ViewPropTypes } from "react-native";
+import GestureRecognizer, {
+  swipeDirections
+} from "react-native-swipe-gestures";
+import XDate from "xdate";
+import dateutils from "../dateutils";
+import { parseDate, xdateToData } from "../interface";
+import Day from "./day/basic";
+import SingleDay from "./day/custom";
+import MultiDotDay from "./day/multi-dot";
+import MultiPeriodDay from "./day/multi-period";
+import UnitDay from "./day/period";
+import CalendarHeader from "./header";
+import styleConstructor from "./style";
+import shouldComponentUpdate from "./updater";
 
 //Fallback when RN version is < 0.44
-const viewPropTypes = ViewPropTypes || View.propTypes
+const viewPropTypes = ViewPropTypes || View.propTypes;
 
-const EmptyArray = []
+const EmptyArray = [];
 
 class Calendar extends Component {
   static propTypes = {
@@ -72,121 +74,131 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func,
-  }
+    onPressArrowRight: PropTypes.func
+  };
 
   constructor(props) {
-    super(props)
-    this.style = styleConstructor(this.props.theme)
-    let currentMonth
+    super(props);
+    this.style = styleConstructor(this.props.theme);
+    let currentMonth;
     if (props.current) {
-      currentMonth = parseDate(props.current)
+      currentMonth = parseDate(props.current);
     } else {
-      currentMonth = XDate()
+      currentMonth = XDate();
     }
     this.state = {
-      currentMonth,
-    }
+      currentMonth
+    };
 
-    this.updateMonth = this.updateMonth.bind(this)
-    this.addMonth = this.addMonth.bind(this)
-    this.pressDay = this.pressDay.bind(this)
-    this.longPressDay = this.longPressDay.bind(this)
-    this.shouldComponentUpdate = shouldComponentUpdate
+    this.updateMonth = this.updateMonth.bind(this);
+    this.addMonth = this.addMonth.bind(this);
+    this.pressDay = this.pressDay.bind(this);
+    this.longPressDay = this.longPressDay.bind(this);
+    this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
   componentWillReceiveProps(nextProps) {
-    const current = parseDate(nextProps.current)
-    if (current && current.toString("yyyy MM") !== this.state.currentMonth.toString("yyyy MM")) {
+    const current = parseDate(nextProps.current);
+    if (
+      current &&
+      current.toString("yyyy MM") !==
+        this.state.currentMonth.toString("yyyy MM")
+    ) {
       this.setState({
-        currentMonth: current.clone(),
-      })
+        currentMonth: current.clone()
+      });
     }
   }
 
   updateMonth(day, doNotTriggerListeners) {
-    if (day.toString("yyyy MM") === this.state.currentMonth.toString("yyyy MM")) {
-      return
+    if (
+      day.toString("yyyy MM") === this.state.currentMonth.toString("yyyy MM")
+    ) {
+      return;
     }
     this.setState(
       {
-        currentMonth: day.clone(),
+        currentMonth: day.clone()
       },
       () => {
         if (!doNotTriggerListeners) {
-          const currMont = this.state.currentMonth.clone()
+          const currMont = this.state.currentMonth.clone();
           if (this.props.onMonthChange) {
-            this.props.onMonthChange(xdateToData(currMont))
+            this.props.onMonthChange(xdateToData(currMont));
           }
           if (this.props.onVisibleMonthsChange) {
-            this.props.onVisibleMonthsChange([xdateToData(currMont)])
+            this.props.onVisibleMonthsChange([xdateToData(currMont)]);
           }
         }
-      },
-    )
+      }
+    );
   }
 
   _handleDayInteraction(date, interaction) {
-    const day = parseDate(date)
-    const minDate = parseDate(this.props.minDate)
-    const maxDate = parseDate(this.props.maxDate)
+    const day = parseDate(date);
+    const minDate = parseDate(this.props.minDate);
+    const maxDate = parseDate(this.props.maxDate);
     if (
       !(minDate && !dateutils.isGTE(day, minDate)) &&
       !(maxDate && !dateutils.isLTE(day, maxDate))
     ) {
       const shouldUpdateMonth =
-        this.props.disableMonthChange === undefined || !this.props.disableMonthChange
+        this.props.disableMonthChange === undefined ||
+        !this.props.disableMonthChange;
       if (shouldUpdateMonth) {
-        this.updateMonth(day)
+        this.updateMonth(day);
       }
       if (interaction) {
-        interaction(xdateToData(day))
+        interaction(xdateToData(day));
       }
     }
   }
 
   pressDay(date) {
-    this._handleDayInteraction(date, this.props.onDayPress)
+    this._handleDayInteraction(date, this.props.onDayPress);
   }
 
   longPressDay(date) {
-    this._handleDayInteraction(date, this.props.onDayLongPress)
+    this._handleDayInteraction(date, this.props.onDayLongPress);
   }
 
   addMonth(count) {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true))
+    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   }
 
   renderDay(day, id) {
-    const minDate = parseDate(this.props.minDate)
-    const maxDate = parseDate(this.props.maxDate)
-    let state = ""
+    const minDate = parseDate(this.props.minDate);
+    const maxDate = parseDate(this.props.maxDate);
+    let state = "";
     if (this.props.disabledByDefault) {
-      state = "disabled"
+      state = "disabled";
     } else if (
       (minDate && !dateutils.isGTE(day, minDate)) ||
       (maxDate && !dateutils.isLTE(day, maxDate))
     ) {
-      state = "disabled"
+      state = "disabled";
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
-      state = "disabled"
+      state = "disabled";
     } else if (dateutils.sameDate(day, XDate())) {
-      state = "today"
+      state = "today";
     }
 
-    if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      return <View key={id} style={{ flex: 1 }} />
+    if (
+      !dateutils.sameMonth(day, this.state.currentMonth) &&
+      this.props.hideExtraDays
+    ) {
+      return <View key={id} style={{ flex: 1 }} />;
     }
 
-    const DayComp = this.getDayComponent()
-    const date = day.getDate()
-    const dateData = xdateToData(day)
-    const holidays = this.props.holidays || []
+    const DayComp = this.getDayComponent();
+    const date = day.getDate();
+    const dateData = xdateToData(day);
+    const holidays = this.props.holidays || [];
 
-    const { dateString } = dateData
-    const isHoliday = holidays.includes(dateString)
-    const dateObject = new Date(dateString)
-    const dayOfTheWeek = dateObject.getDay()
+    const { dateString } = dateData;
+    const isHoliday = holidays.includes(dateString);
+    const dateObject = new Date(dateString);
+    const dayOfTheWeek = dateObject.getDay();
     return (
       <View style={{ flex: 1, alignItems: "center" }} key={id}>
         <DayComp
@@ -202,37 +214,38 @@ class Calendar extends Component {
           {date}
         </DayComp>
       </View>
-    )
+    );
   }
 
   getDayComponent() {
     if (this.props.dayComponent) {
-      return this.props.dayComponent
+      return this.props.dayComponent;
     }
 
     switch (this.props.markingType) {
       case "period":
-        return UnitDay
+        return UnitDay;
       case "multi-dot":
-        return MultiDotDay
+        return MultiDotDay;
       case "multi-period":
-        return MultiPeriodDay
+        return MultiPeriodDay;
       case "custom":
-        return SingleDay
+        return SingleDay;
       default:
-        return Day
+        return Day;
     }
   }
 
   getDateMarking(day) {
     if (!this.props.markedDates) {
-      return false
+      return false;
     }
-    const dates = this.props.markedDates[day.toString("yyyy-MM-dd")] || EmptyArray
+    const dates =
+      this.props.markedDates[day.toString("yyyy-MM-dd")] || EmptyArray;
     if (dates.length || dates) {
-      return dates
+      return dates;
     } else {
-      return false
+      return false;
     }
   }
 
@@ -246,65 +259,73 @@ class Calendar extends Component {
       >
         {weekNumber}
       </Day>
-    )
+    );
   }
 
   renderWeek(days, id) {
-    const week = []
+    const week = [];
     days.forEach((day, id2) => {
-      week.push(this.renderDay(day, id2))
-    }, this)
+      week.push(this.renderDay(day, id2));
+    }, this);
 
     if (this.props.showWeekNumbers) {
-      week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()))
+      week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
     }
 
     return (
       <View style={this.style.week} key={id}>
         {week}
       </View>
-    )
+    );
   }
 
   handleSwipe = gestureName => {
-    const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
-    switch (gestureName) {
-      case SWIPE_LEFT:
-        this.props.onPressArrowRight()
-        break
-      case SWIPE_RIGHT:
-        this.props.onPressArrowLeft()
-        break
+    const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+    try {
+      switch (gestureName) {
+        case SWIPE_LEFT:
+          if (this.props.onPressArrowRight) {
+            this.props.onPressArrowRight();
+          }
+          break;
+        case SWIPE_RIGHT:
+          if (this.props.onPressArrowLeft) {
+            this.props.onPressArrowLeft();
+          }
+          break;
+      }
+    } catch {
+      // do nothing
     }
-  }
+  };
 
   render() {
-    const days = dateutils.page(this.state.currentMonth, this.props.firstDay)
-    const weeks = []
+    const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
+    const weeks = [];
     while (days.length) {
-      weeks.push(this.renderWeek(days.splice(0, 7), weeks.length))
+      weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
-    let indicator
-    const current = parseDate(this.props.current)
+    let indicator;
+    const current = parseDate(this.props.current);
     if (current) {
       const lastMonthOfDay = current
         .clone()
         .addMonths(1, true)
         .setDate(1)
         .addDays(-1)
-        .toString("yyyy-MM-dd")
+        .toString("yyyy-MM-dd");
       if (
         this.props.displayLoadingIndicator &&
         !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])
       ) {
-        indicator = true
+        indicator = true;
       }
     }
     const SWIPE_CONFIG = {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80,
-      gestureIsClickThreshold: 5,
-    }
+      gestureIsClickThreshold: 5
+    };
     return (
       <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
@@ -329,8 +350,8 @@ class Calendar extends Component {
           {weeks}
         </GestureRecognizer>
       </View>
-    )
+    );
   }
 }
 
-export default Calendar
+export default Calendar;
