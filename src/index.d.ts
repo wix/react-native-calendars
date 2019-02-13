@@ -6,8 +6,8 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.8
 
-import * as React from "react"
-import { StyleProp, TextStyle, ViewStyle } from "react-native"
+import * as React from "react";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 export import LocaleConfig = require("xdate")
 
 export interface DateObject {
@@ -382,6 +382,11 @@ export interface AgendaProps<TItem> extends CalendarBaseProps {
    *  Hide knob button. Default = false
    */
   hideKnob?: boolean
+
+  /**
+   *  Show the calendar on initial load. Default = false
+   */
+  calendarView?: boolean
 
   /**
    *  The list of items that have to be displayed in agenda. If you want to render item as empty date
