@@ -283,14 +283,14 @@ class Calendar extends Component {
       switch (gestureName) {
         case SWIPE_LEFT:
         if (this.props.onPressArrowRight){
-          this.props.onPressArrowRight();
+          this.props.onPressArrowRight(() => this.addMonth(1));
         } else {
           this.addMonth(1)
         }
         break;
         case SWIPE_RIGHT:
         if (this.props.onPressArrowLeft){
-          this.props.onPressArrowLeft();
+          this.props.onPressArrowLeft(() => this.addMonth(-1));
         } else {
           this.addMonth(-1)
         }
