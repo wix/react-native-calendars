@@ -106,7 +106,6 @@ export default class AgendaView extends Component {
       topDay: parseDate(this.props.selected) || XDate(true),
       calendarCurrentMonth: parseDate(this.props.selected) || XDate(true),
       agendaOpen: this.props.calendarView ? false : true,
-      initialLoad: true,
       calendarMonthChanged: true
     };
     this.currentMonth = this.state.selectedDay.clone();
@@ -303,7 +302,6 @@ export default class AgendaView extends Component {
     this.setState({
       calendarScrollable: false,
       agendaOpen: true,
-      initialLoad: false,
       calendarMonthChanged: false,
       selectedDay: day.clone()
     });
@@ -381,7 +379,7 @@ export default class AgendaView extends Component {
   toggleCalendar() {
     if (this.state.calendarScrollable) {
       this.setScrollPadPosition(this.initialScrollPadPosition(), true);
-      this.setState({ calendarScrollable: false, initialLoad: false });
+      this.setState({ calendarScrollable: false });
       this.calendar.scrollToDay(
         this.state.selectedDay.clone(),
         this.calendarOffset(),
@@ -476,7 +474,6 @@ export default class AgendaView extends Component {
       selectedDay,
       calendarCurrentMonth,
       calendarMonthChanged,
-      initialLoad
     } = this.state;
 
     const calendar = (
@@ -533,15 +530,6 @@ export default class AgendaView extends Component {
         }}
       />
     );
-
-    // display the calendar on initial load, but after the
-    // calendar references have been set
-    if (this.props.calendarView && initialLoad && this.calendar) {
-      this.setState({ initialLoad: false }, () => {
-        this.headerState = "touched";
-        this.onTouchEnd();
-      });
-    }
 
     return (
       <View
