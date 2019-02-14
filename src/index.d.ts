@@ -260,6 +260,11 @@ export interface CalendarBaseProps {
   onPressArrowRight?: (addMonth: () => void) => void
 
   /**
+   *  Handler which gets executed when we press the header date.
+   */
+  onHeaderDatePress?: () => void
+
+  /**
    *  Handler which gets executed when visible month changes in calendar. Default = undefined
    */
   onMonthChange?: DateCallbackHandler

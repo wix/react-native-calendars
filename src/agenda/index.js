@@ -86,7 +86,9 @@ export default class AgendaView extends Component {
     // Show the calendar on initial load. Default = false
     calendarView: PropTypes.bool,
     // Replace default arrows with custom ones (direction can be 'left' or 'right')
-    renderArrow: PropTypes.func
+    renderArrow: PropTypes.func,
+    // Called when we press the header date
+    onHeaderDatePress: PropTypes.func
   };
 
   constructor(props) {
@@ -478,6 +480,7 @@ export default class AgendaView extends Component {
 
     const calendar = (
       <Calendar
+        onHeaderDatePress={this.props.onHeaderDatePress}
         holidays={this.props.holidays || []}
         renderArrow={this.props.renderArrow}
         calendarWidth={this.viewWidth}

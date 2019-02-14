@@ -1,10 +1,10 @@
-import PropTypes from "prop-types"
-import React, { Component } from "react"
-import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native"
-import XDate from "xdate"
-import { weekDayNames } from "../../dateutils"
-import { CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW } from "../../testIDs"
-import styleConstructor from "./style"
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
+import XDate from "xdate";
+import { weekDayNames } from "../../dateutils";
+import { CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW } from "../../testIDs";
+import styleConstructor from "./style";
 
 class CalendarHeader extends Component {
   static propTypes = {
@@ -19,6 +19,7 @@ class CalendarHeader extends Component {
     weekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func,
+    onHeaderDatePress: PropTypes.func,
   }
 
   static defaultProps = {
@@ -113,16 +114,26 @@ class CalendarHeader extends Component {
       <View>
         <View style={this.style.header}>
           {leftArrow}
-          <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity 
+            disabled={!this.props.onHeaderDatePress}
+            onPress={this.props.onHeaderDatePress}
+            style={[{ flexDirection: "row" },
+              {
+                borderWidth: 1,
+                borderRadius: 35,
+                borderColor: "white",
+              },
+            ]}
+          >
             <Text
               allowFontScaling={false}
-              style={this.style.monthText}
+              style={[this.style.monthText]}
               accessibilityTraits="header"
             >
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
-          </View>
+          </TouchableOpacity>
           {rightArrow}
         </View>
         {!this.props.hideDayNames && (
