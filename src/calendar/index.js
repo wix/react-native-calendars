@@ -1,9 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { View, ViewPropTypes } from "react-native";
-import GestureRecognizer, {
-  swipeDirections
-} from "react-native-swipe-gestures";
+import GestureRecognizer, { swipeDirections } from "react-native-swipe-gestures";
 import XDate from "xdate";
 import dateutils from "../dateutils";
 import { parseDate, xdateToData } from "../interface";
@@ -281,20 +279,24 @@ class Calendar extends Component {
 
   handleSwipe = gestureName => {
     const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-    try {
+    try{
       switch (gestureName) {
         case SWIPE_LEFT:
-          if (this.props.onPressArrowRight) {
-            this.props.onPressArrowRight();
-          }
-          break;
+        if (this.props.onPressArrowRight){
+          this.props.onPressArrowRight();
+        } else {
+          this.addMonth(1)
+        }
+        break;
         case SWIPE_RIGHT:
-          if (this.props.onPressArrowLeft) {
-            this.props.onPressArrowLeft();
-          }
-          break;
+        if (this.props.onPressArrowLeft){
+          this.props.onPressArrowLeft();
+        } else {
+          this.addMonth(-1)
+        }
+        break;
       }
-    } catch (error) {
+    } catch {
       // do nothing
     }
   };
