@@ -294,7 +294,7 @@ class Calendar extends Component {
           }
           break;
       }
-    } catch {
+    } catch (error) {
       // do nothing
     }
   };
