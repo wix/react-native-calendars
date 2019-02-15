@@ -108,7 +108,7 @@ class CalendarHeader extends Component {
     }
     let indicator
     if (this.props.showIndicator) {
-      indicator = <ActivityIndicator />
+      indicator = <ActivityIndicator style={this.props.onHeaderDatePress && {paddingRight: 10}}/>
     }
     return (
       <View>
