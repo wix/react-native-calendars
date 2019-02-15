@@ -88,7 +88,11 @@ export default class AgendaView extends Component {
     // Replace default arrows with custom ones (direction can be 'left' or 'right')
     renderArrow: PropTypes.func,
     // Called when we press the header date
-    onHeaderDatePress: PropTypes.func
+    onHeaderDatePress: PropTypes.func,
+    // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+    onPressArrowLeft: PropTypes.func,
+    // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+    onPressArrowRight: PropTypes.func,
   };
 
   constructor(props) {
@@ -490,8 +494,20 @@ export default class AgendaView extends Component {
         current={calendarMonthChanged ? calendarCurrentMonth : selectedDay}
         firstDay={this.props.firstDay}
         markedDates={this.generateMarkings()}
-        onPressArrowLeft={() => this.addMonth(-1)}
-        onPressArrowRight={() => this.addMonth(1)}
+        onPressArrowLeft={(defaultMinusMonthFxn) => {
+          if(typeof this.props.onPressArrowLeft === "function") {
+            typeof this.props.onPressArrowLeft(defaultMinusMonthFxn)
+          }
+          this.addMonth(-1)
+        }}
+        onPressArrowRight={(defaultAddMonthFxn) => {
+          if(typeof this.props.onPressArrowRight === "function") {
+            typeof this.props.onPressArrowRight(defaultAddMonthFxn)
+          }
+          this.addMonth(1)
+        }}
+        // onPressArrowLeft={() => this.addMonth(-1)}
+        // onPressArrowRight={() => this.addMonth(1)}
         onDayPress={this._chooseDayFromCalendar.bind(this)}
         dayComponent={this.props.calendarDayComponent}
         disabledByDefault={this.props.disabledByDefault}
