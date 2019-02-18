@@ -93,6 +93,8 @@ export default class AgendaView extends Component {
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
     onPressArrowRight: PropTypes.func,
+    // The month difference used to update the calendar
+    monthDifference: PropTypes.number
   };
 
   constructor(props) {
@@ -235,6 +237,24 @@ export default class AgendaView extends Component {
   }
 
   componentWillReceiveProps(props) {
+    // update the expanded calendar month
+    // if it was changed in a parent component
+    if (this.props.monthDifference) {
+      try {
+        if (
+          this.props.monthDifference !== 0 &&
+          Number.isInteger(this.props.monthDifference)
+        ) {
+          this.updateMonth(
+            this.state.calendarCurrentMonth
+              .clone()
+              .addMonths(this.props.monthDifference, true)
+          );
+        }
+      } catch (error) {
+        // do nothing
+      }
+    }
     if (props.items) {
       this.setState({
         firstResevationLoad: false
@@ -479,7 +499,7 @@ export default class AgendaView extends Component {
       agendaOpen,
       selectedDay,
       calendarCurrentMonth,
-      calendarMonthChanged,
+      calendarMonthChanged
     } = this.state;
 
     const calendar = (
@@ -494,20 +514,18 @@ export default class AgendaView extends Component {
         current={calendarMonthChanged ? calendarCurrentMonth : selectedDay}
         firstDay={this.props.firstDay}
         markedDates={this.generateMarkings()}
-        onPressArrowLeft={(defaultMinusMonthFxn) => {
-          if(typeof this.props.onPressArrowLeft === "function") {
-            typeof this.props.onPressArrowLeft(defaultMinusMonthFxn)
+        onPressArrowLeft={defaultMinusMonthFxn => {
+          if (typeof this.props.onPressArrowLeft === "function") {
+            typeof this.props.onPressArrowLeft(defaultMinusMonthFxn);
           }
-          this.addMonth(-1)
+          this.addMonth(-1);
         }}
-        onPressArrowRight={(defaultAddMonthFxn) => {
-          if(typeof this.props.onPressArrowRight === "function") {
-            typeof this.props.onPressArrowRight(defaultAddMonthFxn)
+        onPressArrowRight={defaultAddMonthFxn => {
+          if (typeof this.props.onPressArrowRight === "function") {
+            typeof this.props.onPressArrowRight(defaultAddMonthFxn);
           }
-          this.addMonth(1)
+          this.addMonth(1);
         }}
-        // onPressArrowLeft={() => this.addMonth(-1)}
-        // onPressArrowRight={() => this.addMonth(1)}
         onDayPress={this._chooseDayFromCalendar.bind(this)}
         dayComponent={this.props.calendarDayComponent}
         disabledByDefault={this.props.disabledByDefault}

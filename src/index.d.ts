@@ -447,6 +447,11 @@ export interface AgendaProps<TItem> extends CalendarBaseProps {
   pastScrollRange?: number
 
   /**
+   *  The month difference used to update the calendar
+   */
+  monthDifference?: number
+
+  /**
    *  A RefreshControl component, used to provide pull-to-refresh funtionality for the ScrollView.
    */
   refreshControl?: React.ReactNode
