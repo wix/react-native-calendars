@@ -96,7 +96,9 @@ export default class AgendaView extends Component {
     // Called whenever the date changes within the agenda view
     onAgendaDateChange: PropTypes.func,
     // The month difference used to update the calendar
-    selectedMonthString: PropTypes.string
+    selectedMonthString: PropTypes.string,
+    // Shows a loading indicator at the end of the agenda list
+    agendaLoadingIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -239,30 +241,27 @@ export default class AgendaView extends Component {
   }
 
   componentWillReceiveProps(props) {
-    // update the expanded calendar month
+    // update the expanded calendar month 
     // if it was changed in a parent component
     if (this.props.selectedMonthString) {
-      try {
-        const selectedMonth = XDate(this.props.selectedMonthString);
-        const { calendarCurrentMonth } = this.state;
+      try{
+        const selectedMonth = XDate(this.props.selectedMonthString)
+        const {calendarCurrentMonth} = this.state
         // selectedMonthString is set to the 1st of every month
         // setting calendarCurrentMonth to the 1st for clean comparisons and
         // to prevent setting a month to an out-of-bounds date
         // ie: Feb 31st
-        const adjustedCalendarCurrentMonth = calendarCurrentMonth
-          .clone()
-          .setDate(1);
-        const monthDifference = adjustedCalendarCurrentMonth.diffMonths(
-          selectedMonth
-        );
+        const adjustedCalendarCurrentMonth = calendarCurrentMonth.clone().setDate(1)
+        const monthDifference = adjustedCalendarCurrentMonth.diffMonths(selectedMonth)
         if (monthDifference !== 0 && Number.isInteger(monthDifference)) {
           this.updateMonth(
             calendarCurrentMonth.clone().addMonths(monthDifference, true)
-          );
+            );
+          }
         }
-      } catch (error) {
-        // do nothing
-      }
+        catch (error) {
+          // do nothing
+        }
     }
     if (props.items) {
       this.setState({
@@ -335,11 +334,8 @@ export default class AgendaView extends Component {
   chooseDay(d, optimisticScroll) {
     const day = parseDate(d);
     // update the parent component on date change
-    if (
-      this.props.onAgendaDateChange &&
-      typeof this.props.onAgendaDateChange === "function"
-    ) {
-      this.props.onAgendaDateChange(day.toString());
+    if (this.props.onAgendaDateChange && typeof this.props.onAgendaDateChange === "function") {
+      this.props.onAgendaDateChange(day.toString())
     }
     this.setState({
       calendarScrollable: false,
@@ -368,6 +364,7 @@ export default class AgendaView extends Component {
   renderReservations() {
     return (
       <ReservationsList
+        agendaLoadingIndicator={this.props.agendaLoadingIndicator}
         holidays={this.props.holidays || []}
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing}
@@ -393,11 +390,8 @@ export default class AgendaView extends Component {
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
     this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
     // update the parent component on date change
-    if (
-      this.props.onAgendaDateChange &&
-      typeof this.props.onAgendaDateChange === "function"
-    ) {
-      this.props.onAgendaDateChange(newDate.toString());
+    if (this.props.onAgendaDateChange && typeof this.props.onAgendaDateChange === "function") {
+      this.props.onAgendaDateChange(newDate.toString())
     }
     this.setState({
       selectedDay: newDate
@@ -522,7 +516,7 @@ export default class AgendaView extends Component {
       agendaOpen,
       selectedDay,
       calendarCurrentMonth,
-      calendarMonthChanged
+      calendarMonthChanged,
     } = this.state;
 
     const calendar = (
@@ -537,17 +531,17 @@ export default class AgendaView extends Component {
         current={calendarMonthChanged ? calendarCurrentMonth : selectedDay}
         firstDay={this.props.firstDay}
         markedDates={this.generateMarkings()}
-        onPressArrowLeft={defaultMinusMonthFxn => {
-          if (typeof this.props.onPressArrowLeft === "function") {
-            typeof this.props.onPressArrowLeft(defaultMinusMonthFxn);
+        onPressArrowLeft={(defaultMinusMonthFxn) => {
+          if(typeof this.props.onPressArrowLeft === "function") {
+            typeof this.props.onPressArrowLeft(defaultMinusMonthFxn)
           }
-          this.addMonth(-1);
+          this.addMonth(-1)
         }}
-        onPressArrowRight={defaultAddMonthFxn => {
-          if (typeof this.props.onPressArrowRight === "function") {
-            typeof this.props.onPressArrowRight(defaultAddMonthFxn);
+        onPressArrowRight={(defaultAddMonthFxn) => {
+          if(typeof this.props.onPressArrowRight === "function") {
+            typeof this.props.onPressArrowRight(defaultAddMonthFxn)
           }
-          this.addMonth(1);
+          this.addMonth(1)
         }}
         onDayPress={this._chooseDayFromCalendar.bind(this)}
         dayComponent={this.props.calendarDayComponent}

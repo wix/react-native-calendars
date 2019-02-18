@@ -1,10 +1,10 @@
-import PropTypes from "prop-types"
-import React, { Component } from "react"
-import { ActivityIndicator, FlatList, View } from "react-native"
-import XDate from "xdate"
-import dateutils from "../../dateutils"
-import Reservation from "./reservation"
-import styleConstructor from "./style"
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { ActivityIndicator, FlatList, View } from "react-native";
+import XDate from "xdate";
+import dateutils from "../../dateutils";
+import Reservation from "./reservation";
+import styleConstructor from "./style";
 
 class ReactComp extends Component {
   static propTypes = {
@@ -30,6 +30,7 @@ class ReactComp extends Component {
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
+    agendaLoadingIndicator: PropTypes.bool,
   }
 
   constructor(props) {
@@ -206,6 +207,7 @@ class ReactComp extends Component {
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing || false}
         onRefresh={this.props.onRefresh}
+        ListFooterComponent={this.props.agendaLoadingIndicator && <ActivityIndicator/>}
       />
     )
   }
