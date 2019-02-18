@@ -93,8 +93,10 @@ export default class AgendaView extends Component {
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
     onPressArrowRight: PropTypes.func,
+    // Called whenever the date changes within the agenda view
+    onAgendaDateChange: PropTypes.func,
     // The month difference used to update the calendar
-    monthDifference: PropTypes.number
+    selectedMonthString: PropTypes.string
   };
 
   constructor(props) {
@@ -239,16 +241,23 @@ export default class AgendaView extends Component {
   componentWillReceiveProps(props) {
     // update the expanded calendar month
     // if it was changed in a parent component
-    if (this.props.monthDifference) {
+    if (this.props.selectedMonthString) {
       try {
-        if (
-          this.props.monthDifference !== 0 &&
-          Number.isInteger(this.props.monthDifference)
-        ) {
+        const selectedMonth = XDate(this.props.selectedMonthString);
+        const { calendarCurrentMonth } = this.state;
+        // selectedMonthString is set to the 1st of every month
+        // setting calendarCurrentMonth to the 1st for clean comparisons and
+        // to prevent setting a month to an out-of-bounds date
+        // ie: Feb 31st
+        const adjustedCalendarCurrentMonth = calendarCurrentMonth
+          .clone()
+          .setDate(1);
+        const monthDifference = adjustedCalendarCurrentMonth.diffMonths(
+          selectedMonth
+        );
+        if (monthDifference !== 0 && Number.isInteger(monthDifference)) {
           this.updateMonth(
-            this.state.calendarCurrentMonth
-              .clone()
-              .addMonths(this.props.monthDifference, true)
+            calendarCurrentMonth.clone().addMonths(monthDifference, true)
           );
         }
       } catch (error) {
@@ -325,6 +334,13 @@ export default class AgendaView extends Component {
 
   chooseDay(d, optimisticScroll) {
     const day = parseDate(d);
+    // update the parent component on date change
+    if (
+      this.props.onAgendaDateChange &&
+      typeof this.props.onAgendaDateChange === "function"
+    ) {
+      this.props.onAgendaDateChange(day.toString());
+    }
     this.setState({
       calendarScrollable: false,
       agendaOpen: true,
@@ -376,8 +392,15 @@ export default class AgendaView extends Component {
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
     this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
+    // update the parent component on date change
+    if (
+      this.props.onAgendaDateChange &&
+      typeof this.props.onAgendaDateChange === "function"
+    ) {
+      this.props.onAgendaDateChange(newDate.toString());
+    }
     this.setState({
-      selectedDay: parseDate(day)
+      selectedDay: newDate
     });
 
     if (this.props.onDayChange) {
