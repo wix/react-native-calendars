@@ -15,7 +15,7 @@ export default function styleConstructor(theme={}) {
       marginTop: 4,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
-      fontWeight: appStyle.textDayFontWeight,
+      fontWeight: '300',
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)'
     },
@@ -33,8 +33,7 @@ export default function styleConstructor(theme={}) {
       color: appStyle.todayTextColor
     },
     selectedText: {
-      color: appStyle.selectedDayTextColor,
-      fontWeight: appStyle.selectedDayfontWeight
+      color: appStyle.selectedDayTextColor
     },
     disabledText: {
       color: appStyle.textDisabledColor
