@@ -75,7 +75,11 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    // Provide custom calendar header rendering component
+    calendarHeaderComponent: PropTypes.any,
+    // data which is passed to calendar header, useful only when implementing custom calendar header
+    headerData: PropTypes.object
   };
 
   constructor(props) {
@@ -237,6 +241,14 @@ class Calendar extends Component {
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
+  getCalendarHeaderComponent() {
+    if (this.props.calendarHeaderComponent) {
+      return this.props.calendarHeaderComponent;
+    }
+
+    return CalendarHeader;
+  }
+
   render() {
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
@@ -252,6 +264,8 @@ class Calendar extends Component {
         indicator = true;
       }
     }
+    const CalendarHeader = this.getCalendarHeaderComponent();
+
     return (
       <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
@@ -267,6 +281,7 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          headerData={this.props.headerData}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
