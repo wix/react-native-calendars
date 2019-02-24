@@ -89,6 +89,8 @@ class Calendar extends Component {
     onPressListView: PropTypes.func,
     // Handler which gets executed when press grid icon. It will set calendar to grid
     onPressGridView: PropTypes.func,
+    // to show horizontal calendar with scroll
+    horizontal: PropTypes.bool
   };
 
   constructor(props) {
@@ -101,7 +103,8 @@ class Calendar extends Component {
       currentMonth = XDate();
     }
     this.state = {
-      currentMonth
+      currentMonth,
+      horizontal: props.horizontal
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -120,6 +123,9 @@ class Calendar extends Component {
         currentMonth: current.clone()
       });
     }
+    this.setState({
+      horizontal: nextProps.horizontal
+    });
   }
 
   // scroll the horizontal calendar so that selected date is visible
@@ -317,9 +323,9 @@ class Calendar extends Component {
           onPressGridView={this.props.onPressGridView}
         />
         {
-          this.props.horizontal ?
+          this.state.horizontal ?
             <ScrollView 
-              style={[this.style.monthView, {flex: 1}]}
+              style={[this.style.monthView, {marginBottom: 10}]}
               horizontal
               ref={this.horizontalScrollViewRef}
             >

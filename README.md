@@ -1,3 +1,7 @@
+A calendar built by customizing react-native-calendars to support grid as well as list view.
+
+Read the whole story here: https://medium.com/@varunon9/how-i-built-horizontal-as-well-as-grid-calendar-in-react-native-using-react-native-calendars-eb7a2edcc5db
+
 # React Native Calendars ✨ 🗓️ 📆
 
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
