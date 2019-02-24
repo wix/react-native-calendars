@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
   View,
   ViewPropTypes,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -22,6 +23,9 @@ import shouldComponentUpdate from './updater';
 const viewPropTypes = ViewPropTypes || View.propTypes;
 
 const EmptyArray = [];
+
+// horizontal calendar will be scrolled to (offset * viewport width) to keep selected date visible
+let horizontalScrollViewOffset = 0;
 
 class Calendar extends Component {
   static propTypes = {
@@ -105,6 +109,8 @@ class Calendar extends Component {
     this.pressDay = this.pressDay.bind(this);
     this.longPressDay = this.longPressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
+
+    this.horizontalScrollViewRef = React.createRef();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -112,6 +118,18 @@ class Calendar extends Component {
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
         currentMonth: current.clone()
+      });
+    }
+  }
+
+  // scroll the horizontal calendar so that selected date is visible
+  componentDidUpdate() {
+    const horizontalScrollView = this.horizontalScrollViewRef.current;
+    if (horizontalScrollView) {
+      const windowWidth = Dimensions.get('window').width;
+      horizontalScrollView.scrollTo({
+        x: horizontalScrollViewOffset * windowWidth,
+        animated: true
       });
     }
   }
@@ -192,6 +210,7 @@ class Calendar extends Component {
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
           horizontal={this.props.horizontal}
+          current={this.props.current}
         >
           {date}
         </DayComp>
@@ -238,6 +257,11 @@ class Calendar extends Component {
     const week = [];
     days.forEach((day, id2) => {
       week.push(this.renderDay(day, id2));
+
+      // if day is selected (aka current) day then corresponding week row id will be offset
+      if (day.getTime() === parseDate(this.props.current).getTime()) {
+        horizontalScrollViewOffset = id;
+      }
     }, this);
 
     if (this.props.showWeekNumbers) {
@@ -297,6 +321,7 @@ class Calendar extends Component {
             <ScrollView 
               style={[this.style.monthView, {flex: 1}]}
               horizontal
+              ref={this.horizontalScrollViewRef}
             >
               {weeks}
             </ScrollView>
