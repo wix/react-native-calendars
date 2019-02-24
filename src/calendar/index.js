@@ -80,7 +80,11 @@ class Calendar extends Component {
     // Provide custom calendar header rendering component
     calendarHeaderComponent: PropTypes.any,
     // data which is passed to calendar header, useful only when implementing custom calendar header
-    headerData: PropTypes.object
+    headerData: PropTypes.object,
+    // Handler which gets executed when press list icon. It will set calendar to horizontal
+    onPressListView: PropTypes.func,
+    // Handler which gets executed when press grid icon. It will set calendar to grid
+    onPressGridView: PropTypes.func,
   };
 
   constructor(props) {
@@ -285,6 +289,8 @@ class Calendar extends Component {
           onPressArrowRight={this.props.onPressArrowRight}
           headerData={this.props.headerData}
           horizontal={this.props.horizontal}
+          onPressListView={this.props.onPressListView}
+          onPressGridView={this.props.onPressGridView}
         />
         {
           this.props.horizontal ?
