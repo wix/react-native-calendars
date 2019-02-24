@@ -13,6 +13,7 @@ function xdateToData(xdate) {
     year: xdate.getFullYear(),
     month: xdate.getMonth() + 1,
     day: xdate.getDate(),
+    weekDay: xdate.getDay(),
     timestamp: XDate(dateString, true).getTime(),
     dateString: dateString
   };

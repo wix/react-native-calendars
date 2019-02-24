@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
   View,
-  ViewPropTypes
+  ViewPropTypes,
+  ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -186,6 +187,7 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
+          horizontal={this.props.horizontal}
         >
           {date}
         </DayComp>
@@ -282,8 +284,18 @@ class Calendar extends Component {
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
           headerData={this.props.headerData}
+          horizontal={this.props.horizontal}
         />
-        <View style={this.style.monthView}>{weeks}</View>
+        {
+          this.props.horizontal ?
+            <ScrollView 
+              style={[this.style.monthView, {flex: 1}]}
+              horizontal
+            >
+              {weeks}
+            </ScrollView>
+            : <View style={this.style.monthView}>{weeks}</View>
+        }
       </View>);
   }
 }
