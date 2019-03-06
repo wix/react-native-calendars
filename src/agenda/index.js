@@ -41,6 +41,8 @@ export default class AgendaView extends Component {
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
     renderDay: PropTypes.func,
+    // specify how each holiday should be rendered. day can be undefined if the item is not first in that day.
+    renderHoliday: PropTypes.func,
     // specify how agenda knob should look like
     renderKnob: PropTypes.func,
     // specify how empty date content with no items should be rendered
@@ -99,6 +101,8 @@ export default class AgendaView extends Component {
     selectedMonthString: PropTypes.string,
     // Shows a loading indicator at the end of the agenda list
     agendaLoadingIndicator: PropTypes.bool,
+    // holiday info. The keys are the date of the holiday
+    holidays: PropTypes.object,
   };
 
   constructor(props) {
@@ -365,13 +369,14 @@ export default class AgendaView extends Component {
     return (
       <ReservationsList
         agendaLoadingIndicator={this.props.agendaLoadingIndicator}
-        holidays={this.props.holidays || []}
+        holidays={this.props.holidays || {}}
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing}
         onRefresh={this.props.onRefresh}
         rowHasChanged={this.props.rowHasChanged}
         renderItem={this.props.renderItem}
         renderDay={this.props.renderDay}
+        renderHoliday={this.props.renderHoliday}
         renderEmptyDate={this.props.renderEmptyDate}
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
@@ -522,7 +527,7 @@ export default class AgendaView extends Component {
     const calendar = (
       <Calendar
         onHeaderDatePress={this.props.onHeaderDatePress}
-        holidays={this.props.holidays || []}
+        holidays={this.props.holidays || {}}
         renderArrow={this.props.renderArrow}
         calendarWidth={this.viewWidth}
         onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}

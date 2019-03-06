@@ -31,21 +31,7 @@ class ReservationListItem extends Component {
     return changed
   }
 
-  renderDate(date, item, lastItem = false) {
-    let isHoliday = false
-    let dayOfTheWeek = null
-    if (date) {
-      try {
-        const dateData = xdateToData(date)
-        const dateString = dateData.dateString
-        const holidays = this.props.holidays
-        const dateObject = new Date(dateString)
-        isHoliday = holidays.includes(dateString)
-        dayOfTheWeek = dateObject.getDay()
-      } catch {
-        // do nothing
-      }
-    }
+  renderDate(date, item, isHoliday, dayOfTheWeek, lastItem = false, dateOverride = false) {
     if (this.props.renderDay) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item)
     }
@@ -55,7 +41,7 @@ class ReservationListItem extends Component {
     if (lastItem) {
       return <View style={this.styles.day} />
     }
-    if (date) {
+    if (date && !dateOverride) {
       return (
         <View style={this.styles.day}>
           <Text allowFontScaling={false} style={[this.styles.dayNum, saturday, holiday, today]}>
@@ -71,6 +57,26 @@ class ReservationListItem extends Component {
     }
   }
 
+  getHolidayAndDayOfTheWeek = (date) => {
+    let isHoliday = false
+    let dayOfTheWeek = null
+    let dateString = ""
+    if (date) {
+      try {
+        const dateData = xdateToData(date)
+        dateString = dateData.dateString
+        const holidays = this.props.holidays
+        const holidayDates = Object.keys(holidays)
+        const dateObject = new Date(dateString)
+        isHoliday = holidayDates.includes(dateString)
+        dayOfTheWeek = dateObject.getDay()
+      } catch {
+        // do nothing
+      }
+    }
+    return {isHoliday, dayOfTheWeek, dateString}
+  }
+
   renderSeparator = () => (
     <View
       style={{
@@ -82,37 +88,63 @@ class ReservationListItem extends Component {
 
   render() {
     const { reservation, date } = this.props.item
+    const { isHoliday, dayOfTheWeek, dateString } = this.getHolidayAndDayOfTheWeek(date)
     let content
+    let holidayContent
+    let firstItem = false
     let lastItem = false
     if (reservation) {
-      const firstItem = date ? true : false
+      firstItem = date ? true : false
       content = this.props.renderItem(reservation, firstItem)
       lastItem = reservation.last
     } else {
       content = this.props.renderEmptyDate(date)
     }
+    if(isHoliday){
+      if(typeof this.props.renderHoliday === "function"){
+        holidayContent = this.props.renderHoliday(this.props.holidays[dateString])
+      }
+    }
+    // holiday component
+    if (firstItem && isHoliday && holidayContent) {
+      return (
+        <View>
+          <View style={[this.styles.container, date && this.styles.daySeparator]}>
+            {this.renderDate(date, reservation, isHoliday, dayOfTheWeek)}
+            <View style={{ flex: 1 }}>{holidayContent}</View>
+          </View>
+          <View style={this.styles.container}>
+            {this.renderDate(date, reservation, isHoliday, dayOfTheWeek, lastItem, true)}
+            <View style={{ flex: 1 }}>{content}</View>
+          </View>
+        </View>
+      )
+    }
+    // normal items
     if (!lastItem) {
       return (
         <View style={[this.styles.container, date && this.styles.daySeparator]}>
-          {this.renderDate(date, reservation)}
+          {this.renderDate(date, reservation, isHoliday, dayOfTheWeek)}
           <View style={{ flex: 1 }}>{content}</View>
           {this.renderSeparator()}
         </View>
       )
     }
+    // if last item
     return (
       <View>
         <View style={[this.styles.container, date && this.styles.daySeparator]}>
-          {this.renderDate(date, reservation)}
+          {this.renderDate(date, reservation, isHoliday, dayOfTheWeek)}
           <View style={{ flex: 1 }}>{content}</View>
           {this.renderSeparator()}
         </View>
         <View style={this.styles.container}>
-          {this.renderDate(date, reservation, lastItem)}
+          {this.renderDate(date, reservation, isHoliday, dayOfTheWeek, lastItem)}
           <View style={{ flex: 1 }}>{this.props.renderEmptyDate(date)}</View>
         </View>
       </View>
     )
+      
   }
 }
 

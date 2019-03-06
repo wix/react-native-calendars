@@ -193,10 +193,11 @@ class Calendar extends Component {
     const DayComp = this.getDayComponent();
     const date = day.getDate();
     const dateData = xdateToData(day);
-    const holidays = this.props.holidays || [];
+    const holidays = this.props.holidays || {};
+    const holidayDates = Object.keys(holidays)
 
     const { dateString } = dateData;
-    const isHoliday = holidays.includes(dateString);
+    const isHoliday = holidayDates.includes(dateString);
     const dateObject = new Date(dateString);
     const dayOfTheWeek = dateObject.getDay();
     return (

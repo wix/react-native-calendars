@@ -295,9 +295,9 @@ export interface CalendarBaseProps {
   theme?: CalendarTheme
 
   /**
-   *  a string of the holidays to render
+   *  an object of the holidays to render. The keys are the holiday dates.
    */
-  holidays?: string[]
+  holidays?: object
 }
 
 export class Calendar extends React.Component<CalendarMarkingProps & CalendarBaseProps> {}
@@ -486,6 +486,11 @@ export interface AgendaProps<TItem> extends CalendarBaseProps {
    *  Specify how each item should be rendered in agenda.
    */
   renderItem: (item: TItem, firstDayInDay: boolean) => React.ReactNode
+
+  /**
+   *  Specify how each holiday should be rendered in agenda.
+   */
+  renderHoliday: (item: TItem, firstDayInDay: boolean) => React.ReactNode
 
   /**
    *  Specify how agenda knob should look like.

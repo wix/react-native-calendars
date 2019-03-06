@@ -14,6 +14,8 @@ class ReactComp extends Component {
     renderItem: PropTypes.func,
     // specify how each date should be rendered. day can be undefined if the item is not first in that day.
     renderDay: PropTypes.func,
+    // specify how each holiday should be rendered. day can be undefined if the item is not first in that day.
+    renderHoliday: PropTypes.func,
     // specify how empty date content with no items should be rendered
     renderEmptyDate: PropTypes.func,
     // callback that gets called when day changes while scrolling agenda list
@@ -115,7 +117,9 @@ class ReactComp extends Component {
           holidays={this.props.holidays}
           item={item}
           renderItem={this.props.renderItem}
+          renderHoliday={this.props.renderHoliday}
           renderDay={this.props.renderDay}
+          renderHoliday={this.props.renderHoliday}
           renderEmptyDate={this.props.renderEmptyDate}
           theme={this.props.theme}
           rowHasChanged={this.props.rowHasChanged}
