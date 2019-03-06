@@ -294,6 +294,7 @@ export default class AgendaView extends Component {
         showOnlyDaySelected={this.props.showOnlyDaySelected}
         theme={this.props.theme}
         ItemSeparatorComponent={this.props.ItemSeparatorComponent}
+        extraData={this.props.extraData}
       />
     );
   }

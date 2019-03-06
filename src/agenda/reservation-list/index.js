@@ -213,6 +213,7 @@ class ReactComp extends Component {
         refreshing={this.props.refreshing || false}
         onRefresh={this.props.onRefresh}
         ItemSeparatorComponent={this.props.ItemSeparatorComponent}
+        extraData={this.props.extraData}
       />
     );
   }
