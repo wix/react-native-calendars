@@ -415,6 +415,7 @@ export default class AgendaView extends Component {
               disabledByDefault={this.props.disabledByDefault}
               displayLoadingIndicator={this.props.displayLoadingIndicator}
               showWeekNumbers={this.props.showWeekNumbers}
+              calendarHeight={this.props.calendarHeight}
             />
           </Animated.View>
           {knob}
