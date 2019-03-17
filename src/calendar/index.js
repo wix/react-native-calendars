@@ -90,7 +90,17 @@ class Calendar extends Component {
     // Handler which gets executed when press grid icon. It will set calendar to grid
     onPressGridView: PropTypes.func,
     // to show horizontal calendar with scroll
-    horizontal: PropTypes.bool
+    horizontal: PropTypes.bool,
+    // to automatically scroll horizontal calendar to keep selected date in view
+    autoHorizontalScroll: PropTypes.bool,
+    // to show days in horizontal calendar starting from today, if this is true- autoHorizontalScroll will not work
+    hidePastDatesInHorizontal: PropTypes.bool,
+    // offset to decide when to trigger onPressArrowRight in horizontal calendar,
+    // 0 means when rightmost day is reached, undefined means no auto onPressArrowRight triggering
+    horizontalEndReachedThreshold: PropTypes.number,
+    // offset to decide when to trigger onPressArrowLeft in horizontal calendar,
+    // 0 means when leftmost day is reached, undefined means no auto onPressArrowLeft triggering
+    horizontalStartReachedThreshold: PropTypes.number
   };
 
   constructor(props) {
@@ -112,7 +122,8 @@ class Calendar extends Component {
     this.pressDay = this.pressDay.bind(this);
     this.longPressDay = this.longPressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
-
+    this.onHorizontalCalendarScroll =
+        this.onHorizontalCalendarScroll.bind(this);
     this.horizontalScrollViewRef = React.createRef();
   }
 
@@ -131,7 +142,9 @@ class Calendar extends Component {
   // scroll the horizontal calendar so that selected date is visible
   componentDidUpdate() {
     const horizontalScrollView = this.horizontalScrollViewRef.current;
-    if (horizontalScrollView) {
+    if (horizontalScrollView
+        && this.props.autoHorizontalScroll
+        && !this.props.hidePastDatesInHorizontal) {
       const windowWidth = Dimensions.get('window').width;
       horizontalScrollView.scrollTo({
         x: horizontalScrollViewOffset * windowWidth,
@@ -224,6 +237,46 @@ class Calendar extends Component {
     );
   }
 
+  onHorizontalCalendarScroll({ nativeEvent }) {
+    const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
+    const endReachedThreshold = this.props.horizontalEndReachedThreshold;
+    const startReachedThreshold = this.props.horizontalStartReachedThreshold;
+    const contentWidth = contentSize.width;
+    const travelledWidth = layoutMeasurement.width + contentOffset.x;
+    const horizontalScrollView = this.horizontalScrollViewRef.current;
+    let calendarUpdated = false;
+
+    // going right
+    if (endReachedThreshold
+        && (travelledWidth + endReachedThreshold) > contentWidth) {
+      this.props.onPressArrowRight(this.state.currentMonth, this.addMonth);
+      calendarUpdated = true;
+    }
+
+    // going left
+    if (contentOffset.x === startReachedThreshold) {
+      // don't auto select previous month when past dates are hidden
+      if (this.props.hidePastDatesInHorizontal) {
+        const selectedMonthTime = this.state.currentMonth.getTime();
+        const tomorrowTime = new Date().setHours(0,0,0,0) + (24 * 3600 * 1000);
+        if (selectedMonthTime > tomorrowTime) {
+          calendarUpdated = true;
+        }
+      } else {
+        calendarUpdated = true;
+      }
+      if (calendarUpdated) {
+        this.props.onPressArrowLeft(this.state.currentMonth, this.addMonth);
+      }
+    }
+
+    if (calendarUpdated && horizontalScrollView) {
+      horizontalScrollView.scrollTo({
+        x: 50, animated: false
+      });
+    }
+  }
+
   getDayComponent() {
     if (this.props.dayComponent) {
       return this.props.dayComponent;
@@ -261,13 +314,24 @@ class Calendar extends Component {
 
   renderWeek(days, id) {
     const week = [];
+    const nowTime = new Date().setHours(0,0,0,0); // ignoring hours, mins, secs, msecs
     days.forEach((day, id2) => {
-      week.push(this.renderDay(day, id2));
+      const dayTime = day.getTime();
+
+      // don't show past days in horizontal calendar
+      if (this.state.horizontal && this.props.hidePastDatesInHorizontal) {
+        if (dayTime >= nowTime) {
+          week.push(this.renderDay(day, id2));
+        }
+      } else {
+        week.push(this.renderDay(day, id2));
+      }
 
       // if day is selected (aka current) day then corresponding week row id will be offset
-      if (day.getTime() === parseDate(this.props.current).getTime()) {
+      if (dayTime === parseDate(this.props.current).getTime()) {
         horizontalScrollViewOffset = id;
       }
+
     }, this);
 
     if (this.props.showWeekNumbers) {
@@ -327,6 +391,8 @@ class Calendar extends Component {
             <ScrollView 
               style={[this.style.monthView, {marginBottom: 10}]}
               horizontal
+              scrollEventThrottle={500}
+              onScroll={this.onHorizontalCalendarScroll}
               ref={this.horizontalScrollViewRef}
             >
               {weeks}
