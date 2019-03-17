@@ -27,6 +27,9 @@ const EmptyArray = [];
 // horizontal calendar will be scrolled to (offset * viewport width) to keep selected date visible
 let horizontalScrollViewOffset = 0;
 
+// to throttle back-to-back triggering of onPressArrowRight in horizontal calendar
+let onPressArrowRightTriggered = false;
+
 class Calendar extends Component {
   static propTypes = {
     // Specify theme properties to override specific styles for calendar parts. Default = {}
@@ -248,9 +251,14 @@ class Calendar extends Component {
 
     // going right
     if (endReachedThreshold
-        && (travelledWidth + endReachedThreshold) > contentWidth) {
+        && (travelledWidth + endReachedThreshold) > contentWidth
+        && !onPressArrowRightTriggered) {
       this.props.onPressArrowRight(this.state.currentMonth, this.addMonth);
       calendarUpdated = true;
+      onPressArrowRightTriggered = true;
+      setTimeout(() => {
+        onPressArrowRightTriggered = false;
+      }, 500);
     }
 
     // going left
