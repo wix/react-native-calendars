@@ -3,7 +3,9 @@ import {
   View,
   ViewPropTypes,
   ScrollView,
-  Dimensions
+  Dimensions,
+  ActivityIndicator,
+  Platform
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -103,7 +105,11 @@ class Calendar extends Component {
     horizontalEndReachedThreshold: PropTypes.number,
     // offset to decide when to trigger onPressArrowLeft in horizontal calendar,
     // 0 means when leftmost day is reached, undefined means no auto onPressArrowLeft triggering
-    horizontalStartReachedThreshold: PropTypes.number
+    horizontalStartReachedThreshold: PropTypes.number,
+    // to show a loader
+    loading: PropTypes.bool,
+    // provide a custom loader component
+    LoaderComponent: PropTypes.any
   };
 
   constructor(props) {
@@ -126,7 +132,7 @@ class Calendar extends Component {
     this.longPressDay = this.longPressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
     this.onHorizontalCalendarScroll =
-        this.onHorizontalCalendarScroll.bind(this);
+      this.onHorizontalCalendarScroll.bind(this);
     this.horizontalScrollViewRef = React.createRef();
   }
 
@@ -146,8 +152,8 @@ class Calendar extends Component {
   componentDidUpdate() {
     const horizontalScrollView = this.horizontalScrollViewRef.current;
     if (horizontalScrollView
-        && this.props.autoHorizontalScroll
-        && !this.props.hidePastDatesInHorizontal) {
+      && this.props.autoHorizontalScroll
+      && !this.props.hidePastDatesInHorizontal) {
       const windowWidth = Dimensions.get('window').width;
       horizontalScrollView.scrollTo({
         x: horizontalScrollViewOffset * windowWidth,
@@ -251,8 +257,8 @@ class Calendar extends Component {
 
     // going right
     if (endReachedThreshold
-        && (travelledWidth + endReachedThreshold) > contentWidth
-        && !onPressArrowRightTriggered) {
+      && (travelledWidth + endReachedThreshold) > contentWidth
+      && !onPressArrowRightTriggered) {
       this.props.onPressArrowRight(this.state.currentMonth, this.addMonth);
       calendarUpdated = true;
       onPressArrowRightTriggered = true;
@@ -357,6 +363,65 @@ class Calendar extends Component {
     return CalendarHeader;
   }
 
+  showLoader() {
+    if (this.props.LoaderComponent) {
+      return <LoaderComponent />;
+    } else {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+  }
+
+  showCalendar(weeks) {
+    const windowWidth = Dimensions.get('window').width;
+    if (this.state.horizontal) {
+      return (
+        <ScrollView
+          contentContainerStyle={Platform.OS === 'web' ? { flex: 1 } : {}}
+          style={[this.style.monthView, { marginBottom: 10 }]}
+          horizontal
+          scrollEventThrottle={500}
+          onScroll={this.onHorizontalCalendarScroll}
+          ref={this.horizontalScrollViewRef}
+        >
+          {weeks}
+          {
+            this.props.loading ?
+              <View style={[
+                this.style.loaderContainer,
+                {
+                  width: windowWidth
+                }
+              ]}>
+                {
+                  this.showLoader()
+                }
+              </View>
+              : null
+          }
+        </ScrollView>
+      );
+    } else {
+      return (
+        <View style={this.style.monthView}>
+          {weeks}
+          {
+            this.props.loading ?
+              <View style={this.style.loaderContainer}>
+                {
+                  this.showLoader()
+                }
+              </View>
+              : null
+          }
+        </View>
+      );
+    }
+  }
+
   render() {
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
@@ -368,7 +433,7 @@ class Calendar extends Component {
     if (current) {
       const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
-          !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
+        !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
       }
     }
@@ -395,18 +460,9 @@ class Calendar extends Component {
           onPressGridView={this.props.onPressGridView}
         />
         {
-          this.state.horizontal ?
-            <ScrollView 
-              style={[this.style.monthView, {marginBottom: 10}]}
-              horizontal
-              scrollEventThrottle={500}
-              onScroll={this.onHorizontalCalendarScroll}
-              ref={this.horizontalScrollViewRef}
-            >
-              {weeks}
-            </ScrollView>
-            : <View style={this.style.monthView}>{weeks}</View>
+          this.showCalendar(weeks)
         }
+
       </View>);
   }
 }
