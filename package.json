@@ -1,8 +1,8 @@
 {
-  "name": "react-native-calendars",
-  "version": "1.22.0",
+  "name": "react-native-toggle-calendar",
+  "version": "1.0.0",
   "main": "src/index.js",
-  "description": "React Native Calendar Components",
+  "description": "Horizontal as well as Grid calendar built on top of react-native-calendars",
   "scripts": {
     "test": "jasmine src/*.spec.js && npm run lint",
     "lint": "eslint src/ example/src",
@@ -10,12 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wix/react-native-calendars"
+    "url": "git+https://github.com/varunon9/react-native-toggle-calendar"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "author": "Wix.com",
+  "keywords": [
+    "react-native-calendars",
+    "horizontal scrollable calendar",
+    "grid-list calendar"
+  ],
+  "author": "Varun Kumar <varunon9@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "lodash.get": "^4.4.2",
