@@ -46,6 +46,13 @@ export default function shouldComponentUpdate(nextProps, nextState) {
       field: 'current'
     };
   }
+
+  if (nextState.horizontal !== this.state.horizontal) {
+    shouldUpdate = {
+      update: true,
+      field: 'horizontal'
+    };
+  }
   //console.log(shouldUpdate.field, shouldUpdate.update);
   return shouldUpdate.update;
 }

@@ -20,6 +20,11 @@ export default function getStyle(theme={}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+    loaderContainer: {
+      width: '100%',
+      height: '100%',
+      position: 'absolute'
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
