@@ -1,6 +1,6 @@
 {
   "name": "react-native-toggle-calendar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/index.js",
   "description": "Horizontal as well as Grid calendar built on top of react-native-calendars",
   "scripts": {
@@ -33,9 +33,9 @@
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
-    "semver": "5.x.x",
-    "shell-utils": "1.x.x",
     "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4"
+    "react-native": "0.57.4",
+    "semver": "5.x.x",
+    "shell-utils": "1.x.x"
   }
 }
