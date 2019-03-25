@@ -33,10 +33,10 @@ This package provides these features along with some other properties like showi
     markedDates={this.state.calendarMarkedDates}
     horizontal={this.state.horizontal}
     onDayPress={this.onDayPress}
-    hidePastDatesInHorizontal={true}
     horizontalEndReachedThreshold={50}
     horizontalStartReachedThreshold={0}
     loading={this.state.calendarLoading}
+    showPastDatesInHorizontal={1}
   />
 ```
 
@@ -58,8 +58,8 @@ All the props of https://github.com/wix/react-native-calendars are supported. Ne
   horizontal: PropTypes.bool,
   // to automatically scroll horizontal calendar to keep selected date in view
   autoHorizontalScroll: PropTypes.bool,
-  // to show days in horizontal calendar starting from today, if this is true- autoHorizontalScroll will not work
-  hidePastDatesInHorizontal: PropTypes.bool,
+  // how many past days to be shown, if this is set - autoHorizontalScroll will not work
+  showPastDatesInHorizontal: PropTypes.number,
   // offset to decide when to trigger onPressArrowRight in horizontal calendar,
   // 0 means when rightmost day is reached, undefined means no auto onPressArrowRight triggering
   horizontalEndReachedThreshold: PropTypes.number,
