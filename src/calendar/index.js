@@ -75,7 +75,10 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+
+    // When true, the calender is re-rendered
+    hasNewState:PropTypes.bool
   };
 
   constructor(props) {
@@ -104,6 +107,11 @@ class Calendar extends Component {
       this.setState({
         currentMonth: current.clone()
       });
+    } else if (nextProps.hasNewState) {
+        console.log("nextProps.hasNewState")
+        this.setState({
+          currentMonth: current.clone()
+        });
     }
   }
 
