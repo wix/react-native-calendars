@@ -16,6 +16,7 @@ import MultiPeriodDay from './day/multi-period';
 import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
+import {SELECT_DATE_SLOT} from '../testIDs';
 
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
@@ -173,14 +174,17 @@ class Calendar extends Component {
 
     const DayComp = this.getDayComponent();
     const date = day.getDate();
+    const dateAsObject = xdateToData(day);
+
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
         <DayComp
+          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           state={state}
           theme={this.props.theme}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
-          date={xdateToData(day)}
+          date={dateAsObject}
           marking={this.getDateMarking(day)}
         >
           {date}
