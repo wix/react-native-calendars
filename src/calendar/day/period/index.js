@@ -25,6 +25,7 @@ class Day extends Component {
     date: PropTypes.object,
 
     markingExists: PropTypes.bool,
+    testID: PropTypes.testID
   };
 
   constructor(props) {
@@ -194,7 +195,8 @@ class Day extends Component {
     return (
       <TouchableWithoutFeedback
         onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}>
+        onLongPress={this.onDayLongPress}
+        testID={this.props.testID}>
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>

@@ -15,6 +15,7 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     date: PropTypes.object,
+    testID: PropTypes.string
   };
 
   constructor(props) {
@@ -92,7 +93,7 @@ class Day extends Component {
         style={{
           alignSelf: 'stretch'
         }}>
-        <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
+        <TouchableOpacity style={containerStyle} onPress={this.onDayPress} testID={this.props.testID}>
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>

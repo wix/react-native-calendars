@@ -20,7 +20,8 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object
+    date: PropTypes.object,
+    testID: PropTypes.string
   };
 
   constructor(props) {
@@ -80,7 +81,8 @@ class Day extends Component {
       <TouchableOpacity
         style={containerStyle}
         onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}>
+        onLongPress={this.onDayLongPress}
+        testID={this.props.testID}>
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
         <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>

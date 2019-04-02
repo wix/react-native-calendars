@@ -155,6 +155,7 @@ class Calendar extends Component {
   }
 
   renderDay(day, id) {
+    const testID = 'react-native-calendars-test-id-' + day.toString("dd-MM-yyyy"); // example: react-native-calendars-test-id-01-01-2019
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
@@ -186,6 +187,7 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={dateAsObject}
           marking={this.getDateMarking(day)}
+          testID={testID}
         >
           {date}
         </DayComp>
