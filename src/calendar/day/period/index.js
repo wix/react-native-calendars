@@ -129,7 +129,8 @@ class Day extends Component {
 
     if (this.props.marking) {
       containerStyle.push({
-        borderRadius: 17
+        borderRadius: 17,
+	backgroundColor: this.markingStyle.day && this.markingStyle.day.color ? this.markingStyle.day.color : this.theme.calendarBackground
       });
 
       const flags = this.markingStyle;
