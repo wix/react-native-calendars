@@ -10,7 +10,7 @@
 		"react": "16.8.3",
 		"react-native": "0.59.3",
 		"react-native-calendars": "^1.17.5",
-		"react-native-navigation": "^1.1.205"
+		"react-native-navigation": "2.13.1"
 	},
 	"devDependencies": {
 		"babel-preset-react-native": "^4.0.1",

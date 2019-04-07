@@ -18,16 +18,33 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 */
 
-Navigation.startSingleScreenApp({
-  screen: {
-    screen: 'Menu',
-    title: 'WixCal',
-  },
-  appStyle: {
-    navBarBackgroundColor: '#00adf5',
-    navBarTextColor: 'white',
-    navBarButtonColor: '#ffffff',
-    statusBarTextColorScheme: 'light',
-    autoAdjustScrollViewInsets: true
-  }
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: {
+      component: {
+        name: 'Menu',
+        options: {
+          topBar: {
+            title: {
+              text: 'WixCal'
+            }
+          }
+        }
+      }
+    }
+  });
 });
+
+// Navigation.startSingleScreenApp({
+//   screen: {
+//     screen: 'Menu',
+//     title: 'WixCal',
+//   },
+//   appStyle: {
+//     navBarBackgroundColor: '#00adf5',
+//     navBarTextColor: 'white',
+//     navBarButtonColor: '#ffffff',
+//     statusBarTextColorScheme: 'light',
+//     autoAdjustScrollViewInsets: true
+//   }
+// });
