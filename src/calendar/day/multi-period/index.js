@@ -27,7 +27,10 @@ class Day extends Component {
   onDayPress() {
     this.props.onPress(this.props.date);
   }
-
+ 
+  onDayLongPress() {
+    this.props.onLongPress(this.props.date);
+  }
   shouldComponentUpdate(nextProps) {
     return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
   }
@@ -93,7 +96,7 @@ class Day extends Component {
         style={{
           alignSelf: 'stretch'
         }}>
-        <TouchableOpacity style={containerStyle} onPress={this.onDayPress} onLongPress={this.onLongPress}>
+        <TouchableOpacity style={containerStyle} onPress={this.onDayPress} onLongPress={this.onDayLongPress}>
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>
