@@ -14,7 +14,7 @@ class Day extends Component {
     theme: PropTypes.object,
     marking: PropTypes.any,
     onPress: PropTypes.func,
-    onLongPress: PropTypes.func,
+   onLongPress: PropTypes.func,
     date: PropTypes.object,
   };
 
@@ -97,7 +97,8 @@ class Day extends Component {
         style={{
           alignSelf: 'stretch'
         }}>
-        <TouchableOpacity style={containerStyle} 
+        <TouchableOpacity
+        style={containerStyle} 
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
          >
