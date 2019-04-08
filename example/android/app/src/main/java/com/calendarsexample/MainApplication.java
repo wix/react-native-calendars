@@ -1,4 +1,5 @@
 package com.calendarsexample;
+import com.facebook.react.ReactNativeHost;
 import com.reactnativenavigation.NavigationApplication;
 
 import com.facebook.react.ReactPackage;

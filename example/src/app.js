@@ -21,17 +21,23 @@ LocaleConfig.defaultLocale = 'fr';
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
     root: {
-      component: {
-        name: 'Menu',
-        options: {
-          topBar: {
-            title: {
-              text: 'WixCal'
-            }
-          }
-        }
-      }
-    }
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'Menu',
+              options: {
+                topBar: {
+                  title: {
+                    text: 'WixCal',
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
   });
 });
 
