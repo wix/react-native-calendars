@@ -97,7 +97,10 @@ class Day extends Component {
         style={{
           alignSelf: 'stretch'
         }}>
-        <TouchableOpacity style={containerStyle} onPress={this.onDayPress} onLongPress={this.onDayLongPress}>
+        <TouchableOpacity style={containerStyle} 
+        onPress={this.onDayPress}
+        onLongPress={this.onDayLongPress}
+         >
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>
