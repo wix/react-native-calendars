@@ -46,6 +46,14 @@ export default function shouldComponentUpdate(nextProps, nextState) {
       field: 'current'
     };
   }
+
+  if (nextState.monthFormat !== this.state.monthFormat) {
+    shouldUpdate = {
+      update: true,
+      field: 'monthFormat'
+    };
+  }
+
   //console.log(shouldUpdate.field, shouldUpdate.update);
   return shouldUpdate.update;
 }
