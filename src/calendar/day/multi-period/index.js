@@ -22,6 +22,7 @@ class Day extends Component {
     super(props);
     this.style = styleConstructor(props.theme);
     this.onDayPress = this.onDayPress.bind(this);
+    this.onDayLongPress = this.onDayLongPress.bind(this);
   }
 
   onDayPress() {
