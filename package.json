@@ -30,7 +30,7 @@
     "jasmine": "^2.5.2",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4"
+    "react": "16.8.3",
+    "react-native": "0.59.3"
   }
 }
