@@ -43,7 +43,6 @@ class CalendarListItem extends Component {
           monthFormat={this.props.monthFormat}
           dayComponent={this.props.dayComponent}
           disabledByDefault={this.props.disabledByDefault}
-          onDayLongPress={this.props.onDayLongPress}
           showWeekNumbers={this.props.showWeekNumbers}
         />);
     } else {
