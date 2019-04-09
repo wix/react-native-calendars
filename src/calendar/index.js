@@ -179,16 +179,13 @@ class Calendar extends Component {
     let month;
     let stringDay;
     let stringDate;
-    console.log('dictionary', dict);
     year = day['0'].getFullYear().toString();
     month = (parseInt(day['0'].getMonth().toString(), 10) + 1).toString();
     stringDay = day['0'].getDate().toString();
-    if (month.length < 2) { month = '0' + month; console.log('maand is kleiner') }
+    if (month.length < 2) { month = '0' + month; }
     if (stringDay.length < 2) { stringDay = '0' + stringDay; }
     stringDate = [year, month, stringDay].join('-');
-    console.log('DE DATE IN STRING', stringDate);
     uur = dict[stringDate.toString()];
-    console.log('UUR', uur);
     return (
       <View style={{ flex: 1, alignItems: 'center' }} key={id}>
         <DayComp
