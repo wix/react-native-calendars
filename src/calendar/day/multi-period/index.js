@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
-import {shouldUpdate} from '../../../component-updater';
+import { shouldUpdate } from '../../../component-updater';
 
 import styleConstructor from './style';
 
@@ -14,8 +14,9 @@ class Day extends Component {
     theme: PropTypes.object,
     marking: PropTypes.any,
     onPress: PropTypes.func,
-   onLongPress: PropTypes.func,
+    onLongPress: PropTypes.func,
     date: PropTypes.object,
+    uren: PropTypes.string,
   };
 
   constructor(props) {
@@ -28,7 +29,7 @@ class Day extends Component {
   onDayPress() {
     this.props.onPress(this.props.date);
   }
- 
+
   onDayLongPress() {
     this.props.onLongPress(this.props.date);
   }
@@ -98,13 +99,14 @@ class Day extends Component {
           alignSelf: 'stretch'
         }}>
         <TouchableOpacity
-        style={containerStyle} 
-        onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}
-         >
+          style={containerStyle}
+          onPress={this.onDayPress}
+          onLongPress={this.onDayLongPress}
+        >
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>
+          <Text>{this.props.uur}</Text>
         </TouchableOpacity>
         <View
           style={{

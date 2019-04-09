@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   ViewPropTypes
@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import XDate from 'xdate';
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
+import { xdateToData, parseDate } from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
@@ -16,6 +16,7 @@ import MultiPeriodDay from './day/multi-period';
 import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
+
 
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
@@ -50,7 +51,7 @@ class Calendar extends Component {
     displayLoadingIndicator: PropTypes.bool,
     // Do not show days of other months in month page. Default = false
     hideExtraDays: PropTypes.bool,
-
+    uren: PropTypes.object,
     // Handler which gets executed on day press. Default = undefined
     onDayPress: PropTypes.func,
     // Handler which gets executed on day long press. Default = undefined
@@ -99,7 +100,7 @@ class Calendar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const current= parseDate(nextProps.current);
+    const current = parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
         currentMonth: current.clone()
@@ -168,13 +169,28 @@ class Calendar extends Component {
     }
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      return (<View key={id} style={{flex: 1}}/>);
+      return (<View key={id} style={{ flex: 1 }} />);
     }
 
     const DayComp = this.getDayComponent();
     const date = day.getDate();
+    const dict = this.props.uren;
+    let year;
+    let month;
+    let stringDay;
+    let stringDate;
+    console.log('dictionary', dict);
+    year = day['0'].getFullYear().toString();
+    month = (parseInt(day['0'].getMonth().toString(), 10) + 1).toString();
+    stringDay = day['0'].getDate().toString();
+    if (month.length < 2) { month = '0' + month; console.log('maand is kleiner') }
+    if (stringDay.length < 2) { stringDay = '0' + stringDay; }
+    stringDate = [year, month, stringDay].join('-');
+    console.log('DE DATE IN STRING', stringDate);
+    uur = dict[stringDate.toString()];
+    console.log('UUR', uur);
     return (
-      <View style={{flex: 1, alignItems: 'center'}} key={id}>
+      <View style={{ flex: 1, alignItems: 'center' }} key={id}>
         <DayComp
           state={state}
           theme={this.props.theme}
@@ -182,6 +198,7 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
+          uur={uur}
         >
           {date}
         </DayComp>
@@ -195,16 +212,16 @@ class Calendar extends Component {
     }
 
     switch (this.props.markingType) {
-    case 'period':
-      return UnitDay;
-    case 'multi-dot':
-      return MultiDotDay;
-    case 'multi-period':
-      return MultiPeriodDay;
-    case 'custom':
-      return SingleDay;
-    default:
-      return Day;
+      case 'period':
+        return UnitDay;
+      case 'multi-dot':
+        return MultiDotDay;
+      case 'multi-period':
+        return MultiPeriodDay;
+      case 'custom':
+        return SingleDay;
+      default:
+        return Day;
     }
   }
 
@@ -220,8 +237,8 @@ class Calendar extends Component {
     }
   }
 
-  renderWeekNumber (weekNumber) {
-    return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
+  renderWeekNumber(weekNumber) {
+    return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{ disableTouchEvent: true }} state='disabled'>{weekNumber}</Day>;
   }
 
   renderWeek(days, id) {
@@ -248,7 +265,7 @@ class Calendar extends Component {
     if (current) {
       const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
-          !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
+        !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
       }
     }

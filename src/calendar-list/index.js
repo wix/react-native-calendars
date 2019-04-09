@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   FlatList, Platform, Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import {xdateToData, parseDate} from '../interface';
+import { xdateToData, parseDate } from '../interface';
 import styleConstructor from './style';
 import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 class CalendarList extends Component {
   static propTypes = {
@@ -25,7 +25,6 @@ class CalendarList extends Component {
 
     // Enable or disable scrolling of calendar list
     scrollEnabled: PropTypes.bool,
-
     // Enable or disable vertical scroll indicator. Default = false
     showScrollIndicator: PropTypes.bool,
 
@@ -112,7 +111,7 @@ class CalendarList extends Component {
         }
       }
     }
-    this.listView.scrollToOffset({offset: scrollAmount, animated});
+    this.listView.scrollToOffset({ offset: scrollAmount, animated });
   }
 
   scrollToMonth(m) {
@@ -123,7 +122,7 @@ class CalendarList extends Component {
     const scrollAmount = (size * this.props.pastScrollRange) + (diffMonths * size);
     //console.log(month, this.state.openDate);
     //console.log(scrollAmount, diffMonths);
-    this.listView.scrollToOffset({offset: scrollAmount, animated: false});
+    this.listView.scrollToOffset({ offset: scrollAmount, animated: false });
   }
 
   componentWillReceiveProps(props) {
@@ -148,7 +147,7 @@ class CalendarList extends Component {
     });
   }
 
-  onViewableItemsChanged({viewableItems}) {
+  onViewableItemsChanged({ viewableItems }) {
     function rowIsCloseToViewable(index, distance) {
       for (let i = 0; i < viewableItems.length; i++) {
         if (Math.abs(index - parseInt(viewableItems[i].index)) <= distance) {
@@ -182,12 +181,12 @@ class CalendarList extends Component {
     });
   }
 
-  renderCalendar({item}) {
-    return (<CalendarListItem item={item} calendarHeight={this.props.calendarHeight} calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined  } {...this.props} />);
+  renderCalendar({ item }) {
+    return (<CalendarListItem item={item} calendarHeight={this.props.calendarHeight} calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined} {...this.props} />);
   }
 
   getItemLayout(data, index) {
-    return {length: this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight, offset: (this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight) * index, index};
+    return { length: this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight, offset: (this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight) * index, index };
   }
 
   getMonthIndex(month) {
