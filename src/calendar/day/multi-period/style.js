@@ -7,8 +7,8 @@ export default function styleConstructor(theme = {}) {
   const appStyle = { ...defaultStyle, ...theme };
   return StyleSheet.create({
     base: {
-      width: 32,
-      height: 32,
+      width: 38,
+      height: 38,
       alignItems: 'center',
     },
     text: {
@@ -18,13 +18,29 @@ export default function styleConstructor(theme = {}) {
       fontWeight: '300',
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)',
+      flex: 5,
+      paddingBottom: 0,
+    },
+    uren: {
+      marginTop: Platform.OS === 'android' ? 4 : 6,
+      fontSize: 11,
+      fontFamily: appStyle.textDayFontFamily,
+      fontWeight: '300',
+      color: appStyle.dayTextColor,
+      backgroundColor: 'rgba(255, 255, 255, 0)',
+      flex: 5,
+      paddingTop: 0,
+      marginTop: 0,
     },
     alignedText: {
       marginTop: Platform.OS === 'android' ? 4 : 6,
     },
+    stretch: {
+      alignSelf: 'stretch'
+    },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16,
+      borderRadius: 32,
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor

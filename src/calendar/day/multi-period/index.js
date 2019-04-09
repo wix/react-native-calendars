@@ -76,6 +76,8 @@ class Day extends Component {
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
+    const stretch = [this.style.stretch];
+    const uren = [this.style.uren];
 
     const marking = this.props.marking || {};
     const periods = this.renderPeriods(marking);
@@ -83,6 +85,7 @@ class Day extends Component {
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       textStyle.push(this.style.selectedText);
+      uren.push(this.style.selectedText);
     } else if (
       typeof marking.disabled !== 'undefined'
         ? marking.disabled
@@ -95,9 +98,7 @@ class Day extends Component {
     }
     return (
       <View
-        style={{
-          alignSelf: 'stretch'
-        }}>
+        style={stretch}>
         <TouchableOpacity
           style={containerStyle}
           onPress={this.onDayPress}
@@ -106,7 +107,7 @@ class Day extends Component {
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>
-          <Text>{this.props.uur}</Text>
+          <Text style={uren}>{this.props.uur}</Text>
         </TouchableOpacity>
         <View
           style={{
