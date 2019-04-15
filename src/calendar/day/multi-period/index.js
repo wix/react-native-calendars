@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
+import LinearGradient from 'react-native-linear-gradient';
 import { shouldUpdate } from '../../../component-updater';
 
 import styleConstructor from './style';
@@ -27,17 +28,14 @@ class Day extends Component {
   }
 
   onDayPress() {
-    this.forceUpdate();
     this.props.onPress(this.props.date);
   }
 
   onDayLongPress() {
-    this.forceUpdate();
     this.props.onLongPress(this.props.date);
-
   }
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'selected']);
+    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'uur', 'selected']);
   }
 
   renderPeriods(marking) {
@@ -81,6 +79,7 @@ class Day extends Component {
     const textStyle = [this.style.text];
     const stretch = [this.style.stretch];
     const uren = [this.style.uren];
+    const gradient = []
 
     const marking = this.props.marking || {};
     const periods = this.renderPeriods(marking);
@@ -99,25 +98,39 @@ class Day extends Component {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
+
+    let colors = ['white', 'white'];
+    if (this.props.color !== undefined) {
+      colors = []
+      stretch.push({ overflow: 'hidden', marginLeft: 5 })
+      this.props.color.map(item => {
+        for (let i = 0; i < 5; i++) {
+          colors.push(item);
+        }
+      });
+    }
+
     return (
       <View
         style={stretch}>
-        <TouchableOpacity
-          style={containerStyle}
-          onPress={this.onDayPress}
-          onLongPress={this.onDayLongPress}
-        >
-          <Text allowFontScaling={false} style={textStyle}>
-            {String(this.props.children)}
-          </Text>
-          <Text style={uren}>{this.props.uur}</Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            alignSelf: 'stretch',
-          }}>
-          {periods}
-        </View>
+        <LinearGradient style={gradient} colors={colors} start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }}>
+          <TouchableOpacity
+            style={containerStyle}
+            onPress={this.onDayPress}
+            onLongPress={this.onDayLongPress}
+          >
+            <Text allowFontScaling={false} style={textStyle}>
+              {String(this.props.children)}
+            </Text>
+            <Text style={uren}>{this.props.uur}</Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              alignSelf: 'stretch',
+            }}>
+            {periods}
+          </View>
+        </LinearGradient>
       </View>
     );
   }

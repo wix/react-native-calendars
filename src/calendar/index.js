@@ -52,6 +52,7 @@ class Calendar extends Component {
     // Do not show days of other months in month page. Default = false
     hideExtraDays: PropTypes.bool,
     uren: PropTypes.object,
+    bezettingColor: PropTypes.object,
     // Handler which gets executed on day press. Default = undefined
     onDayPress: PropTypes.func,
     // Handler which gets executed on day long press. Default = undefined
@@ -175,6 +176,7 @@ class Calendar extends Component {
     const DayComp = this.getDayComponent();
     const date = day.getDate();
     const dict = this.props.uren;
+    const dictColor = this.props.bezettingColor;
     let year;
     let month;
     let stringDay;
@@ -186,6 +188,9 @@ class Calendar extends Component {
     if (stringDay.length < 2) { stringDay = '0' + stringDay; }
     stringDate = [year, month, stringDay].join('-');
     uur = dict[stringDate.toString()];
+    color = dictColor[stringDate.toString()];
+
+
     return (
       <View style={{ flex: 1, alignItems: 'center' }} key={id}>
         <DayComp
@@ -195,8 +200,9 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
-          selected={this.getSelected(day)}
           uur={uur}
+          selected={this.getSelected(day)}
+          color={color}
         >
           {date}
         </DayComp>
@@ -247,7 +253,6 @@ class Calendar extends Component {
       return false;
     }
   }
-
   renderWeekNumber(weekNumber) {
     return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{ disableTouchEvent: true }} state='disabled'>{weekNumber}</Day>;
   }

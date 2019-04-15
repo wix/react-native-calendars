@@ -10,6 +10,7 @@ export default function styleConstructor(theme = {}) {
       width: 38,
       height: 38,
       alignItems: 'center',
+      alignSelf: 'center',
     },
     text: {
       marginTop: Platform.OS === 'android' ? 4 : 6,
@@ -36,7 +37,13 @@ export default function styleConstructor(theme = {}) {
       marginTop: Platform.OS === 'android' ? 4 : 6,
     },
     stretch: {
-      alignSelf: 'stretch'
+      alignSelf: 'stretch',
+      // alignItems: 'center',
+      backgroundColor: 'white',
+      borderRadius: 8,
+      // overflow: 'hidden',
+      // aspectRatio: 1,
+      // marginLeft: 5,
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
