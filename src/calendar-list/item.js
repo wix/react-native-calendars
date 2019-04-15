@@ -45,6 +45,7 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
           uren={this.props.uren}
+          bezettingColor={this.props.bezettingColor}
         />);
     } else {
       const text = row.toString();
