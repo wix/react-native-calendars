@@ -27,14 +27,17 @@ class Day extends Component {
   }
 
   onDayPress() {
+    this.forceUpdate();
     this.props.onPress(this.props.date);
   }
 
   onDayLongPress() {
+    this.forceUpdate();
     this.props.onLongPress(this.props.date);
+
   }
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'selected']);
   }
 
   renderPeriods(marking) {

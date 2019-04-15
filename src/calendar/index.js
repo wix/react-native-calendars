@@ -195,6 +195,7 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={xdateToData(day)}
           marking={this.getDateMarking(day)}
+          selected={this.getSelected(day)}
           uur={uur}
         >
           {date}
@@ -229,6 +230,19 @@ class Calendar extends Component {
     const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
+    } else {
+      return false;
+    }
+  }
+  getSelected(day) {
+    if (!this.props.markedDates) {
+      return false;
+    }
+    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
+    if (dates.length || dates) {
+      if (dates.selected === true) {
+        return true;
+      }
     } else {
       return false;
     }
