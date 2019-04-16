@@ -87,7 +87,7 @@ class CalendarHeader extends Component {
       <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
         {this.props.month.toString(this.props.monthFormat)}
       </Text>
-    )
+    );
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity
@@ -125,7 +125,7 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator />;
     }
     if (this.props.monthComponent) {
-      monthComponent = this.props.monthComponent(this.props.month, this.props.monthFormat)
+      monthComponent = this.props.monthComponent(this.props.month, this.props.monthFormat);
     }
     return (
       <View>
