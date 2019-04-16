@@ -19,6 +19,7 @@ class CalendarHeader extends Component {
     showIndicator: PropTypes.bool,
     firstDay: PropTypes.number,
     renderArrow: PropTypes.func,
+    monthComponent: PropTypes.func,
     hideDayNames: PropTypes.bool,
     weekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
@@ -82,6 +83,11 @@ class CalendarHeader extends Component {
     let leftArrow = <View />;
     let rightArrow = <View />;
     let weekDaysNames = weekDayNames(this.props.firstDay);
+    let monthComponent = (
+      <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
+        {this.props.month.toString(this.props.monthFormat)}
+      </Text>
+    )
     if (!this.props.hideArrows) {
       leftArrow = (
         <TouchableOpacity
@@ -118,14 +124,15 @@ class CalendarHeader extends Component {
     if (this.props.showIndicator) {
       indicator = <ActivityIndicator />;
     }
+    if (this.props.monthComponent) {
+      monthComponent = this.props.monthComponent(this.props.month, this.props.monthFormat)
+    }
     return (
       <View>
         <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
-            <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
-              {this.props.month.toString(this.props.monthFormat)}
-            </Text>
+            {monthComponent}
             {indicator}
           </View>
           {rightArrow}
