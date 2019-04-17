@@ -1,7 +1,9 @@
 # React Native Calendars ✨ 🗓️ 📆
 
-[![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
-[![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
+This version is a temp merge of PR need for my work. 
+install by:
+
+yarn add git@github.com:lironsher/react-native-calendars.git
 
 This module includes various customizable react native calendar components.
 
