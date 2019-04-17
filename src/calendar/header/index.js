@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Platform } from 'react-native';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import XDate from 'xdate';
 import PropTypes from 'prop-types';
@@ -22,11 +22,13 @@ class CalendarHeader extends Component {
     hideDayNames: PropTypes.bool,
     weekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    headingLevel: PropTypes.number
   };
 
   static defaultProps = {
     monthFormat: 'MMMM yyyy',
+    headingLevel: 1
   };
 
   constructor(props) {
@@ -118,12 +120,18 @@ class CalendarHeader extends Component {
     if (this.props.showIndicator) {
       indicator = <ActivityIndicator />;
     }
+    const webProps = Platform.OS === 'web' ? { 'aria-level': this.props.headingLevel } : {};
     return (
       <View>
         <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
-            <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
+            <Text
+              allowFontScaling={false}
+              style={this.style.monthText}
+              accessibilityTraits='header'
+              {...webProps}
+            >
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}

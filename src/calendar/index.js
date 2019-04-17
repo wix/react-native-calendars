@@ -76,7 +76,9 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    // Provide heading level for proper accessibility when used with react-native-web
+    headingLevel: PropTypes.number
   };
 
   constructor(props) {
@@ -271,6 +273,7 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          headingLevel={this.props.headingLevel}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
