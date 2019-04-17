@@ -35,7 +35,7 @@ class Day extends Component {
     this.props.onLongPress(this.props.date);
   }
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'uur', 'selected']);
+    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'uur', 'selected', 'color']);
   }
 
   renderPeriods(marking) {
@@ -103,11 +103,20 @@ class Day extends Component {
     if (this.props.color !== undefined) {
       colors = []
       stretch.push({ overflow: 'hidden', marginLeft: 5 })
-      this.props.color.map(item => {
-        for (let i = 0; i < 5; i++) {
-          colors.push(item);
-        }
-      });
+      let bezettingProcent = parseInt(this.props.color);
+
+      // kleur en gradient berekening
+      let green = 250;
+      let red = 0
+      bezettingProcent = bezettingProcent * 5;
+      if (bezettingProcent < 250) {
+        red = red + bezettingProcent;
+        colors.push('white', 'rgba(' + red + ', ' + green + ', 0, ' + ((bezettingProcent / 500) + 0.25) + ')')
+      } else {
+        red = red + 250
+        green = green - (bezettingProcent - 250)
+        colors.push('white', 'rgba(' + red + ', ' + green + ', 0, ' + ((bezettingProcent / 500) + 0.25) + ')')
+      }
     }
 
     return (
