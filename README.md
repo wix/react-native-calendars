@@ -2,8 +2,9 @@
 
 This version is a temp merge of PR need for my work. 
 install by:
-
-yarn add git@github.com:lironsher/react-native-calendars.git
+```
+yarn add https://github.com/lironsher/react-native-calendars.git
+```
 
 This module includes various customizable react native calendar components.
 
