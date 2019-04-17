@@ -89,6 +89,7 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+    isDefaultViewCalendar: PropTypes.any,
   };
 
   constructor(props) {
@@ -101,8 +102,8 @@ export default class AgendaView extends Component {
     this.headerState = 'idle';
     this.state = {
       scrollY: new Animated.Value(0),
-      calendarIsReady: false,
-      calendarScrollable: false,
+      calendarIsReady: Boolean(this.props.isDefaultViewCalendar),
+      calendarScrollable: Boolean(this.props.isDefaultViewCalendar),
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true),
@@ -135,7 +136,7 @@ export default class AgendaView extends Component {
     // When user touches knob, the actual component that receives touch events is a ScrollView.
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
-    this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+    this.setScrollPadPosition(this.props.isDefaultViewCalendar ? 0 : this.initialScrollPadPosition(), false);
     // delay rendering calendar in full height because otherwise it still flickers sometimes
     setTimeout(() => this.setState({calendarIsReady: true}), 0);
   }
@@ -143,6 +144,11 @@ export default class AgendaView extends Component {
   onLayout(event) {
     this.viewHeight = event.nativeEvent.layout.height;
     this.viewWidth = event.nativeEvent.layout.width;
+    if (this.props.isDefaultViewCalendar) {
+      this.calendar.scrollToDay(this.state.selectedDay.clone().setDate(1), 0, false);
+    } else {
+      this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+    }
     this.forceUpdate();
   }
 
@@ -415,6 +421,7 @@ export default class AgendaView extends Component {
               disabledByDefault={this.props.disabledByDefault}
               displayLoadingIndicator={this.props.displayLoadingIndicator}
               showWeekNumbers={this.props.showWeekNumbers}
+              calendarHeight={this.props.calendarHeight}
             />
           </Animated.View>
           {knob}
