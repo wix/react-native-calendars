@@ -11,7 +11,7 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 class CalendarList extends Component {
   static propTypes = {
@@ -195,6 +195,10 @@ class CalendarList extends Component {
     return diffMonths;
   }
 
+  getNumToRender(screenSize, calendarSize) {
+    return Math.ceil(screenSize / calendarSize);
+  }
+  
   render() {
     return (
       <FlatList
@@ -219,6 +223,7 @@ class CalendarList extends Component {
         initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
         getItemLayout={this.getItemLayout}
         scrollsToTop={this.props.scrollsToTop}
+        initialNumToRender={this.props.horizontal ? this.getNumToRender(width, this.props.calendarWidth) : this.getNumToRender(height, this.props.calendarHeight)}
       />
     );
   }
