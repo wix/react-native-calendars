@@ -87,6 +87,8 @@ LocaleConfig.defaultLocale = 'fr';
   onDayLongPress={(day) => {console.log('selected day', day)}}
   // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
   monthFormat={'yyyy MM'}
+  // Provide custom month rendering component
+  monthComponent={(month, monthFormat) => {return (<View />);}}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
   onMonthChange={(month) => {console.log('month changed', month)}}
   // Hide month navigation arrows. Default = false
