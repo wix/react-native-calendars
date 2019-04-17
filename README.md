@@ -1,10 +1,6 @@
 # React Native Calendars ✨ 🗓️ 📆
 
-This version is a temp merge of PR need for my work. 
-install by:
-```
-yarn add https://github.com/lironsher/react-native-calendars.git
-```
+## This version is a temp merge of PRs needed for my work. 
 
 This module includes various customizable react native calendar components.
 
@@ -17,7 +13,7 @@ This project is compatible with Expo/CRNA (without ejecting), and the examples h
 ## Installation
 
 ```
-$ npm install --save react-native-calendars
+yarn add https://github.com/lironsher/react-native-calendars.git
 ```
 
 The solution is implemented in JavaScript so no native module linking is required.
