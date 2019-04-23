@@ -6,6 +6,7 @@ import {
   Animated,
   View
 } from 'react-native';
+import XDate from 'xdate';
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 
@@ -18,8 +19,9 @@ const SPEED = 20;
 const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120;
 const OPEN_HEIGHT = 300;
-const KNOB_CONTAINER_HEIGHT = 30;
+const KNOB_CONTAINER_HEIGHT = 24;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 
 class ExpandableCalendar extends Component {
@@ -27,10 +29,11 @@ class ExpandableCalendar extends Component {
     ...CalendarList.propTypes,
     hideKnob: PropTypes.bool,
     horizontal: PropTypes.bool,
+    currentDate: PropTypes.string, /** 'yyyy-MM-dd' format */
   }
 
   static defaultProps = {
-    horizontal: true
+    // horizontal: true
   }
 
   constructor(props) {
@@ -44,7 +47,8 @@ class ExpandableCalendar extends Component {
 
     this.state = {
       deltaY: new Animated.Value(this.closedHeight),
-      position: POSITIONS.CLOSED
+      position: POSITIONS.CLOSED,
+      selectedDay: props.currentDate || XDate().toString('yyyy-MM-dd')
     };
     
     this.panResponder = PanResponder.create({
@@ -109,13 +113,12 @@ class ExpandableCalendar extends Component {
   /** Events */
 
   onDayPress = (date) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
-    if (!this.props.horizontal) {
-      // close calendar
-      this.bounceToPosition(this.closedHeight);
-    }
-    
-    this.calendar.scrollToDay(date, 0, true); // not working for horizontal
-
+    // close calendar
+    this.bounceToPosition(this.closedHeight);
+    // scroll for vertical
+    this.scrollToDate(date);
+    // mark selected
+    this.setState({selectedDay: date.dateString});
     // Report date change
   }
 
@@ -127,6 +130,16 @@ class ExpandableCalendar extends Component {
     const x = nativeEvent.layout.x;
     if (!this.props.horizontal) {
       this.openHeight = SCREEN_HEIGHT - x - (SCREEN_HEIGHT * 0.2);
+    }
+
+    this.scrollToDate(this.state.selectedDay);
+  }
+
+  scrollToDate(date) {
+    if (this.calendar) {
+      if (!this.props.horizontal) {
+        this.calendar.scrollToDay(XDate(date), 0, true); // not working for horizontal
+      }
     }
   }
 
@@ -142,9 +155,9 @@ class ExpandableCalendar extends Component {
 
   render() {
     const {style, hideKnob, horizontal} = this.props;
-    const {deltaY, position} = this.state;
+    const {deltaY, position, selectedDay} = this.state;
     const isOpen = position === POSITIONS.OPEN;
-    
+
     return (
       <Animated.View 
         ref={e => {this.wrapper = e;}}
@@ -163,6 +176,8 @@ class ExpandableCalendar extends Component {
           scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
+          markedDates={{[selectedDay]: {selected: true}}}
+          theme={{todayTextColor: 'red'}}
         />
         {!hideKnob && this.renderKnob()}
       </Animated.View>

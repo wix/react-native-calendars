@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   SectionList,
@@ -8,7 +9,7 @@ import {
   TouchableOpacity,
   Button
 } from 'react-native';
-import {Calendar, ExpandableCalendar} from 'react-native-calendars';
+import {ExpandableCalendar} from 'react-native-calendars';
 
 
 // const data = [
@@ -77,7 +78,11 @@ export default class ExpandableCalendarsScreen extends Component {
   }
 
   renderEmptyItem() {
-    return <View style={{height: 70, backgroundColor: '#f67e7e'}}/>;
+    return (
+      <View style={{height: 70, alignItems: 'center', justifyContent: 'center', backgroundColor: '#d9e1e8'}}>
+        <Text style={{fontWeight: 'bold', fontStyle: 'italic', fontSize: 16}}>Empty date</Text>
+      </View>
+    );
   }
 
   renderItem = ({item}) => {
@@ -89,8 +94,8 @@ export default class ExpandableCalendarsScreen extends Component {
       hour: item.hour,
       duration: item.duration,
       title: item.title,
-      button: {label: 'info', onPress: () => alert('show more')},
-      onPress: () => alert(id),
+      button: {label: 'info', onPress: () => Alert.alert('show more')},
+      onPress: () => Alert.alert(id)
     };
     return (
       <TouchableOpacity 
@@ -136,7 +141,6 @@ export default class ExpandableCalendarsScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    backgroundColor: '#d9e1e8'
+    flex: 1
   }
 });
