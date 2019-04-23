@@ -77,7 +77,7 @@ export default class ExpandableCalendarsScreen extends Component {
   }
 
   renderEmptyItem() {
-    return <View style={{height: 70, backgroundColor: '#ffce5c'}}/>;
+    return <View style={{height: 70, backgroundColor: '#f67e7e'}}/>;
   }
 
   renderItem = ({item}) => {

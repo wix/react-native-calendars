@@ -6,7 +6,7 @@ export const separatorColor = '#e8e9ec';
 
 export const processedColor = '#a7e0a3';
 export const processingColor = '#ffce5c';
-export const failedColor = 'rgba(246, 126, 126,1)';
+export const failedColor = '#f67e7e';
 
 export const textDefaultColor = '#2d4150';
 export const textColor = '#43515c';
