@@ -21,7 +21,6 @@ const CLOSED_HEIGHT = 120;
 const OPEN_HEIGHT = 300;
 const KNOB_CONTAINER_HEIGHT = 24;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
 
 
 class ExpandableCalendar extends Component {
@@ -30,6 +29,7 @@ class ExpandableCalendar extends Component {
     hideKnob: PropTypes.bool,
     horizontal: PropTypes.bool,
     currentDate: PropTypes.string, /** 'yyyy-MM-dd' format */
+    markedDates: PropTypes.object
   }
 
   static defaultProps = {
@@ -154,10 +154,14 @@ class ExpandableCalendar extends Component {
   }
 
   render() {
-    const {style, hideKnob, horizontal} = this.props;
+    const {style, hideKnob, horizontal, markedDates} = this.props;
     const {deltaY, position, selectedDay} = this.state;
     const isOpen = position === POSITIONS.OPEN;
-
+    
+    if (markedDates && markedDates[selectedDay]) {
+      markedDates[selectedDay].selected = true;
+    }
+    
     return (
       <Animated.View 
         ref={e => {this.wrapper = e;}}
@@ -176,7 +180,7 @@ class ExpandableCalendar extends Component {
           scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
-          markedDates={{[selectedDay]: {selected: true}}}
+          markedDates={markedDates || {[selectedDay]: {selected: true}}}
           theme={{todayTextColor: 'red'}}
         />
         {!hideKnob && this.renderKnob()}

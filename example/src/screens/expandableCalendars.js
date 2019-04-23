@@ -117,7 +117,7 @@ export default class ExpandableCalendarsScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ExpandableCalendar/>
+        <ExpandableCalendar currentDate={'2019-05-08'} markedDates={{'2019-05-08': {marked: true, selected: true}, '2019-05-09': {marked: true}}}/>
         <SectionList
           // style={{borderWidth: 1}}
           data={data}
