@@ -33,7 +33,7 @@ class ExpandableCalendar extends Component {
   }
 
   static defaultProps = {
-    // horizontal: true
+    horizontal: true
   }
 
   constructor(props) {
