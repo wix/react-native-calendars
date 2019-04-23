@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {
@@ -9,6 +10,7 @@ import {
 import XDate from 'xdate';
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
+import asCalendarConsumer from './asCalendarConsumer';
 
 
 const POSITIONS = {
@@ -29,7 +31,8 @@ class ExpandableCalendar extends Component {
     hideKnob: PropTypes.bool,
     horizontal: PropTypes.bool,
     currentDate: PropTypes.string, /** 'yyyy-MM-dd' format */
-    markedDates: PropTypes.object
+    markedDates: PropTypes.object,
+    onDateChanged: PropTypes.func
   }
 
   static defaultProps = {
@@ -48,7 +51,7 @@ class ExpandableCalendar extends Component {
     this.state = {
       deltaY: new Animated.Value(this.closedHeight),
       position: POSITIONS.CLOSED,
-      selectedDay: props.currentDate || XDate().toString('yyyy-MM-dd')
+      selectedDate: this.getCurrentDate()
     };
     
     this.panResponder = PanResponder.create({
@@ -63,9 +66,33 @@ class ExpandableCalendar extends Component {
   componentDidMount() {
     this.updateNativeStyles();
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.context.date !== prevProps.context.date) {
+      // console.warn('INBAL date changed: ', prevProps.context.date);
+      _.invoke(this.props, 'onDateChanged', this.props.context.date); // can be placed in any consumer class
+      this.setSelectedDate(this.props.context.date);
+    }
+  }
   
   updateNativeStyles() {
     this.wrapper && this.wrapper.setNativeProps(this._wrapperStyles);
+  }
+
+  setSelectedDate(selectedDate) {
+    this.setState({selectedDate});
+  }
+
+  getCurrentDate() {
+    return this.props.currentDate || XDate().toString('yyyy-MM-dd');
+  }
+
+  scrollToDate(date) {
+    if (this.calendar) {
+      if (!this.props.horizontal) {
+        this.calendar.scrollToDay(XDate(date), 0, true); // not working for horizontal
+      }
+    }
   }
 
   /** Pan Gesture */
@@ -115,11 +142,12 @@ class ExpandableCalendar extends Component {
   onDayPress = (date) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     // close calendar
     this.bounceToPosition(this.closedHeight);
-    // scroll for vertical
+    // scroll (for vertical)
     this.scrollToDate(date);
     // mark selected
-    this.setState({selectedDay: date.dateString});
-    // Report date change
+    this.setSelectedDate(date.dateString);
+    // report date change
+    _.invoke(this.props.context, 'setDate', date.dateString);
   }
 
   onVisibleMonthsChange = (value) => {
@@ -132,15 +160,7 @@ class ExpandableCalendar extends Component {
       this.openHeight = SCREEN_HEIGHT - x - (SCREEN_HEIGHT * 0.2);
     }
 
-    this.scrollToDate(this.state.selectedDay);
-  }
-
-  scrollToDate(date) {
-    if (this.calendar) {
-      if (!this.props.horizontal) {
-        this.calendar.scrollToDay(XDate(date), 0, true); // not working for horizontal
-      }
-    }
+    this.scrollToDate(this.state.selectedDate);
   }
 
   /** Renders */
@@ -154,14 +174,14 @@ class ExpandableCalendar extends Component {
   }
 
   render() {
-    const {style, hideKnob, horizontal, markedDates} = this.props;
-    const {deltaY, position, selectedDay} = this.state;
+    const {style, hideKnob, horizontal/**, markedDates*/} = this.props;
+    const {deltaY, position, selectedDate} = this.state;
     const isOpen = position === POSITIONS.OPEN;
     
-    if (markedDates && markedDates[selectedDay]) {
-      markedDates[selectedDay].selected = true;
-    }
-    
+    // if (markedDates && markedDates[selectedDate]) {
+    //   markedDates[selectedDate].selected = true;
+    // }
+
     return (
       <Animated.View 
         ref={e => {this.wrapper = e;}}
@@ -180,7 +200,7 @@ class ExpandableCalendar extends Component {
           scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
-          markedDates={markedDates || {[selectedDay]: {selected: true}}}
+          markedDates={/**markedDates || */{[selectedDate]: {selected: true}}}
           theme={{todayTextColor: 'red'}}
         />
         {!hideKnob && this.renderKnob()}
@@ -189,4 +209,4 @@ class ExpandableCalendar extends Component {
   }
 }
 
-export default ExpandableCalendar;
+export default asCalendarConsumer(ExpandableCalendar);

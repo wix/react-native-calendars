@@ -4,28 +4,12 @@ import {
   Alert,
   StyleSheet,
   View,
-  SectionList,
   Text,
   TouchableOpacity,
   Button
 } from 'react-native';
-import {ExpandableCalendar} from 'react-native-calendars';
+import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-calendars';
 
-
-// const data = [
-//   {date: '2019-04-22', hour: '4pm', duration: '1h', title: 'Pilates ABC'},
-//   {date: '2019-04-22', hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'},
-//   {date: '2019-04-23', hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'},
-//   {date: '2019-04-23', hour: '2pm', duration: '1h', title: 'Deep Streches'},
-//   {date: '2019-04-23', hour: '3pm', duration: '1h', title: 'Private Yoga'},
-//   {date: '2019-04-24', hour: '12am', duration: '1h', title: 'Ashtanga Yoga'},
-//   {date: '2019-04-25', hour: '8pm', duration: '1h', title: 'Vinyasa Yoga for Beginners'},
-//   {date: '2019-04-26', hour: '9pm', duration: '1h', title: 'Pilates Reformer'},
-//   {date: '2019-04-26', hour: '10pm', duration: '1h', title: 'Ashtanga'},
-//   {date: '2019-04-26', hour: '11pm', duration: '1h', title: 'TRX'},
-//   {date: '2019-04-26', hour: '12pm', duration: '1h', title: 'Running Group'},
-//   {}
-// ];
 
 const data = [
   {date: '2019-04-22', items: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
@@ -39,25 +23,13 @@ export default class ExpandableCalendarsScreen extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {
-      
-    };
+    this.state = {};
   }
 
-  // getSections() {
-  //   let sectionTitle;
-  //   const sections = _.compact(_.map(data, (item) => {
-  //     if (sectionTitle !== item.date) {
-  //       sectionTitle = item.date;
-  //       const items = _.filter(data, {'date': sectionTitle});
-  //       if (!items) {
-  //         return {title: sectionTitle, data: {}};
-  //       }
-  //       return {title: sectionTitle, data: items};
-  //     }
-  //   }));
-  //   return sections;
-  // }
+  onDateChanged = (date) => {
+    console.warn('INBAL screen onDateChanged: ', date);
+    //get data for date + week
+  }
 
   getSections() {
     const sections = _.compact(_.map(data, (item) => {
@@ -66,21 +38,10 @@ export default class ExpandableCalendarsScreen extends Component {
     return sections;
   }
 
-  onViewableItemsChanged = (data) => {
-    if (data) {
-      const topSection = _.get(data.viewableItems[0], 'section.title');
-      if (topSection !== this._topSection) {
-        this._topSection = topSection;
-        // console.log('INBAL this._topSection: ', this._topSection);
-        // Report date change
-      }
-    }
-  }
-
   renderEmptyItem() {
     return (
-      <View style={{height: 70, alignItems: 'center', justifyContent: 'center', backgroundColor: '#d9e1e8'}}>
-        <Text style={{fontWeight: 'bold', fontStyle: 'italic', fontSize: 16}}>Empty date</Text>
+      <View style={styles.emptyItem}>
+        <Text style={styles.emptyItemText}>Empty date</Text>
       </View>
     );
   }
@@ -100,47 +61,83 @@ export default class ExpandableCalendarsScreen extends Component {
     return (
       <TouchableOpacity 
         onPress={props.onPress} 
-        style={{padding: 12, backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: 'grey', flexDirection: 'row'}}
+        style={styles.item}
       >
         <View>
-          <Text style={{color: 'black'}}>{props.hour}</Text>
-          <Text style={{color: 'grey', fontSize: 12, marginTop: 4}}>{props.duration}</Text>
+          <Text style={styles.itemHourText}>{props.hour}</Text>
+          <Text style={styles.itemDurationText}>{props.duration}</Text>
         </View>
-        <Text style={{color: 'black', marginLeft: 16, fontWeight: 'bold', fontSize: 16}}>{props.title}</Text>
-        <View style={{flex: 1, alignItems: 'flex-end'}}>
+        <Text style={styles.itemTitleText}>{props.title}</Text>
+        <View style={styles.itemButtonContainer}>
           <Button title={props.button.label} onPress={props.button.onPress}/>
         </View>
       </TouchableOpacity>
     );
   }
 
-  render() {
+  render() {    
     return (
-      <View style={styles.container}>
-        <ExpandableCalendar currentDate={'2019-05-08'} markedDates={{'2019-05-08': {marked: true, selected: true}, '2019-05-09': {marked: true}}}/>
-        <SectionList
-          // style={{borderWidth: 1}}
+      <CalendarProvider>
+        <ExpandableCalendar 
+          onDateChanged={this.onDateChanged}
+          // currentDate={'2019-05-08'} 
+          markedDates={{'2019-05-08': {marked: true, selected: true}, '2019-05-09': {marked: true}}}
+        />
+        <AgendaList
           data={data}
           renderItem={this.renderItem}
-          keyExtractor={(item, index) => String(index)}
-          showsVerticalScrollIndicator={false}
-          stickySectionHeadersEnabled
-          renderSectionHeader={({section: {title}}) => (
-            <Text style={{fontWeight: 'bold', padding: 6, backgroundColor: 'grey', color: 'white'}}>{title}</Text>
-          )}
           sections={this.getSections()}
-          onViewableItemsChanged={this.onViewableItemsChanged}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 10 //50 means if 50% of the item is visible
-          }}
+          renderSectionHeader={({section: {title}}) => (
+            <Text style={styles.sectionText}>{title}</Text>
+          )}
         />
-      </View>
+      </CalendarProvider>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
+  sectionText: {
+    fontWeight: 'bold', 
+    color: 'white',
+    padding: 6, 
+    backgroundColor: 'grey'
+  },
+  item: {
+    padding: 12, 
+    backgroundColor: 'white', 
+    borderBottomWidth: 1, 
+    borderBottomColor: 'grey', 
+    flexDirection: 'row'
+  },
+  itemHourText: {
+    color: 'black'
+  },
+  itemDurationText: {
+    color: 'grey', 
+    fontSize: 12, 
+    marginTop: 4,
+    marginLeft: 4
+  },
+  itemTitleText: {
+    color: 'black', 
+    marginLeft: 16, 
+    fontWeight: 'bold', 
+    fontSize: 16
+  },
+  itemButtonContainer: {
+    flex: 1, 
+    alignItems: 'flex-end'
+  },
+  emptyItem: {
+    height: 70, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    backgroundColor: '#d9e1e8'
+  },
+  emptyItemText: {
+    fontWeight: 'bold', 
+    fontStyle: 'italic', 
+    fontSize: 16
   }
 });
