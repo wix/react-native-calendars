@@ -27,8 +27,8 @@ export default class ExpandableCalendarsScreen extends Component {
   }
 
   onDateChanged = (date) => {
-    console.warn('INBAL screen onDateChanged: ', date);
-    //get data for date + week
+    // console.warn('INBAL screen onDateChanged: ', date);
+    // get data for date + week
   }
 
   getSections() {
@@ -80,8 +80,8 @@ export default class ExpandableCalendarsScreen extends Component {
       <CalendarProvider>
         <ExpandableCalendar 
           onDateChanged={this.onDateChanged}
-          // currentDate={'2019-05-08'} 
-          markedDates={{'2019-05-08': {marked: true, selected: true}, '2019-05-09': {marked: true}}}
+          currentDate={'2019-04-08'} 
+          // markedDates={{'2019-04-08': {marked: true, selected: true}, '2019-04-09': {marked: true}}}
         />
         <AgendaList
           data={data}
