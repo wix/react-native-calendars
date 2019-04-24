@@ -59,7 +59,7 @@ class AgendaList extends Component {
         stickySectionHeadersEnabled
         onViewableItemsChanged={this.onViewableItemsChanged}
         viewabilityConfig={{
-          itemVisiblePercentThreshold: 10 //50 means if 50% of the item is visible
+          itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
         }}
         renderSectionHeader={this.renderSectionHeader}
         onScroll={this.onScroll}

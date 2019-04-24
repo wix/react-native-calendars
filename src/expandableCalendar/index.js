@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {
   Dimensions,
+  Platform,
   PanResponder,
   Animated,
   View,
@@ -15,6 +16,7 @@ import CalendarList from '../calendar-list';
 import asCalendarConsumer from './asCalendarConsumer';
 
 
+const isAndroid = Platform.OS === 'android';
 const POSITIONS = {
   CLOSED: 'closed',
   OPEN: 'open'
@@ -22,7 +24,7 @@ const POSITIONS = {
 const SPEED = 20;
 const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120;
-const OPEN_HEIGHT = 330; // for 6 weeks per month
+const OPEN_HEIGHT = isAndroid ? 340 : 330; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
 const HEADER_HEIGHT = 62;
 const SCREEN_HEIGHT = Dimensions.get('window').height;

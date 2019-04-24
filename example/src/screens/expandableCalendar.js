@@ -11,12 +11,13 @@ import {
 import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-calendars';
 
 
+const START_DATE = '2019-05-31';
 const data = [
-  {date: '2019-05-22', items: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
-  {date: '2019-05-23', items: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
-  {date: '2019-05-24', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {date: '2019-05-25', items: [{}]},
-  {date: '2019-05-26', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {date: START_DATE, items: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
+  {date: '2019-06-01', items: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {date: '2019-06-02', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {date: '2019-06-03', items: [{}]},
+  {date: '2019-06-04', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
 ];
 
 export default class ExpandableCalendarScreen extends Component {
@@ -80,7 +81,7 @@ export default class ExpandableCalendarScreen extends Component {
       <CalendarProvider>
         <ExpandableCalendar 
           onDateChanged={this.onDateChanged}
-          currentDate={'2019-06-08'} 
+          currentDate={START_DATE} 
           markedDates={{'2019-06-08': {marked: true}, '2019-06-09': {marked: true}, '2019-05-01': {marked: true}}}
         />
         <AgendaList
