@@ -49,11 +49,11 @@ class ExpandableCalendar extends Component {
     this._height = this.closedHeight;
     this.wrapper = undefined;
     this.calendar = undefined;
+    this.visibleMonth = undefined;
 
     this.state = {
       deltaY: new Animated.Value(this.closedHeight),
       position: POSITIONS.CLOSED,
-      selectedDate: this.getCurrentDate()
     };
 
     this.panResponder = PanResponder.create({
@@ -63,31 +63,28 @@ class ExpandableCalendar extends Component {
       onPanResponderRelease: this.handlePanResponderEnd,
       onPanResponderTerminate: this.handlePanResponderEnd
     });
+
+    _.invoke(this.props.context, 'setDate', this.getCurrentDate()); // report date change (set initial value)
   }
 
   componentDidMount() {
     this.updateNativeStyles();
     
     setTimeout(() => {
-      this.scrollToDate(this.state.selectedDate);
+      this.scrollToDate(this.props.context.date); // not working 100%
     }, 300);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.context.date !== prevProps.context.date) {
-      // console.warn('INBAL date changed: ', prevProps.context.date);
-      _.invoke(this.props, 'onDateChanged', this.props.context.date); // can be placed in any consumer class
-      this.setSelectedDate(this.props.context.date);
+      // date was changed from AgendaList
+      _.invoke(this.props, 'onDateChanged', this.props.context.date); // report to screen (can be placed in any consumer class)
       this.scrollToDate(this.props.context.date);
     }
   }
   
   updateNativeStyles() {
     this.wrapper && this.wrapper.setNativeProps(this._wrapperStyles);
-  }
-
-  setSelectedDate(selectedDate) {
-    this.setState({selectedDate});
   }
 
   getCurrentDate() {
@@ -98,16 +95,16 @@ class ExpandableCalendar extends Component {
     if (this.calendar) {
       if (!this.props.horizontal) {
         this.calendar.scrollToDay(XDate(date), 0, true);
-      } else {
+      } else if (this.getMonth(date) !== this.visibleMonth) {
         this.calendar.scrollToMonth(XDate(date));
       }
     }
   }
 
   getMonth(date) {
-    // Returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
     const d = XDate(date);
-    return d.getMonth();
+    // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
+    return d.getMonth() + 1;
   }
 
   /** Pan Gesture */
@@ -154,15 +151,14 @@ class ExpandableCalendar extends Component {
   
   /** Events */
 
-  onDayPress = (date) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
-    this.setSelectedDate(date.dateString);
-    this.scrollToDate(date);
-    _.invoke(this.props.context, 'setDate', date.dateString); // report date change
+  onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
+    _.invoke(this.props.context, 'setDate', value.dateString); // report date change
+    this.scrollToDate(value.dateString);
     // this.bounceToPosition(this.closedHeight);
   }
 
   onVisibleMonthsChange = (value) => {
-    
+    this.visibleMonth = value[0].month; // equivalent to this.getMonth(value[0].dateString)
   }
 
   onLayout = ({nativeEvent}) => {
@@ -183,12 +179,12 @@ class ExpandableCalendar extends Component {
   }
 
   render() {
-    const {style, hideKnob, horizontal/**, markedDates*/} = this.props;
-    const {deltaY, position, selectedDate} = this.state;
+    const {context, style, hideKnob, horizontal/**, markedDates*/} = this.props;
+    const {deltaY, position} = this.state;
     const isOpen = position === POSITIONS.OPEN;
     
-    // if (markedDates && markedDates[selectedDate]) {
-    //   markedDates[selectedDate].selected = true;
+    // if (markedDates && markedDates[context.date]) {
+    //   markedDates[context.date].selected = true;
     // }
 
     return (
@@ -209,7 +205,7 @@ class ExpandableCalendar extends Component {
           scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
-          markedDates={/**markedDates || */{[selectedDate]: {selected: true}}}
+          markedDates={/**markedDates || */{[context.date]: {selected: true}}}
           theme={{todayTextColor: 'red'}}
         />
         {!hideKnob && this.renderKnob()}
