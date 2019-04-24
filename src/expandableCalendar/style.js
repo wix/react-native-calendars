@@ -26,6 +26,12 @@ export default function styleConstructor(theme={}) {
       borderRadius: 3,
       backgroundColor: appStyle.textColor
     },
+    sectionText: {
+      fontWeight: 'bold', 
+      color: 'white',
+      padding: 6, 
+      backgroundColor: 'grey'
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }

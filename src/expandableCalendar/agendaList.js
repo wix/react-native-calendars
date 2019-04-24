@@ -2,8 +2,10 @@ import _ from 'lodash';
 // import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {
-  SectionList
+  SectionList,
+  Text
 } from 'react-native';
+import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
 
 
@@ -14,11 +16,13 @@ class AgendaList extends Component {
 
   // static defaultProps = {}
 
-  // constructor(props) {
-  //   super(props);
+  constructor(props) {
+    super(props);
 
-  //   this.state = {};
-  // }
+    this.state = {};
+
+    this.style = styleConstructor(props.theme);
+  }
 
   onViewableItemsChanged = (data) => {
     const {context} = this.props;
@@ -41,6 +45,12 @@ class AgendaList extends Component {
     }
   }
 
+  renderSectionHeader = ({section: {title}}) => {
+    return (
+      <Text style={this.style.sectionText}>{title}</Text>
+    );
+  }
+
   render() {
     return (
       <SectionList
@@ -52,6 +62,7 @@ class AgendaList extends Component {
         viewabilityConfig={{
           itemVisiblePercentThreshold: 10 //50 means if 50% of the item is visible
         }}
+        renderSectionHeader={this.renderSectionHeader}
         onScroll={this.onScroll}
       />
     );

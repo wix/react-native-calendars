@@ -42,18 +42,20 @@ class ExpandableCalendar extends Component {
   constructor(props) {
     super(props);
 
+    this.style = styleConstructor(props.theme);
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
     this.openHeight = OPEN_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.style = styleConstructor(props.theme);
     this._wrapperStyles = {style: {}};
     this._height = this.closedHeight;
+    this.wrapper = undefined;
+    this.calendar = undefined;
 
     this.state = {
       deltaY: new Animated.Value(this.closedHeight),
       position: POSITIONS.CLOSED,
       selectedDate: this.getCurrentDate()
     };
-    
+
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
       onPanResponderGrant: this.handlePanResponderGrant,
@@ -65,6 +67,10 @@ class ExpandableCalendar extends Component {
 
   componentDidMount() {
     this.updateNativeStyles();
+    
+    setTimeout(() => {
+      this.scrollToDate(this.state.selectedDate);
+    }, 300);
   }
 
   componentDidUpdate(prevProps) {
@@ -72,6 +78,7 @@ class ExpandableCalendar extends Component {
       // console.warn('INBAL date changed: ', prevProps.context.date);
       _.invoke(this.props, 'onDateChanged', this.props.context.date); // can be placed in any consumer class
       this.setSelectedDate(this.props.context.date);
+      this.scrollToDate(this.props.context.date);
     }
   }
   
@@ -90,9 +97,17 @@ class ExpandableCalendar extends Component {
   scrollToDate(date) {
     if (this.calendar) {
       if (!this.props.horizontal) {
-        this.calendar.scrollToDay(XDate(date), 0, true); // not working for horizontal
+        this.calendar.scrollToDay(XDate(date), 0, true);
+      } else {
+        this.calendar.scrollToMonth(XDate(date));
       }
     }
+  }
+
+  getMonth(date) {
+    // Returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
+    const d = XDate(date);
+    return d.getMonth();
   }
 
   /** Pan Gesture */
@@ -140,14 +155,10 @@ class ExpandableCalendar extends Component {
   /** Events */
 
   onDayPress = (date) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
-    // close calendar
-    this.bounceToPosition(this.closedHeight);
-    // scroll (for vertical)
-    this.scrollToDate(date);
-    // mark selected
     this.setSelectedDate(date.dateString);
-    // report date change
-    _.invoke(this.props.context, 'setDate', date.dateString);
+    this.scrollToDate(date);
+    _.invoke(this.props.context, 'setDate', date.dateString); // report date change
+    // this.bounceToPosition(this.closedHeight);
   }
 
   onVisibleMonthsChange = (value) => {
@@ -159,8 +170,6 @@ class ExpandableCalendar extends Component {
     if (!this.props.horizontal) {
       this.openHeight = SCREEN_HEIGHT - x - (SCREEN_HEIGHT * 0.2);
     }
-
-    this.scrollToDate(this.state.selectedDate);
   }
 
   /** Renders */

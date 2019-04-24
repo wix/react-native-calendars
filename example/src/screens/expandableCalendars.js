@@ -12,11 +12,11 @@ import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-cal
 
 
 const data = [
-  {date: '2019-04-22', items: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
-  {date: '2019-04-23', items: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
-  {date: '2019-04-24', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {date: '2019-04-25', items: [{}]},
-  {date: '2019-04-26', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {date: '2019-05-22', items: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
+  {date: '2019-05-23', items: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {date: '2019-05-24', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {date: '2019-05-25', items: [{}]},
+  {date: '2019-05-26', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
 ];
 
 export default class ExpandableCalendarsScreen extends Component {
@@ -80,16 +80,13 @@ export default class ExpandableCalendarsScreen extends Component {
       <CalendarProvider>
         <ExpandableCalendar 
           onDateChanged={this.onDateChanged}
-          currentDate={'2019-04-08'} 
+          currentDate={'2019-06-08'} 
           // markedDates={{'2019-04-08': {marked: true, selected: true}, '2019-04-09': {marked: true}}}
         />
         <AgendaList
           data={data}
           renderItem={this.renderItem}
           sections={this.getSections()}
-          renderSectionHeader={({section: {title}}) => (
-            <Text style={styles.sectionText}>{title}</Text>
-          )}
         />
       </CalendarProvider>
     );
@@ -97,12 +94,6 @@ export default class ExpandableCalendarsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  sectionText: {
-    fontWeight: 'bold', 
-    color: 'white',
-    padding: 6, 
-    backgroundColor: 'grey'
-  },
   item: {
     padding: 12, 
     backgroundColor: 'white', 
