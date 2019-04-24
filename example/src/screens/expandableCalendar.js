@@ -81,7 +81,7 @@ export default class ExpandableCalendarScreen extends Component {
         <ExpandableCalendar 
           onDateChanged={this.onDateChanged}
           currentDate={'2019-06-08'} 
-          // markedDates={{'2019-04-08': {marked: true, selected: true}, '2019-04-09': {marked: true}}}
+          markedDates={{'2019-06-08': {marked: true}, '2019-06-09': {marked: true}, '2019-05-01': {marked: true}}}
         />
         <AgendaList
           data={data}

@@ -107,6 +107,20 @@ class ExpandableCalendar extends Component {
     return d.getMonth() + 1;
   }
 
+  getMarkedDates() {
+    const {context, markedDates} = this.props;
+    if (markedDates) {
+      const marked = _.cloneDeep(markedDates);
+      if (marked[context.date]) {
+        marked[context.date].selected = true;
+      } else {
+        marked[context.date] = {selected: true};
+      }
+      return marked;
+    } 
+    return {[context.date]: {selected: true}};
+  }
+
   /** Pan Gesture */
 
   handleMoveShouldSetPanResponder = (e, gestureState) => {
@@ -179,13 +193,9 @@ class ExpandableCalendar extends Component {
   }
 
   render() {
-    const {context, style, hideKnob, horizontal/**, markedDates*/} = this.props;
+    const {style, hideKnob, horizontal} = this.props;
     const {deltaY, position} = this.state;
     const isOpen = position === POSITIONS.OPEN;
-    
-    // if (markedDates && markedDates[context.date]) {
-    //   markedDates[context.date].selected = true;
-    // }
 
     return (
       <Animated.View 
@@ -205,7 +215,7 @@ class ExpandableCalendar extends Component {
           scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
-          markedDates={/**markedDates || */{[context.date]: {selected: true}}}
+          markedDates={this.getMarkedDates()}
           theme={{todayTextColor: 'red'}}
         />
         {!hideKnob && this.renderKnob()}
