@@ -168,7 +168,9 @@ class ExpandableCalendar extends Component {
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     _.invoke(this.props.context, 'setDate', value.dateString); // report date change
     this.scrollToDate(value.dateString);
-    // this.bounceToPosition(this.closedHeight);
+    if (!this.props.horizontal) {
+      this.bounceToPosition(this.closedHeight);
+    }
   }
 
   onVisibleMonthsChange = (value) => {

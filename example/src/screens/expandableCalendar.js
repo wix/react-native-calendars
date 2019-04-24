@@ -28,7 +28,7 @@ export default class ExpandableCalendarScreen extends Component {
 
   onDateChanged = (date) => {
     // console.warn('INBAL screen onDateChanged: ', date);
-    // get data for date + week
+    // fetch and set data for date + week ahead
   }
 
   getSections() {
