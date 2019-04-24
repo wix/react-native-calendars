@@ -5,9 +5,11 @@ import {
   Dimensions,
   PanResponder,
   Animated,
-  View
+  View,
+  Text
 } from 'react-native';
 import XDate from 'xdate';
+import dateutils from '../dateutils';
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -22,6 +24,7 @@ const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120;
 const OPEN_HEIGHT = 330; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
+const HEADER_HEIGHT = 62;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 
@@ -46,6 +49,7 @@ class ExpandableCalendar extends Component {
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
     this.openHeight = OPEN_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
     this._wrapperStyles = {style: {}};
+    this._headerStyles = {style: {}};
     this._height = this.closedHeight;
     this.wrapper = undefined;
     this.calendar = undefined;
@@ -53,6 +57,7 @@ class ExpandableCalendar extends Component {
 
     this.state = {
       deltaY: new Animated.Value(this.closedHeight),
+      headerDeltaY: new Animated.Value(0),
       position: POSITIONS.CLOSED,
     };
 
@@ -85,6 +90,9 @@ class ExpandableCalendar extends Component {
   
   updateNativeStyles() {
     this.wrapper && this.wrapper.setNativeProps(this._wrapperStyles);
+    if (!this.props.horizontal) {
+      this.header && this.header.setNativeProps(this._headerStyles);
+    }
   }
 
   getCurrentDate() {
@@ -134,6 +142,9 @@ class ExpandableCalendar extends Component {
   };
   handlePanResponderMove = (e, gestureState) => {
     this._wrapperStyles.style.height = this._height + gestureState.dy;
+    if (!this.props.horizontal) {
+      this._headerStyles.style.top = Math.min(Math.max(-gestureState.dy, -HEADER_HEIGHT), 0);
+    }
     this.updateNativeStyles();
   };
   handlePanResponderEnd = (e, gestureState) => {
@@ -146,7 +157,7 @@ class ExpandableCalendar extends Component {
   bounceToPosition(toValue) {
     const {deltaY} = this.state;
     const newValue = this._height > this.openHeight / 2 ? this.openHeight : this.closedHeight;
-
+    
     deltaY.setValue(this._height);
     this._height = toValue || newValue;
     
@@ -155,11 +166,26 @@ class ExpandableCalendar extends Component {
       speed: SPEED,
       bounciness: BOUNCINESS
     }).start(this.onAnimatedFinished);
+
+    this.closeHeader();
   }
 
   onAnimatedFinished = ({finished}) => {
     if (finished) {
       this.setState({position: this._height === this.closedHeight ? POSITIONS.CLOSED : POSITIONS.OPEN});
+    }
+  }
+
+  closeHeader() {
+    const {horizontal} = this.props;
+    const isClosed = this._height < this.openHeight / 2;
+
+    if (!horizontal && isClosed) {
+      Animated.spring(this.state.headerDeltaY, {
+        toValue: 0,
+        speed: SPEED / 10,
+        bounciness: BOUNCINESS
+      }).start();
     }
   }
   
@@ -185,6 +211,34 @@ class ExpandableCalendar extends Component {
   }
 
   /** Renders */
+
+  renderWeekDaysNames() {
+    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
+
+    return (
+      <View style={this.style.weekDayNames}>
+        {weekDaysNames.map((day, index) => (
+          <Text allowFontScaling={false} key={day+index} style={this.style.weekday} numberOfLines={1}>{day}</Text>
+        ))}
+      </View>
+    );
+  }
+
+  renderHeader() {
+    const {headerDeltaY} = this.state;
+    const monthYear = XDate(this.props.context.date).toString('MMMM yyyy');
+
+    return (
+      <Animated.View
+        ref={e => {this.header = e;}}
+        style={[this.style.header, {height: HEADER_HEIGHT, top: headerDeltaY}]}
+        pointerEvents={'none'}
+      >
+        <Text style={this.style.headerTitle}>{monthYear}</Text>
+        {this.renderWeekDaysNames()}
+      </Animated.View>
+    );
+  }
 
   renderKnob() {
     return (
@@ -221,6 +275,7 @@ class ExpandableCalendar extends Component {
           theme={{todayTextColor: 'red'}}
         />
         {!hideKnob && this.renderKnob()}
+        {!horizontal && this.renderHeader()}
       </Animated.View>
     );
   }

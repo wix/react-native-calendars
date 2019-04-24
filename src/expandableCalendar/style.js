@@ -10,7 +10,6 @@ export default function styleConstructor(theme={}) {
       backgroundColor: appStyle.calendarBackground
     },
     knobContainer: {
-      flex: 1,
       position: 'absolute',
       left: 0,
       right: 0,
@@ -31,6 +30,32 @@ export default function styleConstructor(theme={}) {
       color: 'white',
       padding: 6, 
       backgroundColor: 'grey'
+    },
+    header: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      backgroundColor: appStyle.calendarBackground
+    },
+    headerTitle: {
+      alignSelf: 'center',
+      paddingTop: 10,
+      paddingBottom: 18,
+      fontSize: appStyle.textMonthFontSize,
+      fontFamily: appStyle.textMonthFontFamily,
+      fontWeight: appStyle.textMonthFontWeight,
+      color: appStyle.monthTextColor
+    },
+    weekDayNames: {
+      flexDirection: 'row', 
+      justifyContent: 'space-between', 
+      paddingHorizontal: 22
+    },
+    weekday: {
+      width: 32,
+      textAlign: 'center',
+      fontSize: 13,
+      color: appStyle.textSectionTitleColor
     },
     ...(theme[STYLESHEET_ID] || {})
   });
