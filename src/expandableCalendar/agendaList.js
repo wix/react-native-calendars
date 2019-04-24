@@ -31,9 +31,8 @@ class AgendaList extends Component {
       const topSection = _.get(data.viewableItems[0], 'section.title');
       if (topSection !== this._topSection) {
         this._topSection = topSection;
-        // report date change
         if (this.scrolled) { // to avoid setting on first layout
-          _.invoke(context, 'setDate', this._topSection);
+          _.invoke(context, 'setDate', this._topSection); // report date change
         }
       }
     }

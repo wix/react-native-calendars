@@ -20,7 +20,7 @@ const POSITIONS = {
 const SPEED = 20;
 const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120;
-const OPEN_HEIGHT = 300;
+const OPEN_HEIGHT = 330; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -72,7 +72,7 @@ class ExpandableCalendar extends Component {
     
     setTimeout(() => {
       this.scrollToDate(this.props.context.date); // not working 100%
-    }, 300);
+    }, 500);
   }
 
   componentDidUpdate(prevProps) {
