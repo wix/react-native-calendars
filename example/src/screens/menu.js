@@ -26,7 +26,7 @@ export default class MenuScreen extends Component {
           <Text style={styles.menuText}>Agenda</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menu} onPress={this.onExpandablePress.bind(this)}>
-          <Text style={styles.menuText}>Expandable Calendars</Text>
+          <Text style={styles.menuText}>Expandable Calendar</Text>
         </TouchableOpacity>
       </View>
     );
@@ -64,7 +64,7 @@ export default class MenuScreen extends Component {
   }
 
   onExpandablePress() {
-    this.pushScreen('ExpandableCalendars');
+    this.pushScreen('ExpandableCalendar');
   }
 }
 

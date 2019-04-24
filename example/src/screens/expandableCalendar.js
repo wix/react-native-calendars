@@ -19,7 +19,7 @@ const data = [
   {date: '2019-05-26', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
 ];
 
-export default class ExpandableCalendarsScreen extends Component {
+export default class ExpandableCalendarScreen extends Component {
   constructor(props) {
     super(props);
     
