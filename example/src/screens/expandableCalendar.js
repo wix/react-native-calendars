@@ -80,7 +80,9 @@ export default class ExpandableCalendarScreen extends Component {
     return (
       <CalendarProvider>
         <ExpandableCalendar 
-          // initialPosition={ExpandableCalendar.positions.OPEN}
+          // disablePan
+          // hideKnob
+          // initialPosition={ExpandableCalendar.positions.OPEN} // can't find static positions
           onDateChanged={this.onDateChanged}
           currentDate={START_DATE} 
           markedDates={{'2019-06-08': {marked: true}, '2019-06-09': {marked: true}, '2019-05-01': {marked: true}}}

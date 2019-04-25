@@ -38,7 +38,8 @@ class ExpandableCalendar extends Component {
     currentDate: PropTypes.string, /** 'yyyy-MM-dd' format */
     markedDates: PropTypes.object,
     onDateChanged: PropTypes.func,
-    initialPosition: PropTypes.oneOf(_.values(POSITIONS))
+    initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
+    disablePan: PropTypes.bool
   }
 
   static defaultProps = {
@@ -53,7 +54,7 @@ class ExpandableCalendar extends Component {
 
     this.style = styleConstructor(props.theme);
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.openHeight = OPEN_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
+    this.openHeight = OPEN_HEIGHT + (props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
     this.threshold = this.openHeight / 1.75;
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
     this._wrapperStyles = {style: {}};
@@ -140,8 +141,11 @@ class ExpandableCalendar extends Component {
   /** Pan Gesture */
 
   handleMoveShouldSetPanResponder = (e, gestureState) => {
+    if (this.props.disablePan) {
+      return false;
+    }
     if (!this.props.horizontal && this.state.position === POSITIONS.OPEN) {
-      // stop pan detection when vertical calendar is open to allow calendar scroll
+      // disable pan detection when vertical calendar is open to allow calendar scroll
       return false;
     }
     return gestureState.dy > 5 || gestureState.dy < -5;
