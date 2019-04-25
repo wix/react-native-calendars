@@ -37,12 +37,16 @@ class ExpandableCalendar extends Component {
     horizontal: PropTypes.bool,
     currentDate: PropTypes.string, /** 'yyyy-MM-dd' format */
     markedDates: PropTypes.object,
-    onDateChanged: PropTypes.func
+    onDateChanged: PropTypes.func,
+    initialPosition: PropTypes.oneOf(_.values(POSITIONS))
   }
 
   static defaultProps = {
-    horizontal: true
+    horizontal: true,
+    initialPosition: POSITIONS.CLOSED
   }
+
+  static positions = POSITIONS;
 
   constructor(props) {
     super(props);
@@ -50,15 +54,17 @@ class ExpandableCalendar extends Component {
     this.style = styleConstructor(props.theme);
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
     this.openHeight = OPEN_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
+    this.threshold = this.openHeight / 1.75;
+    const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
     this._wrapperStyles = {style: {}};
     this._headerStyles = {style: {}};
-    this._height = this.closedHeight;
+    this._height = startHeight;
     this.wrapper = undefined;
     this.calendar = undefined;
     this.visibleMonth = undefined;
 
     this.state = {
-      deltaY: new Animated.Value(this.closedHeight),
+      deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(0),
       position: POSITIONS.CLOSED,
     };
@@ -158,7 +164,7 @@ class ExpandableCalendar extends Component {
   
   bounceToPosition(toValue) {
     const {deltaY} = this.state;
-    const newValue = this._height > this.openHeight / 2 ? this.openHeight : this.closedHeight;
+    const newValue = this._height > this.threshold ? this.openHeight : this.closedHeight;
     
     deltaY.setValue(this._height);
     this._height = toValue || newValue;
@@ -180,7 +186,7 @@ class ExpandableCalendar extends Component {
 
   closeHeader() {
     const {horizontal} = this.props;
-    const isClosed = this._height < this.openHeight / 2;
+    const isClosed = this._height < this.threshold;
 
     if (!horizontal && isClosed) {
       Animated.spring(this.state.headerDeltaY, {
@@ -202,13 +208,13 @@ class ExpandableCalendar extends Component {
   }
 
   onVisibleMonthsChange = (value) => {
-    this.visibleMonth = value[0].month; // equivalent to this.getMonth(value[0].dateString)
+    this.visibleMonth = _.first(value).month; // equivalent to this.getMonth(value[0].dateString)
   }
 
   onLayout = ({nativeEvent}) => {
     const x = nativeEvent.layout.x;
     if (!this.props.horizontal) {
-      this.openHeight = SCREEN_HEIGHT - x - (SCREEN_HEIGHT * 0.2);
+      this.openHeight = SCREEN_HEIGHT - x - (SCREEN_HEIGHT * 0.2); // SCREEN_HEIGHT ?
     }
   }
 
