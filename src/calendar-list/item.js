@@ -3,10 +3,11 @@ import {Text, View} from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
+
 class CalendarListItem extends Component {
   static defaultProps = {
     hideArrows: true,
-    hideExtraDays: true,
+    hideExtraDays: true
   };
 
   constructor(props) {
@@ -22,6 +23,7 @@ class CalendarListItem extends Component {
 
   render() {
     const row = this.props.item;
+    
     if (row.getTime) {
       return (
         <Calendar
@@ -44,6 +46,7 @@ class CalendarListItem extends Component {
           dayComponent={this.props.dayComponent}
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
+          renderHeader={this.props.renderHeader}
         />);
     } else {
       const text = row.toString();

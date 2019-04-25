@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, {Component} from 'react';
 import {
   View,
@@ -17,6 +18,7 @@ import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 import {SELECT_DATE_SLOT} from '../testIDs';
+
 
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
@@ -76,18 +78,23 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    // Handler which renders a custom header
+    renderHeader: PropTypes.func
   };
 
   constructor(props) {
     super(props);
+    
     this.style = styleConstructor(this.props.theme);
+    
     let currentMonth;
     if (props.current) {
       currentMonth = parseDate(props.current);
     } else {
       currentMonth = XDate();
     }
+    
     this.state = {
       currentMonth
     };
@@ -112,6 +119,7 @@ class Calendar extends Component {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
+    
     this.setState({
       currentMonth: day.clone()
     }, () => {
@@ -131,6 +139,7 @@ class Calendar extends Component {
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
+    
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
       const shouldUpdateMonth = this.props.disableMonthChange === undefined || !this.props.disableMonthChange;
       if (shouldUpdateMonth) {
@@ -157,6 +166,7 @@ class Calendar extends Component {
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
+    
     let state = '';
     if (this.props.disabledByDefault) {
       state = 'disabled';
@@ -216,6 +226,7 @@ class Calendar extends Component {
     if (!this.props.markedDates) {
       return false;
     }
+    
     const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
@@ -241,12 +252,23 @@ class Calendar extends Component {
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
-  render() {
+  renderWeeks() {
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
+
+    return (
+      <View style={this.style.monthView}>{weeks}</View>
+    );
+  }
+
+  renderHeader() {
+    if (_.isFunction(this.props.renderHeader)) {
+      return this.props.renderHeader();
+    }
+
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
@@ -256,23 +278,30 @@ class Calendar extends Component {
         indicator = true;
       }
     }
+
+    return (
+      <CalendarHeader
+        theme={this.props.theme}
+        hideArrows={this.props.hideArrows}
+        month={this.state.currentMonth}
+        addMonth={this.addMonth}
+        showIndicator={indicator}
+        firstDay={this.props.firstDay}
+        renderArrow={this.props.renderArrow}
+        monthFormat={this.props.monthFormat}
+        hideDayNames={this.props.hideDayNames}
+        weekNumbers={this.props.showWeekNumbers}
+        onPressArrowLeft={this.props.onPressArrowLeft}
+        onPressArrowRight={this.props.onPressArrowRight}
+      />
+    );
+  }
+
+  render() {
     return (
       <View style={[this.style.container, this.props.style]}>
-        <CalendarHeader
-          theme={this.props.theme}
-          hideArrows={this.props.hideArrows}
-          month={this.state.currentMonth}
-          addMonth={this.addMonth}
-          showIndicator={indicator}
-          firstDay={this.props.firstDay}
-          renderArrow={this.props.renderArrow}
-          monthFormat={this.props.monthFormat}
-          hideDayNames={this.props.hideDayNames}
-          weekNumbers={this.props.showWeekNumbers}
-          onPressArrowLeft={this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.onPressArrowRight}
-        />
-        <View style={this.style.monthView}>{weeks}</View>
+        {this.renderHeader()}
+        {this.renderWeeks()}
       </View>);
   }
 }
