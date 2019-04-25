@@ -118,6 +118,16 @@ class ExpandableCalendar extends Component {
     }
   }
 
+  scrollToMonth(next) {
+    // TODO: flip on RTL?
+    if (this.calendar) {
+      const d = XDate();
+      // month is zero-indexed, meaning Jan=0, Feb=1, Mar=2, etc.
+      d.setMonth(this.visibleMonth + (next ? 0 : -2));
+      this.calendar.scrollToMonth(d);
+    }
+  }
+
   getMonth(date) {
     const d = XDate(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
@@ -136,6 +146,13 @@ class ExpandableCalendar extends Component {
       return marked;
     } 
     return {[context.date]: {selected: true}};
+  }
+
+  shouldHideArrows() {
+    if (!this.props.horizontal) {
+      return true;
+    }
+    return this.props.hideArrows || false;
   }
 
   /** Pan Gesture */
@@ -202,6 +219,13 @@ class ExpandableCalendar extends Component {
   }
   
   /** Events */
+
+  onPressArrowLeft = () => {
+    this.scrollToMonth(false);
+  }
+  onPressArrowRight = () => {
+    this.scrollToMonth(true);
+  }
 
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     _.invoke(this.props.context, 'setDate', value.dateString); // report date change
@@ -285,6 +309,9 @@ class ExpandableCalendar extends Component {
           // futureScrollRange={0}
           markedDates={this.getMarkedDates()}
           theme={{todayTextColor: 'red'}}
+          hideArrows={this.shouldHideArrows()}
+          onPressArrowLeft={this.onPressArrowLeft}
+          onPressArrowRight={this.onPressArrowRight}
         />
         {!hideKnob && this.renderKnob()}
         {!horizontal && this.renderHeader()}

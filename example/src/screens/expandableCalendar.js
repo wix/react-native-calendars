@@ -80,6 +80,8 @@ export default class ExpandableCalendarScreen extends Component {
     return (
       <CalendarProvider>
         <ExpandableCalendar 
+          // horizontal={false}
+          // hideArrows
           // disablePan
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN} // can't find static positions
