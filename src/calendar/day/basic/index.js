@@ -77,6 +77,7 @@ class Day extends Component {
 
     return (
       <TouchableOpacity
+        testID={this.props.testID}
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
