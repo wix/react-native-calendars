@@ -89,6 +89,8 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+    
+    enableOptimisticScroll: PropTypes.bool,
   };
 
   constructor(props) {
@@ -245,7 +247,8 @@ export default class AgendaView extends Component {
   }
 
   _chooseDayFromCalendar(d) {
-    this.chooseDay(d, !this.state.calendarScrollable);
+    const { enableOptimisticScroll } = this.props;
+    this.chooseDay(d, !this.state.calendarScrollable && ( enableOptimisticScroll !== undefined && enableOptimisticScroll ));
   }
 
   chooseDay(d, optimisticScroll) {
