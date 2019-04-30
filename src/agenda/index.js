@@ -89,7 +89,7 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
-    
+    //Disable the scroll in the calendar view.    
     enableOptimisticScroll: PropTypes.bool,
   };
 
