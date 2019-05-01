@@ -13,6 +13,7 @@ import XDate from 'xdate';
 import dateutils from '../dateutils';
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
+import WeekCalendar from './weekCalendar';
 import asCalendarConsumer from './asCalendarConsumer';
 
 
@@ -277,6 +278,7 @@ class ExpandableCalendar extends Component {
   }
 
   renderKnob() {
+    // TODO: turn to TouchableOpacity with onPress that closes it
     return (
       <View style={this.style.knobContainer} pointerEvents={'none'}>
         <View style={this.style.knob}/>
@@ -284,10 +286,20 @@ class ExpandableCalendar extends Component {
     );
   }
 
+  renderWeekCalendar() {
+    return (
+      <WeekCalendar 
+        ref={r => this.weekCalendar = r}
+        // hideExtraDays
+        // showWeekNumbers
+      />
+    );
+  }
+
   render() {
     const {style, hideKnob, horizontal} = this.props;
-    const {deltaY, position} = this.state;
-    const isOpen = position === POSITIONS.OPEN;
+    const {deltaY/**, position */} = this.state;
+    // const isOpen = position === POSITIONS.OPEN;
 
     return (
       <Animated.View 
@@ -296,23 +308,26 @@ class ExpandableCalendar extends Component {
         {...this.panResponder.panHandlers}
         onLayout={this.onLayout}
       >
+        {/* {horizontal && isOpen ?  */}
         <CalendarList
           testID="calendar"
           {...this.props}
           ref={r => this.calendar = r}
           horizontal={horizontal}
+          style={{paddingLeft: 0, paddingRight: 0}}
           onDayPress={this.onDayPress}
           onVisibleMonthsChange={this.onVisibleMonthsChange}
           pagingEnabled
-          scrollEnabled={isOpen}
+          // scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
+          // theme={{todayTextColor: 'red'}}
           markedDates={this.getMarkedDates()}
-          theme={{todayTextColor: 'red'}}
           hideArrows={this.shouldHideArrows()}
           onPressArrowLeft={this.onPressArrowLeft}
           onPressArrowRight={this.onPressArrowRight}
-        />
+        /> 
+        {/* : this.renderWeekCalendar()} */}
         {!hideKnob && this.renderKnob()}
         {!horizontal && this.renderHeader()}
       </Animated.View>

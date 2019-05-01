@@ -57,6 +57,16 @@ export default function styleConstructor(theme={}) {
       fontSize: 13,
       color: appStyle.textSectionTitleColor
     },
+    monthView: {
+      backgroundColor: appStyle.calendarBackground
+    },
+    week: {
+      flex: 1,
+      marginTop: 7,
+      marginBottom: 7,
+      flexDirection: 'row',
+      justifyContent: 'space-around'
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
