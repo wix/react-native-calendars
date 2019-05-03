@@ -181,23 +181,33 @@ class ExpandableCalendar extends Component {
   };
   handlePanResponderMove = (e, gestureState) => {
     this._wrapperStyles.style.height = this._height + gestureState.dy;
+    
     if (!this.props.horizontal) {
+      // vertical CalenderList header
       this._headerStyles.style.top = Math.min(Math.max(-gestureState.dy, -HEADER_HEIGHT), 0);
     } else {
+      // horizontal Week view
       if (this.state.position === POSITIONS.CLOSED) {
         if (gestureState.dy > 0) {
           this._weekCalendarStyles.style.bottom = Math.min(Math.max(-WEEK_VIEW_HEIGHT, -gestureState.dy), 0);
         } 
-      } else { // POSITIONS.OPEN
+      } else {
         if (this._wrapperStyles.style.height < this.openHeight) {
           if (this._wrapperStyles.style.height < 190) { // change point
-            this._weekCalendarStyles.style.bottom = 0;
+            // show: bottom = 0;
+            if (this._weekCalendarStyles.style.bottom < -2) { // -2 to avoid bottom gap
+              this._weekCalendarStyles.style.bottom += (-gestureState.dy / 100);
+            }
           } else {
-            this._weekCalendarStyles.style.bottom = -WEEK_VIEW_HEIGHT;
+            // hide: bottom = -WEEK_VIEW_HEIGHT;
+            if (this._weekCalendarStyles.style.bottom > -WEEK_VIEW_HEIGHT) {
+              this._weekCalendarStyles.style.bottom -= (-gestureState.dy / 100);
+            }
           }
         }
       }
     }
+
     this.updateNativeStyles();
   };
 
@@ -261,7 +271,6 @@ class ExpandableCalendar extends Component {
   onWeekAnimationFinished = ({finished}) => {
     if (finished) {
       this.scrollToDate(this.props.context.date);
-      this._weekCalendarStyles.style.bottom = 0;
     }
   }
   
@@ -278,7 +287,7 @@ class ExpandableCalendar extends Component {
     _.invoke(this.props.context, 'setDate', value.dateString); // report date change
     setTimeout(() => { // allows setDate to be completed
       this.scrollToDate(value.dateString);
-      // this.bounceToPosition(this.closedHeight);
+      this.bounceToPosition(this.closedHeight);
     }, 0);
   }
 
