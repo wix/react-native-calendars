@@ -43,8 +43,8 @@ class CalendarList extends Component {
     // Dynamic calendar height
     calendarHeight: PropTypes.number,
 
-    // Style for the List (style prop is passed to the List item - the calendar)
-    containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number])
+    // Style for the List item (the calendar)
+    calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number])
   }
 
   static defaultProps = {
@@ -186,7 +186,7 @@ class CalendarList extends Component {
   }
 
   renderCalendar({item}) {
-    return (<CalendarListItem item={item} calendarHeight={this.props.calendarHeight} calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined  } {...this.props} />);
+    return (<CalendarListItem item={item} calendarHeight={this.props.calendarHeight} calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined} style={this.props.calendarStyle} {...this.props}/>);
   }
 
   getItemLayout(data, index) {
@@ -204,7 +204,7 @@ class CalendarList extends Component {
         onLayout={this.onLayout}
         ref={(c) => this.listView = c}
         //scrollEventThrottle={1000}
-        style={[this.style.container, this.props.containerStyle]}
+        style={[this.style.container, this.props.style]}
         initialListSize={this.props.pastScrollRange + this.props.futureScrollRange + 1}
         data={this.state.rows}
         //snapToAlignment='start'
