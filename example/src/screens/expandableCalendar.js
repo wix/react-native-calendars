@@ -18,6 +18,11 @@ const data = [
   {date: '2019-06-02', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
   {date: '2019-06-03', items: [{}]},
   {date: '2019-06-04', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {date: '2019-06-05', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {date: '2019-06-06', items: [{}]},
+  {date: '2019-06-07', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {date: '2019-06-08', items: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {date: '2019-06-09', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
 ];
 
 export default class ExpandableCalendarScreen extends Component {
@@ -88,6 +93,8 @@ export default class ExpandableCalendarScreen extends Component {
           onDateChanged={this.onDateChanged}
           currentDate={START_DATE} 
           markedDates={{'2019-06-08': {marked: true}, '2019-06-09': {marked: true}, '2019-05-01': {marked: true}}}
+          // firstDay={1}
+          theme={{todayTextColor: 'red'}}
         />
         <AgendaList
           data={data}

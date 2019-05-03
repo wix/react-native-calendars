@@ -10,20 +10,14 @@ import XDate from 'xdate';
 
 import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
-import {SELECT_DATE_SLOT} from '../testIDs';
 import styleConstructor from './style';
 
-import Day from '../calendar/day/basic';
-import UnitDay from '../calendar/day/period';
-import MultiDotDay from '../calendar/day/multi-dot';
-import MultiPeriodDay from '../calendar/day/multi-period';
-import SingleDay from '../calendar/day/custom';
 import CalendarHeader from '../calendar/header';
 import shouldComponentUpdate from '../calendar/updater';
 import Calendar from '../calendar';
+import Week from './week';
 
 
-const EmptyArray = [];
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const PAST_SCROLL_RANG = 1;
 const FUTURE_SCROLL_RANG = 1;
@@ -68,6 +62,23 @@ class WeekCalendar extends Component {
       });
     }
   }
+
+  /** Scroll */
+
+  // onScroll = (event) => {
+  //   const offsetX = event.nativeEvent.contentOffset.x;
+  //   const week = offsetX / SCREEN_WIDTH;
+  //   this.currentWeek = Math.ceil(week); // IMPORTANT!!!
+  //   // console.warn('INBAL onScroll currentWeek: ', this.currentWeek);
+  // }
+
+  // onScrollBeginDrag = () => {
+  //   // console.warn('INBAL BEGIN drag');
+  // }
+
+  // onScrollEndDrag = () => {
+  //   // console.warn('INBAL END drag');
+  // }
 
   /** Header */
 
@@ -130,23 +141,6 @@ class WeekCalendar extends Component {
     }
   }
 
-  /** Scroll */
-
-  // onScroll = (event) => {
-  //   const offsetX = event.nativeEvent.contentOffset.x;
-  //   const week = offsetX / SCREEN_WIDTH;
-  //   this.currentWeek = Math.ceil(week); // IMPORTANT!!!
-  //   // console.warn('INBAL onScroll currentWeek: ', this.currentWeek);
-  // }
-
-  // onScrollBeginDrag = () => {
-  //   // console.warn('INBAL BEGIN drag');
-  // }
-
-  // onScrollEndDrag = () => {
-  //   // console.warn('INBAL END drag');
-  // }
-
   /** Utils */
   
   getWeekNumberInMonth(month) {
@@ -158,7 +152,7 @@ class WeekCalendar extends Component {
   }
 
   getDate() {
-    return this.props.current ? XDate(this.props.current).getDate() : XDate().getDate();
+    return this.props.current ? XDate(this.props.current).getDate() : XDate().getDate(); // use parseDate() instead of Xdate() ?
   }
 
   getNumberOfWeeksInMonth(month) {
@@ -167,6 +161,14 @@ class WeekCalendar extends Component {
   }
   
   /** Day */
+
+  pressDay = (date) => {
+    this.handleDayInteraction(date, this.props.onDayPress);
+  }
+
+  longPressDay = (date) => {
+    this.handleDayInteraction(date, this.props.onDayLongPress);
+  }
 
   handleDayInteraction(date, interaction) {
     const day = parseDate(date);
@@ -183,118 +185,7 @@ class WeekCalendar extends Component {
     }
   }
 
-  pressDay = (date) => {
-    this.handleDayInteraction(date, this.props.onDayPress);
-  }
-
-  longPressDay = (date) => {
-    this.handleDayInteraction(date, this.props.onDayLongPress);
-  }
-  
-  renderDay(day, id) {
-    // const {currentMonth} = this.state;
-    const minDate = parseDate(this.props.minDate);
-    const maxDate = parseDate(this.props.maxDate);
-    let state = '';
-    if (this.props.disabledByDefault) {
-      state = 'disabled';
-    } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
-      state = 'disabled';
-    // } else if (!dateutils.sameMonth(day, currentMonth)) { // for extra days
-    //   state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
-      state = 'today';
-    }
-
-    // hide extra days
-    // if (!dateutils.sameMonth(day, currentMonth) && this.props.hideExtraDays) {
-    //   return (<View key={id} style={{flex: 1}}/>);
-    // }
-
-    const DayComp = this.getDayComponent();
-    const date = day.getDate();
-    const dateAsObject = xdateToData(day);
-
-    return (
-      <View style={{flex: 1, alignItems: 'center'}} key={id}>
-        <DayComp
-          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
-          state={state}
-          theme={this.props.theme}
-          onPress={this.pressDay}
-          onLongPress={this.longPressDay}
-          date={dateAsObject}
-          marking={this.getDateMarking(day)}
-        >
-          {date}
-        </DayComp>
-      </View>
-    );
-  }
-
-  getDayComponent() {
-    if (this.props.dayComponent) {
-      return this.props.dayComponent;
-    }
-
-    switch (this.props.markingType) {
-    case 'period':
-      return UnitDay;
-    case 'multi-dot':
-      return MultiDotDay;
-    case 'multi-period':
-      return MultiPeriodDay;
-    case 'custom':
-      return SingleDay;
-    default:
-      return Day;
-    }
-  }
-
-  getDateMarking(day) {
-    if (!this.props.markedDates) {
-      return false;
-    }
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
-    if (dates.length || dates) {
-      return dates;
-    } else {
-      return false;
-    }
-  }
-
   /** Week */
-
-  // renderWeekNumber (weekNumber) {
-  //   return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
-  // }
-
-  // renderWeek(days, id) {
-  //   const week = [];
-  //   days.forEach((day, id2) => {
-  //     week.push(this.renderDay(day, id2));
-  //   }, this);
-    
-  //   if (this.props.showWeekNumbers) {
-  //     week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
-  //   }
-
-  //   return (
-  //     <View style={this.style.week} key={id}>{week}</View>
-  //   );
-  // }
-
-  // renderMonth(date) {
-  //   const days = dateutils.page(date, this.props.firstDay);
-  //   const weeks = [];
-  //   while (days.length) {
-  //     weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
-  //   }
-
-  //   return (
-  //     <View style={[this.style.monthView, {flexDirection: 'row', width: weeks.length * SCREEN_WIDTH}]}>{weeks}</View>
-  //   );
-  // }
 
   getWeeksArray(months) {
     const monthsArray = Object.values(months);
@@ -341,31 +232,14 @@ class WeekCalendar extends Component {
     }
   }
 
+  /** Month */
+
   getMonthName(date) {
-    return XDate(date).toString('MMMM yyyy');
+    return XDate(date).toString('MMMM yyyy'); // use parseDate() instead of Xdate() ?
   }
   getMonthWeeks(date) {
     return this.state.monthsMap[this.getMonthName(date)];
   }
-
-  /** Rows */
-
-  getRowIndex(date) {
-    let i;
-    const array = this.state.rows;
-    array.forEach((row, index) => {
-      row.forEach(day => {
-        if (dateutils.sameDate(day, date)) {
-          i = index;
-          return;
-        }
-      });
-      if (i !== undefined) return;
-    });
-    return i;
-  }
-
-  /** Month */
 
   updateCurrentMonth(visibleWeek) {
     const preMonth = this.currentMonth.clone().addMonths(-1, true);
@@ -393,6 +267,23 @@ class WeekCalendar extends Component {
     }
   }
 
+  /** Rows */
+
+  getRowIndex(date) {
+    let i;
+    const array = this.state.rows;
+    array.forEach((row, index) => {
+      row.forEach(day => {
+        if (dateutils.sameDate(day, date)) {
+          i = index;
+          return;
+        }
+      });
+      if (i !== undefined) return;
+    });
+    return i;
+  }
+
   updateRows(month, next) {
     const obj = this.getMonth(month);
     let newMap = {};
@@ -410,11 +301,11 @@ class WeekCalendar extends Component {
       console.log('INBAL this.state.rows: ', this.state.rows);
       // if (!next) {
         // Need to update the scroll position when adding items to the beginning of the rows array!!!
-      //   this.scrollToWeek(this.visibleWeek);
+      //   this.scrollToRow(this.visibleWeek);
       // }
     });
   }
-  scrollToWeek(date) {
+  scrollToRow(date) {
     let to = date;
     if (Array.isArray(date)) {
       to = date[0];
@@ -428,18 +319,15 @@ class WeekCalendar extends Component {
   /** Renders */
 
   renderRow = ({item, index}) => {
-    console.warn('INBAL render row: ', item);
-    const week = [];
-    item.forEach((day, id) => {
-      week.push(this.renderDay(day, id));
-    }, this);
-    
-    // if (this.props.showWeekNumbers) {
-    //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
-    // }
-
     return (
-      <View style={[this.style.week, {width: SCREEN_WIDTH}]} key={index}>{week}</View>
+      <Week 
+        dates={item} 
+        index={index} 
+        pressDay={this.pressDay} 
+        longPressDay={this.longPressDay} 
+        theme={this.props.theme}
+        markedDates={this.props.markedDates}
+      />
     );
   }
 
@@ -496,6 +384,7 @@ class WeekCalendar extends Component {
       }
     }
 
+    return this.renderContent();
     return (
       <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
