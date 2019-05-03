@@ -29,18 +29,12 @@ class Week extends Component {
     ...Calendar.propTypes,
     dates: PropTypes.array,
     index: PropTypes.number,
-    currentMonth: PropTypes.string, // for hideExtraDays
-
-    onDayPress: PropTypes.func,
-    // longPressDay: PropTypes.func,
-    theme: PropTypes.object,
-    firstDay: PropTypes.number,
-    markedDates: PropTypes.object,
-    hideExtraDays: PropTypes.bool
+    currentMonth: PropTypes.string // for 'hideExtraDays'
   };
 
   constructor(props) {
     super(props);
+    
     this.style = styleConstructor(this.props.theme);
   }
 
@@ -67,6 +61,7 @@ class Week extends Component {
     if (!this.props.markedDates) {
       return false;
     }
+
     const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;

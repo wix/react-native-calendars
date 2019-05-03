@@ -16,8 +16,8 @@ import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 
 import CalendarList from '../calendar-list';
-import WeekCalendar from './weekCalendar';
 import asCalendarConsumer from './asCalendarConsumer';
+// import WeekCalendar from './weekCalendar';
 import Week from './week';
 
 
@@ -32,15 +32,15 @@ const CLOSED_HEIGHT = 120;
 const OPEN_HEIGHT = isAndroid ? 340 : 330; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
 const HEADER_HEIGHT = 62;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 const WEEK_VIEW_HEIGHT = 48;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class ExpandableCalendar extends Component {
   static propTypes = {
     ...CalendarList.propTypes,
     hideKnob: PropTypes.bool,
     horizontal: PropTypes.bool,
-    currentDate: PropTypes.string, /** 'yyyy-MM-dd' format */
+    currentDate: PropTypes.string, // 'yyyy-MM-dd' format
     markedDates: PropTypes.object,
     onDateChanged: PropTypes.func,
     initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
@@ -62,10 +62,10 @@ class ExpandableCalendar extends Component {
     this.openHeight = OPEN_HEIGHT + (props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
     this.threshold = this.openHeight / 1.75;
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
+    this._height = startHeight;
     this._wrapperStyles = {style: {}};
     this._headerStyles = {style: {}};
     this._weekCalendarStyles = {style: {}};
-    this._height = startHeight;
     this.wrapper = undefined;
     this.calendar = undefined;
     this.visibleMonth = undefined;
@@ -74,7 +74,7 @@ class ExpandableCalendar extends Component {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(0),
       weekDeltaY: new Animated.Value(0),
-      position: POSITIONS.CLOSED,
+      position: POSITIONS.CLOSED
     };
 
     this.panResponder = PanResponder.create({
@@ -145,6 +145,7 @@ class ExpandableCalendar extends Component {
 
   getMarkedDates() {
     const {context, markedDates} = this.props;
+
     if (markedDates) {
       const marked = _.cloneDeep(markedDates);
       if (marked[context.date]) {
@@ -158,7 +159,6 @@ class ExpandableCalendar extends Component {
   }
 
   shouldHideArrows() {
-    // console.log('INBAL isOpen: ', this.state.position);
     if (!this.props.horizontal || (this.props.horizontal && this.state.position === POSITIONS.CLOSED)) {
       return true;
     }
@@ -178,6 +178,7 @@ class ExpandableCalendar extends Component {
     return gestureState.dy > 10 || gestureState.dy < -10; // 5
   };
   handlePanResponderGrant = () => {
+  
   };
   handlePanResponderMove = (e, gestureState) => {
     this._wrapperStyles.style.height = this._height + gestureState.dy;
@@ -210,7 +211,6 @@ class ExpandableCalendar extends Component {
 
     this.updateNativeStyles();
   };
-
   handlePanResponderEnd = (e, gestureState) => {
     this._height += gestureState.dy;
     this.bounceToPosition();
@@ -285,7 +285,8 @@ class ExpandableCalendar extends Component {
 
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     _.invoke(this.props.context, 'setDate', value.dateString); // report date change
-    setTimeout(() => { // allows setDate to be completed
+    
+    setTimeout(() => { // to allows setDate to be completed
       this.scrollToDate(value.dateString);
       this.bounceToPosition(this.closedHeight);
     }, 0);
@@ -298,7 +299,7 @@ class ExpandableCalendar extends Component {
   onLayout = ({nativeEvent}) => {
     const x = nativeEvent.layout.x;
     if (!this.props.horizontal) {
-      this.openHeight = SCREEN_HEIGHT - x - (SCREEN_HEIGHT * 0.2); // SCREEN_HEIGHT ?
+      this.openHeight = SCREEN_HEIGHT - x - (SCREEN_HEIGHT * 0.2); // TODO: change to SCREEN_HEIGHT ?
     }
   }
 
@@ -332,17 +333,9 @@ class ExpandableCalendar extends Component {
     );
   }
 
-  renderKnob() {
-    // TODO: turn to TouchableOpacity with onPress that closes it
-    return (
-      <View style={this.style.knobContainer} pointerEvents={'none'}>
-        <View style={this.style.knob}/>
-      </View>
-    );
-  }
-
   renderWeekCalendar() {
     const {weekDeltaY} = this.state;
+
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
@@ -394,6 +387,15 @@ class ExpandableCalendar extends Component {
     }
   }
 
+  renderKnob() {
+    // TODO: turn to TouchableOpacity with onPress that closes it
+    return (
+      <View style={this.style.knobContainer} pointerEvents={'none'}>
+        <View style={this.style.knob}/>
+      </View>
+    );
+  }
+
   render() {
     const {style, hideKnob, horizontal} = this.props;
     const {deltaY, position} = this.state;
@@ -411,16 +413,16 @@ class ExpandableCalendar extends Component {
           {...this.props}
           ref={r => this.calendar = r}
           horizontal={horizontal}
-          style={{paddingLeft: 0, paddingRight: 0}}
+          style={{paddingLeft: 0, paddingRight: 0}} // TODO: change to 'calendarStyle' after PR #805 merge
           onDayPress={this.onDayPress}
           onVisibleMonthsChange={this.onVisibleMonthsChange}
           pagingEnabled
           scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
-          // theme={{todayTextColor: 'red'}}
+          theme={{todayTextColor: 'red'}}
           markedDates={this.getMarkedDates()}
-          hideArrows={true} // this.shouldHideArrows() - Calendar doesn't re-render the header after prop value changed
+          hideArrows={true} // this.shouldHideArrows() - Calendar doesn't re-render the header after prop value changed. TODO: restore after weekCalendar
           onPressArrowLeft={this.onPressArrowLeft}
           onPressArrowRight={this.onPressArrowRight}
         /> 
