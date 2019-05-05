@@ -3,10 +3,11 @@ import {Text, View} from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
+
 class CalendarListItem extends Component {
   static defaultProps = {
     hideArrows: true,
-    hideExtraDays: true,
+    hideExtraDays: true
   };
 
   constructor(props) {
@@ -22,11 +23,12 @@ class CalendarListItem extends Component {
 
   render() {
     const row = this.props.item;
+    
     if (row.getTime) {
       return (
         <Calendar
           theme={this.props.theme}
-          style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.calendar]}
+          style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.calendar, this.props.style]}
           current={row}
           hideArrows={this.props.hideArrows}
           onPressArrowLeft={this.props.onPressArrowLeft}
@@ -52,6 +54,7 @@ class CalendarListItem extends Component {
         />);
     } else {
       const text = row.toString();
+      
       return (
         <View style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.placeholder]}>
           <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
