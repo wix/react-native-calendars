@@ -195,15 +195,17 @@ class ExpandableCalendar extends Component {
       } else {
         if (this._wrapperStyles.style.height < this.openHeight) {
           if (this._wrapperStyles.style.height < 190) { // change point
-            // show: bottom = 0;
-            if (this._weekCalendarStyles.style.bottom < -2) { // -2 to avoid bottom gap
-              this._weekCalendarStyles.style.bottom += (-gestureState.dy / 100);
-            }
+            // show: bottom = 0; // -2 to avoid bottom gap
+            // if (this._weekCalendarStyles.style.bottom < -2) { 
+            //   this._weekCalendarStyles.style.bottom += (-gestureState.dy / 100);
+            // }
+            this._weekCalendarStyles.style.bottom += (this._weekCalendarStyles.style.bottom < -2 ? -gestureState.dy / 100 : 0);
           } else {
             // hide: bottom = -WEEK_VIEW_HEIGHT;
-            if (this._weekCalendarStyles.style.bottom > -WEEK_VIEW_HEIGHT) {
-              this._weekCalendarStyles.style.bottom -= (-gestureState.dy / 100);
-            }
+            // if (this._weekCalendarStyles.style.bottom > -WEEK_VIEW_HEIGHT) {
+            //   this._weekCalendarStyles.style.bottom -= (-gestureState.dy / 100);
+            // }
+            this._weekCalendarStyles.style.bottom -= (this._weekCalendarStyles.style.bottom > -WEEK_VIEW_HEIGHT ? -gestureState.dy / 100 : 0);
           }
         }
       }
