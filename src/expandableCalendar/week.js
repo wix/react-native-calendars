@@ -75,21 +75,22 @@ class Week extends Component {
   // }
 
   renderDay(day, id) {
+    const {currentMonth, hideExtraDays} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
+    
     let state = '';
     if (this.props.disabledByDefault) {
       state = 'disabled';
     } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
       state = 'disabled';
-    // } else if (!dateutils.sameMonth(day, currentMonth)) { // for extra days
-    //   state = 'disabled';
+    } else if (!dateutils.sameMonth(day, parseDate(currentMonth))) { // for extra days
+      state = 'disabled';
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
 
     // hide extra days
-    const {currentMonth, hideExtraDays} = this.props;
     if (currentMonth && hideExtraDays) {
       if (!dateutils.sameMonth(day, parseDate(currentMonth))) {
         return (<View key={id} style={{flex: 1}}/>);

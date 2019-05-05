@@ -17,7 +17,6 @@ import styleConstructor from './style';
 
 import CalendarList from '../calendar-list';
 import asCalendarConsumer from './asCalendarConsumer';
-// import WeekCalendar from './weekCalendar';
 import Week from './week';
 
 
@@ -98,7 +97,7 @@ class ExpandableCalendar extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.context.date !== prevProps.context.date) {
-      // date was changed from AgendaList
+      // date was changed from AgendaList, arrows or scroll
       _.invoke(this.props, 'onDateChanged', this.props.context.date); // report to screen (can be placed in any consumer class)
       this.scrollToDate(this.props.context.date);
     }
@@ -114,33 +113,46 @@ class ExpandableCalendar extends Component {
   }
 
   getCurrentDate() {
-    return this.props.currentDate || XDate().toString('yyyy-MM-dd'); 
+    return this.props.currentDate || this.getDateString(XDate()); 
+  }
+
+  getDateString(date) {
+    return date.toString('yyyy-MM-dd');
   }
 
   scrollToDate(date) {
     if (this.calendar) {
       if (!this.props.horizontal) {
         this.calendar.scrollToDay(XDate(date), 0, true);
-      } else if (this.getMonth(date) !== this.visibleMonth) {
+      } else if (this.getMonth(date) !== this.visibleMonth) { // don't scroll if the month is already visible
         this.calendar.scrollToMonth(XDate(date));
       }
     }
   }
 
-  scrollToMonth(next) {
+  scrollPage(next) {
     // TODO: flip on RTL?
-    if (this.calendar) {
-      const d = XDate();
-      // month is zero-indexed, meaning Jan=0, Feb=1, Mar=2, etc.
-      d.setMonth(this.visibleMonth + (next ? 0 : -2));
-      this.calendar.scrollToMonth(d);
+    const {position} = this.state;
+    
+    const d = parseDate(this.props.context.date); // XDate(this.props.context.date);
+    if (position === POSITIONS.OPEN) {
+      d.setDate(1);
+      d.addMonths(next ? 1 : -1);
+    } else {
+      d.addDays(next ? 7 : -7); // day of the week / props.firstDay
     }
+    _.invoke(this.props.context, 'setDate', this.getDateString(d)); // report date change
   }
 
   getMonth(date) {
     const d = XDate(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
     return d.getMonth() + 1;
+  }
+
+  getYear(date) {
+    const d = XDate(date);
+    return d.getFullYear();
   }
 
   getMarkedDates() {
@@ -159,7 +171,7 @@ class ExpandableCalendar extends Component {
   }
 
   shouldHideArrows() {
-    if (!this.props.horizontal || (this.props.horizontal && this.state.position === POSITIONS.CLOSED)) {
+    if (!this.props.horizontal) {
       return true;
     }
     return this.props.hideArrows || false;
@@ -175,7 +187,7 @@ class ExpandableCalendar extends Component {
       // disable pan detection when vertical calendar is open to allow calendar scroll
       return false;
     }
-    return gestureState.dy > 10 || gestureState.dy < -10; // 5
+    return gestureState.dy > 5 || gestureState.dy < -5;
   };
   handlePanResponderGrant = () => {
   
@@ -196,15 +208,9 @@ class ExpandableCalendar extends Component {
         if (this._wrapperStyles.style.height < this.openHeight) {
           if (this._wrapperStyles.style.height < 190) { // change point
             // show: bottom = 0; // -2 to avoid bottom gap
-            // if (this._weekCalendarStyles.style.bottom < -2) { 
-            //   this._weekCalendarStyles.style.bottom += (-gestureState.dy / 100);
-            // }
             this._weekCalendarStyles.style.bottom += (this._weekCalendarStyles.style.bottom < -2 ? -gestureState.dy / 100 : 0);
           } else {
             // hide: bottom = -WEEK_VIEW_HEIGHT;
-            // if (this._weekCalendarStyles.style.bottom > -WEEK_VIEW_HEIGHT) {
-            //   this._weekCalendarStyles.style.bottom -= (-gestureState.dy / 100);
-            // }
             this._weekCalendarStyles.style.bottom -= (this._weekCalendarStyles.style.bottom > -WEEK_VIEW_HEIGHT ? -gestureState.dy / 100 : 0);
           }
         }
@@ -272,30 +278,49 @@ class ExpandableCalendar extends Component {
 
   onWeekAnimationFinished = ({finished}) => {
     if (finished) {
-      this.scrollToDate(this.props.context.date);
+      // this.scrollToDate(this.props.context.date); // scroll CalendarList to selected date to match header with week view
     }
   }
   
   /** Events */
 
   onPressArrowLeft = () => {
-    this.scrollToMonth(false);
+    this.scrollPage(false);
   }
   onPressArrowRight = () => {
-    this.scrollToMonth(true);
+    this.scrollPage(true);
   }
 
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     _.invoke(this.props.context, 'setDate', value.dateString); // report date change
     
     setTimeout(() => { // to allows setDate to be completed
-      this.scrollToDate(value.dateString);
+      // this.scrollToDate(value.dateString); // no need as componentDidUpdate will call it after invoking context's setDate
       this.bounceToPosition(this.closedHeight);
     }, 0);
   }
 
+  isLaterDate(date1, date2) {
+    if (date1.year > this.getYear(date2)) {
+      return true;
+    }
+    if (date1.year === this.getYear(date2)) {
+      if (date1.month > this.getMonth(date2)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   onVisibleMonthsChange = (value) => {
-    this.visibleMonth = _.first(value).month; // equivalent to this.getMonth(value[0].dateString)
+    if (this.visibleMonth !== _.first(value).month) {
+      this.visibleMonth = _.first(value).month; // equivalent to this.getMonth(value[0].dateString)
+      
+      if (this.visibleMonth !== this.getMonth(this.props.context.date)) {
+        const next = this.isLaterDate(_.first(value), this.props.context.date);
+        this.scrollPage(next);
+      }
+    }
   }
 
   onLayout = ({nativeEvent}) => {
@@ -337,25 +362,19 @@ class ExpandableCalendar extends Component {
 
   renderWeekCalendar() {
     const {weekDeltaY} = this.state;
-
+    
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
         style={{bottom: weekDeltaY}}
       >
-        {/* <WeekCalendar 
-          style={{position: 'absolute', left: 0, right: 0, bottom: KNOB_CONTAINER_HEIGHT}}
-          markedDates={this.getMarkedDates()}
-          // hideExtraDays
-          // showWeekNumbers
-        /> */}
         <Week
           index={0}
           dates={this.getWeek(this.props.context.date)}
           currentMonth={this.props.context.date}
           {...this.props}
           style={{position: 'absolute', left: 0, right: 0, bottom: KNOB_CONTAINER_HEIGHT}}
-          hideExtraDays
+          // hideExtraDays
           onDayPress={this.onDayPress}
           markedDates={this.getMarkedDates()}
         />
@@ -424,9 +443,10 @@ class ExpandableCalendar extends Component {
           // futureScrollRange={0}
           theme={{todayTextColor: 'red'}}
           markedDates={this.getMarkedDates()}
-          hideArrows={true} // this.shouldHideArrows() - Calendar doesn't re-render the header after prop value changed. TODO: restore after weekCalendar
+          hideArrows={this.shouldHideArrows()}
           onPressArrowLeft={this.onPressArrowLeft}
           onPressArrowRight={this.onPressArrowRight}
+          hideExtraDays={false}
         /> 
         {horizontal && this.renderWeekCalendar()}
         {!hideKnob && this.renderKnob()}
