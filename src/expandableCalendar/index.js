@@ -415,7 +415,7 @@ class ExpandableCalendar extends Component {
           {...this.props}
           ref={r => this.calendar = r}
           horizontal={horizontal}
-          style={{paddingLeft: 0, paddingRight: 0}} // TODO: change to 'calendarStyle' after PR #805 merge
+          calendarStyle={{paddingLeft: 0, paddingRight: 0}}
           onDayPress={this.onDayPress}
           onVisibleMonthsChange={this.onVisibleMonthsChange}
           pagingEnabled
