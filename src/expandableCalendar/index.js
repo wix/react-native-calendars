@@ -48,7 +48,8 @@ class ExpandableCalendar extends Component {
 
   static defaultProps = {
     horizontal: true,
-    initialPosition: POSITIONS.CLOSED
+    initialPosition: POSITIONS.CLOSED,
+    firstDay: 0
   }
 
   static positions = POSITIONS;
@@ -84,7 +85,7 @@ class ExpandableCalendar extends Component {
       onPanResponderTerminate: this.handlePanResponderEnd
     });
 
-    _.invoke(this.props.context, 'setDate', this.getCurrentDate()); // report date change (set initial value)
+    _.invoke(this.props.context, 'setDate', this.getCurrentDate());  // set initial value of context.date
   }
 
   componentDidMount() {
@@ -139,9 +140,10 @@ class ExpandableCalendar extends Component {
       d.setDate(1);
       d.addMonths(next ? 1 : -1);
     } else {
-      d.addDays(next ? 7 : -7); // day of the week / props.firstDay
+      const firstDayOfWeek = (next ? 7 : -7) - d.getDay() + this.props.firstDay;
+      d.addDays(firstDayOfWeek);
     }
-    _.invoke(this.props.context, 'setDate', this.getDateString(d)); // report date change
+    _.invoke(this.props.context, 'setDate', this.getDateString(d)); 
   }
 
   getMonth(date) {
@@ -292,7 +294,7 @@ class ExpandableCalendar extends Component {
   }
 
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
-    _.invoke(this.props.context, 'setDate', value.dateString); // report date change
+    _.invoke(this.props.context, 'setDate', value.dateString); 
     
     setTimeout(() => { // to allows setDate to be completed
       // this.scrollToDate(value.dateString); // no need as componentDidUpdate will call it after invoking context's setDate
@@ -384,9 +386,8 @@ class ExpandableCalendar extends Component {
 
   getWeek(date) {
     if (date) {
-      const firstDay = this.props.firstDay || 0;
       const current = parseDate(date);
-      const dayOfTheWeek = current.getDay() - firstDay;
+      const dayOfTheWeek = current.getDay() - this.props.firstDay;
       const daysArray = [current];
       
       let newDate = current;
