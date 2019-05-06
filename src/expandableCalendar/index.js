@@ -73,6 +73,7 @@ class ExpandableCalendar extends Component {
     this.state = {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(0),
+      weekOpacity: new Animated.Value(1),
       position: POSITIONS.CLOSED
     };
 
@@ -236,7 +237,7 @@ class ExpandableCalendar extends Component {
   };
   handlePanResponderMove = (e, gestureState) => {
     this._wrapperStyles.style.height = this._height + gestureState.dy;
-    
+
     if (!this.props.horizontal) {
       // vertical CalenderList header
       this._headerStyles.style.top = Math.min(Math.max(-gestureState.dy, -HEADER_HEIGHT), 0);
@@ -275,8 +276,17 @@ class ExpandableCalendar extends Component {
 
   resetWeekCalendarOpacity() {
     const isClosed = this._height < this.threshold;
-    this._weekCalendarStyles.style.opacity = isClosed ? 1 : 0;
-    this.updateNativeStyles();
+    if (isClosed) {
+      this.setState({weekOpacity: new Animated.Value(this._weekCalendarStyles.style.opacity)}, () => {
+        Animated.spring(this.state.weekOpacity, {
+          toValue: 1,
+          speed: SPEED / 10,
+          bounciness: BOUNCINESS
+        }).start();
+      });
+    } else {
+      this.setState({weekOpacity: new Animated.Value(0)});
+    }
   }
 
   onAnimatedFinished = ({finished}) => {
@@ -368,7 +378,7 @@ class ExpandableCalendar extends Component {
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
-        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 10)}}
+        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 10), opacity: this.state.weekOpacity}}
       >
         <Week
           index={0}
