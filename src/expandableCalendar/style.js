@@ -7,13 +7,12 @@ export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     containerShadow: {
-      borderWidth: 1,
-      borderColor: 'white',
       shadowColor: '#79838A',
       shadowOpacity: 0.2,
       shadowRadius: 2,
       shadowOffset: {height: 6, width: 0},
       zIndex: 99,
+      backgroundColor: 'white',
       elevation: 2
     },
     container: {
