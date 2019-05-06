@@ -12,7 +12,7 @@ import {
 
 import XDate from 'xdate';
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
+import {parseDate} from '../interface';
 import styleConstructor from './style';
 
 import CalendarList from '../calendar-list';
@@ -31,7 +31,6 @@ const CLOSED_HEIGHT = 120;
 const OPEN_HEIGHT = isAndroid ? 340 : 330; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
 const HEADER_HEIGHT = 62;
-const WEEK_VIEW_HEIGHT = 48;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class ExpandableCalendar extends Component {
@@ -69,11 +68,11 @@ class ExpandableCalendar extends Component {
     this.wrapper = undefined;
     this.calendar = undefined;
     this.visibleMonth = undefined;
+    this.ops = 0;
 
     this.state = {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(0),
-      weekDeltaY: new Animated.Value(0),
       position: POSITIONS.CLOSED
     };
 
@@ -92,7 +91,7 @@ class ExpandableCalendar extends Component {
     this.updateNativeStyles();
     
     setTimeout(() => {
-      this.scrollToDate(this.props.context.date); // not working 100%
+      this.scrollToDate(this.props.context.date);
     }, 500);
   }
 
@@ -113,13 +112,7 @@ class ExpandableCalendar extends Component {
     }
   }
 
-  getCurrentDate() {
-    return this.props.currentDate || this.getDateString(XDate()); 
-  }
-
-  getDateString(date) {
-    return date.toString('yyyy-MM-dd');
-  }
+  /** Scroll */
 
   scrollToDate(date) {
     if (this.calendar) {
@@ -135,7 +128,7 @@ class ExpandableCalendar extends Component {
     // TODO: flip on RTL?
     const {position} = this.state;
     
-    const d = parseDate(this.props.context.date); // XDate(this.props.context.date);
+    const d = parseDate(this.props.context.date);
     if (position === POSITIONS.OPEN) {
       d.setDate(1);
       d.addMonths(next ? 1 : -1);
@@ -146,15 +139,50 @@ class ExpandableCalendar extends Component {
     _.invoke(this.props.context, 'setDate', this.getDateString(d)); 
   }
 
+  /** Utils */
+
+  getCurrentDate() {
+    return this.props.currentDate || this.getDateString(XDate()); 
+  }
+
+  getDateString(date) {
+    return date.toString('yyyy-MM-dd');
+  }
+
+  getYear(date) {
+    const d = XDate(date);
+    return d.getFullYear();
+  }
+
   getMonth(date) {
     const d = XDate(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
     return d.getMonth() + 1;
   }
 
-  getYear(date) {
-    const d = XDate(date);
-    return d.getFullYear();
+  getWeek(date) {
+    if (date) {
+      const current = parseDate(date);
+      const dayOfTheWeek = current.getDay() - this.props.firstDay;
+      const daysArray = [current];
+      
+      let newDate = current;
+      let index = dayOfTheWeek - 1;
+      while (index >= 0) {
+        newDate = parseDate(newDate).addDays(-1);
+        daysArray.unshift(newDate);
+        index -= 1;
+      }
+
+      newDate = current;
+      index = dayOfTheWeek + 1;
+      while (index < 7) {
+        newDate = parseDate(newDate).addDays(1);
+        daysArray.push(newDate);
+        index += 1;
+      }
+      return daysArray;
+    }
   }
 
   getMarkedDates() {
@@ -177,6 +205,18 @@ class ExpandableCalendar extends Component {
       return true;
     }
     return this.props.hideArrows || false;
+  }
+
+  isLaterDate(date1, date2) {
+    if (date1.year > this.getYear(date2)) {
+      return true;
+    }
+    if (date1.year === this.getYear(date2)) {
+      if (date1.month > this.getMonth(date2)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /** Pan Gesture */
@@ -203,19 +243,7 @@ class ExpandableCalendar extends Component {
     } else {
       // horizontal Week view
       if (this.state.position === POSITIONS.CLOSED) {
-        if (gestureState.dy > 0) {
-          this._weekCalendarStyles.style.bottom = Math.min(Math.max(-WEEK_VIEW_HEIGHT, -gestureState.dy), 0);
-        } 
-      } else {
-        if (this._wrapperStyles.style.height < this.openHeight) {
-          if (this._wrapperStyles.style.height < 190) { // change point
-            // show: bottom = 0; // -2 to avoid bottom gap
-            this._weekCalendarStyles.style.bottom += (this._weekCalendarStyles.style.bottom < -2 ? -gestureState.dy / 100 : 0);
-          } else {
-            // hide: bottom = -WEEK_VIEW_HEIGHT;
-            this._weekCalendarStyles.style.bottom -= (this._weekCalendarStyles.style.bottom > -WEEK_VIEW_HEIGHT ? -gestureState.dy / 100 : 0);
-          }
-        }
+        this._weekCalendarStyles.style.opacity = Math.min(1, Math.max(1 - gestureState.dy / 100, 0));
       }
     }
 
@@ -242,7 +270,13 @@ class ExpandableCalendar extends Component {
     }).start(this.onAnimatedFinished);
 
     this.closeHeader();
-    this.showWeekCalendar();
+    this.resetWeekCalendarOpacity();
+  }
+
+  resetWeekCalendarOpacity() {
+    const isClosed = this._height < this.threshold;
+    this._weekCalendarStyles.style.opacity = isClosed ? 1 : 0;
+    this.updateNativeStyles();
   }
 
   onAnimatedFinished = ({finished}) => {
@@ -264,25 +298,6 @@ class ExpandableCalendar extends Component {
       }).start();
     }
   }
-
-  showWeekCalendar() {
-    const {horizontal} = this.props;
-    const isClosed = this._height < this.threshold;
-    
-    if (horizontal && isClosed) {
-      Animated.spring(this.state.weekDeltaY, {
-        toValue: 0,
-        speed: SPEED / 100,
-        bounciness: BOUNCINESS
-      }).start(this.onWeekAnimationFinished);
-    }
-  }
-
-  onWeekAnimationFinished = ({finished}) => {
-    if (finished) {
-      // this.scrollToDate(this.props.context.date); // scroll CalendarList to selected date to match header with week view
-    }
-  }
   
   /** Events */
 
@@ -297,21 +312,8 @@ class ExpandableCalendar extends Component {
     _.invoke(this.props.context, 'setDate', value.dateString); 
     
     setTimeout(() => { // to allows setDate to be completed
-      // this.scrollToDate(value.dateString); // no need as componentDidUpdate will call it after invoking context's setDate
       this.bounceToPosition(this.closedHeight);
     }, 0);
-  }
-
-  isLaterDate(date1, date2) {
-    if (date1.year > this.getYear(date2)) {
-      return true;
-    }
-    if (date1.year === this.getYear(date2)) {
-      if (date1.month > this.getMonth(date2)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   onVisibleMonthsChange = (value) => {
@@ -363,50 +365,21 @@ class ExpandableCalendar extends Component {
   }
 
   renderWeekCalendar() {
-    const {weekDeltaY} = this.state;
-    
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
-        style={{bottom: weekDeltaY}}
+        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 10)}}
       >
         <Week
           index={0}
           dates={this.getWeek(this.props.context.date)}
           currentMonth={this.props.context.date}
           {...this.props}
-          style={{position: 'absolute', left: 0, right: 0, bottom: KNOB_CONTAINER_HEIGHT}}
-          // hideExtraDays
           onDayPress={this.onDayPress}
           markedDates={this.getMarkedDates()}
         />
       </Animated.View>
     );
-  }
-
-  getWeek(date) {
-    if (date) {
-      const current = parseDate(date);
-      const dayOfTheWeek = current.getDay() - this.props.firstDay;
-      const daysArray = [current];
-      
-      let newDate = current;
-      let index = dayOfTheWeek - 1;
-      while (index >= 0) {
-        newDate = parseDate(newDate).addDays(-1);
-        daysArray.unshift(newDate);
-        index -= 1;
-      }
-
-      newDate = current;
-      index = dayOfTheWeek + 1;
-      while (index < 7) {
-        newDate = parseDate(newDate).addDays(1);
-        daysArray.push(newDate);
-        index += 1;
-      }
-      return daysArray;
-    }
   }
 
   renderKnob() {
@@ -426,7 +399,7 @@ class ExpandableCalendar extends Component {
     return (
       <Animated.View 
         ref={e => {this.wrapper = e;}}
-        style={[style, {height: deltaY}]} 
+        style={[this.style.containerShadow, style, {height: deltaY}]} 
         {...this.panResponder.panHandlers}
         onLayout={this.onLayout}
       >
