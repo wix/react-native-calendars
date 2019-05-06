@@ -5,6 +5,8 @@ import {
   SectionList,
   Text
 } from 'react-native';
+import XDate from 'xdate';
+
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
 
@@ -45,8 +47,9 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
+    const sectionTitle = XDate(title).toDateString();
     return (
-      <Text style={this.style.sectionText}>{title}</Text>
+      <Text style={this.style.sectionText}>{sectionTitle}</Text>
     );
   }
 

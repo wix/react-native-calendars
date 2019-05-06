@@ -6,6 +6,16 @@ const STYLESHEET_ID = 'stylesheet.expandable.main';
 export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
+    containerShadow: {
+      borderWidth: 1,
+      borderColor: 'white',
+      shadowColor: '#79838A',
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
+      shadowOffset: {height: 6, width: 0},
+      zIndex: 99,
+      elevation: 2
+    },
     container: {
       backgroundColor: appStyle.calendarBackground
     },
@@ -27,9 +37,11 @@ export default function styleConstructor(theme={}) {
     },
     sectionText: {
       fontWeight: 'bold', 
-      color: 'white',
-      padding: 6, 
-      backgroundColor: 'grey'
+      fontSize: 12,
+      color: '#5c95ff',
+      paddingVertical: 8, 
+      paddingLeft: 20,
+      backgroundColor: appStyle.calendarBackground
     },
     header: {
       position: 'absolute',

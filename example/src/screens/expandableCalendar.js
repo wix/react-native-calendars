@@ -47,7 +47,7 @@ export default class ExpandableCalendarScreen extends Component {
   renderEmptyItem() {
     return (
       <View style={styles.emptyItem}>
-        <Text style={styles.emptyItemText}>Empty date</Text>
+        <Text style={styles.emptyItemText}>No Events Planned</Text>
       </View>
     );
   }
@@ -108,10 +108,10 @@ export default class ExpandableCalendarScreen extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    padding: 12, 
+    padding: 20, 
     backgroundColor: 'white', 
     borderBottomWidth: 1, 
-    borderBottomColor: 'grey', 
+    borderBottomColor: '#e8ecf0', 
     flexDirection: 'row'
   },
   itemHourText: {
@@ -134,14 +134,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   emptyItem: {
-    height: 70, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    backgroundColor: '#d9e1e8'
+    paddingLeft: 20,
+    height: 52, 
+    justifyContent: 'center',
+    borderBottomWidth: 1, 
+    borderBottomColor: '#e8ecf0', 
   },
   emptyItemText: {
-    fontWeight: 'bold', 
-    fontStyle: 'italic', 
-    fontSize: 16
+    color: '#79838a',
+    fontSize: 14
   }
 });
