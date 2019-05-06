@@ -12,17 +12,17 @@ import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-cal
 
 
 const START_DATE = '2019-05-31';
-const data = [
-  {date: START_DATE, items: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
-  {date: '2019-06-01', items: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
-  {date: '2019-06-02', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {date: '2019-06-03', items: [{}]},
-  {date: '2019-06-04', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
-  {date: '2019-06-05', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {date: '2019-06-06', items: [{}]},
-  {date: '2019-06-07', items: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
-  {date: '2019-06-08', items: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
-  {date: '2019-06-09', items: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+const items = [
+  {title: START_DATE, data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
+  {title: '2019-06-01', data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {title: '2019-06-02', data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: '2019-06-03', data: [{}]},
+  {title: '2019-06-04', data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {title: '2019-06-05', data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: '2019-06-06', data: [{}]},
+  {title: '2019-06-07', data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {title: '2019-06-08', data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {title: '2019-06-09', data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
 ];
 
 export default class ExpandableCalendarScreen extends Component {
@@ -38,8 +38,8 @@ export default class ExpandableCalendarScreen extends Component {
   }
 
   getSections() {
-    const sections = _.compact(_.map(data, (item) => {
-      return {title: item.date, data: item.items};
+    const sections = _.compact(_.map(items, (item) => {
+      return {title: item.title, data: item.data};
     }));
     return sections;
   }
@@ -97,7 +97,7 @@ export default class ExpandableCalendarScreen extends Component {
           theme={{todayTextColor: 'red'}}
         />
         <AgendaList
-          data={data}
+          data={items}
           renderItem={this.renderItem}
           sections={this.getSections()}
         />
