@@ -47,7 +47,7 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
-    const sectionTitle = XDate(title).toDateString();
+    const sectionTitle = (XDate(title).toString('dddd, MMM d')).toUpperCase();
     return (
       <Text style={this.style.sectionText}>{sectionTitle}</Text>
     );
