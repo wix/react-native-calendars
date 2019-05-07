@@ -376,7 +376,7 @@ class ExpandableCalendar extends Component {
       <Animated.View
         ref={e => this.weekCalendar = e}
         style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 8)}}
-        pointerEvents={this._weekCalendarStyles.style.opacity > 0 ? undefined : 'none'}
+        pointerEvents={this.state.position === POSITIONS.CLOSED ? 'auto' : 'none'}
       >
         <Week
           index={0}
