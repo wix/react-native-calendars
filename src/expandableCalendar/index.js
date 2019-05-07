@@ -73,7 +73,6 @@ class ExpandableCalendar extends Component {
     this.state = {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(0),
-      weekOpacity: new Animated.Value(1),
       position: POSITIONS.CLOSED
     };
 
@@ -276,17 +275,8 @@ class ExpandableCalendar extends Component {
 
   resetWeekCalendarOpacity() {
     const isClosed = this._height < this.threshold;
-    if (isClosed) {
-      this.setState({weekOpacity: new Animated.Value(this._weekCalendarStyles.style.opacity)}, () => {
-        Animated.spring(this.state.weekOpacity, {
-          toValue: 1,
-          speed: SPEED / 10,
-          bounciness: BOUNCINESS
-        }).start();
-      });
-    } else {
-      this.setState({weekOpacity: new Animated.Value(0)});
-    }
+    this._weekCalendarStyles.style.opacity = isClosed ? 1 : 0;
+    this.updateNativeStyles();
   }
 
   onAnimatedFinished = ({finished}) => {
@@ -378,7 +368,7 @@ class ExpandableCalendar extends Component {
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
-        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 10), opacity: this.state.weekOpacity}}
+        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 10)}}
       >
         <Week
           index={0}
