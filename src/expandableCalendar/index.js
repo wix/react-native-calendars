@@ -126,17 +126,19 @@ class ExpandableCalendar extends Component {
 
   scrollPage(next) {
     // TODO: flip on RTL?
-    const {position} = this.state;
-    
-    const d = parseDate(this.props.context.date);
-    if (position === POSITIONS.OPEN) {
-      d.setDate(1);
-      d.addMonths(next ? 1 : -1);
-    } else {
-      const firstDayOfWeek = (next ? 7 : -7) - d.getDay() + this.props.firstDay;
-      d.addDays(firstDayOfWeek);
+    if (this.props.horizontal) {
+      const {position} = this.state;
+      const d = parseDate(this.props.context.date);
+      
+      if (position === POSITIONS.OPEN) {
+        d.setDate(1);
+        d.addMonths(next ? 1 : -1);
+      } else {
+        const firstDayOfWeek = (next ? 7 : -7) - d.getDay() + this.props.firstDay;
+        d.addDays(firstDayOfWeek);
+      }
+      _.invoke(this.props.context, 'setDate', this.getDateString(d)); 
     }
-    _.invoke(this.props.context, 'setDate', this.getDateString(d)); 
   }
 
   /** Utils */
@@ -258,25 +260,21 @@ class ExpandableCalendar extends Component {
   
   bounceToPosition(toValue) {
     const {deltaY} = this.state;
-    const newValue = this._height > this.threshold ? this.openHeight : this.closedHeight;
+    let isOpen = this._height >= this.threshold;
+    const newValue = isOpen ? this.openHeight : this.closedHeight;
     
-    deltaY.setValue(this._height);
+    deltaY.setValue(this._height); // set the start position for deltaY
     this._height = toValue || newValue;
-    
+    isOpen = this._height >= this.threshold; // re-check after this._height was set
+
     Animated.spring(deltaY, {
       toValue: this._height,
       speed: SPEED,
       bounciness: BOUNCINESS
     }).start(this.onAnimatedFinished);
 
-    this.closeHeader();
-    this.resetWeekCalendarOpacity();
-  }
-
-  resetWeekCalendarOpacity() {
-    const isClosed = this._height < this.threshold;
-    this._weekCalendarStyles.style.opacity = isClosed ? 1 : 0;
-    this.updateNativeStyles();
+    this.closeHeader(isOpen);
+    this.resetWeekCalendarOpacity(isOpen);
   }
 
   onAnimatedFinished = ({finished}) => {
@@ -285,13 +283,17 @@ class ExpandableCalendar extends Component {
       this.setState({position: isClosed ? POSITIONS.CLOSED : POSITIONS.OPEN});
     }
   }
+  
+  resetWeekCalendarOpacity(isOpen) {
+    this._weekCalendarStyles.style.opacity = isOpen ? 0 : 1;
+    this.updateNativeStyles();
+  }
 
-  closeHeader() {
+  closeHeader(isOpen) {
     const {horizontal} = this.props;
-    const isClosed = this._height < this.threshold;
-
-    if (!horizontal && isClosed) {
-      Animated.spring(this.state.headerDeltaY, {
+    
+    if (!horizontal && !isOpen) {
+      Animated.spring(this.state.headerDeltaY, { // Stopped working!!!
         toValue: 0,
         speed: SPEED / 10,
         bounciness: BOUNCINESS
@@ -312,7 +314,9 @@ class ExpandableCalendar extends Component {
     _.invoke(this.props.context, 'setDate', value.dateString); 
     
     setTimeout(() => { // to allows setDate to be completed
-      this.bounceToPosition(this.closedHeight);
+      if (this.state.position === POSITIONS.OPEN) {
+        this.bounceToPosition(this.closedHeight);
+      }
     }, 0);
   }
 
@@ -368,7 +372,8 @@ class ExpandableCalendar extends Component {
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
-        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 10)}}
+        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (isAndroid ? 15 : 8)}}
+        pointerEvents={this._weekCalendarStyles.style.opacity > 0 ? undefined : 'none'}
       >
         <Week
           index={0}
@@ -420,7 +425,7 @@ class ExpandableCalendar extends Component {
           hideArrows={this.shouldHideArrows()}
           onPressArrowLeft={this.onPressArrowLeft}
           onPressArrowRight={this.onPressArrowRight}
-          hideExtraDays={false}
+          hideExtraDays={!this.props.horizontal}
         /> 
         {horizontal && this.renderWeekCalendar()}
         {!hideKnob && this.renderKnob()}
