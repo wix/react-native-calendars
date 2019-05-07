@@ -263,7 +263,7 @@ class ExpandableCalendar extends Component {
     let isOpen = this._height >= this.threshold;
     const newValue = isOpen ? this.openHeight : this.closedHeight;
     
-    deltaY.setValue(this._height); // set the start position for deltaY
+    deltaY.setValue(this._height); // set the start position for the animated value
     this._height = toValue || newValue;
     isOpen = this._height >= this.threshold; // re-check after this._height was set
 
@@ -291,12 +291,15 @@ class ExpandableCalendar extends Component {
 
   closeHeader(isOpen) {
     const {horizontal} = this.props;
-    
+    const {headerDeltaY} = this.state;
+
+    headerDeltaY.setValue(this._headerStyles.style.top); // set the start position for the animated value
+
     if (!horizontal && !isOpen) {
-      Animated.spring(this.state.headerDeltaY, { // Stopped working!!!
+      Animated.spring(headerDeltaY, {
         toValue: 0,
         speed: SPEED / 10,
-        bounciness: BOUNCINESS
+        bounciness: 1
       }).start();
     }
   }
