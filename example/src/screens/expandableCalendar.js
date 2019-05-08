@@ -11,7 +11,7 @@ import {
 import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-calendars';
 
 
-const START_DATE = '2019-05-31';
+const START_DATE = '2019-05-30';
 const items = [
   {title: START_DATE, data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
   {title: '2019-06-01', data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
@@ -29,7 +29,7 @@ export default class ExpandableCalendarScreen extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {};
+    // this.state = {};
   }
 
   onDateChanged = (date) => {
@@ -56,6 +56,7 @@ export default class ExpandableCalendarScreen extends Component {
     if (_.isEmpty(item)) {
       return this.renderEmptyItem();
     }
+
     const id = item.title;
     const props = {
       hour: item.hour,
@@ -64,6 +65,7 @@ export default class ExpandableCalendarScreen extends Component {
       button: {label: 'info', onPress: () => Alert.alert('show more')},
       onPress: () => Alert.alert(id)
     };
+
     return (
       <TouchableOpacity 
         onPress={props.onPress} 
@@ -81,6 +83,14 @@ export default class ExpandableCalendarScreen extends Component {
     );
   }
 
+  getMarkedDates = () => {
+    const marked = {};
+    items.forEach(item => {
+      marked[item.title] = {marked: true};
+    });
+    return marked;
+  }
+
   render() {    
     return (
       <CalendarProvider>
@@ -89,11 +99,11 @@ export default class ExpandableCalendarScreen extends Component {
           // hideArrows
           // disablePan
           // hideKnob
-          // initialPosition={ExpandableCalendar.positions.OPEN} // can't find static positions
-          onDateChanged={this.onDateChanged}
-          currentDate={START_DATE} 
-          markedDates={{'2019-06-08': {marked: true}, '2019-06-09': {marked: true}, '2019-05-01': {marked: true}}}
           // firstDay={1}
+          // initialPosition={'open'} // ExpandableCalendar.positions.OPEN - can't find static positions
+          onDateChanged={this.onDateChanged}
+          current={START_DATE} 
+          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={{todayTextColor: 'red'}}
         />
         <AgendaList

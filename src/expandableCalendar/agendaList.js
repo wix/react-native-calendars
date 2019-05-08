@@ -23,7 +23,7 @@ class AgendaList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    // this.state = {};
 
     this.style = styleConstructor(props.theme);
     this._topSection = undefined;
@@ -34,6 +34,7 @@ class AgendaList extends Component {
   getSectionIndex(date) {
     let i;
     _.map(this.props.sections, (section, index) => {
+      // NOTE: sections titles should match current date format!!!
       if (section.title === date) {
         i = index;
         return;
@@ -45,7 +46,8 @@ class AgendaList extends Component {
   componentDidUpdate(prevProps) {
     const {updateSource, date} = this.props.context;
     if (date !== prevProps.context.date) {
-      if (updateSource !== UPDATE_SOURCES.LIST && updateSource !== UPDATE_SOURCES.CALENDAR_INIT) {
+      // NOTE: on first init data should set first section to the current date!!!
+      if (updateSource !== UPDATE_SOURCES.LIST_DRAG && updateSource !== UPDATE_SOURCES.CALENDAR_INIT) {
         const sectionIndex = this.getSectionIndex(date);
         this.scrollToSection(sectionIndex);
       }
@@ -72,8 +74,8 @@ class AgendaList extends Component {
       const topSection = _.get(viewableItems[0], 'section.title');
       if (topSection && topSection !== this._topSection) {
         this._topSection = topSection;
-        if (this.didScroll) { // only to avoid setting on first layout when setting initial context.date value
-          _.invoke(this.props.context, 'setDate', this._topSection, UPDATE_SOURCES.LIST); // report date change
+        if (this.didScroll) { // to avoid setDate() on first load (while setting the initial context.date value)
+          _.invoke(this.props.context, 'setDate', this._topSection, UPDATE_SOURCES.LIST_DRAG);
         }
       }
     }
@@ -117,8 +119,8 @@ class AgendaList extends Component {
         onScroll={this.onScroll}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
         onScrollEndDrag={this.onScrollEndDrag}
+        onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
         // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
-        // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
       />
     );
   }

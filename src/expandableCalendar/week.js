@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, {Component} from 'react';
 import {
   Dimensions,
@@ -20,9 +19,8 @@ import SingleDay from '../calendar/day/custom';
 import Calendar from '../calendar';
 
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const commons = require('./commons');
 const EmptyArray = [];
-
 
 class Week extends Component {
   static propTypes = {
@@ -35,12 +33,13 @@ class Week extends Component {
   constructor(props) {
     super(props);
     
-    this.style = styleConstructor(this.props.theme);
+    this.style = styleConstructor(props.theme);
   }
 
   getDayComponent() {
-    if (this.props.dayComponent) {
-      return this.props.dayComponent;
+    const {dayComponent} = this.props;
+    if (dayComponent) {
+      return dayComponent;
     }
 
     switch (this.props.markingType) {
@@ -58,11 +57,13 @@ class Week extends Component {
   }
 
   getDateMarking(day) {
-    if (!this.props.markedDates) {
+    const {markedDates} = this.props;
+
+    if (!markedDates) {
       return false;
     }
 
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
+    const dates = markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
@@ -75,7 +76,7 @@ class Week extends Component {
   // }
 
   renderDay(day, id) {
-    const {currentMonth, hideExtraDays} = this.props;
+    const {currentMonth} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     
@@ -91,7 +92,7 @@ class Week extends Component {
     }
 
     // hide extra days
-    if (currentMonth && hideExtraDays) {
+    if (currentMonth && this.props.hideExtraDays) {
       if (!dateutils.sameMonth(day, parseDate(currentMonth))) {
         return (<View key={id} style={{flex: 1}}/>);
       }
@@ -119,9 +120,11 @@ class Week extends Component {
   }
 
   render() {
+    const {dates} = this.props;
     const week = [];
-    if (this.props.dates) {
-      this.props.dates.forEach((day, id) => {
+    
+    if (dates) {
+      dates.forEach((day, id) => {
         week.push(this.renderDay(day, id));
       }, this);
     }
@@ -132,7 +135,7 @@ class Week extends Component {
 
     return (
       <View style={[this.style.container, this.props.style]}>
-        <View style={[this.style.week, {width: SCREEN_WIDTH}]} key={this.props.index}>{week}</View>
+        <View style={[this.style.week, {width: commons.screenWidth}]} key={this.props.index}>{week}</View>
       </View>
     );
   }

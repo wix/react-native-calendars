@@ -10,7 +10,7 @@ export const screenHeight = height;
 
 
 export const UPDATE_SOURCES = {
-  LIST: 'list',
+  LIST_DRAG: 'listDrag',
   CALENDAR_INIT: 'calendarInit',
   DAY_PRESS: 'dayPress',
   PAGE_SCROLL: 'pageScroll'

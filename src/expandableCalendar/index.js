@@ -35,7 +35,7 @@ class ExpandableCalendar extends Component {
     ...CalendarList.propTypes,
     hideKnob: PropTypes.bool,
     horizontal: PropTypes.bool,
-    currentDate: PropTypes.string, // 'yyyy-MM-dd' format
+    // currentDate: PropTypes.string, // 'yyyy-MM-dd' format
     markedDates: PropTypes.object,
     onDateChanged: PropTypes.func,
     initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
@@ -70,7 +70,7 @@ class ExpandableCalendar extends Component {
     this.state = {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(0),
-      position: POSITIONS.CLOSED
+      position: props.initialPosition
     };
 
     this.panResponder = PanResponder.create({
@@ -81,18 +81,20 @@ class ExpandableCalendar extends Component {
       onPanResponderTerminate: this.handlePanResponderEnd
     });
 
-    _.invoke(this.props.context, 'setDate', this.getCurrentDate(), UPDATE_SOURCES.CALENDAR_INIT);  // set initial value of context.date
+    // set initial value of context.date
+    _.invoke(props.context, 'setDate', this.getCurrentDate(), UPDATE_SOURCES.CALENDAR_INIT);
   }
 
-  componentDidMount() {
-    this.updateNativeStyles();
-  }
+  // componentDidMount() {
+  //   this.updateNativeStyles();
+  // }
 
   componentDidUpdate(prevProps) {
-    if (this.props.context.date !== prevProps.context.date) {
+    const {date} = this.props.context;
+    if (date !== prevProps.context.date) {
       // date was changed from AgendaList, arrows or scroll
-      _.invoke(this.props, 'onDateChanged', this.props.context.date); // report to screen (can be placed in any consumer class)
-      this.scrollToDate(this.props.context.date);
+      _.invoke(this.props, 'onDateChanged', date); // report to screen (can be placed in any consumer class)
+      this.scrollToDate(date);
     }
   }
   
@@ -137,7 +139,7 @@ class ExpandableCalendar extends Component {
   /** Utils */
 
   getCurrentDate() {
-    return this.props.currentDate || this.getDateString(XDate()); 
+    return this.props.current || this.getDateString(XDate()); 
   }
 
   getDateString(date) {
@@ -283,12 +285,11 @@ class ExpandableCalendar extends Component {
   }
 
   closeHeader(isOpen) {
-    const {horizontal} = this.props;
     const {headerDeltaY} = this.state;
 
     headerDeltaY.setValue(this._headerStyles.style.top); // set the start position for the animated value
 
-    if (!horizontal && !isOpen) {
+    if (!this.props.horizontal && !isOpen) {
       Animated.spring(headerDeltaY, {
         toValue: 0,
         speed: SPEED / 10,
@@ -321,8 +322,10 @@ class ExpandableCalendar extends Component {
       this.visibleMonth = _.first(value).month; // equivalent to this.getMonth(value[0].dateString)
 
       // for horizontal scroll
-      if (this.visibleMonth !== this.getMonth(this.props.context.date) && this.props.context.updateSource !== UPDATE_SOURCES.DAY_PRESS) {
-        const next = this.isLaterDate(_.first(value), this.props.context.date);
+      const {date, updateSource} = this.props.context;
+      
+      if (this.visibleMonth !== this.getMonth(date) && updateSource !== UPDATE_SOURCES.DAY_PRESS) {
+        const next = this.isLaterDate(_.first(value), date);
         this.scrollPage(next);
       }
     }
@@ -366,16 +369,18 @@ class ExpandableCalendar extends Component {
   }
 
   renderWeekCalendar() {
+    const {date} = this.props.context;
+
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
-        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (commons.isAndroid ? 15 : 8)}}
+        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (commons.isAndroid ? 15 : 8), opacity: this.state.position === POSITIONS.OPEN ? 0 : 1}}
         pointerEvents={this.state.position === POSITIONS.CLOSED ? 'auto' : 'none'}
       >
         <Week
           index={0}
-          dates={this.getWeek(this.props.context.date)}
-          currentMonth={this.props.context.date}
+          dates={this.getWeek(date)}
+          currentMonth={date}
           {...this.props}
           onDayPress={this.onDayPress}
           markedDates={this.getMarkedDates()}
@@ -408,9 +413,9 @@ class ExpandableCalendar extends Component {
         <CalendarList
           testID="calendar"
           {...this.props}
-          current={this.props.currentDate}
+          // current={this.props.currentDate}
+          // horizontal={horizontal}
           ref={r => this.calendar = r}
-          horizontal={horizontal}
           calendarStyle={{paddingLeft: 0, paddingRight: 0}}
           onDayPress={this.onDayPress}
           onVisibleMonthsChange={this.onVisibleMonthsChange}
@@ -423,7 +428,7 @@ class ExpandableCalendar extends Component {
           hideArrows={this.shouldHideArrows()}
           onPressArrowLeft={this.onPressArrowLeft}
           onPressArrowRight={this.onPressArrowRight}
-          hideExtraDays={!this.props.horizontal}
+          hideExtraDays={!horizontal}
         /> 
         {horizontal && this.renderWeekCalendar()}
         {!hideKnob && this.renderKnob()}
