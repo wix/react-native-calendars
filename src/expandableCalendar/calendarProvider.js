@@ -7,19 +7,21 @@ class CalendarProvider extends Component {
     super(props);
 
     this.state = {
-      date: undefined
+      date: undefined,
+      updateSource: undefined
     };
   }
   
   getProviderContextValue = () => {
     return {
       setDate: this.setDate,
-      date: this.state.date
+      date: this.state.date,
+      updateSource: this.state.updateSource
     };
   };
 
-  setDate = (date) => {
-    this.setState({date});
+  setDate = (date, updateSource) => {
+    this.setState({date, updateSource});
   }
   
   render() {
