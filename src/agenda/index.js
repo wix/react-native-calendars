@@ -338,10 +338,10 @@ export default class AgendaView extends Component {
         extrapolate: 'clamp',
       }),
       transform: [{ translateY: this.state.scrollY.interpolate({
-          inputRange: [Math.max(0, agendaHeight - HEADER_HEIGHT), agendaHeight],
-          outputRange: [-HEADER_HEIGHT, 0],
-          extrapolate: 'clamp',
-        })}]
+        inputRange: [Math.max(0, agendaHeight - HEADER_HEIGHT), agendaHeight],
+        outputRange: [-HEADER_HEIGHT, 0],
+        extrapolate: 'clamp',
+      })}]
     }];
 
     const headerTranslate = this.state.scrollY.interpolate({
