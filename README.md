@@ -195,19 +195,19 @@ CAUTION: This marking is only fully supported by the `<Calendar />` component be
 
 ```javascript
 <Calendar
-  markedDates={{  
-    '2017-12-14': {  
-      periods: [  
-        {startingDay: false, endingDay: true, color: '#5f9ea0'},
-        {startingDay: false, endingDay: true, color: '#ffa500'},
-        {startingDay: true, endingDay: false, color: '#f0e68c'}
+  markedDates={{
+    '2017-12-14': {
+      periods: [
+        { startingDay: false, endingDay: true, color: '#5f9ea0' },
+        { startingDay: false, endingDay: true, color: '#ffa500' },
+        { startingDay: true, endingDay: false, color: '#f0e68c' },
       ]
     },
-    '2017-12-15': {  
-      periods: [  
-        {startingDay: true, endingDay: false, color: '#ffa500'},
-        {color: 'transparent'},
-        {startingDay: false, endingDay: false, color: '#f0e68c'}
+    '2017-12-15': {
+      periods: [
+        { startingDay: true, endingDay: false, color: '#ffa500' },
+        { color: 'transparent' },
+        { startingDay: false, endingDay: false, color: '#f0e68c' },
       ]
     },
   }}
@@ -287,6 +287,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
     selectedDotColor: '#ffffff',
     arrowColor: 'orange',
     monthTextColor: 'blue',
+    indicatorColor: 'blue',
     textDayFontFamily: 'monospace',
     textMonthFontFamily: 'monospace',
     textDayHeaderFontFamily: 'monospace',
