@@ -186,7 +186,7 @@ class ReactComp extends Component {
         return this.props.renderEmptyData();
       }
       return (
-        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme.indicatorColor} />
+        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor} />
       );
     }
     return (
