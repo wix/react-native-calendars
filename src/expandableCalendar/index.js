@@ -5,7 +5,8 @@ import {
   PanResponder,
   Animated,
   View,
-  Text
+  Text,
+  Image
 } from 'react-native';
 import XDate from 'xdate';
 
@@ -39,13 +40,17 @@ class ExpandableCalendar extends Component {
     markedDates: PropTypes.object,
     onDateChanged: PropTypes.func,
     initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
-    disablePan: PropTypes.bool
+    disablePan: PropTypes.bool,
+    leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
+    rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func])
   }
 
   static defaultProps = {
     horizontal: true,
     initialPosition: POSITIONS.CLOSED,
-    firstDay: 0
+    firstDay: 0,
+    leftArrowImageSource: require('../calendar/img/previous.png'),
+    rightArrowImageSource: require('../calendar/img/next.png')
   }
 
   static positions = POSITIONS;
@@ -398,6 +403,19 @@ class ExpandableCalendar extends Component {
     );
   }
 
+  renderArrow = (direction) => {
+    if (_.isFunction(this.props.renderArrow)) {
+      this.props.renderArrow(direction);
+    }
+
+    return (
+      <Image
+        source={direction === 'right' ? this.props.rightArrowImageSource : this.props.leftArrowImageSource}
+        style={this.style.arrowImage}
+      />
+    );
+  }
+
   render() {
     const {style, hideKnob, horizontal} = this.props;
     const {deltaY, position} = this.state;
@@ -429,6 +447,7 @@ class ExpandableCalendar extends Component {
           onPressArrowLeft={this.onPressArrowLeft}
           onPressArrowRight={this.onPressArrowRight}
           hideExtraDays={!horizontal}
+          renderArrow={this.renderArrow}
         /> 
         {horizontal && this.renderWeekCalendar()}
         {!hideKnob && this.renderKnob()}

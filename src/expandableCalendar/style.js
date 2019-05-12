@@ -78,6 +78,9 @@ export default function styleConstructor(theme={}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+    arrowImage: {
+      tintColor: appStyle.arrowColor
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
