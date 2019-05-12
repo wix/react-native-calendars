@@ -64,7 +64,7 @@ class AgendaList extends Component {
         sectionIndex: sectionIndex,
         itemIndex: 0,
         viewPosition: 0, // position at the top
-        // viewOffset: {x: 0, y: 10}
+        viewOffset: commons.isAndroid ? 10 : 0
       });
     }
   }
