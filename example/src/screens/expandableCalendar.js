@@ -120,7 +120,7 @@ export default class ExpandableCalendarScreen extends Component {
       dayTextColor: themeColor,
       textDayFontSize: 18,
       textDayFontFamily: 'HelveticaNeue',
-      textDayFontWeight: 'normal',
+      textDayFontWeight: '500',
       textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
       // selected date
       selectedDayBackgroundColor: themeColor,
@@ -131,7 +131,7 @@ export default class ExpandableCalendarScreen extends Component {
       dotColor: themeColor,
       selectedDotColor: white,
       disabledDotColor: disabledColor,
-      dotStyle: {marginTop: 0},
+      dotStyle: {marginTop: -2},
     };
   }
 
