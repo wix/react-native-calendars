@@ -29,7 +29,7 @@ const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120;
 const OPEN_HEIGHT = 340; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
-const HEADER_HEIGHT = 62;
+const HEADER_HEIGHT = 60;
 
 class ExpandableCalendar extends Component {
   static propTypes = {
@@ -394,7 +394,7 @@ class ExpandableCalendar extends Component {
           position: 'absolute', 
           left: 0, 
           right: 0, 
-          top: HEADER_HEIGHT + (commons.isAndroid ? 15 : 8), 
+          top: HEADER_HEIGHT + (commons.isAndroid ? 12 : 8), 
           opacity: this.state.position === POSITIONS.OPEN ? 0 : 1
         }}
         pointerEvents={this.state.position === POSITIONS.CLOSED ? 'auto' : 'none'}
