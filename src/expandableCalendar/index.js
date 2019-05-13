@@ -26,8 +26,9 @@ const POSITIONS = {
 };
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 120;
-const OPEN_HEIGHT = 340; // for 6 weeks per month
+const CLOSED_HEIGHT = 110; // header + 1 week
+const WEEK_HEIGHT = 46;
+const NUMBER_OF_WEEKS = 6; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
 const HEADER_HEIGHT = 60;
 
@@ -60,8 +61,8 @@ class ExpandableCalendar extends Component {
 
     this.style = styleConstructor(props.theme);
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.openHeight = OPEN_HEIGHT + (props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
-    this.threshold = this.openHeight / 1.75;
+    this.openHeight = CLOSED_HEIGHT + (WEEK_HEIGHT * (NUMBER_OF_WEEKS - 1)) + (props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
+    
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
     this._height = startHeight;
     this._wrapperStyles = {style: {}};
@@ -70,7 +71,6 @@ class ExpandableCalendar extends Component {
     this.wrapper = undefined;
     this.calendar = undefined;
     this.visibleMonth = this.getMonth(this.getCurrentDate());
-    this.ops = 0;
 
     this.state = {
       deltaY: new Animated.Value(startHeight),
@@ -263,12 +263,14 @@ class ExpandableCalendar extends Component {
   
   bounceToPosition(toValue) {
     const {deltaY} = this.state;
-    let isOpen = this._height >= this.threshold;
+    const threshold = this.openHeight / 1.75;
+
+    let isOpen = this._height >= threshold;
     const newValue = isOpen ? this.openHeight : this.closedHeight;
     
     deltaY.setValue(this._height); // set the start position for the animated value
     this._height = toValue || newValue;
-    isOpen = this._height >= this.threshold; // re-check after this._height was set
+    isOpen = this._height >= threshold; // re-check after this._height was set
 
     Animated.spring(deltaY, {
       toValue: this._height,
