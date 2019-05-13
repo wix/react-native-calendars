@@ -157,6 +157,7 @@ export default class ExpandableCalendarScreen extends Component {
           data={items}
           renderItem={this.renderItem}
           sections={this.getSections()}
+          sectionStyle={{backgroundColor: '#f0f4f7', color: '#79838a'}}
         />
       </CalendarProvider>
     );

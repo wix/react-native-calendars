@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {
   SectionList,
@@ -15,10 +16,14 @@ const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 
 class AgendaList extends Component {
   static propTypes = {
-    ...SectionList.propTypes
+    ...SectionList.propTypes,
+    dayFormat: PropTypes.string,
+    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number])
   }
 
-  // static defaultProps = {}
+  static defaultProps = {
+    dayFormat: 'dddd, MMM d'
+  }
 
   constructor(props) {
     super(props);
@@ -97,9 +102,9 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
-    const sectionTitle = (XDate(title).toString('dddd, MMM d')).toUpperCase();
+    const sectionTitle = XDate(title).toString(this.props.dayFormat).toUpperCase();
     return (
-      <Text style={this.style.sectionText}>{sectionTitle}</Text>
+      <Text style={[this.style.sectionText, this.props.sectionStyle]}>{sectionTitle}</Text>
     );
   }
 
