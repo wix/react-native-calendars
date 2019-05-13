@@ -26,9 +26,8 @@ const POSITIONS = {
 };
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 120; // header + 1 week
+const CLOSED_HEIGHT = 114; // header + 1 week
 const WEEK_HEIGHT = 46;
-const NUMBER_OF_WEEKS = 6; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
 const HEADER_HEIGHT = 62;
 
@@ -61,7 +60,8 @@ class ExpandableCalendar extends Component {
 
     this.style = styleConstructor(props.theme);
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.openHeight = CLOSED_HEIGHT + (WEEK_HEIGHT * (NUMBER_OF_WEEKS - 1)) + (props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
+    this.numberOfWeeks = this.getNumberOfWeeksInMonth(XDate(this.getCurrentDate()));
+    this.openHeight = this.getOpenHeight();
     
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
     this._height = startHeight;
@@ -142,6 +142,9 @@ class ExpandableCalendar extends Component {
   }
 
   /** Utils */
+  getOpenHeight() {
+    return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
+  }
 
   getCurrentDate() {
     return this.props.current || this.getDateString(XDate()); 
@@ -188,6 +191,11 @@ class ExpandableCalendar extends Component {
       }
       return daysArray;
     }
+  }
+
+  getNumberOfWeeksInMonth(month) {
+    const days = dateutils.page(month, this.props.firstDay);
+    return days.length / 7;
   }
 
   getMarkedDates() {
@@ -338,6 +346,18 @@ class ExpandableCalendar extends Component {
         const next = this.isLaterDate(_.first(value), date);
         this.scrollPage(next);
       }
+
+      // updating openHeight
+      setTimeout(() => { // to wait for setDate() call in horizontal scroll (this.scrollPage())
+        const numberOfWeeks = this.getNumberOfWeeksInMonth(parseDate(this.props.context.date));
+        if (numberOfWeeks !== this.numberOfWeeks) {
+          this.numberOfWeeks = numberOfWeeks;
+          this.openHeight = this.getOpenHeight();
+          if (this.state.position === POSITIONS.OPEN) {
+            this.bounceToPosition(this.openHeight);
+          }
+        }
+      }, 0);
     }
   }
 
