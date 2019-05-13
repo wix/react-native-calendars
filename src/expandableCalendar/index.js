@@ -27,7 +27,7 @@ const POSITIONS = {
 const SPEED = 20;
 const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120;
-const OPEN_HEIGHT = commons.isAndroid ? 340 : 330; // for 6 weeks per month
+const OPEN_HEIGHT = 340; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
 const HEADER_HEIGHT = 62;
 
@@ -349,7 +349,15 @@ class ExpandableCalendar extends Component {
     const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
 
     return (
-      <View style={this.style.weekDayNames}>
+      <View 
+        style={[
+          this.style.weekDayNames, 
+          {
+            paddingLeft: (this.props.calendarStyle.paddingLeft || 18) + 6, 
+            paddingRight: (this.props.calendarStyle.paddingRight || 18) + 6
+          }
+        ]}
+      >
         {weekDaysNames.map((day, index) => (
           <Text allowFontScaling={false} key={day+index} style={this.style.weekday} numberOfLines={1}>{day}</Text>
         ))}
@@ -379,7 +387,13 @@ class ExpandableCalendar extends Component {
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
-        style={{position: 'absolute', left: 0, right: 0, top: HEADER_HEIGHT + (commons.isAndroid ? 15 : 8), opacity: this.state.position === POSITIONS.OPEN ? 0 : 1}}
+        style={{
+          position: 'absolute', 
+          left: 0, 
+          right: 0, 
+          top: HEADER_HEIGHT + (commons.isAndroid ? 15 : 8), 
+          opacity: this.state.position === POSITIONS.OPEN ? 0 : 1
+        }}
         pointerEvents={this.state.position === POSITIONS.CLOSED ? 'auto' : 'none'}
       >
         <Week
@@ -389,6 +403,7 @@ class ExpandableCalendar extends Component {
           {...this.props}
           onDayPress={this.onDayPress}
           markedDates={this.getMarkedDates()}
+          style={this.props.calendarStyle}
         />
       </Animated.View>
     );
@@ -433,15 +448,14 @@ class ExpandableCalendar extends Component {
           {...this.props}
           // current={this.props.currentDate}
           // horizontal={horizontal}
+          // calendarStyle={this.props.calendarStyle}
           ref={r => this.calendar = r}
-          calendarStyle={{paddingLeft: 0, paddingRight: 0}}
           onDayPress={this.onDayPress}
           onVisibleMonthsChange={this.onVisibleMonthsChange}
           pagingEnabled
           scrollEnabled={isOpen}
           // pastScrollRange={0}
           // futureScrollRange={0}
-          theme={{todayTextColor: 'red'}}
           markedDates={this.getMarkedDates()}
           hideArrows={this.shouldHideArrows()}
           onPressArrowLeft={this.onPressArrowLeft}

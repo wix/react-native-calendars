@@ -21,7 +21,8 @@ export default function(theme={}) {
       margin: 10
     },
     arrow: {
-      padding: 10
+      padding: 10,
+      ...appStyle.arrowStyle
     },
     arrowImage: {
       ...Platform.select({
@@ -45,6 +46,7 @@ export default function(theme={}) {
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
+      fontWeight: appStyle.textDayHeaderFontWeight,
       color: appStyle.textSectionTitleColor
     },
     ...(theme[STYLESHEET_ID] || {})

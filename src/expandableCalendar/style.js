@@ -32,7 +32,7 @@ export default function styleConstructor(theme={}) {
       width: 40,
       height: 4,
       borderRadius: 3,
-      backgroundColor: appStyle.textColor
+      backgroundColor: '#e8ecf0'
     },
     sectionText: {
       fontWeight: 'bold', 
@@ -50,7 +50,7 @@ export default function styleConstructor(theme={}) {
     },
     headerTitle: {
       alignSelf: 'center',
-      paddingTop: 10,
+      paddingTop: 13,
       paddingBottom: 18,
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
@@ -59,20 +59,20 @@ export default function styleConstructor(theme={}) {
     },
     weekDayNames: {
       flexDirection: 'row', 
-      justifyContent: 'space-between', 
-      paddingHorizontal: 22
+      justifyContent: 'space-between' 
     },
     weekday: {
       width: 32,
       textAlign: 'center',
-      fontSize: 13,
+      fontSize: appStyle.textDayHeaderFontSize,
+      fontFamily: appStyle.textDayHeaderFontFamily,
+      fontWeight: appStyle.textDayHeaderFontWeight,
       color: appStyle.textSectionTitleColor
     },
     monthView: {
       backgroundColor: appStyle.calendarBackground
     },
     week: {
-      flex: 1,
       marginTop: 7,
       marginBottom: 7,
       flexDirection: 'row',

@@ -134,8 +134,8 @@ class Week extends Component {
     // }
 
     return (
-      <View style={[this.style.container, this.props.style]}>
-        <View style={[this.style.week, {width: commons.screenWidth}]} key={this.props.index}>{week}</View>
+      <View style={this.style.container}>
+        <View style={[this.style.week, this.props.style, {width: commons.screenWidth}]} key={this.props.index}>{week}</View>
       </View>
     );
   }
