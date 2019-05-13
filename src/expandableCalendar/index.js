@@ -165,8 +165,11 @@ class ExpandableCalendar extends Component {
   getWeek(date) {
     if (date) {
       const current = parseDate(date);
-      const dayOfTheWeek = current.getDay() - this.props.firstDay;
       const daysArray = [current];
+      let dayOfTheWeek = current.getDay() - this.props.firstDay;
+      if (dayOfTheWeek < 0) { // to handle firstDay > 0
+        dayOfTheWeek = 7 + dayOfTheWeek;
+      }
       
       let newDate = current;
       let index = dayOfTheWeek - 1;
