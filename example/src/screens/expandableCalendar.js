@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import {
+  Platform,
   Alert,
   StyleSheet,
   View,
@@ -91,6 +92,49 @@ export default class ExpandableCalendarScreen extends Component {
     return marked;
   }
 
+  getTheme = () => {
+    const themeColor = '#0059ff';
+    const lightThemeColor = '#e6efff';
+    const disabledColor = '#a6acb1';
+    const black = '#20303c';
+    const white = '#ffffff';
+    
+    return {
+      // arrows
+      arrowColor: black,
+      arrowStyle: {padding: 0},
+      // month
+      monthTextColor: black,
+      textMonthFontSize: 16,
+      textMonthFontFamily: 'HelveticaNeue',
+      textMonthFontWeight: 'bold',
+      // day names
+      textSectionTitleColor: black,
+      textDayHeaderFontSize: 12,
+      textDayHeaderFontFamily: 'HelveticaNeue',
+      textDayHeaderFontWeight: 'normal',
+      // today
+      todayBackgroundColor: lightThemeColor,
+      todayTextColor: themeColor,
+      // dates
+      dayTextColor: themeColor,
+      textDayFontSize: 18,
+      textDayFontFamily: 'HelveticaNeue',
+      textDayFontWeight: 'normal',
+      textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
+      // selected date
+      selectedDayBackgroundColor: themeColor,
+      selectedDayTextColor: white,
+      // disabled date
+      textDisabledColor: disabledColor,
+      // dot (marked date)
+      dotColor: themeColor,
+      selectedDotColor: white,
+      disabledDotColor: disabledColor,
+      dotStyle: {marginTop: 0},
+    };
+  }
+
   render() {    
     return (
       <CalendarProvider>
@@ -99,12 +143,15 @@ export default class ExpandableCalendarScreen extends Component {
           // hideArrows
           // disablePan
           // hideKnob
-          // firstDay={1}
           // initialPosition={'open'} // ExpandableCalendar.positions.OPEN - can't find static positions
+          firstDay={1}
           onDateChanged={this.onDateChanged}
           current={START_DATE} 
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-          theme={{todayTextColor: 'red'}}
+          calendarStyle={{paddingLeft: 20, paddingRight: 20}}
+          theme={this.getTheme()}
+          leftArrowImageSource={require('../img/previous.png')}
+          rightArrowImageSource={require('../img/next.png')}
         />
         <AgendaList
           data={items}
