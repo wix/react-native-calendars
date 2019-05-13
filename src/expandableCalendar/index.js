@@ -26,11 +26,11 @@ const POSITIONS = {
 };
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 110; // header + 1 week
+const CLOSED_HEIGHT = 120; // header + 1 week
 const WEEK_HEIGHT = 46;
 const NUMBER_OF_WEEKS = 6; // for 6 weeks per month
 const KNOB_CONTAINER_HEIGHT = 24;
-const HEADER_HEIGHT = 60;
+const HEADER_HEIGHT = 62;
 
 class ExpandableCalendar extends Component {
   static propTypes = {

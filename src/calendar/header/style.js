@@ -11,9 +11,7 @@ export default function(theme={}) {
       justifyContent: 'space-between',
       paddingLeft: 10,
       paddingRight: 10,
-      alignItems: 'center',
-      marginTop: 7,
-      marginBottom: 7
+      alignItems: 'center'
     },
     monthText: {
       fontSize: appStyle.textMonthFontSize,
@@ -37,10 +35,13 @@ export default function(theme={}) {
       })
     },
     week: {
+      marginTop: 7,
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
     dayHeader: {
+      marginTop: 2,
+      marginBottom: 7,
       width: 32,
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,
