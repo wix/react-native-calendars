@@ -26,10 +26,10 @@ const POSITIONS = {
 };
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 114; // header + 1 week
+const CLOSED_HEIGHT = 120; // header + 1 week
 const WEEK_HEIGHT = 46;
 const KNOB_CONTAINER_HEIGHT = 24;
-const HEADER_HEIGHT = 62;
+const HEADER_HEIGHT = 68;
 
 // TODO: check other date formats, currently supports 'yyyy-MM-dd' format
 class ExpandableCalendar extends Component {
@@ -392,7 +392,7 @@ class ExpandableCalendar extends Component {
           position: 'absolute', 
           left: 0, 
           right: 0, 
-          top: HEADER_HEIGHT + (commons.isAndroid ? 12 : 8), 
+          top: HEADER_HEIGHT + (commons.isAndroid ? 12 : 8), // align row on top of calendar's first row
           opacity: this.state.position === POSITIONS.OPEN ? 0 : 1
         }}
         pointerEvents={this.state.position === POSITIONS.CLOSED ? 'auto' : 'none'}
