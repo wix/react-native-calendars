@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
 
 const STYLESHEET_ID = 'stylesheet.expandable.main';
@@ -7,13 +7,19 @@ export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     containerShadow: {
-      shadowColor: '#79838A',
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      shadowOffset: {height: 6, width: 0},
-      zIndex: 99,
-      backgroundColor: 'white',
-      elevation: 2
+      ...Platform.select({
+        ios: {
+          shadowColor: '#79838A',
+          shadowOpacity: 0.2,
+          shadowRadius: 2,
+          shadowOffset: {height: 6, width: 0},
+          zIndex: 99
+        },
+        android: {
+          backgroundColor: appStyle.calendarBackground,
+          elevation: 6
+        }
+      })
     },
     container: {
       backgroundColor: appStyle.calendarBackground
@@ -37,6 +43,7 @@ export default function styleConstructor(theme={}) {
     sectionText: {
       fontWeight: 'bold', 
       fontSize: 12,
+      lineHeight: 16,
       color: '#5c95ff',
       paddingVertical: 8, 
       paddingLeft: 20,
