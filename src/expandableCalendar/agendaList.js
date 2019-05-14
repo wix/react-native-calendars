@@ -132,7 +132,7 @@ class AgendaList extends Component {
         onScroll={this.onScroll}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
         onScrollEndDrag={this.onScrollEndDrag}
-        onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
+        // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
         // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
       />
     );

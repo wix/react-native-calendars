@@ -33,7 +33,7 @@ export default class ExpandableCalendarScreen extends Component {
     // this.state = {};
   }
 
-  onDateChanged = (date) => {
+  onDateChanged = (/**date*/) => {
     // console.warn('INBAL screen onDateChanged: ', date);
     // fetch and set data for date + week ahead
   }
