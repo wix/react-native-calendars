@@ -383,8 +383,6 @@ class ExpandableCalendar extends Component {
   }
 
   renderWeekCalendar() {
-    const {date} = this.props.context;
-
     return (
       <Animated.View
         ref={e => this.weekCalendar = e}
@@ -399,7 +397,7 @@ class ExpandableCalendar extends Component {
       >
         <Week
           {...this.props}
-          date={date}
+          current={this.props.context.date}
           onDayPress={this.onDayPress}
           markedDates={this.getMarkedDates()}
           style={this.props.calendarStyle}

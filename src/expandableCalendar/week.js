@@ -22,8 +22,8 @@ const EmptyArray = [];
 class Week extends Component {
   static propTypes = {
     ...Calendar.propTypes,
-    // the selected date in 'yyyy-MM-dd' format
-    date: PropTypes.string
+    // the current date
+    current: PropTypes.any
   };
 
   constructor(props) {
@@ -100,7 +100,7 @@ class Week extends Component {
   // }
 
   renderDay(day, id) {
-    const {date} = this.props;
+    const {current} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     
@@ -109,15 +109,15 @@ class Week extends Component {
       state = 'disabled';
     } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
       state = 'disabled';
-    } else if (!dateutils.sameMonth(day, parseDate(date))) { // for extra days
+    } else if (!dateutils.sameMonth(day, parseDate(current))) { // for extra days
       state = 'disabled';
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
 
     // hide extra days
-    if (date && this.props.hideExtraDays) {
-      if (!dateutils.sameMonth(day, parseDate(date))) {
+    if (current && this.props.hideExtraDays) {
+      if (!dateutils.sameMonth(day, parseDate(current))) {
         return (<View key={id} style={{flex: 1}}/>);
       }
     }
@@ -129,7 +129,7 @@ class Week extends Component {
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
         <DayComp
-          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
+          testID={`${SELECT_DATE_SLOT}-${dateAsObject.current}`}
           state={state}
           theme={this.props.theme}
           onPress={this.props.onDayPress}
@@ -144,8 +144,8 @@ class Week extends Component {
   }
 
   render() {
-    const {date} = this.props;
-    const dates = this.getWeek(date);
+    const {current} = this.props;
+    const dates = this.getWeek(current);
     const week = [];
     
     if (dates) {
