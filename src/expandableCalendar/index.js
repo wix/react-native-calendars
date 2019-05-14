@@ -31,17 +31,21 @@ const WEEK_HEIGHT = 46;
 const KNOB_CONTAINER_HEIGHT = 24;
 const HEADER_HEIGHT = 62;
 
+// TODO: check other date formats, currently supports 'yyyy-MM-dd' format
 class ExpandableCalendar extends Component {
   static propTypes = {
     ...CalendarList.propTypes,
-    hideKnob: PropTypes.bool,
-    horizontal: PropTypes.bool,
-    // currentDate: PropTypes.string, // 'yyyy-MM-dd' format
-    markedDates: PropTypes.object,
+    // callback for date change event
     onDateChanged: PropTypes.func,
+    // the initial position of the calendar ('open' or 'closed')
     initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
+    // an option to disable the pan gesture and disable the opening and closing of the calendar
     disablePan: PropTypes.bool,
+    // whether to hide the knob 
+    hideKnob: PropTypes.bool,
+    // source for the left arrow image
     leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
+    // source for the right arrow image
     rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func])
   }
 
@@ -163,34 +167,6 @@ class ExpandableCalendar extends Component {
     const d = XDate(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
     return d.getMonth() + 1;
-  }
-
-  getWeek(date) {
-    if (date) {
-      const current = parseDate(date);
-      const daysArray = [current];
-      let dayOfTheWeek = current.getDay() - this.props.firstDay;
-      if (dayOfTheWeek < 0) { // to handle firstDay > 0
-        dayOfTheWeek = 7 + dayOfTheWeek;
-      }
-      
-      let newDate = current;
-      let index = dayOfTheWeek - 1;
-      while (index >= 0) {
-        newDate = parseDate(newDate).addDays(-1);
-        daysArray.unshift(newDate);
-        index -= 1;
-      }
-
-      newDate = current;
-      index = dayOfTheWeek + 1;
-      while (index < 7) {
-        newDate = parseDate(newDate).addDays(1);
-        daysArray.push(newDate);
-        index += 1;
-      }
-      return daysArray;
-    }
   }
 
   getNumberOfWeeksInMonth(month) {
@@ -422,10 +398,9 @@ class ExpandableCalendar extends Component {
         pointerEvents={this.state.position === POSITIONS.CLOSED ? 'auto' : 'none'}
       >
         <Week
-          index={0}
-          dates={this.getWeek(date)}
-          currentMonth={date}
           {...this.props}
+          date={date}
+          firstDay={this.props.firstDay}
           onDayPress={this.onDayPress}
           markedDates={this.getMarkedDates()}
           style={this.props.calendarStyle}
@@ -471,16 +446,11 @@ class ExpandableCalendar extends Component {
         <CalendarList
           testID="calendar"
           {...this.props}
-          // current={this.props.currentDate}
-          // horizontal={horizontal}
-          // calendarStyle={this.props.calendarStyle}
           ref={r => this.calendar = r}
           onDayPress={this.onDayPress}
           onVisibleMonthsChange={this.onVisibleMonthsChange}
           pagingEnabled
           scrollEnabled={isOpen}
-          // pastScrollRange={0}
-          // futureScrollRange={0}
           markedDates={this.getMarkedDates()}
           hideArrows={this.shouldHideArrows()}
           onPressArrowLeft={this.onPressArrowLeft}

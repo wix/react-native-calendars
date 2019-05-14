@@ -17,7 +17,9 @@ const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 class AgendaList extends Component {
   static propTypes = {
     ...SectionList.propTypes,
+    // day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting
     dayFormat: PropTypes.string,
+    // style passed to the section view
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number])
   }
 
