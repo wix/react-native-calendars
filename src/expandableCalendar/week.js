@@ -23,9 +23,7 @@ class Week extends Component {
   static propTypes = {
     ...Calendar.propTypes,
     // the selected date in 'yyyy-MM-dd' format
-    date: PropTypes.string,
-    // The first day of the week (0 = Sunday)
-    firstDay: PropTypes.number
+    date: PropTypes.string
   };
 
   constructor(props) {

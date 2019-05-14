@@ -400,7 +400,6 @@ class ExpandableCalendar extends Component {
         <Week
           {...this.props}
           date={date}
-          firstDay={this.props.firstDay}
           onDayPress={this.onDayPress}
           markedDates={this.getMarkedDates()}
           style={this.props.calendarStyle}
