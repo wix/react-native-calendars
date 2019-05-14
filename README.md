@@ -291,7 +291,9 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
     textDayFontFamily: 'monospace',
     textMonthFontFamily: 'monospace',
     textDayHeaderFontFamily: 'monospace',
+    textDayFontWeight: '300',
     textMonthFontWeight: 'bold',
+    textDayHeaderFontWeight: '300',
     textDayFontSize: 16,
     textMonthFontSize: 16,
     textDayHeaderFontSize: 16
