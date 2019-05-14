@@ -20,7 +20,9 @@ class AgendaList extends Component {
     // day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting
     dayFormat: PropTypes.string,
     // style passed to the section view
-    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number])
+    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    // localized string to marked today's date
+    todayString: PropTypes.string
   }
 
   static defaultProps = {
@@ -104,7 +106,11 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
-    const sectionTitle = XDate(title).toString(this.props.dayFormat).toUpperCase();
+    const {todayString} = this.props;
+    const today = XDate().toString(this.props.dayFormat).toUpperCase();
+    const date = XDate(title).toString(this.props.dayFormat).toUpperCase();
+    const sectionTitle = date === today && todayString ? `${todayString.toUpperCase()}, ${date}` : date;
+    
     return (
       <Text style={[this.style.sectionText, this.props.sectionStyle]}>{sectionTitle}</Text>
     );

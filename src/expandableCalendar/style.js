@@ -45,7 +45,8 @@ export default function styleConstructor(theme={}) {
       fontSize: 12,
       lineHeight: 16,
       color: '#5c95ff',
-      paddingVertical: 8, 
+      paddingTop: 24, // 8
+      paddingBottom: 8,
       paddingLeft: 20,
       backgroundColor: appStyle.calendarBackground
     },
