@@ -246,6 +246,8 @@ class ExpandableCalendar extends Component {
   /** Animated */
   
   bounceToPosition(toValue) {
+    this.setPosition();
+    
     const {deltaY} = this.state;
     const threshold = this.openHeight / 1.75;
 
@@ -268,9 +270,13 @@ class ExpandableCalendar extends Component {
 
   onAnimatedFinished = ({finished}) => {
     if (finished) {
-      const isClosed = this._height === this.closedHeight;
-      this.setState({position: isClosed ? POSITIONS.CLOSED : POSITIONS.OPEN});
+      // this.setPosition();
     }
+  }
+
+  setPosition() {
+    const isClosed = this._height === this.closedHeight;
+    this.setState({position: isClosed ? POSITIONS.CLOSED : POSITIONS.OPEN});
   }
   
   resetWeekCalendarOpacity(isOpen) {
