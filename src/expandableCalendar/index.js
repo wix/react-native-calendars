@@ -245,9 +245,7 @@ class ExpandableCalendar extends Component {
 
   /** Animated */
   
-  bounceToPosition(toValue) {
-    this.setPosition();
-    
+  bounceToPosition(toValue) {    
     const {deltaY} = this.state;
     const threshold = this.openHeight / 1.75;
 
@@ -264,6 +262,7 @@ class ExpandableCalendar extends Component {
       bounciness: BOUNCINESS
     }).start(this.onAnimatedFinished);
 
+    this.setPosition();
     this.closeHeader(isOpen);
     this.resetWeekCalendarOpacity(isOpen);
   }
