@@ -58,6 +58,9 @@ export default function styleConstructor(theme={}) {
     disabledDot: {
       backgroundColor: appStyle.disabledDotColor || appStyle.dotColor
     },
+    todayDot: {
+      backgroundColor: appStyle.todayDotColor || appStyle.dotColor
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }

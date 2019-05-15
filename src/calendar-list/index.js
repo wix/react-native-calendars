@@ -44,7 +44,7 @@ class CalendarList extends Component {
     calendarHeight: PropTypes.number,
 
     // Style for the List item (the calendar)
-    calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number])
+    calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   }
 
   static defaultProps = {

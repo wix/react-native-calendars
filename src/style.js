@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
 
 export const foregroundColor = '#ffffff';
-export const backgroundColor = '#f4f4f4';
-export const separatorColor = '#e8e9ec';
+export const backgroundColor = '#f4f4f4'; // Agenda's reservations bg color
+export const separatorColor = '#e8e9ec'; // not in use
 
 export const processedColor = '#a7e0a3';
 export const processingColor = '#ffce5c';
@@ -40,6 +40,7 @@ export const textDisabledColor = '#d9e1e8';
 export const dotColor = textLinkColor;
 export const selectedDotColor = foregroundColor;
 export const disabledDotColor = undefined;
+export const todayDotColor = undefined;
 export const arrowColor = textLinkColor;
 export const monthTextColor = textDefaultColor;
 export const indicatorColor = undefined; // use the default color of React Native ActivityIndicator
