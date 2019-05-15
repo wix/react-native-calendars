@@ -20,7 +20,7 @@ class AgendaList extends Component {
     // day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting
     dayFormat: PropTypes.string,
     // style passed to the section view
-    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     // localized string to marked today's date
     todayString: PropTypes.string
   }
