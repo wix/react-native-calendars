@@ -106,7 +106,7 @@ class AgendaList extends Component {
   renderSectionHeader = ({section: {title}}) => {
     const today = XDate().toString(this.props.dayFormat).toUpperCase();
     const date = XDate(title).toString(this.props.dayFormat).toUpperCase();
-    const todayString = XDate.locales[XDate.defaultLocale].today; // depends on setting XDate.defaultLocale ('')!!!
+    const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
     const sectionTitle = date === today ? `${todayString.toUpperCase()}, ${date}` : date;
     
     return (
