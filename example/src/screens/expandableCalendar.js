@@ -30,7 +30,7 @@ const items = [
 export default class ExpandableCalendarScreen extends Component {
   
   onDateChanged = (/**date, updateSource*/) => {
-    // console.warn('INBAL screen onDateChanged: ', date, updateSource);
+    // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
   }
 
