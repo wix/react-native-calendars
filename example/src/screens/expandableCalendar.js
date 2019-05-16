@@ -9,10 +9,11 @@ import {
   TouchableOpacity,
   Button
 } from 'react-native';
+import XDate from 'xdate';
 import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-calendars';
 
 
-const START_DATE = '2019-05-30';
+const START_DATE = XDate().toString('yyyy-MM-dd');
 const items = [
   {title: START_DATE, data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
   {title: '2019-06-01', data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
@@ -27,14 +28,9 @@ const items = [
 ];
 
 export default class ExpandableCalendarScreen extends Component {
-  constructor(props) {
-    super(props);
-    
-    // this.state = {};
-  }
-
+  
   onDateChanged = (/**date, updateSource*/) => {
-    // console.warn('INBAL screen onDateChanged: ', date, updateSource);
+    // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
   }
 
@@ -194,7 +190,7 @@ const styles = StyleSheet.create({
     height: 52, 
     justifyContent: 'center',
     borderBottomWidth: 1, 
-    borderBottomColor: '#e8ecf0', 
+    borderBottomColor: '#e8ecf0' 
   },
   emptyItemText: {
     color: '#79838a',
