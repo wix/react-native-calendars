@@ -33,8 +33,8 @@ export default class ExpandableCalendarScreen extends Component {
     // this.state = {};
   }
 
-  onDateChanged = (/**date*/) => {
-    // console.warn('INBAL screen onDateChanged: ', date);
+  onDateChanged = (/**date, updateSource*/) => {
+    // console.warn('INBAL screen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
   }
 
@@ -137,7 +137,7 @@ export default class ExpandableCalendarScreen extends Component {
 
   render() {    
     return (
-      <CalendarProvider>
+      <CalendarProvider date={START_DATE} onDateChanged={this.onDateChanged}>
         <ExpandableCalendar 
           // horizontal={false}
           // hideArrows
@@ -145,8 +145,6 @@ export default class ExpandableCalendarScreen extends Component {
           // hideKnob
           // initialPosition={'open'} // ExpandableCalendar.positions.OPEN - can't find static positions
           firstDay={1}
-          onDateChanged={this.onDateChanged}
-          current={START_DATE} 
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           calendarStyle={{paddingLeft: 20, paddingRight: 20}}
           theme={this.getTheme()}

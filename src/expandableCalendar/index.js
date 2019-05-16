@@ -34,8 +34,6 @@ const HEADER_HEIGHT = 68;
 class ExpandableCalendar extends Component {
   static propTypes = {
     ...CalendarList.propTypes,
-    // callback for date change event
-    onDateChanged: PropTypes.func,
     // the initial position of the calendar ('open' or 'closed')
     initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
     // an option to disable the pan gesture and disable the opening and closing of the calendar
@@ -66,7 +64,7 @@ class ExpandableCalendar extends Component {
 
     this.style = styleConstructor(props.theme);
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.numberOfWeeks = this.getNumberOfWeeksInMonth(XDate(this.getCurrentDate()));
+    this.numberOfWeeks = this.getNumberOfWeeksInMonth(XDate(this.props.context.date));
     this.openHeight = this.getOpenHeight();
     
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
@@ -76,7 +74,8 @@ class ExpandableCalendar extends Component {
     this._weekCalendarStyles = {style: {}};
     this.wrapper = undefined;
     this.calendar = undefined;
-    this.visibleMonth = this.getMonth(this.getCurrentDate());
+    this.visibleMonth = this.getMonth(this.props.context.date);
+    this.initialDate = props.context.date; // should be set only once!!!
 
     this.state = {
       deltaY: new Animated.Value(startHeight),
@@ -91,9 +90,6 @@ class ExpandableCalendar extends Component {
       onPanResponderRelease: this.handlePanResponderEnd,
       onPanResponderTerminate: this.handlePanResponderEnd
     });
-
-    // set initial value of context.date
-    _.invoke(props.context, 'setDate', this.getCurrentDate(), UPDATE_SOURCES.CALENDAR_INIT);
   }
 
   // componentDidMount() {
@@ -104,7 +100,6 @@ class ExpandableCalendar extends Component {
     const {date} = this.props.context;
     if (date !== prevProps.context.date) {
       // date was changed from AgendaList, arrows or scroll
-      _.invoke(this.props, 'onDateChanged', date); // report to screen (can be placed in any consumer class)
       this.scrollToDate(date);
     }
   }
@@ -149,10 +144,6 @@ class ExpandableCalendar extends Component {
   /** Utils */
   getOpenHeight() {
     return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
-  }
-
-  getCurrentDate() {
-    return this.props.current || this.getDateString(XDate()); 
   }
 
   getDateString(date) {
@@ -453,6 +444,7 @@ class ExpandableCalendar extends Component {
             testID="calendar"
             {...this.props}
             ref={r => this.calendar = r}
+            current={this.initialDate}
             onDayPress={this.onDayPress}
             onVisibleMonthsChange={this.onVisibleMonthsChange}
             pagingEnabled
