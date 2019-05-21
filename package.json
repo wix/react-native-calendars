@@ -1,6 +1,6 @@
 {
   "name": "react-native-calendars-milk",
-  "version": "1.22.0",
+  "version": "1.22.1",
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
