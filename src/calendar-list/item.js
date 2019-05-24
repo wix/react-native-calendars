@@ -48,14 +48,14 @@ class CalendarListItem extends Component {
           showWeekNumbers={this.props.showWeekNumbers}
           renderArrow={this.props.renderArrow}
           onPressArrowLeft={this.props.onPressArrowLeft ? this.props.onPressArrowLeft : (_,month)=>{
-            month = month.clone()
-            month.addMonths(-1)
-            this.props.calendarListContainer.scrollToMonth(month)
+            month = month.clone();
+            month.addMonths(-1);
+            this.props.calendarListContainer.scrollToMonth(month);
           }}
           onPressArrowRight={this.props.onPressArrowRight ? this.props.onPressArrowRight : (_,month)=>{
-            month = month.clone()
-            month.addMonths(1)
-            this.props.calendarListContainer.scrollToMonth(month)
+            month = month.clone();
+            month.addMonths(1);
+            this.props.calendarListContainer.scrollToMonth(month);
           }}
           headerStyle={this.props.headerStyle}
         />);
