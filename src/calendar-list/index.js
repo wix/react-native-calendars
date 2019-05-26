@@ -62,6 +62,9 @@ class CalendarList extends Component {
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
+    this.viewabilityConfig = {
+      itemVisiblePercentThreshold: 20
+    };
 
     const rows = [];
     const texts = [];
@@ -164,6 +167,7 @@ class CalendarList extends Component {
     const rowclone = this.state.rows;
     const newrows = [];
     const visibleMonths = [];
+
     for (let i = 0; i < rowclone.length; i++) {
       let val = rowclone[i];
       const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
@@ -177,9 +181,11 @@ class CalendarList extends Component {
         visibleMonths.push(xdateToData(val));
       }
     }
+
     if (this.props.onVisibleMonthsChange) {
       this.props.onVisibleMonthsChange(visibleMonths);
     }
+
     this.setState({
       rows: newrows
     });
@@ -222,6 +228,7 @@ class CalendarList extends Component {
         horizontal={this.props.horizontal}
         pagingEnabled={this.props.pagingEnabled}
         onViewableItemsChanged={this.onViewableItemsChangedBound}
+        viewabilityConfig={this.viewabilityConfig}
         renderItem={this.renderCalendarBound}
         showsVerticalScrollIndicator={this.props.showScrollIndicator}
         showsHorizontalScrollIndicator={this.props.showScrollIndicator}
