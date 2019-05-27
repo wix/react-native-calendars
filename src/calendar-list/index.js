@@ -287,6 +287,7 @@ class CalendarList extends Component {
           horizontal={this.props.horizontal}
           pagingEnabled={this.props.pagingEnabled}
           onViewableItemsChanged={this.onViewableItemsChangedBound}
+          viewabilityConfig={this.viewabilityConfig}
           renderItem={this.renderCalendarBound}
           showsVerticalScrollIndicator={this.props.showScrollIndicator}
           showsHorizontalScrollIndicator={this.props.showScrollIndicator}
