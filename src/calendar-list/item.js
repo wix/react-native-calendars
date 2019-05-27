@@ -21,6 +21,30 @@ class CalendarListItem extends Component {
     return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
   }
 
+  onPressArrowLeft(_,month){
+
+    const monthClone = month.clone();
+
+    if(this.props.onPressArrowLeft){
+      this.props.onPressArrowLeft(_,monthClone);
+    }else if(this.props.scrollToMonth){
+      monthClone.addMonths(-1);
+      this.props.scrollToMonth(monthClone);
+    }
+  }
+
+  onPressArrowRight(_,month){
+
+    const monthClone = month.clone();
+
+    if(this.props.onPressArrowRight){
+      this.props.onPressArrowRight(_,monthClone);
+    }else if(this.props.scrollToMonth){
+      monthClone.addMonths(1);
+      this.props.scrollToMonth(monthClone);
+    }
+  }
+
   render() {
     const row = this.props.item;
 
@@ -47,16 +71,8 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
           renderArrow={this.props.renderArrow}
-          onPressArrowLeft={this.props.onPressArrowLeft ? this.props.onPressArrowLeft : (_,month)=>{
-            month = month.clone();
-            month.addMonths(-1);
-            this.props.calendarListContainer.scrollToMonth(month);
-          }}
-          onPressArrowRight={this.props.onPressArrowRight ? this.props.onPressArrowRight : (_,month)=>{
-            month = month.clone();
-            month.addMonths(1);
-            this.props.calendarListContainer.scrollToMonth(month);
-          }}
+          onPressArrowLeft={this.onPressArrowLeft.bind(this)}
+          onPressArrowRight={this.onPressArrowRight.bind(this)}
           headerStyle={this.props.headerStyle}
         />);
     } else {

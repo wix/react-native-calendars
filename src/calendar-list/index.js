@@ -193,7 +193,7 @@ class CalendarList extends Component {
   renderCalendar({item}) {
     return (
       <CalendarListItem
-        calendarListContainer={this}
+        scrollToMonth={this.scrollToMonth.bind(this)}
         item={item} 
         calendarHeight={this.props.calendarHeight} 
         calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined} 
