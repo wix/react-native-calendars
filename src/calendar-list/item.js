@@ -49,6 +49,7 @@ class CalendarListItem extends Component {
           renderArrow={this.props.renderArrow}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          headerStyle={this.props.headerStyle}
         />);
     } else {
       const text = row.toString();
