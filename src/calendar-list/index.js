@@ -55,6 +55,9 @@ class CalendarList extends Component {
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
+    this.viewabilityConfig = {
+      itemVisiblePercentThreshold: 20
+    };
 
     const rows = [];
     const texts = [];

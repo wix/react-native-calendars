@@ -7,7 +7,7 @@ export const isAndroid = Platform.OS === 'android';
 export const isIos = Platform.OS === 'ios';
 export const screenWidth = width;
 export const screenHeight = height;
-
+export const todayString = 'today';
 
 export const UPDATE_SOURCES = {
   LIST_DRAG: 'listDrag',
