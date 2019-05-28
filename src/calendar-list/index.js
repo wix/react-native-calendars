@@ -252,7 +252,7 @@ class CalendarList extends Component {
 
       return (
         <CalendarHeader
-          headerStyle={[this.style.staticHeader, this.props.headerStyle]}
+          style={[this.style.staticHeader, this.props.headerStyle]}
           month={this.state.currentMonth}
           addMonth={this.addMonth}
           showIndicator={indicator}
