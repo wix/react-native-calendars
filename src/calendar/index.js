@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  ViewPropTypes
-} from 'react-native';
+import {View, ViewPropTypes} from 'react-native';
 import PropTypes from 'prop-types';
 
 import XDate from 'xdate';
@@ -18,9 +15,9 @@ import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 import {SELECT_DATE_SLOT} from '../testIDs';
 
+
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
-
 const EmptyArray = [];
 
 class Calendar extends Component {
@@ -29,7 +26,6 @@ class Calendar extends Component {
     theme: PropTypes.object,
     // Collection of dates that have to be marked. Default = {}
     markedDates: PropTypes.object,
-
     // Specify style for calendar container element. Default = {}
     style: viewPropTypes.style,
     // Initially visible month. Default = Date()
@@ -38,20 +34,16 @@ class Calendar extends Component {
     minDate: PropTypes.any,
     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
     maxDate: PropTypes.any,
-
     // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
     firstDay: PropTypes.number,
-
     // Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple'
     markingType: PropTypes.string,
-
     // Hide month navigation arrows. Default = false
     hideArrows: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
     // Do not show days of other months in month page. Default = false
     hideExtraDays: PropTypes.bool,
-
     // Handler which gets executed on day press. Default = undefined
     onDayPress: PropTypes.func,
     // Handler which gets executed on day long press. Default = undefined
@@ -76,20 +68,17 @@ class Calendar extends Component {
     // Handler which gets executed when press arrow icon left. It receive a callback can go back month
     onPressArrowLeft: PropTypes.func,
     // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    // Style passed to the header
+    headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   };
 
   constructor(props) {
     super(props);
     this.style = styleConstructor(this.props.theme);
-    let currentMonth;
-    if (props.current) {
-      currentMonth = parseDate(props.current);
-    } else {
-      currentMonth = XDate();
-    }
+    
     this.state = {
-      currentMonth
+      currentMonth: props.current ? parseDate(props.current) : XDate()
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -259,6 +248,7 @@ class Calendar extends Component {
     return (
       <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
+          style={this.props.headerStyle}
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
           month={this.state.currentMonth}
