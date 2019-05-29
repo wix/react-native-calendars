@@ -124,7 +124,7 @@ export default class ExpandableCalendarScreen extends Component {
       dotColor: themeColor,
       selectedDotColor: white,
       disabledDotColor: disabledColor,
-      dotStyle: {marginTop: -2},
+      dotStyle: {marginTop: -2}
     };
   }
 
@@ -132,7 +132,7 @@ export default class ExpandableCalendarScreen extends Component {
     const style = {paddingLeft: 20, paddingRight: 20};
 
     return (
-      <CalendarProvider date={items[0].title} onDateChanged={this.onDateChanged} todayButton>
+      <CalendarProvider date={items[0].title} onDateChanged={this.onDateChanged} theme={{todayButtonTextColor: '#0059ff'}} todayButton>
         <ExpandableCalendar 
           // horizontal={false}
           // hideArrows
