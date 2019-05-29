@@ -11,6 +11,7 @@ export const todayString = 'today';
 
 export const UPDATE_SOURCES = {
   LIST_DRAG: 'listDrag',
+  LIST_TODAY_PRESS: 'listTodayPress',
   CALENDAR_INIT: 'calendarInit',
   DAY_PRESS: 'dayPress',
   PAGE_SCROLL: 'pageScroll'

@@ -89,6 +89,35 @@ export default function styleConstructor(theme={}) {
     arrowImage: {
       tintColor: appStyle.arrowColor
     },
+    button: {
+      width: 82, 
+      height: 28, 
+      borderRadius: 14, 
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
+      ...Platform.select({
+        ios: {
+          shadowColor: '#79838A',
+          shadowOpacity: 0.3,
+          shadowRadius: 14,
+          shadowOffset: {height: 6, width: 0}
+        },
+        android: {
+          elevation: 6
+        }
+      })
+    },
+    buttonText: {
+      color: appStyle.todayButtonTextColor,
+      fontSize: 14, 
+      fontWeight: '600'
+    },
+    buttonImage: {
+      tintColor: appStyle.todayButtonTextColor, 
+      marginRight: 7
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
