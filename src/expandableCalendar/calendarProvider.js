@@ -32,7 +32,6 @@ class CalendarProvider extends Component {
     this.state = {
       date: this.props.date || XDate().toString('yyyy-MM-dd'),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
-
       buttonY: new Animated.Value(-65),
       buttonIcon: this.getButtonIcon(props.date)
     };
@@ -53,7 +52,7 @@ class CalendarProvider extends Component {
     _.invoke(this.props, 'onDateChanged', date, updateSource);
   }
 
-  
+
   getButtonIcon(date) {
     const isPastDate = this.isPastDate(date);
     return isPastDate ? require('../img/down.png') : require('../img/up.png');
@@ -115,9 +114,9 @@ class CalendarProvider extends Component {
           transform: [{translateY: this.state.buttonY}]
         }}
       >
-        <TouchableOpacity style={this.style.button} onPress={this.onTodayPress}>
-          <Image style={this.style.buttonImage} source={this.state.buttonIcon}/>
-          <Text style={this.style.buttonText}>{today}</Text>
+        <TouchableOpacity style={this.style.todayButton} onPress={this.onTodayPress}>
+          <Image style={this.style.todayButtonImage} source={this.state.buttonIcon}/>
+          <Text style={this.style.todayButtonText}>{today}</Text>
         </TouchableOpacity>
       </Animated.View>
     );

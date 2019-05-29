@@ -89,7 +89,7 @@ export default function styleConstructor(theme={}) {
     arrowImage: {
       tintColor: appStyle.arrowColor
     },
-    button: {
+    todayButton: {
       width: 82, 
       height: 28, 
       borderRadius: 14, 
@@ -109,12 +109,12 @@ export default function styleConstructor(theme={}) {
         }
       })
     },
-    buttonText: {
+    todayButtonText: {
       color: appStyle.todayButtonTextColor,
       fontSize: 14, 
       fontWeight: '600'
     },
-    buttonImage: {
+    todayButtonImage: {
       tintColor: appStyle.todayButtonTextColor, 
       marginRight: 7
     },
