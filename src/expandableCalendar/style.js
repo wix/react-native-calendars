@@ -7,6 +7,7 @@ export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     containerShadow: {
+      backgroundColor: appStyle.calendarBackground,
       ...Platform.select({
         ios: {
           shadowColor: '#79838A',
@@ -16,7 +17,6 @@ export default function styleConstructor(theme={}) {
           zIndex: 99
         },
         android: {
-          backgroundColor: appStyle.calendarBackground,
           elevation: 6
         }
       })

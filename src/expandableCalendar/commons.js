@@ -10,9 +10,9 @@ export const screenHeight = height;
 export const todayString = 'today';
 
 export const UPDATE_SOURCES = {
-  LIST_DRAG: 'listDrag',
-  LIST_TODAY_PRESS: 'listTodayPress',
   CALENDAR_INIT: 'calendarInit',
+  TODAY_PRESS: 'todayPress',
+  LIST_DRAG: 'listDrag',
   DAY_PRESS: 'dayPress',
   PAGE_SCROLL: 'pageScroll'
 };
