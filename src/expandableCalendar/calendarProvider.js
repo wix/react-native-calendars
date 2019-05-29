@@ -21,10 +21,6 @@ class CalendarProvider extends Component {
     todayButton: PropTypes.bool
   }
 
-  static defaultProps = {
-    todayButton: true
-  }
-
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);

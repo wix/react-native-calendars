@@ -132,7 +132,7 @@ export default class ExpandableCalendarScreen extends Component {
     const style = {paddingLeft: 20, paddingRight: 20};
 
     return (
-      <CalendarProvider date={items[0].title} onDateChanged={this.onDateChanged}>
+      <CalendarProvider date={items[0].title} onDateChanged={this.onDateChanged} todayButton>
         <ExpandableCalendar 
           // horizontal={false}
           // hideArrows
