@@ -69,7 +69,6 @@ class CalendarProvider extends Component {
       if (today.getMonth() > d.getMonth()) {
         return true;
       }
-
       if (today.getMonth() === d.getMonth()) {
         if (today.getDate() > d.getDate()) {
           return true;
