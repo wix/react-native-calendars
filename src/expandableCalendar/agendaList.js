@@ -36,7 +36,9 @@ class AgendaList extends Component {
     this._topSection = props.sections ? props.sections[0].title : undefined;
     this.didScroll = false;
     this.sectionScroll = false;
+    this.y = 0;
     this.height = 0;
+    this.firstLoad = true;
   }
 
   isPastDate(date1, date2) {
@@ -101,7 +103,9 @@ class AgendaList extends Component {
   onViewableItemsChanged = ({viewableItems}) => {
     if (viewableItems) {
       const topSection = _.get(viewableItems[0], 'section.title');
-      this.animateTodayButton(topSection);
+      if (this.height !== 0) {
+        this.animateTodayButton(topSection);
+      }
   
       if (!this.sectionScroll) {
         if (topSection && topSection !== this._topSection) {
@@ -130,7 +134,14 @@ class AgendaList extends Component {
   }
 
   onLayout = ({nativeEvent}) => {
+    this.y = nativeEvent.layout.y;
     this.height = nativeEvent.layout.height;
+
+    // Android - onLayout is called after onViewableItemsChanged, thus this.height is 0 on first load
+    if (commons.isAndroid && this.firstLoad) {
+      this.firstLoad = false;
+      this.animateTodayButton(this._topSection);
+    }
   }
 
   onTodayPress = () => {
@@ -146,9 +157,9 @@ class AgendaList extends Component {
         
     const isPast = this.isPastDate(today, this._topSection);
     this.setState({buttonIcon: isPast ? require('../img/down.png') : require('../img/up.png')});
-
+    
     Animated.spring(this.state.buttonY, {
-      toValue: isToday ? commons.screenHeight : this.height * 0.85,
+      toValue: isToday ? commons.screenHeight : this.height * (this.y <= 144 ? 0.85 : 0.7),
       tension: 30,
       friction: 8,
       useNativeDriver: true
