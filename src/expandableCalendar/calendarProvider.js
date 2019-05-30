@@ -18,7 +18,7 @@ class CalendarProvider extends Component {
     // callback for date change event
     onDateChanged: PropTypes.func,
     // whether to show the today button
-    todayButton: PropTypes.bool
+    showTodayButton: PropTypes.bool
   }
 
   constructor(props) {
@@ -75,7 +75,7 @@ class CalendarProvider extends Component {
   }
 
   animateTodayButton(date) {
-    if (this.props.todayButton) {
+    if (this.props.showTodayButton) {
       this.setState({buttonIcon: this.getButtonIcon(date)});
   
       const today = XDate().toString('yyyy-MM-dd');
@@ -100,15 +100,7 @@ class CalendarProvider extends Component {
     const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
     
     return (
-      <Animated.View 
-        style={{
-          position: 'absolute', 
-          left: 20, 
-          right: 0, 
-          bottom : 0, 
-          transform: [{translateY: this.state.buttonY}]
-        }}
-      >
+      <Animated.View style={[this.style.todayButtonContainer, {transform: [{translateY: this.state.buttonY}]}]}>
         <TouchableOpacity style={this.style.todayButton} onPress={this.onTodayPress}>
           <Image style={this.style.todayButtonImage} source={this.state.buttonIcon}/>
           <Text style={this.style.todayButtonText}>{today}</Text>
@@ -121,7 +113,7 @@ class CalendarProvider extends Component {
     return (
       <CalendarContext.Provider value={this.getProviderContextValue()}>
         {this.props.children}
-        {this.props.todayButton && this.renderTodayButton()}
+        {this.props.showTodayButton && this.renderTodayButton()}
       </CalendarContext.Provider>
     );
   }

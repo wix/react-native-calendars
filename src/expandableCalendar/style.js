@@ -89,6 +89,12 @@ export default function styleConstructor(theme={}) {
     arrowImage: {
       tintColor: appStyle.arrowColor
     },
+    todayButtonContainer: {
+      position: 'absolute', 
+      left: 20, 
+      right: 0, 
+      bottom : 0
+    },
     todayButton: {
       width: 82, 
       height: 28, 

@@ -28,7 +28,7 @@ class AgendaList extends Component {
     super(props);
     this.style = styleConstructor(props.theme);
 
-    this._topSection = props.sections ? props.sections[0].title : undefined;
+    this._topSection = _.get(props, 'sections[0].title');
     this.didScroll = false;
     this.sectionScroll = false;
   }
