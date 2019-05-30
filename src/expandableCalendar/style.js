@@ -90,16 +90,17 @@ export default function styleConstructor(theme={}) {
       tintColor: appStyle.arrowColor
     },
     todayButtonContainer: {
+      alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',
       position: 'absolute', 
       left: 20, 
-      right: 0, 
+      right: 20, 
       bottom : 0
     },
     todayButton: {
       width: 82, 
       height: 28, 
       borderRadius: 14, 
-      flexDirection: 'row',
+      flexDirection: appStyle.todayButtonPosition === 'right' ? 'row-reverse' : 'row',
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'white',
@@ -122,7 +123,8 @@ export default function styleConstructor(theme={}) {
     },
     todayButtonImage: {
       tintColor: appStyle.todayButtonTextColor, 
-      marginRight: 7
+      marginLeft: appStyle.todayButtonPosition === 'right' ? 7 : undefined,
+      marginRight: appStyle.todayButtonPosition === 'right' ? undefined : 7
     },
     ...(theme[STYLESHEET_ID] || {})
   });

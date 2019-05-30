@@ -49,3 +49,4 @@ export const agendaDayNumColor = '#7a92a5';
 export const agendaTodayColor = textLinkColor;
 export const agendaKnobColor = Platform.OS === 'ios' ? '#f2F4f5' : '#4ac4f7';
 export const todayButtonTextColor = textLinkColor;
+export const todayButtonPosition = undefined; // right' / 'left' (default)
