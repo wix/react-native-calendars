@@ -92,7 +92,7 @@ class CalendarProvider extends Component {
 
   onTodayPress = () => {
     const today = XDate().toString('yyyy-MM-dd');
-    this.setState({date: today, updateSource: UPDATE_SOURCES.TODAY_PRESS});
+    this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   }
 
   renderTodayButton() {
