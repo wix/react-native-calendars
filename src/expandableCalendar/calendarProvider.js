@@ -102,16 +102,15 @@ class CalendarProvider extends Component {
 
   renderTodayButton() {
     const {disabled} = this.state;
-    const Wrapper = disabled ? View : TouchableOpacity;
     const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
     const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
     
     return (
       <Animated.View style={[this.style.todayButtonContainer, {transform: [{translateY: this.state.buttonY}]}]}>
-        <Wrapper style={this.style.todayButton} onPress={this.onTodayPress}>
+        <TouchableOpacity style={this.style.todayButton} onPress={this.onTodayPress} disabled={disabled}>
           <Image style={[this.style.todayButtonImage, disabled && this.style.todayButtonDisabledImage]} source={this.state.buttonIcon}/>
           <Text style={[this.style.todayButtonText, disabled && this.style.todayButtonDisabledText]}>{today}</Text>
-        </Wrapper>
+        </TouchableOpacity>
       </Animated.View>
     );
   }
