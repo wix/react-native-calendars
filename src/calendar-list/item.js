@@ -71,8 +71,8 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
           renderArrow={this.props.renderArrow}
-          onPressArrowLeft={this.onPressArrowLeft}
-          onPressArrowRight={this.onPressArrowRight}
+          onPressArrowLeft={this.props.horizontal ? this.onPressArrowLeft : this.props.onPressArrowLeft}
+          onPressArrowRight={this.props.horizontal ? this.onPressArrowRight : this.props.onPressArrowRight}
           headerStyle={this.props.headerStyle}
         />);
     } else {
