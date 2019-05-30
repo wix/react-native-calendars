@@ -21,7 +21,7 @@ class CalendarListItem extends Component {
     return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
   }
 
-  onPressArrowLeft(_,month){
+  onPressArrowLeft = (_,month) => {
 
     const monthClone = month.clone();
 
@@ -33,7 +33,7 @@ class CalendarListItem extends Component {
     }
   }
 
-  onPressArrowRight(_,month){
+  onPressArrowRight = (_,month) => {
 
     const monthClone = month.clone();
 
@@ -71,8 +71,8 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
           renderArrow={this.props.renderArrow}
-          onPressArrowLeft={this.onPressArrowLeft.bind(this)}
-          onPressArrowRight={this.onPressArrowRight.bind(this)}
+          onPressArrowLeft={this.onPressArrowLeft}
+          onPressArrowRight={this.onPressArrowRight}
           headerStyle={this.props.headerStyle}
         />);
     } else {
