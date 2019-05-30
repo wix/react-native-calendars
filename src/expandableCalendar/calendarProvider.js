@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {Animated, TouchableOpacity, Image, Text} from 'react-native';
+import {Animated, TouchableOpacity, View, Image, Text} from 'react-native';
 import XDate from 'xdate';
 
 import styleConstructor from './style';
@@ -29,7 +29,8 @@ class CalendarProvider extends Component {
       date: this.props.date || XDate().toString('yyyy-MM-dd'),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-65),
-      buttonIcon: this.getButtonIcon(props.date)
+      buttonIcon: this.getButtonIcon(props.date),
+      disabled: false
     };
   }
   
@@ -37,7 +38,8 @@ class CalendarProvider extends Component {
     return {
       setDate: this.setDate,
       date: this.state.date,
-      updateSource: this.state.updateSource
+      updateSource: this.state.updateSource,
+      setDisabled: this.setDisabled
     };
   };
 
@@ -48,6 +50,9 @@ class CalendarProvider extends Component {
     _.invoke(this.props, 'onDateChanged', date, updateSource);
   }
 
+  setDisabled = (disabled) => {
+    this.setState({disabled});
+  }
 
   getButtonIcon(date) {
     const isPastDate = this.isPastDate(date);
@@ -96,15 +101,17 @@ class CalendarProvider extends Component {
   }
 
   renderTodayButton() {
+    const {disabled} = this.state;
+    const Wrapper = disabled ? View : TouchableOpacity;
     const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
     const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
     
     return (
       <Animated.View style={[this.style.todayButtonContainer, {transform: [{translateY: this.state.buttonY}]}]}>
-        <TouchableOpacity style={this.style.todayButton} onPress={this.onTodayPress}>
-          <Image style={this.style.todayButtonImage} source={this.state.buttonIcon}/>
-          <Text style={this.style.todayButtonText}>{today}</Text>
-        </TouchableOpacity>
+        <Wrapper style={this.style.todayButton} onPress={this.onTodayPress}>
+          <Image style={[this.style.todayButtonImage, disabled && this.style.todayButtonDisabledImage]} source={this.state.buttonIcon}/>
+          <Text style={[this.style.todayButtonText, disabled && this.style.todayButtonDisabledText]}>{today}</Text>
+        </Wrapper>
       </Animated.View>
     );
   }

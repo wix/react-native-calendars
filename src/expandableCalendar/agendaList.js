@@ -89,9 +89,14 @@ class AgendaList extends Component {
     }
   }
 
+  onMomentumScrollBegin = () => {
+    _.invoke(this.props.context, 'setDisabled', true);
+  }
+
   onMomentumScrollEnd = () => {
     // when list momentum ends AND when scrollToSection scroll ends
     this.sectionScroll = false;
+    _.invoke(this.props.context, 'setDisabled', false);
   }
 
   onScrollEndDrag = () => {
@@ -123,6 +128,7 @@ class AgendaList extends Component {
         }}
         renderSectionHeader={this.renderSectionHeader}
         onScroll={this.onScroll}
+        onMomentumScrollBegin={this.onMomentumScrollBegin}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
         onScrollEndDrag={this.onScrollEndDrag}
         // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
