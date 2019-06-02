@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {Animated, TouchableOpacity, View, Image, Text} from 'react-native';
+import {Animated, TouchableOpacity} from 'react-native';
 import XDate from 'xdate';
 
 import styleConstructor from './style';
