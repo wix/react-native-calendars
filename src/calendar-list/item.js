@@ -21,25 +21,23 @@ class CalendarListItem extends Component {
     return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
   }
 
-  onPressArrowLeft = (_,month) => {
-
+  onPressArrowLeft = (_, month) => {
     const monthClone = month.clone();
 
-    if(this.props.onPressArrowLeft){
-      this.props.onPressArrowLeft(_,monthClone);
-    }else if(this.props.scrollToMonth){
+    if (this.props.onPressArrowLeft) {
+      this.props.onPressArrowLeft(_, monthClone);
+    } else if (this.props.scrollToMonth) {
       monthClone.addMonths(-1);
       this.props.scrollToMonth(monthClone);
     }
   }
 
-  onPressArrowRight = (_,month) => {
-
+  onPressArrowRight = (_, month) => {
     const monthClone = month.clone();
 
-    if(this.props.onPressArrowRight){
-      this.props.onPressArrowRight(_,monthClone);
-    }else if(this.props.scrollToMonth){
+    if (this.props.onPressArrowRight) {
+      this.props.onPressArrowRight(_, monthClone);
+    } else if (this.props.scrollToMonth) {
       monthClone.addMonths(1);
       this.props.scrollToMonth(monthClone);
     }
