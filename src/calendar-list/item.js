@@ -21,9 +21,33 @@ class CalendarListItem extends Component {
     return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
   }
 
+  onPressArrowLeft = (_,month) => {
+
+    const monthClone = month.clone();
+
+    if(this.props.onPressArrowLeft){
+      this.props.onPressArrowLeft(_,monthClone);
+    }else if(this.props.scrollToMonth){
+      monthClone.addMonths(-1);
+      this.props.scrollToMonth(monthClone);
+    }
+  }
+
+  onPressArrowRight = (_,month) => {
+
+    const monthClone = month.clone();
+
+    if(this.props.onPressArrowRight){
+      this.props.onPressArrowRight(_,monthClone);
+    }else if(this.props.scrollToMonth){
+      monthClone.addMonths(1);
+      this.props.scrollToMonth(monthClone);
+    }
+  }
+
   render() {
     const row = this.props.item;
-    
+
     if (row.getTime) {
       return (
         <Calendar
@@ -47,13 +71,13 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
           renderArrow={this.props.renderArrow}
-          onPressArrowLeft={this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.onPressArrowRight}
+          onPressArrowLeft={this.props.horizontal ? this.onPressArrowLeft : this.props.onPressArrowLeft}
+          onPressArrowRight={this.props.horizontal ? this.onPressArrowRight : this.props.onPressArrowRight}
           headerStyle={this.props.headerStyle}
         />);
     } else {
       const text = row.toString();
-      
+
       return (
         <View style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.placeholder]}>
           <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
