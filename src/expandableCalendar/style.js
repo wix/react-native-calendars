@@ -7,6 +7,7 @@ export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     containerShadow: {
+      backgroundColor: appStyle.calendarBackground,
       ...Platform.select({
         ios: {
           shadowColor: '#79838A',
@@ -16,7 +17,6 @@ export default function styleConstructor(theme={}) {
           zIndex: 99
         },
         android: {
-          backgroundColor: appStyle.calendarBackground,
           elevation: 6
         }
       })
@@ -44,7 +44,7 @@ export default function styleConstructor(theme={}) {
       fontWeight: 'bold', 
       fontSize: 12,
       lineHeight: 16,
-      color: '#5c95ff',
+      color: '#7a92a5',
       paddingTop: 24, // 8
       paddingBottom: 8,
       paddingLeft: 20,
@@ -88,6 +88,43 @@ export default function styleConstructor(theme={}) {
     },
     arrowImage: {
       tintColor: appStyle.arrowColor
+    },
+    todayButtonContainer: {
+      alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',
+      position: 'absolute', 
+      left: 20, 
+      right: 20, 
+      bottom : 0
+    },
+    todayButton: {
+      width: 82, 
+      height: 28, 
+      borderRadius: 14, 
+      flexDirection: appStyle.todayButtonPosition === 'right' ? 'row-reverse' : 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
+      ...Platform.select({
+        ios: {
+          shadowColor: '#79838A',
+          shadowOpacity: 0.3,
+          shadowRadius: 14,
+          shadowOffset: {height: 6, width: 0}
+        },
+        android: {
+          elevation: 6
+        }
+      })
+    },
+    todayButtonText: {
+      color: appStyle.todayButtonTextColor,
+      fontSize: 14, 
+      fontWeight: '600'
+    },
+    todayButtonImage: {
+      tintColor: appStyle.todayButtonTextColor, 
+      marginLeft: appStyle.todayButtonPosition === 'right' ? 7 : undefined,
+      marginRight: appStyle.todayButtonPosition === 'right' ? undefined : 7
     },
     ...(theme[STYLESHEET_ID] || {})
   });

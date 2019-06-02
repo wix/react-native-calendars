@@ -1,10 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {
-  SectionList,
-  Text
-} from 'react-native';
+import {SectionList, Text} from 'react-native';
 import XDate from 'xdate';
 
 import styleConstructor from './style';
@@ -29,11 +26,9 @@ class AgendaList extends Component {
 
   constructor(props) {
     super(props);
-
-    // this.state = {};
-
     this.style = styleConstructor(props.theme);
-    this._topSection = undefined;
+
+    this._topSection = _.get(props, 'sections[0].title');
     this.didScroll = false;
     this.sectionScroll = false;
   }
@@ -94,9 +89,14 @@ class AgendaList extends Component {
     }
   }
 
+  onMomentumScrollBegin = () => {
+    _.invoke(this.props.context, 'setDisabled', true);
+  }
+
   onMomentumScrollEnd = () => {
     // when list momentum ends AND when scrollToSection scroll ends
     this.sectionScroll = false;
+    _.invoke(this.props.context, 'setDisabled', false);
   }
 
   onScrollEndDrag = () => {
@@ -132,6 +132,7 @@ class AgendaList extends Component {
         }}
         renderSectionHeader={this.renderSectionHeader}
         onScroll={this.onScroll}
+        onMomentumScrollBegin={this.onMomentumScrollBegin}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
         onScrollEndDrag={this.onScrollEndDrag}
         // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
