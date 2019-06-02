@@ -66,7 +66,7 @@ class AgendaList extends Component {
         sectionIndex: sectionIndex,
         itemIndex: 0,
         viewPosition: 0, // position at the top
-        viewOffset: commons.isAndroid ? 10 : 0
+        viewOffset: commons.isAndroid ? this.sectionHeight : 0
       });
     }
   }
@@ -103,6 +103,10 @@ class AgendaList extends Component {
     // when list drag ends
   }
 
+  onLayout = ({nativeEvent}) => {
+    this.sectionHeight = nativeEvent.layout.height;
+  }
+
   renderSectionHeader = ({section: {title}}) => {
     const today = XDate().toString(this.props.dayFormat).toUpperCase();
     const date = XDate(title).toString(this.props.dayFormat).toUpperCase();
@@ -110,7 +114,7 @@ class AgendaList extends Component {
     const sectionTitle = date === today ? `${todayString.toUpperCase()}, ${date}` : date;
     
     return (
-      <Text style={[this.style.sectionText, this.props.sectionStyle]}>{sectionTitle}</Text>
+      <Text style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onLayout}>{sectionTitle}</Text>
     );
   }
 
