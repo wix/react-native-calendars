@@ -126,12 +126,6 @@ export default function styleConstructor(theme={}) {
       marginLeft: appStyle.todayButtonPosition === 'right' ? 7 : undefined,
       marginRight: appStyle.todayButtonPosition === 'right' ? undefined : 7
     },
-    todayButtonDisabledText: {
-      color: appStyle.todayButtonDisabledColor
-    },
-    todayButtonDisabledImage: {
-      tintColor: appStyle.todayButtonDisabledColor
-    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }

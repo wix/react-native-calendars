@@ -30,7 +30,8 @@ class CalendarProvider extends Component {
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-65),
       buttonIcon: this.getButtonIcon(props.date),
-      disabled: false
+      disabled: false,
+      opacity: new Animated.Value(1)
     };
   }
   
@@ -52,6 +53,7 @@ class CalendarProvider extends Component {
 
   setDisabled = (disabled) => {
     this.setState({disabled});
+    this.animateOpacity(disabled);
   }
 
   getButtonIcon(date) {
@@ -95,21 +97,28 @@ class CalendarProvider extends Component {
     }
   }
 
+  animateOpacity(disabled) {
+    Animated.timing(this.state.opacity, {
+      toValue: disabled ? 0.6 : 1, 
+      duration: 500
+    }).start();
+  }
+
   onTodayPress = () => {
     const today = XDate().toString('yyyy-MM-dd');
     this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   }
 
   renderTodayButton() {
-    const {disabled} = this.state;
+    const {disabled, opacity} = this.state;
     const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
     const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
     
     return (
       <Animated.View style={[this.style.todayButtonContainer, {transform: [{translateY: this.state.buttonY}]}]}>
         <TouchableOpacity style={this.style.todayButton} onPress={this.onTodayPress} disabled={disabled}>
-          <Image style={[this.style.todayButtonImage, disabled && this.style.todayButtonDisabledImage]} source={this.state.buttonIcon}/>
-          <Text style={[this.style.todayButtonText, disabled && this.style.todayButtonDisabledText]}>{today}</Text>
+          <Animated.Image style={[this.style.todayButtonImage, {opacity}]} source={this.state.buttonIcon}/>
+          <Animated.Text style={[this.style.todayButtonText, {opacity}]}>{today}</Animated.Text>
         </TouchableOpacity>
       </Animated.View>
     );
