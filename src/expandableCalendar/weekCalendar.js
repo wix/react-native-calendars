@@ -11,7 +11,7 @@ import Week from '../expandableCalendar/week';
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
-const NUMBER_OF_PAGES = 2; // must be a positive number
+const NUMBER_OF_PAGES = 1; // must be a positive number
 
 class WeekCalendar extends Component {
   static propTypes = {
@@ -42,7 +42,7 @@ class WeekCalendar extends Component {
     const {current, firstDay} = this.props;
     const array = [];
 
-    for (let index = -NUMBER_OF_PAGES; index < NUMBER_OF_PAGES; index++) {
+    for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
       const d = XDate(current);
       // get the first day of the week as date (for the on scroll mark)
       let dayOfTheWeek = d.getDay();
@@ -76,14 +76,14 @@ class WeekCalendar extends Component {
       <Week
         {...this.props}
         current={item}
-        key={item} // to avoid re-render of the same item
+        key={item}
       />
     );
   }
 
   render() {
     this.items = this.getDatesArray();
-
+    
     return (
       <FlatList
         ref={(c) => this.listView = c}
