@@ -52,8 +52,10 @@ class CalendarProvider extends Component {
   }
 
   setDisabled = (disabled) => {
-    this.setState({disabled});
-    this.animateOpacity(disabled);
+    if (this.props.showTodayButton && disabled !== this.state.disabled) {
+      this.setState({disabled});
+      this.animateOpacity(disabled);
+    }
   }
 
   getButtonIcon(date) {
