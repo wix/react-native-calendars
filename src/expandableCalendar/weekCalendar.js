@@ -11,7 +11,7 @@ import Week from '../expandableCalendar/week';
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
-const NUMBER_OF_WEEKS = Math.abs(4); // must be positive number
+const NUMBER_OF_PAGES = 2; // must be a positive number
 
 class WeekCalendar extends Component {
   static propTypes = {
@@ -22,29 +22,36 @@ class WeekCalendar extends Component {
 
   constructor(props) {
     super(props);
-    
     this.style = styleConstructor(props.theme);
-    this.items = this.getDatesArray();
+
+    this.viewabilityConfig = {
+      itemVisiblePercentThreshold: 90
+    };
     this.visibleItem = undefined;
-    this.visibleItemIndex = 0;
+    this.items = this.getDatesArray();
   }
 
   componentDidUpdate() {
-    this.items = this.getDatesArray();
+    // to avoid new items render from changing the visible week
     if (this.props.context.updateSource === UPDATE_SOURCES.WEEK_SCROLL) {
-      // to avoid new items render from changing the visible week
-      this.listView.scrollToIndex({animated: false, index: NUMBER_OF_WEEKS});
+      this.listView.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
     }
   }
 
   getDatesArray() {
-    const {current} = this.props;
+    const {current, firstDay} = this.props;
     const array = [];
 
-    // TODO: get the first day of the week as date (for jumping to it on scroll)
-    for (let index = -NUMBER_OF_WEEKS; index < NUMBER_OF_WEEKS; index++) {
+    for (let index = -NUMBER_OF_PAGES; index < NUMBER_OF_PAGES; index++) {
       const d = XDate(current);
-      const newDate = d.addWeeks(index);
+      // get the first day of the week as date (for the on scroll mark)
+      let dayOfTheWeek = d.getDay();
+      if (dayOfTheWeek < firstDay && firstDay > 0) {
+        dayOfTheWeek = 7 + dayOfTheWeek;
+      }
+      // leave the current date in the visible week as is
+      const dd = index === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+      const newDate = dd.addWeeks(index);
       const dateString = newDate.toString('yyyy-MM-dd');
       array.push(dateString);
     }
@@ -53,15 +60,15 @@ class WeekCalendar extends Component {
 
   onViewableItemsChanged = ({viewableItems}) => {
     // NOTE: gets called only on week scroll (so might be un-synced with displayed week) !!!
-    const viweableItem = _.first(viewableItems);
-    if (this.visibleItem !== viweableItem.item) {
-      if (this.visibleItem) {
-        _.invoke(this.props.context, 'setDate', viweableItem.item, UPDATE_SOURCES.WEEK_SCROLL); 
+    if (viewableItems.length > 0) {
+      const viweableItem = _.first(viewableItems);
+      if (viweableItem.isViewable && this.visibleItem !== viweableItem.item) {
+        if (this.visibleItem) { // to avoid invoke on first init
+          _.invoke(this.props.context, 'setDate', viweableItem.item, UPDATE_SOURCES.WEEK_SCROLL); 
+        }
+        this.visibleItem = viweableItem.item;
       }
-      this.visibleItem = viweableItem.item;
-      this.visibleItemIndex = viweableItem.index;
     }
-    // TODO: handle scroll to end/threshold - load items
   }
 
   renderItem = ({item}) => {
@@ -69,11 +76,14 @@ class WeekCalendar extends Component {
       <Week
         {...this.props}
         current={item}
+        key={item} // to avoid re-render of the same item
       />
     );
   }
 
   render() {
+    this.items = this.getDatesArray();
+
     return (
       <FlatList
         ref={(c) => this.listView = c}
@@ -86,8 +96,8 @@ class WeekCalendar extends Component {
         renderItem={this.renderItem}
         keyExtractor={(item, index) => String(index)}
         onViewableItemsChanged={this.onViewableItemsChanged}
-        // viewabilityConfig={this.viewabilityConfig}
-        initialScrollIndex={NUMBER_OF_WEEKS}
+        viewabilityConfig={this.viewabilityConfig}
+        initialScrollIndex={NUMBER_OF_PAGES}
         getItemLayout={this.getItemLayout}
       />
     );
