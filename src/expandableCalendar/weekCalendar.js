@@ -39,23 +39,27 @@ class WeekCalendar extends Component {
   }
 
   getDatesArray() {
-    const {current, firstDay} = this.props;
     const array = [];
-
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
-      const d = XDate(current);
-      // get the first day of the week as date (for the on scroll mark)
-      let dayOfTheWeek = d.getDay();
-      if (dayOfTheWeek < firstDay && firstDay > 0) {
-        dayOfTheWeek = 7 + dayOfTheWeek;
-      }
-      // leave the current date in the visible week as is
-      const dd = index === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
-      const newDate = dd.addWeeks(index);
-      const dateString = newDate.toString('yyyy-MM-dd');
-      array.push(dateString);
+      const date = this.getDate(index);
+      array.push(date);
     }
     return array;
+  }
+
+  getDate(index) {
+    const {current, firstDay} = this.props;
+    const d = XDate(current);
+    // get the first day of the week as date (for the on scroll mark)
+    let dayOfTheWeek = d.getDay();
+    if (dayOfTheWeek < firstDay && firstDay > 0) {
+      dayOfTheWeek = 7 + dayOfTheWeek;
+    }
+    // leave the current date in the visible week as is
+    const dd = index === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+    const newDate = dd.addWeeks(index);
+    const dateString = newDate.toString('yyyy-MM-dd');
+    return dateString;
   }
 
   onViewableItemsChanged = ({viewableItems}) => {
@@ -81,9 +85,9 @@ class WeekCalendar extends Component {
     );
   }
 
-  render() {
+  render() {    
     this.items = this.getDatesArray();
-    
+
     return (
       <FlatList
         ref={(c) => this.listView = c}
