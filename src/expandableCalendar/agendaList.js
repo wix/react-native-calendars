@@ -31,6 +31,10 @@ class AgendaList extends Component {
     this._topSection = _.get(props, 'sections[0].title');
     this.didScroll = false;
     this.sectionScroll = false;
+
+    this.viewabilityConfig = {
+      itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
+    };
   }
 
   getSectionIndex(date) {
@@ -127,9 +131,7 @@ class AgendaList extends Component {
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled
         onViewableItemsChanged={this.onViewableItemsChanged}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
-        }}
+        viewabilityConfig={this.viewabilityConfig}
         renderSectionHeader={this.renderSectionHeader}
         onScroll={this.onScroll}
         onMomentumScrollBegin={this.onMomentumScrollBegin}
