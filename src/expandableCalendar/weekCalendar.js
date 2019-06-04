@@ -24,7 +24,6 @@ class WeekCalendar extends Component {
     super(props);
     this.style = styleConstructor(props.theme);
 
-    this.firstScroll = undefined;
     this.viewabilityConfig = {
       itemVisiblePercentThreshold: 90
     };
@@ -69,19 +68,10 @@ class WeekCalendar extends Component {
       const viweableItem = _.first(viewableItems);
       if (viweableItem.isViewable && this.visibleItem !== viweableItem.item) {
         if (this.visibleItem) { // to avoid invoke on first init
-          if (!this.firstScroll) { // to avoid invoke on first scroll (initialScrollIndex)
-            _.invoke(this.props.context, 'setDate', viweableItem.item, UPDATE_SOURCES.WEEK_SCROLL); 
-          }
-          this.firstScroll = false;
+          _.invoke(this.props.context, 'setDate', viweableItem.item, UPDATE_SOURCES.WEEK_SCROLL); 
         }
         this.visibleItem = viweableItem.item;
       }
-    }
-  }
-
-  onScroll = () => {
-    if (this.firstScroll === undefined) {
-      this.firstScroll = true;
     }
   }
 
@@ -113,7 +103,6 @@ class WeekCalendar extends Component {
         viewabilityConfig={this.viewabilityConfig}
         initialScrollIndex={NUMBER_OF_PAGES}
         getItemLayout={this.getItemLayout}
-        onScroll={this.onScroll}
       />
     );
   }
