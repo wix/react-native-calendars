@@ -33,8 +33,6 @@ class WeekCalendar extends Component {
   }
 
   componentDidUpdate() {
-    this.items = this.getDatesArray();
-
     // to avoid new items render from changing the visible week
     if (this.props.context.updateSource === UPDATE_SOURCES.WEEK_SCROLL) {
       this.listView.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
@@ -98,6 +96,8 @@ class WeekCalendar extends Component {
   }
 
   render() {    
+    this.items = this.getDatesArray();
+
     return (
       <FlatList
         ref={(c) => this.listView = c}
