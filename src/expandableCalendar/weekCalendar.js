@@ -24,6 +24,7 @@ class WeekCalendar extends Component {
     super(props);
     this.style = styleConstructor(props.theme);
 
+    this.firstScroll = undefined;
     this.viewabilityConfig = {
       itemVisiblePercentThreshold: 90
     };
@@ -32,6 +33,8 @@ class WeekCalendar extends Component {
   }
 
   componentDidUpdate() {
+    this.items = this.getDatesArray();
+
     // to avoid new items render from changing the visible week
     if (this.props.context.updateSource === UPDATE_SOURCES.WEEK_SCROLL) {
       this.listView.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
@@ -68,10 +71,19 @@ class WeekCalendar extends Component {
       const viweableItem = _.first(viewableItems);
       if (viweableItem.isViewable && this.visibleItem !== viweableItem.item) {
         if (this.visibleItem) { // to avoid invoke on first init
-          _.invoke(this.props.context, 'setDate', viweableItem.item, UPDATE_SOURCES.WEEK_SCROLL); 
+          if (!this.firstScroll) { // to avoid invoke on first scroll (initialScrollIndex)
+            _.invoke(this.props.context, 'setDate', viweableItem.item, UPDATE_SOURCES.WEEK_SCROLL); 
+          }
+          this.firstScroll = false;
         }
         this.visibleItem = viweableItem.item;
       }
+    }
+  }
+
+  onScroll = () => {
+    if (this.firstScroll === undefined) {
+      this.firstScroll = true;
     }
   }
 
@@ -86,8 +98,6 @@ class WeekCalendar extends Component {
   }
 
   render() {    
-    this.items = this.getDatesArray();
-
     return (
       <FlatList
         ref={(c) => this.listView = c}
@@ -103,6 +113,7 @@ class WeekCalendar extends Component {
         viewabilityConfig={this.viewabilityConfig}
         initialScrollIndex={NUMBER_OF_PAGES}
         getItemLayout={this.getItemLayout}
+        onScroll={this.onScroll}
       />
     );
   }
