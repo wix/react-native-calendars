@@ -29,7 +29,7 @@ class CalendarProvider extends Component {
       date: this.props.date || XDate().toString('yyyy-MM-dd'),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-65),
-      buttonIcon: this.getButtonIcon(props.date),
+      buttonIcon: props.showTodayButton && this.getButtonIcon(props.date),
       disabled: false,
       opacity: new Animated.Value(1)
     };
@@ -45,7 +45,7 @@ class CalendarProvider extends Component {
   };
 
   setDate = (date, updateSource) => {
-    this.setState({date, updateSource}, () => {
+    this.setState({date, updateSource, buttonIcon: this.props.showTodayButton && this.getButtonIcon(date)}, () => {
       this.animateTodayButton(date);
     });
     _.invoke(this.props, 'onDateChanged', date, updateSource);
@@ -85,7 +85,6 @@ class CalendarProvider extends Component {
 
   animateTodayButton(date) {
     if (this.props.showTodayButton) {
-      this.setState({buttonIcon: this.getButtonIcon(date)});
   
       const today = XDate().toString('yyyy-MM-dd');
       const isToday = today === date;
