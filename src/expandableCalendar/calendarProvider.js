@@ -85,7 +85,6 @@ class CalendarProvider extends Component {
 
   animateTodayButton(date) {
     if (this.props.showTodayButton) {
-  
       const today = XDate().toString('yyyy-MM-dd');
       const isToday = today === date;
       
