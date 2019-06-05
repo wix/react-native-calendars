@@ -28,7 +28,7 @@ class WeekCalendar extends Component {
       itemVisiblePercentThreshold: 90
     };
     this.visibleItem = undefined;
-    this.items = this.getDatesArray();
+    this.items = this.getDatesArray(props.current);
   }
 
   componentDidUpdate() {
@@ -38,18 +38,18 @@ class WeekCalendar extends Component {
     }
   }
 
-  getDatesArray() {
+  getDatesArray(date) {
     const array = [];
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
-      const date = this.getDate(index);
-      array.push(date);
+      const d = this.getDate(date, index);
+      array.push(d);
     }
     return array;
   }
 
-  getDate(index) {
-    const {current, firstDay} = this.props;
-    const d = XDate(current);
+  getDate(date, index) {
+    const {firstDay} = this.props;
+    const d = XDate(date);
     // get the first day of the week as date (for the on scroll mark)
     let dayOfTheWeek = d.getDay();
     if (dayOfTheWeek < firstDay && firstDay > 0) {
@@ -68,6 +68,7 @@ class WeekCalendar extends Component {
       const viweableItem = _.first(viewableItems);
       if (viweableItem.isViewable && this.visibleItem !== viweableItem.item) {
         if (this.visibleItem) { // to avoid invoke on first init
+          this.items = this.getDatesArray(viweableItem.item);
           _.invoke(this.props.context, 'setDate', viweableItem.item, UPDATE_SOURCES.WEEK_SCROLL); 
         }
         this.visibleItem = viweableItem.item;
@@ -86,8 +87,6 @@ class WeekCalendar extends Component {
   }
 
   render() {    
-    this.items = this.getDatesArray();
-
     return (
       <FlatList
         ref={(c) => this.listView = c}
