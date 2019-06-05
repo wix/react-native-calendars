@@ -9,23 +9,40 @@ import {
   TouchableOpacity,
   Button
 } from 'react-native';
-import XDate from 'xdate';
 import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-calendars';
 
 
-const today = XDate().toString('yyyy-MM-dd');
+const today = new Date().toISOString().split('T')[0];
+const fastDate = getPastDate(3); 
+const futureDates = getFutureDates(9);
+const dates = [fastDate, today].concat(futureDates);
+
+function getFutureDates(days) {
+  const array = [];
+  for (let index = 1; index <= days; index++) {
+    const date = new Date(Date.now() + (864e5 * index)); // 864e5 == 86400000 == 24*60*60*1000
+    const dateString = date.toISOString().split('T')[0];
+    array.push(dateString);
+  }
+  return array;
+}
+
+function getPastDate(days) {
+  return new Date(Date.now() - (864e5 * days)).toISOString().split('T')[0]; // 864e5 == 86400000 == 24*60*60*1000
+}
+
 const items = [
-  {title: '2019-05-27', data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {title: today, data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
-  {title: '2019-06-01', data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
-  {title: '2019-06-02', data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {title: '2019-06-03', data: [{}]},
-  {title: '2019-06-04', data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
-  {title: '2019-06-05', data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {title: '2019-06-06', data: [{}]},
-  {title: '2019-06-07', data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
-  {title: '2019-06-08', data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
-  {title: '2019-06-09', data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]}
+  {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
+  {title: dates[2], data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {title: dates[3], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: dates[4], data: [{}]},
+  {title: dates[5], data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {title: dates[6], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: dates[7], data: [{}]},
+  {title: dates[8], data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {title: dates[9], data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {title: dates[10], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]}
 ];
 
 export default class ExpandableCalendarScreen extends Component {
