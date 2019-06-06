@@ -15,7 +15,6 @@ import {parseDate} from '../interface';
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import asCalendarConsumer from './asCalendarConsumer';
-import Week from './week';
 import WeekCalendar from './weekCalendar';
 
 
