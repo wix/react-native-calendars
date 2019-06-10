@@ -114,7 +114,7 @@ class AgendaList extends Component {
     const sectionTitle = date === today ? `${todayString.toUpperCase()}, ${date}` : date;
     
     return (
-      <Text style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onLayout}>{sectionTitle}</Text>
+      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onLayout}>{sectionTitle}</Text>
     );
   }
 
