@@ -35,7 +35,6 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "react": "16.8.3",
-    "react-native": "0.59.3",
-    "react-native-navigation": "2.13.1"
+    "react-native": "0.59.3"
   }
 }

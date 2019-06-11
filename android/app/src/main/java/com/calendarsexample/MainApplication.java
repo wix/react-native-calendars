@@ -1,15 +1,10 @@
 package com.calendarsexample;
 import com.facebook.react.ReactNativeHost;
-import com.reactnativenavigation.NavigationApplication;
 
 import com.facebook.react.ReactPackage;
 
 import java.util.Arrays;
 import java.util.List;
-
-import com.reactnativenavigation.NavigationApplication;
-import com.reactnativenavigation.react.NavigationReactNativeHost;
-import com.reactnativenavigation.react.ReactGateway;
 
 
 public class MainApplication extends NavigationApplication {
