@@ -117,6 +117,7 @@ class CalendarHeader extends Component {
     }
 
     return (
+      <View></View>
       // <View style={this.props.style}>
       //   <View style={this.style.header}>
       //     {leftArrow}
