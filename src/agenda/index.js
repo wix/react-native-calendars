@@ -139,6 +139,7 @@ export default class AgendaView extends Component {
     this.setScrollPadPosition(this.props.isDefaultViewCalendar ? 0 : this.initialScrollPadPosition(), false);
     // delay rendering calendar in full height because otherwise it still flickers sometimes
     setTimeout(() => this.setState({calendarIsReady: true}), 0);
+    this.enableCalendarScrolling();
   }
 
   onLayout(event) {
