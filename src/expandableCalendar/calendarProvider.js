@@ -118,7 +118,7 @@ class CalendarProvider extends Component {
       <Animated.View style={[this.style.todayButtonContainer, {transform: [{translateY: this.state.buttonY}]}]}>
         <TouchableOpacity style={this.style.todayButton} onPress={this.onTodayPress} disabled={disabled}>
           <Animated.Image style={[this.style.todayButtonImage, {opacity}]} source={this.state.buttonIcon}/>
-          <Animated.Text style={[this.style.todayButtonText, {opacity}]}>{today}</Animated.Text>
+          <Animated.Text allowFontScaling={false} style={[this.style.todayButtonText, {opacity}]}>{today}</Animated.Text>
         </TouchableOpacity>
       </Animated.View>
     );

@@ -35,6 +35,7 @@ class AgendaList extends Component {
     this.viewabilityConfig = {
       itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
     };
+    this.list = React.createRef();
   }
 
   getSectionIndex(date) {
@@ -61,11 +62,11 @@ class AgendaList extends Component {
   }
 
   scrollToSection(sectionIndex) {
-    if (this.list && sectionIndex !== undefined) {
+    if (this.list.current && sectionIndex !== undefined) {
       this.sectionScroll = true; // to avoid setDate() in onViewableItemsChanged
       this._topSection = this.props.sections[sectionIndex].title;
 
-      this.list.scrollToLocation({
+      this.list.current.scrollToLocation({
         animated: true,
         sectionIndex: sectionIndex,
         itemIndex: 0,
@@ -118,16 +119,18 @@ class AgendaList extends Component {
     const sectionTitle = date === today ? `${todayString.toUpperCase()}, ${date}` : date;
     
     return (
-      <Text style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onLayout}>{sectionTitle}</Text>
+      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onLayout}>{sectionTitle}</Text>
     );
   }
+
+  keyExtractor = (item, index) => String(index);
 
   render() {
     return (
       <SectionList
         {...this.props}
-        ref={r => this.list = r}
-        keyExtractor={(item, index) => String(index)}
+        ref={this.list}
+        keyExtractor={this.keyExtractor}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled
         onViewableItemsChanged={this.onViewableItemsChanged}
