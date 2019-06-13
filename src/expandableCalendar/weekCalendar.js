@@ -29,12 +29,13 @@ class WeekCalendar extends Component {
     };
     this.visibleItem = undefined;
     this.items = this.getDatesArray();
+    this.list = React.createRef();
   }
 
   componentDidUpdate() {
     if (this.props.context.updateSource === UPDATE_SOURCES.WEEK_SCROLL) {
       // to avoid new items render from changing the visible week
-      this.listView.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
+      this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
     }
   }
 
@@ -85,12 +86,14 @@ class WeekCalendar extends Component {
     );
   }
 
+  keyExtractor = (item, index) => String(index);
+
   render() {  
     this.items = this.getDatesArray();
   
     return (
       <FlatList
-        ref={(c) => this.listView = c}
+        ref={this.list}
         data={this.items}
         style={this.style.container}
         horizontal
@@ -98,7 +101,7 @@ class WeekCalendar extends Component {
         pagingEnabled
         scrollEnabled
         renderItem={this.renderItem}
-        keyExtractor={(item, index) => String(index)}
+        keyExtractor={this.keyExtractor}
         onViewableItemsChanged={this.onViewableItemsChanged}
         viewabilityConfig={this.viewabilityConfig}
         initialScrollIndex={NUMBER_OF_PAGES}
