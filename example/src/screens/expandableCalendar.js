@@ -28,10 +28,10 @@ function getFutureDates(days) {
 }
 
 function getPastDate(days) {
-  return new Date(Date.now() - (864e5 * days)).toISOString().split('T')[0]; // 864e5 == 86400000 == 24*60*60*1000
+  return new Date(Date.now() - (864e5 * days)).toISOString().split('T')[0];
 }
 
-const items = [
+const ITEMS = [
   {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
   {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
   {title: dates[2], data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
@@ -46,10 +46,18 @@ const items = [
 ];
 
 export default class ExpandableCalendarScreen extends Component {
-  
+
   onDateChanged = (/**date, updateSource*/) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
+  }
+  
+  buttonPressed() {
+    Alert.alert('show more');
+  }
+
+  itemPressed(id) {
+    Alert.alert(id);
   }
 
   renderEmptyItem() {
@@ -64,28 +72,19 @@ export default class ExpandableCalendarScreen extends Component {
     if (_.isEmpty(item)) {
       return this.renderEmptyItem();
     }
-
-    const id = item.title;
-    const props = {
-      hour: item.hour,
-      duration: item.duration,
-      title: item.title,
-      button: {label: 'info', onPress: () => Alert.alert('show more')},
-      onPress: () => Alert.alert(id)
-    };
-
+    
     return (
       <TouchableOpacity 
-        onPress={props.onPress} 
+        onPress={() => this.itemPressed(item.title)} 
         style={styles.item}
       >
         <View>
-          <Text style={styles.itemHourText}>{props.hour}</Text>
-          <Text style={styles.itemDurationText}>{props.duration}</Text>
+          <Text style={styles.itemHourText}>{item.hour}</Text>
+          <Text style={styles.itemDurationText}>{item.duration}</Text>
         </View>
-        <Text style={styles.itemTitleText}>{props.title}</Text>
+        <Text style={styles.itemTitleText}>{item.title}</Text>
         <View style={styles.itemButtonContainer}>
-          <Button title={props.button.label} onPress={props.button.onPress}/>
+          <Button title={'Info'} onPress={this.buttonPressed}/>
         </View>
       </TouchableOpacity>
     );
@@ -93,7 +92,7 @@ export default class ExpandableCalendarScreen extends Component {
 
   getMarkedDates = () => {
     const marked = {};
-    items.forEach(item => {
+    ITEMS.forEach(item => {
       // only mark dates with data
       if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
         marked[item.title] = {marked: true};
@@ -146,10 +145,8 @@ export default class ExpandableCalendarScreen extends Component {
   }
 
   render() {    
-    const style = {paddingLeft: 20, paddingRight: 20};
-
     return (
-      <CalendarProvider date={items[0].title} onDateChanged={this.onDateChanged} theme={{todayButtonTextColor: '#0059ff'}} showTodayButton>
+      <CalendarProvider date={ITEMS[0].title} onDateChanged={this.onDateChanged} theme={{todayButtonTextColor: '#0059ff'}} showTodayButton>
         <ExpandableCalendar 
           // horizontal={false}
           // hideArrows
@@ -158,17 +155,18 @@ export default class ExpandableCalendarScreen extends Component {
           // initialPosition={'open'} // ExpandableCalendar.positions.OPEN - can't find static positions
           firstDay={1}
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-          calendarStyle={style}
+          calendarStyle={styles.calendar}
           theme={this.getTheme()}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
-          headerStyle={style}
+          headerStyle={styles.calendar}
         />
         <AgendaList
-          data={items}
-          sections={items}
+          data={ITEMS}
+          sections={ITEMS}
+          extraData={this.state}
           renderItem={this.renderItem}
-          // sectionStyle={{backgroundColor: '#f0f4f7', color: '#79838a'}}
+          // sectionStyle={styles.section}
         />
       </CalendarProvider>
     );
@@ -176,6 +174,14 @@ export default class ExpandableCalendarScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  calendar: {
+    paddingLeft: 20, 
+    paddingRight: 20
+  },
+  section: {
+    backgroundColor: '#f0f4f7', 
+    color: '#79838a'
+  },
   item: {
     padding: 20, 
     backgroundColor: 'white', 
