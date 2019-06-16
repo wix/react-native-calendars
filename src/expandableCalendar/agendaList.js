@@ -88,27 +88,26 @@ class AgendaList extends Component {
     }
   }
 
-  onScroll = () => {
+  onScroll = (event) => {
     if (!this.didScroll) {
       this.didScroll = true;
     }
+    _.invoke(this.props, 'onScroll', event);
   }
 
-  onMomentumScrollBegin = () => {
+  onMomentumScrollBegin = (event) => {
     _.invoke(this.props.context, 'setDisabled', true);
+    _.invoke(this.props, 'onMomentumScrollBegin', event);
   }
 
-  onMomentumScrollEnd = () => {
+  onMomentumScrollEnd = (event) => {
     // when list momentum ends AND when scrollToSection scroll ends
     this.sectionScroll = false;
     _.invoke(this.props.context, 'setDisabled', false);
+    _.invoke(this.props, 'onMomentumScrollEnd', event);
   }
 
-  onScrollEndDrag = () => {
-    // when list drag ends
-  }
-
-  onLayout = ({nativeEvent}) => {
+  onHeaderLayout = ({nativeEvent}) => {
     this.sectionHeight = nativeEvent.layout.height;
   }
 
@@ -119,7 +118,7 @@ class AgendaList extends Component {
     const sectionTitle = date === today ? `${todayString.toUpperCase()}, ${date}` : date;
     
     return (
-      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onLayout}>{sectionTitle}</Text>
+      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onHeaderLayout}>{sectionTitle}</Text>
     );
   }
 
@@ -139,7 +138,6 @@ class AgendaList extends Component {
         onScroll={this.onScroll}
         onMomentumScrollBegin={this.onMomentumScrollBegin}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
-        onScrollEndDrag={this.onScrollEndDrag}
         // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
         // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
       />

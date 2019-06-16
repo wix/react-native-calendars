@@ -162,7 +162,6 @@ export default class ExpandableCalendarScreen extends Component {
           headerStyle={styles.calendar}
         />
         <AgendaList
-          data={ITEMS}
           sections={ITEMS}
           extraData={this.state}
           renderItem={this.renderItem}
