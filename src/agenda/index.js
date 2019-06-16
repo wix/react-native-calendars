@@ -89,6 +89,8 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     // Display loading indicador. Default = false
     displayLoadingIndicator: PropTypes.bool,
+    // If true, open calendar
+    shouldOpenCalendar: PropTypes.bool,
   };
 
   constructor(props) {
@@ -135,7 +137,9 @@ export default class AgendaView extends Component {
     // When user touches knob, the actual component that receives touch events is a ScrollView.
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
-    this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+    if (!this.props.shouldOpenCalendar) {
+      this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+    }
     // delay rendering calendar in full height because otherwise it still flickers sometimes
     setTimeout(() => this.setState({calendarIsReady: true}), 0);
   }
@@ -224,6 +228,19 @@ export default class AgendaView extends Component {
     } else {
       this.loadReservations(props);
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.shouldOpenCalendar !== this.props.shouldOpenCalendar) {
+      this.toggleCalendar(!!this.props.shouldOpenCalendar);
+    }
+  }
+
+  toggleCalendar(shouldOpenCalendar) {
+    const scrollTo = shouldOpenCalendar ? 0 : this.initialScrollPadPosition();
+    this.setScrollPadPosition(scrollTo, true);
+    this.setState({ calendarScrollable: shouldOpenCalendar });
+    this.props.onCalendarToggled && this.props.onCalendarToggled(shouldOpenCalendar);
   }
 
   enableCalendarScrolling() {
