@@ -415,6 +415,8 @@ An advanced agenda component that can display interactive listings for calendar 
   }}
   // callback that gets called when items for a certain month should be loaded (month became visible)
   loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+  // If true, open calendar. Default = false
+  shouldOpenCalendar
   // callback that fires when the calendar is opened or closed
   onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
   // callback that gets called on day press
