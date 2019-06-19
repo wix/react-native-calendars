@@ -24,7 +24,7 @@ class CalendarHeader extends Component {
   };
 
   static defaultProps = {
-    monthFormat: 'yyyy년  MMMM'
+    monthFormat: 'MMMM  yyyy'
   };
 
   constructor(props) {
