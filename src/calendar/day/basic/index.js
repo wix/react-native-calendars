@@ -55,6 +55,9 @@ class Day extends Component {
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
+      if (isDisabled) {
+        dotStyle.push(this.style.disabledDot);
+      }
       if (marking.dotColor) {
         dotStyle.push({backgroundColor: marking.dotColor});
       }
@@ -73,10 +76,12 @@ class Day extends Component {
     } else if (this.props.state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
+      dotStyle.push(this.style.todayDot);
     }
 
     return (
       <TouchableOpacity
+        testID={this.props.testID}
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
