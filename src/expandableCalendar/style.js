@@ -97,8 +97,8 @@ export default function styleConstructor(theme={}) {
       bottom : 0
     },
     todayButton: {
-      width: 82, 
       height: 28, 
+      paddingHorizontal: 12,
       borderRadius: 14, 
       flexDirection: appStyle.todayButtonPosition === 'right' ? 'row-reverse' : 'row',
       justifyContent: 'center',
@@ -118,8 +118,9 @@ export default function styleConstructor(theme={}) {
     },
     todayButtonText: {
       color: appStyle.todayButtonTextColor,
-      fontSize: 14, 
-      fontWeight: '600'
+      fontSize: appStyle.todayButtonFontSize, 
+      fontWeight: appStyle.todayButtonFontWeight,
+      fontFamily: appStyle.todayButtonFontFamily
     },
     todayButtonImage: {
       tintColor: appStyle.todayButtonTextColor, 

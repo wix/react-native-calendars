@@ -10,6 +10,8 @@ import CalendarContext from './calendarContext';
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
+const iconDown = require('../img/down.png');
+const iconUp = require('../img/up.png');
 
 class CalendarProvider extends Component {
   static propTypes = {
@@ -18,7 +20,9 @@ class CalendarProvider extends Component {
     // callback for date change event
     onDateChanged: PropTypes.func,
     // whether to show the today button
-    showTodayButton: PropTypes.bool
+    showTodayButton: PropTypes.bool,
+    // The opacity for the disabled today button (0-1)
+    disabledOpacity: PropTypes.number
   }
 
   constructor(props) {
@@ -66,7 +70,7 @@ class CalendarProvider extends Component {
 
   getButtonIcon(date) {
     const isPastDate = this.isPastDate(date);
-    return isPastDate ? require('../img/down.png') : require('../img/up.png');
+    return isPastDate ? iconDown : iconUp;
   }
 
   isPastDate(date) {
@@ -104,10 +108,13 @@ class CalendarProvider extends Component {
   }
 
   animateOpacity(disabled) {
-    Animated.timing(this.state.opacity, {
-      toValue: disabled ? 0.6 : 1, 
-      duration: 500
-    }).start();
+    const {disabledOpacity} = this.props;
+    if (disabledOpacity) {
+      Animated.timing(this.state.opacity, {
+        toValue: disabled ? disabledOpacity : 1, 
+        duration: 500
+      }).start();
+    }
   }
 
   onTodayPress = () => {

@@ -146,7 +146,13 @@ export default class ExpandableCalendarScreen extends Component {
 
   render() {    
     return (
-      <CalendarProvider date={ITEMS[0].title} onDateChanged={this.onDateChanged} theme={{todayButtonTextColor: '#0059ff'}} showTodayButton>
+      <CalendarProvider 
+        date={ITEMS[0].title} 
+        onDateChanged={this.onDateChanged} 
+        theme={{todayButtonTextColor: '#0059ff'}} 
+        showTodayButton 
+        disabledOpacity={0.6}
+      >
         <ExpandableCalendar 
           // horizontal={false}
           // hideArrows
