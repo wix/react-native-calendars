@@ -215,13 +215,18 @@ class ExpandableCalendar extends Component {
       // disable pan detection when vertical calendar is open to allow calendar scroll
       return false;
     }
+    if (this.state.position === POSITIONS.CLOSED && gestureState.dy < 0) {
+      // disable pan detection to limit to closed height
+      return false;
+    }
     return gestureState.dy > 5 || gestureState.dy < -5;
   };
   handlePanResponderGrant = () => {
   
   };
   handlePanResponderMove = (e, gestureState) => {
-    this._wrapperStyles.style.height = this._height + gestureState.dy;
+    // limit min height to closed height
+    this._wrapperStyles.style.height = Math.max(this.closedHeight, this._height + gestureState.dy);
 
     if (!this.props.horizontal) {
       // vertical CalenderList header
@@ -235,8 +240,8 @@ class ExpandableCalendar extends Component {
 
     this.updateNativeStyles();
   };
-  handlePanResponderEnd = (e, gestureState) => {
-    this._height += gestureState.dy;
+  handlePanResponderEnd = () => {
+    this._height = this._wrapperStyles.style.height;
     this.bounceToPosition();
   };
 
