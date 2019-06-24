@@ -34,6 +34,12 @@ class CalendarProvider extends Component {
       opacity: new Animated.Value(1)
     };
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.date !== this.props.date) {
+      this.setDate(this.props.date, UPDATE_SOURCES.PROP_UPDATE);
+    }
+  }
   
   getProviderContextValue = () => {
     return {

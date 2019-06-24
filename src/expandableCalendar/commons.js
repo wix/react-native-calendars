@@ -14,5 +14,6 @@ export const UPDATE_SOURCES = {
   TODAY_PRESS: 'todayPress',
   LIST_DRAG: 'listDrag',
   DAY_PRESS: 'dayPress',
-  PAGE_SCROLL: 'pageScroll'
+  PAGE_SCROLL: 'pageScroll',
+  PROP_UPDATE: 'propUpdate'
 };
