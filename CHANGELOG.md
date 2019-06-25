@@ -2,14 +2,14 @@
 
 ## [1.188.0] - 2019-06-16
 ### Added
-- src/expandableCalendar/AgendaList.js invoking used SectionList's events.
+- src/expandableCalendar/AgendaList.js - invoking used SectionList's events.
 ### Removed
 - example/src/screens/ExpandableCalendar.js - removing unnecessary 'data' prop sent to AgendaList.
 
 
 ## [1.189.0] - 2019-06-24
 ### Bug Fix
-- CalendarProvider: fix for 'date' prop update.
+- CalendarProvider - fix for 'date' prop update.
 
 ## [1.190.0] - 2019-06-24
 ### Added
@@ -21,3 +21,8 @@
 ## [1.191.0] - 2019-06-24
 ### Bug Fix
 - ExpandableCalendar - limit calendar min height to closed height.
+
+## [1.192.0] - 2019-06-25
+### Fix
+- CalendarProvider - Fix for warning on Image 'source' type.
+- ExpandableCalendar - Fix shadow/elevation style.
