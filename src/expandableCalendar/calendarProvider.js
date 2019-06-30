@@ -4,6 +4,8 @@ import React, {Component} from 'react';
 import {Animated, TouchableOpacity} from 'react-native';
 import XDate from 'xdate';
 
+import dateutils from '../dateutils';
+import {xdateToData} from '../interface';
 import styleConstructor from './style';
 import CalendarContext from './calendarContext';
 
@@ -19,6 +21,8 @@ class CalendarProvider extends Component {
     date: PropTypes.any.isRequired,
     // callback for date change event
     onDateChanged: PropTypes.func,
+    // callback for month change event
+    onMonthChange: PropTypes.func,
     // whether to show the today button
     showTodayButton: PropTypes.bool,
     // The opacity for the disabled today button (0-1)
@@ -55,10 +59,17 @@ class CalendarProvider extends Component {
   };
 
   setDate = (date, updateSource) => {
+    const sameMonth = dateutils.sameMonth(XDate(date), XDate(this.state.date));
+
     this.setState({date, updateSource, buttonIcon: this.getButtonIcon(date)}, () => {
       this.animateTodayButton(date);
     });
+
     _.invoke(this.props, 'onDateChanged', date, updateSource);
+    
+    if (!sameMonth) {
+      _.invoke(this.props, 'onMonthChange', xdateToData(XDate(date)), updateSource);
+    }
   }
 
   setDisabled = (disabled) => {

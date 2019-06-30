@@ -31,3 +31,7 @@
 ### Bug Fix
 - ExpandableCalendar - fix for week paddings. Changing knob container height and weekDays style.
 - CalendarList/item - limit headerStyle to horizontal only.
+
+## [1.194.0] - 2019-06-30
+### Added
+- CalendarProvider - 'onMonthChange' event returning date object and updateSource.
