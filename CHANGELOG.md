@@ -26,3 +26,8 @@
 ### Fix
 - CalendarProvider - Fix for warning on Image 'source' type.
 - ExpandableCalendar - Fix shadow/elevation style.
+
+## [1.193.0] - 2019-06-26
+### Bug Fix
+- ExpandableCalendar - fix for week paddings. Changing knob container height and weekDays style.
+- CalendarList/item - limit headerStyle to horizontal only.

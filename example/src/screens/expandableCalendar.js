@@ -161,11 +161,11 @@ export default class ExpandableCalendarScreen extends Component {
           // initialPosition={'open'} // ExpandableCalendar.positions.OPEN - can't find static positions
           firstDay={1}
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-          calendarStyle={styles.calendar}
           theme={this.getTheme()}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
-          headerStyle={styles.calendar}
+          // calendarStyle={styles.calendar}
+          // headerStyle={styles.calendar} // for horizontal only
         />
         <AgendaList
           sections={ITEMS}
