@@ -9,6 +9,7 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import {STATIC_HEADER} from '../../testIDs';
 
 
 const {width} = Dimensions.get('window');
@@ -266,6 +267,7 @@ class CalendarList extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          testID={STATIC_HEADER}
         />
       );
     }
