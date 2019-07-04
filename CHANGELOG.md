@@ -36,6 +36,6 @@
 ### Added
 - CalendarProvider - 'onMonthChange' event returning date object and updateSource.
 
-## [1.195.0] - 2019-07-04
+## [1.196.0] - 2019-07-04
 ### Added
 - CalendarList - passing 'testID' to static CalendarHeader.
