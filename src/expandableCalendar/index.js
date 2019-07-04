@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {
   PanResponder,
@@ -8,6 +7,7 @@ import {
   Text,
   Image
 } from 'react-native';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../dateutils';
@@ -32,21 +32,28 @@ const KNOB_CONTAINER_HEIGHT = 20;
 const HEADER_HEIGHT = 68;
 const DAY_NAMES_PADDING = 24;
 
-
+/**
+ * @description: Expandable calendar component
+ * @extends: CalendarList
+ * @extendslink: docs/CalendarList
+ * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
+ */
 class ExpandableCalendar extends Component {
+  static displayName = 'ExpandableCalendar';
+
   static propTypes = {
     ...CalendarList.propTypes,
-    // the initial position of the calendar ('open' or 'closed')
+    /** the initial position of the calendar ('open' or 'closed') */
     initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
-    // an option to disable the pan gesture and disable the opening and closing of the calendar
+    /** an option to disable the pan gesture and disable the opening and closing of the calendar */
     disablePan: PropTypes.bool,
-    // whether to hide the knob 
+    /** whether to hide the knob  */
     hideKnob: PropTypes.bool,
-    // source for the left arrow image
+    /** source for the left arrow image */
     leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    // source for the right arrow image
+    /** source for the right arrow image */
     rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    // whether to have shadow/elevation for the calendar
+    /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool
   }
 
