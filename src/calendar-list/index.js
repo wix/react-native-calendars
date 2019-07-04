@@ -9,7 +9,7 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
-import {STATIC_HEADER} from '../../testIDs';
+import {STATIC_HEADER} from '../testIDs';
 
 
 const {width} = Dimensions.get('window');
