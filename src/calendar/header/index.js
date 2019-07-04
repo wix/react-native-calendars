@@ -9,6 +9,8 @@ import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} from '../../testIDs';
 
 
 class CalendarHeader extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     theme: PropTypes.object,
     hideArrows: PropTypes.bool,

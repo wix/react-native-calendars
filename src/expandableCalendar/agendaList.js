@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {SectionList, Text} from 'react-native';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import styleConstructor from './style';
@@ -11,12 +11,20 @@ import asCalendarConsumer from './asCalendarConsumer';
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 
+/**
+ * @description: AgendaList component
+ * @extends: SectionList
+ * @notes: Should be wraped in CalendarProvider component
+ * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
+ */
 class AgendaList extends Component {
+  static displayName = 'AgendaList';
+
   static propTypes = {
     ...SectionList.propTypes,
-    // day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting
+    /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
     dayFormat: PropTypes.string,
-    // style passed to the section view
+    /** style passed to the section view */
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   }
 

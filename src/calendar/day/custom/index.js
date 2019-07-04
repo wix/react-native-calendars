@@ -9,6 +9,8 @@ import styleConstructor from './style';
 import {shouldUpdate} from '../../../component-updater';
 
 class Day extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),

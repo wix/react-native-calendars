@@ -5,6 +5,8 @@ import styleConstructor from './style';
 
 
 class CalendarListItem extends Component {
+  static displayName = 'IGNORE';
+  
   static defaultProps = {
     hideArrows: true,
     hideExtraDays: true

@@ -12,6 +12,8 @@ import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
 class ReactComp extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
