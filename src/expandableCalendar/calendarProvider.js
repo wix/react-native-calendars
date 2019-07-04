@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Animated, TouchableOpacity} from 'react-native';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../dateutils';
@@ -15,17 +15,23 @@ const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const iconDown = require('../img/down.png');
 const iconUp = require('../img/up.png');
 
+/**
+ * @description: Calendar context provider component
+ * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
+ */
 class CalendarProvider extends Component {
+  static displayName = 'CalendarProvider';
+
   static propTypes = {
-    // Initial date in 'yyyy-MM-dd' format. Default = Date()
+    /** Initial date in 'yyyy-MM-dd' format. Default = Date() */
     date: PropTypes.any.isRequired,
-    // callback for date change event
+    /** callback for date change event */
     onDateChanged: PropTypes.func,
-    // callback for month change event
+    /** callback for month change event */
     onMonthChange: PropTypes.func,
-    // whether to show the today button
+    /** whether to show the today button */
     showTodayButton: PropTypes.bool,
-    // The opacity for the disabled today button (0-1)
+    /** The opacity for the disabled today button (0-1) */
     disabledOpacity: PropTypes.number
   }
 

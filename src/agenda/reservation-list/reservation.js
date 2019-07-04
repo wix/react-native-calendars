@@ -6,6 +6,8 @@ import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
 class ReservationListItem extends Component {
+  static displayName = 'IGNORE';
+  
   constructor(props) {
     super(props);
     this.styles = styleConstructor(props.theme);

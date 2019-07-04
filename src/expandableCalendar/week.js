@@ -20,6 +20,8 @@ const commons = require('./commons');
 const EmptyArray = [];
 
 class Week extends Component {
+  static displayName = 'IGNORE';
+
   static propTypes = {
     ...Calendar.propTypes,
     // the current date
