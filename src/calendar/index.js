@@ -78,7 +78,7 @@ class Calendar extends Component {
     onPressArrowRight: PropTypes.func,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    // Provide heading level for proper accessibility when used with react-native-web
+    /** Provide heading level for proper accessibility when used with web (react-native-web) */
     headingLevel: PropTypes.number
   };
 
