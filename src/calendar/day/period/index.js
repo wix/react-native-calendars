@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import {
   TouchableWithoutFeedback,
   Text,
-  View
-} from 'react-native';
+  View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import isEqual from 'lodash.isequal';
 
@@ -12,6 +11,8 @@ import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 
 class Day extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     // TODO: selected + disabled props should be removed
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
@@ -193,6 +194,7 @@ class Day extends Component {
 
     return (
       <TouchableWithoutFeedback
+        testID={this.props.testID}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}>
         <View style={this.style.wrapper}>
