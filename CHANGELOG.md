@@ -39,3 +39,7 @@
 ## [1.195.0] - 2019-07-04
 ### Change
 - Components' props comment format.
+
+## [1.196.0] - 2019-07-04
+### Added
+- CalendarList - passing 'testID' to static CalendarHeader.
