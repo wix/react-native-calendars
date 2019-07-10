@@ -109,10 +109,10 @@ class Day extends Component {
         prev.textStyle.color = next.textColor;
       }
       if (marking.customTextStyle) {
-      	defaultStyle.textStyle = marking.customTextStyle;
+        defaultStyle.textStyle = marking.customTextStyle;
       }
       if (marking.customContainerStyle) {
-      	defaultStyle.containerStyle = marking.customContainerStyle;
+        defaultStyle.containerStyle = marking.customContainerStyle;
       }
       return prev;
     }, defaultStyle);
