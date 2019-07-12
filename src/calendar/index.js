@@ -179,6 +179,7 @@ class Calendar extends Component {
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           state={state}
           theme={this.props.theme}
+          defaultPrice={this.props.defaultPrice}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
           date={dateAsObject}

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import {
   TouchableWithoutFeedback,
   Text,
+Platform,
   View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import isEqual from 'lodash.isequal';
 
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
-
+import styleConstructorAndroid from './styleAndroid';
 class Day extends Component {
   static displayName = 'IGNORE';
   
@@ -31,7 +32,7 @@ class Day extends Component {
   constructor(props) {
     super(props);
     this.theme = {...defaultStyle, ...(props.theme || {})};
-    this.style = styleConstructor(props.theme);
+    this.style = (props.marking && props.marking.length > 0 && Platform.OS != 'ios' ) ? styleConstructor(props.theme) : styleConstructorAndroid(props.theme);//styleConstructorAndroid
     this.markingStyle = this.getDrawingStyle(props.marking || []);
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
@@ -113,9 +114,52 @@ class Day extends Component {
     return resultStyle;
   }
 
+  renderDots(marking) {
+    const baseDotStyle = [this.style.dot, this.style.visibleDot];
+    if (marking.dots && Array.isArray(marking.dots) && marking.dots.length > 0) {
+      // Filter out dots so that we we process only those items which have key and color property
+      const validDots = marking.dots.filter(d => (d && d.color));
+      //console.log('validDots ',validDots);
+      if (validDots.length > 0) {
+        return validDots.map((dot, index) => {
+          return (
+            <View key={dot.key ? dot.key : index} >
+              {(Math.floor(dot.color) != Math.floor(this.props.defaultPrice) ) && <Text style={{textAlign: 'center', fontSize: 12,color:(marking.color =='#00C07F') ? '#fff': '#00C07F'}}>{'$'+Math.floor(dot.color)}</Text>}
+              {(Math.floor(dot.color) == Math.floor(this.props.defaultPrice)) && <Text style={{textAlign: 'center', fontSize: 12,color:(marking.color =='#00C07F') ? '#fff': '#b6c1cd'}}>{'$'+Math.floor(dot.color)}</Text>}
+           </View>
+          );
+        });
+      }else {
+        this.renderDefaultValue();
+      }
+
+    }
+    return;
+  }
+
+  renderDefaultValue() {
+    const baseDotStyle = [this.style.dot, this.style.visibleDot];
+    const marking = this.props.marking || {};
+    return (
+      <View>
+        <Text style={{textAlign: 'center', fontSize: 12,color: (marking.color =='#00C07F') ? '#fff': '#b6c1cd'}}>{'$'+Math.floor(this.props.defaultPrice)}</Text>
+     </View>
+    );
+  }
+
+
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
+    const marking = this.props.marking || {};
+    const dot = this.renderDots(marking);
+    var defaultPrice = null;
+    if (this.props.defaultPrice) {
+      defaultPrice = this.renderDefaultValue();
+    }
+
+
+
     let leftFillerStyle = {};
     let rightFillerStyle = {};
     let fillerStyle = {};
@@ -200,7 +244,11 @@ class Day extends Component {
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+            {(marking.color =='#00C07F' && dot) && <Text allowFontScaling={false} style={[textStyle, {color: '#fff', marginTop: 3, fontSize: 10}]}>{String(this.props.children)}</Text>}
+            {(marking.color =='#00C07F' && !dot) && <Text allowFontScaling={false} style={[textStyle, {color: '#fff', marginTop: 3, fontSize: 10}]}>{String(this.props.children)}</Text>}
+            {marking.color !='#00C07F' && <Text allowFontScaling={false} style={[textStyle]}>{String(this.props.children)}</Text>}
+            {dot && <View style={{flexDirection: 'row'}}>{dot}</View>}
+            {!dot && <View style={{flexDirection: 'row'}}>{defaultPrice}</View>}
           </View>
         </View>
       </TouchableWithoutFeedback>
