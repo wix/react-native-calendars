@@ -47,3 +47,7 @@
 ## [1.197.0] - 2019-07-14
 ### Added
 - asCalendarConsumer - hoist non-react statics.
+
+## [1.198.0] - 2019-07-14
+### Fix
+- ExpandableCalendar - fix example screen.
