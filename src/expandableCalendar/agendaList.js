@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {SectionList, Text} from 'react-native';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import styleConstructor from './style';
@@ -11,12 +11,20 @@ import asCalendarConsumer from './asCalendarConsumer';
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 
+/**
+ * @description: AgendaList component
+ * @extends: SectionList
+ * @notes: Should be wraped in CalendarProvider component
+ * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
+ */
 class AgendaList extends Component {
+  static displayName = 'AgendaList';
+
   static propTypes = {
     ...SectionList.propTypes,
-    // day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting
+    /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
     dayFormat: PropTypes.string,
-    // style passed to the section view
+    /** style passed to the section view */
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   }
 
@@ -88,27 +96,26 @@ class AgendaList extends Component {
     }
   }
 
-  onScroll = () => {
+  onScroll = (event) => {
     if (!this.didScroll) {
       this.didScroll = true;
     }
+    _.invoke(this.props, 'onScroll', event);
   }
 
-  onMomentumScrollBegin = () => {
+  onMomentumScrollBegin = (event) => {
     _.invoke(this.props.context, 'setDisabled', true);
+    _.invoke(this.props, 'onMomentumScrollBegin', event);
   }
 
-  onMomentumScrollEnd = () => {
+  onMomentumScrollEnd = (event) => {
     // when list momentum ends AND when scrollToSection scroll ends
     this.sectionScroll = false;
     _.invoke(this.props.context, 'setDisabled', false);
+    _.invoke(this.props, 'onMomentumScrollEnd', event);
   }
 
-  onScrollEndDrag = () => {
-    // when list drag ends
-  }
-
-  onLayout = ({nativeEvent}) => {
+  onHeaderLayout = ({nativeEvent}) => {
     this.sectionHeight = nativeEvent.layout.height;
   }
 
@@ -119,7 +126,7 @@ class AgendaList extends Component {
     const sectionTitle = date === today ? `${todayString.toUpperCase()}, ${date}` : date;
     
     return (
-      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onLayout}>{sectionTitle}</Text>
+      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onHeaderLayout}>{sectionTitle}</Text>
     );
   }
 
@@ -139,7 +146,6 @@ class AgendaList extends Component {
         onScroll={this.onScroll}
         onMomentumScrollBegin={this.onMomentumScrollBegin}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
-        onScrollEndDrag={this.onScrollEndDrag}
         // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
         // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
       />

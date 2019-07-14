@@ -47,9 +47,13 @@ const ITEMS = [
 
 export default class ExpandableCalendarScreen extends Component {
 
-  onDateChanged = (/**date, updateSource*/) => {
+  onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
+  }
+
+  onMonthChange = (/* month, updateSource */) => {
+    // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
   }
   
   buttonPressed() {
@@ -146,23 +150,29 @@ export default class ExpandableCalendarScreen extends Component {
 
   render() {    
     return (
-      <CalendarProvider date={ITEMS[0].title} onDateChanged={this.onDateChanged} theme={{todayButtonTextColor: '#0059ff'}} showTodayButton>
+      <CalendarProvider 
+        date={ITEMS[0].title} 
+        onDateChanged={this.onDateChanged} 
+        onMonthChange={this.onMonthChange}
+        theme={{todayButtonTextColor: '#0059ff'}} 
+        showTodayButton 
+        disabledOpacity={0.6}
+      >
         <ExpandableCalendar 
           // horizontal={false}
           // hideArrows
           // disablePan
           // hideKnob
-          // initialPosition={'open'} // ExpandableCalendar.positions.OPEN - can't find static positions
+          initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-          calendarStyle={styles.calendar}
           theme={this.getTheme()}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
-          headerStyle={styles.calendar}
+          // calendarStyle={styles.calendar}
+          // headerStyle={styles.calendar} // for horizontal only
         />
         <AgendaList
-          data={ITEMS}
           sections={ITEMS}
           extraData={this.state}
           renderItem={this.renderItem}

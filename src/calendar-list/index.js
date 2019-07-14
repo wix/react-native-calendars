@@ -9,34 +9,44 @@ import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import {STATIC_HEADER} from '../testIDs';
 
 
 const {width} = Dimensions.get('window');
 
+/**
+ * @description: Calendar List component for both vertical and horizontal calendars
+ * @extends: Calendar
+ * @extendslink: docs/Calendar
+ * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.js
+ * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar-list.gif
+ */
 class CalendarList extends Component {
+  static displayName = 'CalendarList';
+
   static propTypes = {
     ...Calendar.propTypes,
-    // Max amount of months allowed to scroll to the past. Default = 50
+    /** Max amount of months allowed to scroll to the past. Default = 50 */
     pastScrollRange: PropTypes.number,
-    // Max amount of months allowed to scroll to the future. Default = 50
+    /** Max amount of months allowed to scroll to the future. Default = 50 */
     futureScrollRange: PropTypes.number,
-    // Enable or disable scrolling of calendar list
+    /** Enable or disable scrolling of calendar list */
     scrollEnabled: PropTypes.bool,
-    // Enable or disable vertical scroll indicator. Default = false
+    /** Enable or disable vertical scroll indicator. Default = false */
     showScrollIndicator: PropTypes.bool,
-    // When true, the calendar list scrolls to top when the status bar is tapped. Default = true
+    /** When true, the calendar list scrolls to top when the status bar is tapped. Default = true */
     scrollsToTop: PropTypes.bool,
-    // Enable or disable paging on scroll
+    /** Enable or disable paging on scroll */
     pagingEnabled: PropTypes.bool,
-    // Whether the scroll is horizontal
+    /** Whether the scroll is horizontal */
     horizontal: PropTypes.bool,
-    // Used when calendar scroll is horizontal, default is device width, pagination should be disabled
+    /** Used when calendar scroll is horizontal, default is device width, pagination should be disabled */
     calendarWidth: PropTypes.number,
-    // Dynamic calendar height
+    /** Dynamic calendar height */
     calendarHeight: PropTypes.number,
-    // Style for the List item (the calendar)
+    /** Style for the List item (the calendar) */
     calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    // Whether to use static header that will not scroll with the list (horizontal only)
+    /** Whether to use static header that will not scroll with the list (horizontal only) */
     staticHeader: PropTypes.bool
   }
 
@@ -54,7 +64,9 @@ class CalendarList extends Component {
 
   constructor(props) {
     super(props);
+    
     this.style = styleConstructor(props.theme);
+    
     this.viewabilityConfig = {
       itemVisiblePercentThreshold: 20
     };
@@ -266,6 +278,7 @@ class CalendarList extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          testID={STATIC_HEADER}
         />
       );
     }

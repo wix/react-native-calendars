@@ -16,4 +16,6 @@ export const UPDATE_SOURCES = {
   DAY_PRESS: 'dayPress',
   PAGE_SCROLL: 'pageScroll',
   WEEK_SCROLL: 'weekScroll'
+  PAGE_SCROLL: 'pageScroll',
+  PROP_UPDATE: 'propUpdate'
 };

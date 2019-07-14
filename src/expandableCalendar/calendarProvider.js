@@ -1,24 +1,38 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Animated, TouchableOpacity} from 'react-native';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
+import dateutils from '../dateutils';
+import {xdateToData} from '../interface';
 import styleConstructor from './style';
 import CalendarContext from './calendarContext';
 
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
+const iconDown = require('../img/down.png');
+const iconUp = require('../img/up.png');
 
+/**
+ * @description: Calendar context provider component
+ * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
+ */
 class CalendarProvider extends Component {
+  static displayName = 'CalendarProvider';
+
   static propTypes = {
-    // Initial date in 'yyyy-MM-dd' format. Default = Date()
+    /** Initial date in 'yyyy-MM-dd' format. Default = Date() */
     date: PropTypes.any.isRequired,
-    // callback for date change event
+    /** callback for date change event */
     onDateChanged: PropTypes.func,
-    // whether to show the today button
-    showTodayButton: PropTypes.bool
+    /** callback for month change event */
+    onMonthChange: PropTypes.func,
+    /** whether to show the today button */
+    showTodayButton: PropTypes.bool,
+    /** The opacity for the disabled today button (0-1) */
+    disabledOpacity: PropTypes.number
   }
 
   constructor(props) {
@@ -29,10 +43,16 @@ class CalendarProvider extends Component {
       date: this.props.date || XDate().toString('yyyy-MM-dd'),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-65),
-      buttonIcon: props.showTodayButton && this.getButtonIcon(props.date),
+      buttonIcon: this.getButtonIcon(props.date),
       disabled: false,
       opacity: new Animated.Value(1)
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.date !== this.props.date) {
+      this.setDate(this.props.date, UPDATE_SOURCES.PROP_UPDATE);
+    }
   }
   
   getProviderContextValue = () => {
@@ -45,10 +65,17 @@ class CalendarProvider extends Component {
   };
 
   setDate = (date, updateSource) => {
-    this.setState({date, updateSource, buttonIcon: this.props.showTodayButton && this.getButtonIcon(date)}, () => {
+    const sameMonth = dateutils.sameMonth(XDate(date), XDate(this.state.date));
+
+    this.setState({date, updateSource, buttonIcon: this.getButtonIcon(date)}, () => {
       this.animateTodayButton(date);
     });
+
     _.invoke(this.props, 'onDateChanged', date, updateSource);
+    
+    if (!sameMonth) {
+      _.invoke(this.props, 'onMonthChange', xdateToData(XDate(date)), updateSource);
+    }
   }
 
   setDisabled = (disabled) => {
@@ -59,8 +86,11 @@ class CalendarProvider extends Component {
   }
 
   getButtonIcon(date) {
+    if (!this.props.showTodayButton) {
+      return;
+    }
     const isPastDate = this.isPastDate(date);
-    return isPastDate ? require('../img/down.png') : require('../img/up.png');
+    return isPastDate ? iconDown : iconUp;
   }
 
   isPastDate(date) {
@@ -98,10 +128,13 @@ class CalendarProvider extends Component {
   }
 
   animateOpacity(disabled) {
-    Animated.timing(this.state.opacity, {
-      toValue: disabled ? 0.6 : 1, 
-      duration: 500
-    }).start();
+    const {disabledOpacity} = this.props;
+    if (disabledOpacity) {
+      Animated.timing(this.state.opacity, {
+        toValue: disabled ? disabledOpacity : 1, 
+        duration: 500
+      }).start();
+    }
   }
 
   onTodayPress = () => {

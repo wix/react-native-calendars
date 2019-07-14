@@ -16,14 +16,17 @@ export const textSecondaryColor = '#7a92a5';
 export const textDayFontFamily = 'System';
 export const textMonthFontFamily = 'System';
 export const textDayHeaderFontFamily = 'System';
+export const todayButtonFontFamily = 'System';
 
 export const textDayFontWeight = '300';
 export const textMonthFontWeight = '300';
 export const textDayHeaderFontWeight = undefined;
+export const todayButtonFontWeight = '600';
 
 export const textDayFontSize = 16;
 export const textMonthFontSize = 16;
 export const textDayHeaderFontSize = 13;
+export const todayButtonFontSize = 14;
 
 export const textDayStyle = undefined;
 export const dotStyle = undefined;
