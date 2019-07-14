@@ -43,3 +43,7 @@
 ## [1.196.0] - 2019-07-04
 ### Added
 - CalendarList - passing 'testID' to static CalendarHeader.
+
+## [1.197.0] - 2019-07-14
+### Added
+- asCalendarConsumer - hoist non-react statics.

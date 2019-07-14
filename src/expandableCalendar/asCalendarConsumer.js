@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import hoistNonReactStatic from 'hoist-non-react-statics';
 import CalendarContext from './calendarContext';
 
 
@@ -19,6 +20,8 @@ function asCalendarConsumer(WrappedComponent) {
       );
     }
   }
+
+  hoistNonReactStatic(CalendarConsumer, WrappedComponent);
 
   return CalendarConsumer;
 }
