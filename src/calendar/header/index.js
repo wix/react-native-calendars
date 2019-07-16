@@ -40,8 +40,8 @@ class CalendarHeader extends Component {
     this.substractMonth = this.substractMonth.bind(this);
     this.onPressLeft = this.onPressLeft.bind(this);
     this.onPressRight = this.onPressRight.bind(this);
-    this.onMonthPress = this.onMonthPress.bind(this);
-    this.onMonthLongPress = this.onMonthLongPress.bind(this);
+    this.onHeaderPress = this.onHeaderPress.bind(this);
+    this.onHeaderLongPress = this.onHeaderLongPress.bind(this);
   }
 
   addMonth() {
@@ -84,52 +84,15 @@ class CalendarHeader extends Component {
     return this.addMonth();
   }
 
-  onMonthPress() {
+  onHeaderPress() {
     this.props.onPress && this.props.onPress(this.props.month);
   }
 
-  onMonthLongPress() {
+  onHeaderLongPress() {
     this.props.onLongPress && this.props.onLongPress(this.props.month);
   }
 
-  renderMonth() {
-    if (this.props.onPress || this.props.onLongPress) {
-      return (
-        <TouchableOpacity
-          style={{ flexDirection: "row" }}
-          testID={this.props.testID}
-          onPress={this.onMonthPress}
-          onLongPress={this.onMonthLongPress}
-        >
-          <Text
-            allowFontScaling={false}
-            style={this.style.monthText}
-            accessibilityTraits="header"
-          >
-            {this.props.month.toString(this.props.monthFormat)}
-          </Text>
-          {indicator}
-        </TouchableOpacity>
-      );
-    }
-    return (
-      <View style={{ flexDirection: "row" }}>
-        <Text
-          allowFontScaling={false}
-          style={this.style.monthText}
-          accessibilityTraits="header"
-        >
-          {this.props.month.toString(this.props.monthFormat)}
-        </Text>
-        {indicator}
-      </View>
-    );
-  }
-
-  render() {
-    let leftArrow = <View />;
-    let rightArrow = <View />;
-    let weekDaysNames = weekDayNames(this.props.firstDay);
+  renderHeader() {
     const { testID } = this.props;
 
     if (!this.props.hideArrows) {
@@ -176,7 +139,6 @@ class CalendarHeader extends Component {
         </TouchableOpacity>
       );
     }
-
     let indicator;
     if (this.props.showIndicator) {
       indicator = (
@@ -186,13 +148,55 @@ class CalendarHeader extends Component {
       );
     }
 
+    if (this.props.onPress || this.props.onLongPress) {
+      return (
+        <TouchableOpacity
+          style={this.style.header}
+          testID={this.props.testID}
+          onPress={this.onHeaderPress}
+          onLongPress={this.onHeaderLongPress}
+        >
+          {leftArrow}
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              allowFontScaling={false}
+              style={this.style.monthText}
+              accessibilityTraits="header"
+            >
+              {this.props.month.toString(this.props.monthFormat)}
+            </Text>
+            {indicator}
+          </View>
+          {rightArrow}
+        </TouchableOpacity>
+      );
+    }
+    return (
+      <View style={this.style.header}>
+        {leftArrow}
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            allowFontScaling={false}
+            style={this.style.monthText}
+            accessibilityTraits="header"
+          >
+            {this.props.month.toString(this.props.monthFormat)}
+          </Text>
+          {indicator}
+        </View>
+        {rightArrow}
+      </View>
+    );
+  }
+
+  render() {
+    let leftArrow = <View />;
+    let rightArrow = <View />;
+    let weekDaysNames = weekDayNames(this.props.firstDay);
+
     return (
       <View style={this.props.style}>
-        <View style={this.style.header}>
-          {leftArrow}
-          {this.renderMonth()}
-          {rightArrow}
-        </View>
+        {this.renderHeader()}
         {!this.props.hideDayNames && (
           <View style={this.style.week}>
             {this.props.weekNumbers && (

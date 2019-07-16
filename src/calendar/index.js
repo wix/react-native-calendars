@@ -100,8 +100,8 @@ class Calendar extends Component {
     this.addMonth = this.addMonth.bind(this);
     this.pressDay = this.pressDay.bind(this);
     this.longPressDay = this.longPressDay.bind(this);
-    this.pressMonth = this.pressMonth.bind(this);
-    this.longPressMonth = this.longPressMonth.bind(this);
+    this.pressHeader = this.pressHeader.bind(this);
+    this.longPressHeader = this.longPressHeader.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
@@ -162,6 +162,26 @@ class Calendar extends Component {
     }
   }
 
+  _handleHeaderInteraction(date, interaction) {
+    const day = parseDate(date);
+    const minDate = parseDate(this.props.minDate);
+    const maxDate = parseDate(this.props.maxDate);
+    if (
+      !(minDate && !dateutils.isGTE(day, minDate)) &&
+      !(maxDate && !dateutils.isLTE(day, maxDate))
+    ) {
+      const shouldUpdateMonth =
+        this.props.disableMonthChange === undefined ||
+        !this.props.disableMonthChange;
+      if (shouldUpdateMonth) {
+        this.updateMonth(day);
+      }
+      if (interaction) {
+        interaction(xdateToData(day));
+      }
+    }
+  }
+
   pressDay(date) {
     this._handleDayInteraction(date, this.props.onDayPress);
   }
@@ -170,12 +190,12 @@ class Calendar extends Component {
     this._handleDayInteraction(date, this.props.onDayLongPress);
   }
 
-  pressMonth(month) {
-    this._handleMonthInteraction(date, this.props.onMonthPress);
+  pressHeader(date) {
+    this._handleHeaderInteraction(date, this.props.onHeaderPress);
   }
 
-  longPressMonth(month) {
-    this._handleMonthInteraction(date, this.props.onMonthLongPress);
+  longPressHeader(date) {
+    this._handleHeaderInteraction(date, this.props.onHeaderLongPress);
   }
 
   addMonth(count) {
@@ -330,8 +350,8 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
-          onPress={this.pressMonth}
-          onLongPress={this.longPressMonth}
+          onPress={this.props.onHeaderPress ? this.pressHeader : null}
+          onLongPress={this.propslongPressHeader ? this.longPressHeader : null}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>
