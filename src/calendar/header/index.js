@@ -93,6 +93,8 @@ class CalendarHeader extends Component {
   }
 
   renderHeader() {
+    let leftArrow = <View />;
+    let rightArrow = <View />;
     const { testID } = this.props;
 
     if (!this.props.hideArrows) {
@@ -190,8 +192,6 @@ class CalendarHeader extends Component {
   }
 
   render() {
-    let leftArrow = <View />;
-    let rightArrow = <View />;
     let weekDaysNames = weekDayNames(this.props.firstDay);
 
     return (

@@ -31,7 +31,7 @@ export default class CalendarsScreen extends Component {
           Calendar with selectable header and arrows
         </Text>
         <Calendar
-          onHeaderPress={this.onHeaderPress}
+          onHeaderPress={date => console.log("Header Pressed!", date)}
           style={styles.calendar}
           hideExtraDays
           markedDates={{
@@ -308,8 +308,6 @@ export default class CalendarsScreen extends Component {
       selected: day.dateString
     });
   }
-
-  onHeaderPress() {}
 }
 
 const styles = StyleSheet.create({
