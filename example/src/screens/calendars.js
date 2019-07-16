@@ -309,9 +309,7 @@ export default class CalendarsScreen extends Component {
     });
   }
 
-  onHeaderPress(day) {
-    console.log("HEADER PRESSED", day);
-  }
+  onHeaderPress() {}
 }
 
 const styles = StyleSheet.create({

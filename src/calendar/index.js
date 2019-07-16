@@ -51,9 +51,9 @@ class Calendar extends Component {
     /** Do not show days of other months in month page. Default = false */
     hideExtraDays: PropTypes.bool,
     /** Handler which gets executed on month press. Default = undefined */
-    onMonthPress: PropTypes.func,
+    onHeaderPress: PropTypes.func,
     /** Handler which gets executed on month long press. Default = undefined */
-    onMonthLongPress: PropTypes.func,
+    onHeaderLongPress: PropTypes.func,
     /** Handler which gets executed on day press. Default = undefined */
     onDayPress: PropTypes.func,
     /** Handler which gets executed on day long press. Default = undefined */

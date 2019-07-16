@@ -132,7 +132,7 @@ LocaleConfig.defaultLocale = "fr";
     console.log("selected date", date);
   }}
   // Handler which gets executed on day long press. Default = undefined
-  onMonthLongPress={date => {
+  onHeaderLongPress={date => {
     console.log("selected date", date);
   }}
   // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
