@@ -1,6 +1,13 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { PanResponder, Animated, View, Text, Image } from "react-native";
+import {
+  PanResponder,
+  Animated,
+  View,
+  Text,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import PropTypes from "prop-types";
 import XDate from "xdate";
 
