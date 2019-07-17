@@ -6,7 +6,11 @@
   "scripts": {
     "test": "jasmine src/*.spec.js && npm run lint",
     "lint": "eslint src/ example/src",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release.js",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "xcode": "open ios/CalendarsExample.xcodeproj/"
   },
   "repository": {
     "type": "git",
@@ -30,7 +34,8 @@
     "jasmine": "^2.5.2",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4"
+    "react": "16.8.3",
+    "react-native": "0.59.3",
+    "react-native-navigation": "2.13.1"
   }
 }
