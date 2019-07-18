@@ -51,3 +51,7 @@
 ## [1.198.0] - 2019-07-14
 ### Fix
 - ExpandableCalendar - fix example screen.
+
+## [1.200.0] - 2019-07-14
+### Added
+- Calendar knob - added testID
