@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+import {CALENDAR_KNOB} from '../testIDs';
 
 import dateutils from '../dateutils';
 import {parseDate} from '../interface';
@@ -436,7 +437,7 @@ class ExpandableCalendar extends Component {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
       <View style={this.style.knobContainer} pointerEvents={'none'}>
-        <View style={this.style.knob}/>
+        <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
     );
   }
