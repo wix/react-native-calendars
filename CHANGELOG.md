@@ -52,6 +52,10 @@
 ### Fix
 - ExpandableCalendar - fix example screen.
 
-## [1.200.0] - 2019-07-14
+## [1.199.0] - 2019-07-18
+### Changed
+- CalendarHeader - editing 'testID' for static CalendarHeader.
+
+## [1.200.0] - 2019-07-18
 ### Added
 - Calendar knob - added testID
