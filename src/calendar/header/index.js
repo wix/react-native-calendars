@@ -102,12 +102,8 @@ class CalendarHeader extends Component {
         <TouchableOpacity
           onPress={this.onPressLeft}
           style={this.style.arrow}
-          hitSlop={{ left: 20, right: 20, top: 20, bottom: 20 }}
-          testID={
-            testID
-              ? `${testID}-${CHANGE_MONTH_LEFT_ARROW}`
-              : CHANGE_MONTH_LEFT_ARROW
-          }
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
         >
           {this.props.renderArrow ? (
             this.props.renderArrow("left")
@@ -123,12 +119,9 @@ class CalendarHeader extends Component {
         <TouchableOpacity
           onPress={this.onPressRight}
           style={this.style.arrow}
-          hitSlop={{ left: 20, right: 20, top: 20, bottom: 20 }}
-          testID={
-            testID
-              ? `${testID}-${CHANGE_MONTH_RIGHT_ARROW}`
-              : CHANGE_MONTH_RIGHT_ARROW
-          }
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
+
         >
           {this.props.renderArrow ? (
             this.props.renderArrow("right")

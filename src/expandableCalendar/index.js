@@ -8,17 +8,19 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import PropTypes from "prop-types";
-import XDate from "xdate";
 
-import dateutils from "../dateutils";
-import { parseDate } from "../interface";
-import styleConstructor from "./style";
-import CalendarList from "../calendar-list";
-import asCalendarConsumer from "./asCalendarConsumer";
-import Week from "./week";
+import PropTypes from 'prop-types';
+import XDate from 'xdate';
+import {CALENDAR_KNOB} from '../testIDs';
 
-const commons = require("./commons");
+import dateutils from '../dateutils';
+import {parseDate} from '../interface';
+import styleConstructor from './style';
+import CalendarList from '../calendar-list';
+import asCalendarConsumer from './asCalendarConsumer';
+import Week from './week';
+
+const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const POSITIONS = {
   CLOSED: "closed",
@@ -520,8 +522,8 @@ class ExpandableCalendar extends Component {
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
-      <View style={this.style.knobContainer} pointerEvents={"none"}>
-        <View style={this.style.knob} />
+      <View style={this.style.knobContainer} pointerEvents={'none'}>
+        <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
     );
   }
