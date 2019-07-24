@@ -480,3 +480,4 @@ See also the list of [contributors](https://github.com/wix/react-native-calendar
 ## Contributing
 
 Pull requests are welcome. `npm run test` and `npm run lint` before push.
+
