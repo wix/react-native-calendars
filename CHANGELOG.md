@@ -58,6 +58,12 @@
 
 ## [1.200.0] - 2019-07-18
 ### Added
+- Calendar knob - added testID.
+
+## [1.201.0] - 2019-07-25
+### Change
+- eslint - updating to version 6.1.0.
+- lodash - importing library instead of sub-libraries.
 - ExpandableCalendar - added testID for knob.
 
 ## [1.202.0] - 2019-07-25
