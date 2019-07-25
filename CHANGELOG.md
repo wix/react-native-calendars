@@ -58,4 +58,10 @@
 
 ## [1.200.0] - 2019-07-18
 ### Added
-- Calendar knob - added testID
+- ExpandableCalendar - added testID for knob.
+
+## [1.201.0] - 2019-07-25
+### Added
+- CalendarHeader - adding 'firstDay' (PR #826), 'monthFormat' (PR #787) and 'weekNumbers' to shouldComponentUpdate.
+- Agenda - adding support for weekdays name's 'fontSize', 'fontFamily' and 'fontWeight' (PR #711).
+- ReservationList - adding support for Day number's 'fontFamily', and to Day text's 'fontFamily' and 'fontWeight' (PR #711).

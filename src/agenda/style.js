@@ -35,8 +35,10 @@ export default function styleConstructor(theme = {}) {
     weekday: {
       width: 32,
       textAlign: 'center',
-      fontSize: 13,
       color: appStyle.textSectionTitleColor,
+      fontSize: appStyle.textDayHeaderFontSize,
+      fontFamily: appStyle.textDayHeaderFontFamily,
+      fontWeight: appStyle.textDayHeaderFontWeight
     },
     reservations: {
       flex: 1,
