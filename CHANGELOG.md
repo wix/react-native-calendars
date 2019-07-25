@@ -51,3 +51,16 @@
 ## [1.198.0] - 2019-07-14
 ### Fix
 - ExpandableCalendar - fix example screen.
+
+## [1.199.0] - 2019-07-18
+### Changed
+- CalendarHeader - editing 'testID' for static CalendarHeader.
+
+## [1.200.0] - 2019-07-18
+### Added
+- Calendar knob - added testID.
+
+## [1.201.0] - 2019-07-25
+### Change
+- eslint - updating to version 6.1.0.
+- lodash - importing library instead of sub-libraries.
