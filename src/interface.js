@@ -31,7 +31,7 @@ function parseDate(d) {
   } else if (d.year) {
     const dateString = d.year + '-' + padNumber(d.month) + '-' + padNumber(d.day);
     return XDate(dateString, true);
-  } else if (d) { // timestamp nuber or date formatted as string
+  } else if (d) { // timestamp number or date formatted as string
     return XDate(d, true);
   }
 }

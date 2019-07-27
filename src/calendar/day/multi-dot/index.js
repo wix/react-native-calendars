@@ -11,6 +11,8 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 
 class Day extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -78,6 +80,7 @@ class Day extends Component {
     }
     return (
       <TouchableOpacity
+        testID={this.props.testID}
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}>
