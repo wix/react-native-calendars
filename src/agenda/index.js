@@ -422,6 +422,7 @@ export default class AgendaView extends Component {
               monthFormat={this.props.monthFormat}
               pastScrollRange={this.props.pastScrollRange}
               futureScrollRange={this.props.futureScrollRange}
+              dayAccessibilityHint={this.props.dayAccessibilityHint}
               dayComponent={this.props.dayComponent}
               disabledByDefault={this.props.disabledByDefault}
               displayLoadingIndicator={this.props.displayLoadingIndicator}

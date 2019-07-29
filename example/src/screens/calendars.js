@@ -32,11 +32,11 @@ export default class CalendarsScreen extends Component {
           maxDate={'2012-05-29'}
           firstDay={1}
           markedDates={{
-            '2012-05-23': {selected: true, marked: true},
-            '2012-05-24': {selected: true, marked: true, dotColor: 'green'},
-            '2012-05-25': {marked: true, dotColor: 'red'},
-            '2012-05-26': {marked: true},
-            '2012-05-27': {disabled: true, activeOpacity: 0}
+            '2012-05-23': { accessibilityHint: '2 events', selected: true, marked: true },
+            '2012-05-24': { accessibilityHint: '3 events', selected: true, marked: true, dotColor: 'green' },
+            '2012-05-25': { accessibilityHint: '6 events', marked: true, dotColor: 'red' },
+            '2012-05-26': { accessibilityHint: '1 event', marked: true },
+            '2012-05-27': { accessibilityHint: '4 events', disabled: true, activeOpacity: 0 }
           }}
           // disabledByDefault={true}
           hideArrows={true}

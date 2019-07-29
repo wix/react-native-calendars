@@ -112,6 +112,8 @@ LocaleConfig.defaultLocale = 'fr';
   onPressArrowLeft={substractMonth => substractMonth()}
   // Handler which gets executed when press arrow icon left. It receive a callback can go next month
   onPressArrowRight={addMonth => addMonth()}
+  // Specify a default accessibilityHint for all day components. Default = undefined
+  dayAccessibilityHint="No events"
 />
 ```
 
@@ -132,7 +134,7 @@ Dot marking
     '2012-05-16': {selected: true, marked: true, selectedColor: 'blue'},
     '2012-05-17': {marked: true},
     '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
-    '2012-05-19': {disabled: true, disableTouchEvent: true}
+    '2012-05-19': {disabled: true, disableTouchEvent: true, accessibilityLabel: 'Custom Label', accessibilityHint: 'Custom hint'}
   }}
 />
 ```

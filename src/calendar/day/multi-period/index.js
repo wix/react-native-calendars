@@ -7,7 +7,7 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -76,14 +76,11 @@ class Day extends Component {
     const marking = this.props.marking || {};
     const periods = this.renderPeriods(marking);
 
+    const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       textStyle.push(this.style.selectedText);
-    } else if (
-      typeof marking.disabled !== 'undefined'
-        ? marking.disabled
-        : this.props.state === 'disabled'
-    ) {
+    } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       containerStyle.push(this.style.today);
@@ -94,7 +91,14 @@ class Day extends Component {
         style={{
           alignSelf: 'stretch'
         }}>
-        <TouchableOpacity testID={this.props.testID} style={containerStyle} onPress={this.onDayPress}>
+        <TouchableOpacity
+          testID={this.props.testID}
+          accessible
+          accessibilityRole={isDisabled ? undefined : 'button'}
+          accessibilityLabel={marking.accessibilityLabel || (this.props.date ? this.props.date.friendly : undefined)}
+          accessibilityHint={marking.accessibilityHint || this.props.accessibilityHint || undefined}
+          style={containerStyle}
+          onPress={this.onDayPress}>
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>

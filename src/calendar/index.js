@@ -62,6 +62,8 @@ class Calendar extends Component {
     renderArrow: PropTypes.func,
     /** Provide custom day rendering component */
     dayComponent: PropTypes.any,
+    /** Specify a default accessibilityHint for all day components. Default = undefined */
+    dayAccessibilityHint: PropTypes.string,
     /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
     monthFormat: PropTypes.string,
     /** Disables changing month when click on days of other months (when hideExtraDays is false). Default = false */
@@ -177,6 +179,7 @@ class Calendar extends Component {
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
         <DayComp
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
+          accessibilityHint={this.props.dayAccessibilityHint}
           state={state}
           theme={this.props.theme}
           onPress={this.pressDay}
