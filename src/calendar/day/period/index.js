@@ -1,22 +1,18 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {
-  TouchableWithoutFeedback,
-  Text,
-Platform,
-  View} from 'react-native';
-import {shouldUpdate} from '../../../component-updater';
-import isEqual from 'lodash.isequal';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { TouchableWithoutFeedback, Text, Platform, View } from "react-native";
+import { shouldUpdate } from "../../../component-updater";
+import isEqual from "lodash.isequal";
 
-import * as defaultStyle from '../../../style';
-import styleConstructor from './style';
-import styleConstructorAndroid from './styleAndroid';
+import * as defaultStyle from "../../../style";
+import styleConstructor from "./style";
+import styleConstructorAndroid from "./styleAndroid";
 class Day extends Component {
-  static displayName = 'IGNORE';
-  
+  static displayName = "IGNORE";
+
   static propTypes = {
     // TODO: selected + disabled props should be removed
-    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+    state: PropTypes.oneOf(["selected", "disabled", "today", ""]),
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
@@ -26,13 +22,16 @@ class Day extends Component {
     onLongPress: PropTypes.func,
     date: PropTypes.object,
 
-    markingExists: PropTypes.bool,
+    markingExists: PropTypes.bool
   };
 
   constructor(props) {
     super(props);
-    this.theme = {...defaultStyle, ...(props.theme || {})};
-    this.style = (props.marking && props.marking.length > 0 && Platform.OS != 'ios' ) ? styleConstructor(props.theme) : styleConstructorAndroid(props.theme);//styleConstructorAndroid
+    this.theme = { ...defaultStyle, ...(props.theme || {}) };
+    this.style =
+      props.marking && props.marking.length > 0 && Platform.OS != "ios"
+        ? styleConstructor(props.theme)
+        : styleConstructorAndroid(props.theme); //styleConstructorAndroid
     this.markingStyle = this.getDrawingStyle(props.marking || []);
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
@@ -54,11 +53,16 @@ class Day extends Component {
       return true;
     }
 
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, [
+      "state",
+      "children",
+      "onPress",
+      "onLongPress"
+    ]);
   }
 
   getDrawingStyle(marking) {
-    const defaultStyle = {textStyle: {}};
+    const defaultStyle = { textStyle: {} };
     if (!marking) {
       return defaultStyle;
     }
@@ -67,28 +71,28 @@ class Day extends Component {
     } else if (marking.selected) {
       defaultStyle.textStyle.color = this.theme.selectedDayTextColor;
     }
-    const resultStyle = ([marking]).reduce((prev, next) => {
+    const resultStyle = [marking].reduce((prev, next) => {
       if (next.quickAction) {
         if (next.first || next.last) {
           prev.containerStyle = this.style.firstQuickAction;
           prev.textStyle = this.style.firstQuickActionText;
           if (next.endSelected && next.first && !next.last) {
-            prev.rightFillerStyle = '#c1e4fe';
+            prev.rightFillerStyle = "#c1e4fe";
           } else if (next.endSelected && next.last && !next.first) {
-            prev.leftFillerStyle = '#c1e4fe';
+            prev.leftFillerStyle = "#c1e4fe";
           }
         } else if (!next.endSelected) {
           prev.containerStyle = this.style.quickAction;
           prev.textStyle = this.style.quickActionText;
         } else if (next.endSelected) {
-          prev.leftFillerStyle = '#c1e4fe';
-          prev.rightFillerStyle = '#c1e4fe';
+          prev.leftFillerStyle = "#c1e4fe";
+          prev.rightFillerStyle = "#c1e4fe";
         }
         return prev;
       }
 
       const color = next.color;
-      if (next.status === 'NotAvailable') {
+      if (next.status === "NotAvailable") {
         prev.textStyle = this.style.naText;
       }
       if (next.startingDay) {
@@ -116,23 +120,56 @@ class Day extends Component {
 
   renderDots(marking) {
     const baseDotStyle = [this.style.dot, this.style.visibleDot];
-    if (marking.dots && Array.isArray(marking.dots) && marking.dots.length > 0) {
+    if (
+      marking.dots &&
+      Array.isArray(marking.dots) &&
+      marking.dots.length > 0
+    ) {
       // Filter out dots so that we we process only those items which have key and color property
-      const validDots = marking.dots.filter(d => (d && d.color));
+      const validDots = marking.dots.filter(d => d && d.color);
       //console.log('validDots ',validDots);
       if (validDots.length > 0) {
         return validDots.map((dot, index) => {
           return (
-            <View key={dot.key ? dot.key : index} >
-              {(Math.floor(dot.color) != Math.floor(this.props.defaultPrice) ) && <Text style={{textAlign: 'center', fontSize: 12,color:(marking.color =='#00C07F') ? '#fff': '#00C07F'}}>{'$'+Math.floor(dot.color)}</Text>}
-              {(Math.floor(dot.color) == Math.floor(this.props.defaultPrice)) && <Text style={{textAlign: 'center', fontSize: 12,color:(marking.color =='#00C07F') ? '#fff': '#b6c1cd'}}>{'$'+Math.floor(dot.color)}</Text>}
-           </View>
+            <View key={dot.key ? dot.key : index}>
+              {Math.floor(dot.color) != Math.floor(this.props.defaultPrice) && (
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 12,
+                    color:
+                      this.props.state === "disabled"
+                        ? "#d9e1e8"
+                        : marking.color == "#00C07F"
+                        ? "#fff"
+                        : "#00C07F"
+                  }}
+                >
+                  {"$" + Math.floor(dot.color)}
+                </Text>
+              )}
+              {Math.floor(dot.color) == Math.floor(this.props.defaultPrice) && (
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 12,
+                    color:
+                      this.props.state === "disabled"
+                        ? "#d9e1e8"
+                        : marking.color == "#00C07F"
+                        ? "#fff"
+                        : "#b6c1cd"
+                  }}
+                >
+                  {"$" + Math.floor(dot.color)}
+                </Text>
+              )}
+            </View>
           );
         });
-      }else {
+      } else {
         this.renderDefaultValue();
       }
-
     }
     return;
   }
@@ -142,11 +179,18 @@ class Day extends Component {
     const marking = this.props.marking || {};
     return (
       <View>
-        <Text style={{textAlign: 'center', fontSize: 12,color: (marking.color =='#00C07F') ? '#fff': '#b6c1cd'}}>{'$'+Math.floor(this.props.defaultPrice)}</Text>
-     </View>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 12,
+            color: marking.color == "#00C07F" ? "#fff" : "#b6c1cd"
+          }}
+        >
+          {"$" + Math.floor(this.props.defaultPrice)}
+        </Text>
+      </View>
     );
   }
-
 
   render() {
     const containerStyle = [this.style.base];
@@ -158,16 +202,14 @@ class Day extends Component {
       defaultPrice = this.renderDefaultValue();
     }
 
-
-
     let leftFillerStyle = {};
     let rightFillerStyle = {};
     let fillerStyle = {};
     let fillers;
 
-    if (this.props.state === 'disabled') {
+    if (this.props.state === "disabled") {
       textStyle.push(this.style.disabledText);
-    } else if (this.props.state === 'today') {
+    } else if (this.props.state === "today") {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
@@ -212,10 +254,10 @@ class Day extends Component {
           backgroundColor: flags.endingDay.color
         });
       } else if (flags.day) {
-        leftFillerStyle = {backgroundColor: flags.day.color};
-        rightFillerStyle = {backgroundColor: flags.day.color};
+        leftFillerStyle = { backgroundColor: flags.day.color };
+        rightFillerStyle = { backgroundColor: flags.day.color };
         // #177 bug
-        fillerStyle = {backgroundColor: flags.day.color};
+        fillerStyle = { backgroundColor: flags.day.color };
       } else if (flags.endingDay && flags.startingDay) {
         rightFillerStyle = {
           backgroundColor: this.theme.calendarBackground
@@ -230,8 +272,8 @@ class Day extends Component {
 
       fillers = (
         <View style={[this.style.fillers, fillerStyle]}>
-          <View style={[this.style.leftFiller, leftFillerStyle]}/>
-          <View style={[this.style.rightFiller, rightFillerStyle]}/>
+          <View style={[this.style.leftFiller, leftFillerStyle]} />
+          <View style={[this.style.rightFiller, rightFillerStyle]} />
         </View>
       );
     }
@@ -240,15 +282,50 @@ class Day extends Component {
       <TouchableWithoutFeedback
         testID={this.props.testID}
         onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}>
+        onLongPress={this.onDayLongPress}
+      >
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            {(marking.color =='#00C07F' && dot) && <Text allowFontScaling={false} style={[textStyle, {color: '#fff', marginTop: 3, fontSize: 10}]}>{String(this.props.children)}</Text>}
-            {(marking.color =='#00C07F' && !dot) && <Text allowFontScaling={false} style={[textStyle, {color: '#fff', marginTop: 3, fontSize: 10}]}>{String(this.props.children)}</Text>}
-            {marking.color !='#00C07F' && <Text allowFontScaling={false} style={[textStyle]}>{String(this.props.children)}</Text>}
-            {dot && <View style={{flexDirection: 'row'}}>{dot}</View>}
-            {!dot && <View style={{flexDirection: 'row'}}>{defaultPrice}</View>}
+            {marking.color == "#00C07F" && dot && (
+              <Text
+                allowFontScaling={false}
+                style={[
+                  textStyle,
+                  { color: "#fff", marginTop: 3, fontSize: 10 }
+                ]}
+              >
+                {String(this.props.children)}
+              </Text>
+            )}
+            {marking.color == "#00C07F" && !dot && (
+              <Text
+                allowFontScaling={false}
+                style={[
+                  textStyle,
+                  { color: "#fff", marginTop: 3, fontSize: 10 }
+                ]}
+              >
+                {String(this.props.children)}
+              </Text>
+            )}
+            {marking.color != "#00C07F" && (
+              <Text
+                allowFontScaling={false}
+                style={[
+                  textStyle,
+                  {
+                    color: this.props.state === "disabled" ? "#d9e1e8" : "#000"
+                  }
+                ]}
+              >
+                {String(this.props.children)}
+              </Text>
+            )}
+            {dot && <View style={{ flexDirection: "row" }}>{dot}</View>}
+            {!dot && (
+              <View style={{ flexDirection: "row" }}>{defaultPrice}</View>
+            )}
           </View>
         </View>
       </TouchableWithoutFeedback>
