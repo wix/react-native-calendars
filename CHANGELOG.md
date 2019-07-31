@@ -70,3 +70,7 @@
 - CalendarHeader - adding 'firstDay' (PR #826), 'monthFormat' (PR #787) and 'weekNumbers' to shouldComponentUpdate.
 - Agenda - adding support for weekdays name's 'fontSize', 'fontFamily' and 'fontWeight' (PR #711).
 - ReservationList - adding support for Day number's 'fontFamily', and to Day text's 'fontFamily' and 'fontWeight' (PR #711).
+
+## [1.203.0] - 2019-07-31
+### Fix
+- ExpandableCalendar - fix for vertical open height.
