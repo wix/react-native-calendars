@@ -167,6 +167,9 @@ class ExpandableCalendar extends Component {
 
   /** Utils */
   getOpenHeight() {
+    if (!this.props.horizontal) {
+      return commons.screenHeight;
+    }
     return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
   }
 
@@ -363,13 +366,6 @@ class ExpandableCalendar extends Component {
     }
   }
 
-  onLayout = ({nativeEvent}) => {
-    const x = nativeEvent.layout.x;
-    if (!this.props.horizontal) {
-      this.openHeight = commons.screenHeight - x - (commons.screenHeight * 0.1);
-    }
-  }
-
   /** Renders */
 
   renderWeekDaysNames() {
@@ -467,7 +463,6 @@ class ExpandableCalendar extends Component {
           ref={e => {this.wrapper = e;}}
           style={{height: deltaY}} 
           {...this.panResponder.panHandlers}
-          onLayout={this.onLayout}
         >
           <CalendarList
             testID="calendar"
