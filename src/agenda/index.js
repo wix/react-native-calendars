@@ -268,7 +268,7 @@ export default class AgendaView extends Component {
     }
 
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
-    this.calendar.scrollToDay(day, this.calendarOffset(), false);
+   // this.calendar.scrollToDay(day, this.calendarOffset(), true);
     
     if (this.props.loadItemsForMonth) {
       this.props.loadItemsForMonth(xdateToData(day));
