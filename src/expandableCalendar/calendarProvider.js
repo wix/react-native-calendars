@@ -33,7 +33,7 @@ class CalendarProvider extends Component {
     /** whether to show the today button */
     showTodayButton: PropTypes.bool,
     /** The button top position */
-    buttonTopPosition: PropTypes.number,
+    todayBottomMargin: PropTypes.number,
     /** The opacity for the disabled today button (0-1) */
     disabledOpacity: PropTypes.number
   }
@@ -45,7 +45,7 @@ class CalendarProvider extends Component {
     this.state = {
       date: this.props.date || XDate().toString('yyyy-MM-dd'),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
-      buttonY: new Animated.Value(-props.buttonTopPosition || -TOP_POSITION),
+      buttonY: new Animated.Value(-props.todayBottomMargin || -TOP_POSITION),
       buttonIcon: this.getButtonIcon(props.date),
       disabled: false,
       opacity: new Animated.Value(1)
@@ -122,7 +122,7 @@ class CalendarProvider extends Component {
       const isToday = today === date;
       
       Animated.spring(this.state.buttonY, {
-        toValue: isToday ? TOP_POSITION : -this.props.buttonTopPosition || -TOP_POSITION,
+        toValue: isToday ? TOP_POSITION : -this.props.todayBottomMargin || -TOP_POSITION,
         tension: 30,
         friction: 8,
         useNativeDriver: true

@@ -157,7 +157,7 @@ export default class ExpandableCalendarScreen extends Component {
         theme={{todayButtonTextColor: '#0059ff'}} 
         showTodayButton 
         disabledOpacity={0.6}
-        // buttonTopPosition={16}
+        // todayBottomMargin={16}
       >
         <ExpandableCalendar 
           // horizontal={false}
