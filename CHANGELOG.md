@@ -74,3 +74,7 @@
 ## [1.203.0] - 2019-07-31
 ### Fix
 - ExpandableCalendar - fix for vertical open height.
+
+## [1.204.0] - 2019-08-6
+### Fix
+- CalendarProvider - adding 'buttonTopPosition' prop to control the button's y position.
