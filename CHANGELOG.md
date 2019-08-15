@@ -78,3 +78,7 @@
 ## [1.204.0] - 2019-08-6
 ### Fix
 - CalendarProvider - adding 'buttonTopPosition' prop to control the button's y position.
+
+## [1.204.0] - 2019-08-15
+### Fix
+- Week - fix for style - removing width to allow flex.
