@@ -86,3 +86,7 @@
 ## [1.206.0] - 2019-08-15
 ### Fix
 - CalendarProvider - fix header in vertical mode when initial position is 'open'.
+
+## [1.207.0] - 2019-08-15
+### Added
+- CalendarProvider - 'todayButtonStyle' prop to allow passing style to the today button.
