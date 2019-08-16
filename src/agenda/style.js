@@ -7,7 +7,7 @@ const STYLESHEET_ID = 'stylesheet.agenda.main';
 export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   const { knob, weekdays } = platformStyles(appStyle);
-  return StyleSheet.create({
+  let obj = {
     knob,
     weekdays,
     header: {
@@ -17,7 +17,7 @@ export default function styleConstructor(theme = {}) {
       height:'100%',
       width:'100%',
     },
-    calendar: { // not in use
+    calendar: {
       flex: 1,
       borderBottomWidth: 1,
       borderColor: appStyle.separatorColor
@@ -27,7 +27,7 @@ export default function styleConstructor(theme = {}) {
       position: 'absolute',
       left: 0,
       right: 0,
-      height: 24,
+      height: appStyle.knobHeight,
       bottom: 0,
       alignItems: 'center',
       backgroundColor: appStyle.calendarBackground
@@ -35,10 +35,9 @@ export default function styleConstructor(theme = {}) {
     weekday: {
       width: 32,
       textAlign: 'center',
+      fontSize: appStyle.textSectionFontSize || 13,
+      fontFamily: appStyle.textSectionFontFamily,
       color: appStyle.textSectionTitleColor,
-      fontSize: appStyle.textDayHeaderFontSize,
-      fontFamily: appStyle.textDayHeaderFontFamily,
-      fontWeight: appStyle.textDayHeaderFontWeight
     },
     reservations: {
       flex: 1,
@@ -46,5 +45,13 @@ export default function styleConstructor(theme = {}) {
       backgroundColor: appStyle.backgroundColor
     },
     ...(theme[STYLESHEET_ID] || {})
-  });
+  };
+
+  if(appStyle.scrollPadStyle){
+    obj.scrollPadStyle=appStyle.scrollPadStyle
+  }
+
+  return StyleSheet.create(obj);
+
+
 }
