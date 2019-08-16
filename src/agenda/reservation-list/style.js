@@ -10,18 +10,17 @@ export default function styleConstructor(theme = {}) {
       flexDirection: 'row'
     },
     dayNum: {
-      fontFamily: appStyle.agendaDayNumFontFamily,
-      fontSize: appStyle.agendaDayNumFontSize || 28,
-      fontWeight: appStyle.agendaDayNumFontWeight || '400',
+      fontSize: appStyle.agendaDayNumFontSize,
+      fontWeight: appStyle.agendaDayNumFontSize || '200',
+      fontFamily: appStyle.agendaDayFontFamily,
       color: appStyle.agendaDayNumColor
     },
     dayText: {
-      fontSize: appStyle.agendaDayFontSize || 14,
-      fontWeight: appStyle.agendaDayFontWeight || '300',
-      color: appStyle.agendaDayTextColor,
+      fontSize: appStyle.agendaDayFontSize,
+      fontWeight: appStyle.agendaDayFontWeight,
       fontFamily: appStyle.agendaDayFontFamily,
-      marginTop: appStyle.agendaDayMarginTop || -5,
-      backgroundColor: 'rgba(0,0,0,0)'
+      color: appStyle.agendaDayTextColor,
+      backgroundColor: 'rgba(0,0,0,0)',
     },
     day: {
       width: 63,

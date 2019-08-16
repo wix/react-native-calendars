@@ -5,52 +5,53 @@ import platformStyles from './platform-style';
 const STYLESHEET_ID = 'stylesheet.agenda.main';
 
 export default function styleConstructor(theme = {}) {
-    const appStyle = {...defaultStyle, ...theme};
-    const { knob, weekdays } = platformStyles(appStyle);
+  const appStyle = {...defaultStyle, ...theme};
+  const { knob, weekdays } = platformStyles(appStyle);
+  let obj = {
+    knob,
+    weekdays,
+    header: {
+      overflow: 'hidden',
+      justifyContent: 'flex-end',
+      position:'absolute',
+      height:'100%',
+      width:'100%',
+    },
+    calendar: {
+      flex: 1,
+      borderBottomWidth: 1,
+      borderColor: appStyle.separatorColor
+    },
+    knobContainer: {
+      flex: 1,
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      height: appStyle.knobHeight,
+      bottom: 0,
+      alignItems: 'center',
+      backgroundColor: appStyle.calendarBackground
+    },
+    weekday: {
+      width: 32,
+      textAlign: 'center',
+      fontSize: appStyle.textSectionFontSize || 13,
+      fontFamily: appStyle.textSectionFontFamily,
+      color: appStyle.textSectionTitleColor,
+    },
+    reservations: {
+      flex: 1,
+      marginTop: 104,
+      backgroundColor: appStyle.backgroundColor
+    },
+    ...(theme[STYLESHEET_ID] || {})
+  };
 
-    let obj = {
-        knob,
-        weekdays,
-        header: {
-            overflow: 'hidden',
-            justifyContent: 'flex-end',
-            position:'absolute',
-            height:'100%',
-            width:'100%',
-        },
-        calendar: {
-            flex: 1,
-            borderBottomWidth: 1,
-            borderColor: appStyle.separatorColor
-        },
-        knobContainer: {
-            flex: 1,
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: appStyle.knobHeight,
-            bottom: 0,
-            alignItems: 'center',
-            backgroundColor: appStyle.calendarBackground
-        },
-        weekday: {
-            width: 32,
-            textAlign: 'center',
-            fontSize: appStyle.textSectionFontSize || 13,
-            fontFamily: appStyle.textSectionFontFamily,
-            color: appStyle.textSectionTitleColor,
-        },
-        reservations: {
-            flex: 1,
-            marginTop: 104,
-            backgroundColor: appStyle.backgroundColor
-        },
-        ...(theme[STYLESHEET_ID] || {})
-    };
+  if(appStyle.scrollPadStyle){
+    obj.scrollPadStyle=appStyle.scrollPadStyle
+  }
 
-    if(appStyle.scrollPadStyle){
-        obj.scrollPadStyle=appStyle.scrollPadStyle
-    }
+  return StyleSheet.create(obj);
 
-    return StyleSheet.create(obj);
+
 }
