@@ -90,3 +90,9 @@
 ## [1.207.0] - 2019-08-15
 ### Added
 - CalendarProvider - 'todayButtonStyle' prop to allow passing style to the today button.
+
+## [1.208.0] - 2019-08-15
+### Added
+- CalendarProvider - today button size for tablet. 
+  Passing style prop to a container View.
+- ExpandableCalendar - adjusting vertical mode open height for tablet in both orientations.

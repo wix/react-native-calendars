@@ -168,7 +168,7 @@ class ExpandableCalendar extends Component {
   /** Utils */
   getOpenHeight() {
     if (!this.props.horizontal) {
-      return commons.screenHeight;
+      return commons.screenHeight > commons.screenWidth ? commons.screenHeight : commons.screenWidth;
     }
     return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
   }
