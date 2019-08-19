@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {Animated, TouchableOpacity} from 'react-native';
+import {Animated, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -165,7 +165,9 @@ class CalendarProvider extends Component {
   render() {
     return (
       <CalendarContext.Provider value={this.getProviderContextValue()}>
-        {this.props.children}
+        <View style={this.props.style}>
+          {this.props.children}
+        </View>
         {this.props.showTodayButton && this.renderTodayButton()}
       </CalendarContext.Provider>
     );
