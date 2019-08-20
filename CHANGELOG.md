@@ -96,3 +96,7 @@
 - CalendarProvider - today button size for tablet. 
   Passing style prop to a container View.
 - ExpandableCalendar - adjusting vertical mode open height for tablet in both orientations.
+
+## [1.209.0] - 2019-08-20
+### Fix
+- CalendarProvider - Fix for children wrapper view.
