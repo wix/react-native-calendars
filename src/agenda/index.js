@@ -221,7 +221,10 @@ export default class AgendaView extends Component {
     if (nextProps.items) {
       nextState.firstResevationLoad = false;
     }
-    if (nextProps.selected && nextProps.selected !== this.props.selected) {
+    if (
+      nextProps.selected &&
+      !dateutils.sameDate(nextProps.selected, this.props.selected)
+    ) {
       nextState.selectedDay = parseDate(nextProps.selected);
     }
     if (Object.keys(nextState).length) {
