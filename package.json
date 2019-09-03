@@ -23,6 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.0.0",
+    "moment-timezone": "^0.5.26",
     "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
@@ -31,10 +32,10 @@
     "eslint": "^6.1.0",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
-    "semver": "5.x.x",
-    "shell-utils": "1.x.x",
     "react": "16.8.3",
     "react-native": "0.59.3",
-    "react-native-navigation": "2.13.1"
+    "react-native-navigation": "2.13.1",
+    "semver": "5.x.x",
+    "shell-utils": "1.x.x"
   }
 }
