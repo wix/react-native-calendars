@@ -156,7 +156,7 @@ class CalendarHeader extends Component {
           onLongPress={this.onHeaderLongPress}
         >
           {leftArrow}
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <Text
               allowFontScaling={false}
               style={this.style.monthText}
@@ -173,7 +173,7 @@ class CalendarHeader extends Component {
     return (
       <View style={this.style.header}>
         {leftArrow}
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           <Text
             allowFontScaling={false}
             style={this.style.monthText}

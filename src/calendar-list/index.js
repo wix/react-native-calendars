@@ -1,23 +1,23 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   FlatList,
   Platform,
   Dimensions,
   ActivityIndicator,
   View
-} from "react-native";
-import PropTypes from "prop-types";
-import XDate from "xdate";
+} from 'react-native';
+import PropTypes from 'prop-types';
+import XDate from 'xdate';
 
-import { xdateToData, parseDate } from "../interface";
-import styleConstructor from "./style";
-import dateutils from "../dateutils";
-import Calendar from "../calendar";
-import CalendarListItem from "./item";
-import CalendarHeader from "../calendar/header/index";
-import { STATIC_HEADER } from "../testIDs";
+import { xdateToData, parseDate } from '../interface';
+import styleConstructor from './style';
+import dateutils from '../dateutils';
+import Calendar from '../calendar';
+import CalendarListItem from './item';
+import CalendarHeader from '../calendar/header/index';
+import { STATIC_HEADER } from '../testIDs';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 /**
  * @description: Calendar List component for both vertical and horizontal calendars
@@ -27,7 +27,7 @@ const { width } = Dimensions.get("window");
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar-list.gif
  */
 class CalendarList extends Component {
-  static displayName = "CalendarList";
+  static displayName = 'CalendarList';
 
   static propTypes = {
     ...Calendar.propTypes,
@@ -68,7 +68,7 @@ class CalendarList extends Component {
     showScrollIndicator: false,
     scrollEnabled: true,
     scrollsToTop: false,
-    removeClippedSubviews: Platform.OS === "android" ? false : true
+    removeClippedSubviews: Platform.OS === 'android' ? false : true
   };
 
   constructor(props) {
@@ -91,7 +91,7 @@ class CalendarList extends Component {
       const rangeDate = date
         .clone()
         .addMonths(i - this.props.pastScrollRange, true);
-      const rangeDateStr = rangeDate.toString("MMM yyyy");
+      const rangeDateStr = rangeDate.toString('MMM yyyy');
       texts.push(rangeDateStr);
       /*
        * This selects range around current shown month [-0, +2] or [-1, +1] month for detail calendar rendering.
@@ -277,7 +277,7 @@ class CalendarList extends Component {
 
   updateMonth(day, doNotTriggerListeners) {
     if (
-      day.toString("yyyy MM") === this.state.currentMonth.toString("yyyy MM")
+      day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')
     ) {
       return;
     }

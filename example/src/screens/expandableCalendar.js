@@ -1,5 +1,5 @@
-import _ from "lodash";
-import React, { Component } from "react";
+import _ from 'lodash';
+import React, { Component } from 'react';
 import {
   Platform,
   Alert,
@@ -8,14 +8,14 @@ import {
   Text,
   TouchableOpacity,
   Button
-} from "react-native";
+} from 'react-native';
 import {
   ExpandableCalendar,
   AgendaList,
   CalendarProvider
-} from "react-native-calendars";
+} from 'react-native-calendars';
 
-const today = new Date().toISOString().split("T")[0];
+const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
@@ -24,75 +24,75 @@ function getFutureDates(days) {
   const array = [];
   for (let index = 1; index <= days; index++) {
     const date = new Date(Date.now() + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
-    const dateString = date.toISOString().split("T")[0];
+    const dateString = date.toISOString().split('T')[0];
     array.push(dateString);
   }
   return array;
 }
 
 function getPastDate(days) {
-  return new Date(Date.now() - 864e5 * days).toISOString().split("T")[0];
+  return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
 }
 
 const ITEMS = [
   {
     title: dates[0],
-    data: [{ hour: "12am", duration: "1h", title: "Ashtanga Yoga" }]
+    data: [{ hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }]
   },
   {
     title: dates[1],
     data: [
-      { hour: "4pm", duration: "1h", title: "Pilates ABC" },
-      { hour: "5pm", duration: "1h", title: "Vinyasa Yoga" }
+      { hour: '4pm', duration: '1h', title: 'Pilates ABC' },
+      { hour: '5pm', duration: '1h', title: 'Vinyasa Yoga' }
     ]
   },
   {
     title: dates[2],
     data: [
-      { hour: "1pm", duration: "1h", title: "Ashtanga Yoga" },
-      { hour: "2pm", duration: "1h", title: "Deep Streches" },
-      { hour: "3pm", duration: "1h", title: "Private Yoga" }
+      { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
+      { hour: '2pm', duration: '1h', title: 'Deep Streches' },
+      { hour: '3pm', duration: '1h', title: 'Private Yoga' }
     ]
   },
   {
     title: dates[3],
-    data: [{ hour: "12am", duration: "1h", title: "Ashtanga Yoga" }]
+    data: [{ hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }]
   },
   { title: dates[4], data: [{}] },
   {
     title: dates[5],
     data: [
-      { hour: "9pm", duration: "1h", title: "Pilates Reformer" },
-      { hour: "10pm", duration: "1h", title: "Ashtanga" },
-      { hour: "11pm", duration: "1h", title: "TRX" },
-      { hour: "12pm", duration: "1h", title: "Running Group" }
+      { hour: '9pm', duration: '1h', title: 'Pilates Reformer' },
+      { hour: '10pm', duration: '1h', title: 'Ashtanga' },
+      { hour: '11pm', duration: '1h', title: 'TRX' },
+      { hour: '12pm', duration: '1h', title: 'Running Group' }
     ]
   },
   {
     title: dates[6],
-    data: [{ hour: "12am", duration: "1h", title: "Ashtanga Yoga" }]
+    data: [{ hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }]
   },
   { title: dates[7], data: [{}] },
   {
     title: dates[8],
     data: [
-      { hour: "9pm", duration: "1h", title: "Pilates Reformer" },
-      { hour: "10pm", duration: "1h", title: "Ashtanga" },
-      { hour: "11pm", duration: "1h", title: "TRX" },
-      { hour: "12pm", duration: "1h", title: "Running Group" }
+      { hour: '9pm', duration: '1h', title: 'Pilates Reformer' },
+      { hour: '10pm', duration: '1h', title: 'Ashtanga' },
+      { hour: '11pm', duration: '1h', title: 'TRX' },
+      { hour: '12pm', duration: '1h', title: 'Running Group' }
     ]
   },
   {
     title: dates[9],
     data: [
-      { hour: "1pm", duration: "1h", title: "Ashtanga Yoga" },
-      { hour: "2pm", duration: "1h", title: "Deep Streches" },
-      { hour: "3pm", duration: "1h", title: "Private Yoga" }
+      { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
+      { hour: '2pm', duration: '1h', title: 'Deep Streches' },
+      { hour: '3pm', duration: '1h', title: 'Private Yoga' }
     ]
   },
   {
     title: dates[10],
-    data: [{ hour: "12am", duration: "1h", title: "Ashtanga Yoga" }]
+    data: [{ hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }]
   }
 ];
 
@@ -107,7 +107,7 @@ export default class ExpandableCalendarScreen extends Component {
   };
 
   buttonPressed() {
-    Alert.alert("show more");
+    Alert.alert('show more');
   }
 
   itemPressed(id) {
@@ -138,7 +138,7 @@ export default class ExpandableCalendarScreen extends Component {
         </View>
         <Text style={styles.itemTitleText}>{item.title}</Text>
         <View style={styles.itemButtonContainer}>
-          <Button title={"Info"} onPress={this.buttonPressed} />
+          <Button title={'Info'} onPress={this.buttonPressed} />
         </View>
       </TouchableOpacity>
     );
@@ -156,11 +156,11 @@ export default class ExpandableCalendarScreen extends Component {
   };
 
   getTheme = () => {
-    const themeColor = "#0059ff";
-    const lightThemeColor = "#e6efff";
-    const disabledColor = "#a6acb1";
-    const black = "#20303c";
-    const white = "#ffffff";
+    const themeColor = '#0059ff';
+    const lightThemeColor = '#e6efff';
+    const disabledColor = '#a6acb1';
+    const black = '#20303c';
+    const white = '#ffffff';
 
     return {
       // arrows
@@ -169,22 +169,22 @@ export default class ExpandableCalendarScreen extends Component {
       // month
       monthTextColor: black,
       textMonthFontSize: 16,
-      textMonthFontFamily: "HelveticaNeue",
-      textMonthFontWeight: "bold",
+      textMonthFontFamily: 'HelveticaNeue',
+      textMonthFontWeight: 'bold',
       // day names
       textSectionTitleColor: black,
       textDayHeaderFontSize: 12,
-      textDayHeaderFontFamily: "HelveticaNeue",
-      textDayHeaderFontWeight: "normal",
+      textDayHeaderFontFamily: 'HelveticaNeue',
+      textDayHeaderFontWeight: 'normal',
       // today
       todayBackgroundColor: lightThemeColor,
       todayTextColor: themeColor,
       // dates
       dayTextColor: themeColor,
       textDayFontSize: 18,
-      textDayFontFamily: "HelveticaNeue",
-      textDayFontWeight: "500",
-      textDayStyle: { marginTop: Platform.OS === "android" ? 2 : 4 },
+      textDayFontFamily: 'HelveticaNeue',
+      textDayFontWeight: '500',
+      textDayStyle: { marginTop: Platform.OS === 'android' ? 2 : 4 },
       // selected date
       selectedDayBackgroundColor: themeColor,
       selectedDayTextColor: white,
@@ -204,7 +204,7 @@ export default class ExpandableCalendarScreen extends Component {
         date={ITEMS[0].title}
         onDateChanged={this.onDateChanged}
         onMonthChange={this.onMonthChange}
-        theme={{ todayButtonTextColor: "#0059ff" }}
+        theme={{ todayButtonTextColor: '#0059ff' }}
         showTodayButton
         disabledOpacity={0.6}
         // todayBottomMargin={16}
@@ -216,11 +216,11 @@ export default class ExpandableCalendarScreen extends Component {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
-          // onHeaderPress={date => console.log("Header Pressed", date)}
+          // onHeaderPress={date => console.log('Header Pressed', date)}
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
-          leftArrowImageSource={require("../img/previous.png")}
-          rightArrowImageSource={require("../img/next.png")}
+          leftArrowImageSource={require('../img/previous.png')}
+          rightArrowImageSource={require('../img/next.png')}
           // calendarStyle={styles.calendar}
           // headerStyle={styles.calendar} // for horizontal only
         />
@@ -241,44 +241,44 @@ const styles = StyleSheet.create({
     paddingRight: 20
   },
   section: {
-    backgroundColor: "#f0f4f7",
-    color: "#79838a"
+    backgroundColor: '#f0f4f7',
+    color: '#79838a'
   },
   item: {
     padding: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderBottomColor: "#e8ecf0",
-    flexDirection: "row"
+    borderBottomColor: '#e8ecf0',
+    flexDirection: 'row'
   },
   itemHourText: {
-    color: "black"
+    color: 'black'
   },
   itemDurationText: {
-    color: "grey",
+    color: 'grey',
     fontSize: 12,
     marginTop: 4,
     marginLeft: 4
   },
   itemTitleText: {
-    color: "black",
+    color: 'black',
     marginLeft: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 16
   },
   itemButtonContainer: {
     flex: 1,
-    alignItems: "flex-end"
+    alignItems: 'flex-end'
   },
   emptyItem: {
     paddingLeft: 20,
     height: 52,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: "#e8ecf0"
+    borderBottomColor: '#e8ecf0'
   },
   emptyItemText: {
-    color: "#79838a",
+    color: '#79838a',
     fontSize: 14
   }
 });

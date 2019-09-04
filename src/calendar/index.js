@@ -253,16 +253,16 @@ class Calendar extends Component {
     }
 
     switch (this.props.markingType) {
-      case 'period':
-        return UnitDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      case 'multi-period':
-        return MultiPeriodDay;
-      case 'custom':
-        return SingleDay;
-      default:
-        return Day;
+    case 'period':
+      return UnitDay;
+    case 'multi-dot':
+      return MultiDotDay;
+    case 'multi-period':
+      return MultiPeriodDay;
+    case 'custom':
+      return SingleDay;
+    default:
+      return Day;
     }
   }
 

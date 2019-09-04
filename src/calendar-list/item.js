@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Text, View } from "react-native";
-import Calendar from "../calendar";
-import styleConstructor from "./style";
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import Calendar from '../calendar';
+import styleConstructor from './style';
 
 class CalendarListItem extends Component {
-  static displayName = "IGNORE";
+  static displayName = 'IGNORE';
 
   static defaultProps = {
     hideArrows: true,
@@ -20,7 +20,7 @@ class CalendarListItem extends Component {
     const r1 = this.props.item;
     const r2 = nextProps.item;
     return (
-      r1.toString("yyyy MM") !== r2.toString("yyyy MM") ||
+      r1.toString('yyyy MM') !== r2.toString('yyyy MM') ||
       !!(r2.propbump && r2.propbump !== r1.propbump)
     );
   }
