@@ -2,6 +2,7 @@ import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
 
 
+const commons = require('./commons');
 const STYLESHEET_ID = 'stylesheet.expandable.main';
 
 export default function styleConstructor(theme = {}) {
@@ -50,7 +51,8 @@ export default function styleConstructor(theme = {}) {
       paddingTop: 24, // 8
       paddingBottom: 8,
       paddingLeft: 20,
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: appStyle.calendarBackground,
+      textAlign: 'left'
     },
     header: {
       position: 'absolute',
@@ -101,9 +103,9 @@ export default function styleConstructor(theme = {}) {
       bottom : 0
     },
     todayButton: {
-      height: 28, 
-      paddingHorizontal: 12,
-      borderRadius: 14, 
+      height: commons.isTablet ? 40 : 28, 
+      paddingHorizontal: commons.isTablet ? 20 : 12,
+      borderRadius: commons.isTablet ? 20 : 14,
       flexDirection: appStyle.todayButtonPosition === 'right' ? 'row-reverse' : 'row',
       justifyContent: 'center',
       alignItems: 'center',
@@ -122,7 +124,7 @@ export default function styleConstructor(theme = {}) {
     },
     todayButtonText: {
       color: appStyle.todayButtonTextColor,
-      fontSize: appStyle.todayButtonFontSize, 
+      fontSize: commons.isTablet ? appStyle.todayButtonFontSize + 2 : appStyle.todayButtonFontSize, 
       fontWeight: appStyle.todayButtonFontWeight,
       fontFamily: appStyle.todayButtonFontFamily
     },
