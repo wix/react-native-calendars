@@ -110,7 +110,7 @@ LocaleConfig.defaultLocale = 'fr';
   showWeekNumbers={true}
   // Handler which gets executed when press arrow icon left. It receive a callback can go back month
   onPressArrowLeft={substractMonth => substractMonth()}
-  // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+  // Handler which gets executed when press arrow icon right. It receive a callback can go next month
   onPressArrowRight={addMonth => addMonth()}
 />
 ```
