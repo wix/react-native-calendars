@@ -24,6 +24,8 @@
   "dependencies": {
     "lodash": "^4.0.0",
     "prop-types": "^15.5.10",
+    "react-native-reanimated": "^1.2.0",
+    "react-native-redash": "^8.0.0",
     "xdate": "^0.8.0"
   },
   "devDependencies": {
@@ -31,10 +33,10 @@
     "eslint": "^6.1.0",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
-    "semver": "5.x.x",
-    "shell-utils": "1.x.x",
     "react": "16.8.3",
     "react-native": "0.59.3",
-    "react-native-navigation": "2.13.1"
+    "react-native-navigation": "2.13.1",
+    "semver": "5.x.x",
+    "shell-utils": "1.x.x"
   }
 }

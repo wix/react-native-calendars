@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, ViewPropTypes} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+import Animated from 'react-native-reanimated';
 
 import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
@@ -256,6 +257,8 @@ class Calendar extends Component {
       }
     }
 
+    const y = new Animated.Value(0);
+
     return (
       <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
@@ -272,6 +275,7 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          y={y}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
