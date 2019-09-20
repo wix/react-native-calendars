@@ -32,6 +32,11 @@ export default function(theme={}) {
         },
         android: {
           tintColor: appStyle.arrowColor
+        },
+        web: {
+          tintColor: appStyle.arrowColor,
+          width: 16,
+          height: 27
         }
       })
     },
