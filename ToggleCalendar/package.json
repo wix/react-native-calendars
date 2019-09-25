@@ -1,0 +1,29 @@
+{
+  "name": "ToggleCalendar",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "react": "16.8.1",
+    "react-native": "0.61.1",
+    "react-native-toggle-calendar": "^1.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.0",
+    "@babel/runtime": "^7.5.0",
+    "@react-native-community/eslint-config": "^0.0.3",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0",
+    "metro-react-native-babel-preset": "^0.51.1",
+    "react-test-renderer": "16.8.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
