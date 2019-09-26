@@ -135,7 +135,6 @@ class AgendaList extends Component {
   render() {
     return (
       <SectionList
-        {...this.props}
         ref={this.list}
         keyExtractor={this.keyExtractor}
         showsVerticalScrollIndicator={false}
@@ -148,6 +147,7 @@ class AgendaList extends Component {
         onMomentumScrollEnd={this.onMomentumScrollEnd}
         // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
         // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
+        {...this.props}
       />
     );
   }
