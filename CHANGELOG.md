@@ -51,3 +51,52 @@
 ## [1.198.0] - 2019-07-14
 ### Fix
 - ExpandableCalendar - fix example screen.
+
+## [1.199.0] - 2019-07-18
+### Changed
+- CalendarHeader - editing 'testID' for static CalendarHeader.
+
+## [1.200.0] - 2019-07-18
+### Added
+- ExpandableCalendar - adding testID for knob.
+
+## [1.201.0] - 2019-07-25
+### Change
+- eslint - updating to version 6.1.0.
+- lodash - importing library instead of sub-libraries.
+
+## [1.202.0] - 2019-07-25
+### Added
+- CalendarHeader - adding 'firstDay' (PR #826), 'monthFormat' (PR #787) and 'weekNumbers' to shouldComponentUpdate.
+- Agenda - adding support for weekdays name's 'fontSize', 'fontFamily' and 'fontWeight' (PR #711).
+- ReservationList - adding support for Day number's 'fontFamily', and to Day text's 'fontFamily' and 'fontWeight' (PR #711).
+
+## [1.203.0] - 2019-07-31
+### Fix
+- ExpandableCalendar - fix for vertical open height.
+
+## [1.204.0] - 2019-08-6
+### Fix
+- CalendarProvider - adding 'buttonTopPosition' prop to control the button's y position.
+
+## [1.205.0] - 2019-08-15
+### Fix
+- Week - fix for style - removing width to allow flex.
+
+## [1.206.0] - 2019-08-15
+### Fix
+- CalendarProvider - fix header in vertical mode when initial position is 'open'.
+
+## [1.207.0] - 2019-08-15
+### Added
+- CalendarProvider - 'todayButtonStyle' prop to allow passing style to the today button.
+
+## [1.208.0] - 2019-08-15
+### Added
+- CalendarProvider - today button size for tablet. 
+  Passing style prop to a container View.
+- ExpandableCalendar - adjusting vertical mode open height for tablet in both orientations.
+
+## [1.209.0] - 2019-08-20
+### Fix
+- CalendarProvider - Fix for children wrapper view.

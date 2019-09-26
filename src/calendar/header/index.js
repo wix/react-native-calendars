@@ -56,6 +56,15 @@ class CalendarHeader extends Component {
     if (nextProps.hideDayNames !== this.props.hideDayNames) {
       return true;
     }
+    if (nextProps.firstDay !== this.props.firstDay) {
+      return true;
+    }
+    if (nextProps.weekNumbers !== this.props.weekNumbers) {
+      return true;
+    }
+    if (nextProps.monthFormat !== this.props.monthFormat) {
+      return true;
+    }
     return false;
   }
 
@@ -87,14 +96,14 @@ class CalendarHeader extends Component {
           onPress={this.onPressLeft}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${testID}-${CHANGE_MONTH_LEFT_ARROW}`: CHANGE_MONTH_LEFT_ARROW}
+          testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('left')
             : <Image
-                source={require('../img/previous.png')}
-                style={this.style.arrowImage}
-              />}
+              source={require('../img/previous.png')}
+              style={this.style.arrowImage}
+            />}
         </TouchableOpacity>
       );
       rightArrow = (
@@ -102,14 +111,14 @@ class CalendarHeader extends Component {
           onPress={this.onPressRight}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${testID}-${CHANGE_MONTH_RIGHT_ARROW}`: CHANGE_MONTH_RIGHT_ARROW}
+          testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('right')
             : <Image
-                source={require('../img/next.png')}
-                style={this.style.arrowImage}
-              />}
+              source={require('../img/next.png')}
+              style={this.style.arrowImage}
+            />}
         </TouchableOpacity>
       );
     }
