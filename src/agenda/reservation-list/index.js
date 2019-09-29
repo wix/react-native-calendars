@@ -50,7 +50,7 @@ class ReactComp extends Component {
     this.scrollOver = true;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
   }
 
@@ -74,15 +74,17 @@ class ReactComp extends Component {
     this.updateDataSource(reservations.reservations);
   }
 
-  componentWillReceiveProps(props) {
-    if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
-      this.setState({
-        reservations: []
-      }, () => {
+  componentDidUpdate(props) {
+    if(this.props !== props) {
+      if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
+        this.setState({
+          reservations: []
+        }, () => {
+          this.updateReservations(props);
+        });
+      } else {
         this.updateReservations(props);
-      });
-    } else {
-      this.updateReservations(props);
+      }
     }
   }
 
