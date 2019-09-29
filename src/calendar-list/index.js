@@ -139,28 +139,30 @@ class CalendarList extends Component {
     this.listView.scrollToOffset({offset: scrollAmount, animated: false});
   }
 
-  componentWillReceiveProps(props) {
-    const current = parseDate(this.props.current);
-    const nextCurrent = parseDate(props.current);
-    
-    if (nextCurrent && current && nextCurrent.getTime() !== current.getTime()) {
-      this.scrollToMonth(nextCurrent);
-    }
+  componentDidUpdate(props) {
+    if(this.props !== props) {
+      const current = parseDate(this.props.current);
+      const nextCurrent = parseDate(props.current);
 
-    const rowclone = this.state.rows;
-    const newrows = [];
-    
-    for (let i = 0; i < rowclone.length; i++) {
-      let val = this.state.texts[i];
-      if (rowclone[i].getTime) {
-        val = rowclone[i].clone();
-        val.propbump = rowclone[i].propbump ? rowclone[i].propbump + 1 : 1;
+      if (nextCurrent && current && nextCurrent.getTime() !== current.getTime()) {
+        this.scrollToMonth(nextCurrent);
       }
-      newrows.push(val);
+
+      const rowclone = this.state.rows;
+      const newrows = [];
+
+      for (let i = 0; i < rowclone.length; i++) {
+        let val = this.state.texts[i];
+        if (rowclone[i].getTime) {
+          val = rowclone[i].clone();
+          val.propbump = rowclone[i].propbump ? rowclone[i].propbump + 1 : 1;
+        }
+        newrows.push(val);
+      }
+      this.setState({
+        rows: newrows
+      });
     }
-    this.setState({
-      rows: newrows
-    });
   }
 
   onViewableItemsChanged({viewableItems}) {
