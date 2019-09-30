@@ -7,7 +7,7 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -26,6 +26,7 @@ class Day extends Component {
   }
 
   onDayPress() {
+    if (this.props.marking.disableTouchEvent) return;
     this.props.onPress(this.props.date);
   }
 
