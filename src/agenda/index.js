@@ -118,7 +118,7 @@ export default class AgendaView extends Component {
   }
 
   calendarOffset() {
-    return 90 - (this.viewHeight / 2);
+    return 100 - (this.viewHeight / 2);
   }
 
   initialScrollPadPosition() {
