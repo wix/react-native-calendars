@@ -77,14 +77,18 @@ class Calendar extends Component {
     /** Handler which gets executed when press arrow icon left. It receive a callback can go next month */
     onPressArrowRight: PropTypes.func,
     /** Style passed to the header */
-    headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
+    headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+    /** Mark Sunday. Default = false */
+    markSunday: PropTypes.bool,
+    /** Mark Saturday. Default = false */
+    markSaturday: PropTypes.bool
   };
 
   constructor(props) {
     super(props);
-    
+
     this.style = styleConstructor(this.props.theme);
-    
+
     this.state = {
       currentMonth: props.current ? parseDate(props.current) : XDate()
     };
@@ -214,7 +218,14 @@ class Calendar extends Component {
       return false;
     }
 
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
+    let markedDates = this.props.markedDates;
+
+    if(this.props.markSunday && day.toString().includes('Sun') || this.props.markSaturday && day.toString().includes('Sat')) {
+      markedDates = {...this.props.markedDates,
+        [day.toString('yyyy-MM-dd')]: this.props.markedDates['weekendStyle'] || {}};
+    }
+
+    const dates = markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
@@ -245,7 +256,7 @@ class Calendar extends Component {
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
-    
+
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
@@ -272,6 +283,8 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          markSunday={this.props.markSunday}
+          markSaturday={this.props.markSaturday}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
