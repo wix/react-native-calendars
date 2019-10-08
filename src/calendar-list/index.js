@@ -286,7 +286,7 @@ class CalendarList extends Component {
 
   render() {
     return (
-      <View>
+      <React.Fragment>
         <FlatList
           onLayout={this.onLayout}
           ref={(c) => this.listView = c}
@@ -312,7 +312,7 @@ class CalendarList extends Component {
           scrollsToTop={this.props.scrollsToTop}
         />
         {this.renderStaticHeader()}
-      </View>
+      </React.Fragment>
     );
   }
 }
