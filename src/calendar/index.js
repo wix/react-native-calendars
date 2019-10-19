@@ -108,7 +108,7 @@ class Calendar extends Component {
     if (
       current &&
       current.toString('yyyy MM') !==
-        this.state.currentMonth.toString('yyyy MM')
+      this.state.currentMonth.toString('yyyy MM')
     ) {
       this.setState({
         currentMonth: current.clone(),
@@ -244,7 +244,7 @@ class Calendar extends Component {
 
     let dates = {};
     Object.keys(markedDates).forEach((date, index) => {
-      if (new Date(day).getDay() - firstDay === Number(date)) {
+      if (day.getDay() - firstDay === Number(date)) {
         dates = Object.values(markedDates)[index];
       }
 
