@@ -137,6 +137,34 @@ Dot marking
 />
 ```
 
+You can also provide the day of the week that will be marked. Each provided day of the week (and also the rest of the months) will be marked according to the
+`markedDates` object.
+
+Example with Sunday, Monday and Thursday marked (by default firstDay value is 0):
+
+```javascript
+<Calendar
+  markedDates={{
+    0: { // Sunday
+      selected: true,
+      marked: true,
+      selectedColor: 'red',
+    },
+    1: { // Monday
+      selected: true,
+      marked: true,
+      selectedColor: 'blue',
+    },
+    5: { // Thursday
+      selected: true,
+      marked: true,
+      selectedColor: 'yellow',
+    },
+    }}
+/>
+```
+
+
 You can customise a dot color for each day independently.
 
 Multi-Dot marking
