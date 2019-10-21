@@ -136,15 +136,39 @@ export default class ExpandableCalendarScreen extends Component {
       textDayFontWeight: '500',
       textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
       // selected date
-      selectedDayBackgroundColor: themeColor,
-      selectedDayTextColor: white,
+      selectedDayBackgroundColor: 'green',
+      selectedDayTextColor: themeColor,
       // disabled date
       textDisabledColor: disabledColor,
       // dot (marked date)
       dotColor: themeColor,
-      selectedDotColor: white,
+      selectedDotColor: themeColor,
       disabledDotColor: disabledColor,
-      dotStyle: {marginTop: -2}
+      dotStyle: {marginTop: -2},
+
+      // calendarBackground: 'transparent',     
+
+      // 'stylesheet.calendar.header': {
+      //   week: {
+      //     marginTop: 31,
+      //     flexDirection: 'row',
+      //     justifyContent: 'space-between',
+      //     borderBottomWidth: 1,
+      //     borderColor: black, 
+      //     fontFamily: 'bold', 
+      //     marginHorizontal: 12,    
+      //   },
+      //   dayHeader: {
+      //     color: 'black',
+      //     marginBottom: 45,
+      //     fontFamily: 'HelveticaNeue',
+      //   },
+      //   base: {
+      //     borderLeftWidth: 1,
+      //     borderRightWidth: 1,
+      //     borderColor: 'black'
+      //   }
+      // }
     };
   }
 
@@ -155,7 +179,7 @@ export default class ExpandableCalendarScreen extends Component {
         onDateChanged={this.onDateChanged} 
         onMonthChange={this.onMonthChange}
         theme={{todayButtonTextColor: '#0059ff'}} 
-        showTodayButton 
+        // showTodayButton 
         disabledOpacity={0.6}
         // todayBottomMargin={16}
       >
@@ -163,7 +187,7 @@ export default class ExpandableCalendarScreen extends Component {
           // horizontal={false}
           // hideArrows
           // disablePan
-          // hideKnob
+          hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
@@ -173,12 +197,12 @@ export default class ExpandableCalendarScreen extends Component {
           // calendarStyle={styles.calendar}
           // headerStyle={styles.calendar} // for horizontal only
         />
-        <AgendaList
+        {/* <AgendaList
           sections={ITEMS}
           extraData={this.state}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
-        />
+        /> */}
       </CalendarProvider>
     );
   }

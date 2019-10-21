@@ -5,7 +5,8 @@ import {
   Animated,
   View,
   Text,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -392,7 +393,6 @@ class ExpandableCalendar extends Component {
 
   renderHeader() {
     const monthYear = XDate(this.props.context.date).toString('MMMM yyyy');
-
     return (
       <Animated.View
         ref={e => this.header = e}
@@ -400,6 +400,31 @@ class ExpandableCalendar extends Component {
         pointerEvents={'none'}
       >
         <Text allowFontScaling={false} style={this.style.headerTitle}>{monthYear}</Text>
+        {this.renderWeekDaysNames()}
+      </Animated.View>
+    );
+  }
+
+  renderCustomHeader(customText1, customText2, customHeaderStyle, headerStyle1, headerStyle2) {
+    return (
+      <Animated.View
+        ref={e => this.header = e}
+        style={[this.style.header, {height: 68, top: this.state.headerDeltaY}, customHeaderStyle]}
+      >
+        <View style={{
+          flexDirection: 'row',
+          marginHorizontal: 12,
+          justifyContent: 'space-between',
+          alignContent: 'center',
+          marginBottom: 25,
+        }}>
+          {this.renderWeekSwitchArrow('left')}
+          <View>
+            <Text allowFontScaling={false} style={headerStyle1}>{customText1}</Text>
+            <Text allowFontScaling={false} style={headerStyle2}>{customText2}</Text>
+          </View>
+          {this.renderWeekSwitchArrow('right')}
+        </View>
         {this.renderWeekDaysNames()}
       </Animated.View>
     );
@@ -440,9 +465,26 @@ class ExpandableCalendar extends Component {
     );
   }
 
+  renderCustomArrow = (direction) => {
+    if (_.isFunction(this.props.renderArrow)) {
+      return this.props.renderArrow(direction);
+    }
+
+    return (
+      <View style={{flexDirection: 'row', alignItems:'center'}}>
+        {direction === 'right' && <Text>{this.getMonthName(direction)}</Text> }
+        <Image
+          source={direction === 'right' ? this.props.rightArrowImageSource : this.props.leftArrowImageSource}
+          style={this.style.arrowImage}
+        />
+        {direction === 'left' && <Text>{this.getMonthName(direction)}</Text> }
+      </View>
+    );
+  }
+
   renderArrow = (direction) => {
     if (_.isFunction(this.props.renderArrow)) {
-      this.props.renderArrow(direction);
+      return this.props.renderArrow(direction);
     }
 
     return (
@@ -450,6 +492,28 @@ class ExpandableCalendar extends Component {
         source={direction === 'right' ? this.props.rightArrowImageSource : this.props.leftArrowImageSource}
         style={this.style.arrowImage}
       />
+    );
+  }
+  
+  getMonthName = (direction, mNames) => {
+    const monthNames = mNames || ['Jan','Feb','Mars','Apr','Maj','Juni','Juli','Aug','Sept','Oct','Nov','Dec'];
+    const dayOfTheWeek = parseDate(this.props.context.date).getDay();
+    const {firstDay} = this.props;
+    const next = direction === 'right';
+    const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
+    return monthNames.find((item,idx) =>
+      parseDate(this.props.context.date).addDays(firstDayOfWeek).getMonth() === idx);
+  }
+
+  renderWeekSwitchArrow = (direction) => {
+    const shouldScroll = direction === 'right';
+    return (
+      <TouchableOpacity 
+        onPress={() => this.scrollPage(shouldScroll)}
+        hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+      >
+        {this.renderCustomArrow(direction)}
+      </TouchableOpacity>    
     );
   }
 
@@ -487,6 +551,7 @@ class ExpandableCalendar extends Component {
           {horizontal && this.renderWeekCalendar()}
           {!hideKnob && this.renderKnob()}
           {!horizontal && this.renderHeader()}
+          {this.renderCustomHeader('Week  №',  'number of days')}
         </Animated.View>
       </View>
     );

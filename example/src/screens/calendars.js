@@ -5,7 +5,7 @@ import {
   ScrollView,
   View
 } from 'react-native';
-import {Calendar} from 'react-native-calendars';
+import Calendar from '../../../src/calendar';
 
 export default class CalendarsScreen extends Component {
   constructor(props) {
@@ -22,7 +22,26 @@ export default class CalendarsScreen extends Component {
           onDayPress={this.onDayPress}
           style={styles.calendar}
           hideExtraDays
-          markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}}}
+          markedDates={
+            {
+              [this.state.selected]: {
+                selected: true,
+                marked:true,
+                dotColor:'green',
+                disableTouchEvent: true,
+                selectedDotColor: 'orange',
+                customStyles: {
+                  dots:{
+                    dotColor:'green'
+                  },
+                  container: {
+                    backgroundColor: 'red' 
+                  }
+                }
+              }
+            }
+          }
+          markingType={'custom'}
         />
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
