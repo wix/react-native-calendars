@@ -71,7 +71,8 @@ export default function styleConstructor(theme = {}) {
     },
     weekDayNames: {
       flexDirection: 'row', 
-      justifyContent: 'space-between' 
+      justifyContent: 'space-between',
+      ...appStyle.weekDayNames
     },
     weekday: {
       width: 32,
