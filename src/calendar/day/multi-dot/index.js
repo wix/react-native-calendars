@@ -47,7 +47,7 @@ class Day extends Component {
   renderDots(marking) {
     const baseDotStyle = [this.style.dot, this.style.visibleDot];
     if (marking.dots && Array.isArray(marking.dots) && marking.dots.length > 0) {
-      // Filter out dots so that we we process only those items which have key and color property
+      // Filter out dots so that we process only those items which have key and color property
       const validDots = marking.dots.filter(d => (d && d.color));
       return validDots.map((dot, index) => {
         return (

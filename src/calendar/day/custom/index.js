@@ -45,7 +45,7 @@ class Day extends Component {
     let textStyle = [this.style.text];
 
     let marking = this.props.marking || {};
-    if (marking && marking.constructor === Array && marking.length) {
+    if (Array.isArray(marking.constructor) && marking.length) {
       marking = {
         marking: true
       };
