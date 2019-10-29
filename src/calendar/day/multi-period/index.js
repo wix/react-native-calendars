@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+    import React, { Component } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
-import {shouldUpdate} from '../../../component-updater';
+import { shouldUpdate } from '../../../component-updater';
 
 import styleConstructor from './style';
 
 class Day extends Component {
-  static displayName = 'IGNORE';
-  
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -49,11 +47,23 @@ class Day extends Component {
             backgroundColor: period.color,
           },
         ];
+        const fontSize = period.fontSize === undefined ? 8 : period.fontSize;
+        const fontColor = period.fontColor === undefined ? "white" : period.fontColor;
+        const fontWeight = period.fontWeight === undefined ? "500" : period.fontWeight;
+        const text = period.text === undefined ? "" : period.text;
+        let height;
+        if (period.text !== undefined) {
+          height = period.height === undefined ? 10 : period.height;
+        } else {
+          height = 5
+        }
         if (period.startingDay) {
           style.push({
             borderTopLeftRadius: 2,
             borderBottomLeftRadius: 2,
             marginLeft: 4,
+            padding: 1,
+            height: height
           });
         }
         if (period.endingDay) {
@@ -61,9 +71,11 @@ class Day extends Component {
             borderTopRightRadius: 2,
             borderBottomRightRadius: 2,
             marginRight: 4,
+            padding: 1,
+            height: height
           });
         }
-        return <View key={index} style={style} />;
+        return <View key={index} style={style} ><Text style={{ fontSize: fontSize, color: fontColor, fontWeight: fontWeight }}>{text}</Text></View >;
       });
     }
     return;
@@ -94,7 +106,7 @@ class Day extends Component {
         style={{
           alignSelf: 'stretch'
         }}>
-        <TouchableOpacity testID={this.props.testID} style={containerStyle} onPress={this.onDayPress}>
+        <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>
@@ -111,3 +123,4 @@ class Day extends Component {
 }
 
 export default Day;
+
