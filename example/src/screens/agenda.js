@@ -19,11 +19,11 @@ export default class AgendaScreen extends Component {
       <Agenda
         items={this.state.items}
         loadItemsForMonth={this.loadItems.bind(this)}
-        selected={'2017-05-16'}
+        selected={'2017-05-01'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
-        isDefaultViewCalendar={true}
+        // isDefaultViewCalendar={true}
         // markingType={'period'}
         // markedDates={{
         //    '2017-05-08': {textColor: '#666'},

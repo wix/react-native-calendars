@@ -83,7 +83,7 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     /** Display loading indicador. Default = false */
     displayLoadingIndicator: PropTypes.bool,
-     /** Making Default View as Calendar. Default = false */
+    /** Making Default View as Calendar. Default = false */
     isDefaultViewCalendar: PropTypes.bool
   };
 
@@ -100,8 +100,8 @@ export default class AgendaView extends Component {
 
     this.state = {
       scrollY: new Animated.Value(0),
-      calendarIsReady: false,
-      calendarScrollable: false,
+      calendarIsReady: Boolean(this.props.isDefaultViewCalendar),
+      calendarScrollable: Boolean(this.props.isDefaultViewCalendar),
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true),
