@@ -5,6 +5,10 @@ const STYLESHEET_ID = 'stylesheet.calendar.header';
 
 export default function(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
+  const arrowStyles = {
+    padding: 10,
+    ...appStyle.arrowStyle
+  }
   return StyleSheet.create({
     header: {
       flexDirection: 'row',
@@ -21,10 +25,9 @@ export default function(theme={}) {
       color: appStyle.monthTextColor,
       margin: 10
     },
-    arrow: {
-      padding: 10,
-      ...appStyle.arrowStyle
-    },
+    arrow: arrowStyles,
+    leftArrow: {},
+    rightArrow: {},
     arrowImage: {
       ...Platform.select({
         ios: {
