@@ -18,7 +18,6 @@ import {SELECT_DATE_SLOT} from '../testIDs';
 
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
-const EmptyArray = [];
 
 /**
  * @description: Calendar component
@@ -82,9 +81,9 @@ class Calendar extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.style = styleConstructor(this.props.theme);
-    
+
     this.state = {
       currentMonth: props.current ? parseDate(props.current) : XDate()
     };
@@ -214,11 +213,14 @@ class Calendar extends Component {
       return false;
     }
 
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
-    if (dates.length || dates) {
-      return dates;
-    } else {
+    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')];
+
+    if(!dates) {
       return false;
+    } else if( Array.isArray(dates) && dates.length === 0 ) {
+      return false;
+    } else {
+      return dates;
     }
   }
 
