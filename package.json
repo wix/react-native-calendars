@@ -10,7 +10,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "ios": "react-native run-ios",
     "android": "react-native run-android",
-    "xcode": "open ios/CalendarsExample.xcodeproj/"
+    "xcode": "open ios/CalendarsExample.xcworkspace/"
   },
   "repository": {
     "type": "git",

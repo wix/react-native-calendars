@@ -1,0 +1,6 @@
+framework module Pods_CalendarsExample_tvOSTests {
+  umbrella header "Pods-CalendarsExample-tvOSTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

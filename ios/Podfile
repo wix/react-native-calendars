@@ -1,0 +1,28 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'CalendarsExample' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for CalendarsExample
+
+  target 'CalendarsExampleTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'CalendarsExample-tvOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for CalendarsExample-tvOS
+
+  target 'CalendarsExample-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
