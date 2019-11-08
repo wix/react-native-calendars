@@ -31,10 +31,10 @@
     "eslint": "^6.5.1",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
-    "semver": "5.x.x",
-    "shell-utils": "1.x.x",
     "react": "16.9.0",
     "react-native": "0.61.4",
-    "react-native-navigation": "^3.4.0"
+    "react-native-navigation": "^3.4.0",
+    "semver": "5.x.x",
+    "shell-utils": "1.x.x"
   }
 }
