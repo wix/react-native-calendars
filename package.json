@@ -35,6 +35,6 @@
     "shell-utils": "1.x.x",
     "react": "16.9.0",
     "react-native": "0.61.4",
-    "react-native-navigation": "2.13.1"
+    "react-native-navigation": "^3.4.0"
   }
 }
