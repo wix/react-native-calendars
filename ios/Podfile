@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'react-native-calendars' do
-  # Pods for react-native-calendars
+target 'CalendarsExample' do
+  # Pods for CalendarsExample
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -34,7 +34,7 @@ target 'react-native-calendars' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'react-native-calendarsTests' do
+  target 'CalendarsExampleTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -42,10 +42,10 @@ target 'react-native-calendars' do
   use_native_modules!
 end
 
-target 'react-native-calendars-tvOS' do
-  # Pods for react-native-calendars-tvOS
+target 'CalendarsExample-tvOS' do
+  # Pods for CalendarsExample-tvOS
 
-  target 'react-native-calendars-tvOSTests' do
+  target 'CalendarsExample-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
