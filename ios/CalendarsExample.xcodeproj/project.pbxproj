@@ -22,6 +22,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		1D6E69FC7F2E9B2425D1D77C /* libPods-CalendarsExample-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D93D75C00154C59274FE89E /* libPods-CalendarsExample-tvOSTests.a */; };
+		2CDB99E6608D58608D576A5D /* libPods-CalendarsExample-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1277A2D5198F5EA937DF293F /* libPods-CalendarsExample-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -34,14 +36,11 @@
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* CalendarsExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CalendarsExampleTests.m */; };
-		3965F1A7225A55AE00A76930 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3965F1A4225A55A300A76930 /* libReactNativeNavigation.a */; };
 		398EEBBF225A4017004C3591 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398EEBBE225A4017004C3591 /* JavaScriptCore.framework */; };
-		561404A2E90888BE1727DD2C /* Pods_CalendarsExample_tvOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DB3B64A3EEB532115EC58C3 /* Pods_CalendarsExample_tvOSTests.framework */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		5F7189E8DBE426F5E9CB9E3B /* Pods_CalendarsExample_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 320EC75FE06B70BDF20E1FBD /* Pods_CalendarsExample_tvOS.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		DF35E468E41B48F41BD9AA7D /* Pods_CalendarsExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5D13372242E475A0CEC649 /* Pods_CalendarsExample.framework */; };
-		E008EE6AE88593B1EEFFF6DD /* Pods_CalendarsExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B747F6840D8281067C04FC6E /* Pods_CalendarsExampleTests.framework */; };
+		BACCAA9AD2623CC15806F02B /* libPods-CalendarsExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C68AD48F85533570BE2335EA /* libPods-CalendarsExample.a */; };
+		DF5E5BBBFE6BB67BB3F19224 /* libPods-CalendarsExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74EF9DCBEF878A313FA65523 /* libPods-CalendarsExampleTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,20 +141,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
-		};
-		3965F1A3225A55A300A76930 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3965F19E225A55A300A76930 /* ReactNativeNavigation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
-			remoteInfo = ReactNativeNavigation;
-		};
-		3965F1A5225A55A300A76930 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3965F19E225A55A300A76930 /* ReactNativeNavigation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7B49FEBB1E95090800DEB3EA;
-			remoteInfo = ReactNativeNavigationTests;
 		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -330,6 +315,7 @@
 		00E356EE1AD99517003FC87E /* CalendarsExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarsExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* CalendarsExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarsExampleTests.m; sourceTree = "<group>"; };
+		1277A2D5198F5EA937DF293F /* libPods-CalendarsExample-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CalendarsExample-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* CalendarsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -342,23 +328,21 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* CalendarsExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CalendarsExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* CalendarsExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CalendarsExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		320EC75FE06B70BDF20E1FBD /* Pods_CalendarsExample_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarsExample_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3297F784662D20D095BF1AFB /* Pods-CalendarsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample.debug.xcconfig"; path = "Target Support Files/Pods-CalendarsExample/Pods-CalendarsExample.debug.xcconfig"; sourceTree = "<group>"; };
-		3965F19E225A55A300A76930 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/lib/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		398EEBBE225A4017004C3591 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		46A23C7C177DC438E0CBB3F9 /* Pods-CalendarsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample.release.xcconfig"; path = "Target Support Files/Pods-CalendarsExample/Pods-CalendarsExample.release.xcconfig"; sourceTree = "<group>"; };
 		4D983A3CE8EEF4AF708B8019 /* Pods-CalendarsExample-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample-tvOS.release.xcconfig"; path = "Target Support Files/Pods-CalendarsExample-tvOS/Pods-CalendarsExample-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		4DB3B64A3EEB532115EC58C3 /* Pods_CalendarsExample_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarsExample_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D93D75C00154C59274FE89E /* libPods-CalendarsExample-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CalendarsExample-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		74EF9DCBEF878A313FA65523 /* libPods-CalendarsExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CalendarsExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		982391FF9FB86857A628840C /* Pods-CalendarsExample-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-CalendarsExample-tvOS/Pods-CalendarsExample-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AC897BA667FD0C3E9D8F0D63 /* Pods-CalendarsExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-CalendarsExampleTests/Pods-CalendarsExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		B747F6840D8281067C04FC6E /* Pods_CalendarsExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarsExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C68AD48F85533570BE2335EA /* libPods-CalendarsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CalendarsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF4683684367395045561C12 /* Pods-CalendarsExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExampleTests.release.xcconfig"; path = "Target Support Files/Pods-CalendarsExampleTests/Pods-CalendarsExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		EF58906124F2602DF92D1079 /* Pods-CalendarsExample-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-CalendarsExample-tvOSTests/Pods-CalendarsExample-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		F437D091B67B0F0E9A569F4B /* Pods-CalendarsExample-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-CalendarsExample-tvOSTests/Pods-CalendarsExample-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		FB5D13372242E475A0CEC649 /* Pods_CalendarsExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarsExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -367,7 +351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				E008EE6AE88593B1EEFFF6DD /* Pods_CalendarsExampleTests.framework in Frameworks */,
+				DF5E5BBBFE6BB67BB3F19224 /* libPods-CalendarsExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,7 +359,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3965F1A7225A55AE00A76930 /* libReactNativeNavigation.a in Frameworks */,
 				398EEBBF225A4017004C3591 /* JavaScriptCore.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -388,7 +371,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				DF35E468E41B48F41BD9AA7D /* Pods_CalendarsExample.framework in Frameworks */,
+				BACCAA9AD2623CC15806F02B /* libPods-CalendarsExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,7 +387,7 @@
 				2D02E4C61E0B4AEC006451C7 /* libRCTSettings-tvOS.a in Frameworks */,
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
-				5F7189E8DBE426F5E9CB9E3B /* Pods_CalendarsExample_tvOS.framework in Frameworks */,
+				2CDB99E6608D58608D576A5D /* libPods-CalendarsExample-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,7 +395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				561404A2E90888BE1727DD2C /* Pods_CalendarsExample_tvOSTests.framework in Frameworks */,
+				1D6E69FC7F2E9B2425D1D77C /* libPods-CalendarsExample-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,23 +518,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3965F19F225A55A300A76930 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3965F1A4225A55A300A76930 /* libReactNativeNavigation.a */,
-				3965F1A6225A55A300A76930 /* ReactNativeNavigationTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		398EEB99225A4017004C3591 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				398EEBBE225A4017004C3591 /* JavaScriptCore.framework */,
-				FB5D13372242E475A0CEC649 /* Pods_CalendarsExample.framework */,
-				320EC75FE06B70BDF20E1FBD /* Pods_CalendarsExample_tvOS.framework */,
-				4DB3B64A3EEB532115EC58C3 /* Pods_CalendarsExample_tvOSTests.framework */,
-				B747F6840D8281067C04FC6E /* Pods_CalendarsExampleTests.framework */,
+				C68AD48F85533570BE2335EA /* libPods-CalendarsExample.a */,
+				1277A2D5198F5EA937DF293F /* libPods-CalendarsExample-tvOS.a */,
+				5D93D75C00154C59274FE89E /* libPods-CalendarsExample-tvOSTests.a */,
+				74EF9DCBEF878A313FA65523 /* libPods-CalendarsExampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -577,7 +551,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				3965F19E225A55A300A76930 /* ReactNativeNavigation.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -728,7 +701,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 610;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -801,10 +774,6 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-				},
-				{
-					ProductGroup = 3965F19F225A55A300A76930 /* Products */;
-					ProjectRef = 3965F19E225A55A300A76930 /* ReactNativeNavigation.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -900,20 +869,6 @@
 			fileType = archive.ar;
 			path = "libjsiexecutor-tvOS.a";
 			remoteRef = 3965F19C225A54EC00A76930 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		3965F1A4225A55A300A76930 /* libReactNativeNavigation.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libReactNativeNavigation.a;
-			remoteRef = 3965F1A3225A55A300A76930 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		3965F1A6225A55A300A76930 /* ReactNativeNavigationTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ReactNativeNavigationTests.xctest;
-			remoteRef = 3965F1A5225A55A300A76930 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1304,6 +1259,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CalendarsExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1322,6 +1278,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CalendarsExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1341,6 +1298,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				"HEADER_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-navigation/ios";
 				INFOPLIST_FILE = CalendarsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1360,6 +1318,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				"HEADER_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native-navigation/ios";
 				INFOPLIST_FILE = CalendarsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1386,6 +1345,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "CalendarsExample-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1413,6 +1373,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "CalendarsExample-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
