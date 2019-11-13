@@ -27,6 +27,7 @@ export default class AgendaView extends Component {
   static displayName = 'Agenda';
 
   static propTypes = {
+    setRef: PropTypes.func,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** agenda container style */
@@ -210,7 +211,7 @@ export default class AgendaView extends Component {
 
   componentDidMount() {
     const {setRef} = this.props
-
+    /** Use to pass ref */
     if (typeof setRef === 'function') {
       setRef(this)
     }
@@ -254,6 +255,9 @@ export default class AgendaView extends Component {
     this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
   }
 
+  /** 
+   * function/method to close calendar.
+   */
   closeCalendar() {
     this.setState({
       calendarScrollable: false
