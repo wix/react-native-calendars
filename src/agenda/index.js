@@ -115,6 +115,7 @@ export default class AgendaView extends Component {
     this.generateMarkings = this.generateMarkings.bind(this);
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
+    this.closeCalendar = this.closeCalendar.bind(this)
   }
 
   calendarOffset() {
@@ -207,6 +208,14 @@ export default class AgendaView extends Component {
     }
   }
 
+  componentDidMount() {
+    const {setRef} = this.props
+
+    if (typeof setRef === 'function') {
+      setRef(this)
+    }
+  }
+
   componentWillMount() {
     this._isMounted = true;
     this.loadReservations(this.props);
@@ -243,6 +252,18 @@ export default class AgendaView extends Component {
     // month list in expanded CalendarList.
     // Further info https://github.com/facebook/react-native/issues/1831
     this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
+  }
+
+  closeCalendar() {
+    this.setState({
+      calendarScrollable: false
+    });
+
+    if (this.props.onCalendarToggled) {
+      this.props.onCalendarToggled(false);
+    }
+
+    this.setScrollPadPosition(this.initialScrollPadPosition(), true);
   }
 
   _chooseDayFromCalendar(d) {
