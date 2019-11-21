@@ -69,17 +69,23 @@ class CalendarProvider extends Component {
     };
   };
 
+
   setDate = (date, updateSource) => {
     const sameMonth = dateutils.sameMonth(XDate(date), XDate(this.state.date));
 
-    this.setState({date, updateSource, buttonIcon: this.getButtonIcon(date)}, () => {
-      this.animateTodayButton(date);
-    });
+    const day = parseDate(date);
+    const minDate = parseDate(this.props.minDate);
+    const maxDate = parseDate(this.props.maxDate);
+    if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
+      this.setState({date, updateSource, buttonIcon: this.getButtonIcon(date)}, () => {
+        this.animateTodayButton(date);
+      });
 
-    _.invoke(this.props, 'onDateChanged', date, updateSource);
-    
-    if (!sameMonth) {
-      _.invoke(this.props, 'onMonthChange', xdateToData(XDate(date)), updateSource);
+      _.invoke(this.props, 'onDateChanged', date, updateSource);
+
+      if (!sameMonth) {
+        _.invoke(this.props, 'onMonthChange', xdateToData(XDate(date)), updateSource);
+      }
     }
   }
 
