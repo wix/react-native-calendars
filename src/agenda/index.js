@@ -82,7 +82,9 @@ export default class AgendaView extends Component {
     /** Set this true while waiting for new data from a refresh. */
     refreshing: PropTypes.bool,
     /** Display loading indicador. Default = false */
-    displayLoadingIndicator: PropTypes.bool
+    displayLoadingIndicator: PropTypes.bool,
+    /** Display only agendas selected on list. Default = false */
+    onlySelectedDateList: PropTypes.bool
   };
 
   constructor(props) {
@@ -280,6 +282,18 @@ export default class AgendaView extends Component {
   }
 
   renderReservations() {
+    let items = this.props.items;
+    if (this.props.onlySelectedDataList) {
+      let _select4ed = this.state.selectedDay.getFullYear() + '-' +
+                       (Number(this.state.selectedDay.getMonth())+1) + '-' +
+                       this.state.selectedDay.getDate();
+      items = {};
+      Object.keys(this.props.items).forEach((key) => {
+        if (_selected == key) {
+          items[key] = this.props.items[key];
+        }
+      });
+    }
     return (
       <ReservationsList
         refreshControl={this.props.refreshControl}
@@ -289,7 +303,7 @@ export default class AgendaView extends Component {
         renderItem={this.props.renderItem}
         renderDay={this.props.renderDay}
         renderEmptyDate={this.props.renderEmptyDate}
-        reservations={this.props.items}
+        reservations={items}
         selectedDay={this.state.selectedDay}
         renderEmptyData={this.props.renderEmptyData}
         topDay={this.state.topDay}
