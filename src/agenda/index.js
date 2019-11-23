@@ -284,7 +284,7 @@ export default class AgendaView extends Component {
   renderReservations() {
     let items = this.props.items;
     if (this.props.onlySelectedDataList) {
-      let _select4ed = this.state.selectedDay.getFullYear() + '-' +
+      let _selected = this.state.selectedDay.getFullYear() + '-' +
                        (Number(this.state.selectedDay.getMonth())+1) + '-' +
                        this.state.selectedDay.getDate();
       items = {};
