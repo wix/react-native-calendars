@@ -84,7 +84,7 @@ export default class AgendaView extends Component {
     /** Display loading indicador. Default = false */
     displayLoadingIndicator: PropTypes.bool,
     /** Display only agendas selected on list. Default = false */
-    onlySelectedDateList: PropTypes.bool
+    onlySelectedDataList: PropTypes.bool
   };
 
   constructor(props) {
