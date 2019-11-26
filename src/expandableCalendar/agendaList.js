@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import React, {Component} from 'react';
-import {SectionList, Text} from 'react-native';
+import React, { Component } from 'react';
+import { SectionList, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -59,7 +59,7 @@ class AgendaList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {updateSource, date} = this.props.context;
+    const { updateSource, date } = this.props.context;
     if (date !== prevProps.context.date) {
       // NOTE: on first init data should set first section to the current date!!!
       if (updateSource !== UPDATE_SOURCES.LIST_DRAG && updateSource !== UPDATE_SOURCES.CALENDAR_INIT) {
@@ -84,7 +84,7 @@ class AgendaList extends Component {
     }
   }
 
-  onViewableItemsChanged = ({viewableItems}) => {
+  onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && !this.sectionScroll) {
       const topSection = _.get(viewableItems[0], 'section.title');
       if (topSection && topSection !== this._topSection) {
@@ -115,16 +115,16 @@ class AgendaList extends Component {
     _.invoke(this.props, 'onMomentumScrollEnd', event);
   }
 
-  onHeaderLayout = ({nativeEvent}) => {
+  onHeaderLayout = ({ nativeEvent }) => {
     this.sectionHeight = nativeEvent.layout.height;
   }
 
-  renderSectionHeader = ({section: {title}}) => {
-    const today = XDate().toString(this.props.dayFormat).toUpperCase();
-    const date = XDate(title).toString(this.props.dayFormat).toUpperCase();
+  renderSectionHeader = ({ section: { title } }) => {
+    const today = XDate().toString(this.props.dayFormat);
+    const date = XDate(title).toString(this.props.dayFormat);
     const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
     const sectionTitle = date === today ? `${todayString.toUpperCase()}, ${date}` : date;
-    
+
     return (
       <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onHeaderLayout}>{sectionTitle}</Text>
     );
@@ -146,8 +146,9 @@ class AgendaList extends Component {
         onScroll={this.onScroll}
         onMomentumScrollBegin={this.onMomentumScrollBegin}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
-        // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
-        // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
+        stickySectionHeadersEnabled
+      // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
+      // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
       />
     );
   }
