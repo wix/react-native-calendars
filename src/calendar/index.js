@@ -385,7 +385,7 @@ class Calendar extends Component {
 
   showLoader() {
     if (this.props.LoaderComponent) {
-      return <LoaderComponent />;
+      return this.props.LoaderComponent;
     } else {
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
