@@ -190,6 +190,8 @@ class ReactComp extends Component {
       return (
         <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor} />
       );
+    } else if (this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')] && this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')].length === 0) {
+      return this.props.renderEmptyDate();
     }
     return (
       <FlatList
