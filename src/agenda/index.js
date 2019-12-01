@@ -216,14 +216,14 @@ export default class AgendaView extends Component {
     this._isMounted = false;
   }
 
-  componentWillReceiveProps(props) {
+  static getDerivedStateFromProps(props, state) {
     if (props.items) {
-      this.setState({
-        firstResevationLoad: false
-      });
+      state.firstResevationLoad = false;
     } else {
       this.loadReservations(props);
     }
+
+    return state;
   }
 
   enableCalendarScrolling() {
