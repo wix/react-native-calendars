@@ -12,7 +12,7 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: selected + disabled props should be removed
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
@@ -130,7 +130,7 @@ class Day extends Component {
 
     if (this.props.marking) {
       containerStyle.push({
-        borderRadius: 17
+        borderRadius: this.style.base.borderRadius
       });
 
       const flags = this.markingStyle;
