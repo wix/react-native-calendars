@@ -47,7 +47,9 @@ class CalendarList extends Component {
     /** Style for the List item (the calendar) */
     calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Whether to use static header that will not scroll with the list (horizontal only) */
-    staticHeader: PropTypes.bool
+    staticHeader: PropTypes.bool,
+    /** Whether to scroll to selected dates on change */
+    scrollToDate: PropTypes.bool
   }
 
   static defaultProps = {
@@ -59,7 +61,8 @@ class CalendarList extends Component {
     showScrollIndicator: false,
     scrollEnabled: true,
     scrollsToTop: false,
-    removeClippedSubviews: Platform.OS === 'android' ? false : true
+    removeClippedSubviews: Platform.OS === 'android' ? false : true,
+    scrollToDate: true
   }
 
   constructor(props) {
@@ -143,8 +146,9 @@ class CalendarList extends Component {
     const current = parseDate(this.props.current);
     const nextCurrent = parseDate(props.current);
 
-    if (nextCurrent && current && nextCurrent.getTime() !== current.getTime()) {
-      // this.scrollToMonth(nextCurrent);
+
+    if (this.props.scrollToDate && nextCurrent && current && nextCurrent.getTime() !== current.getTime()) {
+      this.scrollToMonth(nextCurrent);
     }
 
     const rowclone = this.state.rows;
