@@ -1,19 +1,16 @@
 import React, {Component} from 'react';
-import {
-  FlatList,
-  ActivityIndicator,
-  View
-} from 'react-native';
+import {FlatList, ActivityIndicator, View} from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
+import {parseDate} from '../../interface';
 
 class ReactComp extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
@@ -43,9 +40,9 @@ class ReactComp extends Component {
     super(props);
     this.styles = styleConstructor(props.theme);
     this.state = {
-      reservations: []
+      reservations: [],
     };
-    this.heights=[];
+    this.heights = [];
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
   }
@@ -56,7 +53,7 @@ class ReactComp extends Component {
 
   updateDataSource(reservations) {
     this.setState({
-      reservations
+      reservations,
     });
   }
 
@@ -76,11 +73,14 @@ class ReactComp extends Component {
 
   componentWillReceiveProps(props) {
     if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
-      this.setState({
-        reservations: []
-      }, () => {
-        this.updateReservations(props);
-      });
+      this.setState(
+        {
+          reservations: [],
+        },
+        () => {
+          this.updateReservations(props);
+        },
+      );
     } else {
       this.updateReservations(props);
     }
@@ -134,14 +134,16 @@ class ReactComp extends Component {
         return {
           reservation,
           date: i ? false : day,
-          day
+          day,
         };
       });
     } else if (res) {
-      return [{
-        date: iterator.clone(),
-        day
-      }];
+      return [
+        {
+          date: iterator.clone(),
+          day,
+        },
+      ];
     } else {
       return false;
     }
@@ -182,18 +184,61 @@ class ReactComp extends Component {
     return {reservations, scrollPosition};
   }
 
+  _onRefresh = () => {
+    let scrollPosition = 0;
+    const selectedDay = this.props.selectedDay.clone();
+    const iterator = parseDate(
+      this.props.selectedDay.clone().getTime() - 3600 * 24 * 10 * 1000,
+    );
+    let reservations = [];
+    for (let i = 0; i < 10; i++) {
+      const res = this.getReservationsForDay(iterator, this.props);
+      if (res) {
+        reservations = reservations.concat(res);
+      }
+      iterator.addDays(1);
+    }
+    scrollPosition = reservations.length;
+    for (let i = 10; i < 30; i++) {
+      const res = this.getReservationsForDay(iterator, this.props);
+      if (res) {
+        reservations = reservations.concat(res);
+      }
+      iterator.addDays(1);
+    }
+    this.setState(
+      {
+        reservations,
+      },
+      () => {
+        let h = 0;
+        for (let i = 0; i < scrollPosition; i++) {
+          h += this.heights[i] || 0;
+        }
+        this.list.scrollToOffset({offset: h, animated: false});
+        this.props.onDayChange(selectedDay, false);
+      },
+    );
+  };
+
   render() {
-    if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
+    if (
+      !this.props.reservations ||
+      !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]
+    ) {
       if (this.props.renderEmptyData) {
         return this.props.renderEmptyData();
       }
       return (
-        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor} />
+        <ActivityIndicator
+          style={{marginTop: 80}}
+          color={this.props.theme && this.props.theme.indicatorColor}
+        />
       );
     }
     return (
       <FlatList
-        ref={(c) => this.list = c}
+        ref={c => (this.list = c)}
         style={this.props.style}
         contentContainerStyle={this.styles.content}
         renderItem={this.renderRow.bind(this)}
@@ -201,11 +246,14 @@ class ReactComp extends Component {
         onScroll={this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
-        onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
+        onMoveShouldSetResponderCapture={() => {
+          this.onListTouch();
+          return false;
+        }}
         keyExtractor={(item, index) => String(index)}
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing || false}
-        onRefresh={this.props.onRefresh}
+        onRefresh={this._onRefresh}
       />
     );
   }
