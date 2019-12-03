@@ -51,7 +51,7 @@ class App extends React.Component {
           fullyBlocked: false,
           partiallyBlocked: true,
           inventory: 14,
-          highDemand: false,
+          highDemand: true,
           selected: false
         },
         '2019-11-01': {
