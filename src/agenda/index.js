@@ -83,6 +83,7 @@ export default class AgendaView extends Component {
     refreshing: PropTypes.bool,
     /** Display loading indicador. Default = false */
     displayLoadingIndicator: PropTypes.bool,
+    enableInfiniteScrollingForPast: PropTypes.bool,
   };
 
   constructor(props) {
@@ -307,6 +308,9 @@ export default class AgendaView extends Component {
         onScroll={() => {}}
         ref={c => (this.list = c)}
         theme={this.props.theme}
+        enableInfiniteScrollingForPast={
+          this.props.enableInfiniteScrollingForPast
+        }
       />
     );
   }

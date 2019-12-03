@@ -34,6 +34,7 @@ class ReactComp extends Component {
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
+    enableInfiniteScrollingForPast: PropTypes.bool,
   };
 
   constructor(props) {
@@ -253,7 +254,11 @@ class ReactComp extends Component {
         keyExtractor={(item, index) => String(index)}
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing || false}
-        onRefresh={this._onRefresh}
+        onRefresh={
+          this.props.enableInfiniteScrollingForPast
+            ? this._onRefresh
+            : this.props.onRefresh
+        }
       />
     );
   }
