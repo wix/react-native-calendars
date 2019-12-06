@@ -17,9 +17,10 @@ export default class AgendaScreen extends Component {
         loadItemsForMonth={this.loadItems.bind(this)}
         selected={'2017-05-16'}
         renderItem={this.renderItem.bind(this)}
-        renderEmptyDate={this.renderEmptyDate.bind(this)}
+        renderEmptyDate={this._renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         enableInfiniteScrollingForPast={true}
+        renderDay={this._renderDay.bind(this)}
         // markingType={'period'}
         // markedDates={{
         //    '2017-05-08': {textColor: '#666'},
@@ -36,6 +37,16 @@ export default class AgendaScreen extends Component {
       />
     );
   }
+
+  _renderDay = (day, item) => {
+    if (!item) {
+      return <View></View>;
+    }
+  };
+
+  _renderEmptyDate = () => {
+    return <View style={{height: 0}}></View>;
+  };
 
   loadItems(day) {
     setTimeout(() => {
