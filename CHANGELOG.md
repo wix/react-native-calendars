@@ -104,3 +104,8 @@
 ## [1.213.0] - 2019-11-13
 ### Changed
 - Upgrading react-native to version 61.4.0.
+
+## [1.214.0] - 2019-12-12
+### Fix
+- Agenda - Fix typo on 'scrollEnable' prop.
+- ExpandableCalendar - Fix passed props to CalendarList.
