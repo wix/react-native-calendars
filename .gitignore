@@ -62,4 +62,4 @@ fastlane/Preview.html
 fastlane/screenshots
 
 # CocoaPods
-/ios/Pods/
+ios/Pods
