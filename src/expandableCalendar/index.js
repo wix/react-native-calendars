@@ -46,7 +46,7 @@ class ExpandableCalendar extends Component {
     ...CalendarList.propTypes,
     /** the initial position of the calendar ('open' or 'closed') */
     initialPosition: PropTypes.oneOf(_.values(POSITIONS)),
-    /** an option to disable the pan gesture and disable the opening and closing of the calendar */
+    /** an option to disable the pan gesture and disable the opening and closing of the calendar (initialPosition will persist)*/
     disablePan: PropTypes.bool,
     /** whether to hide the knob  */
     hideKnob: PropTypes.bool,
@@ -80,7 +80,7 @@ class ExpandableCalendar extends Component {
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
     this._height = startHeight;
     this._wrapperStyles = {style: {}};
-    this._headerStyles = {style: {}};
+    this._headerStyles = {style: {top: this.props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT}};
     this._weekCalendarStyles = {style: {}};
     this.wrapper = undefined;
     this.calendar = undefined;
@@ -99,7 +99,7 @@ class ExpandableCalendar extends Component {
 
     this.state = {
       deltaY: new Animated.Value(startHeight),
-      headerDeltaY: new Animated.Value(0),
+      headerDeltaY: new Animated.Value(this.props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT),
       position: props.initialPosition
     };
 
@@ -168,7 +168,7 @@ class ExpandableCalendar extends Component {
   /** Utils */
   getOpenHeight() {
     if (!this.props.horizontal) {
-      return commons.screenHeight;
+      return Math.max(commons.screenHeight, commons.screenWidth);
     }
     return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
   }
@@ -269,26 +269,28 @@ class ExpandableCalendar extends Component {
 
   /** Animated */
   
-  bounceToPosition(toValue) {    
-    const {deltaY} = this.state;
-    const threshold = this.openHeight / 1.75;
+  bounceToPosition(toValue) {  
+    if (!this.props.disablePan) {  
+      const {deltaY} = this.state;
+      const threshold = this.openHeight / 1.75;
 
-    let isOpen = this._height >= threshold;
-    const newValue = isOpen ? this.openHeight : this.closedHeight;
-    
-    deltaY.setValue(this._height); // set the start position for the animated value
-    this._height = toValue || newValue;
-    isOpen = this._height >= threshold; // re-check after this._height was set
+      let isOpen = this._height >= threshold;
+      const newValue = isOpen ? this.openHeight : this.closedHeight;
+      
+      deltaY.setValue(this._height); // set the start position for the animated value
+      this._height = toValue || newValue;
+      isOpen = this._height >= threshold; // re-check after this._height was set
 
-    Animated.spring(deltaY, {
-      toValue: this._height,
-      speed: SPEED,
-      bounciness: BOUNCINESS
-    }).start(this.onAnimatedFinished);
+      Animated.spring(deltaY, {
+        toValue: this._height,
+        speed: SPEED,
+        bounciness: BOUNCINESS
+      }).start(this.onAnimatedFinished);
 
-    this.setPosition();
-    this.closeHeader(isOpen);
-    this.resetWeekCalendarOpacity(isOpen);
+      this.setPosition();
+      this.closeHeader(isOpen);
+      this.resetWeekCalendarOpacity(isOpen);
+    }
   }
 
   onAnimatedFinished = ({finished}) => {
@@ -452,7 +454,7 @@ class ExpandableCalendar extends Component {
   }
 
   render() {
-    const {style, hideKnob, horizontal, allowShadow, theme} = this.props;
+    const {style, hideKnob, horizontal, allowShadow, theme, ...others} = this.props;
     const {deltaY, position} = this.state;
     const isOpen = position === POSITIONS.OPEN;
     const themeObject = Object.assign(this.headerStyleOverride, theme);
@@ -466,7 +468,8 @@ class ExpandableCalendar extends Component {
         >
           <CalendarList
             testID="calendar"
-            {...this.props}
+            horizontal={horizontal}
+            {...others}
             theme={themeObject}
             ref={r => this.calendar = r}
             current={this.initialDate}

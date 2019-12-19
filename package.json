@@ -7,10 +7,10 @@
     "test": "jasmine src/*.spec.js && npm run lint",
     "lint": "eslint src/ example/src",
     "release": "node ./scripts/release.js",
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "react-native start",
     "ios": "react-native run-ios",
     "android": "react-native run-android",
-    "xcode": "open ios/CalendarsExample.xcodeproj/"
+    "xcode": "open ios/CalendarsExample.xcworkspace/"
   },
   "repository": {
     "type": "git",
@@ -28,13 +28,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "eslint": "^6.1.0",
+    "eslint": "^6.5.1",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
+    "react": "16.9.0",
+    "react-native": "0.61.4",
+    "react-native-navigation": "^3.5.1",
     "semver": "5.x.x",
-    "shell-utils": "1.x.x",
-    "react": "16.8.3",
-    "react-native": "0.59.3",
-    "react-native-navigation": "2.13.1"
+    "shell-utils": "1.x.x"
   }
 }
