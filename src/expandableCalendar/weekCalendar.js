@@ -90,11 +90,9 @@ class WeekCalendar extends Component {
         }
         this.setState({items: [...items]});
       } else if (this.page === 0) {
-
-        for (let i = NUMBER_OF_PAGES; i < items.length; i++) {
+        for (let i = items.length - 1; i >= NUMBER_OF_PAGES; i--) {
           items[i] = items[i - NUMBER_OF_PAGES];
         }
-
         this.setState({items: [...items]});
       }
     }
@@ -119,7 +117,7 @@ class WeekCalendar extends Component {
           items[i] = newWeekArray[i];
         }
       } else {
-        for (let i = 0 + 1; i < NUMBER_OF_PAGES; i++) {
+        for (let i = 0; i < NUMBER_OF_PAGES; i++) {
           items[i] = newWeekArray[i];
         }
       }
