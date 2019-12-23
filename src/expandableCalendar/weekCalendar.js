@@ -134,6 +134,7 @@ class WeekCalendar extends Component {
         getItemLayout={this.getItemLayout}
         onScroll={this.onScroll}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
+        extraData={this.props.current}
       />
     );
   }
