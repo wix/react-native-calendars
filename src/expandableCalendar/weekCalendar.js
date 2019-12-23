@@ -8,6 +8,7 @@ import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import Week from '../expandableCalendar/week';
 
+
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const NUMBER_OF_PAGES = 2; // must be a positive number
@@ -16,11 +17,12 @@ class WeekCalendar extends Component {
   static propTypes = {
     ...CalendarList.propTypes,
     // the current date
-    current: PropTypes.any,
+    current: PropTypes.any
   };
 
   constructor(props) {
     super(props);
+
     this.style = styleConstructor(props.theme);
     this.list = React.createRef();
     this.page = NUMBER_OF_PAGES;
@@ -33,9 +35,7 @@ class WeekCalendar extends Component {
   componentDidUpdate(prevProps) {
     const {updateSource, date} = this.props.context;
     if (date !== prevProps.context.date && updateSource !== UPDATE_SOURCES.WEEK_SCROLL) {
-      this.setState({
-        items: this.getDatesArray()
-      });
+      this.setState({items: this.getDatesArray()});
       this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
     }
   }
@@ -57,15 +57,18 @@ class WeekCalendar extends Component {
     if (dayOfTheWeek < firstDay && firstDay > 0) {
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
+
     // leave the current date in the visible week as is
     const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
     const newDate = dd.addWeeks(weekIndex);
     const dateString = newDate.toString('yyyy-MM-dd');
+    
     return dateString;
   }
 
   onScroll = ({nativeEvent: {contentOffset: {x}}}) => {
     const newPage = Math.round(x / commons.screenWidth);
+    
     if (this.page !== newPage) {
       const {items} = this.state;
       this.page = newPage;
@@ -84,7 +87,7 @@ class WeekCalendar extends Component {
         this.setState({items: [...items]});
       }
     }
-  };
+  }
 
   onMomentumScrollEnd = () => {
     const {items} = this.state;
@@ -110,19 +113,19 @@ class WeekCalendar extends Component {
         this.setState({items: [...items]});
       }, 100);
     }
-  };
+  }
 
   renderItem = ({item}) => {
-    return <Week {...this.props} current={item} key={item} />;
-  };
+    return <Week {...this.props} current={item} key={item}/>;
+  }
 
   getItemLayout = (data, index) => {
     return {
       length: commons.screenWidth,
       offset: commons.screenWidth * index,
-      index,
+      index
     };
-  };
+  }
 
   keyExtractor = (item, index) => index.toString();
 
@@ -133,6 +136,7 @@ class WeekCalendar extends Component {
       <FlatList
         ref={this.list}
         data={items}
+        extraData={this.props.current}
         style={this.style.container}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -144,7 +148,6 @@ class WeekCalendar extends Component {
         getItemLayout={this.getItemLayout}
         onScroll={this.onScroll}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
-        extraData={this.props.current}
       />
     );
   }
