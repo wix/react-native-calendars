@@ -172,6 +172,7 @@ export default class ExpandableCalendarScreen extends Component {
           rightArrowImageSource={require('../img/next.png')}
           // calendarStyle={styles.calendar}
           // headerStyle={styles.calendar} // for horizontal only
+          // disableWeekScroll
         />
         <AgendaList
           sections={ITEMS}

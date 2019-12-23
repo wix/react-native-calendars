@@ -24,8 +24,8 @@
 
 ## [1.192.0] - 2019-06-25
 ### Fix
-- CalendarProvider - Fix for warning on Image 'source' type.
-- ExpandableCalendar - Fix shadow/elevation style.
+- CalendarProvider - fix for warning on Image 'source' type.
+- ExpandableCalendar - fix shadow/elevation style.
 
 ## [1.193.0] - 2019-06-26
 ### Bug Fix
@@ -99,7 +99,7 @@
 
 ## [1.209.0] - 2019-08-20
 ### Fix
-- CalendarProvider - Fix for children wrapper view.
+- CalendarProvider - fix for children wrapper view.
 
 ## [1.213.0] - 2019-11-13
 ### Changed
@@ -107,5 +107,9 @@
 
 ## [1.214.0] - 2019-12-12
 ### Fix
-- Agenda - Fix typo on 'scrollEnable' prop.
-- ExpandableCalendar - Fix passed props to CalendarList.
+- Agenda - fix typo on 'scrollEnable' prop.
+- ExpandableCalendar - fix passed props to CalendarList.
+
+## [1.215.0] - 2019-12-23
+### Added
+- ExpandableCalendar - adding week scroll to closed position.
