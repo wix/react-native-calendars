@@ -22,12 +22,6 @@ class WeekCalendar extends Component {
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
-
-    this.viewabilityConfig = {
-      itemVisiblePercentThreshold: 90,
-    };
-    this.visibleItem = undefined;
-    // this.items = this.getDatesArray();
     this.list = React.createRef();
     this.page = NUMBER_OF_PAGES;
 
@@ -35,13 +29,6 @@ class WeekCalendar extends Component {
       items: this.getDatesArray(),
     };
   }
-
-  // componentDidUpdate() {
-  //   if (this.props.context.updateSource === UPDATE_SOURCES.WEEK_SCROLL) {
-  //     // to avoid new items render from changing the visible week
-  //     // this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
-  //   }
-  // }
 
   getDatesArray() {
     const array = [];
@@ -67,22 +54,13 @@ class WeekCalendar extends Component {
     return dateString;
   }
 
-  onScroll = ({
-    nativeEvent: {
-      contentOffset: {x},
-    },
-  }) => {
+  onScroll = ({nativeEvent: {contentOffset: {x}}}) => {
     const newPage = Math.round(x / commons.screenWidth);
     if (this.page !== newPage) {
       const {items} = this.state;
       this.page = newPage;
 
-      _.invoke(
-        this.props.context,
-        'setDate',
-        items[this.page],
-        UPDATE_SOURCES.WEEK_SCROLL,
-      );
+      _.invoke(this.props.context, 'setDate', items[this.page], UPDATE_SOURCES.WEEK_SCROLL);
 
       if (this.page === items.length - 1) {
         for (let i = 0; i <= NUMBER_OF_PAGES; i++) {
@@ -104,15 +82,11 @@ class WeekCalendar extends Component {
     const isLastPage = this.page === items.length - 1;
 
     if (isFirstPage || isLastPage) {
-      this.list.current.scrollToIndex({
-        animated: false,
-        index: NUMBER_OF_PAGES,
-      });
+      this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
       this.page = NUMBER_OF_PAGES;
       const newWeekArray = this.getDatesArray();
 
       if (isLastPage) {
-
         for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
           items[i] = newWeekArray[i];
         }
@@ -128,34 +102,21 @@ class WeekCalendar extends Component {
     }
   };
 
-  // onViewableItemsChanged = ({viewableItems}) => {
-  //   // NOTE: gets called only on week scroll (so might be un-synced with displayed week) !!!
-  //   if (viewableItems.length > 0) {
-  //     const viweableItem = _.first(viewableItems);
-  //     if (viweableItem.isViewable && this.visibleItem !== viweableItem.item) {
-  //       if (this.visibleItem) {
-  //         // to avoid invoke on first init
-  //         _.invoke(
-  //           this.props.context,
-  //           'setDate',
-  //           viweableItem.item,
-  //           UPDATE_SOURCES.WEEK_SCROLL,
-  //         );
-  //       }
-  //       this.visibleItem = viweableItem.item;
-  //     }
-  //   }
-  // };
-
   renderItem = ({item}) => {
     return <Week {...this.props} current={item} key={item} />;
+  };
+
+  getItemLayout = (data, index) => {
+    return {
+      length: commons.screenWidth,
+      offset: commons.screenWidth * index,
+      index,
+    };
   };
 
   keyExtractor = (item, index) => index.toString();
 
   render() {
-    // this.items = this.getDatesArray();
-    // const items = this.getDatesArray();
     const {items} = this.state;
 
     return (
@@ -169,8 +130,6 @@ class WeekCalendar extends Component {
         scrollEnabled
         renderItem={this.renderItem}
         keyExtractor={this.keyExtractor}
-        // onViewableItemsChanged={this.onViewableItemsChanged}
-        // viewabilityConfig={this.viewabilityConfig}
         initialScrollIndex={NUMBER_OF_PAGES}
         getItemLayout={this.getItemLayout}
         onScroll={this.onScroll}
@@ -178,14 +137,6 @@ class WeekCalendar extends Component {
       />
     );
   }
-
-  getItemLayout = (data, index) => {
-    return {
-      length: commons.screenWidth,
-      offset: commons.screenWidth * index,
-      index,
-    };
-  };
 }
 
 export default WeekCalendar;
