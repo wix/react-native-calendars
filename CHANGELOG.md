@@ -117,3 +117,7 @@
 ## [1.216.0] - 2019-12-24
 ### Fix
 - Week - moving width style to style file.
+
+## [1.217.0] - 2019-12-24
+### Fix
+- Week - moving width style to WeekCalendar.

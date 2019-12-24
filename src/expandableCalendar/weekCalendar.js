@@ -116,7 +116,8 @@ class WeekCalendar extends Component {
   }
 
   renderItem = ({item}) => {
-    return <Week {...this.props} current={item} key={item}/>;
+    const {calendarWidth, style, ...others} = this.props;
+    return <Week {...others} current={item} key={item} style={[{width: calendarWidth || commons.screenWidth}, style]}/>;
   }
 
   getItemLayout = (data, index) => {

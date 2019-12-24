@@ -85,7 +85,6 @@ export default function styleConstructor(theme = {}) {
       backgroundColor: appStyle.calendarBackground
     },
     week: {
-      width: commons.screenWidth,
       marginTop: 7,
       marginBottom: 7,
       paddingRight: 15,
