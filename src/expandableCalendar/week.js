@@ -14,7 +14,6 @@ import MultiDotDay from '../calendar/day/multi-dot';
 import MultiPeriodDay from '../calendar/day/multi-period';
 import SingleDay from '../calendar/day/custom';
 import Calendar from '../calendar';
-import * as commons from './commons';
 
 
 const EmptyArray = [];
@@ -161,7 +160,7 @@ class Week extends Component {
 
     return (
       <View style={this.style.container}>
-        <View style={[this.style.week, this.props.style, {width: commons.screenWidth}]}>{week}</View>
+        <View style={[this.style.week, this.props.style]}>{week}</View>
       </View>
     );
   }

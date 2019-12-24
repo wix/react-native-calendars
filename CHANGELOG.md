@@ -113,3 +113,7 @@
 ## [1.215.0] - 2019-12-23
 ### Added
 - ExpandableCalendar - adding week scroll to closed position.
+
+## [1.216.0] - 2019-12-24
+### Fix
+- Week - moving width style to style file.
