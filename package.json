@@ -22,7 +22,8 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.0.0",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
