@@ -37,75 +37,12 @@ function getPastDate(days) {
   return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
 }
 
-const ITEMS = [
-  {
-    title: dates[0],
-    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
-  },
-  {
-    title: dates[1],
-    data: [
-      {hour: '4pm', duration: '1h', title: 'Pilates ABC'},
-      {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'},
-    ],
-  },
-  {
-    title: dates[2],
-    data: [
-      {hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'},
-      {hour: '2pm', duration: '1h', title: 'Deep Streches'},
-      {hour: '3pm', duration: '1h', title: 'Private Yoga'},
-    ],
-  },
-  {
-    title: dates[3],
-    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
-  },
-  {title: dates[4], data: [{}]},
-  {
-    title: dates[5],
-    data: [
-      {hour: '9pm', duration: '1h', title: 'Pilates Reformer'},
-      {hour: '10pm', duration: '1h', title: 'Ashtanga'},
-      {hour: '11pm', duration: '1h', title: 'TRX'},
-      {hour: '12pm', duration: '1h', title: 'Running Group'},
-    ],
-  },
-  {
-    title: dates[6],
-    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
-  },
-  {title: dates[7], data: [{}]},
-  {
-    title: dates[8],
-    data: [
-      {hour: '9pm', duration: '1h', title: 'Pilates Reformer'},
-      {hour: '10pm', duration: '1h', title: 'Ashtanga'},
-      {hour: '11pm', duration: '1h', title: 'TRX'},
-      {hour: '12pm', duration: '1h', title: 'Running Group'},
-    ],
-  },
-  {
-    title: dates[9],
-    data: [
-      {hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'},
-      {hour: '2pm', duration: '1h', title: 'Deep Streches'},
-      {hour: '3pm', duration: '1h', title: 'Private Yoga'},
-    ],
-  },
-  {
-    title: dates[10],
-    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
-  },
-];
-
 const EVENTS = [
   {
     start: '2017-09-06 22:30:00',
     end: '2017-09-06 23:30:00',
     title: 'Dr. Mariana Joseph',
     summary: '3412 Piedmont Rd NE, GA 3032',
-    color: 'green',
   },
   {
     start: '2017-09-07 00:30:00',
@@ -188,9 +125,10 @@ const EVENTS = [
 ];
 
 export default class ExpandableCalendarScreen extends Component {
-  onDateChanged = (/* date, updateSource */) => {
+  onDateChanged = date => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
+    console.log(date);
   };
 
   onMonthChange = (/* month, updateSource */) => {
@@ -234,16 +172,16 @@ export default class ExpandableCalendarScreen extends Component {
     );
   };
 
-  getMarkedDates = () => {
-    const marked = {};
-    ITEMS.forEach(item => {
-      // only mark dates with data
-      if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
-        marked[item.title] = {marked: true};
-      }
-    });
-    return marked;
-  };
+  // getMarkedDates = () => {
+  //   const marked = {};
+  //   ITEMS.forEach(item => {
+  //     // only mark dates with data
+  //     if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
+  //       marked[item.title] = {marked: true};
+  //     }
+  //   });
+  //   return marked;
+  // };
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -291,7 +229,7 @@ export default class ExpandableCalendarScreen extends Component {
   render() {
     return (
       <CalendarProvider
-        date={ITEMS[0].title}
+        // date={ITEMS[0].title}
         onDateChanged={this.onDateChanged}
         onMonthChange={this.onMonthChange}
         theme={{todayButtonTextColor: '#0059ff'}}
@@ -306,7 +244,8 @@ export default class ExpandableCalendarScreen extends Component {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
-          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          // markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          markedDates={() => {}} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
@@ -316,10 +255,9 @@ export default class ExpandableCalendarScreen extends Component {
         />
         <Timeline
           format24h={true}
-          renderEvent={false}
-          eventTapped={() => {}}
+          eventTapped={e => console.log(e)}
           events={EVENTS}
-          scrollToFirst={true}
+          // scrollToFirst={true}
           // start={0}
           // end={24}
         />

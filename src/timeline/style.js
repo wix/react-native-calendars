@@ -54,6 +54,7 @@ export default function styleConstructor(theme = {}, calendarHeight) {
       paddingLeft: 4,
       minHeight: 25,
       flex: 1,
+      opacity: 1,
       paddingTop: 5,
       paddingBottom: 0,
       flexDirection: 'column',

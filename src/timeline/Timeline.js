@@ -162,7 +162,7 @@ export default class Timeline extends React.PureComponent {
       const formatTime = this.props.format24h ? 'HH:mm' : 'hh:mm A';
       return (
         <TouchableOpacity
-          activeOpacity={1}
+          activeOpacity={0.5}
           onPress={() => this._onEventTapped(this.props.events[event.index])}
           key={i}
           style={[this.styles.event, style, event.color && eventColor]}>
