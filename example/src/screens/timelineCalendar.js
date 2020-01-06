@@ -8,34 +8,31 @@ import {
   Text,
   TouchableOpacity,
   Button,
-  Dimensions,
 } from 'react-native';
 import {
   ExpandableCalendar,
-  AgendaList,
   Timeline,
   CalendarProvider,
 } from 'react-native-calendars';
-import moment from 'moment';
 
-const today = new Date().toISOString().split('T')[0];
-const fastDate = getPastDate(3);
-const futureDates = getFutureDates(9);
-const dates = [fastDate, today].concat(futureDates);
+// const today = new Date().toISOString().split('T')[0];
+// const fastDate = getPastDate(3);
+// const futureDates = getFutureDates(9);
+// const dates = [fastDate, today].concat(futureDates);
 
-function getFutureDates(days) {
-  const array = [];
-  for (let index = 1; index <= days; index++) {
-    const date = new Date(Date.now() + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
-    const dateString = date.toISOString().split('T')[0];
-    array.push(dateString);
-  }
-  return array;
-}
+// function getFutureDates(days) {
+//   const array = [];
+//   for (let index = 1; index <= days; index++) {
+//     const date = new Date(Date.now() + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
+//     const dateString = date.toISOString().split('T')[0];
+//     array.push(dateString);
+//   }
+//   return array;
+// }
 
-function getPastDate(days) {
-  return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
-}
+// function getPastDate(days) {
+//   return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
+// }
 
 const EVENTS = [
   {

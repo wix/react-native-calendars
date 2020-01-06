@@ -59,7 +59,6 @@ function pack(columns, width, calculatedEvents, dayStart) {
 function populateEvents(events, screenWidth, dayStart) {
   let lastEnd;
   let columns;
-  let self = this;
   let calculatedEvents = [];
 
   events = events
@@ -75,7 +74,7 @@ function populateEvents(events, screenWidth, dayStart) {
   columns = [];
   lastEnd = null;
 
-  events.forEach(function(ev, index) {
+  events.forEach(function(ev) {
     if (lastEnd !== null && ev.start >= lastEnd) {
       pack(columns, screenWidth, calculatedEvents, dayStart);
       columns = [];

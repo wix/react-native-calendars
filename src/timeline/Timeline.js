@@ -14,7 +14,7 @@ import styleConstructor from './style';
 
 const LEFT_MARGIN = 60 - 1;
 // const RIGHT_MARGIN = 10
-const CALENDER_HEIGHT = 2400;
+// const CALENDER_HEIGHT = 2400;
 // const EVENT_TITLE_HEIGHT = 15
 const TEXT_LINE_HEIGHT = 17;
 // const MIN_EVENT_TITLE_WIDTH = 20
