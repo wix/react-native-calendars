@@ -6,6 +6,8 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 
 class Day extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -84,16 +86,15 @@ class Day extends Component {
     ) {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
+      containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
     return (
       <View
         style={{
-          flex: 1,
-          alignItems: 'center',
-          alignSelf: 'stretch',
+          alignSelf: 'stretch'
         }}>
-        <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
+        <TouchableOpacity testID={this.props.testID} style={containerStyle} onPress={this.onDayPress}>
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>

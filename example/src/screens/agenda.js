@@ -33,8 +33,8 @@ export default class AgendaScreen extends Component {
         //    '2017-05-24': {startingDay: true, color: 'gray'},
         //    '2017-05-25': {color: 'gray'},
         //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-         // monthFormat={'yyyy'}
-         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+        // monthFormat={'yyyy'}
+        // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
       />
     );
