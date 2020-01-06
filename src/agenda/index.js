@@ -10,6 +10,8 @@ import ReservationsList from './reservation-list';
 import styleConstructor from './style';
 import {VelocityTracker} from '../input';
 
+import { AGENDA_CALENDAR_KNOB } from '../testIDs';
+
 
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
@@ -453,7 +455,7 @@ export default class AgendaView extends Component {
             {useNativeDriver: true},
           )}
         >
-          <View style={{height: agendaHeight + KNOB_HEIGHT}} onLayout={this.onScrollPadLayout}/>
+          <View testID={AGENDA_CALENDAR_KNOB} style={{height: agendaHeight + KNOB_HEIGHT}} onLayout={this.onScrollPadLayout}/>
         </Animated.ScrollView>
       </View>
     );
