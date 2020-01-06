@@ -20,9 +20,6 @@ export default function getStyle(theme={}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
-    dayContainer: {
-      width: 32
-    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }

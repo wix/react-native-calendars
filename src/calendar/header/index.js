@@ -87,7 +87,9 @@ class CalendarHeader extends Component {
   render() {
     let leftArrow = <View />;
     let rightArrow = <View />;
+
     let weekDaysNames = this.props.customDays ? customDays: weekDayNames(this.props.firstDay);
+
     const {testID} = this.props;
 
     if (!this.props.hideArrows) {
@@ -133,7 +135,7 @@ class CalendarHeader extends Component {
         {this.props.customHeader ? this.props.customHeader() : <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
-            <Text allowFontScaling={false} style={this.style.monthText, {borderBottomColor:'rgba(62, 42, 90, 0.1)', borderBottomWidth:2, color:'#777c8a', fontSize:13, paddingBottom:8, width:'100%', textAlign:'center'}} accessibilityTraits='header'>
+            <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
@@ -149,7 +151,7 @@ class CalendarHeader extends Component {
                 allowFontScaling={false} 
                 key={idx} 
                 accessible={false} 
-                style={this.style.dayHeader, {textTransform:'uppercase', fontWeight: this.props.cur === day ?'bold':'normal'}} 
+                style={this.style.dayHeader} 
                 numberOfLines={1} 
                 importantForAccessibility='no'
               >

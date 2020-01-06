@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {Navigation} from 'react-native-navigation';
+
 
 export default class MenuScreen extends Component {
 
@@ -23,36 +25,46 @@ export default class MenuScreen extends Component {
         <TouchableOpacity style={styles.menu} onPress={this.onAgendaPress.bind(this)}>
           <Text style={styles.menuText}>Agenda</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.menu} onPress={this.onExpandablePress.bind(this)}>
+          <Text style={styles.menuText}>Expandable Calendar</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  onCalendarsPress() {
-    this.props.navigator.push({
-      screen: 'Calendars',
-      title: 'Calendars'
+  pushScreen(screen) {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: screen,
+        options: {
+          topBar: {
+            title: {
+              text: screen
+            }
+          }
+        }
+      }
     });
+  }
+
+  onCalendarsPress() {
+    this.pushScreen('Calendars');
   }
 
   onCalendarListPress() {
-    this.props.navigator.push({
-      screen: 'CalendarsList',
-      title: 'Calendar List'
-    });
+    this.pushScreen('CalendarsList');
   }
 
   onHorizontalCalendarListPress() {
-    this.props.navigator.push({
-      screen: 'HorizontalCalendarList',
-      title: 'Horizontal Calendars List'
-    });
+    this.pushScreen('HorizontalCalendarList');
   }
 
   onAgendaPress() {
-    this.props.navigator.push({
-      screen: 'Agenda',
-      title: 'Agenda'
-    });
+    this.pushScreen('Agenda');
+  }
+
+  onExpandablePress() {
+    this.pushScreen('ExpandableCalendar');
   }
 }
 
