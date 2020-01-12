@@ -192,7 +192,8 @@ const styles = StyleSheet.create({
   },
   section: {
     backgroundColor: '#f0f4f7', 
-    color: '#79838a'
+    color: '#79838a',
+    textTransform: 'capitalize'
   },
   item: {
     padding: 20, 

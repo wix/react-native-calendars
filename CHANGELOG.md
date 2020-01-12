@@ -121,3 +121,7 @@
 ## [1.217.0] - 2019-12-24
 ### Fix
 - Week - moving width style to WeekCalendar.
+
+## [1.218.0] - 2020-1-12
+### Added
+- AgendaList - allow text transform override for section header text.

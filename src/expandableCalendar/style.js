@@ -52,7 +52,8 @@ export default function styleConstructor(theme = {}) {
       paddingBottom: 8,
       paddingLeft: 20,
       backgroundColor: appStyle.calendarBackground,
-      textAlign: 'left'
+      textAlign: 'left',
+      textTransform: 'uppercase'
     },
     header: {
       position: 'absolute',
