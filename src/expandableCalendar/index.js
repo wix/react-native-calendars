@@ -428,8 +428,9 @@ class ExpandableCalendar extends Component {
           {...this.props}
           current={this.props.context.date}
           onDayPress={this.onDayPress}
-          markedDates={this.getMarkedDates()}
+          markedDates={this.getMarkedDates()} // for Week component
           style={this.props.calendarStyle}
+          allowShadow={false}
         />
       </Animated.View>
     );

@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import Week from '../expandableCalendar/week';
+import asCalendarConsumer from './asCalendarConsumer';
 
 
 const commons = require('./commons');
@@ -17,8 +18,15 @@ class WeekCalendar extends Component {
   static propTypes = {
     ...CalendarList.propTypes,
     // the current date
-    current: PropTypes.any
+    current: PropTypes.any,
+    /** whether to have shadow/elevation for the calendar */
+    allowShadow: PropTypes.bool,
   };
+
+  static defaultProps = {
+    firstDay: 0,
+    allowShadow: true
+  }
 
   constructor(props) {
     super(props);
@@ -34,6 +42,7 @@ class WeekCalendar extends Component {
 
   componentDidUpdate(prevProps) {
     const {updateSource, date} = this.props.context;
+    
     if (date !== prevProps.context.date && updateSource !== UPDATE_SOURCES.WEEK_SCROLL) {
       this.setState({items: this.getDatesArray()});
       this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
@@ -50,8 +59,8 @@ class WeekCalendar extends Component {
   }
 
   getDate(weekIndex) {
-    const {current, firstDay} = this.props;
-    const d = XDate(current);
+    const {current, context, firstDay} = this.props;
+    const d = XDate(current || context.date);
     // get the first day of the week as date (for the on scroll mark)
     let dayOfTheWeek = d.getDay();
     if (dayOfTheWeek < firstDay && firstDay > 0) {
@@ -64,6 +73,32 @@ class WeekCalendar extends Component {
     const dateString = newDate.toString('yyyy-MM-dd');
     
     return dateString;
+  }
+
+  getMarkedDates() {
+    const {context, markedDates} = this.props;
+
+    if (markedDates) {
+      const marked = _.cloneDeep(markedDates);
+
+      if (marked[context.date]) {
+        marked[context.date].selected = true;
+      } else {
+        marked[context.date] = {selected: true};
+      }
+      return marked;
+    } 
+    return {[context.date]: {selected: true}};
+  }
+
+  onDayPress = (value) => {
+    const {onDayPress, context} = this.props;
+
+    if (onDayPress) {
+      _.invoke(this.props, 'onDayPress');
+    } else {
+      _.invoke(context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
+    }
   }
 
   onScroll = ({nativeEvent: {contentOffset: {x}}}) => {
@@ -117,7 +152,17 @@ class WeekCalendar extends Component {
 
   renderItem = ({item}) => {
     const {calendarWidth, style, ...others} = this.props;
-    return <Week {...others} current={item} key={item} style={[{width: calendarWidth || commons.screenWidth}, style]}/>;
+
+    return (
+      <Week 
+        {...others} 
+        key={item} 
+        current={item} 
+        style={[{width: calendarWidth || commons.screenWidth}, style]}
+        markedDates={this.getMarkedDates()}
+        onDayPress={this.onDayPress}
+      />
+    );
   }
 
   getItemLayout = (data, index) => {
@@ -131,27 +176,30 @@ class WeekCalendar extends Component {
   keyExtractor = (item, index) => index.toString();
 
   render() {
+    const {allowShadow} = this.props;
     const {items} = this.state;
 
     return (
-      <FlatList
-        ref={this.list}
-        data={items}
-        extraData={this.props.current}
-        style={this.style.container}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        scrollEnabled
-        renderItem={this.renderItem}
-        keyExtractor={this.keyExtractor}
-        initialScrollIndex={NUMBER_OF_PAGES}
-        getItemLayout={this.getItemLayout}
-        onScroll={this.onScroll}
-        onMomentumScrollEnd={this.onMomentumScrollEnd}
-      />
+      <View style={allowShadow && this.style.containerShadow}>
+        <FlatList
+          ref={this.list}
+          data={items}
+          extraData={this.props.current || this.props.context.date}
+          style={this.style.container}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          scrollEnabled
+          renderItem={this.renderItem}
+          keyExtractor={this.keyExtractor}
+          initialScrollIndex={NUMBER_OF_PAGES}
+          getItemLayout={this.getItemLayout}
+          onScroll={this.onScroll}
+          onMomentumScrollEnd={this.onMomentumScrollEnd}
+        />
+      </View>
     );
   }
 }
 
-export default WeekCalendar;
+export default asCalendarConsumer(WeekCalendar);
