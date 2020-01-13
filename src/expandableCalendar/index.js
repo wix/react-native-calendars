@@ -431,6 +431,7 @@ class ExpandableCalendar extends Component {
           markedDates={this.getMarkedDates()} // for Week component
           style={this.props.calendarStyle}
           allowShadow={false}
+          hideDayNames={true}
         />
       </Animated.View>
     );

@@ -28,14 +28,18 @@ export default class MenuScreen extends Component {
         <TouchableOpacity style={styles.menu} onPress={this.onExpandablePress.bind(this)}>
           <Text style={styles.menuText}>Expandable Calendar</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.menu} onPress={this.onWeekPress.bind(this)}>
+          <Text style={styles.menuText}>Week Calendar</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  pushScreen(screen) {
+  pushScreen(screen, props) {
     Navigation.push(this.props.componentId, {
       component: {
         name: screen,
+        passProps: props,
         options: {
           topBar: {
             title: {
@@ -65,6 +69,10 @@ export default class MenuScreen extends Component {
 
   onExpandablePress() {
     this.pushScreen('ExpandableCalendar');
+  }
+
+  onWeekPress() {
+    this.pushScreen('ExpandableCalendar', {weekView: true});
   }
 }
 
