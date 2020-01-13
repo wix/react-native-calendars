@@ -92,13 +92,7 @@ class WeekCalendar extends Component {
   }
 
   onDayPress = (value) => {
-    const {onDayPress, context} = this.props;
-
-    if (onDayPress) {
-      _.invoke(this.props, 'onDayPress');
-    } else {
-      _.invoke(context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
-    }
+    _.invoke(this.props.context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
   }
 
   onScroll = ({nativeEvent: {contentOffset: {x}}}) => {
@@ -151,7 +145,7 @@ class WeekCalendar extends Component {
   }
 
   renderItem = ({item}) => {
-    const {calendarWidth, style, ...others} = this.props;
+    const {calendarWidth, style, onDayPress, ...others} = this.props;
 
     return (
       <Week 
@@ -160,7 +154,7 @@ class WeekCalendar extends Component {
         current={item} 
         style={[{width: calendarWidth || commons.screenWidth}, style]}
         markedDates={this.getMarkedDates()}
-        onDayPress={this.onDayPress}
+        onDayPress={onDayPress || this.onDayPress}
       />
     );
   }
