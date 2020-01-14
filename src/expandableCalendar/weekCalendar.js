@@ -58,6 +58,10 @@ class WeekCalendar extends Component {
     }
   }
 
+  get containerWidth() {
+    return this.props.calendarWidth || commons.screenWidth;
+  }
+
   getDatesArray() {
     const array = [];
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
@@ -105,7 +109,7 @@ class WeekCalendar extends Component {
   }
 
   onScroll = ({nativeEvent: {contentOffset: {x}}}) => {
-    const newPage = Math.round(x / commons.screenWidth);
+    const newPage = Math.round(x / this.containerWidth);
     
     if (this.page !== newPage) {
       const {items} = this.state;
@@ -161,7 +165,7 @@ class WeekCalendar extends Component {
         {...others} 
         key={item} 
         current={item} 
-        style={[{width: calendarWidth || commons.screenWidth}, style]}
+        style={[{width: calendarWidth || this.containerWidth}, style]}
         markedDates={this.getMarkedDates()}
         onDayPress={onDayPress || this.onDayPress}
       />
@@ -170,8 +174,8 @@ class WeekCalendar extends Component {
 
   getItemLayout = (data, index) => {
     return {
-      length: commons.screenWidth,
-      offset: commons.screenWidth * index,
+      length: this.containerWidth,
+      offset: this.containerWidth * index,
       index
     };
   }
