@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Button
 } from 'react-native';
-import {ExpandableCalendar, AgendaList, CalendarProvider} from 'react-native-calendars';
+import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 
 
 const today = new Date().toISOString().split('T')[0];
@@ -158,22 +158,28 @@ export default class ExpandableCalendarScreen extends Component {
         showTodayButton 
         disabledOpacity={0.6}
         // todayBottomMargin={16}
-      >
-        <ExpandableCalendar 
-          // horizontal={false}
-          // hideArrows
-          // disablePan
-          // hideKnob
-          // initialPosition={ExpandableCalendar.positions.OPEN}
-          firstDay={1}
-          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-          theme={this.getTheme()}
-          leftArrowImageSource={require('../img/previous.png')}
-          rightArrowImageSource={require('../img/next.png')}
-          // calendarStyle={styles.calendar}
-          // headerStyle={styles.calendar} // for horizontal only
-          // disableWeekScroll
-        />
+      > 
+        {this.props.weekView ? 
+          <WeekCalendar
+            firstDay={1}
+            markedDates={this.getMarkedDates()}
+            theme={this.getTheme()}
+          /> :
+          <ExpandableCalendar 
+            // horizontal={false}
+            // hideArrows
+            // disablePan
+            // hideKnob
+            // initialPosition={ExpandableCalendar.positions.OPEN}
+            firstDay={1}
+            markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+            theme={this.getTheme()}
+            leftArrowImageSource={require('../img/previous.png')}
+            rightArrowImageSource={require('../img/next.png')}
+            // calendarStyle={styles.calendar}
+            // headerStyle={styles.calendar} // for horizontal only
+            // disableWeekScroll
+          />}
         <AgendaList
           sections={ITEMS}
           extraData={this.state}
