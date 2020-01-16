@@ -446,7 +446,7 @@ class ExpandableCalendar extends Component {
 
   renderArrow = (direction) => {
     if (_.isFunction(this.props.renderArrow)) {
-      this.props.renderArrow(direction);
+      return this.props.renderArrow(direction);
     }
 
     return (
