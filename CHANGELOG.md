@@ -125,3 +125,15 @@
 ## [1.218.0] - 2020-1-12
 ### Added
 - AgendaList - allow text transform override for section header text.
+
+## [1.221.0] - 2020-1-16
+### Fix 
+- ExpandableCalendar - fix renderArrow function (PR #1037).
+
+## [1.223.0] - 2020-1-16
+### Added
+- WeekCalendar - new component.
+
+## [1.224.0] - 2020-1-16
+### Added
+- AgendaList - allow passing keyExtractor.
