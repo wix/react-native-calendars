@@ -130,7 +130,9 @@ class AgendaList extends Component {
     );
   }
 
-  keyExtractor = (item, index) => String(index);
+  keyExtractor = (item, index) => {
+    return _.isFunction(this.props.keyExtractor) ? this.props.keyExtractor(item, index) : String(index);
+  }
 
   render() {
     return (
