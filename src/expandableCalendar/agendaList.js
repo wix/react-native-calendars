@@ -29,7 +29,8 @@ class AgendaList extends Component {
   }
 
   static defaultProps = {
-    dayFormat: 'dddd, MMM d'
+    dayFormat: 'dddd, MMM d',
+    stickySectionHeadersEnabled: true
   }
 
   constructor(props) {
@@ -141,7 +142,6 @@ class AgendaList extends Component {
         ref={this.list}
         keyExtractor={this.keyExtractor}
         showsVerticalScrollIndicator={false}
-        stickySectionHeadersEnabled
         onViewableItemsChanged={this.onViewableItemsChanged}
         viewabilityConfig={this.viewabilityConfig}
         renderSectionHeader={this.renderSectionHeader}
