@@ -137,3 +137,7 @@
 ## [1.224.0] - 2020-1-16
 ### Added
 - AgendaList - allow passing keyExtractor.
+
+## [1.225.0] - 2020-1-19
+### Fix
+- package.json - adding hoist-non-react-statics dependency (fix issue #900).
