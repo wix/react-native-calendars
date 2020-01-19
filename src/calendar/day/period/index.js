@@ -196,7 +196,9 @@ class Day extends Component {
       <TouchableWithoutFeedback
         testID={this.props.testID}
         onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}>
+        onLongPress={this.onDayLongPress}
+        disabled={this.props.marking.disableTouchEvent}
+      >
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
