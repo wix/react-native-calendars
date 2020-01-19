@@ -118,7 +118,7 @@ export default class AgendaView extends Component {
   }
 
   calendarOffset() {
-    return 90 - (this.viewHeight / 2);
+    return 96 - (this.viewHeight / 2);
   }
 
   initialScrollPadPosition() {
@@ -332,7 +332,7 @@ export default class AgendaView extends Component {
   }
 
   render() {
-    const agendaHeight = Math.max(0, this.viewHeight - HEADER_HEIGHT);
+    const agendaHeight = this.initialScrollPadPosition();
     const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
     
     const weekdaysStyle = [this.styles.weekdays, {
