@@ -74,7 +74,7 @@ class Calendar extends Component {
     showWeekNumbers: PropTypes.bool,
     /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
     onPressArrowLeft: PropTypes.func,
-    /** Handler which gets executed when press arrow icon left. It receive a callback can go next month */
+    /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
     onPressArrowRight: PropTypes.func,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
