@@ -141,3 +141,7 @@
 ## [1.225.0] - 2020-1-19
 ### Fix
 - package.json - adding hoist-non-react-statics dependency (fix issue #900).
+
+## [1.226.0] - 2020-1-19
+### Added
+- Life cycle methods - renaming with UNSAFE_ prefix componentWillMount, componentWillReceiveProps.
