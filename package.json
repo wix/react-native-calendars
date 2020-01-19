@@ -22,6 +22,7 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
+    "hoist-non-react-statics": "^3.3.1",
     "lodash": "^4.0.0",
     "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
