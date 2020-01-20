@@ -30,14 +30,14 @@
 ## [1.193.0] - 2019-06-26
 ### Bug Fix
 - ExpandableCalendar - fix for week paddings. Changing knob container height and weekDays style.
-- CalendarList/item - limit headerStyle to horizontal only.
+- CalendarList/item - limit 'headerStyle' to horizontal only.
 
 ## [1.194.0] - 2019-06-30
 ### Added
 - CalendarProvider - 'onMonthChange' event returning date object and updateSource.
 
 ## [1.195.0] - 2019-07-04
-### Change
+### Changed
 - Components' props comment format.
 
 ## [1.196.0] - 2019-07-04
@@ -58,10 +58,10 @@
 
 ## [1.200.0] - 2019-07-18
 ### Added
-- ExpandableCalendar - adding testID for knob.
+- ExpandableCalendar - adding 'testID' for knob.
 
 ## [1.201.0] - 2019-07-25
-### Change
+### Changed
 - eslint - updating to version 6.1.0.
 - lodash - importing library instead of sub-libraries.
 
@@ -94,7 +94,7 @@
 ## [1.208.0] - 2019-08-15
 ### Added
 - CalendarProvider - today button size for tablet. 
-  Passing style prop to a container View.
+    Passing style prop to a container View.
 - ExpandableCalendar - adjusting vertical mode open height for tablet in both orientations.
 
 ## [1.209.0] - 2019-08-20
@@ -127,8 +127,8 @@
 - AgendaList - allow text transform override for section header text.
 
 ## [1.221.0] - 2020-1-16
-### Fix 
-- ExpandableCalendar - fix renderArrow function (PR #1037).
+### Bug Fix 
+- ExpandableCalendar - fix 'renderArrow' (PR #1037).
 
 ## [1.223.0] - 2020-1-16
 ### Added
@@ -136,23 +136,23 @@
 
 ## [1.224.0] - 2020-1-16
 ### Added
-- AgendaList - allow passing keyExtractor.
+- AgendaList - allow passing 'keyExtractor'.
 
 ## [1.225.0] - 2020-1-19
-### Fix
-- package.json - adding hoist-non-react-statics dependency (fix issue #900).
+### Bug Fix
+- package.json - adding 'hoist-non-react-statics' dependency (fix issue #900).
 
 ## [1.226.0] - 2020-1-19
 ### Added
-- Life cycle methods - renaming with UNSAFE_ prefix componentWillMount, componentWillReceiveProps.
+- Life cycle methods - renaming with UNSAFE_ prefix 'componentWillMount()' and 'componentWillReceiveProps()'.
 
 ## [1.227.0] - 2020-1-19
 ### Added
 - AgendaList - allow passing 'stickySectionHeadersEnabled' (PR #1004).
 
 ## [1.228.0] - 2020-1-19
-### Fix
-- Day custom - fix for selectedDayTextColor not working (PR #995).
+### Bug Fix
+- Day custom - fix for 'selectedDayTextColor' not working (PR #995).
 
 ## [1.229.0] - 2020-1-19
 ### Added
@@ -164,8 +164,40 @@
 
 ## [1.231.0] - 2020-1-19
 ### Change
-- Agenda - use initialScrollPadPosition() (PR #948).
+- Agenda - use 'initialScrollPadPosition()' (PR #948).
 
 ## [1.232.0] - 2020-1-19
-### Fix
+### Bug Fix
 - Day components - fix for 'disableTouchEvent' marking to disable interactions for all marking types.
+
+## [1.233.0] = 2020-1-19
+### Added
+- Calendar - update when 'displayLoadingIndicator' changes (PR #939).
+
+## [1.234.0] - 2020-1-19
+### Fix
+- Calendar and README - typo (PR #).
+
+## [1.235.0] - 2020-1-19
+### Fix
+- README - typo (Pr #912).
+
+## [1.236.0] - 2020-1-20
+### Changed
+- Agenda - 'scrollEventThrottle' from 1 to 8 (Pr #908).
+
+## [1.237.0] - 2020-1-20
+### Added
+- CalendarHeader - re-render when 'renderArrow' changes (PR #907).
+
+## [1.238.0] - 2020-1-20
+### Added
+- CalendarList - pass 'onEndReached' and 'onEndReachedThreshold' to FlatList (PR #893).
+
+## [1.239.0] - 2020-1-20
+### Added
+- CalendarList - pass 'keyExtractor' (PR #883).
+
+## [1.240.0] - 2020-1-20
+### Added
+- Day - adding 'onLongPress' support to type multi-period.

@@ -19,6 +19,7 @@ class Day extends Component {
     theme: PropTypes.object,
     marking: PropTypes.any,
     onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
     date: PropTypes.object
   };
 
