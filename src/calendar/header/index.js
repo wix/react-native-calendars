@@ -22,7 +22,9 @@ class CalendarHeader extends Component {
     hideDayNames: PropTypes.bool,
     weekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    disableArrowLeft: PropTypes.bool,
+    disableArrowRight: PropTypes.bool
   };
 
   static defaultProps = {
@@ -68,6 +70,12 @@ class CalendarHeader extends Component {
     if (nextProps.renderArrow !== this.props.renderArrow) {
       return true;
     }
+    if (nextProps.disableArrowLeft !== this.props.disableArrowLeft) {
+      return true;
+    }
+    if (nextProps.disableArrowRight !== this.props.disableArrowRight) {
+      return true;
+    }
     return false;
   }
 
@@ -97,6 +105,7 @@ class CalendarHeader extends Component {
       leftArrow = (
         <TouchableOpacity
           onPress={this.onPressLeft}
+          disabled={this.props.disableArrowLeft}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
@@ -105,13 +114,14 @@ class CalendarHeader extends Component {
             ? this.props.renderArrow('left')
             : <Image
               source={require('../img/previous.png')}
-              style={this.style.arrowImage}
+              style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
             />}
         </TouchableOpacity>
       );
       rightArrow = (
         <TouchableOpacity
           onPress={this.onPressRight}
+          disabled={this.props.disableArrowRight}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
@@ -120,7 +130,7 @@ class CalendarHeader extends Component {
             ? this.props.renderArrow('right')
             : <Image
               source={require('../img/next.png')}
-              style={this.style.arrowImage}
+              style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
             />}
         </TouchableOpacity>
       );

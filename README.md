@@ -112,6 +112,10 @@ LocaleConfig.defaultLocale = 'fr';
   onPressArrowLeft={substractMonth => substractMonth()}
   // Handler which gets executed when press arrow icon right. It receive a callback can go next month
   onPressArrowRight={addMonth => addMonth()}
+  // Disable left arrow. Default = false
+  disableArrowLeft={true}
+  // Disable right arrow. Default = false
+  disableArrowRight={true}
 />
 ```
 
@@ -286,6 +290,7 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
     dotColor: '#00adf5',
     selectedDotColor: '#ffffff',
     arrowColor: 'orange',
+    disabledArrowColor: '#d9e1e8',
     monthTextColor: 'blue',
     indicatorColor: 'blue',
     textDayFontFamily: 'monospace',

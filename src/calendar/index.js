@@ -76,6 +76,10 @@ class Calendar extends Component {
     onPressArrowLeft: PropTypes.func,
     /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
     onPressArrowRight: PropTypes.func,
+    /** Disable left arrow. Default = false */
+    disableArrowLeft: PropTypes.bool,
+    /** Disable right arrow. Default = false */
+    disableArrowRight: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   };
@@ -273,6 +277,8 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
+          disableArrowLeft={this.props.disableArrowLeft}
+          disableArrowRight={this.props.disableArrowRight}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
