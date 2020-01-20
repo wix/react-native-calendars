@@ -6,6 +6,8 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 
 class Day extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -14,6 +16,7 @@ class Day extends Component {
     theme: PropTypes.object,
     marking: PropTypes.any,
     onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
     date: PropTypes.object,
   };
 
@@ -21,10 +24,14 @@ class Day extends Component {
     super(props);
     this.style = styleConstructor(props.theme);
     this.onDayPress = this.onDayPress.bind(this);
+    this.onDayLongPress = this.onDayLongPress.bind(this);
   }
 
   onDayPress() {
     this.props.onPress(this.props.date);
+  }
+  onDayLongPress() {
+    this.props.onLongPress(this.props.date);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -90,11 +97,15 @@ class Day extends Component {
     return (
       <View
         style={{
-          flex: 1,
-          alignItems: 'center',
-          alignSelf: 'stretch',
+          alignSelf: 'stretch'
         }}>
-        <TouchableOpacity style={containerStyle} onPress={this.onDayPress}>
+        <TouchableOpacity 
+          testID={this.props.testID} 
+          style={containerStyle} 
+          onPress={this.onDayPress}
+          onLongPress={this.onDayLongPress}
+          disabled={marking.disableTouchEvent}
+        >
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
           </Text>

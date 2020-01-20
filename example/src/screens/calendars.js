@@ -45,7 +45,7 @@ export default class CalendarsScreen extends Component {
         <Calendar
           style={[styles.calendar, {height: 300}]}
           dayComponent={({date, state}) => {
-            return (<View style={{flex: 1}}><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
+            return (<View><Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text></View>);
           }}
         />
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
@@ -62,6 +62,7 @@ export default class CalendarsScreen extends Component {
             todayTextColor: 'white',
             selectedDayTextColor: 'white',
             monthTextColor: 'white',
+            indicatorColor: 'white',
             selectedDayBackgroundColor: '#333248',
             arrowColor: 'white',
             // textDisabledColor: 'red',
@@ -101,22 +102,22 @@ export default class CalendarsScreen extends Component {
           style={styles.calendar}
           current={'2012-05-16'}
           markingType={'multi-period'}
-          markedDates={{  
-            '2012-05-16': {  
-              periods: [  
+          markedDates={{
+            '2012-05-16': {
+              periods: [
                 { startingDay: true, endingDay: false, color: '#5f9ea0' },
                 { startingDay: true, endingDay: false, color: '#ffa500' },
               ]
             },
-            '2012-05-17': {  
-              periods: [  
+            '2012-05-17': {
+              periods: [
                 { startingDay: false, endingDay: true, color: '#5f9ea0' },
                 { startingDay: false, endingDay: true, color: '#ffa500' },
                 { startingDay: true, endingDay: false, color: '#f0e68c' },
               ]
             },
-            '2012-05-18': {  
-              periods: [  
+            '2012-05-18': {
+              periods: [
                 { startingDay: true, endingDay: true, color: '#ffa500' },
                 { color: 'transparent' },
                 { startingDay: false, endingDay: false, color: '#f0e68c' },

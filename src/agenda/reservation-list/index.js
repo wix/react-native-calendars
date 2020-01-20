@@ -12,6 +12,8 @@ import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
 class ReactComp extends Component {
+  static displayName = 'IGNORE';
+  
   static propTypes = {
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
@@ -48,7 +50,7 @@ class ReactComp extends Component {
     this.scrollOver = true;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
   }
 
@@ -72,7 +74,7 @@ class ReactComp extends Component {
     this.updateDataSource(reservations.reservations);
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
       this.setState({
         reservations: []
@@ -185,7 +187,9 @@ class ReactComp extends Component {
       if (this.props.renderEmptyData) {
         return this.props.renderEmptyData();
       }
-      return (<ActivityIndicator style={{marginTop: 80}}/>);
+      return (
+        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor} />
+      );
     }
     return (
       <FlatList
