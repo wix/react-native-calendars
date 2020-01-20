@@ -79,7 +79,7 @@ class Calendar extends Component {
     /** Disable left arrow. Default = false */
     disableArrowLeft: PropTypes.bool,
     /** Disable right arrow. Default = false */
-    disableArrowRight: PropTypes.bool
+    disableArrowRight: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   };
