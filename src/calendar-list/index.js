@@ -310,6 +310,8 @@ class CalendarList extends Component {
           initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
           getItemLayout={this.getItemLayout}
           scrollsToTop={this.props.scrollsToTop}
+          onEndReachedThreshold={this.props.onEndReachedThreshold}
+          onEndReached={this.props.onEndReached}
         />
         {this.renderStaticHeader()}
       </View>
