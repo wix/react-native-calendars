@@ -185,6 +185,9 @@ export default class AgendaView extends Component {
   }
 
   onVisibleMonthsChange(months) {
+    if (this.props.onVisibleMonthsChange) {
+      this.props.onVisibleMonthsChange(months);
+    }
     if (this.props.items && !this.state.firstResevationLoad) {
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(() => {
