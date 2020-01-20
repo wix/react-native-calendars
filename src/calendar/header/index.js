@@ -65,16 +65,16 @@ class CalendarHeader extends Component {
   }
 
   onPressLeft() {
-    const { onPressArrowLeft } = this.props;
-    if (typeof onPressArrowLeft === 'function') {
+    const {onPressArrowLeft} = this.props;
+    if(typeof onPressArrowLeft === 'function') {
       return onPressArrowLeft(this.substractMonth);
     }
     return this.substractMonth();
   }
 
   onPressRight() {
-    const { onPressArrowRight } = this.props;
-    if (typeof onPressArrowRight === 'function') {
+    const {onPressArrowRight} = this.props;
+    if(typeof onPressArrowRight === 'function') {
       return onPressArrowRight(this.addMonth);
     }
     return this.addMonth();
@@ -90,15 +90,15 @@ class CalendarHeader extends Component {
           onPress={this.onPressLeft}
           disabled={this.props.disableArrowLeft}
           style={this.style.arrow}
-          hitSlop={{ left: 20, right: 20, top: 20, bottom: 20 }}
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           testID={CHANGE_MONTH_LEFT_ARROW}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('left')
             : <Image
-              source={require('../img/previous.png')}
-              style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
+                source={require('../img/previous.png')}
+                style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
+              />}
         </TouchableOpacity>
       );
       rightArrow = (
@@ -106,15 +106,15 @@ class CalendarHeader extends Component {
           onPress={this.onPressRight}
           disabled={this.props.disableArrowRight}
           style={this.style.arrow}
-          hitSlop={{ left: 20, right: 20, top: 20, bottom: 20 }}
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           testID={CHANGE_MONTH_RIGHT_ARROW}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('right')
             : <Image
-              source={require('../img/next.png')}
-              style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
+                source={require('../img/next.png')}
+                style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
+              />}
         </TouchableOpacity>
       );
     }
