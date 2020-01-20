@@ -65,6 +65,9 @@ class CalendarHeader extends Component {
     if (nextProps.monthFormat !== this.props.monthFormat) {
       return true;
     }
+    if (nextProps.renderArrow !== this.props.renderArrow) {
+      return true;
+    }
     return false;
   }
 
