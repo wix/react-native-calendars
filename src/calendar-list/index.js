@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, ActivityIndicator, View} from 'react-native';
+import {FlatList, Platform, Dimensions, ActivityIndicator} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
