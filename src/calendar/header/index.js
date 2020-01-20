@@ -70,6 +70,12 @@ class CalendarHeader extends Component {
     if (nextProps.renderArrow !== this.props.renderArrow) {
       return true;
     }
+    if (nextProps.disableArrowLeft !== this.props.disableArrowLeft) {
+      return true;
+    }
+    if (nextProps.disableArrowRight !== this.props.disableArrowRight) {
+      return true;
+    }
     return false;
   }
 
