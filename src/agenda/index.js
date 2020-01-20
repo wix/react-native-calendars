@@ -396,6 +396,7 @@ export default class AgendaView extends Component {
         </View>
       );
     }
+    const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
 
     return (
       <View onLayout={this.onLayout} style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
@@ -420,7 +421,7 @@ export default class AgendaView extends Component {
               removeClippedSubviews={this.props.removeClippedSubviews}
               onDayPress={this._chooseDayFromCalendar.bind(this)}
               scrollEnabled={this.state.calendarScrollable}
-              hideExtraDays={this.state.calendarScrollable}
+              hideExtraDays={shouldHideExtraDays}
               firstDay={this.props.firstDay}
               monthFormat={this.props.monthFormat}
               pastScrollRange={this.props.pastScrollRange}

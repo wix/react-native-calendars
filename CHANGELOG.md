@@ -201,3 +201,22 @@
 ## [1.240.0] - 2020-1-20
 ### Added
 - Day - adding 'onLongPress' support to type multi-period.
+
+## [1.241.0] - 2020-1-20
+### Fix
+- README - add 'disabledByDefault' prop (Pr #774).
+
+## [1.242.0] - 2020-1-20
+### Added
+- Agenda - invoking 'onVisibleMonthsChange()' directly (PR #746).
+
+## [1.243.0] - 2020-1-20
+### Added
+- Calendar - adding 'disableArrowLeft' and 'disableArrowRight' (PR #530).
+
+## [1.244.0] - 2020-1-20
+### Added
+- Agenda - allow showing extra days (by passing hideExtraDays={false}).
+
+### Changed
+- Calendars screen - remove redundant prop.

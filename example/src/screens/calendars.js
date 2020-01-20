@@ -84,7 +84,6 @@ export default class CalendarsScreen extends Component {
             '2012-05-24': {startingDay: true, color: 'gray'},
             '2012-05-25': {color: 'gray'},
             '2012-05-26': {endingDay: true, color: 'gray'}}}
-          hideArrows={false}
         />
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
@@ -95,7 +94,6 @@ export default class CalendarsScreen extends Component {
             '2012-05-08': {dots: [{key: 'vacation', color: 'blue', selectedDotColor: 'white'}, {key: 'massage', color: 'red', selectedDotColor: 'white'}], selected: true},
             '2012-05-09': {dots: [{key: 'vacation', color: 'blue', selectedDotColor: 'red'}, {key: 'massage', color: 'red', selectedDotColor: 'blue'}], disabled: true}
           }}
-          hideArrows={false}
         />
         <Text style={styles.text}>Calendar with multi-period marking</Text>
         <Calendar
@@ -124,7 +122,6 @@ export default class CalendarsScreen extends Component {
               ]
             },
           }}
-          hideArrows={false}
         />
         <Text style={styles.text}>Calendar with week numbers</Text>
         <Calendar
@@ -248,7 +245,6 @@ export default class CalendarsScreen extends Component {
                 },
               },
             }}}
-          hideArrows={false}
         />
       </ScrollView>
     );
