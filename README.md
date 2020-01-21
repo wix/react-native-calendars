@@ -347,7 +347,7 @@ If you need custom functionality not supported by current day component implemen
   style={[styles.calendar, {height: 300}]}
   dayComponent={({date, state}) => {
     return (
-      <View style={{flex: 1}}>
+      <View>
         <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>
           {date.day}
         </Text>
