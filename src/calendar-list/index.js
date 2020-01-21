@@ -46,7 +46,7 @@ class CalendarList extends Component {
     calendarHeight: PropTypes.number,
 
     // Should Keyboard persist taps
-    keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
+    keyboardShouldPersistTaps: FlatList.propTypes.keyboardShouldPersistTaps,
 
     /** Style for the List item (the calendar) */
     calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
@@ -66,7 +66,6 @@ class CalendarList extends Component {
     scrollEnabled: true,
     scrollsToTop: false,
     removeClippedSubviews: Platform.OS === 'android' ? false : true,
-    keyboardShouldPersistTaps: 'never',
     keyExtractor: (item, index) => String(index)
   }
 
