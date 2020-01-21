@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
 
 const STYLESHEET_ID = 'stylesheet.day.period';
-
 const FILLER_HEIGHT = 34;
 
 export default function styleConstructor(theme={}) {
@@ -39,7 +38,7 @@ export default function styleConstructor(theme={}) {
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
-      color: appStyle.dayTextColor || '#2d4150',
+      color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)'
     },
     today: {

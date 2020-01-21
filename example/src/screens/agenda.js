@@ -25,8 +25,8 @@ export default class AgendaScreen extends Component {
         rowHasChanged={this.rowHasChanged.bind(this)}
         // markingType={'period'}
         // markedDates={{
-        //    '2017-05-08': {textColor: '#666'},
-        //    '2017-05-09': {textColor: '#666'},
+        //    '2017-05-08': {textColor: '#43515c'},
+        //    '2017-05-09': {textColor: '#43515c'},
         //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
         //    '2017-05-21': {startingDay: true, color: 'blue'},
         //    '2017-05-22': {endingDay: true, color: 'gray'},

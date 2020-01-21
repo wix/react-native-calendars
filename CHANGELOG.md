@@ -222,4 +222,9 @@
 - Calendars screen - remove redundant prop.
 
 ## [1.245.0] - 2020-1-21
+### Changed
 - README - editing.
+
+## [1.246.0] - 2020-1-21
+### Changed
+- Example - refresh demo app style.
