@@ -220,3 +220,6 @@
 
 ### Changed
 - Calendars screen - remove redundant prop.
+
+## [1.245.0] - 2020-1-21
+- README - editing.
