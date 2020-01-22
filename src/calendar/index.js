@@ -82,8 +82,8 @@ class Calendar extends Component {
     disableArrowRight: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** Provide heading level for proper accessibility when used with web (react-native-web) */
-    headingLevel: PropTypes.number
+    /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
+    webAriaLevel: PropTypes.number
   };
 
   constructor(props) {
@@ -279,7 +279,7 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
-          headingLevel={this.props.headingLevel}
+          webAriaLevel={this.props.webAriaLevel}
           disableArrowLeft={this.props.disableArrowLeft}
           disableArrowRight={this.props.disableArrowRight}
         />

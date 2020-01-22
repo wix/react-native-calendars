@@ -25,12 +25,12 @@ class CalendarHeader extends Component {
     onPressArrowRight: PropTypes.func,
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
-    headingLevel: PropTypes.number
+    webAriaLevel: PropTypes.number
   };
 
   static defaultProps = {
     monthFormat: 'MMMM yyyy',
-    headingLevel: 1
+    webAriaLevel: 1
   };
 
   constructor(props) {
@@ -143,7 +143,7 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
     }
 
-    const webProps = Platform.OS === 'web' ? { 'aria-level': this.props.headingLevel } : {};
+    const webProps = Platform.OS === 'web' ? { 'aria-level': this.props.webAriaLevel } : {};
     return (
       <View style={this.props.style}>
         <View style={this.style.header}>
