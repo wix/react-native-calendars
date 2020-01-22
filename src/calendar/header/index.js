@@ -152,7 +152,7 @@ class CalendarHeader extends Component {
             <Text
               allowFontScaling={false}
               style={this.style.monthText}
-              accessibilityTraits='header'
+              accessibilityRole='header'
               {...webProps}
             >
               {this.props.month.toString(this.props.monthFormat)}
