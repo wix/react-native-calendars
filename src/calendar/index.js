@@ -74,8 +74,12 @@ class Calendar extends Component {
     showWeekNumbers: PropTypes.bool,
     /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
     onPressArrowLeft: PropTypes.func,
-    /** Handler which gets executed when press arrow icon left. It receive a callback can go next month */
+    /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
     onPressArrowRight: PropTypes.func,
+    /** Disable left arrow. Default = false */
+    disableArrowLeft: PropTypes.bool,
+    /** Disable right arrow. Default = false */
+    disableArrowRight: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide heading level for proper accessibility when used with web (react-native-web) */
@@ -98,8 +102,8 @@ class Calendar extends Component {
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const current= parseDate(nextProps.current);
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const current = parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
         currentMonth: current.clone()
@@ -261,6 +265,7 @@ class Calendar extends Component {
     return (
       <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
+          ref={c => this.header = c}
           style={this.props.headerStyle}
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
@@ -275,6 +280,8 @@ class Calendar extends Component {
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
           headingLevel={this.props.headingLevel}
+          disableArrowLeft={this.props.disableArrowLeft}
+          disableArrowRight={this.props.disableArrowRight}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);

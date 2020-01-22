@@ -1,7 +1,8 @@
 import {Navigation} from 'react-native-navigation';
 import {registerScreens} from './screens';
-registerScreens();
 
+
+registerScreens();
 // eslint-disable-next-line no-console
 console.ignoredYellowBox = ['Remote debugger'];
 
@@ -29,28 +30,14 @@ Navigation.events().registerAppLaunchedListener(() => {
               options: {
                 topBar: {
                   title: {
-                    text: 'WixCal',
-                  },
-                },
-              },
-            },
-          },
-        ],
-      },
-    },
+                    text: 'Wix RN Calendars'
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
   });
 });
-
-// Navigation.startSingleScreenApp({
-//   screen: {
-//     screen: 'Menu',
-//     title: 'WixCal',
-//   },
-//   appStyle: {
-//     navBarBackgroundColor: '#00adf5',
-//     navBarTextColor: 'white',
-//     navBarButtonColor: '#ffffff',
-//     statusBarTextColorScheme: 'light',
-//     autoAdjustScrollViewInsets: true
-//   }
-// });

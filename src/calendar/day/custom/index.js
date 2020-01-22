@@ -19,6 +19,7 @@ class Day extends Component {
     theme: PropTypes.object,
     marking: PropTypes.any,
     onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
     date: PropTypes.object
   };
 
@@ -54,6 +55,7 @@ class Day extends Component {
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
+      textStyle.push(this.style.selectedText);
     } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
