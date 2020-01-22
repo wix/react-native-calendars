@@ -228,3 +228,11 @@
 ## [1.246.0] - 2020-1-21
 ### Changed
 - Example - refresh demo app style.
+
+## [1.247.0] - 2020-1-22
+### Added
+- iOS - app icon.
+
+## [1.248.0] - 2020-1-22
+### Changed
+- iOS - demo app name.
