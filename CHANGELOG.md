@@ -236,3 +236,15 @@
 ## [1.248.0] - 2020-1-22
 ### Changed
 - iOS - demo app name.
+
+## [1.249.0] - 2020-1-22
+### Added
+- CalendarList - passing 'keyboardShouldPersistTaps' to FlatList.
+
+## [1.250.0] - 2020-1-22
+### Added
+- Agenda - passing 'testId' to knob.
+
+## [1.251.0] - 2020-1-22
+### Bug Fix
+- CalendarList - 'keyboardShouldPersistTaps' PropTypes.

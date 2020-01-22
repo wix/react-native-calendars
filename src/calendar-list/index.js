@@ -44,10 +44,8 @@ class CalendarList extends Component {
     calendarWidth: PropTypes.number,
     /** Dynamic calendar height */
     calendarHeight: PropTypes.number,
-
-    // Should Keyboard persist taps
-    keyboardShouldPersistTaps: FlatList.propTypes.keyboardShouldPersistTaps,
-
+    /** Should Keyboard persist taps */
+    keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
     /** Style for the List item (the calendar) */
     calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Whether to use static header that will not scroll with the list (horizontal only) */
