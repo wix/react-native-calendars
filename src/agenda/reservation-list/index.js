@@ -8,7 +8,7 @@ import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
 
-class ReactComp extends Component {
+class ReservationList extends Component {
   static displayName = 'IGNORE';
   
   static propTypes = {
@@ -210,4 +210,4 @@ class ReactComp extends Component {
   }
 }
 
-export default ReactComp;
+export default ReservationList;

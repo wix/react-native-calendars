@@ -269,3 +269,7 @@
 ## [1.256.0] - 2020-1-23
 ### Fix
 - README - fix examples.
+
+## [1.257.0] - 2020-1-23
+### Bug fix
+- Reservation - secure calls to prop functions to avoid crashes.
