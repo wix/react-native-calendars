@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Platform} from 'react-native';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import XDate from 'xdate';
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} from '../../testIDs';
 
 class CalendarHeader extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     theme: PropTypes.object,
     hideArrows: PropTypes.bool,
@@ -24,11 +24,13 @@ class CalendarHeader extends Component {
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func,
     disableArrowLeft: PropTypes.bool,
-    disableArrowRight: PropTypes.bool
+    disableArrowRight: PropTypes.bool,
+    webAriaLevel: PropTypes.number
   };
 
   static defaultProps = {
-    monthFormat: 'MMMM yyyy'
+    monthFormat: 'MMMM yyyy',
+    webAriaLevel: 1
   };
 
   constructor(props) {
@@ -141,12 +143,18 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
     }
 
+    const webProps = Platform.OS === 'web' ? { 'aria-level': this.props.webAriaLevel } : {};
     return (
       <View style={this.props.style}>
         <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
-            <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
+            <Text
+              allowFontScaling={false}
+              style={this.style.monthText}
+              accessibilityRole='header'
+              {...webProps}
+            >
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
@@ -158,12 +166,12 @@ class CalendarHeader extends Component {
           <View style={this.style.week}>
             {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
             {weekDaysNames.map((day, idx) => (
-              <Text 
-                allowFontScaling={false} 
-                key={idx} 
-                accessible={false} 
-                style={this.style.dayHeader} 
-                numberOfLines={1} 
+              <Text
+                allowFontScaling={false}
+                key={idx}
+                accessible={false}
+                style={this.style.dayHeader}
+                numberOfLines={1}
                 importantForAccessibility='no'
               >
                 {day}
