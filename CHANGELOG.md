@@ -265,3 +265,7 @@
 ### Added
 - .eslintrc - new roles.
 - src files - fix lint errors.
+
+## [1.256.0] - 2020-1-23
+### Fix
+- README - fix examples.

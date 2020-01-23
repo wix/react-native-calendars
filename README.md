@@ -347,7 +347,7 @@ If you need custom functionality not supported by current day component implemen
   style={[styles.calendar, {height: 300}]}
   dayComponent={({date, state}) => {
     return (
-      <View style={{flex: 1}}>
+      <View>
         <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>
           {date.day}
         </Text>
@@ -428,10 +428,10 @@ An advanced `Agenda` component that can display interactive listings for calenda
   // the value of date key kas to be an empty array []. If there exists no value for date key it is
   // considered that the date in question is not yet loaded
   items={{
-    '2012-05-22': [{text: 'item 1 - any js object'}],
-    '2012-05-23': [{text: 'item 2 - any js object'}],
+    '2012-05-22': [{name: 'item 1 - any js object'}],
+    '2012-05-23': [{name: 'item 2 - any js object', height: 80}],
     '2012-05-24': [],
-    '2012-05-25': [{text: 'item 3 - any js object'},{text: 'any js object'}]
+    '2012-05-25': [{name: 'item 3 - any js object'}, {name: 'any js object'}]
   }}
   // Callback that gets called when items for a certain month should be loaded (month became visible)
   loadItemsForMonth={(month) => {console.log('trigger items loading')}}
