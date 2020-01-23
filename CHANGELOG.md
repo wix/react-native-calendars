@@ -248,3 +248,20 @@
 ## [1.251.0] - 2020-1-22
 ### Bug Fix
 - CalendarList - 'keyboardShouldPersistTaps' PropTypes.
+
+## [1.252.0] - 2020-1-22
+### Changed
+- Agenda - Animated.ScrollView invoke 'scrollTo' using ref.getNode() for RN62 compatibility (PR #1040).
+
+## [1.253.0] - 2020-1-23
+### Added
+- CalendarHeader - 'aria-level' for web accessability support (PR #792).
+
+## [1.254.0] - 2020-1-23
+### Added
+- ExpandableCalendar - default value to height style to avoid NaN value (PR #1044).
+
+## [1.255.0] - 2020-1-23
+### Added
+- .eslintrc - new roles.
+- src files - fix lint errors.

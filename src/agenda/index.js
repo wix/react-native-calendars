@@ -10,12 +10,12 @@ import ReservationsList from './reservation-list';
 import styleConstructor from './style';
 import {VelocityTracker} from '../input';
 
-import { AGENDA_CALENDAR_KNOB } from '../testIDs';
+import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 
 
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
-//Fallback when RN version is < 0.44
+// Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
 
 /**
@@ -104,7 +104,7 @@ export default class AgendaView extends Component {
       calendarScrollable: false,
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
-      topDay: parseDate(this.props.selected) || XDate(true),
+      topDay: parseDate(this.props.selected) || XDate(true)
     };
 
     this.currentMonth = this.state.selectedDay.clone();
@@ -346,7 +346,7 @@ export default class AgendaView extends Component {
         outputRange: [0, 1],
         extrapolate: 'clamp'
       }),
-      transform: [{ translateY: this.state.scrollY.interpolate({
+      transform: [{translateY: this.state.scrollY.interpolate({
         inputRange: [Math.max(0, agendaHeight - HEADER_HEIGHT), agendaHeight],
         outputRange: [-HEADER_HEIGHT, 0],
         extrapolate: 'clamp'
@@ -367,7 +367,7 @@ export default class AgendaView extends Component {
 
     const headerStyle = [
       this.styles.header,
-      {bottom: agendaHeight, transform: [{ translateY: headerTranslate }]}
+      {bottom: agendaHeight, transform: [{translateY: headerTranslate}]}
     ];
 
     if (!this.state.calendarIsReady) {
@@ -456,7 +456,7 @@ export default class AgendaView extends Component {
           onScrollEndDrag={this.onSnapAfterDrag}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}],
-            {useNativeDriver: true},
+            {useNativeDriver: true}
           )}
         >
           <View testID={AGENDA_CALENDAR_KNOB} style={{height: agendaHeight + KNOB_HEIGHT}} onLayout={this.onScrollPadLayout}/>

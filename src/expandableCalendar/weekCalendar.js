@@ -41,11 +41,12 @@ class WeekCalendar extends Component {
     super(props);
 
     this.style = styleConstructor(props.theme);
+
     this.list = React.createRef();
     this.page = NUMBER_OF_PAGES;
 
     this.state = {
-      items: this.getDatesArray(),
+      items: this.getDatesArray()
     };
   }
 

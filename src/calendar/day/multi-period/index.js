@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import {TouchableOpacity, Text, View} from 'react-native';
 import PropTypes from 'prop-types';
 import {shouldUpdate} from '../../../component-updater';
 
 import styleConstructor from './style';
+
 
 class Day extends Component {
   static displayName = 'IGNORE';
@@ -11,18 +12,19 @@ class Day extends Component {
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
-
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object,
+    date: PropTypes.object
   };
 
   constructor(props) {
     super(props);
+
     this.style = styleConstructor(props.theme);
+
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
   }
@@ -51,24 +53,24 @@ class Day extends Component {
         const style = [
           ...baseDotStyle,
           {
-            backgroundColor: period.color,
-          },
+            backgroundColor: period.color
+          }
         ];
         if (period.startingDay) {
           style.push({
             borderTopLeftRadius: 2,
             borderBottomLeftRadius: 2,
-            marginLeft: 4,
+            marginLeft: 4
           });
         }
         if (period.endingDay) {
           style.push({
             borderTopRightRadius: 2,
             borderBottomRightRadius: 2,
-            marginRight: 4,
+            marginRight: 4
           });
         }
-        return <View key={index} style={style} />;
+        return <View key={index} style={style}/>;
       });
     }
     return;
@@ -95,10 +97,7 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
     return (
-      <View
-        style={{
-          alignSelf: 'stretch'
-        }}>
+      <View style={{alignSelf: 'stretch'}}>
         <TouchableOpacity 
           testID={this.props.testID} 
           style={containerStyle} 
@@ -110,10 +109,7 @@ class Day extends Component {
             {String(this.props.children)}
           </Text>
         </TouchableOpacity>
-        <View
-          style={{
-            alignSelf: 'stretch',
-          }}>
+        <View style={{alignSelf: 'stretch'}}>
           {periods}
         </View>
       </View>

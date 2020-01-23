@@ -1,15 +1,12 @@
 import React, {Component} from 'react';
-import {
-  FlatList,
-  ActivityIndicator,
-  View
-} from 'react-native';
+import {FlatList, ActivityIndicator, View} from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
+
 
 class ReactComp extends Component {
   static displayName = 'IGNORE';
@@ -31,20 +28,22 @@ class ReactComp extends Component {
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
     reservations: PropTypes.object,
-
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
-    onRefresh: PropTypes.func,
+    onRefresh: PropTypes.func
   };
 
   constructor(props) {
     super(props);
+    
     this.styles = styleConstructor(props.theme);
+    
     this.state = {
       reservations: []
     };
+    
     this.heights=[];
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
@@ -188,7 +187,7 @@ class ReactComp extends Component {
         return this.props.renderEmptyData();
       }
       return (
-        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor} />
+        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor}/>
       );
     }
     return (

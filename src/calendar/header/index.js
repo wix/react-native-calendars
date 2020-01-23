@@ -98,8 +98,8 @@ class CalendarHeader extends Component {
   }
 
   render() {
-    let leftArrow = <View />;
-    let rightArrow = <View />;
+    let leftArrow = <View/>;
+    let rightArrow = <View/>;
     let weekDaysNames = weekDayNames(this.props.firstDay);
     const {testID} = this.props;
 
@@ -143,12 +143,12 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
     }
 
-    const webProps = Platform.OS === 'web' ? { 'aria-level': this.props.webAriaLevel } : {};
+    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
     return (
       <View style={this.props.style}>
         <View style={this.style.header}>
           {leftArrow}
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <Text
               allowFontScaling={false}
               style={this.style.monthText}

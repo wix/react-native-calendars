@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-import {
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 
 import styleConstructor from './style';
 import {shouldUpdate} from '../../../component-updater';
+
 
 class Day extends Component {
   static displayName = 'IGNORE';
@@ -14,7 +12,6 @@ class Day extends Component {
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
-
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     marking: PropTypes.any,
@@ -25,7 +22,9 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
+
     this.style = styleConstructor(props.theme);
+
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
   }
