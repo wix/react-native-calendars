@@ -274,5 +274,8 @@
 ### Bug fix
 - Reservation - secure calls to prop functions to avoid crashes.
 
-## [1.258.0] - 2020-1-23
-- file cosmetics
+## [1.258.0] - 2020-1-25
+- file cosmetics.
+
+## [1.259.0] - 2020-1-25
+- Android - app icon and demo app name.
