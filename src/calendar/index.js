@@ -47,7 +47,7 @@ class Calendar extends Component {
     markingType: PropTypes.string,
     /** Hide month navigation arrows. Default = false */
     hideArrows: PropTypes.bool,
-    /** Display loading indicador. Default = false */
+    /** Display loading indicator. Default = false */
     displayLoadingIndicator: PropTypes.bool,
     /** Do not show days of other months in month page. Default = false */
     hideExtraDays: PropTypes.bool,
@@ -55,8 +55,9 @@ class Calendar extends Component {
     onDayPress: PropTypes.func,
     /** Handler which gets executed on day long press. Default = undefined */
     onDayLongPress: PropTypes.func,
-    /** Handler which gets executed when visible month changes in calendar. Default = undefined */
+    /** Handler which gets executed when month changes in calendar. Default = undefined */
     onMonthChange: PropTypes.func,
+    /** Handler which gets executed when visible month changes in calendar. Default = undefined */
     onVisibleMonthsChange: PropTypes.func,
     /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
     renderArrow: PropTypes.func,

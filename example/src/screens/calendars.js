@@ -19,7 +19,7 @@ export default class CalendarsScreen extends Component {
   render() {
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.text}>Calendar with selectable date and arrows</Text>
+        <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           style={styles.calendar}
           hideExtraDays
@@ -42,7 +42,7 @@ export default class CalendarsScreen extends Component {
           maxDate={'2012-05-29'}
           firstDay={1}
           markedDates={{
-            '2012-05-23': {selected: true, marked: true},
+            '2012-05-23': {selected: true, marked: true, disableTouchEvent: true},
             '2012-05-24': {selected: true, marked: true, dotColor: 'red'},
             '2012-05-25': {marked: true, dotColor: 'red'},
             '2012-05-26': {marked: true},

@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
   },
   image: {
     margin: 30,
-    width: 80,
-    height: 80
+    width: 90,
+    height: 90
   },
   menu: {
     width: 300,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     margin: 10,
     // backgroundColor: '#f2F4f5',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: '#7a92a5'
   },

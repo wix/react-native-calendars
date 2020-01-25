@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  View
-} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 
 import {shouldUpdate} from '../../../component-updater';
-
 import styleConstructor from './style';
+
 
 class Day extends Component {
   static displayName = 'IGNORE';
@@ -27,7 +23,9 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
+
     this.style = styleConstructor(props.theme);
+
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
   }
@@ -62,7 +60,6 @@ class Day extends Component {
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-
     const marking = this.props.marking || {};
     const dot = this.renderDots(marking);
 
@@ -78,6 +75,7 @@ class Day extends Component {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
+    
     return (
       <TouchableOpacity
         testID={this.props.testID}

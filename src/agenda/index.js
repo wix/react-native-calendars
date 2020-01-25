@@ -9,7 +9,6 @@ import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
 import styleConstructor from './style';
 import {VelocityTracker} from '../input';
-
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 
 
@@ -83,7 +82,7 @@ export default class AgendaView extends Component {
     onRefresh: PropTypes.func,
     /** Set this true while waiting for new data from a refresh. */
     refreshing: PropTypes.bool,
-    /** Display loading indicador. Default = false */
+    /** Display loading indicator. Default = false */
     displayLoadingIndicator: PropTypes.bool
   };
 
@@ -378,7 +377,7 @@ export default class AgendaView extends Component {
     }
 
     const shouldAllowDragging = !this.props.hideKnob && !this.state.calendarScrollable;
-    const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT  : 0) - KNOB_HEIGHT;
+    const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT : 0) - KNOB_HEIGHT;
 
     const scrollPadStyle = {
       position: 'absolute',
