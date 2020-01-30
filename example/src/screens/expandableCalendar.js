@@ -179,14 +179,14 @@ export default class ExpandableCalendarScreen extends Component {
         onDateChanged={this.onDateChanged} 
         onMonthChange={this.onMonthChange}
         theme={{todayButtonTextColor: '#0059ff'}} 
-        // showTodayButton 
+        showTodayButton 
         disabledOpacity={0.6}
-        // todayBottomMargin={16}
+        todayBottomMargin={16}
       >
         <ExpandableCalendar 
           // horizontal={false}
           // hideArrows
-          // disablePan
+          disablePan
           hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
@@ -194,6 +194,17 @@ export default class ExpandableCalendarScreen extends Component {
           theme={this.getTheme()}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
+          customHeader={{
+            containerStyle: {
+              flexDirection: 'row',
+              marginHorizontal: 12,
+              justifyContent: 'space-between',
+              alignContent: 'center',
+              marginBottom: 25,
+            },
+            renderText: () => <View />,
+            shouldGetWeek: true,
+          }}
           // calendarStyle={styles.calendar}
           // headerStyle={styles.calendar} // for horizontal only
         />
