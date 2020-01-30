@@ -456,8 +456,8 @@ class ExpandableCalendar extends Component {
   }
 
   renderCustomArrow = (direction) => {
-      const { arrowTextStyle } = this.props.customHeader;
-      return (
+    const { arrowTextStyle } = this.props.customHeader;
+    return (
       <View style={{flexDirection: 'row', alignItems:'center'}}>
         {direction === 'right' && <Text style={arrowTextStyle}>{this.getMonthName(direction)}</Text> }
         <Image
@@ -466,7 +466,7 @@ class ExpandableCalendar extends Component {
         />
         {direction === 'left' && <Text style={arrowTextStyle}>{this.getMonthName(direction)}</Text> }
       </View>
-      )};
+    );};
 
   renderArrow = (direction) => {
     if (_.isFunction(this.props.renderArrow)) {
@@ -505,7 +505,7 @@ class ExpandableCalendar extends Component {
   }
 
   render() {
-    const {style, hideKnob, horizontal, allowShadow, theme, customHeader} = this.props;
+    const {style, hideKnob, horizontal, allowShadow, theme, customHeader, shouldShowList} = this.props;
     const {deltaY, position} = this.state;
     const isOpen = position === POSITIONS.OPEN;
     const themeObject = Object.assign(this.headerStyleOverride, theme);
@@ -517,7 +517,7 @@ class ExpandableCalendar extends Component {
           style={{height: deltaY}} 
           {...this.panResponder.panHandlers}
         >
-          <CalendarList
+          {shouldShowList && <CalendarList
             testID="calendar"
             {...this.props}
             theme={themeObject}
@@ -534,7 +534,7 @@ class ExpandableCalendar extends Component {
             hideExtraDays={!horizontal}
             renderArrow={this.renderArrow}
             staticHeader
-          /> 
+          />}
           {horizontal && this.renderWeekCalendar()}
           {!hideKnob && this.renderKnob()}
           {!horizontal && this.renderHeader()}
