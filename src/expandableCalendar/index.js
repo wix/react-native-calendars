@@ -411,9 +411,9 @@ class ExpandableCalendar extends Component {
         style={[this.style.header, {height: HEADER_HEIGHT, top: this.state.headerDeltaY}]}
       >
         <View style={customHeader.containerStyle}>
-          {this.renderWeekSwitchArrow('left')}
+          {this.renderWeekSwitchArrow('left', customHeader.shouldGetWeek)}
           {customHeader.renderText()}
-          {this.renderWeekSwitchArrow('right')}
+          {this.renderWeekSwitchArrow('right', customHeader.shouldGetWeek)}
         </View>
         {this.renderWeekDaysNames()}
       </Animated.View>
@@ -455,16 +455,16 @@ class ExpandableCalendar extends Component {
     );
   }
 
-  renderCustomArrow = (direction) => {
+  renderCustomArrow = (direction, shouldGetWeek) => {
     const { arrowTextStyle } = this.props.customHeader;
     return (
       <View style={{flexDirection: 'row', alignItems:'center'}}>
-        {direction === 'right' && <Text style={arrowTextStyle}>{this.getMonthName(direction)}</Text> }
+        {direction === 'right' && <Text style={arrowTextStyle}>{shouldGetWeek ? this.getWeekNumber(direction) : this.getMonthName(direction)}</Text> }
         <Image
           source={direction === 'right' ? this.props.rightArrowImageSource : this.props.leftArrowImageSource}
           style={this.style.arrowImage}
         />
-        {direction === 'left' && <Text style={arrowTextStyle}>{this.getMonthName(direction)}</Text> }
+        {direction === 'left' && <Text style={arrowTextStyle}>{shouldGetWeek ? this.getWeekNumber(direction) : this.getMonthName(direction)}</Text> }
       </View>
     );};
 
@@ -492,14 +492,19 @@ class ExpandableCalendar extends Component {
       parseDate(this.props.context.date).addDays(firstDayOfWeek).getMonth() === idx);
   }
 
-  renderWeekSwitchArrow = (direction) => {
+  getWeekNumber = (direction) => {
+    const currentWeek = parseDate(this.props.context.date).getWeek();
+    return direction === 'right' ? currentWeek + 1 : currentWeek - 1;
+  }
+
+  renderWeekSwitchArrow = (direction, shouldGetWeek) => {
     const shouldScroll = direction === 'right';
     return (
       <TouchableOpacity 
         onPress={() => this.scrollPage(shouldScroll)}
         hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
       >
-        {this.renderCustomArrow(direction)}
+        {this.renderCustomArrow(direction, shouldGetWeek)}
       </TouchableOpacity>    
     );
   }
