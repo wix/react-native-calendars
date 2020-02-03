@@ -44,6 +44,7 @@ class Day extends Component {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
+    
     let marking = this.props.marking || {};
     if (marking && marking.constructor === Array && marking.length) {
       marking = {
@@ -52,6 +53,7 @@ class Day extends Component {
     }
     
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
+    
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
@@ -87,6 +89,9 @@ class Day extends Component {
         onLongPress={this.onDayLongPress}
         activeOpacity={marking.activeOpacity}
         disabled={marking.disableTouchEvent}
+        accessible
+        accessibilityRole={isDisabled ? undefined : 'button'}
+        accessibilityLabel={this.props.accessibilityLabel}
       >
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
         {dot}

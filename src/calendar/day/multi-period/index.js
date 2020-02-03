@@ -79,18 +79,14 @@ class Day extends Component {
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-
     const marking = this.props.marking || {};
     const periods = this.renderPeriods(marking);
+    const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       textStyle.push(this.style.selectedText);
-    } else if (
-      typeof marking.disabled !== 'undefined'
-        ? marking.disabled
-        : this.props.state === 'disabled'
-    ) {
+    } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       containerStyle.push(this.style.today);
@@ -104,6 +100,9 @@ class Day extends Component {
           onPress={this.onDayPress}
           onLongPress={this.onDayLongPress}
           disabled={marking.disableTouchEvent}
+          accessible
+          accessibilityRole={isDisabled ? undefined : 'button'}
+          accessibilityLabel={this.props.accessibilityLabel}
         >
           <Text allowFontScaling={false} style={textStyle}>
             {String(this.props.children)}
