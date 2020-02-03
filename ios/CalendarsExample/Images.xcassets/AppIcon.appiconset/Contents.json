@@ -9,7 +9,7 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "apple-touch-icon-60x60.png",
+      "filename" : "icon_60x60.png",
       "scale" : "3x"
     },
     {
@@ -33,13 +33,13 @@
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "apple-touch-icon-120x120.png",
+      "filename" : "icon_120x120.png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "apple-touch-icon-120x120-1.png",
+      "filename" : "icon_120x120-1.png",
       "scale" : "2x"
     },
     {

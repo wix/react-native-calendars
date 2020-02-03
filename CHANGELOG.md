@@ -279,3 +279,6 @@
 
 ## [1.259.0] - 2020-1-25
 - Android - app icon and demo app name.
+
+## [1.260.0] - 2020-2-3
+- Fix app icon.
