@@ -44,6 +44,7 @@ export default class MenuScreen extends Component {
               text: screen
             },
             backButton: {
+              accessibilityLabel: 'back',
               showTitle: false, // iOS only
               color: Platform.OS === 'ios' ? '#2d4150' : undefined
             }

@@ -200,8 +200,8 @@ class WeekCalendar extends Component {
                 style={this.style.dayHeader} 
                 numberOfLines={1} 
                 accessibilityLabel={''}
-                accessible={false} // not working
-                importantForAccessibility='no'
+                // accessible={false} // not working
+                // importantForAccessibility='no'
               >
                 {day}
               </Text>

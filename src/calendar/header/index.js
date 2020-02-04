@@ -148,13 +148,15 @@ class CalendarHeader extends Component {
     return (
       <View 
         style={this.props.style} 
-        accessible 
+        accessible
         accessibilityRole={'adjustable'}
         accessibilityActions={[
           {name: 'increment', label: 'increment'}, 
           {name: 'decrement', label: 'decrement'}
         ]}
         onAccessibilityAction={this.onAccessibilityAction}
+        accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+        importantForAccessibility={this.props.importantForAccessibility} // Android
       >
         <View style={this.style.header}>
           {leftArrow}
@@ -182,8 +184,8 @@ class CalendarHeader extends Component {
                 style={this.style.dayHeader}
                 numberOfLines={1}
                 accessibilityLabel={''}
-                accessible={false} // not working
-                importantForAccessibility='no'
+                // accessible={false} // not working
+                // importantForAccessibility='no'
               >
                 {day}
               </Text>
