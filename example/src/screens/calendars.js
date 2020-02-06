@@ -24,7 +24,13 @@ export default class CalendarsScreen extends Component {
           style={styles.calendar}
           hideExtraDays
           onDayPress={this.onDayPress}
-          markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}}}
+          markedDates={{
+            [this.state.selected]: {
+              selected: true, 
+              disableTouchEvent: true, 
+              selectedDotColor: 'orange'
+            }
+          }}
         />
 
         <Text style={styles.text}>Calendar with week numbers</Text>
@@ -87,7 +93,8 @@ export default class CalendarsScreen extends Component {
             '2012-05-22': {endingDay: true, color: 'gray'},
             '2012-05-24': {startingDay: true, color: 'gray'},
             '2012-05-25': {color: 'gray'},
-            '2012-05-26': {endingDay: true, color: 'gray'}}}
+            '2012-05-26': {endingDay: true, color: 'gray'}
+          }}
         />
 
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
@@ -162,7 +169,9 @@ export default class CalendarsScreen extends Component {
                 }
               }
             },
-            '2018-03-08': {selected: true},
+            '2018-03-08': {
+              selected: true
+            },
             '2018-03-09': {
               customStyles: {
                 container: {
@@ -195,7 +204,9 @@ export default class CalendarsScreen extends Component {
                 }
               }
             },
-            '2018-03-21': {disabled: true},
+            '2018-03-21': {
+              disabled: true
+            },
             '2018-03-28': {
               customStyles: {
                 text: {
@@ -226,16 +237,26 @@ export default class CalendarsScreen extends Component {
                   borderRadius: 0
                 }
               }
-            }}}
+            }
+          }}
         />
 
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
-          style={[styles.calendar, {height: 250, borderBottomWidth: 1, borderBottomColor: 'lightgrey'}]}
+          style={[
+            styles.calendar,
+            {
+              height: 250, 
+              borderBottomWidth: 1, 
+              borderBottomColor: 'lightgrey'
+            }
+          ]}
           dayComponent={({date, state}) => {
             return (
               <View>
-                <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text>
+                <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>
+                  {date.day}
+                </Text>
               </View>
             );
           }}

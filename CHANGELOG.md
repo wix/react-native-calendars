@@ -282,3 +282,6 @@
 
 ## [1.260.0] - 2020-2-3
 - Fix app icon.
+
+## [1.261.0] - 2020-2-5
+- Calendar - adding accessibility features.

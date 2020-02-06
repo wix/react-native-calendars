@@ -144,15 +144,26 @@ class CalendarHeader extends Component {
     }
 
     const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
+
     return (
-      <View style={this.props.style}>
+      <View 
+        style={this.props.style} 
+        accessible
+        accessibilityRole={'adjustable'}
+        accessibilityActions={[
+          {name: 'increment', label: 'increment'}, 
+          {name: 'decrement', label: 'decrement'}
+        ]}
+        onAccessibilityAction={this.onAccessibilityAction}
+        accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+        importantForAccessibility={this.props.importantForAccessibility} // Android
+      >
         <View style={this.style.header}>
           {leftArrow}
           <View style={{flexDirection: 'row'}}>
             <Text
               allowFontScaling={false}
               style={this.style.monthText}
-              accessibilityRole='header'
               {...webProps}
             >
               {this.props.month.toString(this.props.monthFormat)}
@@ -161,18 +172,20 @@ class CalendarHeader extends Component {
           </View>
           {rightArrow}
         </View>
-        {
-          !this.props.hideDayNames &&
+        {!this.props.hideDayNames &&
           <View style={this.style.week}>
-            {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
+            {this.props.weekNumbers && 
+              <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
+            }
             {weekDaysNames.map((day, idx) => (
               <Text
                 allowFontScaling={false}
                 key={idx}
-                accessible={false}
                 style={this.style.dayHeader}
                 numberOfLines={1}
-                importantForAccessibility='no'
+                accessibilityLabel={''}
+                // accessible={false} // not working
+                // importantForAccessibility='no'
               >
                 {day}
               </Text>
@@ -181,6 +194,19 @@ class CalendarHeader extends Component {
         }
       </View>
     );
+  }
+
+  onAccessibilityAction = event => {
+    switch (event.nativeEvent.actionName) {
+    case 'decrement':
+      this.onPressLeft();
+      break;
+    case 'increment':
+      this.onPressRight();
+      break;
+    default:
+      break;
+    }
   }
 }
 
