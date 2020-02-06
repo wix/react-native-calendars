@@ -105,7 +105,7 @@ class ExpandableCalendar extends Component {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT),
       position: props.initialPosition,
-      screenReaderEnabled: undefined
+      screenReaderEnabled: false
     };
 
     AccessibilityInfo.isScreenReaderEnabled().then((screenReaderEnabled) => {

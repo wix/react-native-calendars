@@ -84,7 +84,6 @@ class Day extends Component {
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
         disabled={marking.disableTouchEvent}
-        accessible
         accessibilityRole={isDisabled ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
