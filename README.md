@@ -90,13 +90,9 @@ LocaleConfig.defaultLocale = 'fr';
   // Handler which gets executed on day long press. Default = undefined
   onDayLongPress={(day) => {console.log('selected day', day)}}
   // Handler which gets executed on month press. Default = undefined
-  onHeaderPress={date => {
-    console.log("selected date", date);
-  }}
+  onHeaderPress={(date) => {console.log("selected date", date)}}
   // Handler which gets executed on day long press. Default = undefined
-  onHeaderLongPress={date => {
-    console.log("selected date", date);
-  }}
+  onHeaderLongPress={(date) => {console.log("selected date", date)}}
   // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
   monthFormat={'yyyy MM'}
   // Handler which gets executed when visible month changes in calendar. Default = undefined

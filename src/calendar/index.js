@@ -96,7 +96,7 @@ class Calendar extends Component {
     this.style = styleConstructor(this.props.theme);
 
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate(),
+      currentMonth: props.current ? parseDate(props.current) : XDate()
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -200,11 +200,8 @@ class Calendar extends Component {
       state = 'today';
     }
 
-    if (
-      !dateutils.sameMonth(day, this.state.currentMonth) &&
-      this.props.hideExtraDays
-    ) {
-      return <View key={id} style={{flex: 1}} />;
+    if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
+      return (<View key={id} style={{flex: 1}}/>);
     }
 
     const DayComp = this.getDayComponent();

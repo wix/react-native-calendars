@@ -31,6 +31,7 @@ class CalendarHeader extends Component {
 
   static defaultProps = {
     monthFormat: 'MMMM yyyy',
+    webAriaLevel: 1
   };
 
   constructor(props) {
@@ -150,8 +151,7 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
     }
 
-    const webProps =
-      Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
+    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
 
     if (this.props.onPress || this.props.onLongPress) {
       return (

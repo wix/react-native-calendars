@@ -53,7 +53,7 @@ class CalendarList extends Component {
     staticHeader: PropTypes.bool,
     /** A custom key extractor for the generated calendar months */
     keyExtractor: PropTypes.func
-  };
+  }
 
   static defaultProps = {
     horizontal: false,
@@ -66,7 +66,7 @@ class CalendarList extends Component {
     scrollsToTop: false,
     removeClippedSubviews: Platform.OS === 'android' ? false : true,
     keyExtractor: (item, index) => String(index)
-  };
+  }
 
   constructor(props) {
     super(props);
@@ -115,15 +115,10 @@ class CalendarList extends Component {
   }
 
   scrollToDay(d, offset, animated) {
+    const day = parseDate(d);
     const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(day.clone().setDate(1)));
     const size = this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight;
     let scrollAmount = (size * this.props.pastScrollRange) + (diffMonths * size) + (offset || 0);
-
-    const size = this.props.horizontal
-      ? this.props.calendarWidth
-      : this.props.calendarHeight;
-    let scrollAmount =
-      size * this.props.pastScrollRange + diffMonths * size + (offset || 0);
 
     if (!this.props.horizontal) {
       let week = 0;
