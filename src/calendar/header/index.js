@@ -7,10 +7,9 @@ import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
 import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} from '../../testIDs';
 
-
 class CalendarHeader extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     theme: PropTypes.object,
     hideArrows: PropTypes.bool,
@@ -24,11 +23,11 @@ class CalendarHeader extends Component {
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func,
     onPress: PropTypes.func,
-    onLongPress: PropTypes.func
+    onLongPress: PropTypes.func,
   };
 
   static defaultProps = {
-    monthFormat: 'MMMM yyyy'
+    monthFormat: 'MMMM yyyy',
   };
 
   constructor(props) {
@@ -51,7 +50,10 @@ class CalendarHeader extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (nextProps.month.toString('yyyy MM') !== this.props.month.toString('yyyy MM')) {
+    if (
+      nextProps.month.toString('yyyy MM') !==
+      this.props.month.toString('yyyy MM')
+    ) {
       return true;
     }
     if (nextProps.showIndicator !== this.props.showIndicator) {
@@ -99,7 +101,7 @@ class CalendarHeader extends Component {
   renderHeader() {
     let leftArrow = <View />;
     let rightArrow = <View />;
-    const { testID } = this.props;
+    const {testID} = this.props;
 
     if (!this.props.hideArrows) {
       leftArrow = (
@@ -108,14 +110,23 @@ class CalendarHeader extends Component {
           disabled={this.props.disableArrowLeft}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('left')
-            : <Image
+          testID={
+            testID
+              ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`
+              : CHANGE_MONTH_LEFT_ARROW
+          }>
+          {this.props.renderArrow ? (
+            this.props.renderArrow('left')
+          ) : (
+            <Image
               source={require('../img/previous.png')}
-              style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
+              style={
+                this.props.disableArrowLeft
+                  ? this.style.disabledArrowImage
+                  : this.style.arrowImage
+              }
+            />
+          )}
         </TouchableOpacity>
       );
       rightArrow = (
@@ -124,34 +135,48 @@ class CalendarHeader extends Component {
           disabled={this.props.disableArrowRight}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('right')
-            : <Image
+          testID={
+            testID
+              ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`
+              : CHANGE_MONTH_RIGHT_ARROW
+          }>
+          {this.props.renderArrow ? (
+            this.props.renderArrow('right')
+          ) : (
+            <Image
               source={require('../img/next.png')}
-              style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
+              style={
+                this.props.disableArrowRight
+                  ? this.style.disabledArrowImage
+                  : this.style.arrowImage
+              }
+            />
+          )}
         </TouchableOpacity>
       );
     }
 
     let indicator;
     if (this.props.showIndicator) {
-      indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
+      indicator = (
+        <ActivityIndicator
+          color={this.props.theme && this.props.theme.indicatorColor}
+        />
+      );
     }
 
-    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
+    const webProps =
+      Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
 
     if (this.props.onPress || this.props.onLongPress) {
       return (
-        <View 
-          style={this.props.style} 
+        <View
+          style={this.props.style}
           accessible
           accessibilityRole={'adjustable'}
           accessibilityActions={[
-            {name: 'increment', label: 'increment'}, 
-            {name: 'decrement', label: 'decrement'}
+            {name: 'increment', label: 'increment'},
+            {name: 'decrement', label: 'decrement'},
           ]}
           onAccessibilityAction={this.onAccessibilityAction}
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
@@ -161,15 +186,13 @@ class CalendarHeader extends Component {
             style={this.style.header}
             testID={this.props.testID}
             onPress={this.onHeaderPress}
-            onLongPress={this.onHeaderLongPress}
-          >
+            onLongPress={this.onHeaderLongPress}>
             {leftArrow}
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <Text
                 allowFontScaling={false}
                 style={this.style.monthText}
-                {...webProps}
-              >
+                {...webProps}>
                 {this.props.month.toString(this.props.monthFormat)}
               </Text>
               {indicator}
@@ -181,13 +204,13 @@ class CalendarHeader extends Component {
     }
 
     return (
-      <View 
-        style={this.props.style} 
+      <View
+        style={this.props.style}
         accessible
         accessibilityRole={'adjustable'}
         accessibilityActions={[
-          {name: 'increment', label: 'increment'}, 
-          {name: 'decrement', label: 'decrement'}
+          {name: 'increment', label: 'increment'},
+          {name: 'decrement', label: 'decrement'},
         ]}
         onAccessibilityAction={this.onAccessibilityAction}
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
@@ -195,12 +218,11 @@ class CalendarHeader extends Component {
       >
         <View style={this.style.header}>
           {leftArrow}
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <Text
               allowFontScaling={false}
               style={this.style.monthText}
-              {...webProps}
-            >
+              {...webProps}>
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
@@ -217,11 +239,13 @@ class CalendarHeader extends Component {
     return (
       <View style={this.props.style}>
         {this.renderHeader()}
-        {!this.props.hideDayNames &&
+        {!this.props.hideDayNames && (
           <View style={this.style.week}>
-            {this.props.weekNumbers && 
-              <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
-            }
+            {this.props.weekNumbers && (
+              <Text
+                allowFontScaling={false}
+                style={this.style.dayHeader}></Text>
+            )}
             {weekDaysNames.map((day, idx) => (
               <Text
                 allowFontScaling={false}
@@ -236,23 +260,23 @@ class CalendarHeader extends Component {
               </Text>
             ))}
           </View>
-        }
+        )}
       </View>
     );
   }
 
   onAccessibilityAction = event => {
     switch (event.nativeEvent.actionName) {
-    case 'decrement':
-      this.onPressLeft();
-      break;
-    case 'increment':
-      this.onPressRight();
-      break;
-    default:
-      break;
+      case 'decrement':
+        this.onPressLeft();
+        break;
+      case 'increment':
+        this.onPressRight();
+        break;
+      default:
+        break;
     }
-  }
+  };
 }
 
 export default CalendarHeader;

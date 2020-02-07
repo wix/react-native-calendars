@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Text, View, Dimensions, Animated, ViewPropTypes } from 'react-native';
+import React, {Component} from 'react';
+import {Text, View, Dimensions, Animated, ViewPropTypes} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import { parseDate, xdateToData } from '../interface';
+import {parseDate, xdateToData} from '../interface';
 import dateutils from '../dateutils';
 import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
@@ -85,7 +85,7 @@ export default class AgendaView extends Component {
     /** Set this true while waiting for new data from a refresh. */
     refreshing: PropTypes.bool,
     /** Display loading indicator. Default = false */
-    displayLoadingIndicator: PropTypes.bool
+    displayLoadingIndicator: PropTypes.bool,
   };
 
   constructor(props) {
@@ -105,7 +105,7 @@ export default class AgendaView extends Component {
       calendarScrollable: false,
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
-      topDay: parseDate(this.props.selected) || XDate(true)
+      topDay: parseDate(this.props.selected) || XDate(true),
     };
 
     this.currentMonth = this.state.selectedDay.clone();
@@ -117,11 +117,11 @@ export default class AgendaView extends Component {
     this.onSnapAfterDrag = this.onSnapAfterDrag.bind(this);
     this.generateMarkings = this.generateMarkings.bind(this);
     this.knobTracker = new VelocityTracker();
-    this.state.scrollY.addListener(({ value }) => this.knobTracker.add(value));
+    this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
   }
 
   calendarOffset() {
-    return 96 - (this.viewHeight / 2);
+    return 96 - this.viewHeight / 2;
   }
 
   initialScrollPadPosition() {
@@ -130,7 +130,6 @@ export default class AgendaView extends Component {
 
   setScrollPadPosition(y, animated) {
     this.scrollPad.getNode().scrollTo({x: 0, y, animated});
-
   }
 
   onScrollPadLayout() {
@@ -139,7 +138,7 @@ export default class AgendaView extends Component {
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
     this.setScrollPadPosition(this.initialScrollPadPosition(), false);
     // delay rendering calendar in full height because otherwise it still flickers sometimes
-    setTimeout(() => this.setState({ calendarIsReady: true }), 0);
+    setTimeout(() => this.setState({calendarIsReady: true}), 0);
   }
 
   onLayout(event) {
@@ -151,13 +150,13 @@ export default class AgendaView extends Component {
   onTouchStart() {
     this.headerState = 'touched';
     if (this.knob) {
-      this.knob.setNativeProps({ style: { opacity: 0.5 } });
+      this.knob.setNativeProps({style: {opacity: 0.5}});
     }
   }
 
   onTouchEnd() {
     if (this.knob) {
-      this.knob.setNativeProps({ style: { opacity: 1 } });
+      this.knob.setNativeProps({style: {opacity: 1}});
     }
 
     if (this.headerState === 'touched') {
@@ -209,13 +208,13 @@ export default class AgendaView extends Component {
     ) {
       this.setState(
         {
-          firstResevationLoad: true
+          firstResevationLoad: true,
         },
         () => {
           if (this.props.loadItemsForMonth) {
             this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
           }
-        }
+        },
       );
     }
   }
@@ -232,7 +231,7 @@ export default class AgendaView extends Component {
   UNSAFE_componentWillReceiveProps(props) {
     if (props.items) {
       this.setState({
-        firstResevationLoad: false
+        firstResevationLoad: false,
       });
     } else {
       this.loadReservations(props);
@@ -241,7 +240,7 @@ export default class AgendaView extends Component {
 
   enableCalendarScrolling() {
     this.setState({
-      calendarScrollable: true
+      calendarScrollable: true,
     });
 
     if (this.props.onCalendarToggled) {
@@ -258,7 +257,7 @@ export default class AgendaView extends Component {
     this.calendar.scrollToDay(
       this.state.selectedDay,
       this.calendarOffset() + 1,
-      true
+      true,
     );
   }
 
@@ -271,7 +270,7 @@ export default class AgendaView extends Component {
 
     this.setState({
       calendarScrollable: false,
-      selectedDay: day.clone()
+      selectedDay: day.clone(),
     });
 
     if (this.props.onCalendarToggled) {
@@ -280,7 +279,7 @@ export default class AgendaView extends Component {
 
     if (!optimisticScroll) {
       this.setState({
-        topDay: day.clone()
+        topDay: day.clone(),
       });
     }
 
@@ -324,7 +323,7 @@ export default class AgendaView extends Component {
 
     this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
     this.setState({
-      selectedDay: parseDate(day)
+      selectedDay: parseDate(day),
     });
 
     if (this.props.onDayChange) {
@@ -339,7 +338,7 @@ export default class AgendaView extends Component {
       markings = {};
       Object.keys(this.props.items || {}).forEach(key => {
         if (this.props.items[key] && this.props.items[key].length) {
-          markings[key] = { marked: true };
+          markings[key] = {marked: true};
         }
       });
     }
@@ -347,61 +346,72 @@ export default class AgendaView extends Component {
     const key = this.state.selectedDay.toString('yyyy-MM-dd');
     return {
       ...markings,
-      [key]: { ...(markings[key] || {}), ...{ selected: true } }
+      [key]: {...(markings[key] || {}), ...{selected: true}},
     };
   }
 
   render() {
     const agendaHeight = this.initialScrollPadPosition();
     const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
-    
-    const weekdaysStyle = [this.styles.weekdays, {
-      opacity: this.state.scrollY.interpolate({
-        inputRange: [agendaHeight - HEADER_HEIGHT, agendaHeight],
-        outputRange: [0, 1],
-        extrapolate: 'clamp'
-      }),
-      transform: [{translateY: this.state.scrollY.interpolate({
-        inputRange: [Math.max(0, agendaHeight - HEADER_HEIGHT), agendaHeight],
-        outputRange: [-HEADER_HEIGHT, 0],
-        extrapolate: 'clamp'
-      })}]
-    }];
 
+    const weekdaysStyle = [
+      this.styles.weekdays,
+      {
+        opacity: this.state.scrollY.interpolate({
+          inputRange: [agendaHeight - HEADER_HEIGHT, agendaHeight],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        }),
+        transform: [
+          {
+            translateY: this.state.scrollY.interpolate({
+              inputRange: [
+                Math.max(0, agendaHeight - HEADER_HEIGHT),
+                agendaHeight,
+              ],
+              outputRange: [-HEADER_HEIGHT, 0],
+              extrapolate: 'clamp',
+            }),
+          },
+        ],
+      },
+    ];
 
     const headerTranslate = this.state.scrollY.interpolate({
       inputRange: [0, agendaHeight],
       outputRange: [agendaHeight, 0],
-      extrapolate: 'clamp'
+      extrapolate: 'clamp',
     });
 
     const contentTranslate = this.state.scrollY.interpolate({
       inputRange: [0, agendaHeight],
       outputRange: [0, agendaHeight / 2],
-      extrapolate: 'clamp'
+      extrapolate: 'clamp',
     });
 
     const headerStyle = [
       this.styles.header,
-      {bottom: agendaHeight, transform: [{translateY: headerTranslate}]}
+      {bottom: agendaHeight, transform: [{translateY: headerTranslate}]},
     ];
 
     if (!this.state.calendarIsReady) {
       // limit header height until everything is setup for calendar dragging
-      headerStyle.push({ height: 0 });
+      headerStyle.push({height: 0});
       // fill header with appStyle.calendarBackground background to reduce flickering
-      weekdaysStyle.push({ height: HEADER_HEIGHT });
+      weekdaysStyle.push({height: HEADER_HEIGHT});
     }
 
-    const shouldAllowDragging = !this.props.hideKnob && !this.state.calendarScrollable;
-    const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT : 0) - KNOB_HEIGHT;
+    const shouldAllowDragging =
+      !this.props.hideKnob && !this.state.calendarScrollable;
+    const scrollPadPosition =
+      (shouldAllowDragging ? HEADER_HEIGHT : 0) - KNOB_HEIGHT;
 
     const scrollPadStyle = {
       position: 'absolute',
       width: 80,
       height: KNOB_HEIGHT,
       top: scrollPadPosition,
-      left: (this.viewWidth - 80) / 2
+      left: (this.viewWidth - 80) / 2,
     };
 
     let knob = <View style={this.styles.knobContainer} />;
@@ -418,26 +428,26 @@ export default class AgendaView extends Component {
         </View>
       );
     }
-    const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
+    const shouldHideExtraDays = this.state.calendarScrollable
+      ? this.props.hideExtraDays
+      : false;
 
     return (
       <View
         onLayout={this.onLayout}
-        style={[this.props.style, { flex: 1, overflow: 'hidden' }]}
-      >
+        style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
         <View style={this.styles.reservations}>
           {this.renderReservations()}
         </View>
         <Animated.View style={headerStyle}>
           <Animated.View
-            style={{ flex: 1, transform: [{ translateY: contentTranslate }] }}
-          >
+            style={{flex: 1, transform: [{translateY: contentTranslate}]}}>
             <CalendarList
               onLayout={() => {
                 this.calendar.scrollToDay(
                   this.state.selectedDay.clone(),
                   this.calendarOffset(),
-                  false
+                  false,
                 );
               }}
               calendarWidth={this.viewWidth}
@@ -479,8 +489,7 @@ export default class AgendaView extends Component {
               allowFontScaling={false}
               key={day + index}
               style={this.styles.weekday}
-              numberOfLines={1}
-            >
+              numberOfLines={1}>
               {day}
             </Text>
           ))}
@@ -499,10 +508,13 @@ export default class AgendaView extends Component {
           onScrollEndDrag={this.onSnapAfterDrag}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}],
-            {useNativeDriver: true}
-          )}
-        >
-          <View testID={AGENDA_CALENDAR_KNOB} style={{height: agendaHeight + KNOB_HEIGHT}} onLayout={this.onScrollPadLayout}/>
+            {useNativeDriver: true},
+          )}>
+          <View
+            testID={AGENDA_CALENDAR_KNOB}
+            style={{height: agendaHeight + KNOB_HEIGHT}}
+            onLayout={this.onScrollPadLayout}
+          />
         </Animated.ScrollView>
       </View>
     );

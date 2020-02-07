@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import React, {Component} from 'react';
+import {Text, View} from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
@@ -8,7 +8,7 @@ class CalendarListItem extends Component {
 
   static defaultProps = {
     hideArrows: true,
-    hideExtraDays: true
+    hideExtraDays: true,
   };
 
   constructor(props) {
@@ -58,10 +58,10 @@ class CalendarListItem extends Component {
           style={[
             {
               height: this.props.calendarHeight,
-              width: this.props.calendarWidth
+              width: this.props.calendarWidth,
             },
             this.style.calendar,
-            this.props.style
+            this.props.style,
           ]}
           current={row}
           hideArrows={this.props.hideArrows}
@@ -83,9 +83,19 @@ class CalendarListItem extends Component {
           disabledByDefault={this.props.disabledByDefault}
           showWeekNumbers={this.props.showWeekNumbers}
           renderArrow={this.props.renderArrow}
-          onPressArrowLeft={this.props.horizontal ? this.onPressArrowLeft : this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.horizontal ? this.onPressArrowRight : this.props.onPressArrowRight}
-          headerStyle={this.props.horizontal ? this.props.headerStyle : undefined}
+          onPressArrowLeft={
+            this.props.horizontal
+              ? this.onPressArrowLeft
+              : this.props.onPressArrowLeft
+          }
+          onPressArrowRight={
+            this.props.horizontal
+              ? this.onPressArrowRight
+              : this.props.onPressArrowRight
+          }
+          headerStyle={
+            this.props.horizontal ? this.props.headerStyle : undefined
+          }
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
           importantForAccessibility={this.props.importantForAccessibility} // Android
         />
@@ -98,11 +108,10 @@ class CalendarListItem extends Component {
           style={[
             {
               height: this.props.calendarHeight,
-              width: this.props.calendarWidth
+              width: this.props.calendarWidth,
             },
-            this.style.placeholder
-          ]}
-        >
+            this.style.placeholder,
+          ]}>
           <Text allowFontScaling={false} style={this.style.placeholderText}>
             {text}
           </Text>
