@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import CalendarContext from './calendarContext';
 

@@ -1,14 +1,14 @@
-**LOOKING FOR A MAINTAINER** <br>
+**LOOKING FOR A MAINTAINER**
 We love this project, but currently we don’t have enough time to work on it. So we are looking for a maintainer. If you have enough time and knowledge and want to become one - please let us know (levv@wix.com, inbalti@wix.com, ethans@wix.com)
 
 ---
 
-# React Native Calendars ✨ 🗓️ 📆
+# React Native Calendars 🗓️ 📆
 
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
 [![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
 
-This module includes various customizable react native calendar components.
+This module includes various customizable **React-Native** calendar components.
 
 The package is both **Android** and **iOS** compatible.
 
@@ -44,15 +44,15 @@ Event handler callbacks are called with `calendar objects` like this:
 
 ```javasctipt
 {
-  day: 1,     // day of month (1-31)
-  month: 1,   // month of year (1-12)
-  year: 2017, // year
+  day: 1,      // day of month (1-31)
+  month: 1,    // month of year (1-12)
+  year: 2017,  // year
   timestamp,   // UTC timestamp representing 00:00 AM of this date
   dateString: '2016-05-13' // date formatted as 'YYYY-MM-DD' string
 }
 ```
 
-Parameters that require date types accept YYYY-MM-DD formated datestrings, JavaScript date objects, `calendar objects` and UTC timestamps.
+Parameters that require date types accept `YYYY-MM-DD` formated `date-strings`, JavaScript date objects, `calendar objects` and `UTC timestamps`.
 
 Calendars can be localized by adding custom locales to `LocaleConfig` object:
 
@@ -144,7 +144,7 @@ LocaleConfig.defaultLocale = "fr";
   // Hide month navigation arrows. Default = false
   hideArrows={true}
   // Replace default arrows with custom ones (direction can be 'left' or 'right')
-  renderArrow={direction => <Arrow />}
+  renderArrow={(direction) => (<Arrow/>)}
   // Do not show days of other months in month page. Default = false
   hideExtraDays={true}
   // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
@@ -158,20 +158,25 @@ LocaleConfig.defaultLocale = "fr";
   showWeekNumbers={true}
   // Handler which gets executed when press arrow icon left. It receive a callback can go back month
   onPressArrowLeft={substractMonth => substractMonth()}
-  // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+  // Handler which gets executed when press arrow icon right. It receive a callback can go next month
   onPressArrowRight={addMonth => addMonth()}
+  // Disable left arrow. Default = false
+  disableArrowLeft={true}
+  // Disable right arrow. Default = false
+  disableArrowRight={true}
 />
 ```
 
 #### Date marking
 
-**!Disclaimer!** Make sure that `markedDates` param is immutable. If you change `markedDates` object content but the reference to it does not change calendar update will not be triggered.
+**Disclaimer**: Make sure that `markedDates` param is immutable. If you change `markedDates` object content but the reference to it does not change calendar update will not be triggered.
 
 Dot marking
 
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking1.png?raw=true">
 </kbd>
+<p></p>
 
 ```javascript
 <Calendar
@@ -185,15 +190,17 @@ Dot marking
 />
 ```
 
-You can customise a dot color for each day independently.
+You can customize a dot color for each day independently.
 
 Multi-Dot marking
 
 <kbd>
  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking4.png?raw=true">
 </kbd>
+<p></p>
 
-Use markingType = 'multi-dot' if you want to display more than one dot. Both the Calendar and CalendarList control support multiple dots by using 'dots' array in markedDates. The property 'color' is mandatory while 'key' and 'selectedColor' are optional. If key is omitted then the array index is used as key. If selectedColor is omitted then 'color' will be used for selected dates.
+Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop. 
+The property `color` is mandatory while `key` and `selectedColor` are optional. If key is omitted then the array index is used as key. If `selectedColor` is omitted then `color` will be used for selected dates.
 
 ```javascript
 const vacation = { key: "vacation", color: "red", selectedDotColor: "blue" };
@@ -222,6 +229,7 @@ Period marking
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking3.png?raw=true">
 </kbd>
+<p></p>
 
 ```javascript
 <Calendar
@@ -252,24 +260,25 @@ Multi-period marking
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/marking6.png?raw=true">
 </kbd>
+<p></p>
 
-CAUTION: This marking is only fully supported by the `<Calendar />` component because it expands its height. Usage with `<CalendarList />` might lead to overflow issues.
+**CAUTION**: This marking is only fully supported by the `<Calendar/>` component because it expands its height. Usage with `<CalendarList/>` might lead to overflow issues.
 
 ```javascript
 <Calendar
   markedDates={{
     "2017-12-14": {
       periods: [
-        { startingDay: false, endingDay: true, color: "#5f9ea0" },
-        { startingDay: false, endingDay: true, color: "#ffa500" },
-        { startingDay: true, endingDay: false, color: "#f0e68c" }
+        {startingDay: false, endingDay: true, color: '#5f9ea0'},
+        {startingDay: false, endingDay: true, color: '#ffa500'},
+        {startingDay: true, endingDay: false, color: '#f0e68c'}
       ]
     },
     "2017-12-15": {
       periods: [
-        { startingDay: true, endingDay: false, color: "#ffa500" },
-        { color: "transparent" },
-        { startingDay: false, endingDay: false, color: "#f0e68c" }
+        {startingDay: true, endingDay: false, color: '#ffa500'},
+        {color: 'transparent'},
+        {startingDay: false, endingDay: false, color: '#f0e68c'}
       ]
     }
   }}
@@ -283,6 +292,7 @@ Custom marking allows you to customize each marker with custom styles.
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/custom.png?raw=true">
 </kbd>
+<p></p>
 
 ```javascript
 <Calendar
@@ -295,8 +305,8 @@ Custom marking allows you to customize each marker with custom styles.
           backgroundColor: "green"
         },
         text: {
-          color: "black",
-          fontWeight: "bold"
+          color: 'black',
+          fontWeight: 'bold'
         }
       }
     },
@@ -307,7 +317,7 @@ Custom marking allows you to customize each marker with custom styles.
           elevation: 2
         },
         text: {
-          color: "blue"
+          color: 'blue'
         }
       }
     }
@@ -322,8 +332,9 @@ Keep in mind that different marking types are not compatible. You can use just o
 <kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/loader.png?raw=true">
 </kbd>
+<p></p>
 
-The loading indicator next to month name will be displayed if `<Calendar />` has `displayLoadingIndicator` property and `markedDates` collection does not have a value for every day of the month in question. When you load data for days, just set `[]` or special marking value to all days in `markedDates` collection.
+The loading indicator next to the month name will be displayed if `<Calendar/>` has `displayLoadingIndicator` prop and the `markedDates` collection does not have a value for every day of the month in question. When you load data for days, just set `[]` or special marking value to all days in `markedDates` collection.
 
 #### Customizing look & feel
 
@@ -337,25 +348,26 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
   }}
   // Specify theme properties to override specific styles for calendar parts. Default = {}
   theme={{
-    backgroundColor: "#ffffff",
-    calendarBackground: "#ffffff",
-    textSectionTitleColor: "#b6c1cd",
-    selectedDayBackgroundColor: "#00adf5",
-    selectedDayTextColor: "#ffffff",
-    todayTextColor: "#00adf5",
-    dayTextColor: "#2d4150",
-    textDisabledColor: "#d9e1e8",
-    dotColor: "#00adf5",
-    selectedDotColor: "#ffffff",
-    arrowColor: "orange",
-    monthTextColor: "blue",
-    indicatorColor: "blue",
-    textDayFontFamily: "monospace",
-    textMonthFontFamily: "monospace",
-    textDayHeaderFontFamily: "monospace",
-    textDayFontWeight: "300",
-    textMonthFontWeight: "bold",
-    textDayHeaderFontWeight: "300",
+    backgroundColor: '#ffffff',
+    calendarBackground: '#ffffff',
+    textSectionTitleColor: '#b6c1cd',
+    selectedDayBackgroundColor: '#00adf5',
+    selectedDayTextColor: '#ffffff',
+    todayTextColor: '#00adf5',
+    dayTextColor: '#2d4150',
+    textDisabledColor: '#d9e1e8',
+    dotColor: '#00adf5',
+    selectedDotColor: '#ffffff',
+    arrowColor: 'orange',
+    disabledArrowColor: '#d9e1e8',
+    monthTextColor: 'blue',
+    indicatorColor: 'blue',
+    textDayFontFamily: 'monospace',
+    textMonthFontFamily: 'monospace',
+    textDayHeaderFontFamily: 'monospace',
+    textDayFontWeight: '300',
+    textMonthFontWeight: 'bold',
+    textDayHeaderFontWeight: '300',
     textDayFontSize: 16,
     textMonthFontSize: 16,
     textDayHeaderFontSize: 16
@@ -365,11 +377,11 @@ The loading indicator next to month name will be displayed if `<Calendar />` has
 
 #### Advanced styling
 
-If you want to have complete control over calendar styles you can do it by overriding default style.js files. For example, if you want to override calendar header style first you have to find stylesheet id for this file:
+If you want to have complete control over the calendar styles you can do it by overriding default `style.js` files. For example, if you want to override `<CalendarHeader/>` style first you have to find stylesheet id for this file:
 
 https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/style.js#L4
 
-In this case it is 'stylesheet.calendar.header'. Next you can add overriding stylesheet to your theme with this id.
+In this case it is `stylesheet.calendar.header`. Next you can add overriding stylesheet to your theme with this id.
 
 https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js#L56
 
@@ -386,25 +398,19 @@ theme={{
 }}
 ```
 
-**Disclaimer**: issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
+**Disclaimer**: Issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
 
 #### Overriding day component
 
-If you need custom functionality not supported by current day component implementations you can pass your own custom day
-component to the calendar.
+If you need custom functionality not supported by current day component implementations you can pass your own custom day component to the calendar.
 
 ```javascript
 <Calendar
-  style={[styles.calendar, { height: 300 }]}
-  dayComponent={({ date, state }) => {
+  style={[styles.calendar, {height: 300}]}
+  dayComponent={({date, state}) => {
     return (
-      <View style={{ flex: 1 }}>
-        <Text
-          style={{
-            textAlign: "center",
-            color: state === "disabled" ? "gray" : "black"
-          }}
-        >
+      <View>
+        <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>
           {date.day}
         </Text>
       </View>
@@ -413,13 +419,13 @@ component to the calendar.
 />
 ```
 
-The dayComponent prop has to receive a RN component or function that receive props. The day component will receive such props:
+The `dayComponent` prop has to receive a RN component or a function that receive props. The `dayComponent` will receive such props:
 
-- state - disabled if the day should be disabled (this is decided by base calendar component)
-- marking - markedDates value for this day
-- date - the date object representing this day
+* state - disabled if the day should be disabled (this is decided by base calendar component).
+* marking - `markedDates` value for this day.
+* date - the date object representing this day.
 
-**Tip:** Don't forget to implement shouldComponentUpdate for your custom day component to make calendar perform better
+**Tip**: Don't forget to implement `shouldComponentUpdate()` for your custom day component to make the calendar perform better
 
 If you implement an awesome day component please make a PR so that other people could use it :)
 
@@ -428,8 +434,9 @@ If you implement an awesome day component please make a PR so that other people 
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/calendar-list.gif?raw=true">
 </kbd>
+<p></p>
 
-`<CalendarList />` is scrollable semi-infinite calendar composed of `<Calendar />` components. Currently it is possible to scroll 4 years back and 4 years to the future. All paramters that are available for `<Calendar />` are also available for this component. There are also some additional params that can be used:
+`<CalendarList/>` is scrollable semi-infinite calendar composed of `<Calendar/>` components. Currently it is possible to scroll 4 years back and 4 years to the future. All parameters that are available for `<Calendar/>` are also available for this component. There are also some additional params that can be used:
 
 ```javascript
 <CalendarList
@@ -452,6 +459,7 @@ If you implement an awesome day component please make a PR so that other people 
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/horizontal-calendar-list.gif?raw=true">
 </kbd>
+<p></p>
 
 You can also make the `CalendarList` scroll horizontally. To do that you need to pass specific props to the `CalendarList`:
 
@@ -473,41 +481,31 @@ You can also make the `CalendarList` scroll horizontally. To do that you need to
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/agenda.gif?raw=true">
 </kbd>
+<p></p>
 
-An advanced agenda component that can display interactive listings for calendar day items.
+An advanced `Agenda` component that can display interactive listings for calendar day items.
 
 ```javascript
 <Agenda
-  // the list of items that have to be displayed in agenda. If you want to render item as empty date
-  // the value of date key kas to be an empty array []. If there exists no value for date key it is
+  // The list of items that have to be displayed in agenda. If you want to render item as empty date
+  // the value of date key has to be an empty array []. If there exists no value for date key it is
   // considered that the date in question is not yet loaded
   items={{
-    "2012-05-22": [{ text: "item 1 - any js object" }],
-    "2012-05-23": [{ text: "item 2 - any js object" }],
-    "2012-05-24": [],
-    "2012-05-25": [
-      { text: "item 3 - any js object" },
-      { text: "any js object" }
-    ]
+    '2012-05-22': [{name: 'item 1 - any js object'}],
+    '2012-05-23': [{name: 'item 2 - any js object', height: 80}],
+    '2012-05-24': [],
+    '2012-05-25': [{name: 'item 3 - any js object'}, {name: 'any js object'}]
   }}
-  // callback that gets called when items for a certain month should be loaded (month became visible)
-  loadItemsForMonth={month => {
-    console.log("trigger items loading");
-  }}
-  // callback that fires when the calendar is opened or closed
-  onCalendarToggled={calendarOpened => {
-    console.log(calendarOpened);
-  }}
-  // callback that gets called on day press
-  onDayPress={day => {
-    console.log("day pressed");
-  }}
-  // callback that gets called when day changes while scrolling agenda list
-  onDayChange={day => {
-    console.log("day changed");
-  }}
-  // initially selected day
-  selected={"2012-05-16"}
+  // Callback that gets called when items for a certain month should be loaded (month became visible)
+  loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+  // Callback that fires when the calendar is opened or closed
+  onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
+  // Callback that gets called on day press
+  onDayPress={(day)=>{console.log('day pressed')}}
+  // Callback that gets called when day changes while scrolling agenda list
+  onDayChange={(day)=>{console.log('day changed')}}
+  // Initially selected day
+  selected={'2012-05-16'}
   // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
   minDate={"2012-05-10"}
   // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
@@ -516,30 +514,18 @@ An advanced agenda component that can display interactive listings for calendar 
   pastScrollRange={50}
   // Max amount of months allowed to scroll to the future. Default = 50
   futureScrollRange={50}
-  // specify how each item should be rendered in agenda
-  renderItem={(item, firstItemInDay) => {
-    return <View />;
-  }}
-  // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-  renderDay={(day, item) => {
-    return <View />;
-  }}
-  // specify how empty date content with no items should be rendered
-  renderEmptyDate={() => {
-    return <View />;
-  }}
-  // specify how agenda knob should look like
-  renderKnob={() => {
-    return <View />;
-  }}
-  // specify what should be rendered instead of ActivityIndicator
-  renderEmptyData={() => {
-    return <View />;
-  }}
-  // specify your item comparison function for increased performance
-  rowHasChanged={(r1, r2) => {
-    return r1.text !== r2.text;
-  }}
+  // Specify how each item should be rendered in agenda
+  renderItem={(item, firstItemInDay) => {return (<View />);}}
+  // Specify how each date should be rendered. day can be undefined if the item is not first in that day.
+  renderDay={(day, item) => {return (<View />);}}
+  // Specify how empty date content with no items should be rendered
+  renderEmptyDate={() => {return (<View />);}}
+  // Specify how agenda knob should look like
+  renderKnob={() => {return (<View />);}}
+  // Specify what should be rendered instead of ActivityIndicator
+  renderEmptyData = {() => {return (<View />);}}
+  // Specify your item comparison function for increased performance
+  rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
   hideKnob={true}
   // By default, agenda dates are marked if they have at least one item, but you can override this if needed
@@ -548,13 +534,15 @@ An advanced agenda component that can display interactive listings for calendar 
     "2012-05-17": { marked: true },
     "2012-05-18": { disabled: true }
   }}
+  // If disabledByDefault={true} dates flagged as not disabled will be enabled. Default = false
+  disabledByDefault={true}
   // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
   onRefresh={() => console.log("refreshing...")}
   // Set this true while waiting for new data from a refresh
   refreshing={false}
   // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
   refreshControl={null}
-  // agenda theme
+  // Agenda theme
   theme={{
     ...calendarTheme,
     agendaDayTextColor: "yellow",
@@ -562,18 +550,20 @@ An advanced agenda component that can display interactive listings for calendar 
     agendaTodayColor: "red",
     agendaKnobColor: "blue"
   }}
-  // agenda container style
+  // Agenda container style
   style={{}}
 />
 ```
 
 ## Authors
 
-- [Tautvilas Mecinskas](https://github.com/tautvilas/) - Initial code - [@tautvilas](https://twitter.com/TautviIas)
-- Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
+* [Tautvilas Mecinskas](https://github.com/tautvilas/) - Initial code - [@tautvilas](https://twitter.com/Tautvilas)
+* Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
 
 See also the list of [contributors](https://github.com/wix/react-native-calendar-components/contributors) who participated in this project.
 
 ## Contributing
 
-Pull requests are welcome. `npm run test` and `npm run lint` before push.
+Pull requests are most welcome! 
+Please `npm run test` and `npm run lint` before push.
+Don't forget to add a **title** and a **description** that explain the issue you're trying to solve and your suggested solution. Screenshots and gifs are very helpful.

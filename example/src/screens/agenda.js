@@ -1,14 +1,12 @@
-import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet
-} from 'react-native';
+import React, {Component} from 'react';
+import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Agenda} from 'react-native-calendars';
+
 
 export default class AgendaScreen extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       items: {}
     };
@@ -25,8 +23,8 @@ export default class AgendaScreen extends Component {
         rowHasChanged={this.rowHasChanged.bind(this)}
         // markingType={'period'}
         // markedDates={{
-        //    '2017-05-08': {textColor: '#666'},
-        //    '2017-05-09': {textColor: '#666'},
+        //    '2017-05-08': {textColor: '#43515c'},
+        //    '2017-05-09': {textColor: '#43515c'},
         //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
         //    '2017-05-21': {startingDay: true, color: 'blue'},
         //    '2017-05-22': {endingDay: true, color: 'gray'},
@@ -36,6 +34,7 @@ export default class AgendaScreen extends Component {
         // monthFormat={'yyyy'}
         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+        // hideExtraDays={false}
       />
     );
   }
@@ -50,31 +49,36 @@ export default class AgendaScreen extends Component {
           const numItems = Math.floor(Math.random() * 5);
           for (let j = 0; j < numItems; j++) {
             this.state.items[strTime].push({
-              name: 'Item for ' + strTime,
+              name: 'Item for ' + strTime + ' #' + j,
               height: Math.max(50, Math.floor(Math.random() * 150))
             });
           }
         }
       }
-      //console.log(this.state.items);
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
         items: newItems
       });
     }, 1000);
-    // console.log(`Load Items for ${day.year}-${day.month}`);
   }
 
   renderItem(item) {
     return (
-      <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+      <TouchableOpacity 
+        style={[styles.item, {height: item.height}]} 
+        onPress={() => Alert.alert(item.name)}
+      >
+        <Text>{item.name}</Text>
+      </TouchableOpacity>
     );
   }
 
   renderEmptyDate() {
     return (
-      <View style={styles.emptyDate}><Text>This is empty date!</Text></View>
+      <View style={styles.emptyDate}>
+        <Text>This is empty date!</Text>
+      </View>
     );
   }
 

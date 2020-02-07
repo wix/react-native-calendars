@@ -1,21 +1,23 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {View} from 'react-native';
+import {CalendarList} from 'react-native-calendars';
 
-import { CalendarList } from 'react-native-calendars';
 
-export default class CalendarsList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default class HorizontalCalendarList extends Component {
+  
   render() {
     return (
-      <CalendarList
-        current={'2012-05-16'}
-        hideArrows={false}
-        // onHeaderPress={date => console.log('Header Pressed!', date)}
-        pastScrollRange={24}
-        futureScrollRange={24}
-      />
+      <View>
+        <CalendarList
+          current={'2012-05-16'}
+          pastScrollRange={24}
+          futureScrollRange={24}
+          onHeaderPress={date => console.log('Header Pressed!', date)}
+          horizontal
+          pagingEnabled
+          style={{borderBottomWidth: 1, borderBottomColor: 'lightgrey'}}
+        />
+      </View>
     );
   }
 }

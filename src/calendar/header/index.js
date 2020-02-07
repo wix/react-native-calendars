@@ -105,85 +105,108 @@ class CalendarHeader extends Component {
       leftArrow = (
         <TouchableOpacity
           onPress={this.onPressLeft}
+          disabled={this.props.disableArrowLeft}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
         >
-          {this.props.renderArrow ? (
-            this.props.renderArrow('left')
-          ) : (
-            <Image
+          {this.props.renderArrow
+            ? this.props.renderArrow('left')
+            : <Image
               source={require('../img/previous.png')}
-              style={this.style.arrowImage}
-            />
-          )}
+              style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
+            />}
         </TouchableOpacity>
       );
       rightArrow = (
         <TouchableOpacity
           onPress={this.onPressRight}
+          disabled={this.props.disableArrowRight}
           style={this.style.arrow}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
-
         >
-          {this.props.renderArrow ? (
-            this.props.renderArrow('right')
-          ) : (
-            <Image
+          {this.props.renderArrow
+            ? this.props.renderArrow('right')
+            : <Image
               source={require('../img/next.png')}
-              style={this.style.arrowImage}
-            />
-          )}
+              style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
+            />}
         </TouchableOpacity>
       );
     }
+
     let indicator;
     if (this.props.showIndicator) {
-      indicator = (
-        <ActivityIndicator
-          color={this.props.theme && this.props.theme.indicatorColor}
-        />
-      );
+      indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
     }
+
+    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
 
     if (this.props.onPress || this.props.onLongPress) {
       return (
-        <TouchableOpacity
-          style={this.style.header}
-          testID={this.props.testID}
-          onPress={this.onHeaderPress}
-          onLongPress={this.onHeaderLongPress}
+        <View 
+          style={this.props.style} 
+          accessible
+          accessibilityRole={'adjustable'}
+          accessibilityActions={[
+            {name: 'increment', label: 'increment'}, 
+            {name: 'decrement', label: 'decrement'}
+          ]}
+          onAccessibilityAction={this.onAccessibilityAction}
+          accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+          importantForAccessibility={this.props.importantForAccessibility} // Android
         >
+          <TouchableOpacity
+            style={this.style.header}
+            testID={this.props.testID}
+            onPress={this.onHeaderPress}
+            onLongPress={this.onHeaderLongPress}
+          >
+            {leftArrow}
+            <View style={{ flexDirection: 'row' }}>
+              <Text
+                allowFontScaling={false}
+                style={this.style.monthText}
+                {...webProps}
+              >
+                {this.props.month.toString(this.props.monthFormat)}
+              </Text>
+              {indicator}
+            </View>
+            {rightArrow}
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+    return (
+      <View 
+        style={this.props.style} 
+        accessible
+        accessibilityRole={'adjustable'}
+        accessibilityActions={[
+          {name: 'increment', label: 'increment'}, 
+          {name: 'decrement', label: 'decrement'}
+        ]}
+        onAccessibilityAction={this.onAccessibilityAction}
+        accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+        importantForAccessibility={this.props.importantForAccessibility} // Android
+      >
+        <View style={this.style.header}>
           {leftArrow}
           <View style={{ flexDirection: 'row' }}>
             <Text
               allowFontScaling={false}
               style={this.style.monthText}
-              accessibilityTraits="header"
+              {...webProps}
             >
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
           </View>
           {rightArrow}
-        </TouchableOpacity>
-      );
-    }
-    return (
-      <View style={this.style.header}>
-        {leftArrow}
-        <View style={{ flexDirection: 'row' }}>
-          <Text
-            allowFontScaling={false}
-            style={this.style.monthText}
-            accessibilityTraits="header"
-          >
-            {this.props.month.toString(this.props.monthFormat)}
-          </Text>
-          {indicator}
         </View>
-        {rightArrow}
       </View>
     );
   }
@@ -194,27 +217,41 @@ class CalendarHeader extends Component {
     return (
       <View style={this.props.style}>
         {this.renderHeader()}
-        {!this.props.hideDayNames && (
+        {!this.props.hideDayNames &&
           <View style={this.style.week}>
-            {this.props.weekNumbers && (
-              <Text allowFontScaling={false} style={this.style.dayHeader} />
-            )}
+            {this.props.weekNumbers && 
+              <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
+            }
             {weekDaysNames.map((day, idx) => (
               <Text
                 allowFontScaling={false}
                 key={idx}
-                accessible={false}
                 style={this.style.dayHeader}
                 numberOfLines={1}
-                importantForAccessibility='no'
+                accessibilityLabel={''}
+                // accessible={false} // not working
+                // importantForAccessibility='no'
               >
                 {day}
               </Text>
             ))}
           </View>
-        )}
+        }
       </View>
     );
+  }
+
+  onAccessibilityAction = event => {
+    switch (event.nativeEvent.actionName) {
+    case 'decrement':
+      this.onPressLeft();
+      break;
+    case 'increment':
+      this.onPressRight();
+      break;
+    default:
+      break;
+    }
   }
 }
 

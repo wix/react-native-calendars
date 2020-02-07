@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  View
-} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 
 import {shouldUpdate} from '../../../component-updater';
-
 import styleConstructor from './style';
+
 
 class Day extends Component {
   static displayName = 'IGNORE';
@@ -27,7 +23,9 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
+
     this.style = styleConstructor(props.theme);
+
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
   }
@@ -52,7 +50,7 @@ class Day extends Component {
       return validDots.map((dot, index) => {
         return (
           <View key={dot.key ? dot.key : index} style={[baseDotStyle,
-            { backgroundColor: marking.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
+            {backgroundColor: marking.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
         );
       });
     }
@@ -62,9 +60,9 @@ class Day extends Component {
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-
     const marking = this.props.marking || {};
     const dot = this.renderDots(marking);
+    const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
@@ -72,18 +70,23 @@ class Day extends Component {
       if (marking.selectedColor) {
         containerStyle.push({backgroundColor: marking.selectedColor});
       }
-    } else if (typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled') {
+    } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
+    
     return (
       <TouchableOpacity
         testID={this.props.testID}
         style={containerStyle}
         onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}>
+        onLongPress={this.onDayLongPress}
+        disabled={marking.disableTouchEvent}
+        accessibilityRole={isDisabled ? undefined : 'button'}
+        accessibilityLabel={this.props.accessibilityLabel}
+      >
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
         <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>
