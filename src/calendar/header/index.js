@@ -26,7 +26,7 @@ class CalendarHeader extends Component {
     disableArrowRight: PropTypes.bool,
     webAriaLevel: PropTypes.number,
     onPress: PropTypes.func,
-    onLongPress: PropTypes.func,
+    onLongPress: PropTypes.func
   };
 
   static defaultProps = {
@@ -109,8 +109,8 @@ class CalendarHeader extends Component {
   }
 
   renderHeader() {
-    let leftArrow = <View />;
-    let rightArrow = <View />;
+    let leftArrow = <View/>;
+    let rightArrow = <View/>;
     const {testID} = this.props;
 
     if (!this.props.hideArrows) {
@@ -252,14 +252,14 @@ class CalendarHeader extends Component {
 
   onAccessibilityAction = event => {
     switch (event.nativeEvent.actionName) {
-      case 'decrement':
-        this.onPressLeft();
-        break;
-      case 'increment':
-        this.onPressRight();
-        break;
-      default:
-        break;
+    case 'decrement':
+      this.onPressLeft();
+      break;
+    case 'increment':
+      this.onPressRight();
+      break;
+    default:
+      break;
     }
   };
 }

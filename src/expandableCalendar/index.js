@@ -6,7 +6,7 @@ import {
   Animated,
   View,
   Text,
-  Image,
+  Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -25,7 +25,7 @@ const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const POSITIONS = {
   CLOSED: 'closed',
-  OPEN: 'open',
+  OPEN: 'open'
 };
 const SPEED = 20;
 const BOUNCINESS = 6;
@@ -53,21 +53,13 @@ class ExpandableCalendar extends Component {
     /** whether to hide the knob  */
     hideKnob: PropTypes.bool,
     /** source for the left arrow image */
-    leftArrowImageSource: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.func,
-    ]),
+    leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
     /** source for the right arrow image */
-    rightArrowImageSource: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.func,
-    ]),
+    rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
     /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
     /** whether to disable the week scroll in closed position */
-    disableWeekScroll: PropTypes.bool,
+    disableWeekScroll: PropTypes.bool
   };
 
   static defaultProps = {
@@ -76,7 +68,7 @@ class ExpandableCalendar extends Component {
     firstDay: 0,
     leftArrowImageSource: require('../calendar/img/previous.png'),
     rightArrowImageSource: require('../calendar/img/next.png'),
-    allowShadow: true,
+    allowShadow: true
   };
 
   static positions = POSITIONS;
@@ -88,7 +80,7 @@ class ExpandableCalendar extends Component {
     this.closedHeight =
       CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
     this.numberOfWeeks = this.getNumberOfWeeksInMonth(
-      XDate(this.props.context.date),
+      XDate(this.props.context.date)
     );
     this.openHeight = this.getOpenHeight();
 
@@ -100,8 +92,8 @@ class ExpandableCalendar extends Component {
     this._wrapperStyles = {style: {height: startHeight}};
     this._headerStyles = {
       style: {
-        top: props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT,
-      },
+        top: props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT
+      }
     };
     this._weekCalendarStyles = {style: {}};
     this.wrapper = undefined;
@@ -114,18 +106,18 @@ class ExpandableCalendar extends Component {
           marginTop: 7,
           marginBottom: -4, // reduce space between dayNames and first line of dates
           flexDirection: 'row',
-          justifyContent: 'space-around',
-        },
-      },
+          justifyContent: 'space-around'
+        }
+      }
     };
 
     this.state = {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(
-        props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT,
+        props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT
       ),
       position: props.initialPosition,
-      screenReaderEnabled: false,
+      screenReaderEnabled: false
     };
 
     AccessibilityInfo.isScreenReaderEnabled().then(screenReaderEnabled => {
@@ -137,7 +129,7 @@ class ExpandableCalendar extends Component {
       onPanResponderGrant: this.handlePanResponderGrant,
       onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: this.handlePanResponderEnd,
-      onPanResponderTerminate: this.handlePanResponderEnd,
+      onPanResponderTerminate: this.handlePanResponderEnd
     });
   }
 
@@ -196,7 +188,7 @@ class ExpandableCalendar extends Component {
         this.props.context,
         'setDate',
         this.getDateString(d),
-        UPDATE_SOURCES.PAGE_SCROLL,
+        UPDATE_SOURCES.PAGE_SCROLL
       );
     }
   }
@@ -288,7 +280,7 @@ class ExpandableCalendar extends Component {
     // limit min height to closed height
     this._wrapperStyles.style.height = Math.max(
       this.closedHeight,
-      this._height + gestureState.dy,
+      this._height + gestureState.dy
     );
 
     if (!this.props.horizontal) {
@@ -302,7 +294,7 @@ class ExpandableCalendar extends Component {
       if (this.state.position === POSITIONS.CLOSED) {
         this._weekCalendarStyles.style.opacity = Math.min(
           1,
-          Math.max(1 - gestureState.dy / 100, 0),
+          Math.max(1 - gestureState.dy / 100, 0)
         );
       }
     }
@@ -331,7 +323,7 @@ class ExpandableCalendar extends Component {
       Animated.spring(deltaY, {
         toValue: this._height,
         speed: SPEED,
-        bounciness: BOUNCINESS,
+        bounciness: BOUNCINESS
       }).start(this.onAnimatedFinished);
 
       this.setPosition();
@@ -365,7 +357,7 @@ class ExpandableCalendar extends Component {
       Animated.spring(headerDeltaY, {
         toValue: 0,
         speed: SPEED / 10,
-        bounciness: 1,
+        bounciness: 1
       }).start();
     }
   }
@@ -385,7 +377,7 @@ class ExpandableCalendar extends Component {
       this.props.context,
       'setDate',
       value.dateString,
-      UPDATE_SOURCES.DAY_PRESS,
+      UPDATE_SOURCES.DAY_PRESS
     );
 
     setTimeout(() => {
@@ -451,8 +443,8 @@ class ExpandableCalendar extends Component {
               DAY_NAMES_PADDING,
             paddingRight:
               _.get(this.props, 'calendarStyle.paddingRight') + 6 ||
-              DAY_NAMES_PADDING,
-          },
+              DAY_NAMES_PADDING
+          }
         ]}>
         {weekDaysNames.map((day, index) => (
           <Text
@@ -475,7 +467,7 @@ class ExpandableCalendar extends Component {
         ref={e => (this.header = e)}
         style={[
           this.style.header,
-          {height: HEADER_HEIGHT, top: this.state.headerDeltaY},
+          {height: HEADER_HEIGHT, top: this.state.headerDeltaY}
         ]}
         pointerEvents={'none'}>
         {this.props.onHeaderPress ? (
@@ -514,7 +506,7 @@ class ExpandableCalendar extends Component {
           left: 0,
           right: 0,
           top: HEADER_HEIGHT + (commons.isAndroid ? 8 : 4), // align row on top of calendar's first row
-          opacity: position === POSITIONS.OPEN ? 0 : 1,
+          opacity: position === POSITIONS.OPEN ? 0 : 1
         }}
         pointerEvents={position === POSITIONS.CLOSED ? 'auto' : 'none'}>
         <WeekComponent
@@ -536,7 +528,7 @@ class ExpandableCalendar extends Component {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
       <View style={this.style.knobContainer} pointerEvents={'none'}>
-        <View style={this.style.knob} testID={CALENDAR_KNOB} />
+        <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
     );
   }
