@@ -84,7 +84,9 @@ class Calendar extends Component {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    /** Provide Calendar Test ID for user. Default = undefined */
+    testID: PropTypes.string
   };
 
   constructor(props) {
@@ -310,6 +312,7 @@ class Calendar extends Component {
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
         <CalendarHeader
+          testID={this.props.testID}
           ref={c => this.header = c}
           style={this.props.headerStyle}
           theme={this.props.theme}
