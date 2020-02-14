@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, Image, View} from 'react-native';
 import PropTypes from 'prop-types';
 
 import styleConstructor from './style';
@@ -17,7 +17,7 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object
+    date: PropTypes.object,
   };
 
   constructor(props) {
@@ -27,6 +27,7 @@ class Day extends Component {
 
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
+    this.renderCustomIcon = this.renderCustomIcon.bind(this);
   }
 
   onDayPress() {
@@ -40,11 +41,17 @@ class Day extends Component {
     return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
   }
 
+  renderCustomIcon(){
+    if (!this.props.marking.withCustomIcon) return null;
+    return this.props.marking.iconComponent; 
+  }
+
   render() {
     let containerStyle = [this.style.base];
     let textStyle = [this.style.text];
     
     let marking = this.props.marking || {};
+
     if (marking && marking.constructor === Array && marking.length) {
       marking = {
         marking: true
@@ -58,6 +65,7 @@ class Day extends Component {
       textStyle.push(this.style.selectedText);
     } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
+      containerStyle.push(this.style.disabledContainer);
     } else if (this.props.state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
@@ -79,7 +87,7 @@ class Day extends Component {
     return (
       <TouchableOpacity
         testID={this.props.testID}
-        style={containerStyle}
+        style={[containerStyle]}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
         activeOpacity={marking.activeOpacity}
@@ -87,6 +95,7 @@ class Day extends Component {
         accessibilityRole={isDisabled ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
+        {this.renderCustomIcon()}
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
       </TouchableOpacity>
     );

@@ -9,7 +9,8 @@ export default function styleConstructor(theme={}) {
     base: {
       width: 32,
       height: 32,
-      alignItems: 'center'
+      alignItems: 'center',
+      ...appStyle.baseTextDayStyle
     },
     text: {
       marginTop: Platform.OS === 'android' ? 4 : 6,
@@ -17,26 +18,36 @@ export default function styleConstructor(theme={}) {
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
-      backgroundColor: 'rgba(255, 255, 255, 0)'
+      backgroundColor: 'rgba(255, 255, 255, 0)',
+      ...appStyle.textDayStyle
     },
     alignedText: {
       marginTop: Platform.OS === 'android' ? 4 : 6
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
+      borderRadius: 16,
+      ...appStyle.selectedStyle
     },
     today: {
-      backgroundColor: appStyle.todayBackgroundColor
+      backgroundColor: appStyle.todayBackgroundColor,
+      ...appStyle.todayStyle
     },
     todayText: {
-      color: appStyle.todayTextColor
+      color: appStyle.todayTextColor,
+      ...appStyle.todayTextStyle
     },
     selectedText: {
-      color: appStyle.selectedDayTextColor
+      color: appStyle.selectedDayTextColor,
+      ...appStyle.selectedTextStyle
+    },
+    disabledContainer: {
+      backgroundColor: appStyle.disabledContainer,
+      ...appStyle.disabledContainerStyle,
     },
     disabledText: {
-      color: appStyle.textDisabledColor
+      color: appStyle.textDisabledColor,
+      ...appStyle.disabledTextStyle
     },
     ...(theme[STYLESHEET_ID] || {})
   });

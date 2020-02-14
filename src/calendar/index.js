@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ViewPropTypes} from 'react-native';
+import {View, Text, ViewPropTypes} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -14,6 +14,8 @@ import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
 import {SELECT_DATE_SLOT} from '../testIDs';
+import {weekDayNames} from '../dateutils';
+
 
 
 //Fallback when RN version is < 0.44
@@ -84,7 +86,9 @@ class Calendar extends Component {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    /** Provide prop to customize header */
+    headerComponent: PropTypes.func
   };
 
   constructor(props) {
@@ -101,6 +105,7 @@ class Calendar extends Component {
     this.pressDay = this.pressDay.bind(this);
     this.longPressDay = this.longPressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
+    this.renderHeader = this.renderHeader.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -286,6 +291,60 @@ class Calendar extends Component {
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
+  renderHeader(indicator){
+    if (this.props.headerComponent) {
+      // console.log('this.props: ',this.props);
+      const year = this.props.current[0].getFullYear();
+      const month = this.props.current[0].getMonth();
+      let weekDaysNames = weekDayNames(this.props.firstDay);
+      const customStyleWeek = {fontFamily: 'LatamSans-Bold', color: '#138D86'};
+      return (
+        <>
+        {this.props.headerComponent(year, month)}
+        {!this.props.hideDayNames &&
+          <View style={this.style.week}>
+            {this.props.weekNumbers && 
+              <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
+            }
+            {weekDaysNames.map((day, idx) => (
+              <Text
+                allowFontScaling={false}
+                key={idx}
+                style={[this.style.dayHeader, customStyleWeek]}
+                numberOfLines={1}
+                accessibilityLabel={''}
+              >
+                {day}
+              </Text>
+            ))}
+          </View>
+        }
+        </>
+      )
+    }
+    return (
+      <CalendarHeader
+      ref={c => this.header = c}
+      style={this.props.headerStyle}
+      theme={this.props.theme}
+      hideArrows={this.props.hideArrows}
+      month={this.state.currentMonth}
+      addMonth={this.addMonth}
+      showIndicator={indicator}
+      firstDay={this.props.firstDay}
+      renderArrow={this.props.renderArrow}
+      monthFormat={this.props.monthFormat}
+      hideDayNames={this.props.hideDayNames}
+      weekNumbers={this.props.showWeekNumbers}
+      onPressArrowLeft={this.props.onPressArrowLeft}
+      onPressArrowRight={this.props.onPressArrowRight}
+      webAriaLevel={this.props.webAriaLevel}
+      disableArrowLeft={this.props.disableArrowLeft}
+      disableArrowRight={this.props.disableArrowRight}
+    />
+    )
+  }
+
   render() {
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
@@ -302,32 +361,14 @@ class Calendar extends Component {
         indicator = true;
       }
     }
-
+    
     return (
       <View 
         style={[this.style.container, this.props.style]}
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
-        <CalendarHeader
-          ref={c => this.header = c}
-          style={this.props.headerStyle}
-          theme={this.props.theme}
-          hideArrows={this.props.hideArrows}
-          month={this.state.currentMonth}
-          addMonth={this.addMonth}
-          showIndicator={indicator}
-          firstDay={this.props.firstDay}
-          renderArrow={this.props.renderArrow}
-          monthFormat={this.props.monthFormat}
-          hideDayNames={this.props.hideDayNames}
-          weekNumbers={this.props.showWeekNumbers}
-          onPressArrowLeft={this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.onPressArrowRight}
-          webAriaLevel={this.props.webAriaLevel}
-          disableArrowLeft={this.props.disableArrowLeft}
-          disableArrowRight={this.props.disableArrowRight}
-        />
+        {this.renderHeader(indicator)}
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
   }
