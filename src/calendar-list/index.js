@@ -53,7 +53,7 @@ class CalendarList extends Component {
     /** A custom key extractor for the generated calendar months */
     keyExtractor: PropTypes.func,
     /** A custom props for customize header */
-    headerComponent: PropTypes.object,
+    headerComponent: PropTypes.func,
   }
 
   static defaultProps = {
