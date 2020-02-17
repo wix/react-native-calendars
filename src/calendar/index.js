@@ -230,11 +230,11 @@ class Calendar extends Component {
   getMarkingLabel(day) {
     let label = '';
     const marking = this.getDateMarking(day);
-
+    
     if (marking.accessibilityLabel) {
       return marking.accessibilityLabel;
     }
-
+    
     if (marking.selected) {
       label += 'selected ';
       if (!marking.marked) {
@@ -249,7 +249,7 @@ class Calendar extends Component {
     } 
     if (marking.endingDay) {
       label += 'period end ';
-    } 
+    }
     if (marking.disabled || marking.disableTouchEvent) {
       label += 'disabled ';
     }
@@ -290,10 +290,10 @@ class Calendar extends Component {
 
   renderWeekNumber(weekNumber) {
     return (
-      <Day
-        key={`week-${weekNumber}`}
-        theme={this.props.theme}
-        marking={{disableTouchEvent: true}}
+      <Day 
+        key={`week-${weekNumber}`} 
+        theme={this.props.theme} 
+        marking={{disableTouchEvent: true}} 
         state='disabled'
       >
         {weekNumber}
@@ -332,7 +332,7 @@ class Calendar extends Component {
     }
 
     return (
-      <View
+      <View 
         style={[this.style.container, this.props.style]}
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
