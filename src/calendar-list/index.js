@@ -67,7 +67,7 @@ class CalendarList extends Component {
     scrollsToTop: false,
     removeClippedSubviews: Platform.OS === 'android' ? false : true,
     keyExtractor: (item, index) => String(index),
-    headerComponent: null,
+    headerComponent: () => {},
   }
 
   constructor(props) {
