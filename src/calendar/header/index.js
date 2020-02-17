@@ -190,7 +190,7 @@ class CalendarHeader extends Component {
     }
 
     return (
-      <View
+      <View 
         style={this.props.style} 
         accessible
         accessibilityRole={'adjustable'}
@@ -228,7 +228,7 @@ class CalendarHeader extends Component {
         {this.renderHeader()}
         {!this.props.hideDayNames && (
           <View style={this.style.week}>
-            {this.props.weekNumbers &&
+            {this.props.weekNumbers && 
               <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
             }
             {weekDaysNames.map((day, idx) => (
