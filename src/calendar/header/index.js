@@ -7,6 +7,7 @@ import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
 import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} from '../../testIDs';
 
+
 class CalendarHeader extends Component {
   static displayName = 'IGNORE';
 
@@ -156,11 +157,11 @@ class CalendarHeader extends Component {
     if (this.props.onPress || this.props.onLongPress) {
       return (
         <View
-          style={this.props.style}
+          style={this.props.style} 
           accessible
           accessibilityRole={'adjustable'}
           accessibilityActions={[
-            {name: 'increment', label: 'increment'},
+            {name: 'increment', label: 'increment'}, 
             {name: 'decrement', label: 'decrement'}
           ]}
           onAccessibilityAction={this.onAccessibilityAction}
@@ -190,11 +191,11 @@ class CalendarHeader extends Component {
 
     return (
       <View
-        style={this.props.style}
+        style={this.props.style} 
         accessible
         accessibilityRole={'adjustable'}
         accessibilityActions={[
-          {name: 'increment', label: 'increment'},
+          {name: 'increment', label: 'increment'}, 
           {name: 'decrement', label: 'decrement'}
         ]}
         onAccessibilityAction={this.onAccessibilityAction}
@@ -207,7 +208,8 @@ class CalendarHeader extends Component {
             <Text
               allowFontScaling={false}
               style={this.style.monthText}
-              {...webProps}>
+              {...webProps}
+            >
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
@@ -261,7 +263,7 @@ class CalendarHeader extends Component {
     default:
       break;
     }
-  };
+  }
 }
 
 export default CalendarHeader;

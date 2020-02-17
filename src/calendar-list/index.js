@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, ActivityIndicator, View} from 'react-native';
-
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -80,6 +79,7 @@ class CalendarList extends Component {
     const rows = [];
     const texts = [];
     const date = parseDate(props.current) || XDate();
+
     for (let i = 0; i <= this.props.pastScrollRange + this.props.futureScrollRange; i++) {
       const rangeDate = date.clone().addMonths(i - this.props.pastScrollRange, true);
       const rangeDateStr = rangeDate.toString('MMM yyyy');
@@ -211,10 +211,10 @@ class CalendarList extends Component {
     return (
       <CalendarListItem
         scrollToMonth={this.scrollToMonth.bind(this)}
-        item={item}
-        calendarHeight={this.props.calendarHeight}
-        calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined}
-        {...this.props}
+        item={item} 
+        calendarHeight={this.props.calendarHeight} 
+        calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined} 
+        {...this.props} 
         style={this.props.calendarStyle}
       />
     );
@@ -235,7 +235,7 @@ class CalendarList extends Component {
 
   addMonth = (count) => {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
-  };
+  }
 
   updateMonth(day, doNotTriggerListeners) {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
@@ -268,7 +268,6 @@ class CalendarList extends Component {
       if (this.props.showIndicator) {
         indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
       }
-
       return (
         <CalendarHeader
           style={[this.style.staticHeader, this.props.headerStyle]}

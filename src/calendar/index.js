@@ -219,7 +219,8 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={dateAsObject}
           marking={this.getDateMarking(day)}
-          accessibilityLabel={accessibilityLabel}>
+          accessibilityLabel={accessibilityLabel}
+        >
           {date}
         </DayComp>
       </View>
@@ -239,16 +240,16 @@ class Calendar extends Component {
       if (!marking.marked) {
         label += 'You have no entries for this day ';
       }
-    }
+    } 
     if (marking.marked) {
       label += 'You have entries for this day ';
-    }
+    } 
     if (marking.startingDay) {
       label += 'period start ';
-    }
+    } 
     if (marking.endingDay) {
       label += 'period end ';
-    }
+    } 
     if (marking.disabled || marking.disableTouchEvent) {
       label += 'disabled ';
     }
@@ -293,7 +294,8 @@ class Calendar extends Component {
         key={`week-${weekNumber}`}
         theme={this.props.theme}
         marking={{disableTouchEvent: true}}
-        state='disabled'>
+        state='disabled'
+      >
         {weekNumber}
       </Day>
     );
