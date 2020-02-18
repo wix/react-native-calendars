@@ -84,9 +84,7 @@ class Calendar extends Component {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number,
-    /** Provide Calendar Test ID. Default = undefined */
-    testID: PropTypes.string
+    webAriaLevel: PropTypes.number
   };
 
   constructor(props) {

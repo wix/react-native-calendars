@@ -25,8 +25,7 @@ class CalendarHeader extends Component {
     onPressArrowRight: PropTypes.func,
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
-    webAriaLevel: PropTypes.number,
-    testID: PropTypes.string
+    webAriaLevel: PropTypes.number
   };
 
   static defaultProps = {
