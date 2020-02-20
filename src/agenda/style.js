@@ -30,7 +30,7 @@ export default function styleConstructor(theme = {}) {
       backgroundColor: appStyle.calendarBackground
     },
     weekday: {
-      width: 32,
+      width: 35,
       textAlign: 'center',
       color: appStyle.textSectionTitleColor,
       fontSize: appStyle.textDayHeaderFontSize,
