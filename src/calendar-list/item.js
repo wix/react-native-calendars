@@ -14,6 +14,7 @@ class CalendarListItem extends Component {
 
   constructor(props) {
     super(props);
+
     this.style = styleConstructor(props.theme);
   }
 
@@ -74,7 +75,10 @@ class CalendarListItem extends Component {
           onPressArrowLeft={this.props.horizontal ? this.onPressArrowLeft : this.props.onPressArrowLeft}
           onPressArrowRight={this.props.horizontal ? this.onPressArrowRight : this.props.onPressArrowRight}
           headerStyle={this.props.horizontal ? this.props.headerStyle : undefined}
-        />);
+          accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+          importantForAccessibility={this.props.importantForAccessibility} // Android
+        />
+      );
     } else {
       const text = row.toString();
 

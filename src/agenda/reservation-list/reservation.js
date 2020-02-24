@@ -1,15 +1,19 @@
+import _ from 'lodash';
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
+
 import {xdateToData} from '../../interface';
 import XDate from 'xdate';
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
-class ReservationListItem extends Component {
+
+class Reservation extends Component {
   static displayName = 'IGNORE';
   
   constructor(props) {
     super(props);
+
     this.styles = styleConstructor(props.theme);
   }
 
@@ -26,7 +30,9 @@ class ReservationListItem extends Component {
         changed = false;
       } else if (r1.reservation && r2.reservation) {
         if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
-          changed = this.props.rowHasChanged(r1.reservation, r2.reservation);
+          if (_.isFunction(this.props.rowHasChanged)) {
+            changed = this.props.rowHasChanged(r1.reservation, r2.reservation);
+          }
         }
       }
     }
@@ -34,7 +40,7 @@ class ReservationListItem extends Component {
   }
 
   renderDate(date, item) {
-    if (this.props.renderDay) {
+    if (_.isFunction(this.props.renderDay)) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
     const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
@@ -57,14 +63,16 @@ class ReservationListItem extends Component {
     let content;
     if (reservation) {
       const firstItem = date ? true : false;
-      content = this.props.renderItem(reservation, firstItem);
-    } else {
+      if (_.isFunction(this.props.renderItem)) {
+        content = this.props.renderItem(reservation, firstItem);
+      }
+    } else if (_.isFunction(this.props.renderEmptyDate)) {
       content = this.props.renderEmptyDate(date);
     }
     return (
       <View style={this.styles.container}>
         {this.renderDate(date, reservation)}
-        <View style={{flex:1}}>
+        <View style={{flex: 1}}>
           {content}
         </View>
       </View>
@@ -72,4 +80,4 @@ class ReservationListItem extends Component {
   }
 }
 
-export default ReservationListItem;
+export default Reservation;
