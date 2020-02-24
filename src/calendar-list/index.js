@@ -53,7 +53,7 @@ class CalendarList extends Component {
     /** A custom key extractor for the generated calendar months */
     keyExtractor: PropTypes.func,
     /** A custom props for customize header */
-    headerComponent: PropTypes.func,
+    headerComponent: PropTypes.func
   }
 
   static defaultProps = {
@@ -67,7 +67,7 @@ class CalendarList extends Component {
     scrollsToTop: false,
     removeClippedSubviews: Platform.OS === 'android' ? false : true,
     keyExtractor: (item, index) => String(index),
-    headerComponent: () => {},
+    headerComponent: () => {}
   }
 
   constructor(props) {

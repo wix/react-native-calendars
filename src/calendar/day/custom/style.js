@@ -43,7 +43,7 @@ export default function styleConstructor(theme={}) {
     },
     disabledContainer: {
       backgroundColor: appStyle.disabledContainer,
-      ...appStyle.disabledContainerStyle,
+      ...appStyle.disabledContainerStyle
     },
     disabledText: {
       color: appStyle.textDisabledColor,

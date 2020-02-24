@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text, Image, View} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 
 import styleConstructor from './style';
@@ -17,7 +17,7 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object,
+    date: PropTypes.object
   };
 
   constructor(props) {

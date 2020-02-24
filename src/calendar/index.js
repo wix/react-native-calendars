@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {View, Text, ViewPropTypes} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -299,9 +299,9 @@ class Calendar extends Component {
       let weekDaysNames = weekDayNames(this.props.firstDay);
       const customStyleWeek = {fontFamily: 'LatamSans-Bold', color: '#138D86'};
       return (
-        <>
-        {this.props.headerComponent(year, month)}
-        {!this.props.hideDayNames &&
+        <Fragment>
+          {this.props.headerComponent(year, month)}
+          {!this.props.hideDayNames &&
           <View style={this.style.week}>
             {this.props.weekNumbers && 
               <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
@@ -318,31 +318,31 @@ class Calendar extends Component {
               </Text>
             ))}
           </View>
-        }
-        </>
-      )
+          }
+        </Fragment>
+      );
     }
     return (
       <CalendarHeader
-      ref={c => this.header = c}
-      style={this.props.headerStyle}
-      theme={this.props.theme}
-      hideArrows={this.props.hideArrows}
-      month={this.state.currentMonth}
-      addMonth={this.addMonth}
-      showIndicator={indicator}
-      firstDay={this.props.firstDay}
-      renderArrow={this.props.renderArrow}
-      monthFormat={this.props.monthFormat}
-      hideDayNames={this.props.hideDayNames}
-      weekNumbers={this.props.showWeekNumbers}
-      onPressArrowLeft={this.props.onPressArrowLeft}
-      onPressArrowRight={this.props.onPressArrowRight}
-      webAriaLevel={this.props.webAriaLevel}
-      disableArrowLeft={this.props.disableArrowLeft}
-      disableArrowRight={this.props.disableArrowRight}
-    />
-    )
+        ref={c => this.header = c}
+        style={this.props.headerStyle}
+        theme={this.props.theme}
+        hideArrows={this.props.hideArrows}
+        month={this.state.currentMonth}
+        addMonth={this.addMonth}
+        showIndicator={indicator}
+        firstDay={this.props.firstDay}
+        renderArrow={this.props.renderArrow}
+        monthFormat={this.props.monthFormat}
+        hideDayNames={this.props.hideDayNames}
+        weekNumbers={this.props.showWeekNumbers}
+        onPressArrowLeft={this.props.onPressArrowLeft}
+        onPressArrowRight={this.props.onPressArrowRight}
+        webAriaLevel={this.props.webAriaLevel}
+        disableArrowLeft={this.props.disableArrowLeft}
+        disableArrowRight={this.props.disableArrowRight}
+      />
+    );
   }
 
   render() {
