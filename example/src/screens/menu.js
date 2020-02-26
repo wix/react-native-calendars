@@ -8,7 +8,6 @@ const appIcon = require('../img/app-icon-120x120.png');
 export default class MenuScreen extends Component {
   render() {
     return (
-
       <View style={styles.container}>
         <Image source={appIcon} style={styles.image}/>
         <TouchableOpacity style={styles.menu} onPress={this.onCalendarsPress.bind(this)}>
