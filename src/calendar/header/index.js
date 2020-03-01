@@ -175,7 +175,7 @@ class CalendarHeader extends Component {
         {!this.props.hideDayNames &&
           <View style={this.style.week}>
             {this.props.weekNumbers && 
-              <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
+              <Text allowFontScaling={false} style={this.style.weekNumberHeader}></Text>
             }
             {weekDaysNames.map((day, idx) => (
               <Text

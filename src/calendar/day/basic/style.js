@@ -1,12 +1,17 @@
-import {StyleSheet, Platform} from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import * as defaultStyle from '../../../style';
 
 const STYLESHEET_ID = 'stylesheet.day.basic';
 
-export default function styleConstructor(theme={}) {
-  const appStyle = {...defaultStyle, ...theme};
+export default function styleConstructor(theme = {}) {
+  const appStyle = { ...defaultStyle, ...theme };
   return StyleSheet.create({
     base: {
+      width: 32,
+      height: 32,
+      alignItems: 'center'
+    },
+    weekNumberContainer: {
       width: 32,
       height: 32,
       alignItems: 'center'
@@ -18,6 +23,16 @@ export default function styleConstructor(theme={}) {
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)',
+      ...appStyle.textDayStyle
+    },
+    weekNumberText: {
+      marginTop: Platform.OS === 'android' ? 4 : 6,
+      fontSize: appStyle.textDayFontSize,
+      fontFamily: appStyle.textDayFontFamily,
+      fontWeight: appStyle.textDayFontWeight,
+      color: appStyle.dayTextColor,
+      backgroundColor: 'rgba(255, 255, 255, 0)',
+      opacity: .3,
       ...appStyle.textDayStyle
     },
     alignedText: {
@@ -38,7 +53,7 @@ export default function styleConstructor(theme={}) {
       color: appStyle.selectedDayTextColor
     },
     disabledText: {
-      color: appStyle.textDisabledColor
+      opacity: .3
     },
     dot: {
       width: 4,

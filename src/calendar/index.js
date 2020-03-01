@@ -265,8 +265,7 @@ class Calendar extends Component {
       <Day 
         key={`week-${weekNumber}`} 
         theme={this.props.theme} 
-        marking={{disableTouchEvent: true}} 
-        state='disabled'
+        marking={{disableTouchEvent: true, weekNumber: true}}
       >
         {weekNumber}
       </Day>

@@ -46,6 +46,16 @@ export default function(theme={}) {
       fontWeight: appStyle.textDayHeaderFontWeight,
       color: appStyle.textSectionTitleColor
     },
+    weekNumberHeader: {
+      marginTop: 2,
+      marginBottom: 7,
+      width: 32,
+      textAlign: 'center',
+      fontSize: appStyle.textDayHeaderFontSize,
+      fontFamily: appStyle.textDayHeaderFontFamily,
+      fontWeight: appStyle.textDayHeaderFontWeight,
+      color: appStyle.textSectionTitleColor
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
