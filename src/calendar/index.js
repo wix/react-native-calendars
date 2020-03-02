@@ -262,14 +262,16 @@ class Calendar extends Component {
 
   renderWeekNumber(weekNumber) {
     return (
-      <Day 
-        key={`week-${weekNumber}`} 
-        theme={this.props.theme} 
-        marking={{disableTouchEvent: true}} 
-        state='disabled'
-      >
-        {weekNumber}
-      </Day>
+      <View style={{flex: 1, alignItems: 'center'}} key={`week-${weekNumber}`}>
+        <Day 
+          key={`week-${weekNumber}`} 
+          theme={this.props.theme} 
+          marking={{disableTouchEvent: true}} 
+          state='disabled'
+        >
+          {weekNumber}
+        </Day>
+      </View>
     );
   }
 
