@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import React, {Component} from 'react';
+import {View, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
-import { shouldUpdate } from '../../../component-updater';
+import {shouldUpdate} from '../../../component-updater';
 
 import styleConstructor from './style';
 
 
 class Day extends Component {
   static displayName = 'IGNORE';
-
+  
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -57,9 +57,9 @@ class Day extends Component {
         marking: true
       };
     }
-
+    
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
-
+    
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
@@ -67,15 +67,15 @@ class Day extends Component {
         dotStyle.push(this.style.disabledDot);
       }
       if (marking.dotColor) {
-        dotStyle.push({ backgroundColor: marking.dotColor });
+        dotStyle.push({backgroundColor: marking.dotColor});
       }
-      dot = (<View style={dotStyle} />);
+      dot = (<View style={dotStyle}/>);
     }
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       if (marking.selectedColor) {
-        containerStyle.push({ backgroundColor: marking.selectedColor });
+        containerStyle.push({backgroundColor: marking.selectedColor});
       }
       dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
