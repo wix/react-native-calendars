@@ -10,10 +10,12 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: selected + disabled props should be removed
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+    // Optional function to format displayed numbers
+    formatNumber: PropTypes.func,
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     marking: PropTypes.any,
@@ -25,10 +27,10 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
-    
+
     this.markingStyle = this.getDrawingStyle(props.marking || []);
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
@@ -202,7 +204,9 @@ class Day extends Component {
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+            <Text allowFontScaling={false} style={textStyle}>
+              {String(this.props.formatNumber ? this.props.formatNumber(this.props.children) : this.props.children)}
+            </Text>
           </View>
         </View>
       </TouchableWithoutFeedback>

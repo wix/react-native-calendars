@@ -8,11 +8,12 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
-
+    // Optional function to format displayed numbers
+    formatNumber: PropTypes.func,
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     marking: PropTypes.any,
@@ -76,7 +77,7 @@ class Day extends Component {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
-    
+
     return (
       <TouchableOpacity
         testID={this.props.testID}
@@ -87,7 +88,9 @@ class Day extends Component {
         accessibilityRole={isDisabled ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
-        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+        <Text allowFontScaling={false} style={textStyle}>
+          {String(this.props.formatNumber ? this.props.formatNumber(this.props.children) : this.props.children)}
+        </Text>
         <View style={{flexDirection: 'row'}}>{dot}</View>
       </TouchableOpacity>
     );

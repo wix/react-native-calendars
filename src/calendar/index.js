@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {View, ViewPropTypes} from 'react-native';
+import React, { Component } from 'react';
+import { View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
+import { parseDate, xdateToData } from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
@@ -13,8 +13,7 @@ import MultiPeriodDay from './day/multi-period';
 import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
-import {SELECT_DATE_SLOT} from '../testIDs';
-
+import { SELECT_DATE_SLOT } from '../testIDs';
 
 //Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
@@ -29,6 +28,10 @@ class Calendar extends Component {
   static displayName = 'Calendar';
 
   static propTypes = {
+    /** Optional function to format displayed months */
+    formatMonth: PropTypes.func,
+    /** Optional function to format displayed numbers */
+    formatNumber: PropTypes.func,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** Collection of dates that have to be marked. Default = {} */
@@ -87,7 +90,7 @@ class Calendar extends Component {
     webAriaLevel: PropTypes.number
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.style = styleConstructor(this.props.theme);
@@ -103,7 +106,7 @@ class Calendar extends Component {
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const current = parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
@@ -112,7 +115,7 @@ class Calendar extends Component {
     }
   }
 
-  updateMonth(day, doNotTriggerListeners) {
+  updateMonth (day, doNotTriggerListeners) {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
@@ -131,7 +134,7 @@ class Calendar extends Component {
     });
   }
 
-  _handleDayInteraction(date, interaction) {
+  _handleDayInteraction (date, interaction) {
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
@@ -146,19 +149,19 @@ class Calendar extends Component {
     }
   }
 
-  pressDay(date) {
+  pressDay (date) {
     this._handleDayInteraction(date, this.props.onDayPress);
   }
 
-  longPressDay(date) {
+  longPressDay (date) {
     this._handleDayInteraction(date, this.props.onDayLongPress);
   }
 
-  addMonth(count) {
+  addMonth (count) {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   }
 
-  renderDay(day, id) {
+  renderDay (day, id) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
@@ -173,7 +176,7 @@ class Calendar extends Component {
     }
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      return (<View key={id} style={{flex: 1}}/>);
+      return (<View key={id} style={{ flex: 1 }}/>);
     }
 
     const DayComp = this.getDayComponent();
@@ -182,43 +185,44 @@ class Calendar extends Component {
     const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
 
     return (
-      <View style={{flex: 1, alignItems: 'center'}} key={id}>
-        <DayComp
-          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
-          state={state}
-          theme={this.props.theme}
-          onPress={this.pressDay}
-          onLongPress={this.longPressDay}
-          date={dateAsObject}
-          marking={this.getDateMarking(day)}
-          accessibilityLabel={accessibilityLabel}
-        >
-          {date}
-        </DayComp>
-      </View>
+        <View style={{ flex: 1, alignItems: 'center' }} key={id}>
+          <DayComp
+              testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
+              state={state}
+              formatNumber={this.props.formatNumber}
+              theme={this.props.theme}
+              onPress={this.pressDay}
+              onLongPress={this.longPressDay}
+              date={dateAsObject}
+              marking={this.getDateMarking(day)}
+              accessibilityLabel={accessibilityLabel}
+          >
+            {date}
+          </DayComp>
+        </View>
     );
   }
 
-  getMarkingLabel(day) {
+  getMarkingLabel (day) {
     let label = '';
     const marking = this.getDateMarking(day);
-    
+
     if (marking.accessibilityLabel) {
       return marking.accessibilityLabel;
     }
-    
+
     if (marking.selected) {
       label += 'selected ';
       if (!marking.marked) {
         label += 'You have no entries for this day ';
       }
-    } 
+    }
     if (marking.marked) {
       label += 'You have entries for this day ';
-    } 
+    }
     if (marking.startingDay) {
       label += 'period start ';
-    } 
+    }
     if (marking.endingDay) {
       label += 'period end ';
     }
@@ -228,26 +232,26 @@ class Calendar extends Component {
     return label;
   }
 
-  getDayComponent() {
+  getDayComponent () {
     if (this.props.dayComponent) {
       return this.props.dayComponent;
     }
 
     switch (this.props.markingType) {
-    case 'period':
-      return UnitDay;
-    case 'multi-dot':
-      return MultiDotDay;
-    case 'multi-period':
-      return MultiPeriodDay;
-    case 'custom':
-      return SingleDay;
-    default:
-      return Day;
+      case 'period':
+        return UnitDay;
+      case 'multi-dot':
+        return MultiDotDay;
+      case 'multi-period':
+        return MultiPeriodDay;
+      case 'custom':
+        return SingleDay;
+      default:
+        return Day;
     }
   }
 
-  getDateMarking(day) {
+  getDateMarking (day) {
     if (!this.props.markedDates) {
       return false;
     }
@@ -260,20 +264,21 @@ class Calendar extends Component {
     }
   }
 
-  renderWeekNumber(weekNumber) {
+  renderWeekNumber (weekNumber) {
     return (
-      <Day 
-        key={`week-${weekNumber}`} 
-        theme={this.props.theme} 
-        marking={{disableTouchEvent: true}} 
-        state='disabled'
-      >
-        {weekNumber}
-      </Day>
+        <Day
+            key={`week-${weekNumber}`}
+            formatNumber={this.props.formatNumber}
+            theme={this.props.theme}
+            marking={{ disableTouchEvent: true }}
+            state='disabled'
+        >
+          {weekNumber}
+        </Day>
     );
   }
 
-  renderWeek(days, id) {
+  renderWeek (days, id) {
     const week = [];
     days.forEach((day, id2) => {
       week.push(this.renderDay(day, id2));
@@ -286,7 +291,7 @@ class Calendar extends Component {
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
-  render() {
+  render () {
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
     while (days.length) {
@@ -304,33 +309,34 @@ class Calendar extends Component {
     }
 
     return (
-      <View 
-        style={[this.style.container, this.props.style]}
-        accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
-        importantForAccessibility={this.props.importantForAccessibility} // Android
-      >
-        <CalendarHeader
-          testID={this.props.testID}
-          ref={c => this.header = c}
-          style={this.props.headerStyle}
-          theme={this.props.theme}
-          hideArrows={this.props.hideArrows}
-          month={this.state.currentMonth}
-          addMonth={this.addMonth}
-          showIndicator={indicator}
-          firstDay={this.props.firstDay}
-          renderArrow={this.props.renderArrow}
-          monthFormat={this.props.monthFormat}
-          hideDayNames={this.props.hideDayNames}
-          weekNumbers={this.props.showWeekNumbers}
-          onPressArrowLeft={this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.onPressArrowRight}
-          webAriaLevel={this.props.webAriaLevel}
-          disableArrowLeft={this.props.disableArrowLeft}
-          disableArrowRight={this.props.disableArrowRight}
-        />
-        <View style={this.style.monthView}>{weeks}</View>
-      </View>);
+        <View
+            style={[this.style.container, this.props.style]}
+            accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+            importantForAccessibility={this.props.importantForAccessibility} // Android
+        >
+          <CalendarHeader
+              testID={this.props.testID}
+              ref={c => this.header = c}
+              formatMonth={this.props.formatMonth}
+              style={this.props.headerStyle}
+              theme={this.props.theme}
+              hideArrows={this.props.hideArrows}
+              month={this.state.currentMonth}
+              addMonth={this.addMonth}
+              showIndicator={indicator}
+              firstDay={this.props.firstDay}
+              renderArrow={this.props.renderArrow}
+              monthFormat={this.props.monthFormat}
+              hideDayNames={this.props.hideDayNames}
+              weekNumbers={this.props.showWeekNumbers}
+              onPressArrowLeft={this.props.onPressArrowLeft}
+              onPressArrowRight={this.props.onPressArrowRight}
+              webAriaLevel={this.props.webAriaLevel}
+              disableArrowLeft={this.props.disableArrowLeft}
+              disableArrowRight={this.props.disableArrowRight}
+          />
+          <View style={this.style.monthView}>{weeks}</View>
+        </View>);
   }
 }
 
