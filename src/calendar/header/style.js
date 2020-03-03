@@ -1,4 +1,4 @@
-import {StyleSheet, Platform} from 'react-native';
+import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../style';
 
 const STYLESHEET_ID = 'stylesheet.calendar.header';
@@ -26,14 +26,10 @@ export default function(theme={}) {
       ...appStyle.arrowStyle
     },
     arrowImage: {
-      ...Platform.select({
-        ios: {
-          tintColor: appStyle.arrowColor
-        },
-        android: {
-          tintColor: appStyle.arrowColor
-        }
-      })
+      tintColor: appStyle.arrowColor
+    },
+    disabledArrowImage: {
+      tintColor: appStyle.disabledArrowColor
     },
     week: {
       marginTop: 7,

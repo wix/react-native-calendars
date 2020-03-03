@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import {
+  AccessibilityInfo,
   PanResponder,
   Animated,
   View,
@@ -15,9 +16,10 @@ import dateutils from '../dateutils';
 import {parseDate} from '../interface';
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
+import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
+import WeekCalendar from './weekCalendar';
 import Week from './week';
-
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -55,7 +57,9 @@ class ExpandableCalendar extends Component {
     /** source for the right arrow image */
     rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
     /** whether to have shadow/elevation for the calendar */
-    allowShadow: PropTypes.bool
+    allowShadow: PropTypes.bool,
+    /** whether to disable the week scroll in closed position */
+    disableWeekScroll: PropTypes.bool
   }
 
   static defaultProps = {
@@ -79,8 +83,8 @@ class ExpandableCalendar extends Component {
     
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
     this._height = startHeight;
-    this._wrapperStyles = {style: {}};
-    this._headerStyles = {style: {top: this.props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT}};
+    this._wrapperStyles = {style: {height: startHeight}};
+    this._headerStyles = {style: {top: props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT}};
     this._weekCalendarStyles = {style: {}};
     this.wrapper = undefined;
     this.calendar = undefined;
@@ -99,9 +103,14 @@ class ExpandableCalendar extends Component {
 
     this.state = {
       deltaY: new Animated.Value(startHeight),
-      headerDeltaY: new Animated.Value(this.props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT),
-      position: props.initialPosition
+      headerDeltaY: new Animated.Value(props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT),
+      position: props.initialPosition,
+      screenReaderEnabled: false
     };
+
+    AccessibilityInfo.isScreenReaderEnabled().then((screenReaderEnabled) => {
+      this.setState({screenReaderEnabled});
+    });
 
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
@@ -407,6 +416,8 @@ class ExpandableCalendar extends Component {
 
   renderWeekCalendar() {
     const {position} = this.state;
+    const {disableWeekScroll} = this.props;
+    const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
 
     return (
       <Animated.View
@@ -420,12 +431,16 @@ class ExpandableCalendar extends Component {
         }}
         pointerEvents={position === POSITIONS.CLOSED ? 'auto' : 'none'}
       >
-        <Week
+        <WeekComponent
           {...this.props}
           current={this.props.context.date}
           onDayPress={this.onDayPress}
-          markedDates={this.getMarkedDates()}
+          markedDates={this.getMarkedDates()} // for Week component
           style={this.props.calendarStyle}
+          allowShadow={false}
+          hideDayNames={true}
+          accessibilityElementsHidden // iOS
+          importantForAccessibility={'no-hide-descendants'} // Android
         />
       </Animated.View>
     );
@@ -442,7 +457,7 @@ class ExpandableCalendar extends Component {
 
   renderArrow = (direction) => {
     if (_.isFunction(this.props.renderArrow)) {
-      this.props.renderArrow(direction);
+      return this.props.renderArrow(direction);
     }
 
     return (
@@ -454,40 +469,53 @@ class ExpandableCalendar extends Component {
   }
 
   render() {
-    const {style, hideKnob, horizontal, allowShadow, theme} = this.props;
-    const {deltaY, position} = this.state;
+    const {style, hideKnob, horizontal, allowShadow, theme, ...others} = this.props;
+    const {deltaY, position, screenReaderEnabled} = this.state;
     const isOpen = position === POSITIONS.OPEN;
     const themeObject = Object.assign(this.headerStyleOverride, theme);
 
     return (
       <View style={[allowShadow && this.style.containerShadow, style]}>
-        <Animated.View 
-          ref={e => {this.wrapper = e;}}
-          style={{height: deltaY}} 
-          {...this.panResponder.panHandlers}
-        >
-          <CalendarList
+        {screenReaderEnabled ?
+          <Calendar
             testID="calendar"
-            {...this.props}
+            {...others}
             theme={themeObject}
-            ref={r => this.calendar = r}
-            current={this.initialDate}
             onDayPress={this.onDayPress}
-            onVisibleMonthsChange={this.onVisibleMonthsChange}
-            pagingEnabled
-            scrollEnabled={isOpen}
             markedDates={this.getMarkedDates()}
-            hideArrows={this.shouldHideArrows()}
-            onPressArrowLeft={this.onPressArrowLeft}
-            onPressArrowRight={this.onPressArrowRight}
-            hideExtraDays={!horizontal}
+            hideExtraDays
             renderArrow={this.renderArrow}
-            staticHeader
-          /> 
-          {horizontal && this.renderWeekCalendar()}
-          {!hideKnob && this.renderKnob()}
-          {!horizontal && this.renderHeader()}
-        </Animated.View>
+          />
+          :
+          <Animated.View 
+            ref={e => {this.wrapper = e;}}
+            style={{height: deltaY}} 
+            {...this.panResponder.panHandlers}
+          >
+            <CalendarList
+              testID="calendar"
+              horizontal={horizontal}
+              {...others}
+              theme={themeObject}
+              ref={r => this.calendar = r}
+              current={this.initialDate}
+              onDayPress={this.onDayPress}
+              onVisibleMonthsChange={this.onVisibleMonthsChange}
+              pagingEnabled
+              scrollEnabled={isOpen}
+              markedDates={this.getMarkedDates()}
+              hideArrows={this.shouldHideArrows()}
+              onPressArrowLeft={this.onPressArrowLeft}
+              onPressArrowRight={this.onPressArrowRight}
+              hideExtraDays={!horizontal}
+              renderArrow={this.renderArrow}
+              staticHeader
+            /> 
+            {horizontal && this.renderWeekCalendar()}
+            {!hideKnob && this.renderKnob()}
+            {!horizontal && this.renderHeader()}
+          </Animated.View> 
+        }
       </View>
     );
   }

@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-
-import {CalendarList} from 'react-native-calendars';
 import {View} from 'react-native';
+import {CalendarList} from 'react-native-calendars';
+
 
 export default class HorizontalCalendarList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+  
   render() {
     return (
       <View>
@@ -17,7 +14,7 @@ export default class HorizontalCalendarList extends Component {
           futureScrollRange={24}
           horizontal
           pagingEnabled
-          style={{borderBottomWidth: 1, borderBottomColor: 'black'}}
+          style={{borderBottomWidth: 1, borderBottomColor: 'lightgrey'}}
         />
       </View>
     );
