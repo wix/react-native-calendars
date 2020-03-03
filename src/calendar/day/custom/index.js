@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import React, {Component} from 'react';
+import {Text, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 
 import styleConstructor from './style';
-import { shouldUpdate } from '../../../component-updater';
+import {shouldUpdate} from '../../../component-updater';
 
 class Day extends Component {
   static displayName = 'IGNORE';
@@ -38,7 +38,13 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, [
+      'state',
+      'children',
+      'marking',
+      'onPress',
+      'onLongPress'
+    ]);
   }
 
   render() {
@@ -52,7 +58,10 @@ class Day extends Component {
       };
     }
 
-    const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
+    const isDisabled =
+      typeof marking.disabled !== 'undefined'
+        ? marking.disabled
+        : this.props.state === 'disabled';
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
@@ -86,10 +95,13 @@ class Day extends Component {
         activeOpacity={marking.activeOpacity}
         disabled={marking.disableTouchEvent}
         accessibilityRole={isDisabled ? undefined : 'button'}
-        accessibilityLabel={this.props.accessibilityLabel}
-      >
+        accessibilityLabel={this.props.accessibilityLabel}>
         <Text allowFontScaling={false} style={textStyle}>
-          {String(this.props.formatNumber ? this.props.formatNumber(this.props.children) : this.props.children)}
+          {String(
+            this.props.formatNumber
+              ? this.props.formatNumber(this.props.children)
+              : this.props.children
+          )}
         </Text>
       </TouchableOpacity>
     );
