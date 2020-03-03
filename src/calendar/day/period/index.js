@@ -204,9 +204,7 @@ class Day extends Component {
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            <Text allowFontScaling={false} style={textStyle}>
-              {String(this.props.formatNumber ? this.props.formatNumber(this.props.children) : this.props.children)}
-            </Text>
+            <Text allowFontScaling={false} style={textStyle}>{String(this.props.formatNumber ? this.props.formatNumber(this.props.children) : this.props.children)}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
