@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { Animated, Dimensions, Text, View, ViewPropTypes } from 'react-native';
+import React, {Component} from 'react';
+import {Animated, Dimensions, Text, View, ViewPropTypes} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import { parseDate, xdateToData } from '../interface';
+import {parseDate, xdateToData} from '../interface';
 import dateutils from '../dateutils';
 import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
 import styleConstructor from './style';
-import { VelocityTracker } from '../input';
-import { AGENDA_CALENDAR_KNOB } from '../testIDs';
+import {VelocityTracker} from '../input';
+import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
