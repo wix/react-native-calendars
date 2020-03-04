@@ -109,8 +109,8 @@ class Week extends Component {
       state = 'disabled';
     } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
       state = 'disabled';
-    } else if (!dateutils.sameMonth(day, parseDate(current))) { // for extra days
-      state = 'disabled';
+    // } else if (!dateutils.sameMonth(day, parseDate(current))) { // for extra days
+    //   state = 'disabled';
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }

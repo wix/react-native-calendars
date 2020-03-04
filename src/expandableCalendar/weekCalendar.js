@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React, {Component} from 'react';
 import {FlatList, View, Text} from 'react-native';
 import PropTypes from 'prop-types';
@@ -89,22 +90,6 @@ class WeekCalendar extends Component {
     return dateString;
   }
 
-  getMarkedDates() {
-    const {context, markedDates} = this.props;
-
-    if (markedDates) {
-      const marked = _.cloneDeep(markedDates);
-
-      if (marked[context.date]) {
-        marked[context.date].selected = true;
-      } else {
-        marked[context.date] = {selected: true};
-      }
-      return marked;
-    } 
-    return {[context.date]: {selected: true}};
-  }
-
   onDayPress = (value) => {
     _.invoke(this.props.context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
   }
@@ -159,7 +144,7 @@ class WeekCalendar extends Component {
   }
 
   renderItem = ({item}) => {
-    const {calendarWidth, style, onDayPress, ...others} = this.props;
+    const {calendarWidth, style, onDayPress, markedDates, ...others} = this.props;
 
     return (
       <Week 
@@ -167,7 +152,7 @@ class WeekCalendar extends Component {
         key={item} 
         current={item} 
         style={[{width: calendarWidth || this.containerWidth}, style]}
-        markedDates={this.getMarkedDates()}
+        markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
       />
     );
@@ -190,8 +175,9 @@ class WeekCalendar extends Component {
 
     return (
       <View style={[allowShadow && this.style.containerShadow, !hideDayNames && {paddingBottom: 6}]}>
+        {<Text style={[this.style.headerTitle, {paddingBottom: 0, paddingTop: 0, fontSize: 12}]}>{moment(this.props.context.date).format('MMM YYYY')}</Text>}
         {!hideDayNames &&
-          <View style={[this.style.week, {marginTop: 12, marginBottom: -2}]}>
+          <View style={[this.style.week, {marginTop: 10, marginBottom: -2}]}>
             {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
             {weekDaysNames.map((day, idx) => (
               <Text 

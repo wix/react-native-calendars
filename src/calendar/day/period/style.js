@@ -11,11 +11,11 @@ export default function styleConstructor(theme={}) {
     wrapper: {
       alignItems: 'center',
       alignSelf: 'stretch',
-      marginLeft: -1
+      marginLeft: 0
     },
     base: {
       //borderWidth: 1,
-      width: 38,
+      width: 34,
       height: FILLER_HEIGHT,
       alignItems: 'center'
     },
