@@ -26,19 +26,9 @@ export default function(theme={}) {
       ...appStyle.arrowStyle
     },
     arrowImage: {
-      ...Platform.select({
-        ios: {
-          tintColor: appStyle.arrowColor
-        },
-        android: {
-          tintColor: appStyle.arrowColor
-        },
-        web: {
-          tintColor: appStyle.arrowColor,
-          width: 16,
-          height: 27
-        }
-      })
+      tintColor: appStyle.arrowColor,
+      width: 16,
+      height: 27
     },
     disabledArrowImage: {
       tintColor: appStyle.disabledArrowColor
