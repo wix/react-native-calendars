@@ -17,6 +17,5 @@ export const UPDATE_SOURCES = {
   LIST_DRAG: 'listDrag',
   DAY_PRESS: 'dayPress',
   PAGE_SCROLL: 'pageScroll',
-  WEEK_SCROLL: 'weekScroll',
   PROP_UPDATE: 'propUpdate'
 };

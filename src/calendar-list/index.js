@@ -44,14 +44,10 @@ class CalendarList extends Component {
     calendarWidth: PropTypes.number,
     /** Dynamic calendar height */
     calendarHeight: PropTypes.number,
-    /** Should Keyboard persist taps */
-    keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
     /** Style for the List item (the calendar) */
     calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Whether to use static header that will not scroll with the list (horizontal only) */
-    staticHeader: PropTypes.bool,
-    /** A custom key extractor for the generated calendar months */
-    keyExtractor: PropTypes.func
+    staticHeader: PropTypes.bool
   }
 
   static defaultProps = {
@@ -63,8 +59,7 @@ class CalendarList extends Component {
     showScrollIndicator: false,
     scrollEnabled: true,
     scrollsToTop: false,
-    removeClippedSubviews: Platform.OS === 'android' ? false : true,
-    keyExtractor: (item, index) => String(index)
+    removeClippedSubviews: Platform.OS === 'android' ? false : true
   }
 
   constructor(props) {
@@ -144,7 +139,7 @@ class CalendarList extends Component {
     this.listView.scrollToOffset({offset: scrollAmount, animated: false});
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
+  componentWillReceiveProps(props) {
     const current = parseDate(this.props.current);
     const nextCurrent = parseDate(props.current);
     
@@ -284,8 +279,6 @@ class CalendarList extends Component {
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
           testID={STATIC_HEADER}
-          accessibilityElementsHidden={true} // iOS
-          importantForAccessibility={'no-hide-descendants'} // Android
         />
       );
     }
@@ -299,12 +292,12 @@ class CalendarList extends Component {
           ref={(c) => this.listView = c}
           //scrollEventThrottle={1000}
           style={[this.style.container, this.props.style]}
-          initialListSize={this.props.pastScrollRange + this.props.futureScrollRange + 1} // ListView deprecated
+          initialListSize={this.props.pastScrollRange + this.props.futureScrollRange + 1}
           data={this.state.rows}
           //snapToAlignment='start'
           //snapToInterval={this.calendarHeight}
           removeClippedSubviews={this.props.removeClippedSubviews}
-          pageSize={1} // ListView deprecated
+          pageSize={1}
           horizontal={this.props.horizontal}
           pagingEnabled={this.props.pagingEnabled}
           onViewableItemsChanged={this.onViewableItemsChangedBound}
@@ -313,13 +306,10 @@ class CalendarList extends Component {
           showsVerticalScrollIndicator={this.props.showScrollIndicator}
           showsHorizontalScrollIndicator={this.props.showScrollIndicator}
           scrollEnabled={this.props.scrollEnabled}
-          keyExtractor={this.props.keyExtractor}
+          keyExtractor={(item, index) => String(index)}
           initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
           getItemLayout={this.getItemLayout}
           scrollsToTop={this.props.scrollsToTop}
-          onEndReachedThreshold={this.props.onEndReachedThreshold}
-          onEndReached={this.props.onEndReached}
-          keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
         />
         {this.renderStaticHeader()}
       </View>

@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
-import {FlatList, ActivityIndicator, View} from 'react-native';
+import {
+  FlatList,
+  ActivityIndicator,
+  View
+} from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -7,8 +11,7 @@ import XDate from 'xdate';
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
-
-class ReservationList extends Component {
+class ReactComp extends Component {
   static displayName = 'IGNORE';
   
   static propTypes = {
@@ -28,32 +31,26 @@ class ReservationList extends Component {
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
     reservations: PropTypes.object,
+
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
-    onScrollBeginDrag: PropTypes.func,
-    onScrollEndDrag: PropTypes.func,
-    onMomentumScrollBegin: PropTypes.func,
-    onMomentumScrollEnd: PropTypes.func
   };
 
   constructor(props) {
     super(props);
-    
     this.styles = styleConstructor(props.theme);
-    
     this.state = {
       reservations: []
     };
-    
     this.heights=[];
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
   }
 
-  UNSAFE_componentWillMount() {
+  componentWillMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
   }
 
@@ -77,7 +74,7 @@ class ReservationList extends Component {
     this.updateDataSource(reservations.reservations);
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
+  componentWillReceiveProps(props) {
     if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
       this.setState({
         reservations: []
@@ -128,7 +125,6 @@ class ReservationList extends Component {
       </View>
     );
   }
-
   getReservationsForDay(iterator, props) {
     const day = iterator.clone();
     const res = props.reservations[day.toString('yyyy-MM-dd')];
@@ -174,7 +170,7 @@ class ReservationList extends Component {
     }
     const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
+    for (let i = 0; i < 361; i++) {
       const res = this.getReservationsForDay(iterator, props);
       if (res) {
         reservations = reservations.concat(res);
@@ -191,7 +187,7 @@ class ReservationList extends Component {
         return this.props.renderEmptyData();
       }
       return (
-        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor}/>
+        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor} />
       );
     }
     return (
@@ -209,13 +205,9 @@ class ReservationList extends Component {
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing || false}
         onRefresh={this.props.onRefresh}
-        onScrollBeginDrag={this.props.onScrollBeginDrag}
-        onScrollEndDrag={this.props.onScrollEndDrag}
-        onMomentumScrollBegin={this.props.onMomentumScrollBegin}
-        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
       />
     );
   }
 }
 
-export default ReservationList;
+export default ReactComp;

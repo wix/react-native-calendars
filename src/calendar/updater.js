@@ -12,7 +12,7 @@ export default function shouldComponentUpdate(nextProps, nextState) {
     return prev;
   }, {update: false});
 
-  shouldUpdate = ['markedDates', 'hideExtraDays', 'displayLoadingIndicator'].reduce((prev, next) => {
+  shouldUpdate = ['markedDates', 'hideExtraDays'].reduce((prev, next) => {
     if (!prev.update && nextProps[next] !== this.props[next]) {
       return {
         update: true,
@@ -46,5 +46,6 @@ export default function shouldComponentUpdate(nextProps, nextState) {
       field: 'current'
     };
   }
+  //console.log(shouldUpdate.field, shouldUpdate.update);
   return shouldUpdate.update;
 }

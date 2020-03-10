@@ -52,8 +52,7 @@ export default function styleConstructor(theme = {}) {
       paddingBottom: 8,
       paddingLeft: 20,
       backgroundColor: appStyle.calendarBackground,
-      textAlign: 'left',
-      textTransform: 'uppercase'
+      textAlign: 'left'
     },
     header: {
       position: 'absolute',
@@ -92,14 +91,6 @@ export default function styleConstructor(theme = {}) {
       paddingLeft: 15,
       flexDirection: 'row',
       justifyContent: 'space-around'
-    },
-    dayHeader: {
-      width: 32,
-      textAlign: 'center',
-      fontSize: appStyle.textDayHeaderFontSize,
-      fontFamily: appStyle.textDayHeaderFontFamily,
-      fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
     },
     arrowImage: {
       tintColor: appStyle.arrowColor

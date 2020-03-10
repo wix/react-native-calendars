@@ -47,7 +47,7 @@ class Calendar extends Component {
     markingType: PropTypes.string,
     /** Hide month navigation arrows. Default = false */
     hideArrows: PropTypes.bool,
-    /** Display loading indicator. Default = false */
+    /** Display loading indicador. Default = false */
     displayLoadingIndicator: PropTypes.bool,
     /** Do not show days of other months in month page. Default = false */
     hideExtraDays: PropTypes.bool,
@@ -55,9 +55,8 @@ class Calendar extends Component {
     onDayPress: PropTypes.func,
     /** Handler which gets executed on day long press. Default = undefined */
     onDayLongPress: PropTypes.func,
-    /** Handler which gets executed when month changes in calendar. Default = undefined */
-    onMonthChange: PropTypes.func,
     /** Handler which gets executed when visible month changes in calendar. Default = undefined */
+    onMonthChange: PropTypes.func,
     onVisibleMonthsChange: PropTypes.func,
     /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
     renderArrow: PropTypes.func,
@@ -75,23 +74,17 @@ class Calendar extends Component {
     showWeekNumbers: PropTypes.bool,
     /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
     onPressArrowLeft: PropTypes.func,
-    /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
+    /** Handler which gets executed when press arrow icon left. It receive a callback can go next month */
     onPressArrowRight: PropTypes.func,
-    /** Disable left arrow. Default = false */
-    disableArrowLeft: PropTypes.bool,
-    /** Disable right arrow. Default = false */
-    disableArrowRight: PropTypes.bool,
     /** Style passed to the header */
-    headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   };
 
   constructor(props) {
     super(props);
-
+    
     this.style = styleConstructor(this.props.theme);
-
+    
     this.state = {
       currentMonth: props.current ? parseDate(props.current) : XDate()
     };
@@ -103,7 +96,7 @@ class Calendar extends Component {
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     const current = parseDate(nextProps.current);
     if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
       this.setState({
@@ -179,7 +172,6 @@ class Calendar extends Component {
     const DayComp = this.getDayComponent();
     const date = day.getDate();
     const dateAsObject = xdateToData(day);
-    const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
 
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
@@ -191,41 +183,11 @@ class Calendar extends Component {
           onLongPress={this.longPressDay}
           date={dateAsObject}
           marking={this.getDateMarking(day)}
-          accessibilityLabel={accessibilityLabel}
         >
           {date}
         </DayComp>
       </View>
     );
-  }
-
-  getMarkingLabel(day) {
-    let label = '';
-    const marking = this.getDateMarking(day);
-    
-    if (marking.accessibilityLabel) {
-      return marking.accessibilityLabel;
-    }
-    
-    if (marking.selected) {
-      label += 'selected ';
-      if (!marking.marked) {
-        label += 'You have no entries for this day ';
-      }
-    } 
-    if (marking.marked) {
-      label += 'You have entries for this day ';
-    } 
-    if (marking.startingDay) {
-      label += 'period start ';
-    } 
-    if (marking.endingDay) {
-      label += 'period end ';
-    }
-    if (marking.disabled || marking.disableTouchEvent) {
-      label += 'disabled ';
-    }
-    return label;
   }
 
   getDayComponent() {
@@ -260,17 +222,8 @@ class Calendar extends Component {
     }
   }
 
-  renderWeekNumber(weekNumber) {
-    return (
-      <Day 
-        key={`week-${weekNumber}`} 
-        theme={this.props.theme} 
-        marking={{disableTouchEvent: true}} 
-        state='disabled'
-      >
-        {weekNumber}
-      </Day>
-    );
+  renderWeekNumber (weekNumber) {
+    return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
   }
 
   renderWeek(days, id) {
@@ -292,7 +245,7 @@ class Calendar extends Component {
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
-
+    
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
@@ -304,14 +257,8 @@ class Calendar extends Component {
     }
 
     return (
-      <View 
-        style={[this.style.container, this.props.style]}
-        accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
-        importantForAccessibility={this.props.importantForAccessibility} // Android
-      >
+      <View style={[this.style.container, this.props.style]}>
         <CalendarHeader
-          testID={this.props.testID}
-          ref={c => this.header = c}
           style={this.props.headerStyle}
           theme={this.props.theme}
           hideArrows={this.props.hideArrows}
@@ -325,9 +272,6 @@ class Calendar extends Component {
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
-          webAriaLevel={this.props.webAriaLevel}
-          disableArrowLeft={this.props.disableArrowLeft}
-          disableArrowRight={this.props.disableArrowRight}
         />
         <View style={this.style.monthView}>{weeks}</View>
       </View>);
