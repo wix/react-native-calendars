@@ -144,7 +144,7 @@ class WeekCalendar extends Component {
   }
 
   renderItem = ({item}) => {
-    const {calendarWidth, style, onDayPress, markedDates, ...others} = this.props;
+    const {calendarWidth, style, onDayPress, onDayLongPress, markedDates, ...others} = this.props;
 
     return (
       <Week 
@@ -154,6 +154,7 @@ class WeekCalendar extends Component {
         style={[{width: calendarWidth || this.containerWidth}, style]}
         markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
+        onDayLongPress={onDayLongPress}
       />
     );
   }
@@ -175,7 +176,7 @@ class WeekCalendar extends Component {
 
     return (
       <View style={[allowShadow && this.style.containerShadow, !hideDayNames && {paddingBottom: 6}]}>
-        {<Text style={[this.style.headerTitle, {paddingBottom: 0, paddingTop: 0, fontSize: 12}]}>{moment(this.props.context.date).format('MMM YYYY')}</Text>}
+        {<Text style={[this.style.headerTitle, {paddingBottom: 0, paddingTop: 0, fontSize: 12, lineHeight: 30}]}>{moment(this.props.context.date).format('MMM YYYY')}</Text>}
         {!hideDayNames &&
           <View style={[this.style.week, {marginTop: 10, marginBottom: -2}]}>
             {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
@@ -196,7 +197,11 @@ class WeekCalendar extends Component {
         <FlatList
           ref={this.list}
           data={items}
-          extraData={this.props.current || this.props.context.date}
+          extraData={{
+            current: this.props.current,
+            date: this.props.context.date,
+            markedDates: this.props.markedDates
+          }}
           style={this.style.container}
           horizontal
           showsHorizontalScrollIndicator={false}

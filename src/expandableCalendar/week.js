@@ -133,7 +133,7 @@ class Week extends Component {
           state={state}
           theme={this.props.theme}
           onPress={this.props.onDayPress}
-          onLongPress={this.props.onDayPress}
+          onLongPress={this.props.onDayLongPress}
           date={dateAsObject}
           marking={this.getDateMarking(day)}
         >
