@@ -86,10 +86,10 @@ class Calendar extends Component {
     headerStyle: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
-      PropTypes.array,
+      PropTypes.array
     ]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number,
+    webAriaLevel: PropTypes.number
   };
 
   constructor(props) {
@@ -98,7 +98,7 @@ class Calendar extends Component {
     this.style = styleConstructor(this.props.theme);
 
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate(),
+      currentMonth: props.current ? parseDate(props.current) : XDate()
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -116,7 +116,7 @@ class Calendar extends Component {
         this.state.currentMonth.toString('yyyy MM')
     ) {
       this.setState({
-        currentMonth: current.clone(),
+        currentMonth: current.clone()
       });
     }
   }
@@ -129,7 +129,7 @@ class Calendar extends Component {
     }
     this.setState(
       {
-        currentMonth: day.clone(),
+        currentMonth: day.clone()
       },
       () => {
         if (!doNotTriggerListeners) {
@@ -198,7 +198,7 @@ class Calendar extends Component {
       !dateutils.sameMonth(day, this.state.currentMonth) &&
       this.props.hideExtraDays
     ) {
-      return <View key={id} style={{flex: 1}} />;
+      return <View key={id} style={{flex: 1}}/>;
     }
 
     const DayComp = this.getDayComponent();
@@ -260,16 +260,16 @@ class Calendar extends Component {
     }
 
     switch (this.props.markingType) {
-      case 'period':
-        return UnitDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      case 'multi-period':
-        return MultiPeriodDay;
-      case 'custom':
-        return SingleDay;
-      default:
-        return Day;
+    case 'period':
+      return UnitDay;
+    case 'multi-dot':
+      return MultiDotDay;
+    case 'multi-period':
+      return MultiPeriodDay;
+    case 'custom':
+      return SingleDay;
+    default:
+      return Day;
     }
   }
 
