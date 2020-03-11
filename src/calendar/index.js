@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as ReactNative from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../dateutils';
-import { xdateToData, parseDate } from '../interface';
+import {xdateToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
@@ -13,11 +13,11 @@ import MultiPeriodDay from './day/multi-period';
 import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
-import { SELECT_DATE_SLOT } from '../testIDs';
+import {SELECT_DATE_SLOT} from '../testIDs';
 
 
 //Fallback when RN version is < 0.44
-const { View, ViewPropTypes } = ReactNative;
+const {View, ViewPropTypes} = ReactNative;
 const viewPropTypes = ViewPropTypes || View.propTypes;
 const EmptyArray = [];
 
@@ -174,7 +174,7 @@ class Calendar extends Component {
     }
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      return (<View key={id} style={{ flex: 1 }} />);
+      return (<View key={id} style={{flex: 1}}/>);
     }
 
     const DayComp = this.getDayComponent();
@@ -183,7 +183,7 @@ class Calendar extends Component {
     const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
 
     return (
-      <View style={{ flex: 1, alignItems: 'center' }} key={id}>
+      <View style={{flex: 1, alignItems: 'center'}} key={id}>
         <DayComp
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           state={state}
@@ -235,16 +235,16 @@ class Calendar extends Component {
     }
 
     switch (this.props.markingType) {
-      case 'period':
-        return UnitDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      case 'multi-period':
-        return MultiPeriodDay;
-      case 'custom':
-        return SingleDay;
-      default:
-        return Day;
+    case 'period':
+      return UnitDay;
+    case 'multi-dot':
+      return MultiDotDay;
+    case 'multi-period':
+      return MultiPeriodDay;
+    case 'custom':
+      return SingleDay;
+    default:
+      return Day;
     }
   }
 
@@ -266,7 +266,7 @@ class Calendar extends Component {
       <Day
         key={`week-${weekNumber}`}
         theme={this.props.theme}
-        marking={{ disableTouchEvent: true }}
+        marking={{disableTouchEvent: true}}
         state='disabled'
       >
         {weekNumber}
