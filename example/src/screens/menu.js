@@ -9,7 +9,7 @@ export default class MenuScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID={'menu'}>
         <Image source={appIcon} style={styles.image}/>
         <TouchableOpacity style={styles.menu} onPress={this.onCalendarsPress.bind(this)}>
           <Text style={styles.menuText}>Calendars</Text>
