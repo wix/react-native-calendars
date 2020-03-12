@@ -296,4 +296,4 @@
 - CalendarListItem - fix previous months bug (PR #1069).
 
 ## [1.265.0] - 2020-3-12
-- Setup Detox for e2e tests.
+- Setup Detox for e2e tests (iOS).
