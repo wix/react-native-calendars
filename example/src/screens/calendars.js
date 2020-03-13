@@ -18,9 +18,11 @@ export default class CalendarsScreen extends Component {
 
   render() {
     return (
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} testID={'calendars_screen'}>
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
+          testID={'test'}
+          current={'2020-02-02'}
           style={styles.calendar}
           hideExtraDays
           onDayPress={this.onDayPress}

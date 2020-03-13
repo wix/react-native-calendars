@@ -5,7 +5,7 @@ import XDate from 'xdate';
 import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
-import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} from '../../testIDs';
+import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME} from '../../testIDs';
 
 
 class CalendarHeader extends Component {
@@ -165,6 +165,7 @@ class CalendarHeader extends Component {
               allowFontScaling={false}
               style={this.style.monthText}
               {...webProps}
+              testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
             >
               {this.props.month.toString(this.props.monthFormat)}
             </Text>

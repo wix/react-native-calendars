@@ -11,7 +11,7 @@ export default class MenuScreen extends Component {
     return (
       <View style={styles.container} testID={'menu'}>
         <Image source={appIcon} style={styles.image}/>
-        <TouchableOpacity style={styles.menu} onPress={this.onCalendarsPress.bind(this)}>
+        <TouchableOpacity testID={'calendars_btn'} style={styles.menu} onPress={this.onCalendarsPress.bind(this)}>
           <Text style={styles.menuText}>Calendars</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menu} onPress={this.onCalendarListPress.bind(this)}>
