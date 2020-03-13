@@ -1,6 +1,5 @@
 const testIDs = require('../src/testIDs');
 
-
 describe('Calendars', () => {
   before(async () => {
     await device.reloadReactNative();
