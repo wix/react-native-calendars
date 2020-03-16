@@ -3,7 +3,7 @@ const testIDs = require('../src/testIDs');
 describe('Calendars', () => {
   before(async () => {
     await device.reloadReactNative();
-    await element(by.id('calendars_btn')).tap();
+    await element(by.id(testIDs.menu.CALENDARS)).tap();
   });
 
   it('should move to previous month', async () => {

@@ -28,6 +28,8 @@ export default class AgendaView extends Component {
   static displayName = 'Agenda';
 
   static propTypes = {
+    /** Specify testID for testing agenda component */
+    testID: PropTypes.string,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** agenda container style */
@@ -412,7 +414,7 @@ export default class AgendaView extends Component {
     const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
 
     return (
-      <View onLayout={this.onLayout} style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
+      <View testID={this.props.testID} onLayout={this.onLayout} style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
         <View style={this.styles.reservations}>
           {this.renderReservations()}
         </View>

@@ -293,7 +293,7 @@ class CalendarList extends Component {
 
   render() {
     return (
-      <View>
+      <View testID={this.props.testID}>
         <FlatList
           onLayout={this.onLayout}
           ref={(c) => this.listView = c}

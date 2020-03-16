@@ -2,31 +2,50 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 
-
 const appIcon = require('../img/app-icon-120x120.png');
+const testIDs = require('../../../src/testIDs');
+
 
 export default class MenuScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container} testID={'menu'}>
+      <View style={styles.container} testID={testIDs.menu.CONTAINER}>
         <Image source={appIcon} style={styles.image}/>
-        <TouchableOpacity testID={'calendars_btn'} style={styles.menu} onPress={this.onCalendarsPress.bind(this)}>
+        <TouchableOpacity
+          testID={testIDs.menu.CALENDARS}
+          style={styles.menu}
+          onPress={this.onCalendarsPress.bind(this)}>
           <Text style={styles.menuText}>Calendars</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menu} onPress={this.onCalendarListPress.bind(this)}>
+        <TouchableOpacity
+          testID={testIDs.menu.CALENDAR_LIST}
+          style={styles.menu}
+          onPress={this.onCalendarListPress.bind(this)}>
           <Text style={styles.menuText}>Calendar List</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menu} onPress={this.onHorizontalCalendarListPress.bind(this)}>
+        <TouchableOpacity
+          testID={testIDs.menu.HORIZONTAL_LIST}
+          style={styles.menu}
+          onPress={this.onHorizontalCalendarListPress.bind(this)}>
           <Text style={styles.menuText}>Horizontal Calendar List</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menu} onPress={this.onAgendaPress.bind(this)}>
+        <TouchableOpacity
+          testID={testIDs.menu.AGENDA}
+          style={styles.menu}
+          onPress={this.onAgendaPress.bind(this)}>
           <Text style={styles.menuText}>Agenda</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menu} onPress={this.onExpandablePress.bind(this)}>
+        <TouchableOpacity
+          testID={testIDs.menu.EXPANDABLE_CALENDAR}
+          style={styles.menu}
+          onPress={this.onExpandablePress.bind(this)}>
           <Text style={styles.menuText}>Expandable Calendar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menu} onPress={this.onWeekPress.bind(this)}>
+        <TouchableOpacity
+          testID={testIDs.menu.WEEK_CALENDAR}
+          style={styles.menu}
+          onPress={this.onWeekPress.bind(this)}>
           <Text style={styles.menuText}>Week Calendar</Text>
         </TouchableOpacity>
       </View>

@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Agenda} from 'react-native-calendars';
 
+const testIDs = require('../../../src/testIDs');
+
 
 export default class AgendaScreen extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ export default class AgendaScreen extends Component {
   render() {
     return (
       <Agenda
+        testID={testIDs.agenda.CONTAINER}
         items={this.state.items}
         loadItemsForMonth={this.loadItems.bind(this)}
         selected={'2017-05-16'}

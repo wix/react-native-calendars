@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, View, ScrollView, Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
+const testIDs = require('../../../src/testIDs');
+
 
 export default class CalendarsScreen extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ export default class CalendarsScreen extends Component {
 
   render() {
     return (
-      <ScrollView showsVerticalScrollIndicator={false} testID={'calendars_screen'}>
+      <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={'test'}
