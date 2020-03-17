@@ -146,7 +146,8 @@ class CalendarHeader extends Component {
     const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
 
     return (
-      <View 
+      <View
+        testID={testID}
         style={this.props.style} 
         accessible
         accessibilityRole={'adjustable'}

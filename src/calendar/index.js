@@ -13,7 +13,7 @@ import MultiPeriodDay from './day/multi-period';
 import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
-import {SELECT_DATE_SLOT} from '../testIDs';
+import * as testIDs from '../testIDs';
 
 
 //Fallback when RN version is < 0.44
@@ -29,7 +29,7 @@ class Calendar extends Component {
   static displayName = 'Calendar';
 
   static propTypes = {
-    /** Specify testID for testing Calendar component */
+    /** Specify testID for testing Calendar component, default is undefined */
     testID: PropTypes.string,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
@@ -186,7 +186,7 @@ class Calendar extends Component {
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
         <DayComp
-          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
+          testID={`${testIDs.SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           state={state}
           theme={this.props.theme}
           onPress={this.pressDay}

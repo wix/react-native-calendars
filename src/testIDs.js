@@ -18,7 +18,11 @@ module.exports = {
     EXPANDABLE_CALENDAR: 'expandable_calendar_btn',
     WEEK_CALENDAR: 'week_calendar_btn'
   },
-  calendars: {CONTAINER: 'calendars'},
+  calendars: {
+    CONTAINER: 'calendars',
+    FIRST: 'first_calendar',
+    LAST: 'last_calendar'
+  },
   calendarList: {CONTAINER: 'calendarList'},
   horizontalList: {CONTAINER: 'horizontalList'},
   agenda: {CONTAINER: 'agenda'},

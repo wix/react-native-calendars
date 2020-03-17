@@ -4,6 +4,7 @@
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
+    "e2e": "detox test --configuration ios.sim.debug",
     "test": "jasmine src/*.spec.js && npm run lint",
     "lint": "eslint src/ example/src",
     "release": "node ./scripts/release.js",

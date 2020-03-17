@@ -23,7 +23,7 @@ export default class CalendarsScreen extends Component {
       <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
-          testID={'test'}
+          testID={testIDs.calendars.FIRST}
           current={'2020-02-02'}
           style={styles.calendar}
           hideExtraDays
@@ -247,6 +247,7 @@ export default class CalendarsScreen extends Component {
 
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
+          testID={testIDs.calendars.LAST}
           style={[
             styles.calendar,
             {
