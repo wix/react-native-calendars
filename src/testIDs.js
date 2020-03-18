@@ -7,7 +7,9 @@ module.exports = {
   CALENDAR_KNOB: `${PREFIX}.CALENDAR_KNOB`,
   STATIC_HEADER: 'STATIC_HEADER',
   AGENDA_CALENDAR_KNOB: `${PREFIX}.AGENDA_CALENDAR_KNOB`,
+  AGENDA_CALENDAR_ITEM: `${PREFIX}.AGENDA_CALENDAR_ITEM`,
   HEADER_MONTH_NAME: 'HEADER_MONTH_NAME',
+  RESERVATION_DATE: `${PREFIX}.RESERVATION_DATE`,
 
   menu: {
     CONTAINER: 'menu',
@@ -25,7 +27,10 @@ module.exports = {
   },
   calendarList: {CONTAINER: 'calendarList'},
   horizontalList: {CONTAINER: 'horizontalList'},
-  agenda: {CONTAINER: 'agenda'},
+  agenda: {
+    CONTAINER: 'agenda',
+    ITEM: 'item'
+  },
   expandableCalendar: {CONTAINER: 'expandableCalendar'},
   weekCalendar: {CONTAINER: 'weekCalendar'}
 };

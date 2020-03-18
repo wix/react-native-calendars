@@ -59,6 +59,7 @@ class CalendarListItem extends Component {
     if (row.getTime) {
       return (
         <Calendar
+          testID={`${this.props.testID}_${row}`}
           theme={this.props.theme}
           style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.calendar, this.props.style]}
           current={row}

@@ -49,7 +49,7 @@ export default class AgendaScreen extends Component {
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 5);
+          const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
             this.state.items[strTime].push({
               name: 'Item for ' + strTime + ' #' + j,
@@ -68,7 +68,8 @@ export default class AgendaScreen extends Component {
 
   renderItem(item) {
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
+        testID={testIDs.agenda.ITEM}
         style={[styles.item, {height: item.height}]} 
         onPress={() => Alert.alert(item.name)}
       >

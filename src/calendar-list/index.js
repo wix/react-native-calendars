@@ -210,6 +210,7 @@ class CalendarList extends Component {
   renderCalendar({item}) {
     return (
       <CalendarListItem
+        testID={`${this.props.testID}_${item}`}
         scrollToMonth={this.scrollToMonth.bind(this)}
         item={item} 
         calendarHeight={this.props.calendarHeight} 
@@ -293,8 +294,9 @@ class CalendarList extends Component {
 
   render() {
     return (
-      <View testID={this.props.testID}>
+      <View>
         <FlatList
+          testID={this.props.testID}
           onLayout={this.onLayout}
           ref={(c) => this.listView = c}
           //scrollEventThrottle={1000}
