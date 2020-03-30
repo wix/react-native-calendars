@@ -2,17 +2,16 @@ import _ from 'lodash';
 import React, {Component} from 'react';
 import {
   Platform,
-  Alert,
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
-  Button,
+  Button
 } from 'react-native';
 import {
   ExpandableCalendar,
   Timeline,
-  CalendarProvider,
+  CalendarProvider
 } from 'react-native-calendars';
 
 // const today = new Date().toISOString().split('T')[0];
@@ -40,92 +39,78 @@ const EVENTS = [
     end: '2017-09-06 23:30:00',
     title: 'Dr. Mariana Joseph',
     summary: '3412 Piedmont Rd NE, GA 3032',
+    color: '#e6add8'
   },
   {
     start: '2017-09-07 00:30:00',
     end: '2017-09-07 01:30:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    title: 'Visit Grand Mother',
+    summary: 'Visit Grand Mother and bring some fruits.',
+    color: '#ade6d8'
   },
   {
-    start: '2017-09-07 01:30:00',
-    end: '2017-09-07 02:20:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    start: '2017-09-07 02:30:00',
+    end: '2017-09-07 03:20:00',
+    title: 'Meeting with Prof. Behjet Zuhaira',
+    summary: 'Meeting with Prof. Behjet at 130 in her office.',
+    color: '#e6add8'
   },
   {
     start: '2017-09-07 04:10:00',
     end: '2017-09-07 04:40:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    title: 'Tea Time with Dr. Hasan',
+    summary: 'Tea Time with Dr. Hasan, Talk about Project'
   },
   {
     start: '2017-09-07 01:05:00',
-    end: '2017-09-07 01:45:00',
+    end: '2017-09-07 01:35:00',
     title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    summary: '3412 Piedmont Rd NE, GA 3032'
   },
   {
     start: '2017-09-07 14:30:00',
     end: '2017-09-07 16:30:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    title: 'Meeting Some Friends in ARMED',
+    summary: 'Arsalan, Hasnaat, Talha, Waleed, Bilal',
+    color: '#d8ade6'
   },
   {
-    start: '2017-09-08 01:20:00',
-    end: '2017-09-08 02:20:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    start: '2017-09-08 01:40:00',
+    end: '2017-09-08 02:25:00',
+    title: 'Meet Sir Khurram Iqbal',
+    summary: 'Computer Science Dept. Comsats Islamabad',
+    color: '#e6bcad'
   },
   {
     start: '2017-09-08 04:10:00',
     end: '2017-09-08 04:40:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    title: 'Tea Time with Colleagues',
+    summary: 'WeRplay'
   },
   {
     start: '2017-09-08 00:45:00',
     end: '2017-09-08 01:45:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    title: 'Lets Play Apex Legends',
+    summary: 'with Boys at Work'
   },
   {
     start: '2017-09-08 11:30:00',
     end: '2017-09-08 12:30:00',
     title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
-  },
-  {
-    start: '2017-09-09 01:30:00',
-    end: '2017-09-09 02:00:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
-  },
-  {
-    start: '2017-09-09 03:10:00',
-    end: '2017-09-09 03:40:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
-  },
-  {
-    start: '2017-09-09 00:10:00',
-    end: '2017-09-09 01:45:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    summary: '3412 Piedmont Rd NE, GA 3032'
   },
   {
     start: '2017-09-10 12:10:00',
     end: '2017-09-10 13:45:00',
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
-  },
+    title: 'Merge Request to React Native Calendards',
+    summary: 'Merge Timeline Calendar to React Native Calendars'
+  }
 ];
 
 export default class ExpandableCalendarScreen extends Component {
   onDateChanged = date => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
-    console.log(date);
   };
 
   onMonthChange = (/* month, updateSource */) => {
@@ -133,11 +118,9 @@ export default class ExpandableCalendarScreen extends Component {
   };
 
   buttonPressed() {
-    Alert.alert('show more');
   }
 
   itemPressed(id) {
-    Alert.alert(id);
   }
 
   renderEmptyItem() {
@@ -163,22 +146,11 @@ export default class ExpandableCalendarScreen extends Component {
         </View>
         <Text style={styles.itemTitleText}>{item.title}</Text>
         <View style={styles.itemButtonContainer}>
-          <Button title={'Info'} onPress={this.buttonPressed} />
+          <Button title={'Info'} onPress={this.buttonPressed}/>
         </View>
       </TouchableOpacity>
     );
   };
-
-  // getMarkedDates = () => {
-  //   const marked = {};
-  //   ITEMS.forEach(item => {
-  //     // only mark dates with data
-  //     if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
-  //       marked[item.title] = {marked: true};
-  //     }
-  //   });
-  //   return marked;
-  // };
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -252,7 +224,7 @@ export default class ExpandableCalendarScreen extends Component {
         />
         <Timeline
           format24h={true}
-          eventTapped={e => console.log(e)}
+          eventTapped={e => e}
           events={EVENTS}
           // scrollToFirst={true}
           // start={0}
@@ -266,47 +238,47 @@ export default class ExpandableCalendarScreen extends Component {
 const styles = StyleSheet.create({
   calendar: {
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   section: {
     backgroundColor: '#f0f4f7',
-    color: '#79838a',
+    color: '#79838a'
   },
   item: {
     padding: 20,
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: '#e8ecf0',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   itemHourText: {
-    color: 'black',
+    color: 'black'
   },
   itemDurationText: {
     color: 'grey',
     fontSize: 12,
     marginTop: 4,
-    marginLeft: 4,
+    marginLeft: 4
   },
   itemTitleText: {
     color: 'black',
     marginLeft: 16,
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 16
   },
   itemButtonContainer: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   emptyItem: {
     paddingLeft: 20,
     height: 52,
     justifyContent: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#e8ecf0',
+    borderBottomColor: '#e8ecf0'
   },
   emptyItemText: {
     color: '#79838a',
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 });

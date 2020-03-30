@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import populateEvents from './Packer';
 import React from 'react';
 import moment from 'moment';
@@ -27,26 +28,47 @@ function range(from, to) {
 let {width: dimensionWidth} = Dimensions.get('window');
 
 export default class Timeline extends React.PureComponent {
+  static propTypes = {
+    start: PropTypes.number,
+    end: PropTypes.number,
+    eventTapped: PropTypes.func,
+    format24h: PropTypes.bool,
+    events: PropTypes.arrayOf(PropTypes.shape({
+      start: PropTypes.string.isRequired,
+      end: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      summary: PropTypes.string.isRequired,
+      color: PropTypes.string
+    })).isRequired
+  }
+
+  static defaultProps = {
+    start: 0,
+    end: 24,
+    events: [],
+    format24h: true
+  }
+
   constructor(props) {
     super(props);
-    const {start = 0, end = 24} = this.props;
-    this.styles = styleConstructor(props.styles, (end - start) * 100);
+    const {start, end} = this.props;
     this.calendarHeight = (end - start) * 100;
+    this.styles = styleConstructor(props.styles, this.calendarHeight);
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
     let initPosition =
       _.min(_.map(packedEvents, 'top')) - this.calendarHeight / (end - start);
-    initPosition = initPosition < 0 ? 0 : initPosition;
+    const verifiedInitPosition = initPosition < 0 ? 0 : initPosition;
     this.state = {
-      _scrollY: initPosition,
-      packedEvents,
+      _scrollY: verifiedInitPosition,
+      packedEvents
     };
   }
 
-  componentWillReceiveProps({events, start = 0}) {
+  UNSAFE_componentWillReceiveProps({events, start = 0}) {
     const width = dimensionWidth - LEFT_MARGIN;
     this.setState({
-      packedEvents: populateEvents(events, width, start),
+      packedEvents: populateEvents(events, width, start)
     });
   }
 
@@ -60,7 +82,7 @@ export default class Timeline extends React.PureComponent {
         this._scrollView.scrollTo({
           x: 0,
           y: this.state._scrollY,
-          animated: true,
+          animated: true
         });
       }
     }, 1);
@@ -89,18 +111,20 @@ export default class Timeline extends React.PureComponent {
     const {format24h, start = 0, end = 24} = this.props;
     const offset = this.calendarHeight / (end - start);
 
+    const EVENT_DIFF = 20;
+
     return range(start, end + 1).map((i, index) => {
       let timeText;
       if (i === start) {
         timeText = '';
       } else if (i < 12) {
-        timeText = !format24h ? `${i} AM` : i;
+        timeText = !format24h ? `${i} AM` : `${i}:00`;
       } else if (i === 12) {
-        timeText = !format24h ? `${i} PM` : i;
+        timeText = !format24h ? `${i} PM` : `${i}:00`;
       } else if (i === 24) {
-        timeText = !format24h ? '12 AM' : 0;
+        timeText = !format24h ? '12 AM' : '23:59';
       } else {
-        timeText = !format24h ? `${i - 12} PM` : i;
+        timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
       }
       return [
         <Text
@@ -113,7 +137,7 @@ export default class Timeline extends React.PureComponent {
             key={`line${i}`}
             style={[
               this.styles.line,
-              {top: offset * index, width: dimensionWidth - 20},
+              {top: offset * index, width: dimensionWidth - EVENT_DIFF}
             ]}
           />
         ),
@@ -121,20 +145,10 @@ export default class Timeline extends React.PureComponent {
           key={`lineHalf${i}`}
           style={[
             this.styles.line,
-            {top: offset * (index + 0.5), width: dimensionWidth - 20},
+            {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF}
           ]}
-        />,
+        />
       ];
-    });
-  }
-
-  _renderTimeLabels() {
-    const {start = 0, end = 24} = this.props;
-    const offset = this.calendarHeight / (end - start);
-    return range(start, end).map((item, i) => {
-      return (
-        <View key={`line${i}`} style={[this.styles.line, {top: offset * i}]} />
-      );
     });
   }
 
@@ -150,10 +164,7 @@ export default class Timeline extends React.PureComponent {
         height: event.height,
         width: event.width,
         top: event.top,
-      };
-
-      const eventColor = {
-        backgroundColor: event.color,
+        backgroundColor: event.color ? event.color : '#add8e6'
       };
 
       // Fixing the number of lines for the event title makes this calculation easier.
@@ -162,10 +173,10 @@ export default class Timeline extends React.PureComponent {
       const formatTime = this.props.format24h ? 'HH:mm' : 'hh:mm A';
       return (
         <TouchableOpacity
-          activeOpacity={0.5}
+          activeOpacity={0.9}
           onPress={() => this._onEventTapped(this.props.events[event.index])}
           key={i}
-          style={[this.styles.event, style, event.color && eventColor]}>
+          style={[this.styles.event, style]}>
           {this.props.renderEvent ? (
             this.props.renderEvent(event)
           ) : (
@@ -205,7 +216,7 @@ export default class Timeline extends React.PureComponent {
         ref={ref => (this._scrollView = ref)}
         contentContainerStyle={[
           this.styles.contentStyle,
-          {width: dimensionWidth},
+          {width: dimensionWidth}
         ]}>
         {this._renderLines()}
         {this._renderEvents()}

@@ -13,27 +13,21 @@ export default class MenuScreen extends Component {
         <TouchableOpacity style={styles.menu} onPress={this.onCalendarsPress.bind(this)}>
           <Text style={styles.menuText}>Calendars</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.menu}
-          onPress={this.onCalendarListPress.bind(this)}>
+        <TouchableOpacity style={styles.menu} onPress={this.onCalendarListPress.bind(this)}>
           <Text style={styles.menuText}>Calendar List</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.menu}
-          onPress={this.onHorizontalCalendarListPress.bind(this)}>
+        <TouchableOpacity style={styles.menu} onPress={this.onHorizontalCalendarListPress.bind(this)}>
           <Text style={styles.menuText}>Horizontal Calendar List</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.menu}
-          onPress={this.onAgendaPress.bind(this)}>
+        <TouchableOpacity style={styles.menu} onPress={this.onAgendaPress.bind(this)}>
           <Text style={styles.menuText}>Agenda</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.menu}
-          onPress={this.onExpandablePress.bind(this)}>
+        <TouchableOpacity style={styles.menu} onPress={this.onExpandablePress.bind(this)}>
           <Text style={styles.menuText}>Expandable Calendar</Text>
         </TouchableOpacity>
-
+        <TouchableOpacity style={styles.menu} onPress={this.onTimelinePress.bind(this)}>
+          <Text style={styles.menuText}>Timeline Calendar</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.menu} onPress={this.onWeekPress.bind(this)}>
           <Text style={styles.menuText}>Week Calendar</Text>
         </TouchableOpacity>
@@ -82,10 +76,10 @@ export default class MenuScreen extends Component {
     this.pushScreen('ExpandableCalendar');
   }
 
-
   onTimelinePress() {
     this.pushScreen('TimelineCalendar');
   }
+
   onWeekPress() {
     this.pushScreen('ExpandableCalendar', {weekView: true});
   }
