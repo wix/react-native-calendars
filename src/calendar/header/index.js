@@ -19,6 +19,7 @@ class CalendarHeader extends Component {
     showIndicator: PropTypes.bool,
     firstDay: PropTypes.number,
     renderArrow: PropTypes.func,
+    renderMonth: PropTypes.func,
     hideDayNames: PropTypes.bool,
     weekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
@@ -70,6 +71,9 @@ class CalendarHeader extends Component {
       return true;
     }
     if (nextProps.renderArrow !== this.props.renderArrow) {
+      return true;
+    }
+    if (nextProps.renderMonth !== this.props.renderMonth) {
       return true;
     }
     if (nextProps.disableArrowLeft !== this.props.disableArrowLeft) {
@@ -138,6 +142,20 @@ class CalendarHeader extends Component {
       );
     }
 
+    let renderMonth;
+    if (this.props.renderMonth) {
+      renderMonth = this.props.renderMonth;
+    } else {
+      renderMonth = (month) => (
+        <Text
+          allowFontScaling={false}
+          style={this.style.monthText}
+          {...webProps}>
+          {month.toString(this.props.monthFormat)}
+        </Text>
+      );
+    }
+
     let indicator;
     if (this.props.showIndicator) {
       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
@@ -161,13 +179,7 @@ class CalendarHeader extends Component {
         <View style={this.style.header}>
           {leftArrow}
           <View style={{flexDirection: 'row'}}>
-            <Text
-              allowFontScaling={false}
-              style={this.style.monthText}
-              {...webProps}
-            >
-              {this.props.month.toString(this.props.monthFormat)}
-            </Text>
+            {renderMonth(this.props.month)}
             {indicator}
           </View>
           {rightArrow}

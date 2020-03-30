@@ -261,6 +261,32 @@ export default class CalendarsScreen extends Component {
             );
           }}
         />
+
+
+        <Text style={styles.text}>Calendar with custom month component</Text>
+        <Calendar
+          style={styles.calendar}
+          theme={{
+            'stylesheet.calendar.header': {
+              header: {
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingLeft: 10,
+                paddingRight: 10,
+                marginTop: 6,
+                alignItems: 'center',
+                height: 80
+              }
+            }
+          }}
+          renderMonth={(month) => (
+            <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={{fontSize: 18, marginBottom: 5}}>{month.toString('MMMM')}</Text>
+              <Text style={{fontSize: 12, color: '#AAA'}}>{month.toString('yyyy')}</Text>
+            </View>
+          )}
+        />
+
       </ScrollView>
     );
   }
