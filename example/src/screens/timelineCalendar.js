@@ -111,6 +111,7 @@ export default class ExpandableCalendarScreen extends Component {
   onDateChanged = date => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
+    date;
   };
 
   onMonthChange = (/* month, updateSource */) => {
@@ -121,6 +122,7 @@ export default class ExpandableCalendarScreen extends Component {
   }
 
   itemPressed(id) {
+    id;
   }
 
   renderEmptyItem() {
@@ -191,7 +193,7 @@ export default class ExpandableCalendarScreen extends Component {
       dotColor: themeColor,
       selectedDotColor: white,
       disabledDotColor: disabledColor,
-      dotStyle: {marginTop: -2},
+      dotStyle: {marginTop: -2}
     };
   };
 

@@ -9,12 +9,12 @@ export default function styleConstructor(theme = {}, calendarHeight) {
     container: {
       flex: 1,
       backgroundColor: '#ffff',
-      ...theme.container,
+      ...theme.container
     },
     contentStyle: {
       backgroundColor: '#ffff',
       height: calendarHeight + 10,
-      ...theme.contentStyle,
+      ...theme.contentStyle
     },
     header: {
       paddingHorizontal: 30,
@@ -26,25 +26,25 @@ export default function styleConstructor(theme = {}, calendarHeight) {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'stretch',
-      ...theme.header,
+      ...theme.header
     },
     headerTextContainer: {
-      justifyContent: 'center',
+      justifyContent: 'center'
     },
     headerText: {
       fontSize: 16,
-      ...theme.headerText,
+      ...theme.headerText
     },
     arrow: {
       width: 15,
       height: 15,
-      resizeMode: 'contain',
+      resizeMode: 'contain'
     },
     arrowButton: {
       width: 50,
       alignItems: 'center',
       justifyContent: 'center',
-      ...theme.arrowButton,
+      ...theme.arrowButton
     },
     event: {
       position: 'absolute',
@@ -60,19 +60,19 @@ export default function styleConstructor(theme = {}, calendarHeight) {
       flexDirection: 'column',
       alignItems: 'flex-start',
       overflow: 'hidden',
-      ...theme.event,
+      ...theme.event
     },
     eventTitle: {
       color: '#615B73',
       fontWeight: '600',
       minHeight: 15,
-      ...theme.eventTitle,
+      ...theme.eventTitle
     },
     eventSummary: {
       color: '#615B73',
       fontSize: 12,
       flexWrap: 'wrap',
-      ...theme.eventSummary,
+      ...theme.eventSummary
     },
     eventTimes: {
       marginTop: 3,
@@ -80,21 +80,21 @@ export default function styleConstructor(theme = {}, calendarHeight) {
       fontWeight: 'bold',
       color: '#615B73',
       flexWrap: 'wrap',
-      ...theme.eventTimes,
+      ...theme.eventTimes
     },
     line: {
       height: 1,
       position: 'absolute',
       left: leftMargin,
       backgroundColor: 'rgb(216,216,216)',
-      ...theme.line,
+      ...theme.line
     },
     lineNow: {
       height: 1,
       position: 'absolute',
       left: leftMargin,
       backgroundColor: 'red',
-      ...theme.lineNow,
+      ...theme.lineNow
     },
     timeLabel: {
       position: 'absolute',
@@ -103,8 +103,8 @@ export default function styleConstructor(theme = {}, calendarHeight) {
       fontSize: 10,
       fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',
       fontWeight: '500',
-      ...theme.timeLabel,
-    },
+      ...theme.timeLabel
+    }
   };
   return StyleSheet.create(style);
 }

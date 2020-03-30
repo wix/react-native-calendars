@@ -4,7 +4,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
 import populateEvents from './Packer';
@@ -87,25 +87,6 @@ export default class Timeline extends React.PureComponent {
       }
     }, 1);
   }
-
-  // _renderRedLine() {
-  //   const offset = 100;
-  //   const {start = 0} = this.props;
-  //   const timeNowHour = moment().hour();
-  //   const timeNowMin = moment().minutes();
-  //   return (
-  //     <View
-  //       key={'timeNow'}
-  //       style={[
-  //         this.styles.lineNow,
-  //         {
-  //           top: offset * (timeNowHour - start) + (offset * timeNowMin) / 60,
-  //           width: dimensionWidth - 20,
-  //         },
-  //       ]}
-  //     />
-  //   );
-  // }
 
   _renderLines() {
     const {format24h, start = 0, end = 24} = this.props;
