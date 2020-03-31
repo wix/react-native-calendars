@@ -338,6 +338,7 @@ class Calendar extends Component {
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
         <CalendarHeader
+          testID={this.props.testID}
           ref={c => this.header = c}
           style={this.props.headerStyle}
           theme={this.props.theme}
