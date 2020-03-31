@@ -97,6 +97,9 @@ LocaleConfig.defaultLocale = 'fr';
   hideArrows={true}
   // Replace default arrows with custom ones (direction can be 'left' or 'right')
   renderArrow={(direction) => (<Arrow/>)}
+  // Replace default month component with a custom one (month is of type XDate). 
+  // Formatting values: http://arshaw.com/xdate/#Formatting
+  renderMonth={(month) => (<Month/>)}
   // Do not show days of other months in month page. Default = false
   hideExtraDays={true}
   // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
@@ -366,6 +369,23 @@ The `dayComponent` prop has to receive a RN component or a function that receive
 **Tip**: Don't forget to implement `shouldComponentUpdate()` for your custom day component to make the calendar perform better
 
 If you implement an awesome day component please make a PR so that other people could use it :)
+
+#### Overriding month component
+
+If you need custom styling or functionality not supported by the default month component, you can pass your own custom month component to the calendar.
+
+```javascript
+<Calendar
+  renderMonth={(month) => (
+    <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+      <Text style={{fontSize: 18, marginBottom: 5}}>{month.toString('MMMM')}</Text>
+      <Text style={{fontSize: 12, color: '#AAA'}}>{month.toString('yyyy')}</Text>
+    </View>
+  )}
+/>
+```
+
+The `renderMonth` prop is very similar to the `renderArrow` prop. It must be a function that receives a `month` parameter and returns a React Native component. The `month` prop is of type `XDate`. [Take a look at the date formatting options available here](https://arshaw.com/xdate/#Formatting).
 
 ### CalendarList
 

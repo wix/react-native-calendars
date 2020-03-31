@@ -61,7 +61,7 @@ class Calendar extends Component {
     onVisibleMonthsChange: PropTypes.func,
     /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
     renderArrow: PropTypes.func,
-    /** Replace default month renderer with custom ones (recieves Date()) */
+    /** Replace default month renderer with custom ones (receives XDate()) */
     renderMonth: PropTypes.func,
     /** Provide custom day rendering component */
     dayComponent: PropTypes.any,
