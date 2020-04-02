@@ -29,8 +29,6 @@ class Calendar extends Component {
   static displayName = 'Calendar';
 
   static propTypes = {
-    /** Specify testID for testing Calendar component, default is undefined */
-    testID: PropTypes.string,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** Collection of dates that have to be marked. Default = {} */

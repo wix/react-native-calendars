@@ -28,8 +28,6 @@ export default class AgendaView extends Component {
   static displayName = 'Agenda';
 
   static propTypes = {
-    /** Specify testID for testing agenda component */
-    testID: PropTypes.string,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** agenda container style */
