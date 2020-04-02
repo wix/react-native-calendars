@@ -412,7 +412,7 @@ export default class AgendaView extends Component {
     const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
 
     return (
-      <View onLayout={this.onLayout} style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
+      <View testID={this.props.testID} onLayout={this.onLayout} style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
         <View style={this.styles.reservations}>
           {this.renderReservations()}
         </View>
