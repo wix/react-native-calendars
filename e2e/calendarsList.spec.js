@@ -1,7 +1,7 @@
 const testIDs = require('../src/testIDs');
 
 describe('Calendars List', () => {
-  const FIRST_CALENDAR = `${testIDs.calendarList.CONTAINER}_1281916800000`;
+  const FIRST_CALENDAR = `${testIDs.calendarList.CONTAINER}_1273968000000`;
   const LAST_CALENDAR = `${testIDs.calendarList.CONTAINER}_1400198400000`;
 
   beforeEach(async () => {
