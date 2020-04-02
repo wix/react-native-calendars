@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {CalendarList} from 'react-native-calendars';
 
-const testIDs = require('../../../src/testIDs');
+const testIDs = require('../testIDs');
 
 export default class CalendarsList extends Component {
   

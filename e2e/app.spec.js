@@ -1,4 +1,4 @@
-const testIDs = require('../src/testIDs');
+const testIDs = require('../example/src/testIDs');
 
 describe('Example app', () => {
   beforeEach(async () => {

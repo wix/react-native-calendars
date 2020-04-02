@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 
-const testIDs = require('../../../src/testIDs');
+const testIDs = require('../testIDs');
 
 
 const today = new Date().toISOString().split('T')[0];

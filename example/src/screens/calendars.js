@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, View, ScrollView, Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
-const testIDs = require('../../../src/testIDs');
+const testIDs = require('../testIDs');
 
 
 export default class CalendarsScreen extends Component {

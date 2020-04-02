@@ -3,8 +3,7 @@ import {Platform, StyleSheet, View, TouchableOpacity, Text, Image} from 'react-n
 import {Navigation} from 'react-native-navigation';
 
 const appIcon = require('../img/app-icon-120x120.png');
-const testIDs = require('../../../src/testIDs');
-
+const testIDs = require('../testIDs');
 
 export default class MenuScreen extends Component {
 

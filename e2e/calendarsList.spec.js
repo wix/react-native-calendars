@@ -1,4 +1,5 @@
-const testIDs = require('../src/testIDs');
+const {HEADER_MONTH_NAME} = require('../src/testIDs');
+const testIDs = require('../example/src/testIDs');
 
 describe('Calendars List', () => {
   const FIRST_CALENDAR = `${testIDs.calendarList.CONTAINER}_1273968000000`;
@@ -11,13 +12,13 @@ describe('Calendars List', () => {
 
   it('should scroll calendars to the top', async () => {
     await element(by.id(testIDs.calendarList.CONTAINER)).scrollTo('top');
-    await expect(element(by.id(`${testIDs.HEADER_MONTH_NAME}-${FIRST_CALENDAR}`))).toBeVisible();
-    await expect(element(by.id(`${testIDs.HEADER_MONTH_NAME}-${FIRST_CALENDAR}`))).toHaveText('May 2010');
+    await expect(element(by.id(`${HEADER_MONTH_NAME}-${FIRST_CALENDAR}`))).toBeVisible();
+    await expect(element(by.id(`${HEADER_MONTH_NAME}-${FIRST_CALENDAR}`))).toHaveText('May 2010');
   });
 
   it('should scroll calendars to the bottom', async () => {
     await element(by.id(testIDs.calendarList.CONTAINER)).scrollTo('bottom');
-    await expect(element(by.id(`${testIDs.HEADER_MONTH_NAME}-${LAST_CALENDAR}`))).toBeVisible();
-    await expect(element(by.id(`${testIDs.HEADER_MONTH_NAME}-${LAST_CALENDAR}`))).toHaveText('May 2014');
+    await expect(element(by.id(`${HEADER_MONTH_NAME}-${LAST_CALENDAR}`))).toBeVisible();
+    await expect(element(by.id(`${HEADER_MONTH_NAME}-${LAST_CALENDAR}`))).toHaveText('May 2014');
   });
 });

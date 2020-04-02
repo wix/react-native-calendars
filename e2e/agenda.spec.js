@@ -1,4 +1,5 @@
-const testIDs = require('../src/testIDs');
+const {SELECT_DATE_SLOT, RESERVATION_DATE} = require('../src/testIDs');
+const testIDs = require('../example/src/testIDs');
 
 describe('Agenda', () => {
   beforeEach(async () => {
@@ -7,12 +8,12 @@ describe('Agenda', () => {
   });
 
   it('should move to previous month', async () => {
-    await element(by.id(`${testIDs.SELECT_DATE_SLOT}-2017-05-17`)).tap();
-    await element(by.id(`${testIDs.SELECT_DATE_SLOT}-2017-05-18`)).tap();
-    await element(by.id(`${testIDs.SELECT_DATE_SLOT}-2017-05-19`)).tap();
-    await element(by.id(`${testIDs.SELECT_DATE_SLOT}-2017-05-20`)).tap();
+    await element(by.id(`${SELECT_DATE_SLOT}-2017-05-17`)).tap();
+    await element(by.id(`${SELECT_DATE_SLOT}-2017-05-18`)).tap();
+    await element(by.id(`${SELECT_DATE_SLOT}-2017-05-19`)).tap();
+    await element(by.id(`${SELECT_DATE_SLOT}-2017-05-20`)).tap();
 
-    await expect(element(by.text('20').withAncestor(by.id(testIDs.RESERVATION_DATE)))).toBeVisible();
+    await expect(element(by.text('20').withAncestor(by.id(RESERVATION_DATE)))).toBeVisible();
   });
 
   it('should tap agenda item and see an alert', async () => {
