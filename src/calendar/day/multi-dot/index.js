@@ -18,7 +18,8 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object
+    date: PropTypes.object,
+    dayOfWeek: PropTypes.number
   };
 
   constructor(props) {

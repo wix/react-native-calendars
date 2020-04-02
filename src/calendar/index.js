@@ -190,6 +190,7 @@ class Calendar extends Component {
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
           date={dateAsObject}
+          dayOfWeek={day.getDay()}
           marking={this.getDateMarking(day)}
           accessibilityLabel={accessibilityLabel}
         >
