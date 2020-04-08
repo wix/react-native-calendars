@@ -10,6 +10,7 @@ import Day from './day/basic';
 import UnitDay from './day/period';
 import MultiDotDay from './day/multi-dot';
 import MultiPeriodDay from './day/multi-period';
+import DayWithFootNote from './day/withFootNote';
 import SingleDay from './day/custom';
 import CalendarHeader from './header';
 import shouldComponentUpdate from './updater';
@@ -202,23 +203,23 @@ class Calendar extends Component {
   getMarkingLabel(day) {
     let label = '';
     const marking = this.getDateMarking(day);
-    
+
     if (marking.accessibilityLabel) {
       return marking.accessibilityLabel;
     }
-    
+
     if (marking.selected) {
       label += 'selected ';
       if (!marking.marked) {
         label += 'You have no entries for this day ';
       }
-    } 
+    }
     if (marking.marked) {
       label += 'You have entries for this day ';
-    } 
+    }
     if (marking.startingDay) {
       label += 'period start ';
-    } 
+    }
     if (marking.endingDay) {
       label += 'period end ';
     }
@@ -242,6 +243,8 @@ class Calendar extends Component {
       return MultiPeriodDay;
     case 'custom':
       return SingleDay;
+    case 'withFootNote':
+      return DayWithFootNote;
     default:
       return Day;
     }
@@ -262,10 +265,10 @@ class Calendar extends Component {
 
   renderWeekNumber(weekNumber) {
     return (
-      <Day 
-        key={`week-${weekNumber}`} 
-        theme={this.props.theme} 
-        marking={{disableTouchEvent: true}} 
+      <Day
+        key={`week-${weekNumber}`}
+        theme={this.props.theme}
+        marking={{disableTouchEvent: true}}
         state='disabled'
       >
         {weekNumber}
