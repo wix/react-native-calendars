@@ -67,8 +67,6 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
 
-    console.log(this.props.marking);
-    console.log("--")
     return (
       <TouchableOpacity
         testID={this.props.testID}
