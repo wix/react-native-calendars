@@ -285,3 +285,15 @@
 
 ## [1.261.0] - 2020-2-5
 - Calendar - adding accessibility features.
+
+## [1.262.0] - 2020-2-18
+- Agenda - adding scroll events callbacks (PR #1063).
+
+## [1.263.0] - 2020-2-18
+- Calendar - passing testID to header (PR #1058).
+
+## [1.264.0] - 2020-3-3
+- CalendarListItem - fix previous months bug (PR #1069).
+
+## [1.265.0] - 2020-3-12
+- Setup Detox for e2e tests (iOS).

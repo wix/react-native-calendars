@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 
+const testIDs = require('../testIDs');
+
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3); 
@@ -158,10 +160,12 @@ export default class ExpandableCalendarScreen extends Component {
       > 
         {this.props.weekView ? 
           <WeekCalendar
+            testID={testIDs.weekCalendar.CONTAINER}
             firstDay={1}
             markedDates={this.getMarkedDates()}
           /> :
-          <ExpandableCalendar 
+          <ExpandableCalendar
+            testID={testIDs.expandableCalendar.CONTAINER}
             // horizontal={false}
             // hideArrows
             // disablePan

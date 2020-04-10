@@ -475,7 +475,7 @@ class ExpandableCalendar extends Component {
     const themeObject = Object.assign(this.headerStyleOverride, theme);
 
     return (
-      <View style={[allowShadow && this.style.containerShadow, style]}>
+      <View testID={this.props.testID} style={[allowShadow && this.style.containerShadow, style]}>
         {screenReaderEnabled ?
           <Calendar
             testID="calendar"
