@@ -6,7 +6,8 @@ import {
   Animated,
   View,
   Text,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -59,7 +60,9 @@ class ExpandableCalendar extends Component {
     /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
     /** whether to disable the week scroll in closed position */
-    disableWeekScroll: PropTypes.bool
+    disableWeekScroll: PropTypes.bool,
+    /** whether to scroll back to week displaying on clicking a date */
+    canScrollBackWeek: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -68,7 +71,8 @@ class ExpandableCalendar extends Component {
     firstDay: 0,
     leftArrowImageSource: require('../calendar/img/previous.png'),
     rightArrowImageSource: require('../calendar/img/next.png'),
-    allowShadow: true
+    allowShadow: true,
+    canScrollBackWeek: true,
   }
 
   static positions = POSITIONS;
@@ -344,11 +348,12 @@ class ExpandableCalendar extends Component {
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     _.invoke(this.props.context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS); 
     
-    setTimeout(() => { // to allows setDate to be completed
-      if (this.state.position === POSITIONS.OPEN) {
-        this.bounceToPosition(this.closedHeight);
-      }
-    }, 0);
+    if (this.props.canScrollBackWeek)
+      setTimeout(() => { // to allows setDate to be completed
+        if (this.state.position === POSITIONS.OPEN) {
+          this.bounceToPosition(this.closedHeight);
+        }
+      }, 0);
   }
 
   onVisibleMonthsChange = (value) => {
@@ -449,9 +454,15 @@ class ExpandableCalendar extends Component {
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
-      <View style={this.style.knobContainer} pointerEvents={'none'}>
+      <TouchableOpacity style={this.style.knobContainer} pointerEvents={'none'}
+        onPress={() => {
+          setTimeout(() => { // to allows setDate to be completed
+            this.bounceToPosition(this.state.position === POSITIONS.OPEN ? this.closedHeight : this.openHeight);
+          }, 0);
+        }}
+      >
         <View style={this.style.knob} testID={CALENDAR_KNOB}/>
-      </View>
+      </TouchableOpacity>
     );
   }
 
