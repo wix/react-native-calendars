@@ -240,6 +240,10 @@ class ExpandableCalendar extends Component {
     return false;
   }
 
+  static getIsOpen() {
+    return this.state.position == POSITIONS.OPEN;
+  }
+
   /** Pan Gesture */
 
   handleMoveShouldSetPanResponder = (e, gestureState) => {
