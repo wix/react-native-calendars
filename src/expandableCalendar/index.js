@@ -63,6 +63,8 @@ class ExpandableCalendar extends Component {
     disableWeekScroll: PropTypes.bool,
     /** whether to scroll back to week displaying on clicking a date */
     canScrollBackWeek: PropTypes.bool,
+    /** Callback when clicking on Knob */
+    onExpand: PropTypes.func
   }
 
   static defaultProps = {
@@ -240,10 +242,6 @@ class ExpandableCalendar extends Component {
     return false;
   }
 
-  static getIsOpen() {
-    return this.state.position == POSITIONS.OPEN;
-  }
-
   /** Pan Gesture */
 
   handleMoveShouldSetPanResponder = (e, gestureState) => {
@@ -307,6 +305,8 @@ class ExpandableCalendar extends Component {
       this.setPosition();
       this.closeHeader(isOpen);
       this.resetWeekCalendarOpacity(isOpen);
+      if (this.props.onExpand)
+        this.props.onExpand();
     }
   }
 
