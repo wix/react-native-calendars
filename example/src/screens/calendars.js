@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, ScrollView, Text} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
 
@@ -284,6 +284,33 @@ export default class CalendarsScreen extends Component {
               <Text style={{fontSize: 18, marginBottom: 5}}>{month.toString('MMMM')}</Text>
               <Text style={{fontSize: 12, color: '#AAA'}}>{month.toString('yyyy')}</Text>
             </View>
+          )}
+        />
+
+        <Text style={styles.text}>Calendar with custom arrow component</Text>
+        <Calendar
+          style={styles.calendar}
+          theme={{
+            'stylesheet.calendar.header': {
+              header: {
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingLeft: 10,
+                paddingRight: 10,
+                marginTop: 6,
+                alignItems: 'center',
+                height: 80
+              }
+            }
+          }}
+          renderArrow={(direction, onPress) => (
+            <TouchableOpacity onPress={onPress}>
+              <Text style={{fontSize: 20, marginHorizontal: 20}}>
+                {
+                  direction === 'left' ? '<' : '>'
+                }
+              </Text>
+            </TouchableOpacity>
           )}
         />
 
