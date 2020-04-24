@@ -363,7 +363,7 @@ class Calendar extends Component {
     }
     
     return (
-      <View 
+      <View
         style={[this.style.container, this.props.style]}
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
