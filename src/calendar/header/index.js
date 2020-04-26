@@ -5,7 +5,7 @@ import XDate from 'xdate';
 import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
-import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME} from '../../testIDs';
+import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} from '../../testIDs';
 
 
 class CalendarHeader extends Component {
@@ -42,8 +42,16 @@ class CalendarHeader extends Component {
     this.onPressRight = this.onPressRight.bind(this);
   }
 
+  addYear() {
+    this.props.addMonth(12);
+  }
+  
   addMonth() {
     this.props.addMonth(1);
+  }
+
+  substractYear() {
+    this.props.addMonth(-12);
   }
 
   substractMonth() {
@@ -105,36 +113,52 @@ class CalendarHeader extends Component {
 
     if (!this.props.hideArrows) {
       leftArrow = (
-        <TouchableOpacity
-          onPress={this.onPressLeft}
-          disabled={this.props.disableArrowLeft}
-          style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('left')
-            : <Image
-              source={require('../img/previous.png')}
-              style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
-        </TouchableOpacity>
+        <View style={{flexDirection:'row'}}>
+          <TouchableOpacity onPress={() => this.substractYear()} style={this.style.arrow}>
+            <Image
+                source={require('../img/dprevious.png')}
+                style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this.onPressLeft}
+            disabled={this.props.disableArrowLeft}
+            style={this.style.arrow}
+            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+            testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
+          >
+            {this.props.renderArrow
+              ? this.props.renderArrow('left')
+              : <Image
+                source={require('../img/previous.png')}
+                style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
+              />}
+          </TouchableOpacity>
+        </View>
       );
       rightArrow = (
-        <TouchableOpacity
-          onPress={this.onPressRight}
-          disabled={this.props.disableArrowRight}
-          style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('right')
-            : <Image
-              source={require('../img/next.png')}
-              style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            onPress={this.onPressRight}
+            disabled={this.props.disableArrowRight}
+            style={this.style.arrow}
+            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+            testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
+          >
+            {this.props.renderArrow
+              ? this.props.renderArrow('right')
+              : <Image
+                source={require('../img/next.png')}
+                style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
+              />}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.addYear()} style={this.style.arrow}>
+              <Image
+                  source={require('../img/dnext.png')}
+                  style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
+              />
+          </TouchableOpacity>
+        </View>
       );
     }
 
@@ -146,8 +170,7 @@ class CalendarHeader extends Component {
     const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
 
     return (
-      <View
-        testID={testID}
+      <View 
         style={this.props.style} 
         accessible
         accessibilityRole={'adjustable'}
@@ -166,7 +189,6 @@ class CalendarHeader extends Component {
               allowFontScaling={false}
               style={this.style.monthText}
               {...webProps}
-              testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
             >
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
