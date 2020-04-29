@@ -59,11 +59,11 @@ class CalendarListItem extends Component {
 
   render() {
     const row = this.props.item;
-    // console.log(555, this)
+    const itemIndex = this.props.itemIndex;
     if (row.getTime) {
       return (
         <Calendar
-          testID={`${this.props.testID}_${row}`}
+          testID={`${this.props.testID}_${itemIndex}`}
           theme={this.props.theme}
           style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.calendar, this.props.style]}
           current={row}

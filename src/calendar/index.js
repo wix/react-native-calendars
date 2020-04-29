@@ -340,7 +340,7 @@ class Calendar extends Component {
   }
 
   render() {
-    const {hideCalendar} =this.props;
+    const {hideCalendar, testID} =this.props;
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
     while (days.length) {
@@ -356,6 +356,7 @@ class Calendar extends Component {
         {this.renderHeader()}
         {!hideCalendar && <View 
           key="calendar_dates" 
+          testID={`${testID}_calendar_dates`}
           style={[this.style.monthView]}>{weeks}</View>}
       </View>);
   }

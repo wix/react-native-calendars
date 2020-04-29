@@ -246,12 +246,14 @@ class CalendarList extends Component {
     });
   }
 
-  renderCalendar({item}) {
+  renderCalendar(d) {
+    const {item, index} = d;
     return (
       <CalendarListItem
-        testID={`${this.props.testID}_${item}`}
+        testID={`${this.props.testID}_${index+1}`}
         scrollToMonth={this.scrollToMonth.bind(this)}
         item={item}
+        itemIndex={index}
         calendarHeight={this.props.calendarHeight}
         hideCalendar={this.state.hideCalendar}
         toggleCalendar={this.toggleCalendar}
