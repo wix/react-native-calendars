@@ -5,11 +5,12 @@ import styleConstructor from './style';
 
 
 class CalendarListItem extends Component {
-  static displayName = 'IGNORE';
+  static displayName = 'CalendarListItem';
   
   static defaultProps = {
     hideArrows: true,
-    hideExtraDays: true
+    hideExtraDays: true,
+    renderHeader: undefined
   };
 
   constructor(props) {
@@ -19,6 +20,8 @@ class CalendarListItem extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    // console.log('CalendarList/Item/shouldComponentUpdate',this.props.item,nextProps.item);
+    if(nextProps.hideCalendar !== this.props.hideCalendar)return true;
     const r1 = this.props.item;
     const r2 = nextProps.item;
     return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
@@ -53,9 +56,10 @@ class CalendarListItem extends Component {
     }
   }
 
+
   render() {
     const row = this.props.item;
-
+    // console.log(555, this)
     if (row.getTime) {
       return (
         <Calendar
@@ -63,6 +67,8 @@ class CalendarListItem extends Component {
           theme={this.props.theme}
           style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.calendar, this.props.style]}
           current={row}
+          hideCalendar={this.props.hideCalendar}
+          toggleCalendar={this.props.toggleCalendar}
           hideArrows={this.props.hideArrows}
           hideExtraDays={this.props.hideExtraDays}
           disableMonthChange
@@ -85,9 +91,11 @@ class CalendarListItem extends Component {
           headerStyle={this.props.horizontal ? this.props.headerStyle : undefined}
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
           importantForAccessibility={this.props.importantForAccessibility} // Android
+          renderHeader={this.props.renderHeader}
         />
       );
     } else {
+      // console.log('CalendarList/Item/render/else',row);
       const text = row.toString();
 
       return (

@@ -84,16 +84,17 @@ class Calendar extends Component {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+
+    renderHeader:PropTypes.func
   };
 
   constructor(props) {
     super(props);
-
     this.style = styleConstructor(this.props.theme);
 
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate()
+      currentMonth: props.current ? parseDate(props.current) : XDate(),
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -111,6 +112,8 @@ class Calendar extends Component {
       });
     }
   }
+
+  
 
   updateMonth(day, doNotTriggerListeners) {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
@@ -131,8 +134,9 @@ class Calendar extends Component {
     });
   }
 
-  _handleDayInteraction(date, interaction) {
+  _handleDayInteraction=(date, interaction) =>{
     const day = parseDate(date);
+    
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
@@ -146,7 +150,8 @@ class Calendar extends Component {
     }
   }
 
-  pressDay(date) {
+  pressDay=(date)=> {
+    
     this._handleDayInteraction(date, this.props.onDayPress);
   }
 
@@ -180,7 +185,6 @@ class Calendar extends Component {
     const date = day.getDate();
     const dateAsObject = xdateToData(day);
     const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
-
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
         <DayComp
@@ -258,6 +262,7 @@ class Calendar extends Component {
     } else {
       return false;
     }
+    
   }
 
   renderWeekNumber(weekNumber) {
@@ -286,13 +291,7 @@ class Calendar extends Component {
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
-  render() {
-    const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
-    const weeks = [];
-    while (days.length) {
-      weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
-    }
-
+  renderHeader(){
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
@@ -302,6 +301,51 @@ class Calendar extends Component {
         indicator = true;
       }
     }
+    const {
+      state:{currentMonth},
+      props:{renderHeader,hideArrows,headerStyle,renderArrow,firstDay,monthFormat,hideDayNames,showWeekNumbers,onPressArrowLeft,onPressArrowRight,testID,webAriaLevel,disableArrowLeft,disableArrowRight, hideCalendar,toggleCalendar},
+      addMonth
+
+  } = this;
+  if(!renderHeader){
+  return (
+    <CalendarHeader
+    testID={testID}
+    ref={c => this.header = c}
+    style={headerStyle}
+    theme={this.props.theme}
+    hideArrows={hideArrows}
+    month={currentMonth}
+    addMonth={addMonth}
+    showIndicator={indicator}
+    firstDay={firstDay}
+    renderArrow={renderArrow}
+    monthFormat={monthFormat}
+    hideDayNames={hideDayNames}
+    weekNumbers={showWeekNumbers}
+    onPressArrowLeft={onPressArrowLeft}
+    onPressArrowRight={onPressArrowRight}
+    webAriaLevel={webAriaLevel}
+    disableArrowLeft={disableArrowLeft}
+    disableArrowRight={disableArrowRight}
+  />
+  )}
+
+  const headerProps={
+    addMonth,
+    month: currentMonth.toDate(),
+    hideArrows,headerStyle,renderArrow,firstDay,monthFormat,hideDayNames,showWeekNumbers,onPressArrowLeft,onPressArrowRight,testID,webAriaLevel,disableArrowLeft,disableArrowRight,toggleCalendar,calendarHidden:hideCalendar
+  }
+  return renderHeader(headerProps);
+  }
+
+  render() {
+    const {hideCalendar} =this.props;
+    const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
+    const weeks = [];
+    while (days.length) {
+      weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
+    }
 
     return (
       <View
@@ -309,27 +353,10 @@ class Calendar extends Component {
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
-        <CalendarHeader
-          testID={this.props.testID}
-          ref={c => this.header = c}
-          style={this.props.headerStyle}
-          theme={this.props.theme}
-          hideArrows={this.props.hideArrows}
-          month={this.state.currentMonth}
-          addMonth={this.addMonth}
-          showIndicator={indicator}
-          firstDay={this.props.firstDay}
-          renderArrow={this.props.renderArrow}
-          monthFormat={this.props.monthFormat}
-          hideDayNames={this.props.hideDayNames}
-          weekNumbers={this.props.showWeekNumbers}
-          onPressArrowLeft={this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.onPressArrowRight}
-          webAriaLevel={this.props.webAriaLevel}
-          disableArrowLeft={this.props.disableArrowLeft}
-          disableArrowRight={this.props.disableArrowRight}
-        />
-        <View style={this.style.monthView}>{weeks}</View>
+        {this.renderHeader()}
+        {!hideCalendar && <View 
+          key="calendar_dates" 
+          style={[this.style.monthView]}>{weeks}</View>}
       </View>);
   }
 }

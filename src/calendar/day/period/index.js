@@ -9,7 +9,7 @@ import styleConstructor from './style';
 
 
 class Day extends Component {
-  static displayName = 'IGNORE';
+  static displayName = 'Day_period';
   
   static propTypes = {
     // TODO: selected + disabled props should be removed

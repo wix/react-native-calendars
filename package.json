@@ -3,17 +3,6 @@
   "version": "1.22.0",
   "main": "src/index.js",
   "description": "React Native Calendar Components",
-  "scripts": {
-    "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
-    "e2e": "node ./scripts/test-e2e.js",
-    "test": "jasmine src/*.spec.js && npm run lint",
-    "lint": "eslint src/ example/src",
-    "release": "node ./scripts/release.js",
-    "start": "react-native start",
-    "ios": "react-native run-ios",
-    "android": "react-native run-android",
-    "xcode": "open ios/CalendarsExample.xcworkspace/"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wix/react-native-calendars"
@@ -29,6 +18,11 @@
     "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
+  "peerDependencies": {
+    "react-native": ">=0.61",
+    "react": ">=16.7",
+    "react-native-navigation": "^>=3"
+  },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "detox": "^15.5.0",
@@ -36,9 +30,6 @@
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
     "mocha": "^7.1.0",
-    "react": "16.9.0",
-    "react-native": "0.61.4",
-    "react-native-navigation": "^3.5.1",
     "semver": "5.x.x",
     "shell-utils": "1.x.x"
   },

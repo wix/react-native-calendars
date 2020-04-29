@@ -7,7 +7,7 @@ import {shouldUpdate} from '../../../component-updater';
 
 
 class Day extends Component {
-  static displayName = 'IGNORE';
+  static displayName = 'Day_custom';
   
   static propTypes = {
     // TODO: disabled props should be removed

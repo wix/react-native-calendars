@@ -7,7 +7,13 @@ export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return  StyleSheet.create({
     container: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+      // backgroundColor:'yellow',
+      marginVertical:2,
+      paddingVertical:8
+      // justifyContent:'flex-start',
+      // alignItems:'flex-start',
+      // alignContent:'flex-start'
     },
     dayNum: {
       fontSize: 28,
@@ -21,13 +27,15 @@ export default function styleConstructor(theme = {}) {
       fontFamily: appStyle.textDayFontFamily,
       color: appStyle.agendaDayTextColor,
       backgroundColor: 'rgba(0,0,0,0)',
-      marginTop: -5
+      marginTop: -5,
+      opacity:0.5
     },
     day: {
       width: 63,
       alignItems: 'center',
       justifyContent: 'flex-start',
-      marginTop: 32
+      // marginTop: 8,
+      // alignSelf:'flex-start'
     },
     today: {
       color: appStyle.agendaTodayColor

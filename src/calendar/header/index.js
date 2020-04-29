@@ -9,7 +9,7 @@ import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME} fr
 
 
 class CalendarHeader extends Component {
-  static displayName = 'IGNORE';
+  static displayName = 'CalendarHeader';
 
   static propTypes = {
     theme: PropTypes.object,
@@ -102,6 +102,7 @@ class CalendarHeader extends Component {
     let rightArrow = <View/>;
     let weekDaysNames = weekDayNames(this.props.firstDay);
     const {testID} = this.props;
+    // console.log(222,this)
 
     if (!this.props.hideArrows) {
       leftArrow = (
@@ -148,7 +149,7 @@ class CalendarHeader extends Component {
     return (
       <View
         testID={testID}
-        style={this.props.style} 
+        style={[this.props.style,{backgroundColor:'yellow'}]} 
         accessible
         accessibilityRole={'adjustable'}
         accessibilityActions={[
@@ -159,9 +160,9 @@ class CalendarHeader extends Component {
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
-        <View style={this.style.header}>
+        <View style={this.style.header} key="RNC-header-with-arrow">
           {leftArrow}
-          <View style={{flexDirection: 'row'}}>
+          <View key="RNC-header-title-wrapper" style={{flexDirection: 'row', justifyContent: 'flex-start',flex:1}}>
             <Text
               allowFontScaling={false}
               style={this.style.monthText}

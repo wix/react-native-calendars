@@ -7,7 +7,7 @@ import styleConstructor from './style';
 
 
 class Day extends Component {
-  static displayName = 'IGNORE';
+  // static displayName = 'DAY_COMP_BASIC';
   
   static propTypes = {
     // TODO: disabled props should be removed
@@ -25,11 +25,10 @@ class Day extends Component {
 
     this.style = styleConstructor(props.theme);
 
-    this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
   }
 
-  onDayPress() {
+  onDayPress=() =>{
     this.props.onPress(this.props.date);
   }
   onDayLongPress() {
@@ -83,7 +82,7 @@ class Day extends Component {
 
     return (
       <TouchableOpacity
-        testID={this.props.testID}
+        testID={`${this.props.testID}_touch`}
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}

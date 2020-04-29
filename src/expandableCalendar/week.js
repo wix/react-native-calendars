@@ -19,7 +19,7 @@ import Calendar from '../calendar';
 const EmptyArray = [];
 
 class Week extends Component {
-  static displayName = 'IGNORE';
+  static displayName = 'Week';
 
   static propTypes = {
     ...Calendar.propTypes,

@@ -8,17 +8,20 @@ function padNumber(n) {
 }
 
 function xdateToData(xdate) {
+  // console.log('interface/xdateToData', xdate);
   const dateString = xdate.toString('yyyy-MM-dd');
   return {
     year: xdate.getFullYear(),
     month: xdate.getMonth() + 1,
     day: xdate.getDate(),
     timestamp: XDate(dateString, true).getTime(),
-    dateString: dateString
+    dateString: dateString,
+    dateObject:xdate.toDate()
   };
 }
 
 function parseDate(d) {
+  // console.log('interface/parseDate',d);
   if (!d) {
     return;
   } else if (d.timestamp) { // conventional data timestamp

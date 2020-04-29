@@ -2,14 +2,15 @@ import React, {Component} from 'react';
 import {FlatList, ActivityIndicator, View} from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import XDate, { today } from 'xdate';
+import {parseDate} from '../../interface';
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
 
 class ReservationList extends Component {
-  static displayName = 'IGNORE';
+  static displayName = 'ReservationList';
   
   static propTypes = {
     // specify your item comparison function for increased performance
@@ -51,10 +52,14 @@ class ReservationList extends Component {
     this.heights=[];
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
+    this.isTouched = false;
+    this.forcedScrolling = false;
+    // this.monthIsUpdated = true;
   }
 
   UNSAFE_componentWillMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
+
   }
 
   updateDataSource(reservations) {
@@ -65,33 +70,61 @@ class ReservationList extends Component {
 
   updateReservations(props) {
     const reservations = this.getReservations(props);
-    if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
-      let scrollPosition = 0;
-      for (let i = 0; i < reservations.scrollPosition; i++) {
-        scrollPosition += this.heights[i] || 0;
-      }
-      this.scrollOver = false;
-      this.list.scrollToOffset({offset: scrollPosition, animated: true});
-    }
-    this.selectedDay = props.selectedDay;
+    
+    if(!dateutils.sameDate(props.selectedDay, this.selectedDay)){
+      
+    this.updateScrollPosition();
+  }
+  this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
   }
 
   UNSAFE_componentWillReceiveProps(props) {
-    if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
+    const oldMonth = new XDate(this.props.currentMonth);
+    const newMonth = new XDate(props.currentMonth);
+    if (!dateutils.sameDate(props.topDay, this.props.topDay) || oldMonth.getMonth() !== newMonth.getMonth()) {
+      if(oldMonth.getMonth() !== newMonth.getMonth())this.forcedScrolling = true;
       this.setState({
         reservations: []
       }, () => {
         this.updateReservations(props);
+        /* if(oldMonth.getMonth() !== newMonth.getMonth()){
+          this.monthIsUpdated = true;
+          // this.list.setNativeProps({ pointerEvents: 'auto' });
+        } */
       });
     } else {
       this.updateReservations(props);
     }
   }
 
+  updateScrollPosition=()=>{
+    if(this.isTouched)return;
+    if(!this.list && this.heights.length !== this.state.reservations.length){
+      // setImidiate(this.updateScrollPosition);
+      return;
+    }
+    let scrollPosition = 0;
+      const toDay = this.selectedDay.getDate();
+      for (let i = 0; i < toDay-1; i++) {
+        scrollPosition += this.heights[i] || 0;
+      }
+    this.scrollOver = false;
+    // this.forcedScrolling = true;
+    if(this.list)this.list.scrollToOffset({offset: scrollPosition, animated: true});
+  }
+
   onScroll(event) {
-    const yOffset = event.nativeEvent.contentOffset.y;
-    this.props.onScroll(yOffset);
+    const {nativeEvent:{
+        contentOffset:{y}, 
+        // contentSize:{height}, 
+        // layoutMeasurement:{height: lHeight}
+      }} = event;
+    /* if(y > height-lHeight + 100){
+      this.changeMonth(1);
+      return;
+    } */
+    const yOffset = y;
     let topRowOffset = 0;
     let topRow;
     for (topRow = 0; topRow < this.heights.length; topRow++) {
@@ -103,15 +136,21 @@ class ReservationList extends Component {
     const row = this.state.reservations[topRow];
     if (!row) return;
     const day = row.day;
-    const sameDate = dateutils.sameDate(day, this.selectedDay);
-    if (!sameDate && this.scrollOver) {
+    const sameDate = dateutils.sameDate(day, this.selectedDay,y);
+    
+    
+    if (!sameDate && this.scrollOver && !this.forcedScrolling) {
       this.selectedDay = day.clone();
-      this.props.onDayChange(day.clone());
+      this.forcedScrolling = false;
+      this.props.onDayChange(day.toDate());
     }
   }
 
   onRowLayoutChange(ind, event) {
     this.heights[ind] = event.nativeEvent.layout.height;
+    if(this.heights.length === this.state.reservations.length){
+      this.updateScrollPosition();
+    }
   }
 
   renderRow({item, index}) {
@@ -133,13 +172,15 @@ class ReservationList extends Component {
     const day = iterator.clone();
     const res = props.reservations[day.toString('yyyy-MM-dd')];
     if (res && res.length) {
-      return res.map((reservation, i) => {
-        return {
-          reservation,
-          date: i ? false : day,
-          day
-        };
+      const out = res.reduce((acc, v) => {
+        acc.reservation.push(v);
+        return acc;
+      }, {
+        reservation:[],
+        date: day,
+        day,
       });
+      return out;
     } else if (res) {
       return [{
         date: iterator.clone(),
@@ -172,47 +213,95 @@ class ReservationList extends Component {
         iterator.addDays(1);
       }
     }
-    const scrollPosition = reservations.length;
-    const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
+    const scrollPosition = reservations.length;    
+    const iterator = new XDate(props.currentMonth);
+    const days = iterator.clone().addMonths(1).setDate(0).getDate();
+    iterator.setDate(1);
+    for (let i = 0; i < days; i++) {
       const res = this.getReservationsForDay(iterator, props);
       if (res) {
         reservations = reservations.concat(res);
       }
       iterator.addDays(1);
     }
-
     return {reservations, scrollPosition};
   }
 
+  changeMonth=add=>{
+    /* if(!this.monthIsUpdated)return;
+    this.monthIsUpdated = false; */
+    const newMonth = this.selectedDay.clone();
+          newMonth.setDate(1);
+          newMonth.addMonths(add); 
+          this.scrollOver = false;
+          this.isTouched= false;
+          this.props.onDayChange(newMonth.toDate());
+  }
+
   render() {
-    if (!this.props.reservations || !this.props.reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
-      if (this.props.renderEmptyData) {
-        return this.props.renderEmptyData();
+    const {
+      props:{
+        reservations,
+        renderEmptyData,
+        style,
+        theme,
+        ...otherProps
+      },
+    } = this;
+
+    if (!reservations) {
+      if (renderEmptyData) {
+        return renderEmptyData();
       }
       return (
-        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor}/>
+        <ActivityIndicator style={{marginTop: 80}} color={theme && theme.indicatorColor}/>
       );
     }
     return (
       <FlatList
-        ref={(c) => this.list = c}
-        style={this.props.style}
+      {...otherProps}
+        ref={(c) => {
+          if(!this.list){
+            this.list = c;
+            this.updateScrollPosition();
+          }else this.list = c;
+        }
+        }
+        style={style}
         contentContainerStyle={this.styles.content}
         renderItem={this.renderRow.bind(this)}
         data={this.state.reservations}
         onScroll={this.onScroll.bind(this)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
-        onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
-        keyExtractor={(item, index) => String(index)}
-        refreshControl={this.props.refreshControl}
-        refreshing={this.props.refreshing || false}
-        onRefresh={this.props.onRefresh}
-        onScrollBeginDrag={this.props.onScrollBeginDrag}
-        onScrollEndDrag={this.props.onScrollEndDrag}
-        onMomentumScrollBegin={this.props.onMomentumScrollBegin}
-        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        onMoveShouldSetResponderCapture={() => {
+          this.onListTouch(); 
+          this.isTouched= true;
+          this.forcedScrolling = false;
+          return false;
+        }}
+        onScrollBeginDrag={()=>{
+          this.isTouched= true;
+          this.forcedScrolling = false;
+          this.onListTouch(); 
+        }}
+        keyExtractor={(_, index) => String(index)}
+        onMomentumScrollEnd={()=>{
+          if(!this.isTouched)return;
+          this.scrollOver = false;
+          this.isTouched= false;
+          this.forcedScrolling = false;
+          this.updateScrollPosition();
+          
+        }}
+        onScrollEndDrag={({nativeEvent})=>{
+          if(!this.isTouched || nativeEvent.velocity.y !==0)return;
+          this.scrollOver = false;
+          this.isTouched= false;
+          this.updateScrollPosition();
+          this.forcedScrolling=false;
+        }}
+        
       />
     );
   }
