@@ -44,7 +44,7 @@ export default class MenuScreen extends Component {
         <TouchableOpacity style={styles.menu} onPress={this.onTimelinePress.bind(this)}>
           <Text style={styles.menuText}>Timeline Calendar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menu} onPress={this.onWeekPress.bind(this)}>
+
         <TouchableOpacity
           testID={testIDs.menu.WEEK_CALENDAR}
           style={styles.menu}
