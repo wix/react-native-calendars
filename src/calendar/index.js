@@ -84,7 +84,9 @@ class Calendar extends Component {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    // Handle which gets executed when determining the day state
+    getDayState: PropTypes.func
   };
 
   constructor(props) {
@@ -162,14 +164,18 @@ class Calendar extends Component {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
-    if (this.props.disabledByDefault) {
-      state = 'disabled';
-    } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
-      state = 'disabled';
-    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
-      state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
-      state = 'today';
+    if (this.props.getDayState) {
+      state = this.props.getDayState()
+    } else {
+      if (this.props.disabledByDefault) {
+        state = 'disabled';
+      } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
+        state = 'disabled';
+      } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
+        state = 'disabled';
+      } else if (dateutils.sameDate(day, XDate())) {
+        state = 'today';
+      }
     }
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
