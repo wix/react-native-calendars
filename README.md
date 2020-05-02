@@ -115,7 +115,9 @@ LocaleConfig.defaultLocale = 'fr';
   // Disable left arrow. Default = false
   disableArrowLeft={true}
   // Disable right arrow. Default = false
-  disableArrowRight={true}
+  disableArrowRight={true},
+  // Handle which gets executed when determining the day state
+  getDayState: PropTypes.func
 />
 ```
 
