@@ -85,7 +85,7 @@ class Calendar extends Component {
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
     webAriaLevel: PropTypes.number,
-    // Handle which gets executed when determining the day state
+    /** Handler which gets executed when determining the day state */
     getDayState: PropTypes.func
   };
 
