@@ -17,6 +17,8 @@ class Day extends Component {
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     marking: PropTypes.any,
+    dot: PropTypes.bool,
+    dotColor: PropTypes.string,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     date: PropTypes.object,
@@ -54,9 +56,19 @@ class Day extends Component {
   }
 
   getDrawingStyle(marking) {
-    const defaultStyle = {textStyle: {}};
+    const defaultStyle = {textStyle: {}, dotStyle: {}};
     if (!marking) {
       return defaultStyle;
+    }
+    const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
+    if (marking.marked) {
+      defaultStyle.dotStyle = this.style.visibleDot;
+      if (isDisabled) {
+        defaultStyle.dotStyle = this.style.disabledDot;
+      }
+      if (marking.dotColor) {
+        defaultStyle.dotStyle.backgroundColor = marking.dotColor;
+      }
     }
     if (marking.disabled) {
       defaultStyle.textStyle.color = this.theme.textDisabledColor;
@@ -113,6 +125,7 @@ class Day extends Component {
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
+    const dotStyle = [this.style.dot];
     let leftFillerStyle = {};
     let rightFillerStyle = {};
     let fillerStyle = {};
@@ -142,6 +155,9 @@ class Day extends Component {
       }
       if (flags.rightFillerStyle) {
         rightFillerStyle.backgroundColor = flags.rightFillerStyle;
+      }
+      if (flags.dotStyle) {
+        dotStyle.push(flags.dotStyle);
       }
 
       if (flags.startingDay && !flags.endingDay) {
@@ -203,6 +219,7 @@ class Day extends Component {
           {fillers}
           <View style={containerStyle}>
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+            <View style={dotStyle}/>
           </View>
         </View>
       </TouchableWithoutFeedback>
