@@ -17,8 +17,6 @@ class Day extends Component {
     // Specify theme properties to override specific styles for calendar parts. Default = {}
     theme: PropTypes.object,
     marking: PropTypes.any,
-    dot: PropTypes.bool,
-    dotColor: PropTypes.string,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     date: PropTypes.object,
