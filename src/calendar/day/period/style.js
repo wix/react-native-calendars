@@ -83,8 +83,8 @@ export default function styleConstructor(theme={}) {
       opacity: 1,
       backgroundColor: appStyle.dotColor
     },
-    selectedDot: {
-      backgroundColor: appStyle.selectedDotColor
+    disabledDot: {
+      backgroundColor: appStyle.disabledDotColor || appStyle.dotColor
     },
     ...(theme[STYLESHEET_ID] || {})
   });
