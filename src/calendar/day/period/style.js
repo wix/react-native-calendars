@@ -14,10 +14,10 @@ export default function styleConstructor(theme={}) {
       marginLeft: 0
     },
     base: {
-      //borderWidth: 1,
-      width: 34,
+      width: 38,
       height: FILLER_HEIGHT,
-      alignItems: 'center'
+      alignItems: 'center',
+      overflow: 'hidden'
     },
     fillers: {
       position: 'absolute',

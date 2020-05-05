@@ -63,3 +63,7 @@ fastlane/screenshots
 
 # CocoaPods
 ios/Pods
+
+# Editor
+.vscode
+.history
