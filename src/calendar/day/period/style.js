@@ -4,6 +4,7 @@ import * as defaultStyle from '../../../style';
 
 const STYLESHEET_ID = 'stylesheet.day.period';
 const FILLER_HEIGHT = 34;
+const FILLER_WIDTH = 34;
 
 export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -14,7 +15,7 @@ export default function styleConstructor(theme={}) {
       marginLeft: 0
     },
     base: {
-      width: 38,
+      width: FILLER_WIDTH,
       height: FILLER_HEIGHT,
       alignItems: 'center',
       overflow: 'hidden'
