@@ -8,10 +8,9 @@ import dateutils from '../../dateutils';
 import styleConstructor from './style';
 import {RESERVATION_DATE} from '../../testIDs';
 
-
 class Reservation extends Component {
   static displayName = 'Reservation';
-  
+
   constructor(props) {
     super(props);
 
@@ -44,41 +43,45 @@ class Reservation extends Component {
     if (_.isFunction(this.props.renderDay)) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
-    const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
+    const today = dateutils.sameDate(date, XDate())
+      ? this.styles.today
+      : undefined;
     if (date) {
       return (
-        <View style={[this.styles.day,{justifyContent:'flex-start'/* , backgroundColor:'orange' */}]} testID={RESERVATION_DATE}>
-          <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.getDate()}</Text>
-          <Text allowFontScaling={false} style={[this.styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
+        <View
+          style={[
+            this.styles.day,
+            {justifyContent: 'flex-start' /* , backgroundColor:'orange' */},
+          ]}
+          testID={RESERVATION_DATE}>
+          <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>
+            {date.getDate()}
+          </Text>
+          <Text allowFontScaling={false} style={[this.styles.dayText, today]}>
+            {XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}
+          </Text>
         </View>
       );
     } else {
-      return (
-        <View style={this.styles.day}/>
-      );
+      return <View style={this.styles.day} />;
     }
   }
 
   render() {
-    // console.log(this);
     const {reservation, date} = this.props.item;
     let content;
     if (reservation) {
-      const firstItem = date ? true : false;
       if (_.isFunction(this.props.renderItem)) {
-        content = this.props.renderItem(reservation, firstItem);
+        content = this.props.renderItem(reservation, date.toDate());
       }
     } else if (_.isFunction(this.props.renderEmptyDate)) {
       content = this.props.renderEmptyDate(date);
     }
     return (
       <View style={this.styles.container}>
-      {this.renderDate(date, reservation)}
+        {this.renderDate(date, reservation)}
 
-        <View style={{flex: 1}}>
-          {content}
-
-        </View>
+        <View style={{flex: 1}}>{content}</View>
       </View>
     );
   }
