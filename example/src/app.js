@@ -1,5 +1,6 @@
 import {Navigation} from 'react-native-navigation';
 import {registerScreens} from './screens';
+import {LocaleConfig} from 'react-native-calendars';
 
 
 registerScreens();
@@ -18,6 +19,58 @@ LocaleConfig.locales['fr'] = {
 };
 LocaleConfig.defaultLocale = 'fr';
 */
+
+LocaleConfig.locales['es'] = {
+  ftAccesibilitylabel: 'dddd d \'de\' MMMM \'de\' yyyy',
+  monthNames: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ],
+  monthNamesShort: [
+    'ene',
+    'feb',
+    'mar',
+    'abr',
+    'may',
+    'jun',
+    'jul',
+    'ago',
+    'sep',
+    'oct',
+    'nov',
+    'dic'
+  ],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+  dayNamesShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+  today: 'Hoy',
+  monthNamesIndexFromZero: {
+    0: 'Enero',
+    1: 'Febrero',
+    2: 'Marzo',
+    3: 'Abril',
+    4: 'Mayo',
+    5: 'Junio',
+    6: 'Julio',
+    7: 'Agosto',
+    8: 'Septiembre',
+    9: 'Octubre',
+    10: 'Noviembre',
+    11: 'Diciembre'
+  }
+};
+
+LocaleConfig.defaultLocale = 'es';
+
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
