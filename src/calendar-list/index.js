@@ -222,6 +222,7 @@ class CalendarList extends Component {
         {...this.props} 
         style={this.props.calendarStyle}
         headerComponent={this.props.headerComponent}
+        customWeekStyle={this.props.customWeekStyle}
       />
     );
   }
