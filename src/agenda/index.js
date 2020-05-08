@@ -83,7 +83,15 @@ export default class AgendaView extends Component {
     /** Set this true while waiting for new data from a refresh. */
     refreshing: PropTypes.bool,
     /** Display loading indicator. Default = false */
-    displayLoadingIndicator: PropTypes.bool
+    displayLoadingIndicator: PropTypes.bool,
+    /** Called when the user begins dragging the agenda list. **/
+    onScrollBeginDrag: PropTypes.func,
+    /** Called when the user stops dragging the agenda list. **/
+    onScrollEndDrag: PropTypes.func,
+    /** Called when the momentum scroll starts for the agenda list. **/
+    onMomentumScrollBegin: PropTypes.func,
+    /** Called when the momentum scroll stops for the agenda list. **/
+    onMomentumScrollEnd: PropTypes.func
   };
 
   constructor(props) {
@@ -286,6 +294,10 @@ export default class AgendaView extends Component {
   renderReservations() {
     return (
       <ReservationsList
+        onScrollBeginDrag={this.props.onScrollBeginDrag}
+        onScrollEndDrag={this.props.onScrollEndDrag}
+        onMomentumScrollBegin={this.props.onMomentumScrollBegin}
+        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing}
         onRefresh={this.props.onRefresh}
@@ -400,7 +412,7 @@ export default class AgendaView extends Component {
     const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
 
     return (
-      <View onLayout={this.onLayout} style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
+      <View testID={this.props.testID} onLayout={this.onLayout} style={[this.props.style, {flex: 1, overflow: 'hidden'}]}>
         <View style={this.styles.reservations}>
           {this.renderReservations()}
         </View>
