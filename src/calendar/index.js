@@ -85,6 +85,7 @@ class Calendar extends Component {
     disableArrowRight: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+    customWeekStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
     webAriaLevel: PropTypes.number,
     /** Provide prop to customize header */
@@ -163,6 +164,13 @@ class Calendar extends Component {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   }
 
+  intzAccessibilityLabel(state, day) {
+    const today = XDate.locales[XDate.defaultLocale].today;
+    const ftAccesibilitylabel = XDate.locales[XDate.defaultLocale].ftAccesibilitylabel;
+    if (ftAccesibilitylabel) return `${state === 'today' ? today : ''} ${day.toString(ftAccesibilitylabel)} ${this.getMarkingLabel(day)}`;
+    return `${state === 'today' ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${this.getMarkingLabel(day)}`;
+  }
+
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
@@ -184,7 +192,8 @@ class Calendar extends Component {
     const DayComp = this.getDayComponent();
     const date = day.getDate();
     const dateAsObject = xdateToData(day);
-    const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
+    // const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
+    const accessibilityLabel = this.intzAccessibilityLabel(state, day);
 
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
@@ -297,7 +306,8 @@ class Calendar extends Component {
       const year = this.props.current[0].getFullYear();
       const month = this.props.current[0].getMonth();
       let weekDaysNames = weekDayNames(this.props.firstDay);
-      const customStyleWeek = {fontFamily: 'LatamSans-Bold', color: '#138D86'};
+      // const customWeekStyle = {fontFamily: 'LatamSans-Bold', color: '#138D86'};
+      // const customWeekStyle = {color: '#138D86'};
       return (
         <Fragment>
           {this.props.headerComponent(year, month)}
@@ -310,7 +320,7 @@ class Calendar extends Component {
               <Text
                 allowFontScaling={false}
                 key={idx}
-                style={[this.style.dayHeader, customStyleWeek]}
+                style={[this.style.dayHeader, this.props.customWeekStyle]}
                 numberOfLines={1}
                 accessibilityLabel={''}
               >
