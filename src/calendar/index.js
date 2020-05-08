@@ -313,7 +313,7 @@ class Calendar extends Component {
         <Fragment>
           {this.props.headerComponent(year, month)}
           {!this.props.hideDayNames &&
-          <View style={this.style.week}>
+          <View style={this.style.week} accessible={false}>
             {this.props.weekNumbers && 
               <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
             }
@@ -323,7 +323,7 @@ class Calendar extends Component {
                 key={idx}
                 style={[this.style.dayHeader, this.props.customWeekStyle]}
                 numberOfLines={1}
-                accessibilityLabel={''}
+                // accessibilityLabel={''}
               >
                 {day}
               </Text>
