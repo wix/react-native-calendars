@@ -302,6 +302,7 @@ class Calendar extends Component {
   }
 
   renderHeader(indicator){
+    console.log({customWeekStyle: this.props.customWeekStyle});
     if (this.props.headerComponent) {
       // console.log('this.props: ',this.props);
       const year = this.props.current[0].getFullYear();
