@@ -52,6 +52,8 @@ class CalendarList extends Component {
     staticHeader: PropTypes.bool,
     /** A custom key extractor for the generated calendar months */
     keyExtractor: PropTypes.func,
+    /** Style passed to the customWeekStyle */
+    customWeekStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** A custom props for customize header */
     headerComponent: PropTypes.func
   }
