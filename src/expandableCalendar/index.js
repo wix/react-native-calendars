@@ -6,7 +6,8 @@ import {
   Animated,
   View,
   Text,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -279,13 +280,33 @@ class ExpandableCalendar extends Component {
   /** Animated */
   
   bounceToPosition(toValue) {  
-    if (!this.props.disablePan) {  
+    if (this.props.disablePan) {  
       const {deltaY} = this.state;
       const threshold = this.openHeight / 1.75;
 
       let isOpen = this._height >= threshold;
       const newValue = isOpen ? this.openHeight : this.closedHeight;
       
+      deltaY.setValue(this._height); // set the start position for the animated value
+      this._height = toValue || newValue;
+      isOpen = this._height >= threshold; // re-check after this._height was set
+
+      Animated.spring(deltaY, {
+        toValue: this._height,
+        speed: SPEED,
+        bounciness: BOUNCINESS
+      }).start(this.onAnimatedFinished);
+
+      this.setPosition();
+      this.closeHeader(isOpen);
+      !this.props.disablePan && this.resetWeekCalendarOpacity(isOpen);
+
+    }else {
+      const {deltaY} = this.state;
+      const threshold = this.openHeight / 1.75;
+      let isOpen = this._height >= threshold;
+      const newValue = isOpen ? this.openHeight : this.closedHeight;
+
       deltaY.setValue(this._height); // set the start position for the animated value
       this._height = toValue || newValue;
       isOpen = this._height >= threshold; // re-check after this._height was set
@@ -339,6 +360,10 @@ class ExpandableCalendar extends Component {
   }
   onPressArrowRight = () => {
     this.scrollPage(true);
+  }
+
+  onKnobPress = () => {
+    this.state.position === POSITIONS.CLOSED ? this.bounceToPosition(this.openHeight) : this.bounceToPosition(this.closedHeight);
   }
 
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
@@ -448,7 +473,13 @@ class ExpandableCalendar extends Component {
 
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
-    return (
+    return this.props.disablePan ? (
+      <TouchableOpacity style={this.style.knobContainer} onPress={() => this.onKnobPress()}>
+        <View style={this.style.knobContainer} pointerEvents={'none'}>
+          <View style={this.style.knob} testID={CALENDAR_KNOB}/>
+        </View>
+      </TouchableOpacity>
+    ):(
       <View style={this.style.knobContainer} pointerEvents={'none'}>
         <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
