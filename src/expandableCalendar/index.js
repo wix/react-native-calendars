@@ -476,12 +476,12 @@ class ExpandableCalendar extends Component {
     return this.props.disablePan ? (
       <TouchableOpacity style={this.style.knobContainer} onPress={() => this.onKnobPress()}>
         <View style={this.style.knobContainer} pointerEvents={'none'}>
-          <View style={this.style.knob} testID={CALENDAR_KNOB} />
+          <View style={this.style.knob} testID={CALENDAR_KNOB}/>
         </View>
       </TouchableOpacity>
     ):(
       <View style={this.style.knobContainer} pointerEvents={'none'}>
-        <View style={this.style.knob} testID={CALENDAR_KNOB} />
+        <View style={this.style.knob} testID={CALENDAR_KNOB}/>
       </View>
     );
   }
