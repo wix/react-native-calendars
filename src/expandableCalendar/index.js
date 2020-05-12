@@ -363,7 +363,7 @@ class ExpandableCalendar extends Component {
   }
 
   onKnobPress = () => {
-    this.state.position === POSITIONS.CLOSED ? this.bounceToPosition(this.openHeight) : this.bounceToPosition(this.closedHeight)
+    this.state.position === POSITIONS.CLOSED ? this.bounceToPosition(this.openHeight) : this.bounceToPosition(this.closedHeight);
   }
 
   onDayPress = (value) => { // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
@@ -481,10 +481,10 @@ class ExpandableCalendar extends Component {
       </TouchableOpacity>
 
     ):(
-        <View style={this.style.knobContainer} pointerEvents={'none'}>
-          <View style={this.style.knob} testID={CALENDAR_KNOB} />
-        </View>
-      )
+      <View style={this.style.knobContainer} pointerEvents={'none'}>
+        <View style={this.style.knob} testID={CALENDAR_KNOB} />
+      </View>
+      );
   }
 
   renderArrow = (direction) => {
