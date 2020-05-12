@@ -90,8 +90,6 @@ class Calendar extends Component {
   constructor(props) {
     super(props);
 
-    this.style = styleConstructor(this.props.theme);
-
     this.state = {
       currentMonth: props.current ? parseDate(props.current) : XDate()
     };
@@ -287,6 +285,9 @@ class Calendar extends Component {
   }
 
   render() {
+
+    this.style = styleConstructor(this.props.theme);
+
     const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
     const weeks = [];
     while (days.length) {
