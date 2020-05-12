@@ -479,12 +479,11 @@ class ExpandableCalendar extends Component {
           <View style={this.style.knob} testID={CALENDAR_KNOB} />
         </View>
       </TouchableOpacity>
-
     ):(
       <View style={this.style.knobContainer} pointerEvents={'none'}>
         <View style={this.style.knob} testID={CALENDAR_KNOB} />
       </View>
-      );
+    );
   }
 
   renderArrow = (direction) => {
