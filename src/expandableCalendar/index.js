@@ -473,12 +473,25 @@ class ExpandableCalendar extends Component {
 
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
+    const {position} = this.state;
+    const isOpen = position === POSITIONS.OPEN;
     return this.props.disablePan ? (
-      <TouchableOpacity style={this.style.knobContainer} onPress={() => this.onKnobPress()}>
-        <View style={this.style.knobContainer} pointerEvents={'none'}>
-          <View style={this.style.knob} testID={CALENDAR_KNOB}/>
-        </View>
-      </TouchableOpacity>
+      <View style={this.style.knobContainer}>
+        <TouchableOpacity
+          activeOpacity={0.75}
+          style={this.style.knobContainer}
+          onPress={() => this.onKnobPress()}>
+          <Image
+            source={
+              isOpen
+                ? this.props.leftArrowImageSource
+                : this.props.rightArrowImageSource
+            }
+            style={[this.style.arrowImage, {transform: [{rotate: '90deg'}]}]}
+            testID={CALENDAR_KNOB}
+          />
+        </TouchableOpacity>
+      </View>
     ):(
       <View style={this.style.knobContainer} pointerEvents={'none'}>
         <View style={this.style.knob} testID={CALENDAR_KNOB}/>
