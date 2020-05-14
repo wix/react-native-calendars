@@ -487,7 +487,7 @@ class ExpandableCalendar extends Component {
                 ? this.props.leftArrowImageSource
                 : this.props.rightArrowImageSource
             }
-            style={[this.style.arrowImage, {transform: [{ rotate: '90deg' }]}]}
+            style={[this.style.arrowImage, {transform: [{rotate: '90deg'}]}]}
             testID={CALENDAR_KNOB}
           />
         </TouchableOpacity>
