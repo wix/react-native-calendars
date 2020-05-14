@@ -473,6 +473,8 @@ class ExpandableCalendar extends Component {
 
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
+    const {position} = this.state;
+    const isOpen = position === POSITIONS.OPEN;
     return this.props.disablePan ? (
       <View style={this.style.knobContainer}>
         <TouchableOpacity
