@@ -36,6 +36,8 @@ export default class AgendaView extends Component {
     the value of date key has to be an empty array []. If there exists no value for date key it is
     considered that the date in question is not yet loaded */
     items: PropTypes.object,
+    /** Forces the component to render all items even if item date is out of selected date current month. Default = false */
+    showAllItems: PropTypes.bool,
     /** callback that gets called when items for a certain month should be loaded (month became visible) */
     loadItemsForMonth: PropTypes.func,
     /** callback that fires when the calendar is opened or closed */
@@ -258,7 +260,7 @@ export default class AgendaView extends Component {
   }
 
   _chooseDayFromCalendar(d) {
-    this.chooseDay(d, !this.state.calendarScrollable);
+    this.chooseDay(d, !this.state.calendarScrollable || this.props.showAllItems);
   }
 
   chooseDay(d, optimisticScroll) {
@@ -306,6 +308,7 @@ export default class AgendaView extends Component {
         renderDay={this.props.renderDay}
         renderEmptyDate={this.props.renderEmptyDate}
         reservations={this.props.items}
+        showAllReservations={this.props.showAllItems}
         selectedDay={this.state.selectedDay}
         renderEmptyData={this.props.renderEmptyData}
         topDay={this.state.topDay}

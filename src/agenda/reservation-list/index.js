@@ -28,6 +28,7 @@ class ReservationList extends Component {
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
     reservations: PropTypes.object,
+    showAllReservations: PropTypes.bool,
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
     refreshControl: PropTypes.element,
@@ -174,7 +175,10 @@ class ReservationList extends Component {
     }
     const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
+    const limit = props.showAllReservations
+      ? Object.keys(props.reservations).length
+      : 31;
+    for (let i = 0; i < limit; i++) {
       const res = this.getReservationsForDay(iterator, props);
       if (res) {
         reservations = reservations.concat(res);
