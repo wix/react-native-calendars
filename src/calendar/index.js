@@ -109,8 +109,8 @@ class Calendar extends Component {
     if (current && current.toString('yyyy MM') !== prevState.currentMonth.toString('yyyy MM')) {
       return {
         ...prevState,
-        currentMonth: current.clone(),
-      }
+        currentMonth: current.clone()
+      };
     }
   
     return null;

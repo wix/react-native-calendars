@@ -161,7 +161,7 @@ class CalendarList extends Component {
 
     return {
       ...prevState,
-      rows: newrows,
+      rows: newrows
     };
   }
 

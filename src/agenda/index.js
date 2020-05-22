@@ -91,7 +91,7 @@ export default class AgendaView extends Component {
     /** Called when the momentum scroll starts for the agenda list. **/
     onMomentumScrollBegin: PropTypes.func,
     /** Called when the momentum scroll stops for the agenda list. **/
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
     /** Switch the initial position between open and closed */
     initialPosition: PropTypes.oneOf(['open', 'closed']),
     /** Set an initial number of row to render in calendar list */
@@ -234,7 +234,7 @@ export default class AgendaView extends Component {
     } else if (!nextProps.items || !Object.keys(nextProps.items).length && !prevState.firstResevationLoad) {
       return {
         ...prevState,
-        firstResevationLoad: true,
+        firstResevationLoad: true
       };
     }
   }
@@ -276,7 +276,7 @@ export default class AgendaView extends Component {
     const scrollTo = shouldOpenCalendar ? 0 : this.initialScrollPadPosition();
 
     this.setScrollPadPosition(scrollTo, true);
-    this.setState({ calendarScrollable: shouldOpenCalendar });
+    this.setState({calendarScrollable: shouldOpenCalendar});
 
     this.props.onCalendarToggled && this.props.onCalendarToggled(shouldOpenCalendar);
   }

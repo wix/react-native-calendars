@@ -119,7 +119,7 @@ class ReservationList extends PureComponent {
       reservations,
       scrollPosition,
       reservationsObject: props.reservations,
-      topDay: props.topDay,
+      topDay: props.topDay
     };
     
     this.heights= [];
