@@ -207,6 +207,20 @@ export default class AgendaView extends Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.items) {
+      return {
+        ...prevState,
+        firstResevationLoad: false
+      };
+    } else if (!nextProps.items || !Object.keys(nextProps.items).length && !prevState.firstResevationLoad) {
+      return {
+        ...prevState,
+        firstResevationLoad: true,
+      };
+    }
+  }
+
   loadReservations(props) {
     if ((!props.items || !Object.keys(props.items).length) && !this.state.firstResevationLoad) {
       this.setState({
@@ -219,7 +233,7 @@ export default class AgendaView extends Component {
     }
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this._isMounted = true;
     this.loadReservations(this.props);
   }
@@ -228,13 +242,11 @@ export default class AgendaView extends Component {
     this._isMounted = false;
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (props.items) {
-      this.setState({
-        firstResevationLoad: false
-      });
-    } else {
-      this.loadReservations(props);
+  componentDidUpdate() {
+    if (this.props.firstResevationLoad) {
+      if (this.props.loadItemsForMonth) {
+        this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
+      }
     }
   }
 

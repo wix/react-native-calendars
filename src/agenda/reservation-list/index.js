@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {FlatList, ActivityIndicator, View} from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
@@ -7,8 +7,76 @@ import XDate from 'xdate';
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
 
+/**
+ * Get reservations for a specific day
+ * @param {*} iterator
+ * @param {*} reservations
+ */
+const getReservationsForDay = (iterator, reservations) => {
+  const day = iterator.clone();
+  const res = reservations[day.toString('yyyy-MM-dd')];
+  if (res && res.length) {
+    return res.map((reservation, i) => {
+      return {
+        reservation,
+        date: i ? false : day,
+        day
+      };
+    });
+  } else if (res) {
+    return [{
+      date: iterator.clone(),
+      day
+    }];
+  } else {
+    return false;
+  }
+};
 
-class ReservationList extends Component {
+/**
+ * Generate reservations array based on the day
+ * @param {Object} param0 reservations and selectedDay
+ */
+const generateReservations = (props, state = null) => {
+  if (!props.reservations || !props.selectedDay) {
+    return {reservations: [], scrollPosition: 0};
+  }
+
+  let reservations = [];
+  if (state && state.reservations && state.reservations.length) {
+    const iterator = state.reservations[0].day.clone();
+    while (iterator.getTime() < props.selectedDay.getTime()) {
+      const res = getReservationsForDay(iterator, props.reservations);
+      if (!res) {
+        reservations = [];
+        break;
+      } else {
+        reservations = reservations.concat(res);
+      }
+      iterator.addDays(1);
+    }
+  }
+
+  const scrollPosition = reservations.length;
+  const iterator = props.selectedDay.clone();
+  for (let i = 0; i < 31; i++) {
+    const res = getReservationsForDay(iterator, props.reservations);
+    if (res) {
+      reservations = reservations.concat(res);
+    }
+    iterator.addDays(1);
+  }
+
+  return {reservations, scrollPosition};
+};
+
+/**
+ * This variable is set outside of the component, because this one is needed in a static method.
+ * A solution can be to store it in state, but it will triger usefull component update
+ */
+let _selectedDay = null;
+
+class ReservationList extends PureComponent {
   static displayName = 'IGNORE';
   
   static propTypes = {
@@ -41,52 +109,60 @@ class ReservationList extends Component {
 
   constructor(props) {
     super(props);
-    
+    const {reservations, scrollPosition} = generateReservations(props);
+
     this.styles = styleConstructor(props.theme);
-    
+ 
     this.state = {
-      reservations: []
+      reservations,
+      scrollPosition,
+      reservationsObject: props.reservations,
+      topDay: props.topDay,
     };
     
-    this.heights=[];
-    this.selectedDay = this.props.selectedDay;
+    this.heights= [];
+    _selectedDay = props.selectedDay;
     this.scrollOver = true;
   }
 
-  UNSAFE_componentWillMount() {
-    this.updateDataSource(this.getReservations(this.props).reservations);
+  static getDerivedStateFromProps(nextProps, prevState) {
+
+    if (nextProps.reservations !== prevState.reservationsObject ||
+        !dateutils.sameDate(nextProps.selectedDay, _selectedDay) ||
+        !dateutils.sameDate(nextProps.topDay, prevState.topDay)) {
+      const {reservations, scrollPosition} = generateReservations(nextProps, prevState);
+
+      return {
+        ...prevState,
+        topDay: nextProps.topDay,
+        reservations,
+        reservationsObject: nextProps.reservations,
+        scrollPosition
+      };
+    }
+
+    return null;
   }
 
-  updateDataSource(reservations) {
-    this.setState({
-      reservations
-    });
+  componentDidUpdate() {
+    this.updateScrollPosition();
   }
 
-  updateReservations(props) {
-    const reservations = this.getReservations(props);
-    if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
+  componentWillUnmount() {
+    _selectedDay = null;
+  }
+
+  updateScrollPosition() {
+    if (this.list && !dateutils.sameDate(this.props.selectedDay, _selectedDay)) {
       let scrollPosition = 0;
-      for (let i = 0; i < reservations.scrollPosition; i++) {
+      for (let i = 0; i < this.state.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
       this.list.scrollToOffset({offset: scrollPosition, animated: true});
     }
-    this.selectedDay = props.selectedDay;
-    this.updateDataSource(reservations.reservations);
-  }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
-      this.setState({
-        reservations: []
-      }, () => {
-        this.updateReservations(props);
-      });
-    } else {
-      this.updateReservations(props);
-    }
+    _selectedDay = this.props.selectedDay;
   }
 
   onScroll(event) {
@@ -103,9 +179,9 @@ class ReservationList extends Component {
     const row = this.state.reservations[topRow];
     if (!row) return;
     const day = row.day;
-    const sameDate = dateutils.sameDate(day, this.selectedDay);
+    const sameDate = dateutils.sameDate(day, _selectedDay);
     if (!sameDate && this.scrollOver) {
-      this.selectedDay = day.clone();
+      _selectedDay = day.clone();
       this.props.onDayChange(day.clone());
     }
   }
@@ -129,60 +205,8 @@ class ReservationList extends Component {
     );
   }
 
-  getReservationsForDay(iterator, props) {
-    const day = iterator.clone();
-    const res = props.reservations[day.toString('yyyy-MM-dd')];
-    if (res && res.length) {
-      return res.map((reservation, i) => {
-        return {
-          reservation,
-          date: i ? false : day,
-          day
-        };
-      });
-    } else if (res) {
-      return [{
-        date: iterator.clone(),
-        day
-      }];
-    } else {
-      return false;
-    }
-  }
-
   onListTouch() {
     this.scrollOver = true;
-  }
-
-  getReservations(props) {
-    if (!props.reservations || !props.selectedDay) {
-      return {reservations: [], scrollPosition: 0};
-    }
-    let reservations = [];
-    if (this.state.reservations && this.state.reservations.length) {
-      const iterator = this.state.reservations[0].day.clone();
-      while (iterator.getTime() < props.selectedDay.getTime()) {
-        const res = this.getReservationsForDay(iterator, props);
-        if (!res) {
-          reservations = [];
-          break;
-        } else {
-          reservations = reservations.concat(res);
-        }
-        iterator.addDays(1);
-      }
-    }
-    const scrollPosition = reservations.length;
-    const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
-      const res = this.getReservationsForDay(iterator, props);
-      if (res) {
-        reservations = reservations.concat(res);
-      }
-      iterator.addDays(1);
-    }
-
-    return {reservations, scrollPosition};
   }
 
   render() {
@@ -205,7 +229,7 @@ class ReservationList extends Component {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
         onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
-        keyExtractor={(item, index) => String(index)}
+        keyExtractor={(item, index) => String(item.reservation._id || index)}
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing || false}
         onRefresh={this.props.onRefresh}

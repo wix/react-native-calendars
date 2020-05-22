@@ -103,13 +103,17 @@ class Calendar extends Component {
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const current = parseDate(nextProps.current);
-    if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
-      this.setState({
-        currentMonth: current.clone()
-      });
+
+    if (current && current.toString('yyyy MM') !== prevState.currentMonth.toString('yyyy MM')) {
+      return {
+        ...prevState,
+        currentMonth: current.clone(),
+      }
     }
+  
+    return null;
   }
 
   updateMonth(day, doNotTriggerListeners) {
