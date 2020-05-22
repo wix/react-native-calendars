@@ -94,6 +94,10 @@ export default class AgendaView extends Component {
     onMomentumScrollEnd: PropTypes.func
     /** Switch the initial position between open and closed */
     initialPosition: PropTypes.oneOf(['open', 'closed']),
+    /** Set an initial number of row to render in calendar list */
+    initialCalendarListNumToRender: PropTypes.number,
+    /** Set an initial numnber of row to render in reservation list */
+    initialReservationListNumToRender: PropTypes.number,
     /** Set calendar view height */
     calendarHeight: PropTypes.number
   };
@@ -347,6 +351,7 @@ export default class AgendaView extends Component {
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
         renderEmptyData={this.props.renderEmptyData}
+        initialNumToRender={this.props.initialReservationListNumToRender}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange.bind(this)}
         onScroll={() => {}}
@@ -483,6 +488,7 @@ export default class AgendaView extends Component {
               displayLoadingIndicator={this.props.displayLoadingIndicator}
               showWeekNumbers={this.props.showWeekNumbers}
               calendarHeight={this.props.calendarHeight}
+              initialNumToRender={this.props.initialCalendarListNumToRender}
             />
           </Animated.View>
           {knob}

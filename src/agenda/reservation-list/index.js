@@ -104,7 +104,9 @@ class ReservationList extends PureComponent {
     onScrollBeginDrag: PropTypes.func,
     onScrollEndDrag: PropTypes.func,
     onMomentumScrollBegin: PropTypes.func,
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
+    /** Set an initial number of row to render in FlatList */
+    initialNumToRender: PropTypes.number
   };
 
   constructor(props) {
@@ -237,6 +239,7 @@ class ReservationList extends PureComponent {
         onScrollEndDrag={this.props.onScrollEndDrag}
         onMomentumScrollBegin={this.props.onMomentumScrollBegin}
         onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        initialNumToRender={this.props.initialNumToRender}
       />
     );
   }
