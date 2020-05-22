@@ -92,6 +92,8 @@ export default class AgendaView extends Component {
     onMomentumScrollBegin: PropTypes.func,
     /** Called when the momentum scroll stops for the agenda list. **/
     onMomentumScrollEnd: PropTypes.func
+    /** Switch the initial position between open and closed */
+    initialPosition: PropTypes.oneOf(['open', 'closed']),
   };
 
   constructor(props) {
@@ -107,8 +109,8 @@ export default class AgendaView extends Component {
 
     this.state = {
       scrollY: new Animated.Value(0),
-      calendarIsReady: false,
-      calendarScrollable: false,
+      calendarIsReady: props.initialPosition === 'closed',
+      calendarScrollable: props.initialPosition === 'closed',
       firstResevationLoad: false,
       selectedDay: parseDate(this.props.selected) || XDate(true),
       topDay: parseDate(this.props.selected) || XDate(true)
@@ -139,10 +141,13 @@ export default class AgendaView extends Component {
   }
 
   onScrollPadLayout() {
+    const {initialPosition} = this.props;
     // When user touches knob, the actual component that receives touch events is a ScrollView.
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
-    this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+    if (initialPosition === 'open') {
+      this.setScrollPadPosition(this.initialScrollPadPosition(), false);
+    }
     // delay rendering calendar in full height because otherwise it still flickers sometimes
     setTimeout(() => this.setState({calendarIsReady: true}), 0);
   }
@@ -150,6 +155,13 @@ export default class AgendaView extends Component {
   onLayout(event) {
     this.viewHeight = event.nativeEvent.layout.height;
     this.viewWidth = event.nativeEvent.layout.width;
+
+    if (this.props.initialPosition === 'closed') {
+      this.calendar.scrollToDay(this.state.selectedDay.clone().setDate(1), 0, false);
+    } else {
+      this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+    }
+
     this.forceUpdate();
   }
 
@@ -242,12 +254,25 @@ export default class AgendaView extends Component {
     this._isMounted = false;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (prevProps.initialPosition !== this.props.initialPosition) {
+      this.toggleCalendar(this.props.initialPosition === 'closed');
+    }
+
     if (this.props.firstResevationLoad) {
       if (this.props.loadItemsForMonth) {
         this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
       }
     }
+  }
+
+  toggleCalendar(shouldOpenCalendar) {
+    const scrollTo = shouldOpenCalendar ? 0 : this.initialScrollPadPosition();
+
+    this.setScrollPadPosition(scrollTo, true);
+    this.setState({ calendarScrollable: shouldOpenCalendar });
+
+    this.props.onCalendarToggled && this.props.onCalendarToggled(shouldOpenCalendar);
   }
 
   enableCalendarScrolling() {
