@@ -53,6 +53,7 @@ class ReservationList extends Component {
     this.scrollOver = true;
     this.isTouched = false;
     this.forcedScrolling = false;
+    this.noUpdate = false;
     // this.monthIsUpdated = true;
   }
 
@@ -103,7 +104,7 @@ class ReservationList extends Component {
   }
 
   updateScrollPosition = () => {
-    if (this.isTouched) return;
+    if (this.isTouched || this.noUpdate) return;
     if (!this.list && this.heights.length !== this.state.reservations.length) {
       // setImidiate(this.updateScrollPosition);
       return;
@@ -135,13 +136,24 @@ class ReservationList extends Component {
     let topRowOffset = 0;
     let topRow;
     for (topRow = 0; topRow < this.heights.length; topRow++) {
-      if (topRowOffset + this.heights[topRow] / 2 >= yOffset) {
+      const withNext =
+        topRowOffset + this.heights[topRow] + this.heights[topRow + 1] || 0;
+      if (topRowOffset + this.heights[topRow] * 0.7 >= yOffset) {
         break;
       }
       topRowOffset += this.heights[topRow];
     }
     const row = this.state.reservations[topRow];
     if (!row) return;
+    if (
+      topRowOffset + this.heights[topRow] * 0.1 <= yOffset &&
+      topRowOffset + this.heights[topRow] * 0.95 >= yOffset &&
+      this.listHeight < this.heights[topRow]
+    ) {
+      this.noUpdate = true;
+    } else {
+      this.noUpdate = false;
+    }
     const day = row.day;
     const sameDate = dateutils.sameDate(day, this.selectedDay, y);
 
@@ -226,8 +238,7 @@ class ReservationList extends Component {
     }
     const scrollPosition = reservations.length;
     const iterator = new XDate(props.currentMonth);
-    // clone-> set day somewhere in the middle to avoid last day bug -> add one month -> get date 0 because a zeor based date lib will return last day of prev month this way
-    const days = iterator.clone().setDate(15).addMonths(1).setDate(0).getDate();
+    const days = iterator.clone().addMonths(1).setDate(0).getDate();
     iterator.setDate(1);
     for (let i = 0; i < days; i++) {
       const res = this.getReservationsForDay(iterator, props);
@@ -307,6 +318,16 @@ class ReservationList extends Component {
           this.isTouched = false;
           this.updateScrollPosition();
           this.forcedScrolling = false;
+        }}
+        onLayout={({
+          nativeEvent: {
+            layout: {x, y, width, height},
+          },
+        }) => {
+          console.log(`------------------------`);
+          console.log({x, y, width, height});
+          this.listHeight = height;
+          console.log(`------------------------`);
         }}
       />
     );
