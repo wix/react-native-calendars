@@ -91,7 +91,6 @@ class Calendar extends Component {
     super(props);
 
     this.style = styleConstructor(this.props.theme);
-
     this.state = {
       currentMonth: props.current ? parseDate(props.current) : XDate()
     };
@@ -101,15 +100,6 @@ class Calendar extends Component {
     this.pressDay = this.pressDay.bind(this);
     this.longPressDay = this.longPressDay.bind(this);
     this.shouldComponentUpdate = shouldComponentUpdate;
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const current = parseDate(nextProps.current);
-    if (current && current.toString('yyyy MM') !== this.state.currentMonth.toString('yyyy MM')) {
-      this.setState({
-        currentMonth: current.clone()
-      });
-    }
   }
 
   updateMonth(day, doNotTriggerListeners) {
@@ -202,23 +192,23 @@ class Calendar extends Component {
   getMarkingLabel(day) {
     let label = '';
     const marking = this.getDateMarking(day);
-    
+
     if (marking.accessibilityLabel) {
       return marking.accessibilityLabel;
     }
-    
+
     if (marking.selected) {
       label += 'selected ';
       if (!marking.marked) {
         label += 'You have no entries for this day ';
       }
-    } 
+    }
     if (marking.marked) {
       label += 'You have entries for this day ';
-    } 
+    }
     if (marking.startingDay) {
       label += 'period start ';
-    } 
+    }
     if (marking.endingDay) {
       label += 'period end ';
     }
@@ -262,10 +252,10 @@ class Calendar extends Component {
 
   renderWeekNumber(weekNumber) {
     return (
-      <Day 
-        key={`week-${weekNumber}`} 
-        theme={this.props.theme} 
-        marking={{disableTouchEvent: true}} 
+      <Day
+        key={`week-${weekNumber}`}
+        theme={this.props.theme}
+        marking={{disableTouchEvent: true}}
         state='disabled'
       >
         {weekNumber}
