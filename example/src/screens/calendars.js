@@ -32,7 +32,8 @@ export default class CalendarsScreen extends Component {
             [this.state.selected]: {
               selected: true,
               disableTouchEvent: true,
-              selectedDotColor: 'orange'
+              selectedColor: 'orange',
+              selectedTextColor: 'red'
             }
           }}
         />

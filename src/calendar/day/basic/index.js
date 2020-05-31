@@ -8,7 +8,7 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -44,16 +44,16 @@ class Day extends Component {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
-    
+
     let marking = this.props.marking || {};
     if (marking && marking.constructor === Array && marking.length) {
       marking = {
         marking: true
       };
     }
-    
+
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
-    
+
     let dot;
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
@@ -68,11 +68,17 @@ class Day extends Component {
 
     if (marking.selected) {
       containerStyle.push(this.style.selected);
+      dotStyle.push(this.style.selectedDot);
+      textStyle.push(this.style.selectedText);
+
       if (marking.selectedColor) {
         containerStyle.push({backgroundColor: marking.selectedColor});
       }
-      dotStyle.push(this.style.selectedDot);
-      textStyle.push(this.style.selectedText);
+
+      if (marking.selectedTextColor) {
+        textStyle.push({color: marking.selectedTextColor});
+      }
+
     } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
     } else if (this.props.state === 'today') {
