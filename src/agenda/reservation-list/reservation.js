@@ -11,7 +11,7 @@ import {RESERVATION_DATE} from '../../testIDs';
 
 class Reservation extends Component {
   static displayName = 'IGNORE';
-  
+
   constructor(props) {
     super(props);
 
