@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
-
+import Dot from '../../dot';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: selected + disabled props should be removed
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
@@ -25,10 +25,10 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
-    
+
     this.markingStyle = this.getDrawingStyle(props.marking || []);
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
@@ -189,6 +189,8 @@ class Day extends Component {
       );
     }
 
+    const {marking: {marked, dotColor}, theme} = this.props;
+
     return (
       <TouchableWithoutFeedback
         testID={this.props.testID}
@@ -203,6 +205,11 @@ class Day extends Component {
           {fillers}
           <View style={containerStyle}>
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+            <Dot
+              theme={theme}
+              isMarked={marked}
+              dotColor={dotColor}
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>

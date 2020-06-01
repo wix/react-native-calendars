@@ -102,6 +102,24 @@ export default class CalendarsScreen extends Component {
           }}
         />
 
+        <Text style={styles.text}>Calendar with period marking and dot marking</Text>
+        <Calendar
+          current={'2012-05-16'}
+          minDate={'2012-05-01'}
+          markingType={'period'}
+          markedDates={{
+            '2012-05-15': {marked: true, dotColor: '#50cebb'},
+            '2012-05-16': {marked: true, dotColor: '#50cebb'},
+            '2012-05-20': {startingDay: true, color: '#50cebb', textColor: 'white'},
+            '2012-05-21': {color: '#70d7c7', textColor: 'white'},
+            '2012-05-22': {color: '#70d7c7', textColor: 'white'},
+            '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
+            '2012-05-24': {color: '#70d7c7', textColor: 'white'},
+            '2012-05-25': {color: '#70d7c7', textColor: 'white'},
+            '2012-05-26': {endingDay: true, color: '#50cebb', textColor: 'white'}
+          }}
+        />
+
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
@@ -111,7 +129,7 @@ export default class CalendarsScreen extends Component {
             '2012-05-08': {
               selected: true,
               dots: [
-                {key: 'vacation', color: 'blue', selectedDotColor: 'white'},
+                {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
                 {key: 'massage', color: 'red', selectedDotColor: 'white'}
               ]
             },
