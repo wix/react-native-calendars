@@ -24,7 +24,7 @@ const Dot = ({theme, isMarked, isDisabled, dotColor, isToday, isSelected}) => {
     }
 
     if (isToday) {
-      dotStyle.push(this.style.todayDot);
+      dotStyle.push(style.todayDot);
     }
   }
 
