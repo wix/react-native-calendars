@@ -25,7 +25,8 @@ class CalendarHeader extends Component {
     onPressArrowRight: PropTypes.func,
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number)
   };
 
   static defaultProps = {
@@ -97,6 +98,29 @@ class CalendarHeader extends Component {
     return this.addMonth();
   }
 
+  renderWeekDays = (weekDaysNames) => {
+    const {disabledDaysIndexes} = this.props;
+    return weekDaysNames.map((day, idx) => {
+      const dayStyle = [this.style.dayHeader];
+      if (disabledDaysIndexes && disabledDaysIndexes.length) {
+        if (disabledDaysIndexes.includes(idx)) {
+          dayStyle.push(this.style.disabledDayHeader);
+        }
+      }
+      return (
+        <Text
+          allowFontScaling={false}
+          key={idx}
+          style={dayStyle}
+          numberOfLines={1}
+          accessibilityLabel={''}
+        >
+          {day}
+        </Text>
+      );
+    });
+  }
+
   render() {
     let leftArrow = <View/>;
     let rightArrow = <View/>;
@@ -148,11 +172,11 @@ class CalendarHeader extends Component {
     return (
       <View
         testID={testID}
-        style={this.props.style} 
+        style={this.props.style}
         accessible
         accessibilityRole={'adjustable'}
         accessibilityActions={[
-          {name: 'increment', label: 'increment'}, 
+          {name: 'increment', label: 'increment'},
           {name: 'decrement', label: 'decrement'}
         ]}
         onAccessibilityAction={this.onAccessibilityAction}
@@ -176,22 +200,10 @@ class CalendarHeader extends Component {
         </View>
         {!this.props.hideDayNames &&
           <View style={this.style.week}>
-            {this.props.weekNumbers && 
+            {this.props.weekNumbers &&
               <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
             }
-            {weekDaysNames.map((day, idx) => (
-              <Text
-                allowFontScaling={false}
-                key={idx}
-                style={this.style.dayHeader}
-                numberOfLines={1}
-                accessibilityLabel={''}
-                // accessible={false} // not working
-                // importantForAccessibility='no'
-              >
-                {day}
-              </Text>
-            ))}
+            {this.renderWeekDays(weekDaysNames)}
           </View>
         }
       </View>
