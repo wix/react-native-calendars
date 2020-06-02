@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, ScrollView, Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
+import moment from 'moment';
+import _ from 'lodash';
 
 const testIDs = require('../testIDs');
 
@@ -16,6 +18,18 @@ export default class CalendarsScreen extends Component {
 
   onDayPress = (day) => {
     this.setState({selected: day.dateString});
+  }
+
+  getDisabledDates = (startDate, endDate, daysToDisable) => {
+    const disabledDates = {};
+    const start = moment(startDate);
+    const end = moment(endDate);
+    for (let m = moment(start); m.diff(end, 'days') <= 0; m.add(1, 'days')) {
+      if (_.includes(daysToDisable, m.weekday())) {
+        disabledDates[m.format('YYYY-MM-DD')] = {disabled: true};
+      }
+    }
+    return disabledDates;
   }
 
   render() {
@@ -90,7 +104,6 @@ export default class CalendarsScreen extends Component {
               }
             }
           }}
-          disabledDaysIndexes={[0, 6]}
           markedDates={{
             '2012-05-17': {disabled: true},
             '2012-05-08': {textColor: 'pink'},
@@ -109,16 +122,17 @@ export default class CalendarsScreen extends Component {
           current={'2012-05-16'}
           minDate={'2012-05-01'}
           markingType={'period'}
+          disabledDaysIndexes={[0, 6]}
           markedDates={{
             '2012-05-15': {marked: true, dotColor: '#50cebb'},
             '2012-05-16': {marked: true, dotColor: '#50cebb'},
-            '2012-05-20': {startingDay: true, color: '#50cebb', textColor: 'white'},
-            '2012-05-21': {color: '#70d7c7', textColor: 'white'},
+            '2012-05-21': {startingDay: true, color: '#50cebb', textColor: 'white'},
             '2012-05-22': {color: '#70d7c7', textColor: 'white'},
             '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
             '2012-05-24': {color: '#70d7c7', textColor: 'white'},
-            '2012-05-25': {color: '#70d7c7', textColor: 'white'},
-            '2012-05-26': {endingDay: true, color: '#50cebb', textColor: 'white'}
+            '2012-05-25': {endingDay: true, color: '#50cebb', textColor: 'white'},
+            '2012-05-26': {disabled: true},
+            ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
           }}
         />
 

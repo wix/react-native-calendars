@@ -84,7 +84,9 @@ class Calendar extends Component {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    /** Apply custom disable color to selected day indexes */
+    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number)
   };
 
   constructor(props) {
