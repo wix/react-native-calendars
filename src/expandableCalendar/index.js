@@ -108,10 +108,6 @@ class ExpandableCalendar extends Component {
       screenReaderEnabled: false
     };
 
-    AccessibilityInfo.isScreenReaderEnabled().then((screenReaderEnabled) => {
-      this.setState({screenReaderEnabled});
-    });
-
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
       onPanResponderGrant: this.handlePanResponderGrant,
@@ -121,9 +117,11 @@ class ExpandableCalendar extends Component {
     });
   }
 
-  // componentDidMount() {
-  //   this.updateNativeStyles();
-  // }
+  componentDidMount() {
+    AccessibilityInfo.isScreenReaderEnabled().then((screenReaderEnabled) => {
+      this.setState({screenReaderEnabled});
+    });
+  }
 
   componentDidUpdate(prevProps) {
     const {date} = this.props.context;
