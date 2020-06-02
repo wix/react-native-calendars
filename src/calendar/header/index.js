@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
 import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME} from '../../testIDs';
+import _ from 'lodash';
 
 
 class CalendarHeader extends Component {
@@ -102,7 +103,8 @@ class CalendarHeader extends Component {
     const {disabledDaysIndexes} = this.props;
     return weekDaysNames.map((day, idx) => {
       const dayStyle = [this.style.dayHeader];
-      if (disabledDaysIndexes && disabledDaysIndexes.length) {
+
+      if (!_.isEmpty(disabledDaysIndexes)) {
         if (disabledDaysIndexes.includes(idx)) {
           dayStyle.push(this.style.disabledDayHeader);
         }
