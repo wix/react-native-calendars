@@ -11,9 +11,11 @@ import {
 } from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 
+const testIDs = require('../testIDs');
+
 
 const today = new Date().toISOString().split('T')[0];
-const fastDate = getPastDate(3); 
+const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 const themeColor = '#00AAAF';
@@ -57,7 +59,7 @@ export default class ExpandableCalendarScreen extends Component {
   onMonthChange = (/* month, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
   }
-  
+
   buttonPressed() {
     Alert.alert('show more');
   }
@@ -78,10 +80,10 @@ export default class ExpandableCalendarScreen extends Component {
     if (_.isEmpty(item)) {
       return this.renderEmptyItem();
     }
-    
+
     return (
-      <TouchableOpacity 
-        onPress={() => this.itemPressed(item.title)} 
+      <TouchableOpacity
+        onPress={() => this.itemPressed(item.title)}
         style={styles.item}
       >
         <View>
@@ -109,7 +111,7 @@ export default class ExpandableCalendarScreen extends Component {
 
   getTheme = () => {
     const disabledColor = 'grey';
-    
+
     return {
       // arrows
       arrowColor: 'black',
@@ -143,25 +145,27 @@ export default class ExpandableCalendarScreen extends Component {
     };
   }
 
-  render() {    
+  render() {
     return (
-      <CalendarProvider 
-        date={ITEMS[0].title} 
-        onDateChanged={this.onDateChanged} 
+      <CalendarProvider
+        date={ITEMS[0].title}
+        onDateChanged={this.onDateChanged}
         onMonthChange={this.onMonthChange}
-        showTodayButton 
+        showTodayButton
         disabledOpacity={0.6}
         // theme={{
         //   todayButtonTextColor: themeColor
-        // }} 
+        // }}
         // todayBottomMargin={16}
-      > 
-        {this.props.weekView ? 
+      >
+        {this.props.weekView ?
           <WeekCalendar
+            testID={testIDs.weekCalendar.CONTAINER}
             firstDay={1}
             markedDates={this.getMarkedDates()}
           /> :
-          <ExpandableCalendar 
+          <ExpandableCalendar
+            testID={testIDs.expandableCalendar.CONTAINER}
             // horizontal={false}
             // hideArrows
             // disablePan
@@ -190,46 +194,46 @@ export default class ExpandableCalendarScreen extends Component {
 
 const styles = StyleSheet.create({
   calendar: {
-    paddingLeft: 20, 
+    paddingLeft: 20,
     paddingRight: 20
   },
   section: {
-    backgroundColor: lightThemeColor, 
+    backgroundColor: lightThemeColor,
     color: 'grey',
     textTransform: 'capitalize'
   },
   item: {
-    padding: 20, 
-    backgroundColor: 'white', 
-    borderBottomWidth: 1, 
-    borderBottomColor: 'lightgrey', 
+    padding: 20,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey',
     flexDirection: 'row'
   },
   itemHourText: {
     color: 'black'
   },
   itemDurationText: {
-    color: 'grey', 
-    fontSize: 12, 
+    color: 'grey',
+    fontSize: 12,
     marginTop: 4,
     marginLeft: 4
   },
   itemTitleText: {
-    color: 'black', 
-    marginLeft: 16, 
-    fontWeight: 'bold', 
+    color: 'black',
+    marginLeft: 16,
+    fontWeight: 'bold',
     fontSize: 16
   },
   itemButtonContainer: {
-    flex: 1, 
+    flex: 1,
     alignItems: 'flex-end'
   },
   emptyItem: {
     paddingLeft: 20,
-    height: 52, 
+    height: 52,
     justifyContent: 'center',
-    borderBottomWidth: 1, 
-    borderBottomColor: 'lightgrey' 
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey'
   },
   emptyItemText: {
     color: 'lightgrey',

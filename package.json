@@ -4,6 +4,8 @@
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
+    "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
+    "e2e": "node ./scripts/test-e2e.js",
     "test": "jasmine src/*.spec.js && npm run lint",
     "lint": "eslint src/ example/src",
     "release": "node ./scripts/release.js",
@@ -29,13 +31,36 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "detox": "^15.5.0",
     "eslint": "^6.5.1",
     "eslint-plugin-react": "^7.0.0",
     "jasmine": "^2.5.2",
-    "react": "16.9.0",
-    "react-native": "0.61.4",
-    "react-native-navigation": "^3.5.1",
+    "mocha": "^7.1.0",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-native-navigation": "^6.7.1",
     "semver": "5.x.x",
     "shell-utils": "1.x.x"
+  },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/CalendarsExample.app",
+        "build": "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11"
+        }
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/CalendarsExample.app",
+        "build": "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11"
+        }
+      }
+    },
+    "test-runner": "mocha"
   }
 }
