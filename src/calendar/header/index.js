@@ -105,7 +105,7 @@ class CalendarHeader extends Component {
       const dayStyle = [this.style.dayHeader];
 
       if (!_.isEmpty(disabledDaysIndexes)) {
-        if (disabledDaysIndexes.includes(idx)) {
+        if (_.includes(disabledDaysIndexes, idx)) {
           dayStyle.push(this.style.disabledDayHeader);
         }
       }
