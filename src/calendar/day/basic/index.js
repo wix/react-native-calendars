@@ -17,7 +17,8 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object
+    date: PropTypes.object,
+    disableAllTouchEventsForDisabledDays: PropTypes.bool
   };
 
   constructor(props) {
@@ -40,7 +41,7 @@ class Day extends Component {
   }
 
   render() {
-    const {theme} = this.props;
+    const {theme, disableAllTouchEventsForDisabledDays} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
 
@@ -54,7 +55,15 @@ class Day extends Component {
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
     const isToday = this.props.state === 'today';
 
-    const {marked, dotColor, selected, selectedColor} = marking;
+    const {
+      marked,
+      dotColor,
+      selected,
+      selectedColor,
+      selectedTextColor,
+      activeOpacity,
+      disableTouchEvent
+    } = marking;
 
     if (selected) {
       containerStyle.push(this.style.selected);
@@ -64,8 +73,8 @@ class Day extends Component {
         containerStyle.push({backgroundColor: selectedColor});
       }
 
-      if (marking.selectedTextColor) {
-        textStyle.push({color: marking.selectedTextColor});
+      if (selectedTextColor) {
+        textStyle.push({color: selectedTextColor});
       }
 
     } else if (isDisabled) {
@@ -75,14 +84,21 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
 
+    let shouldDisableTouchEvent = false;
+    if (typeof disableTouchEvent === 'boolean') {
+      shouldDisableTouchEvent = disableTouchEvent;
+    } else if (typeof disableAllTouchEventsForDisabledDays === 'boolean' && isDisabled) {
+      shouldDisableTouchEvent = disableAllTouchEventsForDisabledDays;
+    }
+
     return (
       <TouchableOpacity
         testID={this.props.testID}
         style={containerStyle}
         onPress={this.onDayPress}
         onLongPress={this.onDayLongPress}
-        activeOpacity={marking.activeOpacity}
-        disabled={marking.disableTouchEvent}
+        activeOpacity={activeOpacity}
+        disabled={shouldDisableTouchEvent}
         accessibilityRole={isDisabled ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
