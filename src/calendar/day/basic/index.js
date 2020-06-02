@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import {shouldUpdate} from '../../../component-updater';
-
+import Dot from '../../dot';
 import styleConstructor from './style';
 
 
@@ -22,7 +22,6 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
-
     this.style = styleConstructor(props.theme);
 
     this.onDayPress = this.onDayPress.bind(this);
@@ -41,9 +40,9 @@ class Day extends Component {
   }
 
   render() {
+    const {theme} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-    const dotStyle = [this.style.dot];
 
     let marking = this.props.marking || {};
     if (marking && marking.constructor === Array && marking.length) {
@@ -53,26 +52,16 @@ class Day extends Component {
     }
 
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
+    const isToday = this.props.state === 'today';
 
-    let dot;
-    if (marking.marked) {
-      dotStyle.push(this.style.visibleDot);
-      if (isDisabled) {
-        dotStyle.push(this.style.disabledDot);
-      }
-      if (marking.dotColor) {
-        dotStyle.push({backgroundColor: marking.dotColor});
-      }
-      dot = (<View style={dotStyle}/>);
-    }
+    const {marked, dotColor, selected, selectedColor} = marking;
 
-    if (marking.selected) {
+    if (selected) {
       containerStyle.push(this.style.selected);
-      dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
 
-      if (marking.selectedColor) {
-        containerStyle.push({backgroundColor: marking.selectedColor});
+      if (selectedColor) {
+        containerStyle.push({backgroundColor: selectedColor});
       }
 
       if (marking.selectedTextColor) {
@@ -81,10 +70,9 @@ class Day extends Component {
 
     } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
-    } else if (this.props.state === 'today') {
+    } else if (isToday) {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
-      dotStyle.push(this.style.todayDot);
     }
 
     return (
@@ -99,7 +87,14 @@ class Day extends Component {
         accessibilityLabel={this.props.accessibilityLabel}
       >
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        {dot}
+        <Dot
+          theme={theme}
+          isMarked={marked}
+          dotColor={dotColor}
+          isSelected={selected}
+          isToday={isToday}
+          isDisabled={isDisabled}
+        />
       </TouchableOpacity>
     );
   }
