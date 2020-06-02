@@ -73,6 +73,7 @@ export default class CalendarsScreen extends Component {
           theme={{
             calendarBackground: '#333248',
             textSectionTitleColor: 'white',
+            textSectionTitleDisabledColor: 'gray',
             dayTextColor: 'red',
             todayTextColor: 'white',
             selectedDayTextColor: 'white',
@@ -89,6 +90,7 @@ export default class CalendarsScreen extends Component {
               }
             }
           }}
+          disabledDaysIndexes={[0, 6]}
           markedDates={{
             '2012-05-17': {disabled: true},
             '2012-05-08': {textColor: 'pink'},
