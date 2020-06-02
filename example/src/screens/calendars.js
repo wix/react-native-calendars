@@ -121,8 +121,8 @@ export default class CalendarsScreen extends Component {
         <Calendar
           current={'2012-05-16'}
           minDate={'2012-05-01'}
-          markingType={'period'}
           disabledDaysIndexes={[0, 6]}
+          markingType={'period'}
           markedDates={{
             '2012-05-15': {marked: true, dotColor: '#50cebb'},
             '2012-05-16': {marked: true, dotColor: '#50cebb'},
@@ -131,7 +131,6 @@ export default class CalendarsScreen extends Component {
             '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
             '2012-05-24': {color: '#70d7c7', textColor: 'white'},
             '2012-05-25': {endingDay: true, color: '#50cebb', textColor: 'white'},
-            '2012-05-26': {disabled: true},
             ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
           }}
         />
