@@ -87,7 +87,9 @@ class Calendar extends Component {
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
     webAriaLevel: PropTypes.number,
     /** Apply custom disable color to selected day indexes */
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number)
+    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
+    /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
+    disableAllTouchEventsForDisabledDays: PropTypes.bool
   };
 
   constructor(props) {
@@ -151,13 +153,17 @@ class Calendar extends Component {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   }
 
+  isDateNotInTheRange = (minDate, maxDate, date) => {
+    return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
+  }
+
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
     if (this.props.disabledByDefault) {
       state = 'disabled';
-    } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
+    } else if (this.isDateNotInTheRange(minDate, maxDate, day)) {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
@@ -185,6 +191,7 @@ class Calendar extends Component {
           date={dateAsObject}
           marking={this.getDateMarking(day)}
           accessibilityLabel={accessibilityLabel}
+          disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
         >
           {date}
         </DayComp>
@@ -256,10 +263,10 @@ class Calendar extends Component {
   renderWeekNumber(weekNumber) {
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={`week-container-${weekNumber}`}>
-        <Day 
-          key={`week-${weekNumber}`} 
-          theme={this.props.theme} 
-          marking={{disableTouchEvent: true}} 
+        <Day
+          key={`week-${weekNumber}`}
+          theme={this.props.theme}
+          marking={{disableTouchEvent: true}}
           state='disabled'
         >
           {weekNumber}

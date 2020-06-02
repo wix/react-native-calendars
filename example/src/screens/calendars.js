@@ -65,13 +65,14 @@ export default class CalendarsScreen extends Component {
           current={'2012-05-16'}
           minDate={'2012-05-10'}
           maxDate={'2012-05-29'}
+          disableAllTouchEventsForDisabledDays
           firstDay={1}
           markedDates={{
             '2012-05-23': {selected: true, marked: true, disableTouchEvent: true},
             '2012-05-24': {selected: true, marked: true, dotColor: 'red'},
             '2012-05-25': {marked: true, dotColor: 'red'},
             '2012-05-26': {marked: true},
-            '2012-05-27': {disabled: true, activeOpacity: 0}
+            '2012-05-27': {disabled: true, activeOpacity: 0, disableTouchEvent: false}
           }}
           hideArrows={true}
           // disabledByDefault={true}
