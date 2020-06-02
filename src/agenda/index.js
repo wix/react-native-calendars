@@ -126,6 +126,26 @@ export default class AgendaView extends Component {
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+    this.loadReservations(this.props);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+    this.state.scrollY.removeAllListeners();
+  }
+
+  UNSAFE_componentWillReceiveProps(props) {
+    if (props.items) {
+      this.setState({
+        firstResevationLoad: false
+      });
+    } else {
+      this.loadReservations(props);
+    }
+  }
+
   calendarOffset() {
     return 96 - (this.viewHeight / 2);
   }
@@ -216,25 +236,6 @@ export default class AgendaView extends Component {
           this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
         }
       });
-    }
-  }
-
-  UNSAFE_componentWillMount() {
-    this._isMounted = true;
-    this.loadReservations(this.props);
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  UNSAFE_componentWillReceiveProps(props) {
-    if (props.items) {
-      this.setState({
-        firstResevationLoad: false
-      });
-    } else {
-      this.loadReservations(props);
     }
   }
 
