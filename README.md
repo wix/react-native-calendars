@@ -116,6 +116,8 @@ LocaleConfig.defaultLocale = 'fr';
   disableArrowLeft={true}
   // Disable right arrow. Default = false
   disableArrowRight={true}
+  // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
+  disableAllTouchEventsForDisabledDays={true}
 />
 ```
 

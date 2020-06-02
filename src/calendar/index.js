@@ -87,7 +87,9 @@ class Calendar extends Component {
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
     webAriaLevel: PropTypes.number,
     /** Apply custom disable color to selected day indexes */
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number)
+    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
+    /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
+    disableAllTouchEventsForDisabledDays: PropTypes.bool
   };
 
   constructor(props) {
