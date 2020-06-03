@@ -292,7 +292,7 @@ class ExpandableCalendar extends Component {
         toValue: this._height,
         speed: SPEED,
         bounciness: BOUNCINESS,
-        useNativeDriver: true
+        useNativeDriver: false
       }).start(this.onAnimatedFinished);
 
       this.setPosition();
@@ -327,7 +327,7 @@ class ExpandableCalendar extends Component {
         toValue: 0,
         speed: SPEED / 10,
         bounciness: 1,
-        useNativeDriver: true
+        useNativeDriver: false
       }).start();
     }
   }
