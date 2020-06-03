@@ -24,6 +24,18 @@ export default class AgendaScreen extends Component {
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
+        showWeekNumbers
+        staticHeaderOnCollapseView={
+          {
+            style: {
+              textTransform: 'uppercase',
+              fontWeight: 'bold'
+            },
+            enableMonthText: true,
+            monthFormat: 'MMMM yyyy',
+            text: 'Title'
+          }
+        }
         // markingType={'period'}
         // markedDates={{
         //    '2017-05-08': {textColor: '#43515c'},
@@ -70,7 +82,7 @@ export default class AgendaScreen extends Component {
     return (
       <TouchableOpacity
         testID={testIDs.agenda.ITEM}
-        style={[styles.item, {height: item.height}]} 
+        style={[styles.item, {height: item.height}]}
         onPress={() => Alert.alert(item.name)}
       >
         <Text>{item.name}</Text>
