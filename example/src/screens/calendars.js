@@ -34,7 +34,7 @@ export default class CalendarsScreen extends Component {
 
   renderCalendarWithSelectableDates = () => {
     return (
-      <>
+      <View>
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
@@ -51,24 +51,24 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithWeekNumbers = () => {
     return (
-      <>
+      <View>
         <Text style={styles.text}>Calendar with week numbers</Text>
         <Calendar
           style={styles.calendar}
           hideExtraDays
           showWeekNumbers
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithMarkedDatesAndHiddenArrows = () => {
     return (
-      <>
+      <View>
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
@@ -88,12 +88,12 @@ export default class CalendarsScreen extends Component {
           hideArrows
           // disabledByDefault={true}
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithPeriodMarkingAndSpinner = () => {
     return (
-      <>
+      <View>
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
         <Calendar
           // style={styles.calendar}
@@ -133,12 +133,12 @@ export default class CalendarsScreen extends Component {
             '2012-05-26': {endingDay: true, color: 'gray'}
           }}
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithPeriodAndDotMarking = () => {
     return(
-      <>
+      <View>
         <Text style={styles.text}>Calendar with period marking and dot marking</Text>
         <Calendar
           current={'2012-05-16'}
@@ -156,12 +156,12 @@ export default class CalendarsScreen extends Component {
             ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
           }}
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithMultiDotMarking = () => {
     return (
-      <>
+      <View>
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
@@ -184,12 +184,12 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithMultiPeriodMarking = () => {
     return (
-      <>
+      <View>
         <Text style={styles.text}>Calendar with multi-period marking</Text>
         <Calendar
           style={styles.calendar}
@@ -218,12 +218,12 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithCustomMarking = () => {
     return (
-      <>
+      <View>
         <Text style={styles.text}>Custom calendar with custom marking type</Text>
         <Calendar
           style={styles.calendar}
@@ -315,12 +315,12 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-      </>
+      </View>
     );
   }
   renderCalendarWithCustomDayComponent = () => {
     return(
-      <>
+      <View>
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
           testID={testIDs.calendars.LAST}
@@ -342,7 +342,7 @@ export default class CalendarsScreen extends Component {
             );
           }}
         />
-      </>
+      </View>
     );
   }
 
