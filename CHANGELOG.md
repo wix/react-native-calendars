@@ -297,3 +297,6 @@
 
 ## [1.265.0] - 2020-3-12
 - Setup Detox for e2e tests (iOS).
+
+## [1.282.0] - 2020-6-04
+- New Feature - Enable swipe in calendar
