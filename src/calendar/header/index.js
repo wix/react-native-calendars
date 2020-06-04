@@ -38,18 +38,16 @@ class CalendarHeader extends Component {
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
-    this.addMonth = this.addMonth.bind(this);
-    this.substractMonth = this.substractMonth.bind(this);
-    this.onPressLeft = this.onPressLeft.bind(this);
-    this.onPressRight = this.onPressRight.bind(this);
   }
 
-  addMonth() {
-    this.props.addMonth(1);
+  addMonth = () => {
+    const {addMonth} = this.props;
+    addMonth(1);
   }
 
-  substractMonth() {
-    this.props.addMonth(-1);
+  subtractMonth = () => {
+    const {addMonth} = this.props;
+    addMonth(-1);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -83,18 +81,18 @@ class CalendarHeader extends Component {
     return false;
   }
 
-  onPressLeft() {
-    const {onPressArrowLeft} = this.props;
+  onPressLeft = () => {
+    const {onPressArrowLeft, month} = this.props;
     if (typeof onPressArrowLeft === 'function') {
-      return onPressArrowLeft(this.substractMonth, this.props.month);
+      return onPressArrowLeft(this.subtractMonth, month);
     }
-    return this.substractMonth();
+    return this.subtractMonth();
   }
 
-  onPressRight() {
-    const {onPressArrowRight} = this.props;
+  onPressRight = () => {
+    const {onPressArrowRight, month} = this.props;
     if (typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.addMonth, this.props.month);
+      return onPressArrowRight(this.addMonth, month);
     }
     return this.addMonth();
   }
