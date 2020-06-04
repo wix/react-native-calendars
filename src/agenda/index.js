@@ -94,7 +94,15 @@ export default class AgendaView extends Component {
     onMomentumScrollBegin: PropTypes.func,
     /** Called when the momentum scroll stops for the agenda list. **/
     onMomentumScrollEnd: PropTypes.func,
-    staticHeaderOnCollapseView: PropTypes.object
+    /** Display static header above the calendar on collapse view. Default = Not Showing */
+    staticHeaderOnCollapseView: PropTypes.shape({
+      style: PropTypes.object,
+      month: PropTypes.shape({
+        enable: PropTypes.bool,
+        format: PropTypes.string
+      }),
+      customText: PropTypes.string
+    })
   };
 
   constructor(props) {
@@ -322,7 +330,6 @@ export default class AgendaView extends Component {
   }
 
   onDayChange(day) {
-    console.log('onDayChange');
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
 
@@ -359,15 +366,15 @@ export default class AgendaView extends Component {
     }
 
     const {selectedDay} = this.state;
-    const {text, style, enableMonthText, monthFormat} = staticHeaderOnCollapseView;
+    const {customText, style, month} = staticHeaderOnCollapseView;
 
-    if (!enableMonthText && !text) {
+    if ((_.isEmpty(month) || !month.enable) && !customText) {
       return null;
     }
 
-    const format = monthFormat ? monthFormat : 'MMMM';
+    const format = month.format ? month.format : 'MMMM';
 
-    const headerText = enableMonthText ? selectedDay.toString(format) : text;
+    const headerText = month.enable ? selectedDay.toString(format) : customText;
     return (
       <Animated.View style={collapseViewAnimation}>
         {<Text style={[this.styles.staticHeader, style]}>

@@ -31,9 +31,11 @@ export default class AgendaScreen extends Component {
               textTransform: 'uppercase',
               fontWeight: 'bold'
             },
-            enableMonthText: true,
-            monthFormat: 'MMMM yyyy',
-            text: 'Title'
+            month: {
+              enable: true,
+              format: 'MMMM yyyy'
+            }
+            // customText: 'Title'
           }
         }
         // markingType={'period'}
