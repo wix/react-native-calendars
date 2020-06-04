@@ -11,7 +11,6 @@ export const styles = {
     borderShadow: 'none'
   },
   textMonth: {
-    fontFamily: 'LatamSans-LightItalic',
     fontSize: 25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -19,17 +18,47 @@ export const styles = {
   },
   textYear: {
     color: '#5C5C5C',
-    fontFamily: 'LatamSans-Bold',
     fontSize: 20,
     justifyContent: 'center',
     alignItems: 'center',
     top: 5
   },
   customWeekStyle: {
-    fontFamily: 'LatamSans-Bold', 
     color: '#138D86'
   }
 };
+
+// const defaultBaseText = {
+//   width: 48,
+//   height: 48,
+//   borderWidth: 1,
+//   borderColor: '#bbb',
+//   justifyContent: 'flex-end',
+//   alignItems: 'flex-end',
+//   borderRadius: 8,
+//   padding: 2,
+//   margin: 0
+// };
+
+const themeLatam = {
+  todayTextStyle: {
+    color: '#138D86'
+  },
+  selectedStyle: {
+    borderRadius: 8,
+    borderColor: 'rgba(45, 52, 206, 0.15)'
+  },
+  dayHeaderStyle: {
+    fontFamily: 'LatamSans-Bold',
+    color: '#138D86'
+  },
+  dayTextColor: '#5C5C5C',
+  disabledContainerStyle: {
+    backgroundColor: '#F5F5F5'
+  }
+};
+
+
 
 export default class CalendarsList extends Component {
   
@@ -45,12 +74,14 @@ export default class CalendarsList extends Component {
   render() {
     return (
       <CalendarList 
-        current={'2012-05-16'} 
+        current={'2020-05-16'} 
         pastScrollRange={24} 
         futureScrollRange={24}
         markingType={'custom'}
         headerComponent={this.headerMonthYearCustomize}
         customWeekStyle={styles.customWeekStyle}
+        theme={themeLatam}
+        selected={'2020-05-15'}
       />
     );
   }
