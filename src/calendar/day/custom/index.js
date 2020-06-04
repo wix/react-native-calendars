@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {shouldUpdate} from '../../../component-updater';
 
-const styleVisualAccesibility = {borderColor: '#1C0187', borderWidth: 1, position: 'absolute', top: -2};
+const styleVisualAccesibility = {borderColor: '#1B0088', borderWidth: 1, position: 'absolute', top: -2};
 
 const VisualAccessibility = ({state, children}) => {
   if (state === 'today') {
