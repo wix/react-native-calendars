@@ -1,10 +1,22 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 
 import styleConstructor from './style';
 import {shouldUpdate} from '../../../component-updater';
 
+const styleVisualAccesibility = {borderColor: '#1C0187', borderWidth: 1, position: 'absolute', top: -2};
+
+const VisualAccessibility = ({state, children}) => {
+  if (state === 'today') {
+    return (
+      <View style={styleVisualAccesibility}>
+        {children}
+      </View>
+    );
+  }
+  return children;
+};
 
 class Day extends Component {
   static displayName = 'IGNORE';
@@ -85,19 +97,21 @@ class Day extends Component {
     }
 
     return (
-      <TouchableOpacity
-        testID={this.props.testID}
-        style={[containerStyle]}
-        onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}
-        activeOpacity={marking.activeOpacity}
-        disabled={marking.disableTouchEvent}
-        accessibilityRole={isDisabled ? undefined : 'button'}
-        accessibilityLabel={this.props.accessibilityLabel}
-      >
-        {this.renderCustomIcon()}
-        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-      </TouchableOpacity>
+      <VisualAccessibility state={this.props.state}>
+        <TouchableOpacity
+          testID={this.props.testID}
+          style={[containerStyle]}
+          onPress={this.onDayPress}
+          onLongPress={this.onDayLongPress}
+          activeOpacity={marking.activeOpacity}
+          disabled={marking.disableTouchEvent}
+          accessibilityRole={isDisabled ? undefined : 'button'}
+          accessibilityLabel={this.props.accessibilityLabel}
+        >
+          {this.renderCustomIcon()}
+          <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+        </TouchableOpacity>
+      </VisualAccessibility>
     );
   }
 }
