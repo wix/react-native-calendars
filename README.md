@@ -524,6 +524,20 @@ An advanced `Agenda` component that can display interactive listings for calenda
   }}
   // Agenda container style
   style={{}}
+  // Display static header above the calendar on collapse view.
+  staticHeaderOnCollapseView={
+    {
+    style: {
+        textTransform: 'uppercase',
+        fontWeight: 'bold'
+    },
+    month: {
+        enable: true,
+        format: 'MMMM yyyy'
+    }
+    // customText: 'Title'
+    }
+  }
 />
 ```
 
