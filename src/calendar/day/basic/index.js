@@ -18,7 +18,8 @@ class Day extends Component {
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     date: PropTypes.object,
-    disableAllTouchEventsForDisabledDays: PropTypes.bool
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
+    defaultDayMark: PropTypes.bool
   };
 
   constructor(props) {
@@ -41,7 +42,7 @@ class Day extends Component {
   }
 
   render() {
-    const {theme, disableAllTouchEventsForDisabledDays} = this.props;
+    const {theme, disableAllTouchEventsForDisabledDays, defaultDayMark} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
 
@@ -64,6 +65,8 @@ class Day extends Component {
       activeOpacity,
       disableTouchEvent
     } = marking;
+
+    const isMarked = marked || defaultDayMark;
 
     if (selected) {
       containerStyle.push(this.style.selected);
@@ -105,7 +108,7 @@ class Day extends Component {
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
         <Dot
           theme={theme}
-          isMarked={marked}
+          isMarked={isMarked}
           dotColor={dotColor}
           isSelected={selected}
           isToday={isToday}

@@ -90,7 +90,9 @@ class Calendar extends Component {
     /** Apply custom disable color to selected day indexes */
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
     /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
-    disableAllTouchEventsForDisabledDays: PropTypes.bool
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
+    // Mark all dates. Default = false
+    defaultDayMark: PropTypes.bool
   };
 
   constructor(props) {
@@ -158,10 +160,19 @@ class Calendar extends Component {
   }
 
   renderDay(day, id) {
+
+    const {
+      disabledByDefault,
+      hideExtraDays,
+      theme,
+      disableAllTouchEventsForDisabledDays,
+      defaultDayMark
+    } = this.props;
+
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
-    if (this.props.disabledByDefault) {
+    if (disabledByDefault) {
       state = 'disabled';
     } else if (this.isDateNotInTheRange(minDate, maxDate, day)) {
       state = 'disabled';
@@ -171,7 +182,7 @@ class Calendar extends Component {
       state = 'today';
     }
 
-    if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
+    if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
       return (<View key={id} style={{flex: 1}}/>);
     }
 
@@ -185,13 +196,14 @@ class Calendar extends Component {
         <DayComp
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           state={state}
-          theme={this.props.theme}
+          theme={theme}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
           date={dateAsObject}
           marking={this.getDateMarking(day)}
           accessibilityLabel={accessibilityLabel}
-          disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
+          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
+          defaultDayMark={defaultDayMark}
         >
           {date}
         </DayComp>
@@ -261,6 +273,11 @@ class Calendar extends Component {
   }
 
   onSwipe = (gestureName) => {
+    const {hideArrows} = this.props;
+    if (hideArrows) {
+      return;
+    }
+
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
     case SWIPE_UP:

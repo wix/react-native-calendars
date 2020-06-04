@@ -32,9 +32,9 @@ export default class CalendarsScreen extends Component {
     return disabledDates;
   }
 
-  render() {
+  renderCalendarWithSelectableDates = () => {
     return (
-      <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
+      <>
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
@@ -51,14 +51,24 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-
+      </>
+    );
+  }
+  renderCalendarWithWeekNumbers = () => {
+    return (
+      <>
         <Text style={styles.text}>Calendar with week numbers</Text>
         <Calendar
           style={styles.calendar}
           hideExtraDays
           showWeekNumbers
         />
-
+      </>
+    );
+  }
+  renderCalendarWithMarkedDatesAndHiddenArrows = () => {
+    return (
+      <>
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
@@ -67,6 +77,7 @@ export default class CalendarsScreen extends Component {
           maxDate={'2012-05-29'}
           disableAllTouchEventsForDisabledDays
           firstDay={1}
+          defaultDayMark
           markedDates={{
             '2012-05-23': {selected: true, marked: true, disableTouchEvent: true},
             '2012-05-24': {selected: true, marked: true, dotColor: 'red'},
@@ -74,10 +85,15 @@ export default class CalendarsScreen extends Component {
             '2012-05-26': {marked: true},
             '2012-05-27': {disabled: true, activeOpacity: 0, disableTouchEvent: false}
           }}
-          hideArrows={true}
+          hideArrows
           // disabledByDefault={true}
         />
-
+      </>
+    );
+  }
+  renderCalendarWithPeriodMarkingAndSpinner = () => {
+    return (
+      <>
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
         <Calendar
           // style={styles.calendar}
@@ -117,7 +133,12 @@ export default class CalendarsScreen extends Component {
             '2012-05-26': {endingDay: true, color: 'gray'}
           }}
         />
-
+      </>
+    );
+  }
+  renderCalendarWithPeriodAndDotMarking = () => {
+    return(
+      <>
         <Text style={styles.text}>Calendar with period marking and dot marking</Text>
         <Calendar
           current={'2012-05-16'}
@@ -135,7 +156,12 @@ export default class CalendarsScreen extends Component {
             ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
           }}
         />
-
+      </>
+    );
+  }
+  renderCalendarWithMultiDotMarking = () => {
+    return (
+      <>
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
@@ -158,7 +184,12 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-
+      </>
+    );
+  }
+  renderCalendarWithMultiPeriodMarking = () => {
+    return (
+      <>
         <Text style={styles.text}>Calendar with multi-period marking</Text>
         <Calendar
           style={styles.calendar}
@@ -187,7 +218,12 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-
+      </>
+    );
+  }
+  renderCalendarWithCustomMarking = () => {
+    return (
+      <>
         <Text style={styles.text}>Custom calendar with custom marking type</Text>
         <Calendar
           style={styles.calendar}
@@ -279,7 +315,12 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
-
+      </>
+    );
+  }
+  renderCalendarWithCustomDayComponent = () => {
+    return(
+      <>
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
           testID={testIDs.calendars.LAST}
@@ -301,6 +342,24 @@ export default class CalendarsScreen extends Component {
             );
           }}
         />
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
+
+        {this.renderCalendarWithSelectableDates()}
+        {this.renderCalendarWithWeekNumbers()}
+        {this.renderCalendarWithMarkedDatesAndHiddenArrows()}
+        {this.renderCalendarWithPeriodMarkingAndSpinner()}
+        {this.renderCalendarWithPeriodAndDotMarking()}
+        {this.renderCalendarWithMultiDotMarking()}
+        {this.renderCalendarWithMultiPeriodMarking()}
+        {this.renderCalendarWithCustomMarking()}
+        {this.renderCalendarWithCustomDayComponent()}
+
       </ScrollView>
     );
   }

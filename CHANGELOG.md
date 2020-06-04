@@ -300,3 +300,7 @@
 
 ## [1.282.0] - 2020-6-04
 - New Feature - Enable swipe in calendar
+
+## [1.283.0] - 2020-6-04
+- New Feature - Default day mark
+- Bug Fix - Disable swiping when passing hideArrows prop
