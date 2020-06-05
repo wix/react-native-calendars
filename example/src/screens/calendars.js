@@ -35,6 +35,7 @@ export default class CalendarsScreen extends Component {
   render() {
     return (
       <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
+
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
@@ -301,6 +302,54 @@ export default class CalendarsScreen extends Component {
             );
           }}
         />
+
+        <Text style={styles.text}>Calendar with custom header and week days</Text>
+        <Calendar
+          style={styles.calendar}
+          hideExtraDays
+          current={'2020-06-05'}
+          hideArrows
+          showWeekNumbers
+          allowWeekDaysFirstLetterOnly
+          theme={{
+            'stylesheet.calendar.header': {
+              monthAndYearContainer: {
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '100%'
+              },
+              yearText: {
+                fontSize: 18,
+                paddingTop: 10,
+                paddingBottom: 10,
+                color: '#5E60CE',
+                paddingRight: 5
+              },
+              monthText: {
+                fontSize: 18,
+                paddingTop: 10,
+                paddingBottom: 10,
+                color: '#5E60CE',
+                paddingLeft: 5
+              },
+              dayHeader: {
+                fontWeight: '600',
+                color: '#48BFE3'
+              }
+            },
+            'stylesheet.day.basic': {
+              today: {
+                borderColor: '#48BFE3',
+                borderWidth: 0.8
+              },
+              todayText: {
+                color: '#5390D9',
+                fontWeight: '800'
+              }
+            }
+          }}
+        />
+
       </ScrollView>
     );
   }

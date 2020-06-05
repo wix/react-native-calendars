@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {ActivityIndicator, Platform} from 'react-native';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import XDate from 'xdate';
 import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
-import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME} from '../../testIDs';
+import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME, HEADER_YEAR_NAME} from '../../testIDs';
 import _ from 'lodash';
 
 
@@ -27,12 +27,14 @@ class CalendarHeader extends Component {
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
     webAriaLevel: PropTypes.number,
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number)
+    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
+    allowWeekDaysFirstLetterOnly: PropTypes.bool
   };
 
   static defaultProps = {
     monthFormat: 'MMMM yyyy',
-    webAriaLevel: 1
+    webAriaLevel: 1,
+    allowWeekDaysFirstLetterOnly: false
   };
 
   constructor(props) {
@@ -120,11 +122,43 @@ class CalendarHeader extends Component {
     });
   }
 
+  renderMonthAndYear = () => {
+    const {testID, month, monthFormat} = this.props;
+    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
+    if (monthFormat.toLowerCase().includes('d')) {
+      return null;
+    }
+
+    const formattedHeader = month.toString(monthFormat);
+    const [formattedMonth, formattedYear] = formattedHeader.split(' ');
+
+    return (
+      <Fragment>
+        <Text
+          testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
+          style={this.style.monthText}
+          allowFontScaling={false}
+          {...webProps}
+        >
+          {`${formattedMonth} `}
+        </Text>
+        <Text
+          testID={testID ? `${HEADER_YEAR_NAME}-${testID}`: HEADER_YEAR_NAME}
+          style={this.style.yearText}
+          allowFontScaling={false}
+          {...webProps}
+        >
+          {formattedYear}
+        </Text>
+      </Fragment>
+    );
+  };
+
   render() {
     let leftArrow = <View/>;
     let rightArrow = <View/>;
-    let weekDaysNames = weekDayNames(this.props.firstDay);
-    const {testID} = this.props;
+    const {testID, firstDay, allowWeekDaysFirstLetterOnly} = this.props;
+    let weekDaysNames = weekDayNames(firstDay, allowWeekDaysFirstLetterOnly);
 
     if (!this.props.hideArrows) {
       leftArrow = (
@@ -166,8 +200,6 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
     }
 
-    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
-
     return (
       <View
         testID={testID}
@@ -184,15 +216,8 @@ class CalendarHeader extends Component {
       >
         <View style={this.style.header}>
           {leftArrow}
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              allowFontScaling={false}
-              style={this.style.monthText}
-              {...webProps}
-              testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
-            >
-              {this.props.month.toString(this.props.monthFormat)}
-            </Text>
+          <View style={this.style.monthAndYearContainer}>
+            {this.renderMonthAndYear()}
             {indicator}
           </View>
           {rightArrow}

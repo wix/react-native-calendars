@@ -14,12 +14,21 @@ export default function(theme={}) {
       marginTop: 6,
       alignItems: 'center'
     },
+    monthAndYearContainer: {
+      flexDirection: 'row',
+      margin: 10
+    },
     monthText: {
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
       fontWeight: appStyle.textMonthFontWeight,
-      color: appStyle.monthTextColor,
-      margin: 10
+      color: appStyle.monthTextColor
+    },
+    yearText: {
+      fontSize: appStyle.textMonthFontSize,
+      fontFamily: appStyle.textMonthFontFamily,
+      fontWeight: appStyle.textMonthFontWeight,
+      color: appStyle.monthTextColor
     },
     arrow: {
       padding: 10,
