@@ -39,7 +39,6 @@ class Day extends Component {
 
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
-    this.renderCustomIcon = this.renderCustomIcon.bind(this);
   }
 
   onDayPress() {
@@ -53,9 +52,10 @@ class Day extends Component {
     return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
   }
 
-  renderCustomIcon(){
-    if (!this.props.marking.withCustomIcon) return null;
-    return this.props.marking.iconComponent; 
+  renderCustomIcon = () => {
+    const {marking: {withCustomIcon, iconComponent}} = this.props;
+    if (!withCustomIcon) return null;
+    return iconComponent; 
   }
 
   render() {

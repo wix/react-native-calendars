@@ -20,56 +20,42 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 */
 
-LocaleConfig.locales['es'] = {
-  ftAccesibilitylabel: 'dddd d \'de\' MMMM \'de\' yyyy',
+LocaleConfig.locales['en'] = {
+  ftAccesibilitylabel: 'dddd d \'of\' MMMM \'of\' yyyy',
   monthNames: [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ],
   monthNamesShort: [
-    'ene',
+    'jan',
     'feb',
     'mar',
-    'abr',
+    'apr',
     'may',
     'jun',
     'jul',
-    'ago',
+    'aug',
     'sep',
     'oct',
     'nov',
-    'dic'
+    'dec'
   ],
-  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-  dayNamesShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-  today: 'Hoy',
-  monthNamesIndexFromZero: {
-    0: 'Enero',
-    1: 'Febrero',
-    2: 'Marzo',
-    3: 'Abril',
-    4: 'Mayo',
-    5: 'Junio',
-    6: 'Julio',
-    7: 'Agosto',
-    8: 'Septiembre',
-    9: 'Octubre',
-    10: 'Noviembre',
-    11: 'Diciembre'
-  }
+  dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  today: 'Today'
 };
 
-LocaleConfig.defaultLocale = 'es';
+LocaleConfig.defaultLocale = 'en';
 
 
 Navigation.events().registerAppLaunchedListener(() => {

@@ -28,18 +28,6 @@ export const styles = {
   }
 };
 
-// const defaultBaseText = {
-//   width: 48,
-//   height: 48,
-//   borderWidth: 1,
-//   borderColor: '#bbb',
-//   justifyContent: 'flex-end',
-//   alignItems: 'flex-end',
-//   borderRadius: 8,
-//   padding: 2,
-//   margin: 0
-// };
-
 const themeLatam = {
   todayTextStyle: {
     color: '#138D86'
@@ -49,7 +37,6 @@ const themeLatam = {
     borderColor: 'rgba(45, 52, 206, 0.15)'
   },
   dayHeaderStyle: {
-    fontFamily: 'LatamSans-Bold',
     color: '#138D86'
   },
   dayTextColor: '#5C5C5C',
@@ -58,12 +45,10 @@ const themeLatam = {
   }
 };
 
-
-
 export default class CalendarsList extends Component {
   
   headerMonthYearCustomize = (year, month) => {
-    const monthNamesZero = LocaleConfig.locales[LocaleConfig.defaultLocale].monthNamesIndexFromZero;
+    const monthNamesZero = LocaleConfig.locales[LocaleConfig.defaultLocale].monthNames;
     return (
       <View style={styles.containerHeader} accessible>
         <Text style={styles.textMonth}>{monthNamesZero[month]}</Text>

@@ -193,7 +193,6 @@ class Calendar extends Component {
     const DayComp = this.getDayComponent();
     const date = day.getDate();
     const dateAsObject = xdateToData(day);
-    // const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
     const accessibilityLabel = this.intzAccessibilityLabel(state, day);
 
     return (
@@ -302,13 +301,11 @@ class Calendar extends Component {
   }
 
   renderHeader(indicator){
-    if (this.props.headerComponent) {
-      // console.log('this.props: ',this.props);
+    const {headerComponent} = this.props;
+    if (headerComponent) {
       const year = this.props.current[0].getFullYear();
       const month = this.props.current[0].getMonth();
       let weekDaysNames = weekDayNames(this.props.firstDay);
-      // const customWeekStyle = {fontFamily: 'LatamSans-Bold', color: '#138D86'};
-      // const customWeekStyle = {color: '#138D86'};
       return (
         <Fragment>
           {this.props.headerComponent(year, month)}
@@ -323,7 +320,6 @@ class Calendar extends Component {
                 key={idx}
                 style={[this.style.dayHeader, this.props.customWeekStyle]}
                 numberOfLines={1}
-                // accessibilityLabel={''}
               >
                 {day}
               </Text>
