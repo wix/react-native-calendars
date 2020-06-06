@@ -156,7 +156,9 @@ export default class AgendaView extends Component {
   }
 
   setScrollPadPosition = (y, animated) => {
-    this.scrollPad.current.scrollTo({x: 0, y, animated});
+    if (this.scrollPad.current) {
+      this.scrollPad.current.scrollTo({x: 0, y, animated});
+    }
   }
 
   onScrollPadLayout = () => {
@@ -474,7 +476,11 @@ export default class AgendaView extends Component {
             {useNativeDriver: true}
           )}
         >
-          <View testID={AGENDA_CALENDAR_KNOB} style={{height: agendaHeight + KNOB_HEIGHT}} onLayout={this.onScrollPadLayout}/>
+          <View
+            testID={AGENDA_CALENDAR_KNOB}
+            style={{height: agendaHeight + KNOB_HEIGHT}}
+            onLayout={this.onScrollPadLayout}
+          />
         </Animated.ScrollView>
       </View>
     );
