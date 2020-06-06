@@ -117,7 +117,6 @@ export default class AgendaView extends Component {
 
     this.currentMonth = this.state.selectedDay.clone();
     this.onLayout = this.onLayout.bind(this);
-    this.onScrollPadLayout = this.onScrollPadLayout.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onStartDrag = this.onStartDrag.bind(this);
@@ -151,15 +150,17 @@ export default class AgendaView extends Component {
     return 96 - (this.viewHeight / 2);
   }
 
-  initialScrollPadPosition() {
+  initialScrollPadPosition = () => {
     return Math.max(0, this.viewHeight - HEADER_HEIGHT);
   }
 
-  setScrollPadPosition(y, animated) {
-    this.scrollPad.scrollTo({x: 0, y, animated});
+  setScrollPadPosition = (y, animated) => {
+    if (this.scrollPad) {
+      this.scrollPad.scrollTo({x: 0, y, animated});
+    }
   }
 
-  onScrollPadLayout() {
+  onScrollPadLayout = () => {
     // When user touches knob, the actual component that receives touch events is a ScrollView.
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
