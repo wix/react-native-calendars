@@ -124,6 +124,7 @@ export default class AgendaView extends Component {
     this.generateMarkings = this.generateMarkings.bind(this);
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
+    this.scrollPad = React.createRef();
   }
 
   componentDidMount() {
@@ -155,9 +156,7 @@ export default class AgendaView extends Component {
   }
 
   setScrollPadPosition = (y, animated) => {
-    if (this.scrollPad) {
-      this.scrollPad.scrollTo({x: 0, y, animated});
-    }
+    this.scrollPad.current.scrollTo({x: 0, y, animated});
   }
 
   onScrollPadLayout = () => {
@@ -459,7 +458,7 @@ export default class AgendaView extends Component {
           ))}
         </Animated.View>
         <Animated.ScrollView
-          ref={c => this.scrollPad = c}
+          ref={this.scrollPad}
           overScrollMode='never'
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
