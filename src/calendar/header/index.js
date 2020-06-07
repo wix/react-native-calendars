@@ -8,6 +8,7 @@ import {weekDayNames} from '../../dateutils';
 import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME, HEADER_YEAR_NAME} from '../../testIDs';
 import _ from 'lodash';
 
+const defaultMonthFormat = 'MMMM yyyy';
 
 class CalendarHeader extends Component {
   static displayName = 'IGNORE';
@@ -32,7 +33,7 @@ class CalendarHeader extends Component {
   };
 
   static defaultProps = {
-    monthFormat: 'MMMM yyyy',
+    monthFormat: defaultMonthFormat,
     webAriaLevel: 1,
     allowWeekDaysFirstLetterOnly: false
   };
@@ -125,11 +126,10 @@ class CalendarHeader extends Component {
   renderMonthAndYear = () => {
     const {testID, month, monthFormat} = this.props;
     const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
-    if (monthFormat.toLowerCase().includes('d')) {
-      return null;
-    }
+    const isFormatIncludingDay = monthFormat.toLowerCase().includes('d');
+    const format = isFormatIncludingDay ? defaultMonthFormat : monthFormat;
 
-    const formattedHeader = month.toString(monthFormat);
+    const formattedHeader = month.toString(format);
     const [formattedMonth, formattedYear] = formattedHeader.split(' ');
 
     return (
