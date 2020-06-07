@@ -128,10 +128,19 @@ export default class CalendarsScreen extends Component {
             '2012-05-15': {marked: true, dotColor: '#50cebb'},
             '2012-05-16': {marked: true, dotColor: '#50cebb'},
             '2012-05-21': {startingDay: true, color: '#50cebb', textColor: 'white'},
-            '2012-05-22': {color: '#70d7c7', textColor: 'white'},
+            '2012-05-22': {
+              color: '#70d7c7',
+              customTextStyle: {
+                color: '#FFFAAA',
+                fontWeight: '700'
+              }},
             '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
             '2012-05-24': {color: '#70d7c7', textColor: 'white'},
-            '2012-05-25': {endingDay: true, color: '#50cebb', textColor: 'white'},
+            '2012-05-25': {endingDay: true, color: '#50cebb', textColor: 'white',
+              customContainerStyle: {
+                borderTopRightRadius: 5,
+                borderBottomRightRadius: 5
+              }},
             ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
           }}
         />
