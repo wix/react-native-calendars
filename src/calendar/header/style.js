@@ -46,6 +46,9 @@ export default function(theme={}) {
       fontWeight: appStyle.textDayHeaderFontWeight,
       color: appStyle.textSectionTitleColor
     },
+    disabledDayHeader: {
+      color: appStyle.textSectionTitleDisabledColor
+    },
     ...(theme[STYLESHEET_ID] || {})
   });
 }
