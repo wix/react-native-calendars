@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, Fragment} from 'react';
 import {StyleSheet, View, ScrollView, Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
@@ -7,20 +7,15 @@ import _ from 'lodash';
 const testIDs = require('../testIDs');
 
 
-export default class CalendarsScreen extends Component {
-  constructor(props) {
-    super(props);
+const CalendarsScreen = () => {
 
-    this.state = {
-      selected: undefined
-    };
-  }
+  const [selected, setSelected] = useState('');
 
-  onDayPress = (day) => {
-    this.setState({selected: day.dateString});
-  }
+  const onDayPress = (day) => {
+    setSelected(day.dateString);
+  };
 
-  getDisabledDates = (startDate, endDate, daysToDisable) => {
+  const getDisabledDates = (startDate, endDate, daysToDisable) => {
     const disabledDates = {};
     const start = moment(startDate);
     const end = moment(endDate);
@@ -30,20 +25,20 @@ export default class CalendarsScreen extends Component {
       }
     }
     return disabledDates;
-  }
+  };
 
-  render() {
+  const renderCalendarWithSelectableDate = () => {
     return (
-      <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
+      <Fragment>
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
           current={'2020-02-02'}
           style={styles.calendar}
           hideExtraDays
-          onDayPress={this.onDayPress}
+          onDayPress={onDayPress}
           markedDates={{
-            [this.state.selected]: {
+            [selected]: {
               selected: true,
               disableTouchEvent: true,
               selectedColor: 'orange',
@@ -51,14 +46,26 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithWeekNumbers = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Calendar with week numbers</Text>
         <Calendar
           style={styles.calendar}
           hideExtraDays
           showWeekNumbers
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithMarkedDatesAndHiddenArrows = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
@@ -77,7 +84,13 @@ export default class CalendarsScreen extends Component {
           hideArrows={true}
           // disabledByDefault={true}
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithPeriodMarkingAndSpinner = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
         <Calendar
           // style={styles.calendar}
@@ -117,7 +130,13 @@ export default class CalendarsScreen extends Component {
             '2012-05-26': {endingDay: true, color: 'gray'}
           }}
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithPeriodMarkingAndDotMarking = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Calendar with period marking and dot marking</Text>
         <Calendar
           current={'2012-05-16'}
@@ -141,10 +160,16 @@ export default class CalendarsScreen extends Component {
                 borderTopRightRadius: 5,
                 borderBottomRightRadius: 5
               }},
-            ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
+            ...getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
           }}
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithMultiDotMarking = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
@@ -167,7 +192,13 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithMultiPeriodMarking = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Calendar with multi-period marking</Text>
         <Calendar
           style={styles.calendar}
@@ -196,7 +227,13 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithCustomMarkingType = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Custom calendar with custom marking type</Text>
         <Calendar
           style={styles.calendar}
@@ -288,7 +325,13 @@ export default class CalendarsScreen extends Component {
             }
           }}
         />
+      </Fragment>
+    );
+  };
 
+  const renderCalendarWithCustomDay = () => {
+    return (
+      <Fragment>
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
           testID={testIDs.calendars.LAST}
@@ -310,10 +353,29 @@ export default class CalendarsScreen extends Component {
             );
           }}
         />
-      </ScrollView>
+      </Fragment>
     );
-  }
-}
+  };
+
+
+
+  return (
+    <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
+      {renderCalendarWithSelectableDate()}
+      {renderCalendarWithWeekNumbers()}
+      {renderCalendarWithMarkedDatesAndHiddenArrows()}
+      {renderCalendarWithPeriodMarkingAndSpinner()}
+      {renderCalendarWithPeriodMarkingAndDotMarking()}
+      {renderCalendarWithMultiDotMarking()}
+      {renderCalendarWithMultiPeriodMarking()}
+      {renderCalendarWithCustomMarkingType()}
+      {renderCalendarWithCustomDay()}
+    </ScrollView>
+  );
+
+};
+
+export default CalendarsScreen;
 
 const styles = StyleSheet.create({
   calendar: {
