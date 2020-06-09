@@ -329,6 +329,34 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithInitialDays = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with initials as days header</Text>
+        <Calendar
+          daysInitial
+          style={[
+            styles.calendar,
+            {
+              height: 250,
+              borderBottomWidth: 1,
+              borderBottomColor: 'lightgrey'
+            }
+          ]}
+          dayComponent={({date, state}) => {
+            return (
+              <View>
+                <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>
+                  {date.day}
+                </Text>
+              </View>
+            );
+          }}
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithCustomDay = () => {
     return (
       <Fragment>
@@ -369,6 +397,7 @@ const CalendarsScreen = () => {
       {renderCalendarWithMultiDotMarking()}
       {renderCalendarWithMultiPeriodMarking()}
       {renderCalendarWithCustomMarkingType()}
+      {renderCalendarWithInitialDays()}
       {renderCalendarWithCustomDay()}
     </ScrollView>
   );

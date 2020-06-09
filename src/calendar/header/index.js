@@ -27,7 +27,8 @@ class CalendarHeader extends Component {
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
     webAriaLevel: PropTypes.number,
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number)
+    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
+    daysInitial: PropTypes.bool
   };
 
   static defaultProps = {
@@ -78,6 +79,9 @@ class CalendarHeader extends Component {
     if (nextProps.disableArrowRight !== this.props.disableArrowRight) {
       return true;
     }
+    if (nextProps.daysInitial !== this.props.daysInitial) {
+      return true;
+    }
     return false;
   }
 
@@ -123,7 +127,7 @@ class CalendarHeader extends Component {
   render() {
     let leftArrow = <View/>;
     let rightArrow = <View/>;
-    let weekDaysNames = weekDayNames(this.props.firstDay);
+    let weekDaysNames = weekDayNames(this.props.firstDay, this.props.daysInitial);
     const {testID} = this.props;
 
     if (!this.props.hideArrows) {

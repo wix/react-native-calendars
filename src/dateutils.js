@@ -40,8 +40,13 @@ function month(xd) {
   return fromTo(firstDay, lastDay);
 }
 
-function weekDayNames(firstDayOfWeek = 0) {
+function weekDayNames(firstDayOfWeek = 0, initial = false) {
   let weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+
+  if (initial) {
+    weekDaysNames = weekDaysNames.map((dayName) => dayName.substr(0, 1));
+  }
+
   const dayShift = firstDayOfWeek % 7;
   if (dayShift) {
     weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));

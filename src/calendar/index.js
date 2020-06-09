@@ -90,7 +90,9 @@ class Calendar extends Component {
     /** Apply custom disable color to selected day indexes */
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
     /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
-    disableAllTouchEventsForDisabledDays: PropTypes.bool
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
+    /** Only show the initial in the days of the header*/
+    daysInitial: PropTypes.bool
   };
 
   constructor(props) {
@@ -357,6 +359,7 @@ class Calendar extends Component {
             disableArrowLeft={this.props.disableArrowLeft}
             disableArrowRight={this.props.disableArrowRight}
             disabledDaysIndexes={this.props.disabledDaysIndexes}
+            daysInitial={this.props.daysInitial}
           />
           <View style={this.style.monthView}>{weeks}</View>
         </View>

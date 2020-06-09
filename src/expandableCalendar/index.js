@@ -59,7 +59,9 @@ class ExpandableCalendar extends Component {
     /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
     /** whether to disable the week scroll in closed position */
-    disableWeekScroll: PropTypes.bool
+    disableWeekScroll: PropTypes.bool,
+    /** Only show the initial in the days of the header. **/
+    daysInitial: PropTypes.bool
   }
 
   static defaultProps = {
@@ -380,7 +382,7 @@ class ExpandableCalendar extends Component {
   /** Renders */
 
   renderWeekDaysNames() {
-    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
+    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay, this.props.daysInitial);
 
     return (
       <View

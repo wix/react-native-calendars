@@ -118,6 +118,8 @@ LocaleConfig.defaultLocale = 'fr';
   disableArrowRight={true}
   // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
   disableAllTouchEventsForDisabledDays={true}
+  // Only show the initial in the days of the header
+  daysInitial={true}
 />
 ```
 
@@ -153,7 +155,7 @@ Multi-Dot marking
 </kbd>
 <p></p>
 
-Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop. 
+Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop.
 The property `color` is mandatory while `key` and `selectedColor` are optional. If key is omitted then the array index is used as key. If `selectedColor` is omitted then `color` will be used for selected dates.
 
 ```javascript
@@ -536,6 +538,6 @@ See also the list of [contributors](https://github.com/wix/react-native-calendar
 
 ## Contributing
 
-Pull requests are most welcome! 
+Pull requests are most welcome!
 Please `npm run test` and `npm run lint` before push.
 Don't forget to add a **title** and a **description** that explain the issue you're trying to solve and your suggested solution. Screenshots and gifs are very helpful.

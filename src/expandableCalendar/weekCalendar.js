@@ -29,7 +29,9 @@ class WeekCalendar extends Component {
     /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
     /** whether to hide the names of the week days */
-    hideDayNames: PropTypes.bool
+    hideDayNames: PropTypes.bool,
+    /** Only show the initial in the days of the header. **/
+    daysInitial: PropTypes.bool
   };
 
   static defaultProps = {
@@ -52,7 +54,7 @@ class WeekCalendar extends Component {
 
   componentDidUpdate(prevProps) {
     const {updateSource, date} = this.props.context;
-    
+
     if (date !== prevProps.context.date && updateSource !== UPDATE_SOURCES.WEEK_SCROLL) {
       this.setState({items: this.getDatesArray()});
       this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
@@ -85,7 +87,7 @@ class WeekCalendar extends Component {
     const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
     const newDate = dd.addWeeks(weekIndex);
     const dateString = newDate.toString('yyyy-MM-dd');
-    
+
     return dateString;
   }
 
@@ -101,7 +103,7 @@ class WeekCalendar extends Component {
         marked[context.date] = {selected: true};
       }
       return marked;
-    } 
+    }
     return {[context.date]: {selected: true}};
   }
 
@@ -111,7 +113,7 @@ class WeekCalendar extends Component {
 
   onScroll = ({nativeEvent: {contentOffset: {x}}}) => {
     const newPage = Math.round(x / this.containerWidth);
-    
+
     if (this.page !== newPage) {
       const {items} = this.state;
       this.page = newPage;
@@ -162,10 +164,10 @@ class WeekCalendar extends Component {
     const {calendarWidth, style, onDayPress, ...others} = this.props;
 
     return (
-      <Week 
-        {...others} 
-        key={item} 
-        current={item} 
+      <Week
+        {...others}
+        key={item}
+        current={item}
         style={[{width: calendarWidth || this.containerWidth}, style]}
         markedDates={this.getMarkedDates()}
         onDayPress={onDayPress || this.onDayPress}
@@ -184,9 +186,9 @@ class WeekCalendar extends Component {
   keyExtractor = (item, index) => index.toString();
 
   render() {
-    const {allowShadow, firstDay, hideDayNames} = this.props;
+    const {allowShadow, daysInitial, firstDay, hideDayNames} = this.props;
     const {items} = this.state;
-    let weekDaysNames = weekDayNames(firstDay);
+    let weekDaysNames = weekDayNames(firstDay, daysInitial);
 
     return (
       <View testID={this.props.testID} style={[allowShadow && this.style.containerShadow, !hideDayNames && {paddingBottom: 6}]}>
@@ -194,11 +196,11 @@ class WeekCalendar extends Component {
           <View style={[this.style.week, {marginTop: 12, marginBottom: -2}]}>
             {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
             {weekDaysNames.map((day, idx) => (
-              <Text 
-                allowFontScaling={false} 
-                key={idx} 
-                style={this.style.dayHeader} 
-                numberOfLines={1} 
+              <Text
+                allowFontScaling={false}
+                key={idx}
+                style={this.style.dayHeader}
+                numberOfLines={1}
                 accessibilityLabel={''}
                 // accessible={false} // not working
                 // importantForAccessibility='no'

@@ -92,7 +92,9 @@ export default class AgendaView extends Component {
     /** Called when the momentum scroll starts for the agenda list. **/
     onMomentumScrollBegin: PropTypes.func,
     /** Called when the momentum scroll stops for the agenda list. **/
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
+    /** Only show the initial in the days of the header. **/
+    daysInitial: PropTypes.bool
   };
 
   constructor(props) {
@@ -355,7 +357,7 @@ export default class AgendaView extends Component {
 
   render() {
     const agendaHeight = this.initialScrollPadPosition();
-    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
+    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay, this.props.daysInitial);
 
     const weekdaysStyle = [this.styles.weekdays, {
       opacity: this.state.scrollY.interpolate({
