@@ -124,6 +124,7 @@ export default class AgendaView extends Component {
     this.generateMarkings = this.generateMarkings.bind(this);
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
+    this.onTouchStartReservations = this.onTouchStartReservations.bind(this);
   }
 
   componentDidMount() {
@@ -144,6 +145,11 @@ export default class AgendaView extends Component {
     } else {
       this.loadReservations(props);
     }
+  }
+
+  onTouchStartReservations() {
+    this.setScrollPadPosition(0, true);
+    this.enableCalendarScrolling();
   }
 
   calendarOffset() {
@@ -477,6 +483,7 @@ export default class AgendaView extends Component {
             [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}],
             {useNativeDriver: true}
           )}
+          onTouchStartReservations={this.props.onTouchStartReservations}
         >
           <View
             testID={AGENDA_CALENDAR_KNOB}
