@@ -6,11 +6,12 @@ import {xdateToData} from '../../interface';
 import XDate from 'xdate';
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
+import {RESERVATION_DATE} from '../../testIDs';
 
 
 class Reservation extends Component {
   static displayName = 'IGNORE';
-  
+
   constructor(props) {
     super(props);
 
@@ -46,7 +47,7 @@ class Reservation extends Component {
     const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
     if (date) {
       return (
-        <View style={this.styles.day}>
+        <View style={this.styles.day} testID={RESERVATION_DATE}>
           <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.getDate()}</Text>
           <Text allowFontScaling={false} style={[this.styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
         </View>
