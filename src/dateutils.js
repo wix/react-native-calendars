@@ -49,7 +49,7 @@ function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-function page(xd, firstDayOfWeek, showSixWeeks, hideExtraDays) {
+function page(xd, firstDayOfWeek, showSixWeeks) {
   const days = month(xd);
   let before = [], after = [];
 
@@ -73,7 +73,7 @@ function page(xd, firstDayOfWeek, showSixWeeks, hideExtraDays) {
 
   const daysForSixWeeks = (((daysBefore + days.length) / 6) >= 6);
 
-  if (showSixWeeks && !daysForSixWeeks && hideExtraDays !== true) {
+  if (showSixWeeks && !daysForSixWeeks) {
     to.addDays(7);
   }
 
