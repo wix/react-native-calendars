@@ -41,15 +41,15 @@ class Day extends Component {
   }
 
   render() {
-    let containerStyle = [this.style.base];
-    let textStyle = [this.style.text];
+    const containerStyle = [this.style.base];
+    const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
 
     let marking = this.props.marking || {};
 
     if (marking.weekNumber) {
-      containerStyle = [this.style.weekNumberContainer];
-      textStyle = [this.style.weekNumberText];
+      containerStyle.push(this.style.weekNumberContainer);
+      textStyle.push(this.style.weekNumberText);
     }
 
     if (marking && marking.constructor === Array && marking.length) {

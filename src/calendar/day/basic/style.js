@@ -11,11 +11,7 @@ export default function styleConstructor(theme={}) {
       height: 32,
       alignItems: 'center'
     },
-    weekNumberContainer: {
-      width: 32,
-      height: 32,
-      alignItems: 'center'
-    },
+    weekNumberContainer: {},
     text: {
       marginTop: Platform.OS === 'android' ? 4 : 6,
       fontSize: appStyle.textDayFontSize,
@@ -26,14 +22,6 @@ export default function styleConstructor(theme={}) {
       ...appStyle.textDayStyle
     },
     weekNumberText: {
-      marginTop: Platform.OS === 'android' ? 4 : 6,
-      fontSize: appStyle.textDayFontSize,
-      fontFamily: appStyle.textDayFontFamily,
-      fontWeight: appStyle.textDayFontWeight,
-      color: appStyle.dayTextColor,
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-      opacity: .3,
-      ...appStyle.textDayStyle
     },
     alignedText: {
       marginTop: Platform.OS === 'android' ? 4 : 6
@@ -53,7 +41,7 @@ export default function styleConstructor(theme={}) {
       color: appStyle.selectedDayTextColor
     },
     disabledText: {
-      opacity: .3
+      color: appStyle.textDisabledColor
     },
     dot: {
       width: 4,
