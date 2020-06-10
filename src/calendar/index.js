@@ -90,7 +90,9 @@ class Calendar extends Component {
     /** Apply custom disable color to selected day indexes */
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
     /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
-    disableAllTouchEventsForDisabledDays: PropTypes.bool
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
+    /** Replace default month and year title with custom one. the function receive a date as parameter. */
+    renderHeader: PropTypes.any
   };
 
   constructor(props) {
@@ -157,6 +159,20 @@ class Calendar extends Component {
     return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
   }
 
+  getAccessibilityLabel = (state, day) => {
+    const today = XDate.locales[XDate.defaultLocale].today;
+    const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].ftAccesibilitylabel;
+    const isToday = state === 'today';
+    const markingLabel = this.getDateMarking(day);
+
+    if (formatAccessibilityLabel) {
+      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
+    }
+
+    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
+  }
+
+
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
@@ -178,7 +194,7 @@ class Calendar extends Component {
     const DayComp = this.getDayComponent();
     const date = day.getDate();
     const dateAsObject = xdateToData(day);
-    const accessibilityLabel = `${state === 'today' ? 'today' : ''} ${day.toString('dddd MMMM d')} ${this.getMarkingLabel(day)}`;
+    const accessibilityLabel = this.getAccessibilityLabel(state, day);
 
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>
@@ -357,6 +373,7 @@ class Calendar extends Component {
             disableArrowLeft={this.props.disableArrowLeft}
             disableArrowRight={this.props.disableArrowRight}
             disabledDaysIndexes={this.props.disabledDaysIndexes}
+            renderHeader={this.props.renderHeader}
           />
           <View style={this.style.monthView}>{weeks}</View>
         </View>

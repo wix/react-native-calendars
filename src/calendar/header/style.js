@@ -14,6 +14,9 @@ export default function(theme={}) {
       marginTop: 6,
       alignItems: 'center'
     },
+    headerContainer: {
+      flexDirection: 'row'
+    },
     monthText: {
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
