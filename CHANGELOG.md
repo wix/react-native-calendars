@@ -304,3 +304,6 @@
 ## [1.291.0] - 2020-6-10
 - New Feature - Render custom header in calendar
 - Update Calendar List's example with the new feature
+
+## [1.292.0] - 2020-6-10
+- New Feature - Show should six weeks in the calendar by passing showSixWeeks
