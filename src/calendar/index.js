@@ -53,6 +53,8 @@ class Calendar extends Component {
     displayLoadingIndicator: PropTypes.bool,
     /** Do not show days of other months in month page. Default = false */
     hideExtraDays: PropTypes.bool,
+    /** Always show six weeks on each month. Default = false */
+    showSixWeeks: PropTypes.bool,
     /** Handler which gets executed on day press. Default = undefined */
     onDayPress: PropTypes.func,
     /** Handler which gets executed on day long press. Default = undefined */
@@ -328,7 +330,11 @@ class Calendar extends Component {
   }
 
   render() {
-    const days = dateutils.page(this.state.currentMonth, this.props.firstDay);
+    const {currentMonth} = this.state;
+    const {firstDay, showSixWeeks, hideExtraDays} = this.props;
+    const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
+    const days = dateutils.page(currentMonth, firstDay, shouldShowSixWeeks);
+    
     const weeks = [];
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
@@ -363,6 +369,7 @@ class Calendar extends Component {
             addMonth={this.addMonth}
             showIndicator={indicator}
             firstDay={this.props.firstDay}
+            showSixWeeks={this.props.showSixWeeks}
             renderArrow={this.props.renderArrow}
             monthFormat={this.props.monthFormat}
             hideDayNames={this.props.hideDayNames}
