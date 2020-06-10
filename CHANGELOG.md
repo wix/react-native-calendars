@@ -300,3 +300,7 @@
 
 ## [1.282.0] - 2020-6-04
 - New Feature - Enable swipe in calendar
+
+## [1.291.0] - 2020-6-10
+- New Feature - Render custom header in calendar
+- Update Calendar List's example with the new feature

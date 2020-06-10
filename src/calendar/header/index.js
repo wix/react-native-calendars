@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {ActivityIndicator, Platform} from 'react-native';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import XDate from 'xdate';
@@ -27,7 +27,8 @@ class CalendarHeader extends Component {
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
     webAriaLevel: PropTypes.number,
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number)
+    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
+    renderHeader: PropTypes.any
   };
 
   static defaultProps = {
@@ -120,6 +121,28 @@ class CalendarHeader extends Component {
     });
   }
 
+  renderHeader = () => {
+    const {renderHeader, month, monthFormat, testID} = this.props;
+    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
+
+    if (renderHeader) {
+      return renderHeader(month);
+    }
+
+    return (
+      <Fragment>
+        <Text
+          allowFontScaling={false}
+          style={this.style.monthText}
+          testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
+          {...webProps}
+        >
+          {month.toString(monthFormat)}
+        </Text>
+      </Fragment>
+    );
+  };
+
   render() {
     let leftArrow = <View/>;
     let rightArrow = <View/>;
@@ -166,8 +189,6 @@ class CalendarHeader extends Component {
       indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
     }
 
-    const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
-
     return (
       <View
         testID={testID}
@@ -184,15 +205,8 @@ class CalendarHeader extends Component {
       >
         <View style={this.style.header}>
           {leftArrow}
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              allowFontScaling={false}
-              style={this.style.monthText}
-              {...webProps}
-              testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
-            >
-              {this.props.month.toString(this.props.monthFormat)}
-            </Text>
+          <View style={this.style.headerContainer}>
+            {this.renderHeader()}
             {indicator}
           </View>
           {rightArrow}
