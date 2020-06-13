@@ -14,6 +14,9 @@ export default function(theme={}) {
       marginTop: 6,
       alignItems: 'center'
     },
+    headerContainer: {
+      flexDirection: 'row'
+    },
     monthText: {
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
@@ -45,6 +48,9 @@ export default function(theme={}) {
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
       color: appStyle.textSectionTitleColor
+    },
+    disabledDayHeader: {
+      color: appStyle.textSectionTitleDisabledColor
     },
     ...(theme[STYLESHEET_ID] || {})
   });
