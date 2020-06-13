@@ -14,25 +14,6 @@ import {
   CalendarProvider
 } from 'react-native-calendars';
 
-// const today = new Date().toISOString().split('T')[0];
-// const fastDate = getPastDate(3);
-// const futureDates = getFutureDates(9);
-// const dates = [fastDate, today].concat(futureDates);
-
-// function getFutureDates(days) {
-//   const array = [];
-//   for (let index = 1; index <= days; index++) {
-//     const date = new Date(Date.now() + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
-//     const dateString = date.toISOString().split('T')[0];
-//     array.push(dateString);
-//   }
-//   return array;
-// }
-
-// function getPastDate(days) {
-//   return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
-// }
-
 const EVENTS = [
   {
     start: '2017-09-06 22:30:00',
@@ -118,13 +99,6 @@ export default class ExpandableCalendarScreen extends Component {
     // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
   };
 
-  buttonPressed() {
-  }
-
-  itemPressed(id) {
-    id;
-  }
-
   renderEmptyItem() {
     return (
       <View style={styles.emptyItem}>
@@ -140,7 +114,6 @@ export default class ExpandableCalendarScreen extends Component {
 
     return (
       <TouchableOpacity
-        onPress={() => this.itemPressed(item.title)}
         style={styles.item}>
         <View>
           <Text style={styles.itemHourText}>{item.hour}</Text>
@@ -148,7 +121,7 @@ export default class ExpandableCalendarScreen extends Component {
         </View>
         <Text style={styles.itemTitleText}>{item.title}</Text>
         <View style={styles.itemButtonContainer}>
-          <Button title={'Info'} onPress={this.buttonPressed}/>
+          <Button title={'Info'}/>
         </View>
       </TouchableOpacity>
     );

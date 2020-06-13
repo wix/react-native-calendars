@@ -14,12 +14,7 @@ import _ from 'lodash';
 import styleConstructor from './style';
 
 const LEFT_MARGIN = 60 - 1;
-// const RIGHT_MARGIN = 10
-// const CALENDER_HEIGHT = 2400;
-// const EVENT_TITLE_HEIGHT = 15
 const TEXT_LINE_HEIGHT = 17;
-// const MIN_EVENT_TITLE_WIDTH = 20
-// const EVENT_PADDING_LEFT = 4
 
 function range(from, to) {
   return Array.from(Array(to), (_, i) => from + i);
@@ -65,7 +60,7 @@ export default class Timeline extends React.PureComponent {
     };
   }
 
-  UNSAFE_componentWillReceiveProps({events, start = 0}) {
+  componentDidUpdate({events, start = 0}) {
     const width = dimensionWidth - LEFT_MARGIN;
     this.setState({
       packedEvents: populateEvents(events, width, start)
@@ -134,7 +129,9 @@ export default class Timeline extends React.PureComponent {
   }
 
   _onEventTapped(event) {
-    this.props.eventTapped(event);
+    if(this.props.eventTapped) {
+      this.props.eventTapped(event);
+    }
   }
 
   _renderEvents() {
@@ -201,7 +198,6 @@ export default class Timeline extends React.PureComponent {
         ]}>
         {this._renderLines()}
         {this._renderEvents()}
-        {/* {this._renderRedLine()} */}
       </ScrollView>
     );
   }

@@ -25,12 +25,12 @@ function collision(a, b) {
 }
 
 function expand(ev, column, columns) {
-  var colSpan = 1;
+  let colSpan = 1;
 
-  for (var i = column + 1; i < columns.length; i++) {
-    var col = columns[i];
-    for (var j = 0; j < col.length; j++) {
-      var ev1 = col[j];
+  for (let i = column + 1; i < columns.length; i++) {
+    let col = columns[i];
+    for (let j = 0; j < col.length; j++) {
+      let ev1 = col[j];
       if (collision(ev, ev1)) {
         return colSpan;
       }
@@ -42,14 +42,14 @@ function expand(ev, column, columns) {
 }
 
 function pack(columns, width, calculatedEvents, dayStart) {
-  var colLength = columns.length;
+  let colLength = columns.length;
 
-  for (var i = 0; i < colLength; i++) {
-    var col = columns[i];
-    for (var j = 0; j < col.length; j++) {
-      var colSpan = expand(col[j], i, columns);
-      var L = (i / colLength) * width;
-      var W = (width * colSpan) / colLength - 10;
+  for (let i = 0; i < colLength; i++) {
+    let col = columns[i];
+    for (let j = 0; j < col.length; j++) {
+      const colSpan = expand(col[j], i, columns);
+      const L = (i / colLength) * width;
+      const W = (width * colSpan) / colLength - 10;
 
       calculatedEvents.push(buildEvent(col[j], L, W, dayStart));
     }
@@ -81,9 +81,9 @@ function populateEvents(events, screenWidth, dayStart) {
       lastEnd = null;
     }
 
-    var placed = false;
-    for (var i = 0; i < columns.length; i++) {
-      var col = columns[i];
+    let placed = false;
+    for (let i = 0; i < columns.length; i++) {
+      let col = columns[i];
       if (!collision(col[col.length - 1], ev)) {
         col.push(ev);
         placed = true;
