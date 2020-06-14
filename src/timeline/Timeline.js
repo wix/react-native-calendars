@@ -60,11 +60,15 @@ export default class Timeline extends React.PureComponent {
     };
   }
 
-  componentDidUpdate({events, start = 0}) {
+  componentDidUpdate(prevProps) {
     const width = dimensionWidth - LEFT_MARGIN;
-    this.setState({
-      packedEvents: populateEvents(events, width, start)
-    });
+    const {events: prevEvents, start: prevStart = 0} = prevProps;
+    const {events, start = 0} = this.props;
+    if(prevEvents !== events || prevStart !== start) {
+      this.setState({
+        packedEvents: populateEvents(events, width, start)
+      });
+    }
   }
 
   componentDidMount() {
