@@ -25,9 +25,10 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "hoist-non-react-statics": "^3.3.1",
     "react-native-swipe-gestures": "^1.0.5",
-    "lodash": "^4.0.0",
     "prop-types": "^15.5.10",
     "xdate": "^0.8.0"
   },
