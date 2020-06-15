@@ -27,6 +27,22 @@ const CalendarsScreen = () => {
     return disabledDates;
   };
 
+  const dayUnderView = () => {
+		return (
+			<View>
+				<Text>This is day under view for custom</Text>
+			</View>
+		);
+	};
+
+	const dayUnderView2 = () => {
+		return (
+			<View>
+				<Text>Or show any icon as here</Text>
+			</View>
+		);
+	};
+
   const renderCalendarWithSelectableDate = () => {
     return (
       <Fragment>
@@ -357,6 +373,31 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithAUnderView = () => {
+		return (
+			<Fragment>
+				<Text style={styles.text}>Calendar with a custom view under the day component</Text>
+				<Calendar
+					style={styles.calendar}
+					current={'2020-06-16'}
+					markedDates={{
+						'2020-06-16': {selected: true, marked: false, selectedColor: 'green', underView: dayUnderView()},
+						'2020-06-17': {marked: true},
+						'2020-06-25': {
+							marked: true,
+							dotColor: 'red',
+							activeOpacity: 0,
+							selected: true,
+							selectedColor: 'red',
+							underView: dayUnderView2()
+						},
+						'2020-06-26': {disabled: true, disableTouchEvent: true}
+					}}
+				/>
+			</Fragment>
+		);
+	};
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
       {renderCalendarWithSelectableDate()}
@@ -368,6 +409,7 @@ const CalendarsScreen = () => {
       {renderCalendarWithMultiPeriodMarking()}
       {renderCalendarWithCustomMarkingType()}
       {renderCalendarWithCustomDay()}
+      {renderCalendarWithAUnderView()}
     </ScrollView>
   );
 

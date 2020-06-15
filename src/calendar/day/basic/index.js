@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import {shouldUpdate} from '../../../component-updater';
 import Dot from '../../dot';
@@ -62,7 +62,8 @@ class Day extends Component {
       selectedColor,
       selectedTextColor,
       activeOpacity,
-      disableTouchEvent
+      disableTouchEvent,
+      underView
     } = marking;
 
     if (selected) {
@@ -92,26 +93,29 @@ class Day extends Component {
     }
 
     return (
-      <TouchableOpacity
-        testID={this.props.testID}
-        style={containerStyle}
-        onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}
-        activeOpacity={activeOpacity}
-        disabled={shouldDisableTouchEvent}
-        accessibilityRole={isDisabled ? undefined : 'button'}
-        accessibilityLabel={this.props.accessibilityLabel}
-      >
-        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        <Dot
-          theme={theme}
-          isMarked={marked}
-          dotColor={dotColor}
-          isSelected={selected}
-          isToday={isToday}
-          isDisabled={isDisabled}
-        />
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity
+          testID={this.props.testID}
+          style={containerStyle}
+          onPress={this.onDayPress}
+          onLongPress={this.onDayLongPress}
+          activeOpacity={activeOpacity}
+          disabled={shouldDisableTouchEvent}
+          accessibilityRole={isDisabled ? undefined : 'button'}
+          accessibilityLabel={this.props.accessibilityLabel}
+        >
+          <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+          <Dot
+            theme={theme}
+            isMarked={marked}
+            dotColor={dotColor}
+            isSelected={selected}
+            isToday={isToday}
+            isDisabled={isDisabled}
+          />
+        </TouchableOpacity>
+        {underView}
+      </View>
     );
   }
 }
