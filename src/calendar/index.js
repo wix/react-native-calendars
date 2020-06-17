@@ -94,7 +94,13 @@ class Calendar extends Component {
     /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
     disableAllTouchEventsForDisabledDays: PropTypes.bool,
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
-    renderHeader: PropTypes.any
+    renderHeader: PropTypes.any,
+    /** Enable the option to swipe between months. Default: false */
+    enableSwipeMonths: PropTypes.bool
+  };
+
+  static defaultProps = {
+    enableSwipeMonths: false
   };
 
   constructor(props) {
@@ -279,6 +285,11 @@ class Calendar extends Component {
   }
 
   onSwipe = (gestureName) => {
+    const {enableSwipeMonths} = this.props;
+    if (!enableSwipeMonths) {
+      return;
+    }
+
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
     case SWIPE_UP:
@@ -334,7 +345,7 @@ class Calendar extends Component {
     const {firstDay, showSixWeeks, hideExtraDays} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
     const days = dateutils.page(currentMonth, firstDay, shouldShowSixWeeks);
-    
+
     const weeks = [];
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
