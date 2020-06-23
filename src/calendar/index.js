@@ -96,11 +96,14 @@ class Calendar extends Component {
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
     /** Enable the option to swipe between months. Default: false */
-    enableSwipeMonths: PropTypes.bool
+    enableSwipeMonths: PropTypes.bool,
+    /** Enable the option to disable calendar swipe gesture handling. Default: false */
+    disableCalendarGestureRecognizer: PropTypes.bool
   };
 
   static defaultProps = {
-    enableSwipeMonths: false
+    enableSwipeMonths: false,
+    disableCalendarGestureRecognizer: false
   };
 
   constructor(props) {
@@ -314,7 +317,8 @@ class Calendar extends Component {
 
   renderWeekNumber(weekNumber) {
     return (
-      <View style={{flex: 1, alignItems: 'center'}} key={`week-container-${weekNumber}`}>
+      <View style={{flex: 1, alignItems: 'center'}}
+        key={`week-container-${weekNumber}`}>
         <Day
           key={`week-${weekNumber}`}
           theme={this.props.theme}
@@ -361,42 +365,45 @@ class Calendar extends Component {
       }
     }
 
-    return (
-      <GestureRecognizer
-        onSwipe={(direction, state) => this.onSwipe(direction, state)}
-      >
-        <View
-          style={[this.style.container, this.props.style]}
-          accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
-          importantForAccessibility={this.props.importantForAccessibility} // Android
+    const coreCalendar = (<View
+      style={[this.style.container, this.props.style]}
+      accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+      importantForAccessibility={this.props.importantForAccessibility} // Android
+    >
+      <CalendarHeader
+        testID={this.props.testID}
+        ref={c => this.header = c}
+        style={this.props.headerStyle}
+        theme={this.props.theme}
+        hideArrows={this.props.hideArrows}
+        month={this.state.currentMonth}
+        addMonth={this.addMonth}
+        showIndicator={indicator}
+        firstDay={this.props.firstDay}
+        showSixWeeks={this.props.showSixWeeks}
+        renderArrow={this.props.renderArrow}
+        monthFormat={this.props.monthFormat}
+        hideDayNames={this.props.hideDayNames}
+        weekNumbers={this.props.showWeekNumbers}
+        onPressArrowLeft={this.props.onPressArrowLeft}
+        onPressArrowRight={this.props.onPressArrowRight}
+        webAriaLevel={this.props.webAriaLevel}
+        disableArrowLeft={this.props.disableArrowLeft}
+        disableArrowRight={this.props.disableArrowRight}
+        disabledDaysIndexes={this.props.disabledDaysIndexes}
+        renderHeader={this.props.renderHeader}
+      />
+      <View style={this.style.monthView}>{weeks}</View>
+    </View>);
+
+    return this.props.disableCalendarGestureRecognizer ? coreCalendar :
+      (
+        <GestureRecognizer
+          onSwipe={(direction, state) => this.onSwipe(direction, state)}
         >
-          <CalendarHeader
-            testID={this.props.testID}
-            ref={c => this.header = c}
-            style={this.props.headerStyle}
-            theme={this.props.theme}
-            hideArrows={this.props.hideArrows}
-            month={this.state.currentMonth}
-            addMonth={this.addMonth}
-            showIndicator={indicator}
-            firstDay={this.props.firstDay}
-            showSixWeeks={this.props.showSixWeeks}
-            renderArrow={this.props.renderArrow}
-            monthFormat={this.props.monthFormat}
-            hideDayNames={this.props.hideDayNames}
-            weekNumbers={this.props.showWeekNumbers}
-            onPressArrowLeft={this.props.onPressArrowLeft}
-            onPressArrowRight={this.props.onPressArrowRight}
-            webAriaLevel={this.props.webAriaLevel}
-            disableArrowLeft={this.props.disableArrowLeft}
-            disableArrowRight={this.props.disableArrowRight}
-            disabledDaysIndexes={this.props.disabledDaysIndexes}
-            renderHeader={this.props.renderHeader}
-          />
-          <View style={this.style.monthView}>{weeks}</View>
-        </View>
-      </GestureRecognizer>
-    );
+          {coreCalendar}
+        </GestureRecognizer>
+      );
   }
 }
 

@@ -120,6 +120,8 @@ LocaleConfig.defaultLocale = 'fr';
   disableAllTouchEventsForDisabledDays={true}
   /** Replace default month and year title with custom one. the function receive a date as parameter. */
   renderHeader={(date) => {/*Return JSX*/}}
+  // (Advanced) Disable calendar swipe gesture handling. Default: false
+  disableCalendarGestureRecognizer={false}
 />
 ```
 
