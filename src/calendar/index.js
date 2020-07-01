@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
+import {momentToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
@@ -127,10 +127,10 @@ class Calendar extends Component {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
         if (this.props.onMonthChange) {
-          this.props.onMonthChange(xdateToData(currMont));
+          this.props.onMonthChange(momentToData(currMont));
         }
         if (this.props.onVisibleMonthsChange) {
-          this.props.onVisibleMonthsChange([xdateToData(currMont)]);
+          this.props.onVisibleMonthsChange([momentToData(currMont)]);
         }
       }
     });
@@ -146,7 +146,7 @@ class Calendar extends Component {
         this.updateMonth(day);
       }
       if (interaction) {
-        interaction(xdateToData(day));
+        interaction(momentToData(day));
       }
     }
   }
@@ -201,7 +201,7 @@ class Calendar extends Component {
 
     const DayComp = this.getDayComponent();
     const date = day.getDate();
-    const dateAsObject = xdateToData(day);
+    const dateAsObject = momentToData(day);
     const accessibilityLabel = this.getAccessibilityLabel(state, day);
 
     return (

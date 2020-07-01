@@ -1,5 +1,5 @@
 const iface = require('./interface');
-const XDate = require('xdate');
+const moment = require('moment');
 
 describe('calendar interface', () => {
   describe('input', () => {
@@ -27,10 +27,10 @@ describe('calendar interface', () => {
     });
 
     it('should accept XDate as argument', () => {
-      const testDate = XDate('2016-11-22 00:00:00+3');
+      const testDate = moment('2016-11-22 00:00:00+3');
       expect(testDate.toISOString()).toEqual('2016-11-21T21:00:00Z');
       const time = 1479772800000;
-      expect(XDate(time, true).toISOString()).toEqual('2016-11-22T00:00:00Z');
+      expect(moment(time, true).toISOString()).toEqual('2016-11-22T00:00:00Z');
     });
 
     it('should accept Date as argument', () => {
@@ -53,9 +53,9 @@ describe('calendar interface', () => {
   describe('output', () => {
     it('should convert xdate to data', () => {
       const time = 1479772800000;
-      const testDate = XDate(time, true);
+      const testDate = moment(time, true);
       expect((testDate).toISOString()).toEqual('2016-11-22T00:00:00Z');
-      const data = iface.xdateToData(testDate);
+      const data = iface.momentToData(testDate);
       expect(data).toEqual({
         year: 2016,
         month: 11,

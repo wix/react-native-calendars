@@ -3,7 +3,7 @@ import * as ReactNative from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import {parseDate, xdateToData} from '../interface';
+import {parseDate, momentToData} from '../interface';
 import dateutils from '../dateutils';
 import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
@@ -238,7 +238,7 @@ export default class AgendaView extends Component {
         firstResevationLoad: true
       }, () => {
         if (this.props.loadItemsForMonth) {
-          this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
+          this.props.loadItemsForMonth(momentToData(this.state.selectedDay));
         }
       });
     }
@@ -289,11 +289,11 @@ export default class AgendaView extends Component {
     this.calendar.scrollToDay(day, this.calendarOffset(), true);
 
     if (this.props.loadItemsForMonth) {
-      this.props.loadItemsForMonth(xdateToData(day));
+      this.props.loadItemsForMonth(momentToData(day));
     }
 
     if (this.props.onDayPress) {
-      this.props.onDayPress(xdateToData(day));
+      this.props.onDayPress(momentToData(day));
     }
   }
 
@@ -333,7 +333,7 @@ export default class AgendaView extends Component {
     });
 
     if (this.props.onDayChange) {
-      this.props.onDayChange(xdateToData(newDate));
+      this.props.onDayChange(momentToData(newDate));
     }
   }
 

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
-import {xdateToData} from '../../interface';
+import {momentToData} from '../../interface';
 import XDate from 'xdate';
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
@@ -42,7 +42,7 @@ class Reservation extends Component {
 
   renderDate(date, item) {
     if (_.isFunction(this.props.renderDay)) {
-      return this.props.renderDay(date ? xdateToData(date) : undefined, item);
+      return this.props.renderDay(date ? momentToData(date) : undefined, item);
     }
     const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
     if (date) {
