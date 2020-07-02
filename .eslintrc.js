@@ -23,7 +23,7 @@ module.exports = {
   "rules": {
       "comma-dangle": ['error', 'never'],
       "indent": ["error", 2],
-      "linebreak-style": ["error", "unix"],
+      "linebreak-style": 0,
       "no-unused-vars": 2,
       "object-curly-spacing": ["error", "never"],
       "quotes": ["error", "single"],

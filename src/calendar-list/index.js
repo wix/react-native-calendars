@@ -3,7 +3,7 @@ import {FlatList, Platform, Dimensions, ActivityIndicator, View} from 'react-nat
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import {xdateToData, parseDate} from '../interface';
+import {momentToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import dateutils from '../dateutils';
 import Calendar from '../calendar';
@@ -193,7 +193,7 @@ class CalendarList extends Component {
       }
       newrows.push(val);
       if (rowIsCloseToViewable(i, 0)) {
-        visibleMonths.push(xdateToData(val));
+        visibleMonths.push(momentToData(val));
       }
     }
     
@@ -250,10 +250,10 @@ class CalendarList extends Component {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
         if (this.props.onMonthChange) {
-          this.props.onMonthChange(xdateToData(currMont));
+          this.props.onMonthChange(momentToData(currMont));
         }
         if (this.props.onVisibleMonthsChange) {
-          this.props.onVisibleMonthsChange([xdateToData(currMont)]);
+          this.props.onVisibleMonthsChange([momentToData(currMont)]);
         }
       }
     });
