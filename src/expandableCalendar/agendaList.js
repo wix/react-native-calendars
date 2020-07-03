@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, {Component} from 'react';
 import {SectionList, Text} from 'react-native';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -22,7 +22,7 @@ class AgendaList extends Component {
 
   static propTypes = {
     ...SectionList.propTypes,
-    /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
+    /** day format in section title. Formatting values: https://momentjs.com/docs/#/displaying/format/ */
     dayFormat: PropTypes.string,
     /** style passed to the section view */
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
@@ -131,9 +131,9 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
-    const today = XDate().toString(this.props.dayFormat);
-    const date = XDate(title).toString(this.props.dayFormat);
-    const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+    const today = moment().format(this.props.dayFormat);
+    const date = moment(title).format(this.props.dayFormat);
+    const todayString = today || commons.todayString;
     const sectionTitle = date === today ? `${todayString}, ${date}` : date;
 
     return (

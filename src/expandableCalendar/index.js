@@ -9,7 +9,7 @@ import {
   Image
 } from 'react-native';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 import {CALENDAR_KNOB} from '../testIDs';
 
 import dateutils from '../dateutils';
@@ -78,7 +78,7 @@ class ExpandableCalendar extends Component {
 
     this.style = styleConstructor(props.theme);
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.numberOfWeeks = this.getNumberOfWeeksInMonth(XDate(this.props.context.date));
+    this.numberOfWeeks = this.getNumberOfWeeksInMonth(moment(this.props.context.date));
     this.openHeight = this.getOpenHeight();
 
     const startHeight = props.initialPosition === POSITIONS.CLOSED ? this.closedHeight : this.openHeight;
@@ -145,9 +145,9 @@ class ExpandableCalendar extends Component {
   scrollToDate(date) {
     if (this.calendar) {
       if (!this.props.horizontal) {
-        this.calendar.scrollToDay(XDate(date), 0, true);
+        this.calendar.scrollToDay(moment(date), 0, true);
       } else if (this.getMonth(date) !== this.visibleMonth) { // don't scroll if the month is already visible
-        this.calendar.scrollToMonth(XDate(date));
+        this.calendar.scrollToMonth(moment(date));
       }
     }
   }
@@ -157,16 +157,16 @@ class ExpandableCalendar extends Component {
       const d = parseDate(this.props.context.date);
 
       if (this.state.position === POSITIONS.OPEN) {
-        d.setDate(1);
-        d.addMonths(next ? 1 : -1);
+        d.date(1);
+        d.add(next ? 1 : -1, 'months');
       } else {
         const {firstDay} = this.props;
-        let dayOfTheWeek = d.getDay();
+        let dayOfTheWeek = d.day();
         if (dayOfTheWeek < firstDay && firstDay > 0) {
           dayOfTheWeek = 7 + dayOfTheWeek;
         }
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-        d.addDays(firstDayOfWeek);
+        d.add(firstDayOfWeek,'days');
       }
       _.invoke(this.props.context, 'setDate', this.getDateString(d), UPDATE_SOURCES.PAGE_SCROLL);
     }
@@ -181,18 +181,18 @@ class ExpandableCalendar extends Component {
   }
 
   getDateString(date) {
-    return date.toString('yyyy-MM-dd');
+    return date.format('yyyy-MM-dd');
   }
 
   getYear(date) {
-    const d = XDate(date);
-    return d.getFullYear();
+    const d = moment(date);
+    return d.year();
   }
 
   getMonth(date) {
-    const d = XDate(date);
+    const d = moment(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
-    return d.getMonth() + 1;
+    return d.month() + 1;
   }
 
   getNumberOfWeeksInMonth(month) {
@@ -400,7 +400,7 @@ class ExpandableCalendar extends Component {
   }
 
   renderHeader() {
-    const monthYear = XDate(this.props.context.date).toString('MMMM yyyy');
+    const monthYear = moment(this.props.context.date).format('MMMM yyyy');
 
     return (
       <Animated.View

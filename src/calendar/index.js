@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import * as ReactNative from 'react-native';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
+import {momentToData, parseDate} from '../interface';
 import styleConstructor from './style';
 import Day from './day/basic';
 import UnitDay from './day/period';
@@ -67,7 +67,7 @@ class Calendar extends Component {
     renderArrow: PropTypes.func,
     /** Provide custom day rendering component */
     dayComponent: PropTypes.any,
-    /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
+    /** Month format in calendar title. Formatting values: https://momentjs.com/docs/#/displaying/format/ */
     monthFormat: PropTypes.string,
     /** Disables changing month when click on days of other months (when hideExtraDays is false). Default = false */
     disableMonthChange: PropTypes.bool,
@@ -108,7 +108,7 @@ class Calendar extends Component {
 
     this.style = styleConstructor(this.props.theme);
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate()
+      currentMonth: props.current ? parseDate(props.current) : moment()
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -127,10 +127,10 @@ class Calendar extends Component {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
         if (this.props.onMonthChange) {
-          this.props.onMonthChange(xdateToData(currMont));
+          this.props.onMonthChange(momentToData(currMont));
         }
         if (this.props.onVisibleMonthsChange) {
-          this.props.onVisibleMonthsChange([xdateToData(currMont)]);
+          this.props.onVisibleMonthsChange([momentToData(currMont)]);
         }
       }
     });
@@ -146,7 +146,7 @@ class Calendar extends Component {
         this.updateMonth(day);
       }
       if (interaction) {
-        interaction(xdateToData(day));
+        interaction(momentToData(day));
       }
     }
   }
@@ -168,8 +168,8 @@ class Calendar extends Component {
   }
 
   getAccessibilityLabel = (state, day) => {
-    const today = XDate.locales[XDate.defaultLocale].today;
-    const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel;
+    const today = moment.locales(moment.defaultLocale).today;
+    const formatAccessibilityLabel = 'dddd d \'of\' MMMM \'of\' yyyy';
     const isToday = state === 'today';
     const markingLabel = this.getDateMarking(day);
 
@@ -191,7 +191,7 @@ class Calendar extends Component {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
+    } else if (dateutils.sameDate(day, moment())) {
       state = 'today';
     }
 
@@ -200,8 +200,8 @@ class Calendar extends Component {
     }
 
     const DayComp = this.getDayComponent();
-    const date = day.getDate();
-    const dateAsObject = xdateToData(day);
+    const date = day.date();
+    const dateAsObject = momentToData(day);
     const accessibilityLabel = this.getAccessibilityLabel(state, day);
 
     return (

@@ -1,4 +1,4 @@
-const XDate = require('xdate');
+const moment = require('moment');
 
 function padNumber(n) {
   if (n < 10) {
@@ -7,37 +7,36 @@ function padNumber(n) {
   return n;
 }
 
-function xdateToData(xdate) {
-  const dateString = xdate.toString('yyyy-MM-dd');
+function momentToData(momentObject) {
+  const dateString = momentObject.format('YYYY-MM-DD');
   return {
-    year: xdate.getFullYear(),
-    month: xdate.getMonth() + 1,
-    day: xdate.getDate(),
-    timestamp: XDate(dateString, true).getTime(),
+    year: momentObject.year(),
+    month: momentObject.month()+1,
+    day: momentObject.date(),
+    timestamp: momentObject.valueOf(),
     dateString: dateString
   };
 }
-
 function parseDate(d) {
   if (!d) {
     return;
   } else if (d.timestamp) { // conventional data timestamp
-    return XDate(d.timestamp, true);
-  } else if (d instanceof XDate) { // xdate
-    return XDate(d.toString('yyyy-MM-dd'), true);
+    return moment(d.timestamp);
+  } else if (d instanceof moment) { // moment
+    return moment(d, 'YYYY-MM-DD', true);
   } else if (d.getTime) { // javascript date
     const dateString = d.getFullYear() + '-' + padNumber((d.getMonth() + 1)) + '-' + padNumber(d.getDate());
-    return XDate(dateString, true);
+    return moment(dateString, true);
   } else if (d.year) {
     const dateString = d.year + '-' + padNumber(d.month) + '-' + padNumber(d.day);
-    return XDate(dateString, true);
+    return moment(dateString, 'YYYY-MM-DD', true);
   } else if (d) { // timestamp number or date formatted as string
-    return XDate(d, true);
+    return moment(d);
   }
 }
 
 module.exports = {
-  xdateToData,
+  momentToData,
   parseDate
 };
 

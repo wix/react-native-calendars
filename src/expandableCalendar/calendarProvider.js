@@ -2,10 +2,10 @@ import _ from 'lodash';
 import React, {Component} from 'react';
 import {Animated, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 
 import dateutils from '../dateutils';
-import {xdateToData} from '../interface';
+import {momentToData} from '../interface';
 import styleConstructor from './style';
 import CalendarContext from './calendarContext';
 
@@ -45,7 +45,7 @@ class CalendarProvider extends Component {
     this.style = styleConstructor(props.theme);
 
     this.state = {
-      date: this.props.date || XDate().toString('yyyy-MM-dd'),
+      date: this.props.date || moment().format('yyyy-MM-dd'),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-props.todayBottomMargin || -TOP_POSITION),
       buttonIcon: this.getButtonIcon(props.date),
@@ -70,7 +70,7 @@ class CalendarProvider extends Component {
   };
 
   setDate = (date, updateSource) => {
-    const sameMonth = dateutils.sameMonth(XDate(date), XDate(this.state.date));
+    const sameMonth = dateutils.sameMonth(moment(date), moment(this.state.date));
 
     this.setState({date, updateSource, buttonIcon: this.getButtonIcon(date)}, () => {
       this.animateTodayButton(date);
@@ -79,7 +79,7 @@ class CalendarProvider extends Component {
     _.invoke(this.props, 'onDateChanged', date, updateSource);
 
     if (!sameMonth) {
-      _.invoke(this.props, 'onMonthChange', xdateToData(XDate(date)), updateSource);
+      _.invoke(this.props, 'onMonthChange', momentToData(moment(date)), updateSource);
     }
   }
 
@@ -99,18 +99,18 @@ class CalendarProvider extends Component {
   }
 
   isPastDate(date) {
-    const today = XDate();
-    const d = XDate(date);
+    const today = moment();
+    const d = moment(date);
 
-    if (today.getFullYear() > d.getFullYear()) {
+    if (today.year() > d.year()) {
       return true;
     }
-    if (today.getFullYear() === d.getFullYear()) {
-      if (today.getMonth() > d.getMonth()) {
+    if (today.year() === d.year()) {
+      if (today.month() > d.month()) {
         return true;
       }
-      if (today.getMonth() === d.getMonth()) {
-        if (today.getDate() > d.getDate()) {
+      if (today.month() === d.month()) {
+        if (today.date() > d.date()) {
           return true;
         }
       }
@@ -120,7 +120,7 @@ class CalendarProvider extends Component {
 
   animateTodayButton(date) {
     if (this.props.showTodayButton) {
-      const today = XDate().toString('yyyy-MM-dd');
+      const today = moment().format('yyyy-MM-dd');
       const isToday = today === date;
 
       Animated.spring(this.state.buttonY, {
@@ -144,13 +144,14 @@ class CalendarProvider extends Component {
   }
 
   onTodayPress = () => {
-    const today = XDate().toString('yyyy-MM-dd');
+    const today = moment.format('YYYY-MM-DD');
     this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   }
 
   renderTodayButton() {
     const {disabled, opacity, buttonY, buttonIcon} = this.state;
-    const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+    const todayCurrent = moment.format('YYYY-MM-DD');
+    const todayString = todayCurrent || commons.todayString;
     const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
 
     return (

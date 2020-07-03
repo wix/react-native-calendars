@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {ActivityIndicator, Platform} from 'react-native';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import XDate from 'xdate';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
@@ -15,7 +15,7 @@ class CalendarHeader extends Component {
   static propTypes = {
     theme: PropTypes.object,
     hideArrows: PropTypes.bool,
-    month: PropTypes.instanceOf(XDate),
+    month: PropTypes.instanceOf(moment),
     addMonth: PropTypes.func,
     showIndicator: PropTypes.bool,
     firstDay: PropTypes.number,

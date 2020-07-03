@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import * as ReactNative from 'react-native';
+import moment from 'moment';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
 
-import {parseDate, xdateToData} from '../interface';
+import {parseDate, momentToData} from '../interface';
 import dateutils from '../dateutils';
 import CalendarList from '../calendar-list';
 import ReservationsList from './reservation-list';
@@ -75,7 +75,7 @@ export default class AgendaView extends Component {
     markingType: PropTypes.string,/*
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool,
-    /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
+    /** Month format in calendar title. Formatting values: https://momentjs.com/docs/#/displaying/format/ */
     monthFormat: PropTypes.string,
     /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
     refreshControl: PropTypes.element,
@@ -111,8 +111,8 @@ export default class AgendaView extends Component {
       calendarIsReady: false,
       calendarScrollable: false,
       firstResevationLoad: false,
-      selectedDay: parseDate(this.props.selected) || XDate(true),
-      topDay: parseDate(this.props.selected) || XDate(true)
+      selectedDay: parseDate(this.props.selected) || moment(),
+      topDay: parseDate(this.props.selected) || moment()
     };
 
     this.currentMonth = this.state.selectedDay.clone();
@@ -238,7 +238,7 @@ export default class AgendaView extends Component {
         firstResevationLoad: true
       }, () => {
         if (this.props.loadItemsForMonth) {
-          this.props.loadItemsForMonth(xdateToData(this.state.selectedDay));
+          this.props.loadItemsForMonth(momentToData(this.state.selectedDay));
         }
       });
     }
@@ -289,11 +289,11 @@ export default class AgendaView extends Component {
     this.calendar.scrollToDay(day, this.calendarOffset(), true);
 
     if (this.props.loadItemsForMonth) {
-      this.props.loadItemsForMonth(xdateToData(day));
+      this.props.loadItemsForMonth(momentToData(day));
     }
 
     if (this.props.onDayPress) {
-      this.props.onDayPress(xdateToData(day));
+      this.props.onDayPress(momentToData(day));
     }
   }
 
@@ -333,7 +333,7 @@ export default class AgendaView extends Component {
     });
 
     if (this.props.onDayChange) {
-      this.props.onDayChange(xdateToData(newDate));
+      this.props.onDayChange(momentToData(newDate));
     }
   }
 

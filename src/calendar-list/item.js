@@ -30,12 +30,12 @@ class CalendarListItem extends Component {
     if (this.props.onPressArrowLeft) {
       this.props.onPressArrowLeft(_, monthClone);
     } else if (this.props.scrollToMonth) {
-      const currentMonth = monthClone.getMonth();
+      const currentMonth = monthClone.month();
       monthClone.addMonths(-1);
 
       // Make sure we actually get the previous month, not just 30 days before currentMonth.
-      while (monthClone.getMonth() === currentMonth) {
-        monthClone.setDate(monthClone.getDate() - 1);
+      while (monthClone.month() === currentMonth) {
+        monthClone.setDate(monthClone.date() - 1);
       }
 
       this.props.scrollToMonth(monthClone);

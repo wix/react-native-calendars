@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
+import {momentToData, parseDate} from '../interface';
 import {SELECT_DATE_SLOT} from '../testIDs';
 import styleConstructor from './style';
 
@@ -37,7 +37,7 @@ class Week extends Component {
     if (date) {
       const current = parseDate(date);
       const daysArray = [current];
-      let dayOfTheWeek = current.getDay() - this.props.firstDay;
+      let dayOfTheWeek = current.day() - this.props.firstDay;
       if (dayOfTheWeek < 0) { // to handle firstDay > 0
         dayOfTheWeek = 7 + dayOfTheWeek;
       }
@@ -111,7 +111,7 @@ class Week extends Component {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, parseDate(current))) { // for extra days
       state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
+    } else if (dateutils.sameDate(day, moment())) {
       state = 'today';
     }
 
@@ -123,8 +123,8 @@ class Week extends Component {
     }
 
     const DayComp = this.getDayComponent();
-    const dayDate = day.getDate();
-    const dateAsObject = xdateToData(day);
+    const dayDate = day.date();
+    const dateAsObject = momentToData(day);
 
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={id}>

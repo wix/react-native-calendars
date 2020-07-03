@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {FlatList, View, Text} from 'react-native';
 import {Map} from 'immutable';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
@@ -75,9 +75,9 @@ class WeekCalendar extends Component {
 
   getDate(weekIndex) {
     const {current, context, firstDay} = this.props;
-    const d = XDate(current || context.date);
+    const d = moment(current || context.date);
     // get the first day of the week as date (for the on scroll mark)
-    let dayOfTheWeek = d.getDay();
+    let dayOfTheWeek = d.day();
     if (dayOfTheWeek < firstDay && firstDay > 0) {
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
