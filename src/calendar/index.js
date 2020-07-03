@@ -276,7 +276,7 @@ class Calendar extends Component {
       return false;
     }
 
-    const dates = this.props.markedDates[day.format('yyyy-MM-dd')] || EmptyArray;
+    const dates = this.props.markedDates[day.format('YYYY-MM-DD')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
@@ -354,7 +354,7 @@ class Calendar extends Component {
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
-      const lastMonthOfDay = current.clone().add(1, 'months').date(1).add(-1,'days').format('yyyy-MM-dd');
+      const lastMonthOfDay = current.clone().add(1, 'months').date(1).add(-1,'days').format('YYYY-MM-DD');
       if (this.props.displayLoadingIndicator &&
         !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;

@@ -131,7 +131,7 @@ class ReservationList extends Component {
 
   getReservationsForDay(iterator, props) {
     const day = iterator.clone();
-    const res = props.reservations[day.format('yyyy-MM-dd')];
+    const res = props.reservations[day.format('YYYY-MM-DD')];
     if (res && res.length) {
       return res.map((reservation, i) => {
         return {
@@ -187,7 +187,7 @@ class ReservationList extends Component {
 
   render() {
     const {reservations} = this.props;
-    if (!reservations || !reservations[this.props.selectedDay.format('yyyy-MM-dd')]) {
+    if (!reservations || !reservations[this.props.selectedDay.format('YYYY-MM-DD')]) {
       if (this.props.renderEmptyData) {
         return this.props.renderEmptyData();
       }

@@ -181,7 +181,7 @@ class ExpandableCalendar extends Component {
   }
 
   getDateString(date) {
-    return date.format('yyyy-MM-dd');
+    return date.format('YYYY-MM-DD');
   }
 
   getYear(date) {

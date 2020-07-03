@@ -24,7 +24,7 @@ class CalendarProvider extends Component {
   static displayName = 'CalendarProvider';
 
   static propTypes = {
-    /** Initial date in 'yyyy-MM-dd' format. Default = Date() */
+    /** Initial date in 'YYYY-MM-DD' format. Default = Date() */
     date: PropTypes.any.isRequired,
     /** Callback for date change event */
     onDateChanged: PropTypes.func,
@@ -45,7 +45,7 @@ class CalendarProvider extends Component {
     this.style = styleConstructor(props.theme);
 
     this.state = {
-      date: this.props.date || moment().format('yyyy-MM-dd'),
+      date: this.props.date || moment().format('YYYY-MM-DD'),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-props.todayBottomMargin || -TOP_POSITION),
       buttonIcon: this.getButtonIcon(props.date),
@@ -120,7 +120,7 @@ class CalendarProvider extends Component {
 
   animateTodayButton(date) {
     if (this.props.showTodayButton) {
-      const today = moment().format('yyyy-MM-dd');
+      const today = moment().format('YYYY-MM-DD');
       const isToday = today === date;
 
       Animated.spring(this.state.buttonY, {

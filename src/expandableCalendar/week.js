@@ -87,7 +87,7 @@ class Week extends Component {
       return false;
     }
 
-    const dates = markedDates[day.format('yyyy-MM-dd')] || EmptyArray;
+    const dates = markedDates[day.format('YYYY-MM-DD')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
