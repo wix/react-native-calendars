@@ -3,7 +3,7 @@ import {parseDate} from '../interface';
 export default function shouldComponentUpdate(nextProps, nextState) {
   let shouldUpdate = (nextProps.selected || []).reduce((prev, next, i) => {
     const currentSelected = (this.props.selected || [])[i];
-    if (!currentSelected || !next || parseDate(currentSelected).getTime() !== parseDate(next).getTime()) {
+    if (!currentSelected || !next || parseDate(currentSelected).valueOf() !== parseDate(next).valueOf()) {
       return {
         update: true,
         field: 'selected'
@@ -28,7 +28,7 @@ export default function shouldComponentUpdate(nextProps, nextState) {
     if (prev.update) {
       return prev;
     } else if (prevDate !== nextDate) {
-      if (prevDate && nextDate && prevDate.getTime() === nextDate.getTime()) {
+      if (prevDate && nextDate && prevDate.valueOf() === nextDate.valueOf()) {
         return prev;
       } else {
         return {

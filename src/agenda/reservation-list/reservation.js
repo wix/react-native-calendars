@@ -25,7 +25,7 @@ class Reservation extends Component {
     if (!r1 && !r2) {
       changed = false;
     } else if (r1 && r2) {
-      if (r1.day.getTime() !== r2.day.getTime()) {
+      if (r1.day.valueOf() !== r2.day.valueOf()) {
         changed = true;
       } else if (!r1.reservation && !r2.reservation) {
         changed = false;
