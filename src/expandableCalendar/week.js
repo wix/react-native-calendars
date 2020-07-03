@@ -45,7 +45,7 @@ class Week extends Component {
       let newDate = current;
       let index = dayOfTheWeek - 1;
       while (index >= 0) {
-        newDate = parseDate(newDate).addDays(-1);
+        newDate = parseDate(newDate).add(-1, 'days');
         daysArray.unshift(newDate);
         index -= 1;
       }
@@ -53,7 +53,7 @@ class Week extends Component {
       newDate = current;
       index = dayOfTheWeek + 1;
       while (index < 7) {
-        newDate = parseDate(newDate).addDays(1);
+        newDate = parseDate(newDate).add(1, 'days');
         daysArray.push(newDate);
         index += 1;
       }
@@ -87,7 +87,7 @@ class Week extends Component {
       return false;
     }
 
-    const dates = markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
+    const dates = markedDates[day.format('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {

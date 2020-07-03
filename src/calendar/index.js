@@ -118,7 +118,7 @@ class Calendar extends Component {
   }
 
   updateMonth(day, doNotTriggerListeners) {
-    if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+    if (day.format('yyyy MM') === this.state.currentMonth.format('yyyy MM')) {
       return;
     }
     this.setState({
@@ -160,7 +160,7 @@ class Calendar extends Component {
   }
 
   addMonth = (count) => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+    this.updateMonth(this.state.currentMonth.clone().add(count, 'months'));
   }
 
   isDateNotInTheRange = (minDate, maxDate, date) => {
@@ -174,10 +174,10 @@ class Calendar extends Component {
     const markingLabel = this.getDateMarking(day);
 
     if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
+      return `${isToday ? today : ''} ${day.format(formatAccessibilityLabel)} ${markingLabel}`;
     }
 
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
+    return `${isToday ? 'today' : ''} ${day.format('dddd d MMMM yyyy')} ${markingLabel}`;
   }
 
 
@@ -276,7 +276,7 @@ class Calendar extends Component {
       return false;
     }
 
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
+    const dates = this.props.markedDates[day.format('yyyy-MM-dd')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
@@ -354,7 +354,7 @@ class Calendar extends Component {
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
-      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
+      const lastMonthOfDay = current.clone().add(1, 'months').date(1).add(-1,'days').format('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
         !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;

@@ -81,8 +81,8 @@ class CalendarList extends Component {
     const date = parseDate(props.current) || moment();
     
     for (let i = 0; i <= this.props.pastScrollRange + this.props.futureScrollRange; i++) {
-      const rangeDate = date.clone().addMonths(i - this.props.pastScrollRange, true);
-      const rangeDateStr = rangeDate.toString('MMM yyyy');
+      const rangeDate = date.clone().add(i - this.props.pastScrollRange, 'months');
+      const rangeDateStr = rangeDate.format('MMM yyyy');
       texts.push(rangeDateStr);
       /*
        * This selects range around current shown month [-0, +2] or [-1, +1] month for detail calendar rendering.
@@ -187,7 +187,7 @@ class CalendarList extends Component {
       const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
       
       if (rowShouldBeRendered && !rowclone[i].getTime) {
-        val = this.state.openDate.clone().addMonths(i - this.props.pastScrollRange, true);
+        val = this.state.openDate.clone().add(i - this.props.pastScrollRange, 'months');
       } else if (!rowShouldBeRendered) {
         val = this.state.texts[i];
       }
@@ -234,11 +234,11 @@ class CalendarList extends Component {
   }
 
   addMonth = (count) => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+    this.updateMonth(this.state.currentMonth.clone().add(count, 'months'));
   }
 
   updateMonth(day, doNotTriggerListeners) {
-    if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+    if (day.format('yyyy MM') === this.state.currentMonth.format('yyyy MM')) {
       return;
     }
 

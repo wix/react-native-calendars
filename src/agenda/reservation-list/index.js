@@ -131,7 +131,7 @@ class ReservationList extends Component {
 
   getReservationsForDay(iterator, props) {
     const day = iterator.clone();
-    const res = props.reservations[day.toString('yyyy-MM-dd')];
+    const res = props.reservations[day.format('yyyy-MM-dd')];
     if (res && res.length) {
       return res.map((reservation, i) => {
         return {
@@ -169,7 +169,7 @@ class ReservationList extends Component {
         } else {
           reservations = reservations.concat(res);
         }
-        iterator.addDays(1);
+        iterator.add(1, 'days');
       }
     }
     const scrollPosition = reservations.length;
@@ -179,7 +179,7 @@ class ReservationList extends Component {
       if (res) {
         reservations = reservations.concat(res);
       }
-      iterator.addDays(1);
+      iterator.add(1, 'days');
     }
 
     return {reservations, scrollPosition};
@@ -187,7 +187,7 @@ class ReservationList extends Component {
 
   render() {
     const {reservations} = this.props;
-    if (!reservations || !reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
+    if (!reservations || !reservations[this.props.selectedDay.format('yyyy-MM-dd')]) {
       if (this.props.renderEmptyData) {
         return this.props.renderEmptyData();
       }

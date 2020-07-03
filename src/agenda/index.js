@@ -349,7 +349,7 @@ export default class AgendaView extends Component {
       });
     }
 
-    const key = this.state.selectedDay.toString('yyyy-MM-dd');
+    const key = this.state.selectedDay.format('yyyy-MM-dd');
     return {...markings, [key]: {...(markings[key] || {}), ...{selected: true}}};
   }
 

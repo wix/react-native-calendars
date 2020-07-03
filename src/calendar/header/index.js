@@ -52,7 +52,7 @@ class CalendarHeader extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (nextProps.month.toString('yyyy MM') !== this.props.month.toString('yyyy MM')) {
+    if (nextProps.month.format('yyyy MM') !== this.props.month.format('yyyy MM')) {
       return true;
     }
     if (nextProps.showIndicator !== this.props.showIndicator) {
@@ -137,7 +137,7 @@ class CalendarHeader extends Component {
           testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
           {...webProps}
         >
-          {month.toString(monthFormat)}
+          {month.format(monthFormat)}
         </Text>
       </Fragment>
     );

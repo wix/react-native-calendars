@@ -83,9 +83,9 @@ class WeekCalendar extends Component {
     }
 
     // leave the current date in the visible week as is
-    const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+    const dd = weekIndex === 0 ? d : d.add(firstDay - dayOfTheWeek, 'days');
     const newDate = dd.addWeeks(weekIndex);
-    return  newDate.toString('yyyy-MM-dd');
+    return  newDate.format('yyyy-MM-dd');
   }
 
   getMarkedDates() {
