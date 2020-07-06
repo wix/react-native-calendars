@@ -308,5 +308,11 @@
 ## [1.292.0] - 2020-6-10
 - New Feature - Show should six weeks in the calendar by passing showSixWeeks
 
+## [1.297.0] - 2020-6-17
+- Bug Fix - Calendar isn't getting re-rendered if the first day prop is changed.
+
+## [1.298.0] - 2020-6-17
+- New Feature - Control the swipe on Calendar with new prop - enableSwipeMonths
+
 ## [1.293.0] - 2020-7-6
 - Added new prop for custom hitSlop for calendar header

@@ -96,6 +96,13 @@ class Calendar extends Component {
     renderHeader: PropTypes.any,
     /** CalendarHeader left right arrows - how many px the Touchable is extended in all directions (default is 20) */
     headerArrowsHitSlop: PropTypes.number
+    /** Enable the option to swipe between months. Default: false */
+    enableSwipeMonths: PropTypes.bool
+  };
+
+  static defaultProps = {
+    enableSwipeMonths: false,
+    headerArrowsHitSlop: 20
   };
 
   constructor(props) {
@@ -280,6 +287,11 @@ class Calendar extends Component {
   }
 
   onSwipe = (gestureName) => {
+    const {enableSwipeMonths} = this.props;
+    if (!enableSwipeMonths) {
+      return;
+    }
+
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
     switch (gestureName) {
     case SWIPE_UP:
@@ -335,7 +347,7 @@ class Calendar extends Component {
     const {firstDay, showSixWeeks, hideExtraDays} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
     const days = dateutils.page(currentMonth, firstDay, shouldShowSixWeeks);
-    
+
     const weeks = [];
     while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
