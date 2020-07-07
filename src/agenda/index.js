@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as ReactNative from 'react-native';
+import moment from 'moment';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
 
 import {parseDate, momentToData} from '../interface';
 import dateutils from '../dateutils';
@@ -75,7 +75,7 @@ export default class AgendaView extends Component {
     markingType: PropTypes.string,/*
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool,
-    /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
+    /** Month format in calendar title. Formatting values: https://momentjs.com/docs/#/displaying/format/ */
     monthFormat: PropTypes.string,
     /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
     refreshControl: PropTypes.element,
@@ -111,8 +111,8 @@ export default class AgendaView extends Component {
       calendarIsReady: false,
       calendarScrollable: false,
       firstResevationLoad: false,
-      selectedDay: parseDate(this.props.selected) || XDate(true),
-      topDay: parseDate(this.props.selected) || XDate(true)
+      selectedDay: parseDate(this.props.selected) || moment(),
+      topDay: parseDate(this.props.selected) || moment()
     };
 
     this.currentMonth = this.state.selectedDay.clone();
@@ -349,7 +349,7 @@ export default class AgendaView extends Component {
       });
     }
 
-    const key = this.state.selectedDay.toString('yyyy-MM-dd');
+    const key = this.state.selectedDay.format('YYYY-MM-DD');
     return {...markings, [key]: {...(markings[key] || {}), ...{selected: true}}};
   }
 

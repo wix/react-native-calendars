@@ -21,7 +21,7 @@ class CalendarListItem extends Component {
   shouldComponentUpdate(nextProps) {
     const r1 = this.props.item;
     const r2 = nextProps.item;
-    return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
+    return r1.format('yyyy MM') !== r2.format('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
   }
 
   onPressArrowLeft = (_, month) => {
@@ -30,12 +30,12 @@ class CalendarListItem extends Component {
     if (this.props.onPressArrowLeft) {
       this.props.onPressArrowLeft(_, monthClone);
     } else if (this.props.scrollToMonth) {
-      const currentMonth = monthClone.getMonth();
-      monthClone.addMonths(-1);
+      const currentMonth = monthClone.month();
+      monthClone.add(-1,'months');
 
       // Make sure we actually get the previous month, not just 30 days before currentMonth.
-      while (monthClone.getMonth() === currentMonth) {
-        monthClone.setDate(monthClone.getDate() - 1);
+      while (monthClone.month() === currentMonth) {
+        monthClone.setDate(monthClone.date() - 1);
       }
 
       this.props.scrollToMonth(monthClone);
@@ -48,7 +48,7 @@ class CalendarListItem extends Component {
     if (this.props.onPressArrowRight) {
       this.props.onPressArrowRight(_, monthClone);
     } else if (this.props.scrollToMonth) {
-      monthClone.addMonths(1);
+      monthClone.add(1,'months');
       this.props.scrollToMonth(monthClone);
     }
   }

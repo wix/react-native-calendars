@@ -1,47 +1,44 @@
-const XDate = require('xdate');
+const moment = require('moment');
 
 function sameMonth(a, b) {
-  return a instanceof XDate && b instanceof XDate &&
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth();
+  return a instanceof moment && b instanceof moment &&
+    a.year() === b.year() &&
+    a.month() === b.month();
 }
 
 function sameDate(a, b) {
-  return a instanceof XDate && b instanceof XDate &&
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
+  return a instanceof moment && b instanceof moment &&
+    a.year() === b.year() &&
+    a.month() === b.month() &&
+    a.date() === b.date();
 }
 
 function isGTE(a, b) {
-  return b.diffDays(a) > -1;
+  return a.startOf('day')>=b.startOf('day');
 }
 
 function isLTE(a, b) {
-  return a.diffDays(b) > -1;
+  return a.startOf('day')<=b.startOf('day');
 }
 
 function fromTo(a, b) {
   const days = [];
-  let from = +a, to = +b;
-  for (; from <= to; from = new XDate(from, true).addDays(1).getTime()) {
-    days.push(new XDate(from, true));
+  let from = a.valueOf(), to = b.valueOf();
+  while(from <= to ){
+    days.push(moment(from));
+    from =  moment(from).add(1,'days').valueOf();
   }
   return days;
 }
 
-function month(xd) {
-  const year = xd.getFullYear(), month = xd.getMonth();
-  const days = new Date(year, month + 1, 0).getDate();
-
-  const firstDay = new XDate(year, month, 1, 0, 0, 0, true);
-  const lastDay = new XDate(year, month, days, 0, 0, 0, true);
-
+function month(md) {
+  const firstDay = md.startOf('month');
+  const lastDay = md.clone().endOf('month');
   return fromTo(firstDay, lastDay);
 }
 
 function weekDayNames(firstDayOfWeek = 0) {
-  let weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+  let weekDaysNames = moment.weekdaysShort();
   const dayShift = firstDayOfWeek % 7;
   if (dayShift) {
     weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));
@@ -49,32 +46,34 @@ function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-function page(xd, firstDayOfWeek, showSixWeeks) {
-  const days = month(xd);
+function page(md, firstDayOfWeek, showSixWeeks) {
+  const days = month(md);
   let before = [], after = [];
-
+  
   const fdow = ((7 + firstDayOfWeek) % 7) || 7;
   const ldow = (fdow + 6) % 7;
-
+  
   firstDayOfWeek = firstDayOfWeek || 0;
-
+  
   const from = days[0].clone();
-  const daysBefore = from.getDay();
-
-  if (from.getDay() !== fdow) {
-    from.addDays(-(from.getDay() + 7 - fdow) % 7);
+  
+  const daysBefore = from.day();
+  
+  if (from.day() !== fdow) {
+    from.add(-(from.day() + 7 - fdow) % 7, 'days');
   }
 
   const to = days[days.length - 1].clone();
-  const day = to.getDay();
+  
+  const day = to.day();
+  
   if (day !== ldow) {
-    to.addDays((ldow + 7 - day) % 7);
+    to.add((ldow + 7 - day) % 7,'days');
   }
 
   const daysForSixWeeks = (((daysBefore + days.length) / 6) >= 6);
-
   if (showSixWeeks && !daysForSixWeeks) {
-    to.addDays(7);
+    to.add(7,'days');
   }
 
   if (isLTE(from, days[0])) {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {FlatList, ActivityIndicator, View} from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
@@ -28,8 +28,8 @@ class ReservationList extends Component {
     // the value of date key kas to be an empty array []. If there exists no value for date key it is
     // considered that the date in question is not yet loaded
     reservations: PropTypes.object,
-    selectedDay: PropTypes.instanceOf(XDate),
-    topDay: PropTypes.instanceOf(XDate),
+    selectedDay: PropTypes.instanceOf(moment),
+    topDay: PropTypes.instanceOf(moment),
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
@@ -131,7 +131,7 @@ class ReservationList extends Component {
 
   getReservationsForDay(iterator, props) {
     const day = iterator.clone();
-    const res = props.reservations[day.toString('yyyy-MM-dd')];
+    const res = props.reservations[day.format('YYYY-MM-DD')];
     if (res && res.length) {
       return res.map((reservation, i) => {
         return {
@@ -161,7 +161,7 @@ class ReservationList extends Component {
     let reservations = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
-      while (iterator.getTime() < props.selectedDay.getTime()) {
+      while (iterator.valueOf() < props.selectedDay.valueOf()) {
         const res = this.getReservationsForDay(iterator, props);
         if (!res) {
           reservations = [];
@@ -169,7 +169,7 @@ class ReservationList extends Component {
         } else {
           reservations = reservations.concat(res);
         }
-        iterator.addDays(1);
+        iterator.add(1, 'days');
       }
     }
     const scrollPosition = reservations.length;
@@ -179,7 +179,7 @@ class ReservationList extends Component {
       if (res) {
         reservations = reservations.concat(res);
       }
-      iterator.addDays(1);
+      iterator.add(1, 'days');
     }
 
     return {reservations, scrollPosition};
@@ -187,7 +187,7 @@ class ReservationList extends Component {
 
   render() {
     const {reservations} = this.props;
-    if (!reservations || !reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
+    if (!reservations || !reservations[this.props.selectedDay.format('YYYY-MM-DD')]) {
       if (this.props.renderEmptyData) {
         return this.props.renderEmptyData();
       }

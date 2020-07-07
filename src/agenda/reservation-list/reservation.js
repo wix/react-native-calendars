@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 import {momentToData} from '../../interface';
-import XDate from 'xdate';
+import moment from 'moment';
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
 import {RESERVATION_DATE} from '../../testIDs';
@@ -25,7 +25,7 @@ class Reservation extends Component {
     if (!r1 && !r2) {
       changed = false;
     } else if (r1 && r2) {
-      if (r1.day.getTime() !== r2.day.getTime()) {
+      if (r1.day.valueOf() !== r2.day.valueOf()) {
         changed = true;
       } else if (!r1.reservation && !r2.reservation) {
         changed = false;
@@ -44,12 +44,12 @@ class Reservation extends Component {
     if (_.isFunction(this.props.renderDay)) {
       return this.props.renderDay(date ? momentToData(date) : undefined, item);
     }
-    const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
+    const today = dateutils.sameDate(date, moment()) ? this.styles.today : undefined;
     if (date) {
       return (
         <View style={this.styles.day} testID={RESERVATION_DATE}>
-          <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.getDate()}</Text>
-          <Text allowFontScaling={false} style={[this.styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
+          <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.date()}</Text>
+          <Text allowFontScaling={false} style={[this.styles.dayText, today]}>{moment.locales[moment.defaultLocale].dayNamesShort[date.day()]}</Text>
         </View>
       );
     } else {

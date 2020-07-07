@@ -13,7 +13,7 @@ const CalendarsList = () => {
       pastScrollRange={24}
       futureScrollRange={24}
       renderHeader={(date) => {
-        const header = date.toString('MMMM yyyy');
+        const header = date.format('MMMM yyyy');
         const [month, year] = header.split(' ');
         const textStyle = {
           fontSize: 18,

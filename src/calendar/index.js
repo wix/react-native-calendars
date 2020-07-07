@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as ReactNative from 'react-native';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+import moment from 'moment';
 
 import dateutils from '../dateutils';
 import {momentToData, parseDate} from '../interface';
@@ -67,7 +67,7 @@ class Calendar extends Component {
     renderArrow: PropTypes.func,
     /** Provide custom day rendering component */
     dayComponent: PropTypes.any,
-    /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
+    /** Month format in calendar title. Formatting values: https://momentjs.com/docs/#/displaying/format/ */
     monthFormat: PropTypes.string,
     /** Disables changing month when click on days of other months (when hideExtraDays is false). Default = false */
     disableMonthChange: PropTypes.bool,
@@ -108,7 +108,7 @@ class Calendar extends Component {
 
     this.style = styleConstructor(this.props.theme);
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate()
+      currentMonth: props.current ? parseDate(props.current) : moment()
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -118,7 +118,7 @@ class Calendar extends Component {
   }
 
   updateMonth(day, doNotTriggerListeners) {
-    if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+    if (day.format('yyyy MM') === this.state.currentMonth.format('yyyy MM')) {
       return;
     }
     this.setState({
@@ -160,7 +160,7 @@ class Calendar extends Component {
   }
 
   addMonth = (count) => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+    this.updateMonth(this.state.currentMonth.clone().add(count, 'months'));
   }
 
   isDateNotInTheRange = (minDate, maxDate, date) => {
@@ -168,16 +168,16 @@ class Calendar extends Component {
   }
 
   getAccessibilityLabel = (state, day) => {
-    const today = XDate.locales[XDate.defaultLocale].today;
-    const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel;
+    const today = moment.locales(moment.defaultLocale).today;
+    const formatAccessibilityLabel = 'dddd d \'of\' MMMM \'of\' yyyy';
     const isToday = state === 'today';
     const markingLabel = this.getDateMarking(day);
 
     if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
+      return `${isToday ? today : ''} ${day.format(formatAccessibilityLabel)} ${markingLabel}`;
     }
 
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
+    return `${isToday ? 'today' : ''} ${day.format('dddd d MMMM yyyy')} ${markingLabel}`;
   }
 
 
@@ -191,7 +191,7 @@ class Calendar extends Component {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
+    } else if (dateutils.sameDate(day, moment())) {
       state = 'today';
     }
 
@@ -200,7 +200,7 @@ class Calendar extends Component {
     }
 
     const DayComp = this.getDayComponent();
-    const date = day.getDate();
+    const date = day.date();
     const dateAsObject = momentToData(day);
     const accessibilityLabel = this.getAccessibilityLabel(state, day);
 
@@ -276,7 +276,7 @@ class Calendar extends Component {
       return false;
     }
 
-    const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
+    const dates = this.props.markedDates[day.format('YYYY-MM-DD')] || EmptyArray;
     if (dates.length || dates) {
       return dates;
     } else {
@@ -354,7 +354,7 @@ class Calendar extends Component {
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
-      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
+      const lastMonthOfDay = current.clone().add(1, 'months').date(1).add(-1,'days').format('YYYY-MM-DD');
       if (this.props.displayLoadingIndicator &&
         !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
