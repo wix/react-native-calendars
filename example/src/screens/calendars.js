@@ -371,7 +371,7 @@ const CalendarsScreen = () => {
               borderBottomColor: 'lightgrey'
             }
           ]}
-          customHeader={() => <Text>Custom Header</Text>}
+          customHeader={React.forwardRef((props, ref) => <Text ref={ref}>Custom Header</Text>)}
         />
       </Fragment>
     );
