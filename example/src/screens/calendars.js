@@ -357,6 +357,25 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithCustomHeader = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with custom header component</Text>
+        <Calendar
+          testID={testIDs.calendars.LAST}
+          style={[
+            styles.calendar,
+            {
+              height: 250,
+              borderBottomWidth: 1,
+              borderBottomColor: 'lightgrey'
+            }
+          ]}
+          customHeader={() => <Text>Custom Header</Text>}
+        />
+      </Fragment>
+    );
+  };
   return (
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
       {renderCalendarWithSelectableDate()}
@@ -368,6 +387,7 @@ const CalendarsScreen = () => {
       {renderCalendarWithMultiPeriodMarking()}
       {renderCalendarWithCustomMarkingType()}
       {renderCalendarWithCustomDay()}
+      {renderCalendarWithCustomHeader()}
     </ScrollView>
   );
 
