@@ -85,6 +85,7 @@ class CalendarListItem extends Component {
           headerStyle={this.props.horizontal ? this.props.headerStyle : undefined}
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
           importantForAccessibility={this.props.importantForAccessibility} // Android
+          customHeader={this.props.customHeader}
           renderHeader={this.props.renderHeader}
           disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
         />
