@@ -257,6 +257,12 @@ class ExpandableCalendar extends Component {
     // limit min height to closed height
     this._wrapperStyles.style.height = Math.max(this.closedHeight, this._height + gestureState.dy);
 
+    // Do not allow to pull the container lower than the calendar height + knob
+    if(this._wrapperStyles.style.height > this.openHeight + 60){
+      this._wrapperStyles.style.height = this.openHeight + 60
+      return null
+    }
+
     if (!this.props.horizontal) {
       // vertical CalenderList header
       this._headerStyles.style.top = Math.min(Math.max(-gestureState.dy, -HEADER_HEIGHT), 0);
