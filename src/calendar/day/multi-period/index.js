@@ -70,7 +70,13 @@ class Day extends Component {
             marginRight: 4
           });
         }
-        return <View key={index} style={style}/>;
+        return (
+           <View key={index} style={style}>
+              validPeriods.map((period, index) => {
+              <Text style={{fontWeight:'600', fontSize:12}}>{period.name}</Text>
+              })
+           </View>
+        );
       });
     }
     return;
