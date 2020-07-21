@@ -93,7 +93,7 @@ class Day extends Component {
     }
 
     return (
-      <View>
+      <View style={{alignItems:'center'}}>
         <TouchableOpacity
           testID={this.props.testID}
           style={containerStyle}
