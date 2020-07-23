@@ -63,7 +63,7 @@ class Day extends Component {
       selectedTextColor,
       activeOpacity,
       disableTouchEvent,
-      underView
+      renderUnderView
     } = marking;
 
     if (selected) {
@@ -93,7 +93,7 @@ class Day extends Component {
     }
 
     return (
-      <View style={{alignItems:'center'}}>
+      <View style={this.style.dayContainer}>
         <TouchableOpacity
           testID={this.props.testID}
           style={containerStyle}
@@ -114,7 +114,7 @@ class Day extends Component {
             isDisabled={isDisabled}
           />
         </TouchableOpacity>
-        {underView}
+        {!!renderUnderView && renderUnderView()}
       </View>
     );
   }

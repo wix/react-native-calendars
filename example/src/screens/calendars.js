@@ -381,7 +381,7 @@ const CalendarsScreen = () => {
 					style={styles.calendar}
 					current={'2020-06-16'}
 					markedDates={{
-						'2020-06-16': {selected: true, marked: false, selectedColor: 'green', underView: dayUnderView()},
+						'2020-06-16': {selected: true, marked: false, selectedColor: 'green', renderUnderView:() => dayUnderView() },
 						'2020-06-17': {marked: true},
 						'2020-06-25': {
 							marked: true,
@@ -389,7 +389,9 @@ const CalendarsScreen = () => {
 							activeOpacity: 0,
 							selected: true,
 							selectedColor: 'red',
-							underView: dayUnderView2()
+							renderUnderView: () => {
+                return dayUnderView2()
+              }
 						},
 						'2020-06-26': {disabled: true, disableTouchEvent: true}
 					}}
