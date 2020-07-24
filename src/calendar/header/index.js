@@ -28,7 +28,8 @@ class CalendarHeader extends Component {
     disableArrowRight: PropTypes.bool,
     webAriaLevel: PropTypes.number,
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
-    renderHeader: PropTypes.any
+    renderHeader: PropTypes.any,
+    renderWeekDays: PropTypes.any
   };
 
   static defaultProps = {
@@ -99,12 +100,16 @@ class CalendarHeader extends Component {
   }
 
   renderWeekDays = (weekDaysNames) => {
-    const {disabledDaysIndexes} = this.props;
+    const {disabledDaysIndexes, renderWeekDays} = this.props;
     return weekDaysNames.map((day, idx) => {
       const dayStyle = [this.style.dayHeader];
 
       if (_.includes(disabledDaysIndexes, idx)) {
         dayStyle.push(this.style.disabledDayHeader);
+      }
+
+      if (renderWeekDays) {
+        return renderWeekDays(day, idx);
       }
 
       return (

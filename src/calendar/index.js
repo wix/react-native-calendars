@@ -95,6 +95,8 @@ class Calendar extends Component {
     disableAllTouchEventsForDisabledDays: PropTypes.bool,
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
+    /** Replace default day of week with custom one. the function receive a day, index as parameters. */
+    renderWeekDays: PropTypes.any,
     /** Enable the option to swipe between months. Default: false */
     enableSwipeMonths: PropTypes.bool
   };
@@ -392,6 +394,7 @@ class Calendar extends Component {
             disableArrowRight={this.props.disableArrowRight}
             disabledDaysIndexes={this.props.disabledDaysIndexes}
             renderHeader={this.props.renderHeader}
+            renderWeekDays={this.props.renderWeekDays}
           />
           <View style={this.style.monthView}>{weeks}</View>
         </View>
