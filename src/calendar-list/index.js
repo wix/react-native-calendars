@@ -287,6 +287,7 @@ class CalendarList extends Component {
           testID={STATIC_HEADER}
           accessibilityElementsHidden={true} // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
+          renderWeekDays={this.props.renderWeekDays}
         />
       );
     }
