@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {ActivityIndicator, Platform} from 'react-native';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {ActivityIndicator, Image, Platform, Text, TouchableOpacity, View} from 'react-native';
 import XDate from 'xdate';
 import PropTypes from 'prop-types';
 import styleConstructor from './style';
@@ -134,7 +133,7 @@ class CalendarHeader extends Component {
         <Text
           allowFontScaling={false}
           style={this.style.monthText}
-          testID={testID ? `${HEADER_MONTH_NAME}-${testID}`: HEADER_MONTH_NAME}
+          testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
           {...webProps}
         >
           {month.toString(monthFormat)}
@@ -151,36 +150,40 @@ class CalendarHeader extends Component {
 
     if (!this.props.hideArrows) {
       leftArrow = (
-        <TouchableOpacity
-          onPress={this.onPressLeft}
-          disabled={this.props.disableArrowLeft}
-          style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('left')
-            : <Image
-              source={require('../img/previous.png')}
-              style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
-        </TouchableOpacity>
+        this.props.renderArrow
+          ? this.props.renderArrow('left', this.props.addMonth)
+          : (
+            <TouchableOpacity
+              onPress={this.onPressLeft}
+              disabled={this.props.disableArrowLeft}
+              style={this.style.arrow}
+              hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+              testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}` : CHANGE_MONTH_LEFT_ARROW}
+            >
+              <Image
+                source={require('../img/previous.png')}
+                style={this.props.disableArrowLeft ? this.style.disabledArrowImage : this.style.arrowImage}
+              />
+            </TouchableOpacity>
+          )
       );
       rightArrow = (
-        <TouchableOpacity
-          onPress={this.onPressRight}
-          disabled={this.props.disableArrowRight}
-          style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('right')
-            : <Image
-              source={require('../img/next.png')}
-              style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
-            />}
-        </TouchableOpacity>
+        this.props.renderArrow
+          ? this.props.renderArrow('right', this.props.addMonth)
+          : (
+            <TouchableOpacity
+              onPress={this.onPressRight}
+              disabled={this.props.disableArrowRight}
+              style={this.style.arrow}
+              hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+              testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}` : CHANGE_MONTH_RIGHT_ARROW}
+            >
+              <Image
+                source={require('../img/next.png')}
+                style={this.props.disableArrowRight ? this.style.disabledArrowImage : this.style.arrowImage}
+              />
+            </TouchableOpacity>
+          )
       );
     }
 
@@ -212,12 +215,10 @@ class CalendarHeader extends Component {
           {rightArrow}
         </View>
         {!this.props.hideDayNames &&
-          <View style={this.style.week}>
-            {this.props.weekNumbers &&
-              <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
-            }
-            {this.renderWeekDays(weekDaysNames)}
-          </View>
+        <View style={this.style.week}>
+          {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
+          {this.renderWeekDays(weekDaysNames)}
+        </View>
         }
       </View>
     );
@@ -225,14 +226,14 @@ class CalendarHeader extends Component {
 
   onAccessibilityAction = event => {
     switch (event.nativeEvent.actionName) {
-    case 'decrement':
-      this.onPressLeft();
-      break;
-    case 'increment':
-      this.onPressRight();
-      break;
-    default:
-      break;
+      case 'decrement':
+        this.onPressLeft();
+        break;
+      case 'increment':
+        this.onPressRight();
+        break;
+      default:
+        break;
     }
   }
 }
