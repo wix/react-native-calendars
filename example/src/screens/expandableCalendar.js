@@ -104,6 +104,8 @@ export default class ExpandableCalendarScreen extends Component {
       // NOTE: only mark dates with data
       if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
         marked[item.title] = {marked: true};
+      } else {
+        marked[item.title] = {disabled: true};
       }
     });
     return marked;
@@ -175,6 +177,7 @@ export default class ExpandableCalendarScreen extends Component {
             // headerStyle={styles.calendar} // for horizontal only
             // disableWeekScroll
             // theme={this.getTheme()}
+            disableAllTouchEventsForDisabledDays
             firstDay={1}
             markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
             leftArrowImageSource={require('../img/previous.png')}
