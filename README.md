@@ -109,13 +109,17 @@ LocaleConfig.defaultLocale = 'fr';
   // Show week numbers to the left. Default = false
   showWeekNumbers={true}
   // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-  onPressArrowLeft={substractMonth => substractMonth()}
+  onPressArrowLeft={subtractMonth => subtractMonth()}
   // Handler which gets executed when press arrow icon right. It receive a callback can go next month
   onPressArrowRight={addMonth => addMonth()}
   // Disable left arrow. Default = false
   disableArrowLeft={true}
   // Disable right arrow. Default = false
   disableArrowRight={true}
+  // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
+  disableAllTouchEventsForDisabledDays={true}
+  /** Replace default month and year title with custom one. the function receive a date as parameter. */
+  renderHeader={(date) => {/*Return JSX*/}}
 />
 ```
 
@@ -263,7 +267,27 @@ Custom marking allows you to customize each marker with custom styles.
 />
 ```
 
-Keep in mind that different marking types are not compatible. You can use just one marking style for calendar.
+**NEW!** While we still don't support multi marking type, we add the possibility to combine between `period` and `simple`.
+```javascript
+<Calendar
+  markingType={'period'}
+  markedDates={{
+    '2012-05-15': {marked: true, dotColor: '#50cebb'},
+    '2012-05-16': {marked: true, dotColor: '#50cebb'},
+    '2012-05-21': {startingDay: true, color: '#50cebb', textColor: 'white'},
+    '2012-05-22': {color: '#70d7c7', textColor: 'white'},
+    '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
+    '2012-05-24': {color: '#70d7c7', textColor: 'white'},
+    '2012-05-25': {endingDay: true, color: '#50cebb', textColor: 'white'},
+  }}
+/>
+```
+<kbd>
+  <img height=350 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/multi-marking.png?raw=true">
+</kbd>
+<p></p>
+
+Keep in mind that different marking types are not compatible. You can use just one marking style for a calendar.
 
 #### Displaying data loading indicator
 
@@ -289,6 +313,7 @@ The loading indicator next to the month name will be displayed if `<Calendar/>` 
     backgroundColor: '#ffffff',
     calendarBackground: '#ffffff',
     textSectionTitleColor: '#b6c1cd',
+    textSectionTitleDisabledColor: '#d9e1e8',
     selectedDayBackgroundColor: '#00adf5',
     selectedDayTextColor: '#ffffff',
     todayTextColor: '#00adf5',
@@ -310,6 +335,18 @@ The loading indicator next to the month name will be displayed if `<Calendar/>` 
     textMonthFontSize: 16,
     textDayHeaderFontSize: 16
   }}
+/>
+```
+#### Customize days titles with disabled styling
+```javascript
+<Calendar
+    theme={{
+     textSectionTitleDisabledColor: '#d9e1e8'
+    }}
+    disabledDaysIndexes={[0, 6]}
+    markedDates={{
+    ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
+    }}
 />
 ```
 
