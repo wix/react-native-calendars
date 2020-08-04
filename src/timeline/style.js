@@ -1,10 +1,13 @@
 // @flow
 import {Platform, StyleSheet} from 'react-native';
 
-// const eventPaddingLeft = 4
-const leftMargin = 50 - 1;
+const CALENDAR_VERTICAL_OFFSET = 15;
 
-export default function styleConstructor(theme = {}, calendarHeight) {
+export default function styleConstructor(
+  theme = {}, 
+  calendarHeight,
+  {offsetLeft, offsetRight, timeTextWidth}
+  ) {
   let style = {
     container: {
       flex: 1,
@@ -13,8 +16,13 @@ export default function styleConstructor(theme = {}, calendarHeight) {
     },
     contentStyle: {
       backgroundColor: '#ffff',
-      height: calendarHeight + 10,
-      ...theme.contentStyle
+      height: calendarHeight + CALENDAR_VERTICAL_OFFSET * 2,
+      paddingTop: CALENDAR_VERTICAL_OFFSET,
+      paddingBottom: CALENDAR_VERTICAL_OFFSET,
+      ...theme.contentStyle,
+    },
+    innerContentStyle: {
+      height: calendarHeight
     },
     header: {
       paddingHorizontal: 30,
@@ -85,20 +93,24 @@ export default function styleConstructor(theme = {}, calendarHeight) {
     line: {
       height: 1,
       position: 'absolute',
-      left: leftMargin,
       backgroundColor: 'rgb(216,216,216)',
+      left: offsetLeft + timeTextWidth,
+      right: offsetRight,
       ...theme.line
     },
     lineNow: {
-      height: 1,
+      height: 2,
       position: 'absolute',
-      left: leftMargin,
       backgroundColor: 'red',
+      left: offsetLeft + timeTextWidth - 10,
+      right: offsetRight - 10,
       ...theme.lineNow
     },
     timeLabel: {
       position: 'absolute',
-      left: 15,
+      left: offsetLeft,
+      width: timeTextWidth,
+      textAlign: 'left',
       color: 'rgb(170,170,170)',
       fontSize: 10,
       fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',

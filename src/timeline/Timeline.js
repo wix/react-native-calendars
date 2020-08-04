@@ -4,7 +4,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Dimensions
+  Dimensions, RefreshControl
 } from 'react-native';
 import PropTypes from 'prop-types';
 import populateEvents from './Packer';
@@ -13,7 +13,6 @@ import moment from 'moment';
 import _ from 'lodash';
 import styleConstructor from './style';
 
-const LEFT_MARGIN = 60 - 1;
 const TEXT_LINE_HEIGHT = 17;
 
 function range(from, to) {
@@ -32,25 +31,47 @@ export default class Timeline extends React.PureComponent {
       start: PropTypes.string.isRequired,
       end: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
-      summary: PropTypes.string.isRequired,
+      summary: PropTypes.string,
       color: PropTypes.string
-    })).isRequired
+    })).isRequired,
+    offsetLeft: PropTypes.number,
+    offsetRight: PropTypes.number,
+    timeTextWidth: PropTypes.number,
   }
 
   static defaultProps = {
     start: 0,
     end: 24,
     events: [],
-    format24h: true
+    format24h: true,
+    offsetLeft: 16,
+    offsetRight: 20,
+    timeTextWidth: 54,
+    eventRelativeOffsetLeft: -8,
+    eventRelativeOffsetRight: -4,
+    hourOffset: 100
   }
 
   constructor(props) {
     super(props);
-    const {start, end} = this.props;
-    this.calendarHeight = (end - start) * 100;
-    this.styles = styleConstructor(props.styles, this.calendarHeight);
-    const width = dimensionWidth - LEFT_MARGIN;
-    const packedEvents = populateEvents(props.events, width, start);
+    const {
+      start, 
+      end, 
+      offsetLeft, 
+      offsetRight, 
+      timeTextWidth, 
+      eventRelativeOffsetLeft, 
+      eventRelativeOffsetRight,
+      hourOffset
+    } = this.props;
+    this.calendarHeight = (end - start) * hourOffset;
+    this.styles = styleConstructor(props.styles, this.calendarHeight, {
+      offsetLeft: offsetLeft,
+      offsetRight: offsetRight,
+      timeTextWidth: timeTextWidth
+    });
+    const width = dimensionWidth - offsetLeft - offsetRight - timeTextWidth - eventRelativeOffsetLeft - eventRelativeOffsetRight;
+    const packedEvents = populateEvents(props.events, width, start, hourOffset);
     let initPosition =
       _.min(_.map(packedEvents, 'top')) - this.calendarHeight / (end - start);
     const verifiedInitPosition = initPosition < 0 ? 0 : initPosition;
@@ -61,18 +82,27 @@ export default class Timeline extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const width = dimensionWidth - LEFT_MARGIN;
+    const {
+      offsetLeft, 
+      offsetRight, 
+      timeTextWidth, 
+      eventRelativeOffsetLeft, 
+      eventRelativeOffsetRight,
+      hourOffset
+    } = this.props;
+    const width = dimensionWidth - offsetLeft - offsetRight - timeTextWidth - eventRelativeOffsetLeft - eventRelativeOffsetRight;
     const {events: prevEvents, start: prevStart = 0} = prevProps;
     const {events, start = 0} = this.props;
     if(prevEvents !== events || prevStart !== start) {
       this.setState({
-        packedEvents: populateEvents(events, width, start)
+        packedEvents: populateEvents(events, width, start, hourOffset)
       });
     }
   }
 
   componentDidMount() {
     this.props.scrollToFirst && this.scrollToFirst();
+    this.props.scrollToTime && this.scrollToTime()
   }
 
   scrollToFirst() {
@@ -87,45 +117,73 @@ export default class Timeline extends React.PureComponent {
     }, 1);
   }
 
+  scrollToTime() {
+    setTimeout(() => {
+      if (this.state && this._scrollView) {
+        const { scrollToTime } = this.props;
+
+        this._scrollView.scrollTo({
+          x: 0,
+          y: this.getTimeHeightOffset(scrollToTime),
+          animated: true
+        });
+      }
+    }, 1);
+  }
+
+  getTimeHeightOffset (date) {
+    const {start = 0, end = 24 } = this.props;
+    const timeHoursFromDayStart = moment(date).diff(moment(date).startOf('day'), 'minutes') / 60
+    return this.calendarHeight * timeHoursFromDayStart / (end - start)
+  }
+
+  getNowOffset(){
+    return this.getTimeHeightOffset(Date.now())
+  }
+
+  _renderNowLine(){
+    if (!this.props.renderNowLine) return null
+    const offset = this.getNowOffset();
+
+    return (
+      <View 
+        style={[
+          this.styles.line, 
+          this.styles.lineNow,
+          {top: offset}
+        ]}
+      />
+    )
+  }
+
   _renderLines() {
     const {format24h, start = 0, end = 24} = this.props;
     const offset = this.calendarHeight / (end - start);
 
-    const EVENT_DIFF = 20;
-
     return range(start, end + 1).map((i, index) => {
       let timeText;
       if (i === start) {
-        timeText = '';
+        timeText = '00:00';
       } else if (i < 12) {
-        timeText = !format24h ? `${i} AM` : `${i}:00`;
+        timeText = !format24h ? `${i} AM` : `${i < 10 ? '0' + i : i}:00`;
       } else if (i === 12) {
         timeText = !format24h ? `${i} PM` : `${i}:00`;
       } else if (i === 24) {
-        timeText = !format24h ? '12 AM' : '23:59';
+        timeText = !format24h ? '12 AM' : '00:00';
       } else {
         timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
       }
       return [
         <Text
           key={`timeLabel${i}`}
-          style={[this.styles.timeLabel, {top: offset * index - 6}]}>
+          style={[this.styles.timeLabel, {top: offset * index - 9}]}>
           {timeText}
         </Text>,
-        i === start ? null : (
-          <View
-            key={`line${i}`}
-            style={[
-              this.styles.line,
-              {top: offset * index, width: dimensionWidth - EVENT_DIFF}
-            ]}
-          />
-        ),
         <View
-          key={`lineHalf${i}`}
+          key={`line${i}`}
           style={[
             this.styles.line,
-            {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF}
+            {top: offset * index}
           ]}
         />
       ];
@@ -142,7 +200,7 @@ export default class Timeline extends React.PureComponent {
     const {packedEvents} = this.state;
     let events = packedEvents.map((event, i) => {
       const style = {
-        left: event.left,
+        left: event.left + this.props.eventRelativeOffsetLeft,
         height: event.height,
         width: event.width,
         top: event.top,
@@ -155,7 +213,7 @@ export default class Timeline extends React.PureComponent {
       const formatTime = this.props.format24h ? 'HH:mm' : 'hh:mm A';
       return (
         <TouchableOpacity
-          activeOpacity={0.9}
+          activeOpacity={0.7}
           onPress={() => this._onEventTapped(this.props.events[event.index])}
           key={i}
           style={[this.styles.event, style]}>
@@ -187,7 +245,7 @@ export default class Timeline extends React.PureComponent {
 
     return (
       <View>
-        <View style={{marginLeft: LEFT_MARGIN}}>{events}</View>
+        <View style={{marginLeft: this.props.offsetLeft + this.props.timeTextWidth}}>{events}</View>
       </View>
     );
   }
@@ -196,12 +254,24 @@ export default class Timeline extends React.PureComponent {
     return (
       <ScrollView
         ref={ref => (this._scrollView = ref)}
+        refreshControl={(
+          <RefreshControl
+            refreshing={this.props.isRefreshing}
+            onRefresh={this.props.onRefresh}
+          />
+        )}
         contentContainerStyle={[
           this.styles.contentStyle,
           {width: dimensionWidth}
         ]}>
-        {this._renderLines()}
-        {this._renderEvents()}
+          <View style={[
+            this.styles.innerContentStyle,
+            {width: dimensionWidth}
+          ]}>
+            {this._renderLines()}
+            {this._renderEvents()}
+            {this._renderNowLine()}
+          </View>
       </ScrollView>
     );
   }
