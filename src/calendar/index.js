@@ -16,10 +16,12 @@ import shouldComponentUpdate from './updater';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {SELECT_DATE_SLOT} from '../testIDs';
 
-
-//Fallback when RN version is < 0.44
+//Fallback for react-native-web or when RN version is < 0.44
 const {View, ViewPropTypes} = ReactNative;
-const viewPropTypes = ViewPropTypes || View.propTypes;
+const viewPropTypes =
+  typeof document !== 'undefined'
+    ? PropTypes.shape({style: PropTypes.object})
+    : ViewPropTypes || View.propTypes;
 const EmptyArray = [];
 
 /**
