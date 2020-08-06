@@ -118,9 +118,14 @@ class ExpandableCalendar extends Component {
   }
 
   componentDidMount() {
-    AccessibilityInfo.isScreenReaderEnabled().then((screenReaderEnabled) => {
-      this.setState({screenReaderEnabled});
-    });
+    if (AccessibilityInfo) {
+      if (AccessibilityInfo.isScreenReaderEnabled) {
+        AccessibilityInfo.isScreenReaderEnabled().then(this.handleScreenReaderStatus);
+      } else if (AccessibilityInfo.fetch) {
+        // Support for older RN versions
+        AccessibilityInfo.fetch().then(this.handleScreenReaderStatus);
+      }
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -130,6 +135,10 @@ class ExpandableCalendar extends Component {
       this.scrollToDate(date);
     }
   }
+
+  handleScreenReaderStatus = (screenReaderEnabled) => {
+    this.setState({screenReaderEnabled});
+  };
 
   updateNativeStyles() {
     this.wrapper && this.wrapper.setNativeProps(this._wrapperStyles);
