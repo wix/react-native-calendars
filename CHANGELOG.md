@@ -314,3 +314,8 @@
 ## [1.298.0] - 2020-6-17
 - New Feature - Control the swipe on Calendar with new prop - enableSwipeMonths
 
+## [1.299.0] - 2020-8-5
+- Fix - Android RNN version and configuration (PR #1251).
+
+## [1.300.0] - 2020-8-5
+- Fix - ExpandableCalendar and AgendaList RTL style.
