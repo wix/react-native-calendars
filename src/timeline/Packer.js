@@ -1,8 +1,8 @@
 // @flow
 import moment from 'moment';
-const offset = 100;
+const DEFAULT_OFFSET = 100;
 
-function buildEvent(column, left, width, dayStart) {
+function buildEvent(column, left, width, dayStart, offset = DEFAULT_OFFSET) {
   const startTime = moment(column.start);
   const endTime = column.end
     ? moment(column.end)
@@ -41,7 +41,7 @@ function expand(ev, column, columns) {
   return colSpan;
 }
 
-function pack(columns, width, calculatedEvents, dayStart) {
+function pack(columns, width, calculatedEvents, dayStart, offset = DEFAULT_OFFSET) {
   let colLength = columns.length;
 
   for (let i = 0; i < colLength; i++) {
@@ -49,14 +49,14 @@ function pack(columns, width, calculatedEvents, dayStart) {
     for (let j = 0; j < col.length; j++) {
       const colSpan = expand(col[j], i, columns);
       const L = (i / colLength) * width;
-      const W = (width * colSpan) / colLength - 10;
+      const W = (width * colSpan) / colLength;
 
-      calculatedEvents.push(buildEvent(col[j], L, W, dayStart));
+      calculatedEvents.push(buildEvent(col[j], L, W, dayStart, offset));
     }
   }
 }
 
-function populateEvents(events, screenWidth, dayStart) {
+function populateEvents(events, screenWidth, dayStart, offset = DEFAULT_OFFSET) {
   let lastEnd;
   let columns;
   let calculatedEvents = [];
@@ -76,7 +76,7 @@ function populateEvents(events, screenWidth, dayStart) {
 
   events.forEach(function(ev) {
     if (lastEnd !== null && ev.start >= lastEnd) {
-      pack(columns, screenWidth, calculatedEvents, dayStart);
+      pack(columns, screenWidth, calculatedEvents, dayStart, offset);
       columns = [];
       lastEnd = null;
     }
@@ -101,7 +101,7 @@ function populateEvents(events, screenWidth, dayStart) {
   });
 
   if (columns.length > 0) {
-    pack(columns, screenWidth, calculatedEvents, dayStart);
+    pack(columns, screenWidth, calculatedEvents, dayStart, offset);
   }
   return calculatedEvents;
 }
