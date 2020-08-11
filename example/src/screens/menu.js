@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 
@@ -6,7 +7,6 @@ const appIcon = require('../img/app-icon-120x120.png');
 const testIDs = require('../testIDs');
 
 export default class MenuScreen extends Component {
-
   render() {
     return (
       <ScrollView>
@@ -41,6 +41,9 @@ export default class MenuScreen extends Component {
             style={styles.menu}
             onPress={this.onExpandablePress.bind(this)}>
             <Text style={styles.menuText}>Expandable Calendar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menu} onPress={this.onTimelinePress.bind(this)}>
+            <Text style={styles.menuText}>Timeline Calendar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             testID={testIDs.menu.WEEK_CALENDAR}
@@ -92,6 +95,10 @@ export default class MenuScreen extends Component {
 
   onExpandablePress() {
     this.pushScreen('ExpandableCalendar');
+  }
+
+  onTimelinePress() {
+    this.pushScreen('TimelineCalendar');
   }
 
   onWeekPress() {

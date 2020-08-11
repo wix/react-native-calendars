@@ -86,6 +86,7 @@ class CalendarListItem extends Component {
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
           importantForAccessibility={this.props.importantForAccessibility} // Android
           renderHeader={this.props.renderHeader}
+          disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
         />
       );
     } else {

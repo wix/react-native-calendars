@@ -307,3 +307,15 @@
 
 ## [1.292.0] - 2020-6-10
 - New Feature - Show should six weeks in the calendar by passing showSixWeeks
+
+## [1.297.0] - 2020-6-17
+- Bug Fix - Calendar isn't getting re-rendered if the first day prop is changed.
+
+## [1.298.0] - 2020-6-17
+- New Feature - Control the swipe on Calendar with new prop - enableSwipeMonths
+
+## [1.299.0] - 2020-8-5
+- Fix - Android RNN version and configuration (PR #1251).
+
+## [1.300.0] - 2020-8-5
+- Fix - ExpandableCalendar and AgendaList RTL style.
