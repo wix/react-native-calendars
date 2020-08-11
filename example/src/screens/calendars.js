@@ -394,7 +394,12 @@ const CalendarsScreen = () => {
               }
 						},
 						'2020-06-26': {disabled: true, disableTouchEvent: true}
-					}}
+          }}
+          theme={{
+            dayContainerStyle:{  //customize style
+              // height: 50, allow user get a height to show each week row of month as a same height.
+            }
+          }}
 				/>
 			</Fragment>
 		);
