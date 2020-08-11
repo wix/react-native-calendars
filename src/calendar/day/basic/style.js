@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Date: 2020-06-12 18:13:13
+ * @Author: Jeremy.Chou
+ * @LastEditors: Jeremy.Chou
+ * @LastEditTime: 2020-08-11 14:59:48
+ */
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../../style';
 
@@ -7,7 +14,8 @@ export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     dayContainer: {
-      alignItems: 'center'
+      alignItems: 'center',
+      ...appStyle.dayContainerStyle,
     },
     base: {
       width: 32,
