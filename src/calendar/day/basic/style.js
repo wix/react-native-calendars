@@ -1,10 +1,3 @@
-/*
- * @Description: 
- * @Date: 2020-06-12 18:13:13
- * @Author: Jeremy.Chou
- * @LastEditors: Jeremy.Chou
- * @LastEditTime: 2020-08-12 14:45:04
- */
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../../style';
 
