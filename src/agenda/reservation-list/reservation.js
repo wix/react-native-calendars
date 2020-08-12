@@ -1,17 +1,19 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableWithoutFeedback} from 'react-native';
 
 import {xdateToData} from '../../interface';
 import XDate from 'xdate';
+const Day = require("dayjs")
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
 import {RESERVATION_DATE} from '../../testIDs';
 
+import {fonts,colors} from '@app/utils'
 
 class Reservation extends Component {
   static displayName = 'IGNORE';
-  
+
   constructor(props) {
     super(props);
 
@@ -60,10 +62,26 @@ class Reservation extends Component {
   }
 
   render() {
+    if(this.props.item.startDate && this.props.item.endDate) {
+      let s = Day(this.props.item.startDate.toString());
+      let e = Day(this.props.item.endDate.toString())
+      if(s.isSame(e, 'day')) {
+        return (
+          <View style = {{height : 40, justifyContent : 'center', marginLeft : 32}}>
+            <Text style = {{fontFamily : fonts.subtitle, color : colors.subtitle, fontSize : 12}}>{s.format("MMM D")}</Text>
+          </View>
+        )
+      }
+      return (
+        <View style = {{height : 40, justifyContent : 'center', marginLeft : 32}}>
+          <Text style = {{fontFamily : fonts.subtitle, color : colors.subtitle, fontSize : 12}}>{s.format("MMM D")} - {e.format("D")}</Text>
+        </View>
+      )
+    }
     const {reservation, date} = this.props.item;
     let content;
+    const firstItem = date ? true : false;
     if (reservation) {
-      const firstItem = date ? true : false;
       if (_.isFunction(this.props.renderItem)) {
         content = this.props.renderItem(reservation, firstItem);
       }
@@ -71,12 +89,14 @@ class Reservation extends Component {
       content = this.props.renderEmptyDate(date);
     }
     return (
-      <View style={this.styles.container}>
-        {this.renderDate(date, reservation)}
-        <View style={{flex: 1}}>
-          {content}
+      <TouchableWithoutFeedback onPress = {() => this.props.openAddWorkScreenWithDate(date)}>
+        <View style={[this.styles.container, {marginTop : firstItem ? 30 : 8}]}>
+          {this.renderDate(date, reservation)}
+          <View style={{flex: 1}}>
+            {content}
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

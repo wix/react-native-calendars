@@ -3,6 +3,8 @@ import {FlatList, ActivityIndicator, View} from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+import Day from 'dayjs'
+const _ = require("lodash")
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
@@ -10,7 +12,7 @@ import styleConstructor from './style';
 
 class ReservationList extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // specify your item comparison function for increased performance
     rowHasChanged: PropTypes.func,
@@ -41,13 +43,13 @@ class ReservationList extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.styles = styleConstructor(props.theme);
-    
+
     this.state = {
       reservations: []
     };
-    
+
     this.heights=[];
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
@@ -124,6 +126,7 @@ class ReservationList extends Component {
           renderEmptyDate={this.props.renderEmptyDate}
           theme={this.props.theme}
           rowHasChanged={this.props.rowHasChanged}
+          openAddWorkScreenWithDate = {this.props.openAddWorkScreenWithDate}
         />
       </View>
     );
@@ -172,7 +175,6 @@ class ReservationList extends Component {
         iterator.addDays(1);
       }
     }
-    const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
     for (let i = 0; i < 31; i++) {
       const res = this.getReservationsForDay(iterator, props);
@@ -181,8 +183,64 @@ class ReservationList extends Component {
       }
       iterator.addDays(1);
     }
+    //TODO
+    /*
+    Go ahead and create it from here
+    What we need to do
+    we are given an array of objects, objects with reservations have a reservation property that is an array
+    starting at the beginning of the array
+    if no reservation ->
+    loop until there is a reservation or end of week
+    delete those items and create a new item with property of date, day, start, end
+    if reservation ->
+    keep item
+    repeat for reservations
+    let item = reservations[i];
+    let endDay = Day(reservations[i].date.toString()).endOf('week')
+    if(item.hasOwnProperty("reservation")) {
+      ranges.push({date : item.date, reservation : item.reservation, day : item.date})
+    } else {
+      let c = i;
+      let date = Day(reservations[c].date.toString());
+      while(c < reservations.length && !reservations[c].hasOwnProperty("reservation") && (date.isBefore(endDay, 'day'))) {
+        date = Day(reservations[c].date.toString());
+        c++;
+      }
+      if(c >= reservations.length) {
+        ranges.push({date : reservations[i].date, day : reservations[i].date, startDate : reservations[i].date, endDate : reservations[i].date})
+      } else {
+        ranges.push({date : reservations[i].date, day : reservations[i].date, startDate : reservations[i].date, endDate : reservations[c - 1].date})
+        i = c - 1;
+      }
+    }
+    */
 
-    return {reservations, scrollPosition};
+    let ranges = []
+
+    for(let i = 0; i < reservations.length; i++) {
+      let item = reservations[i];
+      let endDay = Day(reservations[i].date.toString()).endOf('week')
+      if(item.hasOwnProperty("reservation")) {
+        ranges.push({date : item.date, reservation : item.reservation, day : item.date})
+      } else {
+        let c = i;
+        let date = Day(reservations[c].date.toString());
+        while(c < reservations.length && !reservations[c].hasOwnProperty("reservation") && (date.isBefore(endDay, 'day'))) {
+          date = Day(reservations[c].date.toString());
+          c++;
+        }
+        if(c >= reservations.length) {
+          ranges.push({date : reservations[i].date, day : reservations[i].date, startDate : reservations[i].date, endDate : reservations[i].date})
+        } else {
+          ranges.push({date : reservations[i].date, day : reservations[i].date, startDate : reservations[i].date, endDate : reservations[c - 1].date})
+          i = c - 1;
+        }
+      }
+    }
+
+    const scrollPosition = ranges.length;
+    //console.log(ranges, reservations, _.isEqual(ranges, reservations))
+    return {reservations : ranges, scrollPosition};
   }
 
   render() {

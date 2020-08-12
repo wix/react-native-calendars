@@ -6,11 +6,11 @@ import {shouldUpdate} from '../../../component-updater';
 
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
-
+import {colors} from '@app/utils'
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: selected + disabled props should be removed
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
@@ -25,10 +25,10 @@ class Day extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
-    
+
     this.markingStyle = this.getDrawingStyle(props.marking || []);
     this.onDayPress = this.onDayPress.bind(this);
     this.onDayLongPress = this.onDayLongPress.bind(this);
@@ -127,7 +127,7 @@ class Day extends Component {
 
     if (this.props.marking) {
       containerStyle.push({
-        borderRadius: 17
+        borderRadius: 10
       });
 
       const flags = this.markingStyle;
@@ -149,7 +149,7 @@ class Day extends Component {
           backgroundColor: this.theme.calendarBackground
         };
         rightFillerStyle = {
-          backgroundColor: flags.startingDay.color
+          backgroundColor: colors.bgDateSelected
         };
         containerStyle.push({
           backgroundColor: flags.startingDay.color
@@ -159,7 +159,7 @@ class Day extends Component {
           backgroundColor: this.theme.calendarBackground
         };
         leftFillerStyle = {
-          backgroundColor: flags.endingDay.color
+          backgroundColor: colors.bgDateSelected
         };
         containerStyle.push({
           backgroundColor: flags.endingDay.color
