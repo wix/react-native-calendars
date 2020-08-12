@@ -3,7 +3,7 @@
  * @Date: 2020-06-12 18:13:13
  * @Author: Jeremy.Chou
  * @LastEditors: Jeremy.Chou
- * @LastEditTime: 2020-08-11 14:59:48
+ * @LastEditTime: 2020-08-12 14:45:04
  */
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../../style';
@@ -18,9 +18,10 @@ export default function styleConstructor(theme={}) {
       ...appStyle.dayContainerStyle,
     },
     base: {
-      width: 32,
-      height: 32,
-      alignItems: 'center'
+      width: appStyle.dayBorderLength || 32,
+      height: appStyle.dayBorderLength || 32,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     text: {
       marginTop: Platform.OS === 'android' ? 4 : 6,
@@ -36,11 +37,11 @@ export default function styleConstructor(theme={}) {
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
+      borderRadius: appStyle.dayBorderLength / 2 || 16
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
-      borderRadius: 16
+      borderRadius: appStyle.dayBorderLength / 2 || 16
     },
     todayText: {
       color: appStyle.todayTextColor
