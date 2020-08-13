@@ -15,6 +15,7 @@ function run() {
   const loglevel = verbose ? '--loglevel verbose' : '';
 
   if (!skipBuild) {
+    exec.execSync('npm run pod-install');
     exec.execSync(`detox build --configuration ${configuration}`);
   }
   exec.execSync(`detox test --configuration ${configuration} -w ${workers} ${loglevel}`);
