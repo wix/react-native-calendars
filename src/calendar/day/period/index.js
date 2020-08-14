@@ -23,6 +23,10 @@ class Day extends Component {
     markingExists: PropTypes.bool
   };
 
+  static defaultProps = {
+    marking: {},
+  }
+
   constructor(props) {
     super(props);
 

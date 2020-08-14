@@ -17,7 +17,7 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 */
 LocaleConfig.locales['en'] = {
-  formatAccessibilityLabel: 'dddd d \'of\' MMMM \'of\' yyyy',
+  formatAccessibilityLabel: `dddd d 'of' MMMM 'of' yyyy`,
   monthNames: [
     'January',
     'February',
@@ -30,7 +30,7 @@ LocaleConfig.locales['en'] = {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ],
   monthNamesShort: [
     'jan',
@@ -44,34 +44,68 @@ LocaleConfig.locales['en'] = {
     'sep',
     'oct',
     'nov',
-    'dec'
+    'dec',
   ],
-  dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+  dayNames: [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ],
+  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 };
 
 LocaleConfig.defaultLocale = 'en';
 
-
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
     root: {
-      stack: {
+      bottomTabs: {
         children: [
           {
-            component: {
-              name: 'Menu',
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'Menu',
+                    options: {
+                      topBar: {
+                        title: {
+                          text: 'Wix RN Calendars',
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
               options: {
-                topBar: {
-                  title: {
-                    text: 'Wix RN Calendars'
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
+                bottomTab: {
+                  text: 'Demo',
+                },
+              },
+            },
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'Storybook',
+                  },
+                },
+              ],
+              options: {
+                bottomTab: {
+                  text: 'Storybook',
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
   });
 });

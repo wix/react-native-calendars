@@ -35,6 +35,7 @@
     "immutable": "^4.0.0-rc.12"
   },
   "devDependencies": {
+    "@react-native-community/async-storage": "^1.11.0",
     "babel-eslint": "^7.2.3",
     "detox": "^16.7.2",
     "eslint": "^6.5.1",
@@ -45,7 +46,8 @@
     "react-native": "0.62.2",
     "react-native-navigation": "^6.7.1",
     "semver": "5.x.x",
-    "shell-utils": "1.x.x"
+    "shell-utils": "1.x.x",
+    "wix-react-native-storybook-template": "^0.0.28"
   },
   "detox": {
     "configurations": {
