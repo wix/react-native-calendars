@@ -1,18 +1,11 @@
 import React from 'react';
-import {View, Text, Alert} from 'react-native';
+import {Alert} from 'react-native';
+import Container from '../container';
 import BasicDay from '../../../src/calendar/day/basic';
 import MultiDotDay from '../../../src/calendar/day/multi-dot';
 import PeriodDay from '../../../src/calendar/day/period';
 import MultiPeriodDay from '../../../src/calendar/day/multi-period';
 import CustomDay from '../../../src/calendar/day/custom';
-
-const DayContainer = ({title, children}) => (
-  <View
-    style={{paddingVertical: 4, flexDirection: 'row', alignItems: 'center'}}>
-    {children}
-    <Text style={{marginLeft: 4}}>{title}</Text>
-  </View>
-);
 
 const date = new Date('2020-06-01');
 
@@ -116,11 +109,11 @@ export default function(storiesOf, module) {
     story.add(type.name, () => (
       <>
         {testCases.map(testCase => (
-          <DayContainer
+          <Container
             title={testCase.name}
             key={`${type.name}-${testCase.name}`}>
             <DayComp {...testCase.props}>21</DayComp>
-          </DayContainer>
+          </Container>
         ))}
       </>
     ));
