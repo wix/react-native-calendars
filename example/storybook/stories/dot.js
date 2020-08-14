@@ -10,7 +10,7 @@ const theme = {
 };
 
 export default function(storiesOf, module) {
-  storiesOf('Dot', module).add('isMarked', () => (
+  storiesOf('Dot', module).add('Examples', () => (
     <>
       <Container title="Not marked">
         <Dot theme={theme} isMarked={false} />
