@@ -24,7 +24,7 @@ class Day extends Component {
   };
 
   static defaultProps = {
-    marking: {},
+    marking: {}
   }
 
   constructor(props) {

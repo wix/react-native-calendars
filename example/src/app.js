@@ -17,7 +17,7 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 */
 LocaleConfig.locales['en'] = {
-  formatAccessibilityLabel: `dddd d 'of' MMMM 'of' yyyy`,
+  formatAccessibilityLabel: 'dddd d \'of\' MMMM \'of\' yyyy',
   monthNames: [
     'January',
     'February',
@@ -30,7 +30,7 @@ LocaleConfig.locales['en'] = {
     'September',
     'October',
     'November',
-    'December',
+    'December'
   ],
   monthNamesShort: [
     'jan',
@@ -44,7 +44,7 @@ LocaleConfig.locales['en'] = {
     'sep',
     'oct',
     'nov',
-    'dec',
+    'dec'
   ],
   dayNames: [
     'Sunday',
@@ -53,9 +53,9 @@ LocaleConfig.locales['en'] = {
     'Wednesday',
     'Thursday',
     'Friday',
-    'Saturday',
+    'Saturday'
   ],
-  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 };
 
 LocaleConfig.defaultLocale = 'en';
@@ -74,38 +74,38 @@ Navigation.events().registerAppLaunchedListener(() => {
                     options: {
                       topBar: {
                         title: {
-                          text: 'Wix RN Calendars',
-                        },
-                      },
-                    },
-                  },
-                },
+                          text: 'Wix RN Calendars'
+                        }
+                      }
+                    }
+                  }
+                }
               ],
               options: {
                 bottomTab: {
-                  text: 'Demo',
-                },
-              },
-            },
+                  text: 'Demo'
+                }
+              }
+            }
           },
           {
             stack: {
               children: [
                 {
                   component: {
-                    name: 'Storybook',
-                  },
-                },
+                    name: 'Storybook'
+                  }
+                }
               ],
               options: {
                 bottomTab: {
-                  text: 'Storybook',
-                },
-              },
-            },
-          },
-        ],
-      },
-    },
+                  text: 'Storybook'
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
   });
 });
