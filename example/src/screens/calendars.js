@@ -27,20 +27,26 @@ const CalendarsScreen = () => {
     return disabledDates;
   };
 
-  const dayUnderView = () => {
-		return (
-			<View>
-				<Text>This is day under view for custom</Text>
-			</View>
-		);
-	};
+  const dayUnderViewData = {
+    '2020-06-16': {selected: true, marked: false, selectedColor: 'green' },
+    '2020-06-17': {marked: true},
+    '2020-06-25': {
+      marked: true,
+      dotColor: 'red',
+      activeOpacity: 0,
+      selected: true,
+      selectedColor: 'red',
+    },
+    '2020-06-26': {disabled: true, disableTouchEvent: true}
+  };
 
-	const dayUnderView2 = () => {
-		return (
-			<View>
-				<Text>Or show any icon as here</Text>
-			</View>
-		);
+  const dayUnderView = (date) => {
+    let keys = Object.keys(dayUnderViewData);
+    let dayUnderView = null;
+    if(keys.indexOf(date.dateString) >= 0 ){
+      dayUnderView = <Text style={styles.underViewStar}>{'@@'}</Text>;
+    }
+    return dayUnderView;
 	};
 
   const renderCalendarWithSelectableDate = () => {
@@ -373,34 +379,21 @@ const CalendarsScreen = () => {
     );
   };
 
-  const renderCalendarWithAUnderView = () => {
+  const renderCalendarWithUnderDayView = () => {
 		return (
 			<Fragment>
 				<Text style={styles.text}>Calendar with a custom view under the day component</Text>
 				<Calendar
 					style={styles.calendar}
 					current={'2020-06-16'}
-					markedDates={{
-						'2020-06-16': {selected: true, marked: false, selectedColor: 'green', renderUnderView:() => dayUnderView() },
-						'2020-06-17': {marked: true},
-						'2020-06-25': {
-							marked: true,
-							dotColor: 'red',
-							activeOpacity: 0,
-							selected: true,
-							selectedColor: 'red',
-							renderUnderView: () => {
-                return dayUnderView2()
-              }
-						},
-						'2020-06-26': {disabled: true, disableTouchEvent: true}
-          }}
+					markedDates={dayUnderViewData}
           theme={{
             dayContainerStyle:{  //customize style
-              // height: 50, allow user get a height to show each week row of month as a same height.
+              //height: 32, //allow user give a height to show each week row of month as a same height.
             },
-            daySideLength: 30,
+            //daySideLength: 38,
           }}
+          renderUnderDayView={dayUnderView}
 				/>
 			</Fragment>
 		);
@@ -417,7 +410,7 @@ const CalendarsScreen = () => {
       {renderCalendarWithMultiPeriodMarking()}
       {renderCalendarWithCustomMarkingType()}
       {renderCalendarWithCustomDay()}
-      {renderCalendarWithAUnderView()}
+      {renderCalendarWithUnderDayView()}
     </ScrollView>
   );
 
@@ -434,5 +427,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'lightgrey',
     fontSize: 16
+  },
+  underViewStar:{
+    color: '#e91929'
   }
 });

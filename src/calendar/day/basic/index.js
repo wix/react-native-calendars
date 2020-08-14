@@ -18,7 +18,8 @@ class Day extends Component {
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     date: PropTypes.object,
-    disableAllTouchEventsForDisabledDays: PropTypes.bool
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
+    renderUnderDayView: PropTypes.func
   };
 
   constructor(props) {
@@ -37,11 +38,11 @@ class Day extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress', 'renderUnderDayView']);
   }
 
   render() {
-    const {theme, disableAllTouchEventsForDisabledDays} = this.props;
+    const {theme, disableAllTouchEventsForDisabledDays, renderUnderDayView, date} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
 
@@ -62,8 +63,7 @@ class Day extends Component {
       selectedColor,
       selectedTextColor,
       activeOpacity,
-      disableTouchEvent,
-      renderUnderView
+      disableTouchEvent
     } = marking;
 
     if (selected) {
@@ -114,7 +114,7 @@ class Day extends Component {
             isDisabled={isDisabled}
           />
         </TouchableOpacity>
-        {!!renderUnderView && renderUnderView()}
+        {!!renderUnderDayView && renderUnderDayView(date)}
       </View>
     );
   }

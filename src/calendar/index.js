@@ -97,6 +97,8 @@ class Calendar extends Component {
     disableAllTouchEventsForDisabledDays: PropTypes.bool,
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
+    /** Allow user give a custom view which is under the day view(button). the function receive a date as parameter, Default = undefined */
+    renderUnderDayView: PropTypes.func,
     /** Enable the option to swipe between months. Default: false */
     enableSwipeMonths: PropTypes.bool
   };
@@ -218,6 +220,7 @@ class Calendar extends Component {
           marking={this.getDateMarking(day)}
           accessibilityLabel={accessibilityLabel}
           disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
+          renderUnderDayView={this.props.renderUnderDayView}
         >
           {date}
         </DayComp>
