@@ -398,7 +398,8 @@ const CalendarsScreen = () => {
           theme={{
             dayContainerStyle:{  //customize style
               // height: 50, allow user get a height to show each week row of month as a same height.
-            }
+            },
+            daySideLength: 30,
           }}
 				/>
 			</Fragment>
