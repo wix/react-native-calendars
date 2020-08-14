@@ -319,3 +319,6 @@
 
 ## [1.300.0] - 2020-8-5
 - Fix - ExpandableCalendar and AgendaList RTL style.
+
+## [1.309.0] - 2020-8-12
+- Fix - AgendaList - check 'dayFormat' prop before passing to XDate.toString().
