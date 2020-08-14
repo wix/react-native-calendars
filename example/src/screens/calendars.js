@@ -388,10 +388,10 @@ const CalendarsScreen = () => {
 					current={'2020-06-16'}
 					markedDates={dayUnderViewData}
           theme={{
-            dayContainerStyle:{  //customize style
-              //height: 32, //allow user give a height to show each week row of month as a same height.
+            dayContainerStyle:{
+              height: 40, //allow user give a height to show each week row of month as a same height.
             },
-            //daySideLength: 38,
+            daySideLength: 38,
           }}
           renderUnderDayView={dayUnderView}
 				/>
