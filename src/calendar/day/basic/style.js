@@ -8,7 +8,7 @@ export default function styleConstructor(theme={}) {
   return StyleSheet.create({
     dayContainer: {
       alignItems: 'center',
-      ...appStyle.dayContainerStyle,
+      ...appStyle.dayContainerStyle
     },
     base: {
       width: appStyle.daySideLength || 32,

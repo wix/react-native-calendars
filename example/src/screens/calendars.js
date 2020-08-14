@@ -28,14 +28,14 @@ const CalendarsScreen = () => {
   };
 
   const dayUnderViewData = {
-    '2020-06-16': {selected: true, marked: false, selectedColor: 'green' },
+    '2020-06-16': {selected: true, marked: false, selectedColor: 'green'},
     '2020-06-17': {marked: true},
     '2020-06-25': {
       marked: true,
       dotColor: 'red',
       activeOpacity: 0,
       selected: true,
-      selectedColor: 'red',
+      selectedColor: 'red'
     },
     '2020-06-26': {disabled: true, disableTouchEvent: true}
   };
@@ -47,7 +47,7 @@ const CalendarsScreen = () => {
       dayUnderView = <Text style={styles.underViewStar}>{'@@'}</Text>;
     }
     return dayUnderView;
-	};
+  };
 
   const renderCalendarWithSelectableDate = () => {
     return (
@@ -380,24 +380,24 @@ const CalendarsScreen = () => {
   };
 
   const renderCalendarWithUnderDayView = () => {
-		return (
-			<Fragment>
-				<Text style={styles.text}>Calendar with a custom view under the day component</Text>
-				<Calendar
-					style={styles.calendar}
-					current={'2020-06-16'}
-					markedDates={dayUnderViewData}
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with a custom view under the day component</Text>
+        <Calendar
+          style={styles.calendar}
+          current={'2020-06-16'}
+          markedDates={dayUnderViewData}
           theme={{
             dayContainerStyle:{
-              height: 40, //allow user give a height to show each week row of month as a same height.
+              height: 40 //allow user give a height to show each week row of month as a same height
             },
-            daySideLength: 38,
+            daySideLength: 38
           }}
           renderUnderDayView={dayUnderView}
-				/>
-			</Fragment>
-		);
-	};
+        />
+      </Fragment>
+    );
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
