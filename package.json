@@ -38,9 +38,13 @@
     "babel-eslint": "^7.2.3",
     "detox": "^16.7.2",
     "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-react": "^7.0.0",
+    "husky": "^4.2.5",
     "jasmine": "^2.5.2",
+    "lint-staged": "^10.2.11",
     "mocha": "^7.1.0",
+    "prettier": "^2.0.5",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-navigation": "^6.7.1",
@@ -67,5 +71,14 @@
       }
     },
     "test-runner": "mocha"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
