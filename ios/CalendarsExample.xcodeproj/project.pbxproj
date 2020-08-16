@@ -686,7 +686,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 78G36M9BB8;
+						DevelopmentTeam = D452Y9D57S;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1298,6 +1298,7 @@
 			baseConfigurationReference = AC897BA667FD0C3E9D8F0D63 /* Pods-CalendarsExampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1317,6 +1318,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CalendarsExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1335,10 +1337,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 78G36M9BB8;
+				DEVELOPMENT_TEAM = D452Y9D57S;
 				INFOPLIST_FILE = CalendarsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.chen.CalendarsExample;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.CalendarsExample;
 				PRODUCT_NAME = CalendarsExample;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1354,10 +1356,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 78G36M9BB8;
+				DEVELOPMENT_TEAM = D452Y9D57S;
 				INFOPLIST_FILE = CalendarsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.chen.CalendarsExample;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.CalendarsExample;
 				PRODUCT_NAME = CalendarsExample;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

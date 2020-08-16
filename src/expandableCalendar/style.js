@@ -1,4 +1,4 @@
-import {StyleSheet, Platform, I18nManager} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
 
 
@@ -104,7 +104,7 @@ export default function styleConstructor(theme = {}) {
     },
     arrowImage: {
       tintColor: appStyle.arrowColor,
-      transform: I18nManager.isRTL ? [{scaleX: -1}] : undefined
+      transform: commons.isRTL ? [{scaleX: -1}] : undefined
     },
     todayButtonContainer: {
       alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',
