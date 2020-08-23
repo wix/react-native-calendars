@@ -361,3 +361,7 @@
 ### Added
 - Updating CHANGELOG.
 - Configuring github stale bot.
+
+## [1.315.0] - 2020-8-23
+### Added
+- AgendaList - adding 'useMoment' to allow using moment.js for section header's date string formatting.
