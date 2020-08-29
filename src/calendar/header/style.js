@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 
 const STYLESHEET_ID = 'stylesheet.calendar.header';
@@ -30,8 +30,12 @@ export default function(theme={}) {
     },
     arrowImage: {
       tintColor: appStyle.arrowColor,
-      width: appStyle.arrowWidth,
-      height: appStyle.arrowHeight
+      ...Platform.select({
+        web: {
+          width: appStyle.arrowWidth,
+          height: appStyle.arrowHeight
+        }
+      }),
     },
     disabledArrowImage: {
       tintColor: appStyle.disabledArrowColor

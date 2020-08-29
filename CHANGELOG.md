@@ -365,3 +365,11 @@
 ## [1.315.0] - 2020-8-23
 ### Added
 - AgendaList - adding 'useMoment' to allow using moment.js for section header's date string formatting.
+
+## [1.316.0] - 2020-8-27
+### Fix
+- Calendar Header - Fixed issue on react-native-web where the calendar arrows were not appearing (PR #934).
+
+## [1.317.0] - 2020-8-29
+### Fix
+- Calendar Header style - fix for arrows not showing in mobile due to PR #934.
