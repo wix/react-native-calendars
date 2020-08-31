@@ -275,13 +275,101 @@
 - Reservation - secure calls to prop functions to avoid crashes.
 
 ## [1.258.0] - 2020-1-25
+### Fix
 - file cosmetics.
 
 ## [1.259.0] - 2020-1-25
+### Added
 - Android - app icon and demo app name.
 
 ## [1.260.0] - 2020-2-3
+### Fix
 - Fix app icon.
 
 ## [1.261.0] - 2020-2-5
+### Added
 - Calendar - adding accessibility features.
+
+## [1.262.0] - 2020-2-18
+### Added
+- Agenda - adding scroll events callbacks (PR #1063).
+
+## [1.263.0] - 2020-2-18
+### Added
+- Calendar - passing testID to header (PR #1058).
+
+## [1.264.0] - 2020-3-3
+### Bug fix
+- CalendarListItem - fix previous months bug (PR #1069).
+
+## [1.265.0] - 2020-3-12
+### Added
+- Setup Detox for e2e tests (iOS).
+
+## [1.282.0] - 2020-6-04
+### New Feature
+- Calendar - Enable swipe.
+
+## [1.291.0] - 2020-6-10
+### New Feature
+- Calendar - Render custom header.
+
+## [1.292.0] - 2020-6-10
+### New Feature
+- Calendar - Show should show six weeks by passing 'showSixWeeks'.
+
+## [1.297.0] - 2020-6-17
+### Bug fix
+- Calendar isn't getting re-rendered if the first day prop is changed.
+
+## [1.298.0] - 2020-6-17
+### New Feature
+- Calendar - Control the swipe with new 'enableSwipeMonths' prop.
+
+## [1.299.0] - 2020-8-5
+### Fix
+- Android RNN version and configuration (PR #1251).
+
+## [1.300.0] - 2020-8-5
+### Fix
+- ExpandableCalendar and AgendaList RTL style.
+
+## [1.309.0] - 2020-8-12
+### Fix
+- AgendaList - Check 'dayFormat' prop before passing to XDate.toString().
+
+## [1.310.0] - 2020-8-13
+### Fix
+- Calendar - Remove default gesture wrapper (PR #1248).
+
+## [1.311.0] - 2020-8-13
+### Fix
+- Fix E2E tests (PR #1255).
+
+## [1.312.0] - 2020-8-13
+### Added
+- Test E2E on CI (PR #1264).
+
+## [1.313.0] - 2020-8-16
+### Added
+- Prettier (PR #1265).
+
+## [1.314.0] - 2020-8-16
+### Fix
+- Fix iOS example bundle identifier.
+- ExpandableCalendar style - using I18nManager from common constants.
+### Added
+- Updating CHANGELOG.
+- Configuring github stale bot.
+
+## [1.315.0] - 2020-8-23
+### Added
+- AgendaList - adding 'useMoment' to allow using moment.js for section header's date string formatting.
+
+## [1.316.0] - 2020-8-27
+### Fix
+- Calendar Header - Fixed issue on react-native-web where the calendar arrows were not appearing (PR #934).
+
+## [1.317.0] - 2020-8-29
+### Fix
+- Calendar Header style - fix for arrows not showing in mobile due to PR #934.

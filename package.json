@@ -4,13 +4,17 @@
   "main": "src/index.js",
   "description": "React Native Calendar Components",
   "scripts": {
-    "test": "jasmine src/*.spec.js && npm run lint",
+    "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
+    "e2e": "node ./scripts/test-e2e.js --release",
+    "test": "jasmine src/*.spec.js && npm run lint && npm run e2e",
     "lint": "eslint src/ example/src",
     "release": "node ./scripts/release.js",
     "start": "react-native start",
     "ios": "react-native run-ios",
     "android": "react-native run-android",
-    "xcode": "open ios/CalendarsExample.xcworkspace/"
+    "xcode": "open ios/CalendarsExample.xcworkspace/",
+    "clean": "rm package-lock.json && rm -rf ./node_modules && npm i",
+    "pod-install": "pod install --project-directory=ios"
   },
   "repository": {
     "type": "git",
@@ -22,20 +26,59 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "hoist-non-react-statics": "^3.3.1",
-    "lodash": "^4.0.0",
+    "react-native-swipe-gestures": "^1.0.5",
     "prop-types": "^15.5.10",
-    "xdate": "^0.8.0"
+    "xdate": "^0.8.0",
+    "immutable": "^4.0.0-rc.12"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "detox": "^16.7.2",
     "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-react": "^7.0.0",
+    "husky": "^4.2.5",
     "jasmine": "^2.5.2",
-    "react": "16.9.0",
-    "react-native": "0.61.4",
-    "react-native-navigation": "^3.5.1",
+    "lint-staged": "^10.2.11",
+    "mocha": "^7.1.0",
+    "prettier": "^2.0.5",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-native-navigation": "^6.7.1",
     "semver": "5.x.x",
     "shell-utils": "1.x.x"
+  },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/CalendarsExample.app",
+        "build": "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11"
+        }
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/CalendarsExample.app",
+        "build": "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11"
+        }
+      }
+    },
+    "test-runner": "mocha"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
