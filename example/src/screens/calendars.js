@@ -1,5 +1,5 @@
 import React, {useState, Fragment} from 'react';
-import {StyleSheet, View, ScrollView, Text} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import _ from 'lodash';
@@ -334,7 +334,7 @@ const CalendarsScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
-          testID={`${testIDs.calendars.LAST}-custom-header`}
+          testID={testIDs.calendars.LAST}
           style={[
             styles.calendar,
             {
@@ -358,11 +358,26 @@ const CalendarsScreen = () => {
   };
 
   const renderCalendarWithCustomHeader = () => {
+    const CustomHeader = React.forwardRef((props, ref) => {
+      return (
+        <View ref={ref} style={{
+          backgroundColor: '#FCC',
+          flexDirection: 'row',
+          justifyContent: "space-around",
+          marginHorizontal: -4,
+          padding: 8
+        }}>
+          <Text>This is a custom header!</Text>
+          <TouchableOpacity onPress={() => console.log("Tapped!")}><Text>Tap Me</Text></TouchableOpacity>
+        </View>
+      );
+    });
+
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with custom header component</Text>
         <Calendar
-          testID={testIDs.calendars.LAST}
+          testID={`custom-header-calendar`}
           style={[
             styles.calendar,
             {
@@ -371,7 +386,7 @@ const CalendarsScreen = () => {
               borderBottomColor: 'lightgrey'
             }
           ]}
-          customHeader={React.forwardRef((props, ref) => <Text ref={ref}>Custom Header</Text>)}
+          customHeader={CustomHeader}
         />
       </Fragment>
     );
