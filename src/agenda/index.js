@@ -138,7 +138,7 @@ export default class AgendaView extends Component {
     this.state.scrollY.removeAllListeners();
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const nextState = {};
     if (nextProps.items) {
       nextState.firstResevationLoad = false;
