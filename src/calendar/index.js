@@ -339,6 +339,7 @@ class Calendar extends Component {
   }
 
   render() {
+    this.style = styleConstructor(this.props.theme);
     const {currentMonth} = this.state;
     const {firstDay, showSixWeeks, hideExtraDays, enableSwipeMonths} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;

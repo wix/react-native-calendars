@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React, {Component} from 'react';
 import {FlatList, View, Text} from 'react-native';
 import {Map} from 'immutable';
@@ -158,7 +159,7 @@ class WeekCalendar extends Component {
   }
 
   renderItem = ({item}) => {
-    const {calendarWidth, style, onDayPress, ...others} = this.props;
+    const {calendarWidth, style, onDayPress, onDayLongPress, markedDates, ...others} = this.props;
 
     return (
       <Week
@@ -166,8 +167,9 @@ class WeekCalendar extends Component {
         key={item}
         current={item}
         style={[{width: calendarWidth || this.containerWidth}, style]}
-        markedDates={this.getMarkedDates()}
+        markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
+        onDayLongPress={onDayLongPress}
       />
     );
   }
@@ -193,8 +195,9 @@ class WeekCalendar extends Component {
     });
     return (
       <View testID={this.props.testID} style={[allowShadow && this.style.containerShadow, !hideDayNames && {paddingBottom: 6}]}>
+        {/* {<Text style={[this.style.headerTitle, {paddingBottom: 0, paddingTop: 0, fontSize: 12, lineHeight: 30}]}>{moment(this.props.context.date).format('MMM YYYY')}</Text>} */}
         {!hideDayNames &&
-          <View style={[this.style.week, {marginTop: 12, marginBottom: -2}]}>
+          <View style={[this.style.week, {marginTop: 10, marginBottom: -2}]}>
             {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
             {weekDaysNames.map((day, idx) => (
               <Text
