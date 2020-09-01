@@ -116,6 +116,21 @@ class Day extends Component {
     return resultStyle;
   }
 
+  renderDots(marking) {
+    const baseDotStyle = [this.style.dot, this.style.visibleDot];
+    if (marking.dots && Array.isArray(marking.dots) && marking.dots.length > 0) {
+      // Filter out dots so that we we process only those items which have key and color property
+      const validDots = marking.dots.filter(d => (d && d.color));
+      return validDots.map((dot, index) => {
+        return (
+          <View key={dot.key ? dot.key : index} style={[baseDotStyle,
+            {backgroundColor: marking.selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color}]}/>
+        );
+      });
+    }
+    return;
+  }
+
   render() {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
@@ -195,7 +210,8 @@ class Day extends Component {
       );
     }
 
-    const {marking: {marked, dotColor}, theme} = this.props;
+    const marking = this.props.marking || {};
+    const dot = this.renderDots(marking);
 
     return (
       <TouchableWithoutFeedback
@@ -211,11 +227,7 @@ class Day extends Component {
           {fillers}
           <View style={containerStyle}>
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-            <Dot
-              theme={theme}
-              isMarked={marked}
-              dotColor={dotColor}
-            />
+            <View style={{flexDirection: 'row'}}>{dot}</View>
           </View>
         </View>
       </TouchableWithoutFeedback>

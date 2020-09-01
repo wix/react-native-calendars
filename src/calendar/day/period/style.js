@@ -4,6 +4,7 @@ import * as defaultStyle from '../../../style';
 
 const STYLESHEET_ID = 'stylesheet.day.period';
 const FILLER_HEIGHT = 34;
+const FILLER_WIDTH = 34;
 
 export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -11,13 +12,13 @@ export default function styleConstructor(theme={}) {
     wrapper: {
       alignItems: 'center',
       alignSelf: 'stretch',
-      marginLeft: -1
+      marginLeft: 0
     },
     base: {
-      //borderWidth: 1,
-      width: 38,
+      width: FILLER_WIDTH,
       height: FILLER_HEIGHT,
-      alignItems: 'center'
+      alignItems: 'center',
+      overflow: 'hidden'
     },
     fillers: {
       position: 'absolute',
@@ -70,6 +71,19 @@ export default function styleConstructor(theme={}) {
     },
     naText: {
       color: '#b6c1cd'
+    },
+    dot: {
+      width: 4,
+      height: 4,
+      marginTop: 1,
+      marginLeft: 1,
+      marginRight: 1,
+      borderRadius: 2,
+      opacity: 0
+    },
+    visibleDot: {
+      opacity: 1,
+      backgroundColor: appStyle.dotColor
     },
     ...(theme[STYLESHEET_ID] || {})
   });
