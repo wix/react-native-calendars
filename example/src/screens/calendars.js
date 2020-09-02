@@ -334,7 +334,6 @@ const CalendarsScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
-          testID={testIDs.calendars.LAST}
           style={[
             styles.calendar,
             {
@@ -377,6 +376,7 @@ const CalendarsScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with custom header component</Text>
         <Calendar
+          testID={testIDs.calendars.LAST}
           style={[
             styles.calendar,
             {
