@@ -16,10 +16,12 @@ import shouldComponentUpdate from './updater';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {SELECT_DATE_SLOT} from '../testIDs';
 
-
-//Fallback when RN version is < 0.44
+//Fallback for react-native-web or when RN version is < 0.44
 const {View, ViewPropTypes} = ReactNative;
-const viewPropTypes = ViewPropTypes || View.propTypes;
+const viewPropTypes =
+  typeof document !== 'undefined'
+    ? PropTypes.shape({style: PropTypes.object})
+    : ViewPropTypes || View.propTypes;
 const EmptyArray = [];
 
 /**
@@ -285,12 +287,8 @@ class Calendar extends Component {
   }
 
   onSwipe = (gestureName) => {
-    const {enableSwipeMonths} = this.props;
-    if (!enableSwipeMonths) {
-      return;
-    }
-
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+
     switch (gestureName) {
     case SWIPE_UP:
     case SWIPE_DOWN:
@@ -343,7 +341,7 @@ class Calendar extends Component {
   render() {
     this.style = styleConstructor(this.props.theme);
     const {currentMonth} = this.state;
-    const {firstDay, showSixWeeks, hideExtraDays} = this.props;
+    const {firstDay, showSixWeeks, hideExtraDays, enableSwipeMonths} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
     const days = dateutils.page(currentMonth, firstDay, shouldShowSixWeeks);
 
@@ -362,10 +360,11 @@ class Calendar extends Component {
       }
     }
 
+    const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
+    const gestureProps = enableSwipeMonths ? {onSwipe: (direction, state) => this.onSwipe(direction, state)} : {};
+
     return (
-      <GestureRecognizer
-        onSwipe={(direction, state) => this.onSwipe(direction, state)}
-      >
+      <GestureComponent {...gestureProps}>
         <View
           style={[this.style.container, this.props.style]}
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
@@ -396,7 +395,7 @@ class Calendar extends Component {
           />
           <View style={this.style.monthView}>{weeks}</View>
         </View>
-      </GestureRecognizer>
+      </GestureComponent>
     );
   }
 }
