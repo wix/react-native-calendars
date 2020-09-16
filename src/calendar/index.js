@@ -99,6 +99,8 @@ class Calendar extends Component {
     renderHeader: PropTypes.any,
     /** Allow rendering of a totally custom header */
     customHeader: PropTypes.any,
+    /** Allow rendering of a totally custom footer */
+    customFooter: PropTypes.any,
     /** Enable the option to swipe between months. Default: false */
     enableSwipeMonths: PropTypes.bool
   };
@@ -388,6 +390,7 @@ class Calendar extends Component {
       renderHeader: this.props.renderHeader
     };
     const CustomHeader = this.props.customHeader;
+    const CustomFooter = this.props.customFooter;
     return (
       <GestureComponent {...gestureProps}>
         <View
@@ -400,6 +403,10 @@ class Calendar extends Component {
             : <CalendarHeader {...headerProps}/>
           }
           <View style={this.style.monthView}>{weeks}</View>
+          { CustomFooter
+            ? <CustomFooter {...headerProps}/>
+            : null
+          }
         </View>
       </GestureComponent>
     );
