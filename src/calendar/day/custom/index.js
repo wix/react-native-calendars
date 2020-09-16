@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import PropTypes from 'prop-types';
+import Dot from '../../dot';
 
 import styleConstructor from './style';
 import {shouldUpdate} from '../../../component-updater';
-
 
 class Day extends Component {
   static displayName = 'IGNORE';
@@ -41,6 +41,7 @@ class Day extends Component {
   }
 
   render() {
+    const {theme} = this.props;
     let containerStyle = [this.style.base];
     let textStyle = [this.style.text];
     
@@ -51,7 +52,14 @@ class Day extends Component {
       };
     }
 
+    const {
+      marked,
+      dotColor,
+      selected
+    } = marking;
+
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
+    const isToday = this.props.state === 'today';
     
     if (marking.selected) {
       containerStyle.push(this.style.selected);
@@ -88,6 +96,14 @@ class Day extends Component {
         accessibilityLabel={this.props.accessibilityLabel}
       >
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+        <Dot
+          theme={theme}
+          isMarked={marked}
+          dotColor={dotColor}
+          isSelected={selected}
+          isToday={isToday}
+          isDisabled={isDisabled}
+        />
       </TouchableOpacity>
     );
   }
