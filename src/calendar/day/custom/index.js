@@ -41,7 +41,7 @@ class Day extends Component {
   }
 
   render() {
-    const {theme} = this.props;
+    const theme = this.props.theme;
     let containerStyle = [this.style.base];
     let textStyle = [this.style.text];
     
