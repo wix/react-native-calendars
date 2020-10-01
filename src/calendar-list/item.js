@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
@@ -15,7 +15,7 @@ class CalendarListItem extends Component {
   constructor(props) {
     super(props);
 
-    this.style = styleConstructor(props.theme);
+
   }
 
   shouldComponentUpdate(nextProps) {
@@ -55,50 +55,53 @@ class CalendarListItem extends Component {
 
   render() {
     const row = this.props.item;
+    this.style = styleConstructor(this.props.theme);
 
-    if (row.getTime) {
-      return (
-        <Calendar
-          testID={`${this.props.testID}_${row}`}
-          theme={this.props.theme}
-          style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.calendar, this.props.style]}
-          current={row}
-          hideArrows={this.props.hideArrows}
-          hideExtraDays={this.props.hideExtraDays}
-          disableMonthChange
-          markedDates={this.props.markedDates}
-          markingType={this.props.markingType}
-          hideDayNames={this.props.hideDayNames}
-          onDayPress={this.props.onDayPress}
-          onDayLongPress={this.props.onDayLongPress}
-          displayLoadingIndicator={this.props.displayLoadingIndicator}
-          minDate={this.props.minDate}
-          maxDate={this.props.maxDate}
-          firstDay={this.props.firstDay}
-          monthFormat={this.props.monthFormat}
-          dayComponent={this.props.dayComponent}
-          disabledByDefault={this.props.disabledByDefault}
-          showWeekNumbers={this.props.showWeekNumbers}
-          renderArrow={this.props.renderArrow}
-          onPressArrowLeft={this.props.horizontal ? this.onPressArrowLeft : this.props.onPressArrowLeft}
-          onPressArrowRight={this.props.horizontal ? this.onPressArrowRight : this.props.onPressArrowRight}
-          headerStyle={this.props.horizontal ? this.props.headerStyle : undefined}
-          accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
-          importantForAccessibility={this.props.importantForAccessibility} // Android
-          customHeader={this.props.customHeader}
-          renderHeader={this.props.renderHeader}
-          disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
-        />
-      );
-    } else {
-      const text = row.toString();
-
-      return (
-        <View style={[{height: this.props.calendarHeight, width: this.props.calendarWidth}, this.style.placeholder]}>
-          <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
-        </View>
-      );
+    if (this.style) {
+      if (row.getTime) {
+        return (
+          <Calendar
+            testID={`${this.props.testID}_${row}`}
+            theme={this.props.theme}
+            style={[{ height: this.props.calendarHeight, width: this.props.calendarWidth }, this.style.calendar, this.props.style]}
+            current={row}
+            hideArrows={this.props.hideArrows}
+            hideExtraDays={this.props.hideExtraDays}
+            disableMonthChange
+            markedDates={this.props.markedDates}
+            markingType={this.props.markingType}
+            hideDayNames={this.props.hideDayNames}
+            onDayPress={this.props.onDayPress}
+            onDayLongPress={this.props.onDayLongPress}
+            displayLoadingIndicator={this.props.displayLoadingIndicator}
+            minDate={this.props.minDate}
+            maxDate={this.props.maxDate}
+            firstDay={this.props.firstDay}
+            monthFormat={this.props.monthFormat}
+            dayComponent={this.props.dayComponent}
+            disabledByDefault={this.props.disabledByDefault}
+            showWeekNumbers={this.props.showWeekNumbers}
+            renderArrow={this.props.renderArrow}
+            onPressArrowLeft={this.props.horizontal ? this.onPressArrowLeft : this.props.onPressArrowLeft}
+            onPressArrowRight={this.props.horizontal ? this.onPressArrowRight : this.props.onPressArrowRight}
+            headerStyle={this.props.horizontal ? this.props.headerStyle : undefined}
+            accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+            importantForAccessibility={this.props.importantForAccessibility} // Android
+            customHeader={this.props.customHeader}
+            renderHeader={this.props.renderHeader}
+            disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
+          />
+        );
+      } else {
+        const text = row.toString();
+        return (
+          <View style={[{ height: this.props.calendarHeight, width: this.props.calendarWidth }, this.style.placeholder]}>
+            <Text allowFontScaling={false} style={this.style.placeholderText}>{text}</Text>
+          </View>
+        );
+      }
     }
+    return null
   }
 }
 

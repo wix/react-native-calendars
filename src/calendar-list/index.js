@@ -70,8 +70,6 @@ class CalendarList extends Component {
   constructor(props) {
     super(props);
 
-    this.style = styleConstructor(props.theme);
-
     this.viewabilityConfig = {
       itemVisiblePercentThreshold: 20
     };
@@ -216,7 +214,7 @@ class CalendarList extends Component {
         calendarHeight={this.props.calendarHeight}
         calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined}
         {...this.props}
-        style={this.props.calendarStyle}
+        style={[this.props.calendarStyle, this.props.theme]}
       />
     );
   }
@@ -293,39 +291,44 @@ class CalendarList extends Component {
   }
 
   render() {
-    return (
-      <View>
-        <FlatList
-          testID={this.props.testID}
-          onLayout={this.onLayout}
-          ref={(c) => this.listView = c}
-          //scrollEventThrottle={1000}
-          style={[this.style.container, this.props.style]}
-          initialListSize={this.props.pastScrollRange + this.props.futureScrollRange + 1} // ListView deprecated
-          data={this.state.rows}
-          //snapToAlignment='start'
-          //snapToInterval={this.calendarHeight}
-          removeClippedSubviews={this.props.removeClippedSubviews}
-          pageSize={1} // ListView deprecated
-          horizontal={this.props.horizontal}
-          pagingEnabled={this.props.pagingEnabled}
-          onViewableItemsChanged={this.onViewableItemsChangedBound}
-          viewabilityConfig={this.viewabilityConfig}
-          renderItem={this.renderCalendarBound}
-          showsVerticalScrollIndicator={this.props.showScrollIndicator}
-          showsHorizontalScrollIndicator={this.props.showScrollIndicator}
-          scrollEnabled={this.props.scrollEnabled}
-          keyExtractor={this.props.keyExtractor}
-          initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
-          getItemLayout={this.getItemLayout}
-          scrollsToTop={this.props.scrollsToTop}
-          onEndReachedThreshold={this.props.onEndReachedThreshold}
-          onEndReached={this.props.onEndReached}
-          keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
-        />
-        {this.renderStaticHeader()}
-      </View>
-    );
+    this.style = styleConstructor(this.props.theme);
+
+    if (this.style) {
+      return (
+        <View>
+          <FlatList
+            testID={this.props.testID}
+            onLayout={this.onLayout}
+            ref={(c) => this.listView = c}
+            //scrollEventThrottle={1000}
+            style={[this.style.container, this.props.style]}
+            initialListSize={this.props.pastScrollRange + this.props.futureScrollRange + 1} // ListView deprecated
+            data={this.state.rows}
+            //snapToAlignment='start'
+            //snapToInterval={this.calendarHeight}
+            removeClippedSubviews={this.props.removeClippedSubviews}
+            pageSize={1} // ListView deprecated
+            horizontal={this.props.horizontal}
+            pagingEnabled={this.props.pagingEnabled}
+            onViewableItemsChanged={this.onViewableItemsChangedBound}
+            viewabilityConfig={this.viewabilityConfig}
+            renderItem={this.renderCalendarBound}
+            showsVerticalScrollIndicator={this.props.showScrollIndicator}
+            showsHorizontalScrollIndicator={this.props.showScrollIndicator}
+            scrollEnabled={this.props.scrollEnabled}
+            keyExtractor={this.props.keyExtractor}
+            initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
+            getItemLayout={this.getItemLayout}
+            scrollsToTop={this.props.scrollsToTop}
+            onEndReachedThreshold={this.props.onEndReachedThreshold}
+            onEndReached={this.props.onEndReached}
+            keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
+          />
+          {this.renderStaticHeader()}
+        </View>
+      );
+    }
+    return null
   }
 }
 

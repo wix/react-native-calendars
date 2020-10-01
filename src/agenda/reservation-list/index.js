@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import {FlatList, ActivityIndicator, View} from 'react-native';
+import React, { Component } from 'react';
+import { FlatList, ActivityIndicator, View } from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import dateutils from '../../dateutils';
 import styleConstructor from './style';
+import { property } from 'lodash';
 
 
 class ReservationList extends Component {
@@ -42,13 +43,11 @@ class ReservationList extends Component {
   constructor(props) {
     super(props);
 
-    this.styles = styleConstructor(props.theme);
-
     this.state = {
       reservations: []
     };
 
-    this.heights=[];
+    this.heights = [];
     this.selectedDay = this.props.selectedDay;
     this.scrollOver = true;
   }
@@ -65,13 +64,14 @@ class ReservationList extends Component {
 
   updateReservations(props) {
     const reservations = this.getReservations(props);
+
     if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.scrollToOffset({offset: scrollPosition, animated: true});
+      this.list.scrollToOffset({ offset: scrollPosition, animated: true });
     }
     this.selectedDay = props.selectedDay;
     this.updateDataSource(reservations.reservations);
@@ -114,7 +114,7 @@ class ReservationList extends Component {
     this.heights[ind] = event.nativeEvent.layout.height;
   }
 
-  renderRow({item, index}) {
+  renderRow({ item, index }) {
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
         <Reservation
@@ -156,66 +156,59 @@ class ReservationList extends Component {
 
   getReservations(props) {
     if (!props.reservations || !props.selectedDay) {
-      return {reservations: [], scrollPosition: 0};
+      return { reservations: [], scrollPosition: 0 };
     }
     let reservations = [];
-    if (this.state.reservations && this.state.reservations.length) {
-      const iterator = this.state.reservations[0].day.clone();
-      while (iterator.getTime() < props.selectedDay.getTime()) {
-        const res = this.getReservationsForDay(iterator, props);
-        if (!res) {
-          reservations = [];
-          break;
-        } else {
-          reservations = reservations.concat(res);
-        }
-        iterator.addDays(1);
-      }
-    }
     const scrollPosition = reservations.length;
-    const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
-      const res = this.getReservationsForDay(iterator, props);
-      if (res) {
-        reservations = reservations.concat(res);
-      }
-      iterator.addDays(1);
+
+    var date = null;
+
+    for (var i in props.reservations) {
+      date = new XDate(i)
+      const res = this.getReservationsForDay(date, props);
+      reservations = reservations.concat(res);
     }
 
-    return {reservations, scrollPosition};
+    return { reservations, scrollPosition };
   }
 
   render() {
-    const {reservations} = this.props;
-    if (!reservations || !reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
-      if (this.props.renderEmptyData) {
-        return this.props.renderEmptyData();
+    this.styles = styleConstructor(this.props.theme);
+
+    if (this.styles) {
+      const { reservations } = this.props;
+      if (!reservations || !reservations[this.props.selectedDay.toString('yyyy-MM-dd')]) {
+        if (this.props.renderEmptyData) {
+          return this.props.renderEmptyData();
+        }
+        return (
+          <ActivityIndicator style={{ marginTop: 80 }} color={this.props.theme && this.props.theme.indicatorColor} />
+        );
       }
+
       return (
-        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor}/>
+        <FlatList
+          ref={(c) => this.list = c}
+          style={this.props.style}
+          contentContainerStyle={this.styles.content}
+          renderItem={this.renderRow.bind(this)}
+          data={this.state.reservations}
+          onScroll={this.onScroll.bind(this)}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={200}
+          onMoveShouldSetResponderCapture={() => { this.onListTouch(); return false; }}
+          keyExtractor={(item, index) => String(index)}
+          refreshControl={this.props.refreshControl}
+          refreshing={this.props.refreshing || false}
+          onRefresh={this.props.onRefresh}
+          onScrollBeginDrag={this.props.onScrollBeginDrag}
+          onScrollEndDrag={this.props.onScrollEndDrag}
+          onMomentumScrollBegin={this.props.onMomentumScrollBegin}
+          onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        />
       );
     }
-    return (
-      <FlatList
-        ref={(c) => this.list = c}
-        style={this.props.style}
-        contentContainerStyle={this.styles.content}
-        renderItem={this.renderRow.bind(this)}
-        data={this.state.reservations}
-        onScroll={this.onScroll.bind(this)}
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={200}
-        onMoveShouldSetResponderCapture={() => {this.onListTouch(); return false;}}
-        keyExtractor={(item, index) => String(index)}
-        refreshControl={this.props.refreshControl}
-        refreshing={this.props.refreshing || false}
-        onRefresh={this.props.onRefresh}
-        onScrollBeginDrag={this.props.onScrollBeginDrag}
-        onScrollEndDrag={this.props.onScrollEndDrag}
-        onMomentumScrollBegin={this.props.onMomentumScrollBegin}
-        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
-      />
-    );
+    return null
   }
 }
 

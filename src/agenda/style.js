@@ -9,7 +9,7 @@ export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   const {knob, weekdays} = platformStyles(appStyle);
   
-  return StyleSheet.create({
+  var style = StyleSheet.create({
     knob,
     weekdays,
     header: {
@@ -17,7 +17,7 @@ export default function styleConstructor(theme = {}) {
       justifyContent: 'flex-end',
       position:'absolute',
       height:'100%',
-      width:'100%'
+      width:'100%',
     },
     knobContainer: {
       flex: 1,
@@ -44,4 +44,6 @@ export default function styleConstructor(theme = {}) {
     },
     ...(theme[STYLESHEET_ID] || {})
   });
+
+  return style
 }

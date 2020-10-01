@@ -109,8 +109,7 @@ class Calendar extends Component {
 
   constructor(props) {
     super(props);
-
-    this.style = styleConstructor(this.props.theme);
+    
     this.state = {
       currentMonth: props.current ? parseDate(props.current) : XDate()
     };
@@ -259,8 +258,8 @@ class Calendar extends Component {
   getDayComponent() {
     if (this.props.dayComponent) {
       return this.props.dayComponent;
+      
     }
-
     switch (this.props.markingType) {
     case 'period':
       return UnitDay;
@@ -336,11 +335,13 @@ class Calendar extends Component {
     if (this.props.showWeekNumbers) {
       week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
     }
-
+    
     return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
   render() {
+    this.style = styleConstructor(this.props.theme);
+
     const {currentMonth} = this.state;
     const {firstDay, showSixWeeks, hideExtraDays, enableSwipeMonths} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
@@ -388,21 +389,24 @@ class Calendar extends Component {
       renderHeader: this.props.renderHeader
     };
     const CustomHeader = this.props.customHeader;
-    return (
-      <GestureComponent {...gestureProps}>
-        <View
-          style={[this.style.container, this.props.style]}
-          accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
-          importantForAccessibility={this.props.importantForAccessibility} // Android
-        >
-          { CustomHeader
-            ? <CustomHeader {...headerProps}/>
-            : <CalendarHeader {...headerProps}/>
-          }
-          <View style={this.style.monthView}>{weeks}</View>
-        </View>
-      </GestureComponent>
-    );
+    if (this.style) {
+      return (
+        <GestureComponent {...gestureProps}>
+          <View
+            style={[this.style.container, this.props.style]}
+            accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
+            importantForAccessibility={this.props.importantForAccessibility} // Android
+          >
+            {CustomHeader
+              ? <CustomHeader {...headerProps} />
+              : <CalendarHeader {...headerProps} />
+            }
+            <View style={this.style.monthView}>{weeks}</View>
+          </View>
+        </GestureComponent>
+      );
+    }
+    return null
   }
 }
 
