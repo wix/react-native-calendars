@@ -36,7 +36,8 @@ class ReservationList extends Component {
     onScrollBeginDrag: PropTypes.func,
     onScrollEndDrag: PropTypes.func,
     onMomentumScrollBegin: PropTypes.func,
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
+    isInteractive: PropTypes.bool
   };
 
   constructor(props) {
@@ -124,6 +125,7 @@ class ReservationList extends Component {
           renderEmptyDate={this.props.renderEmptyDate}
           theme={this.props.theme}
           rowHasChanged={this.props.rowHasChanged}
+          isInteractive={this.props.isInteractive}
         />
       </View>
     );

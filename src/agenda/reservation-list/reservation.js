@@ -27,6 +27,8 @@ class Reservation extends Component {
     } else if (r1 && r2) {
       if (r1.day.getTime() !== r2.day.getTime()) {
         changed = true;
+      } else if (!this.props.isInteractive && !r1.reservation && !r2.reservation) {
+        changed = false;
       } else if (r1.reservation && r2.reservation) {
         if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
           if (_.isFunction(this.props.rowHasChanged)) {

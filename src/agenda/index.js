@@ -91,7 +91,9 @@ export default class AgendaView extends Component {
     /** Called when the momentum scroll starts for the agenda list. **/
     onMomentumScrollBegin: PropTypes.func,
     /** Called when the momentum scroll stops for the agenda list. **/
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
+    /** Allows rerendering of day even if no reservations for day. Useful for a day that includes buttons, overlays, modals **/
+    isInteractive: PropTypes.bool
   };
 
   constructor(props) {
@@ -313,6 +315,7 @@ export default class AgendaView extends Component {
         onScroll={() => {}}
         ref={(c) => this.list = c}
         theme={this.props.theme}
+        isInteractive={this.props.isInteractive}
       />
     );
   }
