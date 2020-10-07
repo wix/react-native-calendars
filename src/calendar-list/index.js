@@ -1,18 +1,19 @@
-import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, ActivityIndicator, View} from 'react-native';
+import React, { Component } from 'react';
+import { FlatList, Platform, Dimensions, ActivityIndicator, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import {xdateToData, parseDate} from '../interface';
+import { xdateToData, parseDate } from '../interface';
 import styleConstructor from './style';
 import dateutils from '../dateutils';
 import Calendar from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
-import {STATIC_HEADER} from '../testIDs';
+import { STATIC_HEADER } from '../testIDs';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import moment from 'moment';
 
-
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 /**
  * @description: Calendar List component for both vertical and horizontal calendars
@@ -63,7 +64,7 @@ class CalendarList extends Component {
     showScrollIndicator: false,
     scrollEnabled: true,
     scrollsToTop: false,
-    removeClippedSubviews: Platform.OS === 'android',
+    removeClippedSubviews: Platform.OS === 'android' ? false : true,
     keyExtractor: (item, index) => String(index)
   }
 
@@ -131,7 +132,7 @@ class CalendarList extends Component {
         }
       }
     }
-    this.listView.scrollToOffset({offset: scrollAmount, animated});
+    this.listView.scrollToOffset({ offset: scrollAmount, animated });
   }
 
   scrollToMonth(m) {
@@ -141,7 +142,7 @@ class CalendarList extends Component {
     const size = this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight;
     const scrollAmount = (size * this.props.pastScrollRange) + (diffMonths * size);
 
-    this.listView.scrollToOffset({offset: scrollAmount, animated: false});
+    this.listView.scrollToOffset({ offset: scrollAmount, animated: false });
   }
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -168,7 +169,7 @@ class CalendarList extends Component {
     });
   }
 
-  onViewableItemsChanged({viewableItems}) {
+  onViewableItemsChanged({ viewableItems }) {
     function rowIsCloseToViewable(index, distance) {
       for (let i = 0; i < viewableItems.length; i++) {
         if (Math.abs(index - parseInt(viewableItems[i].index)) <= distance) {
@@ -207,7 +208,7 @@ class CalendarList extends Component {
     });
   }
 
-  renderCalendar({item}) {
+  renderCalendar({ item }) {
     return (
       <CalendarListItem
         testID={`${this.props.testID}_${item}`}
@@ -260,13 +261,13 @@ class CalendarList extends Component {
   }
 
   renderStaticHeader() {
-    const {staticHeader, horizontal} = this.props;
+    const { staticHeader, horizontal } = this.props;
     const useStaticHeader = staticHeader && horizontal;
 
     if (useStaticHeader) {
       let indicator;
       if (this.props.showIndicator) {
-        indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor}/>;
+        indicator = <ActivityIndicator color={this.props.theme && this.props.theme.indicatorColor} />;
       }
 
       return (
@@ -292,9 +293,27 @@ class CalendarList extends Component {
     }
   }
 
+  updateMonths = (count) => {
+    const data = this.state.rows;
+    const updateData = data.map(x => {
+      return x.clone().addMonths(count, true);
+    })
+    this.setState({ rows: updateData })
+  }
+  previousHandler = () => {
+    this.updateMonths(-1);
+  }
+  nextHandler = () => {
+    this.updateMonths(1);
+  }
   render() {
     return (
       <View>
+        <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginTop: 5 }}>
+          <TouchableOpacity onPress={this.previousHandler}>
+            <Text style={{ fontSize: 13, color: '#39454B' }}>{moment(this.state.rows[0].toString()).subtract(1, 'months').startOf('month').format('MMMM')}</Text>
+          </TouchableOpacity>
+        </View>
         <FlatList
           testID={this.props.testID}
           onLayout={this.onLayout}
@@ -324,6 +343,11 @@ class CalendarList extends Component {
           keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
         />
         {this.renderStaticHeader()}
+        <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginBottom: 5 }}>
+          <TouchableOpacity onPress={this.nextHandler}>
+            <Text style={{ fontSize: 13, color: '#39454B' }}>{moment(this.state.rows[1]?.toString()).add(1, 'months').startOf('month').format('MMMM')}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
