@@ -199,7 +199,7 @@ export default class AgendaView extends Component {
     }
   }
 
-  onScrollPadLayout() {
+  onScrollPadLayout = () => {
     const {initialPosition} = this.props;
     // When user touches knob, the actual component that receives touch events is a ScrollView.
     // It needs to be scrolled to the bottom, so that when user moves finger downwards,
