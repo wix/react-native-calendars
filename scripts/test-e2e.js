@@ -14,11 +14,8 @@ function run() {
   const workers = multi ? 3 : 1;
   const loglevel = verbose ? '--loglevel verbose' : '';
 
-  if (release) {
-    exec.execSync('npm run build');
-  }
-
-  if (release && !skipBuild) {
+  if (!skipBuild) {
+    exec.execSync('npm run pod-install');
     exec.execSync(`detox build --configuration ${configuration}`);
   }
   exec.execSync(`detox test --configuration ${configuration} -w ${workers} ${loglevel}`);

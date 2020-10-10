@@ -6,7 +6,7 @@ import styleConstructor from './style';
 
 class CalendarListItem extends Component {
   static displayName = 'IGNORE';
-  
+
   static defaultProps = {
     hideArrows: true,
     hideExtraDays: true
@@ -85,6 +85,9 @@ class CalendarListItem extends Component {
           headerStyle={this.props.horizontal ? this.props.headerStyle : undefined}
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
           importantForAccessibility={this.props.importantForAccessibility} // Android
+          customHeader={this.props.customHeader}
+          renderHeader={this.props.renderHeader}
+          disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
         />
       );
     } else {
