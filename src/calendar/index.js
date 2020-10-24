@@ -17,11 +17,11 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {SELECT_DATE_SLOT} from '../testIDs';
 
 //Fallback for react-native-web or when RN version is < 0.44
-const {View, ViewPropTypes} = ReactNative;
+const {View} = ReactNative;
 const viewPropTypes =
-  typeof document !== 'undefined'
+  typeof document !== 'undefined' || Platform.OS === 'web'
     ? PropTypes.shape({style: PropTypes.object})
-    : ViewPropTypes || View.propTypes;
+    : require('react-native').ViewPropTypes || View.propTypes;
 const EmptyArray = [];
 
 /**
@@ -38,7 +38,7 @@ class Calendar extends Component {
     /** Collection of dates that have to be marked. Default = {} */
     markedDates: PropTypes.object,
     /** Specify style for calendar container element. Default = {} */
-    style: viewPropTypes.style,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Initially visible month. Default = Date() */
     current: PropTypes.any,
     /** Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined */

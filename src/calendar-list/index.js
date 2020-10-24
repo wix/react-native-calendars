@@ -137,11 +137,8 @@ class CalendarList extends Component {
   scrollToMonth(m) {
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
-    let diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
-    const size = this.props.horizontal ? this.props.calendarWidth : this.props.calendarHeight;
-    const scrollAmount = (size * this.props.pastScrollRange) + (diffMonths * size);
 
-    this.listView.scrollToOffset({offset: scrollAmount, animated: false});
+    this.listView.scrollToIndex({index: this.getMonthIndex(scrollTo)})
   }
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -294,7 +291,7 @@ class CalendarList extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <FlatList
           testID={this.props.testID}
           onLayout={this.onLayout}
@@ -316,7 +313,9 @@ class CalendarList extends Component {
           showsHorizontalScrollIndicator={this.props.showScrollIndicator}
           scrollEnabled={this.props.scrollEnabled}
           keyExtractor={this.props.keyExtractor}
-          initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
+          initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : 0}
+          //initialScrollIndex={1}
+          onScrollToIndexFailed={() => {}}
           getItemLayout={this.getItemLayout}
           scrollsToTop={this.props.scrollsToTop}
           onEndReachedThreshold={this.props.onEndReachedThreshold}

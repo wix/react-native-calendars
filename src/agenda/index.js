@@ -15,11 +15,11 @@ import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 //Fallback for react-native-web or when RN version is < 0.44
-const {Text, View, Dimensions, Animated, ViewPropTypes} = ReactNative;
+const {Text, View, Dimensions, Animated, Platform} = ReactNative;
 const viewPropTypes =
-  typeof document !== 'undefined'
+  typeof document !== 'undefined' || Platform.OS === 'web'
     ? PropTypes.shape({style: PropTypes.object})
-    : ViewPropTypes || View.propTypes;
+    : require('react-native').ViewPropTypes || View.propTypes;
 
 /**
  * @description: Agenda component
@@ -35,7 +35,7 @@ export default class AgendaView extends Component {
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** agenda container style */
-    style: viewPropTypes.style,
+    style: PropTypes.object,
     /** the list of items that have to be displayed in agenda. If you want to render item as empty date
     the value of date key has to be an empty array []. If there exists no value for date key it is
     considered that the date in question is not yet loaded */
@@ -119,6 +119,8 @@ export default class AgendaView extends Component {
     };
 
     this.currentMonth = this.state.selectedDay.clone();
+    this.onHover = this.onHover.bind(this);
+    this.onStopHover = this.onStopHover.bind(this);
     this.onLayout = this.onLayout.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
@@ -130,6 +132,15 @@ export default class AgendaView extends Component {
   }
 
   componentDidMount() {
+    if (Platform.OS === 'web') {
+      const domel = ReactNative.findNodeHandle(this.scrollPad);
+      domel.style.cursor = 'pointer';
+      domel.addEventListener('mousedown', this.onTouchStart);
+      domel.addEventListener('mouseup', this.onTouchEnd);
+      domel.addEventListener('mouseenter', this.onHover);
+      domel.addEventListener('mouseleave', this.onStopHover);
+    }
+
     this._isMounted = true;
     this.loadReservations(this.props);
   }
@@ -137,6 +148,16 @@ export default class AgendaView extends Component {
   componentWillUnmount() {
     this._isMounted = false;
     this.state.scrollY.removeAllListeners();
+  }
+
+  onHover() {
+    this.knob.setNativeProps({ style: { opacity: 0.7 } });
+  }
+
+  onStopHover() {
+    if (this.knob) {
+      this.knob.setNativeProps({ style: { opacity: 1 } });
+    }
   }
 
   UNSAFE_componentWillReceiveProps(props) {
