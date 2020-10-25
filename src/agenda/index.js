@@ -16,10 +16,6 @@ const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 //Fallback for react-native-web or when RN version is < 0.44
 const {Text, View, Dimensions, Animated, Platform} = ReactNative;
-const viewPropTypes =
-  typeof document !== 'undefined' || Platform.OS === 'web'
-    ? PropTypes.shape({style: PropTypes.object})
-    : require('react-native').ViewPropTypes || View.propTypes;
 
 /**
  * @description: Agenda component
@@ -151,12 +147,12 @@ export default class AgendaView extends Component {
   }
 
   onHover() {
-    this.knob.setNativeProps({ style: { opacity: 0.7 } });
+    this.knob.setNativeProps({style: {opacity: 0.7}});
   }
 
   onStopHover() {
     if (this.knob) {
-      this.knob.setNativeProps({ style: { opacity: 1 } });
+      this.knob.setNativeProps({style: {opacity: 1}});
     }
   }
 

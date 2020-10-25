@@ -138,7 +138,7 @@ class CalendarList extends Component {
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
 
-    this.listView.scrollToIndex({index: this.getMonthIndex(scrollTo)})
+    this.listView.scrollToIndex({index: this.getMonthIndex(scrollTo)});
   }
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -291,7 +291,7 @@ class CalendarList extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <FlatList
           testID={this.props.testID}
           onLayout={this.onLayout}
