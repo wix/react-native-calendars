@@ -1,5 +1,5 @@
 {
-  "name": "react-native-calendars",
+  "name": "@nurse-brite/react-native-calendars",
   "version": "1.22.0",
   "main": "src/index.js",
   "description": "React Native Calendar Components",
@@ -18,10 +18,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wix/react-native-calendars"
+    "url": "git@github.com:nurse-brite/nb-mobile.git"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com/"
   },
   "author": "Wix.com",
   "license": "MIT",
