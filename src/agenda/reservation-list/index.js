@@ -36,7 +36,9 @@ class ReservationList extends Component {
     onScrollBeginDrag: PropTypes.func,
     onScrollEndDrag: PropTypes.func,
     onMomentumScrollBegin: PropTypes.func,
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
+    /** Show items only for the selected day. Default = false */
+    showOnlySelectedDayItems: PropTypes.bool
   };
 
   constructor(props) {
@@ -174,12 +176,20 @@ class ReservationList extends Component {
     }
     const scrollPosition = reservations.length;
     const iterator = props.selectedDay.clone();
-    for (let i = 0; i < 31; i++) {
+    if(this.props.showOnlySelectedDayItems){
       const res = this.getReservationsForDay(iterator, props);
       if (res) {
-        reservations = reservations.concat(res);
+        reservations = res;
       }
       iterator.addDays(1);
+    } else {
+      for (let i = 0; i < 31; i++) {
+        const res = this.getReservationsForDay(iterator, props);
+        if (res) {
+          reservations = reservations.concat(res);
+        }
+        iterator.addDays(1);
+      }
     }
 
     return {reservations, scrollPosition};
