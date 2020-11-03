@@ -43,7 +43,7 @@
     "husky": "^4.2.5",
     "jasmine": "^2.5.2",
     "lint-staged": "^10.2.11",
-    "mocha": "^7.1.0",
+    "mocha": "^8.2.1",
     "prettier": "^2.0.5",
     "react": "16.11.0",
     "react-native": "0.62.2",
