@@ -41,7 +41,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-react": "^7.0.0",
     "husky": "^4.2.5",
-    "jasmine": "^2.5.2",
+    "jasmine": "^3.6.3",
     "lint-staged": "^10.2.11",
     "mocha": "^7.1.0",
     "prettier": "^2.0.5",
