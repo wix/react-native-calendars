@@ -30,7 +30,9 @@ export default class Timeline extends React.PureComponent {
         summary: PropTypes.string.isRequired,
         color: PropTypes.string
       })
-    ).isRequired
+    ).isRequired,
+    scrollToNow: PropTypes.bool,
+    currentDateString: PropTypes.string
   };
 
   static defaultProps = {
@@ -72,7 +74,23 @@ export default class Timeline extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.props.scrollToFirst && this.scrollToFirst();
+    if (this.props.scrollToFirst) {
+      this.scrollToFirst();
+    } else if (this.props.scrollToNow) {
+      this.scrollToNow();
+    }
+  }
+
+  scrollToNow() {
+    setTimeout(() => {
+      if (this._scrollView) {
+        this._scrollView.scrollTo({
+          x: 0,
+          y: this.currentTimeOffset(),
+          animated: true,
+        });
+      }
+    }, 1);
   }
 
   scrollToFirst() {
@@ -87,6 +105,38 @@ export default class Timeline extends React.PureComponent {
     }, 1);
   }
 
+  currentTimeOffset() {
+    const offset = 100;
+    const {start = 0} = this.props;
+    const timeNowHour = moment().hour();
+    const timeNowMin = moment().minutes();
+
+    return offset * (timeNowHour - start) + (offset * timeNowMin) / 60;
+  }
+
+  _renderCurrentTimeIndicator() {
+    // currentDateString format YYYY-MM-DD, e.g. 2020-11-06
+    if (typeof this.props.currentDateString === 'undefined') {
+      return;
+    }
+
+    if (this.props.currentDateString === moment().format('YYYY-MM-DD')) {
+      // Time indicator should be displayed only on the current date
+      return (
+        <View
+          key={'timeNow'}
+          style={[
+            this.styles.lineNow,
+            {
+              top: this.currentTimeOffset(),
+              width: dimensionWidth - 20,
+            },
+          ]}
+        />
+      );
+    }
+  }
+
   _renderLines() {
     const {format24h, start = 0, end = 24} = this.props;
     const offset = this.calendarHeight / (end - start);
@@ -94,7 +144,7 @@ export default class Timeline extends React.PureComponent {
 
     return range(start, end + 1).map((i, index) => {
       let timeText;
-      
+
       if (i === start) {
         timeText = '';
       } else if (i < 12) {
@@ -143,7 +193,7 @@ export default class Timeline extends React.PureComponent {
       // However it would make sense to overflow the title to a new line if needed
       const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
       const formatTime = this.props.format24h ? 'HH:mm' : 'hh:mm A';
-      
+
       return (
         <TouchableOpacity
           activeOpacity={0.9}
@@ -189,6 +239,7 @@ export default class Timeline extends React.PureComponent {
       >
         {this._renderLines()}
         {this._renderEvents()}
+        {this._renderCurrentTimeIndicator()}
       </ScrollView>
     );
   }

@@ -196,6 +196,8 @@ export default class TimelineCalendarScreen extends Component {
           eventTapped={e => e}
           events={EVENTS.filter(event => moment(event.start).isSame(this.state.currentDate, 'day'))}
           // scrollToFirst={true}
+          // scrollToNow={true}
+          // currentDateString={this.state.currentDate}
           // start={0}
           // end={24}
         />
