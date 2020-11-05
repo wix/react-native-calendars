@@ -35,7 +35,7 @@
     "immutable": "^4.0.0-rc.12"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^10.1.0",
     "detox": "^16.7.2",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.11.0",
