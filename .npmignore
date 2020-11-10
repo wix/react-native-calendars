@@ -241,3 +241,19 @@ demo/
 .babelrc
 # eslint-rules/
 scripts/
+
+# test
+e2e/
+spec/
+
+# github
+.github/
+
+# docs
+ISSUE_TEMPLATE.md
+
+# other
+.eslintrc.js
+.nvmrc
+.prettierignore
+.prettierrc.json
