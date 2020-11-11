@@ -1,0 +1,13 @@
+{
+  "ignore_dirs": [
+    ".git",
+    "node_modules",
+    "android",
+    "demo",
+    "e2e",
+    "example",
+    "ios",
+    "package-lock.json",
+    "scripts"
+  ]
+}

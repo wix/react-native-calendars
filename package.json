@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:nurse-brite/nb-mobile.git"
+    "url": "git@github.com:nurse-brite/react-native-calendars.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
