@@ -47,7 +47,7 @@
     "prettier": "^2.0.5",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-navigation": "^6.7.1",
+    "react-native-navigation": "^7.3.0",
     "semver": "7.x.x",
     "shell-utils": "1.x.x"
   },
