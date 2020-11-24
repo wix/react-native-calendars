@@ -15,7 +15,7 @@ class Reservation extends Component {
   constructor(props) {
     super(props);
 
-    this.styles = styleConstructor(props.theme);
+    this.style = styleConstructor(props.theme);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -44,17 +44,17 @@ class Reservation extends Component {
     if (_.isFunction(this.props.renderDay)) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
-    const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
+    const today = dateutils.sameDate(date, XDate()) ? this.style.today : undefined;
     if (date) {
       return (
-        <View style={this.styles.day} testID={RESERVATION_DATE}>
-          <Text allowFontScaling={false} style={[this.styles.dayNum, today]}>{date.getDate()}</Text>
-          <Text allowFontScaling={false} style={[this.styles.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
+        <View style={this.style.day} testID={RESERVATION_DATE}>
+          <Text allowFontScaling={false} style={[this.style.dayNum, today]}>{date.getDate()}</Text>
+          <Text allowFontScaling={false} style={[this.style.dayText, today]}>{XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}</Text>
         </View>
       );
     } else {
       return (
-        <View style={this.styles.day}/>
+        <View style={this.style.day}/>
       );
     }
   }
@@ -71,9 +71,9 @@ class Reservation extends Component {
       content = this.props.renderEmptyDate(date);
     }
     return (
-      <View style={this.styles.container}>
+      <View style={this.style.container}>
         {this.renderDate(date, reservation)}
-        <View style={this.styles.innerContainer}>
+        <View style={this.style.innerContainer}>
           {content}
         </View>
       </View>

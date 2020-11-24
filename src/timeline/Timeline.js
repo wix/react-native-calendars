@@ -48,7 +48,7 @@ export default class Timeline extends React.PureComponent {
     super(props);
     const {start, end} = this.props;
     this.calendarHeight = (end - start) * 100;
-    this.styles = styleConstructor(props.styles, this.calendarHeight);
+    this.style = styleConstructor(props.styles, this.calendarHeight);
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
     let initPosition =
@@ -109,14 +109,14 @@ export default class Timeline extends React.PureComponent {
       return [
         <Text
           key={`timeLabel${i}`}
-          style={[this.styles.timeLabel, {top: offset * index - 6}]}>
+          style={[this.style.timeLabel, {top: offset * index - 6}]}>
           {timeText}
         </Text>,
         i === start ? null : (
           <View
             key={`line${i}`}
             style={[
-              this.styles.line,
+              this.style.line,
               {top: offset * index, width: dimensionWidth - EVENT_DIFF}
             ]}
           />
@@ -124,7 +124,7 @@ export default class Timeline extends React.PureComponent {
         <View
           key={`lineHalf${i}`}
           style={[
-            this.styles.line,
+            this.style.line,
             {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF}
           ]}
         />
@@ -158,23 +158,23 @@ export default class Timeline extends React.PureComponent {
           activeOpacity={0.9}
           onPress={() => this._onEventTapped(this.props.events[event.index])}
           key={i}
-          style={[this.styles.event, style]}>
+          style={[this.style.event, style]}>
           {this.props.renderEvent ? (
             this.props.renderEvent(event)
           ) : (
             <View>
-              <Text numberOfLines={1} style={this.styles.eventTitle}>
+              <Text numberOfLines={1} style={this.style.eventTitle}>
                 {event.title || 'Event'}
               </Text>
               {numberOfLines > 1 ? (
                 <Text
                   numberOfLines={numberOfLines - 1}
-                  style={[this.styles.eventSummary]}>
+                  style={[this.style.eventSummary]}>
                   {event.summary || ' '}
                 </Text>
               ) : null}
               {numberOfLines > 2 ? (
-                <Text style={this.styles.eventTimes} numberOfLines={1}>
+                <Text style={this.style.eventTimes} numberOfLines={1}>
                   {moment(event.start).format(formatTime)} -{' '}
                   {moment(event.end).format(formatTime)}
                 </Text>
@@ -197,7 +197,7 @@ export default class Timeline extends React.PureComponent {
       <ScrollView
         ref={ref => (this._scrollView = ref)}
         contentContainerStyle={[
-          this.styles.contentStyle,
+          this.style.contentStyle,
           {width: dimensionWidth}
         ]}>
         {this._renderLines()}

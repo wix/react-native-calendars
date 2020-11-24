@@ -385,3 +385,6 @@
 
 ## [1.404.0] - 2020-11-24
 - Moving inline styles to StyleSheets.
+
+## [1.406.0] - 2020-11-24
+- Unify library code - this.styles to this.style.

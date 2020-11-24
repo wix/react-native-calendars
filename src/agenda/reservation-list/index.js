@@ -42,7 +42,7 @@ class ReservationList extends Component {
   constructor(props) {
     super(props);
 
-    this.styles = styleConstructor(props.theme);
+    this.style = styleConstructor(props.theme);
 
     this.state = {
       reservations: []
@@ -192,14 +192,14 @@ class ReservationList extends Component {
         return this.props.renderEmptyData();
       }
       return (
-        <ActivityIndicator style={this.styles.indicator} color={this.props.theme && this.props.theme.indicatorColor}/>
+        <ActivityIndicator style={this.style.indicator} color={this.props.theme && this.props.theme.indicatorColor}/>
       );
     }
     return (
       <FlatList
         ref={(c) => this.list = c}
         style={this.props.style}
-        contentContainerStyle={this.styles.content}
+        contentContainerStyle={this.style.content}
         renderItem={this.renderRow.bind(this)}
         data={this.state.reservations}
         onScroll={this.onScroll.bind(this)}
