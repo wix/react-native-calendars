@@ -192,7 +192,7 @@ class ReservationList extends Component {
         return this.props.renderEmptyData();
       }
       return (
-        <ActivityIndicator style={{marginTop: 80}} color={this.props.theme && this.props.theme.indicatorColor}/>
+        <ActivityIndicator style={this.styles.indicator} color={this.props.theme && this.props.theme.indicatorColor}/>
       );
     }
     return (

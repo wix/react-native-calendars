@@ -9,6 +9,9 @@ export default function styleConstructor(theme = {}) {
     container: {
       flexDirection: 'row'
     },
+    innerContainer: {
+      flex: 1
+    },
     dayNum: {
       fontSize: 28,
       fontWeight: '200',
@@ -31,6 +34,9 @@ export default function styleConstructor(theme = {}) {
     },
     today: {
       color: appStyle.agendaTodayColor
+    },
+    indicator: {
+      marginTop: 80
     },
     ...(theme[STYLESHEET_ID] || {})
   });

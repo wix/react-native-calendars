@@ -200,7 +200,7 @@ class Calendar extends Component {
     }
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      return (<View key={id} style={{flex: 1}}/>);
+      return (<View key={id} style={this.style.emptyDayContainer}/>);
     }
 
     const DayComp = this.getDayComponent();
@@ -209,7 +209,7 @@ class Calendar extends Component {
     const accessibilityLabel = this.getAccessibilityLabel(state, day);
 
     return (
-      <View style={{flex: 1, alignItems: 'center'}} key={id}>
+      <View style={this.style.dayContainer} key={id}>
         <DayComp
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           state={state}
@@ -314,7 +314,7 @@ class Calendar extends Component {
 
   renderWeekNumber(weekNumber) {
     return (
-      <View style={{flex: 1, alignItems: 'center'}} key={`week-container-${weekNumber}`}>
+      <View style={this.style.dayContainer} key={`week-container-${weekNumber}`}>
         <Day
           key={`week-${weekNumber}`}
           theme={this.props.theme}

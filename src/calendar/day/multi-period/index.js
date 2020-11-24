@@ -93,7 +93,7 @@ class Day extends Component {
       textStyle.push(this.style.todayText);
     }
     return (
-      <View style={{alignSelf: 'stretch'}}>
+      <View style={this.style.container}>
         <TouchableOpacity 
           testID={this.props.testID} 
           style={containerStyle} 
@@ -108,7 +108,7 @@ class Day extends Component {
             {String(this.props.children)}
           </Text>
         </TouchableOpacity>
-        <View style={{alignSelf: 'stretch'}}>
+        <View style={this.style.container}>
           {periods}
         </View>
       </View>

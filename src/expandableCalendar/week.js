@@ -118,7 +118,7 @@ class Week extends Component {
     // hide extra days
     if (current && this.props.hideExtraDays) {
       if (!dateutils.sameMonth(day, parseDate(current))) {
-        return (<View key={id} style={{flex: 1}}/>);
+        return (<View key={id} style={this.style.emptyDayContainer}/>);
       }
     }
 
@@ -127,7 +127,7 @@ class Week extends Component {
     const dateAsObject = xdateToData(day);
 
     return (
-      <View style={{flex: 1, alignItems: 'center'}} key={id}>
+      <View style={this.style.dayContainer} key={id}>
         <DayComp
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           state={state}

@@ -73,7 +73,7 @@ class Reservation extends Component {
     return (
       <View style={this.styles.container}>
         {this.renderDate(date, reservation)}
-        <View style={{flex: 1}}>
+        <View style={this.styles.innerContainer}>
           {content}
         </View>
       </View>

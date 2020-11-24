@@ -11,6 +11,13 @@ export default function getStyle(theme={}) {
       paddingRight: 5,
       backgroundColor: appStyle.calendarBackground
     },
+    dayContainer: {
+      flex: 1, 
+      alignItems: 'center'
+    },
+    emptyDayContainer: {
+      flex: 1
+    },
     monthView: {
       backgroundColor: appStyle.calendarBackground
     },
