@@ -36,7 +36,8 @@ export default class Timeline extends React.PureComponent {
     })).isRequired,
     offsetLeft: PropTypes.number,
     offsetRight: PropTypes.number,
-    timeTextWidth: PropTypes.number,
+    offsetBottom: PropTypes.number,
+    timeTextWidth: PropTypes.number
   }
 
   static defaultProps = {
@@ -46,6 +47,7 @@ export default class Timeline extends React.PureComponent {
     format24h: true,
     offsetLeft: 16,
     offsetRight: 20,
+    offsetBottom: 0,
     timeTextWidth: 54,
     eventRelativeOffsetLeft: -8,
     eventRelativeOffsetRight: -4,
@@ -59,6 +61,7 @@ export default class Timeline extends React.PureComponent {
       end, 
       offsetLeft, 
       offsetRight, 
+      offsetBottom,
       timeTextWidth, 
       eventRelativeOffsetLeft, 
       eventRelativeOffsetRight,
@@ -68,6 +71,7 @@ export default class Timeline extends React.PureComponent {
     this.styles = styleConstructor(props.styles, this.calendarHeight, {
       offsetLeft: offsetLeft,
       offsetRight: offsetRight,
+      offsetBottom: offsetBottom,
       timeTextWidth: timeTextWidth
     });
     const width = dimensionWidth - offsetLeft - offsetRight - timeTextWidth - eventRelativeOffsetLeft - eventRelativeOffsetRight;
@@ -102,7 +106,7 @@ export default class Timeline extends React.PureComponent {
 
   componentDidMount() {
     this.props.scrollToFirst && this.scrollToFirst();
-    this.props.scrollToTime && this.scrollToTime()
+    this.props.scrollToTime && this.scrollToTime();
   }
 
   scrollToFirst() {
@@ -120,7 +124,7 @@ export default class Timeline extends React.PureComponent {
   scrollToTime() {
     setTimeout(() => {
       if (this.state && this._scrollView) {
-        const { scrollToTime } = this.props;
+        const {scrollToTime} = this.props;
 
         this._scrollView.scrollTo({
           x: 0,
@@ -132,17 +136,17 @@ export default class Timeline extends React.PureComponent {
   }
 
   getTimeHeightOffset (date) {
-    const {start = 0, end = 24 } = this.props;
-    const timeHoursFromDayStart = moment(date).diff(moment(date).startOf('day'), 'minutes') / 60
-    return this.calendarHeight * timeHoursFromDayStart / (end - start)
+    const {start = 0, end = 24} = this.props;
+    const timeHoursFromDayStart = moment(date).diff(moment(date).startOf('day'), 'minutes') / 60;
+    return this.calendarHeight * timeHoursFromDayStart / (end - start);
   }
 
   getNowOffset(){
-    return this.getTimeHeightOffset(Date.now())
+    return this.getTimeHeightOffset(Date.now());
   }
 
   _renderNowLine(){
-    if (!this.props.renderNowLine) return null
+    if (!this.props.renderNowLine) return null;
     const offset = this.getNowOffset();
 
     return (
@@ -153,7 +157,7 @@ export default class Timeline extends React.PureComponent {
           {top: offset}
         ]}
       />
-    )
+    );
   }
 
   _renderLines() {
@@ -264,14 +268,14 @@ export default class Timeline extends React.PureComponent {
           this.styles.contentStyle,
           {width: dimensionWidth}
         ]}>
-          <View style={[
-            this.styles.innerContentStyle,
-            {width: dimensionWidth}
-          ]}>
-            {this._renderLines()}
-            {this._renderEvents()}
-            {this._renderNowLine()}
-          </View>
+        <View style={[
+          this.styles.innerContentStyle,
+          {width: dimensionWidth}
+        ]}>
+          {this._renderLines()}
+          {this._renderEvents()}
+          {this._renderNowLine()}
+        </View>
       </ScrollView>
     );
   }

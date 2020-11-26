@@ -4,10 +4,10 @@ import {Platform, StyleSheet} from 'react-native';
 const CALENDAR_VERTICAL_OFFSET = 15;
 
 export default function styleConstructor(
-  theme = {}, 
+  theme = {},
   calendarHeight,
-  {offsetLeft, offsetRight, timeTextWidth}
-  ) {
+  {offsetLeft, offsetRight, offsetBottom, timeTextWidth},
+) {
   let style = {
     container: {
       flex: 1,
@@ -16,10 +16,10 @@ export default function styleConstructor(
     },
     contentStyle: {
       backgroundColor: '#ffff',
-      height: calendarHeight + CALENDAR_VERTICAL_OFFSET * 2,
+      height: calendarHeight + CALENDAR_VERTICAL_OFFSET * 2 + offsetBottom,
       paddingTop: CALENDAR_VERTICAL_OFFSET,
       paddingBottom: CALENDAR_VERTICAL_OFFSET,
-      ...theme.contentStyle,
+      ...theme.contentStyle
     },
     innerContentStyle: {
       height: calendarHeight
