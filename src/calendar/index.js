@@ -92,11 +92,11 @@ class Calendar extends Component {
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
     /** Enable the option to swipe between months. Default: false */
-    enableSwipeMonths: PropTypes.bool,
+    enableSwipeMonths: PropTypes.bool
   };
 
   static defaultProps = {
-    enableSwipeMonths: false,
+    enableSwipeMonths: false
   };
 
   constructor(props) {
@@ -104,7 +104,7 @@ class Calendar extends Component {
 
     this.style = styleConstructor(this.props.theme);
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate(),
+      currentMonth: props.current ? parseDate(props.current) : XDate()
     };
 
     this.updateMonth = this.updateMonth.bind(this);
@@ -117,22 +117,19 @@ class Calendar extends Component {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
-    this.setState(
-      {
-        currentMonth: day.clone(),
-      },
-      () => {
-        if (!doNotTriggerListeners) {
-          const currMont = this.state.currentMonth.clone();
-          if (this.props.onMonthChange) {
-            this.props.onMonthChange(xdateToData(currMont));
-          }
-          if (this.props.onVisibleMonthsChange) {
-            this.props.onVisibleMonthsChange([xdateToData(currMont)]);
-          }
+    this.setState({
+      currentMonth: day.clone()
+    }, () => {
+      if (!doNotTriggerListeners) {
+        const currMont = this.state.currentMonth.clone();
+        if (this.props.onMonthChange) {
+          this.props.onMonthChange(xdateToData(currMont));
         }
-      },
-    );
+        if (this.props.onVisibleMonthsChange) {
+          this.props.onVisibleMonthsChange([xdateToData(currMont)]);
+        }
+      }
+    });
   }
 
   _handleDayInteraction(date, interaction) {
@@ -160,11 +157,11 @@ class Calendar extends Component {
 
   addMonth = (count) => {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
-  };
+  }
 
   isDateNotInTheRange = (minDate, maxDate, date) => {
     return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
-  };
+  }
 
   getAccessibilityLabel = (state, day) => {
     const today = XDate.locales[XDate.defaultLocale].today;
@@ -177,7 +174,8 @@ class Calendar extends Component {
     }
 
     return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
-  };
+  }
+
 
   renderDay(day, id) {
     const minDate = parseDate(this.props.minDate);
@@ -194,7 +192,7 @@ class Calendar extends Component {
     }
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
-      return <View key={id} style={{flex: 1}} />;
+      return (<View key={id} style={{flex: 1}}/>);
     }
 
     const DayComp = this.getDayComponent();
@@ -256,16 +254,16 @@ class Calendar extends Component {
     }
 
     switch (this.props.markingType) {
-      case 'period':
-        return UnitDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      case 'multi-period':
-        return MultiPeriodDay;
-      case 'custom':
-        return SingleDay;
-      default:
-        return Day;
+    case 'period':
+      return UnitDay;
+    case 'multi-dot':
+      return MultiDotDay;
+    case 'multi-period':
+      return MultiPeriodDay;
+    case 'custom':
+      return SingleDay;
+    default:
+      return Day;
     }
   }
 
@@ -286,30 +284,35 @@ class Calendar extends Component {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
 
     switch (gestureName) {
-      case SWIPE_UP:
-      case SWIPE_DOWN:
-        break;
-      case SWIPE_LEFT:
-        this.onSwipeLeft();
-        break;
-      case SWIPE_RIGHT:
-        this.onSwipeRight();
-        break;
+    case SWIPE_UP:
+    case SWIPE_DOWN:
+      break;
+    case SWIPE_LEFT:
+      this.onSwipeLeft();
+      break;
+    case SWIPE_RIGHT:
+      this.onSwipeRight();
+      break;
     }
-  };
+  }
 
   onSwipeLeft = () => {
     this.header.onPressRight();
-  };
+  }
 
   onSwipeRight = () => {
     this.header.onPressLeft();
-  };
+  }
 
   renderWeekNumber(weekNumber) {
     return (
       <View style={{flex: 1, alignItems: 'center'}} key={`week-container-${weekNumber}`}>
-        <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state="disabled">
+        <Day
+          key={`week-${weekNumber}`}
+          theme={this.props.theme}
+          marking={{disableTouchEvent: true}}
+          state='disabled'
+        >
           {weekNumber}
         </Day>
       </View>
@@ -326,11 +329,7 @@ class Calendar extends Component {
       week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
     }
 
-    return (
-      <View style={this.style.week} key={id}>
-        {week}
-      </View>
-    );
+    return (<View style={this.style.week} key={id}>{week}</View>);
   }
 
   render() {
@@ -348,7 +347,8 @@ class Calendar extends Component {
     const current = parseDate(this.props.current);
     if (current) {
       const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
-      if (this.props.displayLoadingIndicator && !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
+      if (this.props.displayLoadingIndicator &&
+        !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
         indicator = true;
       }
     }
@@ -365,7 +365,7 @@ class Calendar extends Component {
         >
           <CalendarHeader
             testID={this.props.testID}
-            ref={(c) => (this.header = c)}
+            ref={c => this.header = c}
             style={this.props.headerStyle}
             theme={this.props.theme}
             hideArrows={this.props.hideArrows}
