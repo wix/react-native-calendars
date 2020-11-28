@@ -134,6 +134,10 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
+    if(this.props.renderSectionHeader){
+      return this.props.renderSectionHeader();
+    }
+
     let sectionTitle = title;
 
     if (this.props.dayFormat) {
