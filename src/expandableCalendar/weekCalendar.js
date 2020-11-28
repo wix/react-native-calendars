@@ -45,6 +45,7 @@ class WeekCalendar extends Component {
 
     this.list = React.createRef();
     this.page = NUMBER_OF_PAGES;
+    this.gettingDatesMedianIndex = 0;
 
     this.state = {
       items: this.getDatesArray()
@@ -67,7 +68,7 @@ class WeekCalendar extends Component {
   getDatesArray() {
     const array = [];
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
-      const d = this.getDate(index);
+      const d = this.getDate(index + this.gettingDatesMedianIndex);
       array.push(d);
     }
     return array;
@@ -139,16 +140,14 @@ class WeekCalendar extends Component {
     if (isFirstPage || isLastPage) {
       this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
       this.page = NUMBER_OF_PAGES;
-      const newWeekArray = this.getDatesArray();
 
-      if (isLastPage) {
-        for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
-          items[i] = newWeekArray[i];
-        }
-      } else {
-        for (let i = 0; i < NUMBER_OF_PAGES; i++) {
-          items[i] = newWeekArray[i];
-        }
+      const startIndex = isLastPage ? NUMBER_OF_PAGES : 0;
+      const endIndex = isLastPage ? items.length : NUMBER_OF_PAGES;
+      isLastPage ? this.gettingDatesMedianIndex += NUMBER_OF_PAGES : this.gettingDatesMedianIndex -= NUMBER_OF_PAGES;
+
+      const newDatesArray = this.getDatesArray();
+      for (let i = startIndex; i < endIndex; i++) {
+        items[i] = newDatesArray[i];
       }
 
       setTimeout(() => {
