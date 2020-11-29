@@ -12,10 +12,10 @@ import {SELECT_DATE_SLOT} from '../testIDs';
 import styleConstructor from './style';
 import CalendarHeader from './header';
 import Day from './day/basic';
-import UnitDay from './day/period';
+import PeriodDay from './day/period';
 import MultiDotDay from './day/multi-dot';
 import MultiPeriodDay from './day/multi-period';
-import SingleDay from './day/custom';
+import CustomDay from './day/custom';
 
 //Fallback for react-native-web or when RN version is < 0.44
 const {View, ViewPropTypes} = ReactNative;
@@ -222,13 +222,13 @@ class Calendar extends Component {
 
     switch (markingType) {
       case 'period':
-        return UnitDay;
+        return PeriodDay;
       case 'multi-dot':
         return MultiDotDay;
       case 'multi-period':
         return MultiPeriodDay;
       case 'custom':
-        return SingleDay;
+        return CustomDay;
       default:
         return Day;
     }
