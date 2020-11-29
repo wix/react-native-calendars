@@ -10,6 +10,17 @@ function shouldUpdate(a, b, paths) {
   return false;
 }
 
+function extractComponentProps(component, props, ignoreProps) {
+  const componentPropTypes = component.propTypes;
+  const componentProps = _.chain(props)
+    .pickBy((_value, key) => _.includes(Object.keys(componentPropTypes), key))
+    .omit(ignoreProps)
+    .value();
+
+  return componentProps;
+}
+
 module.exports = {
-  shouldUpdate
+  shouldUpdate,
+  extractComponentProps
 };

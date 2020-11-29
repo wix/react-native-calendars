@@ -3,7 +3,7 @@ import * as defaultStyle from '../style';
 
 const STYLESHEET_ID = 'stylesheet.calendar.main';
 
-export default function getStyle(theme={}) {
+export default function getStyle(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     container: {
@@ -12,7 +12,7 @@ export default function getStyle(theme={}) {
       backgroundColor: appStyle.calendarBackground
     },
     dayContainer: {
-      flex: 1, 
+      flex: 1,
       alignItems: 'center'
     },
     emptyDayContainer: {
@@ -30,4 +30,3 @@ export default function getStyle(theme={}) {
     ...(theme[STYLESHEET_ID] || {})
   });
 }
-
