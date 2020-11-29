@@ -388,3 +388,19 @@
 
 ## [1.406.0] - 2020-11-24
 - Unify library code - this.styles to this.style.
+
+## [1.407.0] - 2020-11-26
+### Fix
+- Calendar - fix for 'disableArrowLeft', 'disableArrowRight' update (PR #1309).
+
+## [1.490.0] - 2020-11-29
+### Added
+- AgendaList - allow passing 'renderSectionHeader' prop (PR #1306).
+
+## [1.491.0] - 2020-11-29
+### Added
+- Agenda - add 'showOnlySelectedDayItems' prop (PR #1317).
+
+## [1.492.0] - 2020-11-29
+### Fix
+- example - fix formatting.

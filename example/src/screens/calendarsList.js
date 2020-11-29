@@ -1,18 +1,17 @@
 import React from 'react';
-import {CalendarList} from 'react-native-calendars';
 import {Text, View} from 'react-native';
+import {CalendarList} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
 
 const CalendarsList = () => {
-
   return (
     <CalendarList
       testID={testIDs.calendarList.CONTAINER}
       current={'2020-06-10'}
       pastScrollRange={24}
       futureScrollRange={24}
-      renderHeader={(date) => {
+      renderHeader={date => {
         const header = date.toString('MMMM yyyy');
         const [month, year] = header.split(' ');
         const textStyle = {
@@ -24,14 +23,16 @@ const CalendarsList = () => {
           paddingRight: 5
         };
 
-        return(
-          <View style={{
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between',
-            marginTop: 10,
-            marginBottom: 10
-          }}>
+        return (
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+              marginTop: 10,
+              marginBottom: 10
+            }}
+          >
             <Text style={{marginLeft: 5, ...textStyle}}>{`${month}`}</Text>
             <Text style={{marginRight: 5, ...textStyle}}>{year}</Text>
           </View>
@@ -55,8 +56,8 @@ const CalendarsList = () => {
           }
         }
       }}
-    />);
-
+    />
+  );
 };
 
 export default CalendarsList;

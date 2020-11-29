@@ -134,7 +134,7 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
-    if(this.props.renderSectionHeader){
+    if (this.props.renderSectionHeader) {
       return this.props.renderSectionHeader();
     }
 
