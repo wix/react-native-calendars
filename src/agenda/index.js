@@ -95,7 +95,9 @@ export default class AgendaView extends Component {
     /** Called when the momentum scroll starts for the agenda list. **/
     onMomentumScrollBegin: PropTypes.func,
     /** Called when the momentum scroll stops for the agenda list. **/
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
+    /** Show items only for the selected day. Default = false */
+    showOnlySelectedDayItems: PropTypes.bool
   };
 
   constructor(props) {
@@ -322,6 +324,7 @@ export default class AgendaView extends Component {
         onScroll={() => { }}
         ref={(c) => this.list = c}
         theme={this.props.theme}
+        showOnlySelectedDayItems={this.props.showOnlySelectedDayItems}
       />
     );
   }
