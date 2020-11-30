@@ -12,12 +12,14 @@ function shouldUpdate(a, b, paths) {
 
 function extractComponentProps(component, props, ignoreProps) {
   const componentPropTypes = component.propTypes;
-  const componentProps = _.chain(props)
-    .pickBy((_value, key) => _.includes(Object.keys(componentPropTypes), key))
-    .omit(ignoreProps)
-    .value();
-
-  return componentProps;
+  if (componentPropTypes) {
+    const componentProps = _.chain(props)
+      .pickBy((_value, key) => _.includes(Object.keys(componentPropTypes), key))
+      .omit(ignoreProps)
+      .value();
+  
+    return componentProps;
+  }
 }
 
 module.exports = {
