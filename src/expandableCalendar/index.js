@@ -344,6 +344,7 @@ class ExpandableCalendar extends Component {
   onPressArrowLeft = () => {
     this.scrollPage(false);
   };
+
   onPressArrowRight = () => {
     this.scrollPage(true);
   };
