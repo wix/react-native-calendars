@@ -1,16 +1,12 @@
 // @flow
 import moment from 'moment';
+
 const offset = 100;
 
 function buildEvent(column, left, width, dayStart) {
   const startTime = moment(column.start);
-  const endTime = column.end
-    ? moment(column.end)
-    : startTime.clone().add(1, 'hour');
-  const dayStartTime = startTime
-    .clone()
-    .hour(dayStart)
-    .minute(0);
+  const endTime = column.end ? moment(column.end) : startTime.clone().add(1, 'hour');
+  const dayStartTime = startTime.clone().hour(dayStart).minute(0);
   const diffHours = startTime.diff(dayStartTime, 'hours', true);
 
   column.top = diffHours * offset;
@@ -63,7 +59,7 @@ function populateEvents(events, screenWidth, dayStart) {
 
   events = events
     .map((ev, index) => ({...ev, index: index}))
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       if (a.start < b.start) return -1;
       if (a.start > b.start) return 1;
       if (a.end < b.end) return -1;
@@ -74,7 +70,7 @@ function populateEvents(events, screenWidth, dayStart) {
   columns = [];
   lastEnd = null;
 
-  events.forEach(function(ev) {
+  events.forEach(function (ev) {
     if (lastEnd !== null && ev.start >= lastEnd) {
       pack(columns, screenWidth, calculatedEvents, dayStart);
       columns = [];
