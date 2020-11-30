@@ -23,7 +23,8 @@ class ReservationList extends Component {
     showOnlySelectedDayItems: PropTypes.bool,
     // callback that gets called when day changes while scrolling agenda list
     onDayChange: PropTypes.func,
-
+    /** specify what should be rendered instead of ActivityIndicator */
+    renderEmptyData: PropTypes.func,
 
     /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
     refreshControl: PropTypes.element,
