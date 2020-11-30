@@ -55,7 +55,7 @@ export default class AgendaView extends Component {
     /** specify how agenda knob should look like */
     renderKnob: PropTypes.func,
     /** specify how empty date content with no items should be rendered */
-    renderEmptyDay: PropTypes.func,
+    renderEmptyDate: PropTypes.func,
     /** specify what should be rendered instead of ActivityIndicator */
     renderEmptyData: PropTypes.func,
     /** specify your item comparison function for increased performance */
