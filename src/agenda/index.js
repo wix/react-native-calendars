@@ -46,15 +46,9 @@ export default class AgendaView extends Component {
     /** callback that gets called on day press */
     onDayPress: PropTypes.func,
     /** callback that gets called when day changes while scrolling agenda list */
-    onDaychange: PropTypes.func,
-    
+    onDaychange: PropTypes.func, 
     /** specify how agenda knob should look like */
     renderKnob: PropTypes.func,
-    /** specify how empty date content with no items should be rendered */
-    renderEmptyDate: PropTypes.func,
-    /** specify what should be rendered instead of ActivityIndicator */
-    renderEmptyData: PropTypes.func,
-    
     /** initially selected day */
     selected: PropTypes.any,
     /** Hide knob button. Default = false */
