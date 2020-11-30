@@ -42,16 +42,6 @@ class CalendarHeader extends Component {
     this.style = styleConstructor(props.theme);
   }
 
-  addMonth = () => {
-    const {addMonth} = this.props;
-    addMonth(1);
-  };
-
-  subtractMonth = () => {
-    const {addMonth} = this.props;
-    addMonth(-1);
-  };
-
   shouldComponentUpdate(nextProps) {
     if (nextProps.month.toString('yyyy MM') !== this.props.month.toString('yyyy MM')) {
       return true;
@@ -67,6 +57,16 @@ class CalendarHeader extends Component {
       'disableArrowRight'
     ]);
   }
+
+  addMonth = () => {
+    const {addMonth} = this.props;
+    addMonth(1);
+  };
+
+  subtractMonth = () => {
+    const {addMonth} = this.props;
+    addMonth(-1);
+  };
 
   onPressLeft = () => {
     const {onPressArrowLeft, month} = this.props;
