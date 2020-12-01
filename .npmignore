@@ -1,5 +1,6 @@
 .DS_Store
 .idea
+.github
 src/**/*.spec.js
 example/
 demo/
@@ -8,9 +9,18 @@ android/
 index.android.js
 index.ios.js
 
-
-.npmignore
+.nvmrc
+.*ignore
 .watchmanconfig
+
+.eslintrc
+.eslintrc.js
+.prettierrc.json
+
+e2e
+spec
+
+ISSUE_TEMPLATE.md
 
 
 #################
@@ -241,3 +251,4 @@ demo/
 .babelrc
 # eslint-rules/
 scripts/
+
