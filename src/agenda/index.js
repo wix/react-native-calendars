@@ -92,13 +92,13 @@ export default class AgendaView extends Component {
     this.state.scrollY.removeAllListeners();
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (props.items) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.items) {
       this.setState({
         firstReservationLoad: false
       });
     } else {
-      this.loadReservations(props);
+      this.loadReservations(nextProps);
     }
   }
 

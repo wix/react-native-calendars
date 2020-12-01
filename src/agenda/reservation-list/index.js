@@ -66,18 +66,18 @@ class ReservationList extends Component {
     this.updateDataSource(this.getReservations(this.props).reservations);
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (!dateutils.sameDate(props.topDay, this.props.topDay)) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!dateutils.sameDate(nextProps.topDay, this.props.topDay)) {
       this.setState(
         {
           reservations: []
         },
         () => {
-          this.updateReservations(props);
+          this.updateReservations(nextProps);
         }
       );
     } else {
-      this.updateReservations(props);
+      this.updateReservations(nextProps);
     }
   }
 
@@ -88,8 +88,9 @@ class ReservationList extends Component {
   }
 
   updateReservations(props) {
+    const {selectedDay} = props;
     const reservations = this.getReservations(props);
-    if (this.list && !dateutils.sameDate(props.selectedDay, this.selectedDay)) {
+    if (this.list && !dateutils.sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
@@ -97,7 +98,7 @@ class ReservationList extends Component {
       this.scrollOver = false;
       this.list.scrollToOffset({offset: scrollPosition, animated: true});
     }
-    this.selectedDay = props.selectedDay;
+    this.selectedDay = selectedDay;
     this.updateDataSource(reservations.reservations);
   }
 
@@ -125,7 +126,8 @@ class ReservationList extends Component {
   }
 
   getReservations(props) {
-    if (!props.reservations || !props.selectedDay) {
+    const {selectedDay, showOnlySelectedDayItems} = props;
+    if (!props.reservations || !selectedDay) {
       return {reservations: [], scrollPosition: 0};
     }
 
@@ -133,7 +135,7 @@ class ReservationList extends Component {
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
 
-      while (iterator.getTime() < props.selectedDay.getTime()) {
+      while (iterator.getTime() < selectedDay.getTime()) {
         const res = this.getReservationsForDay(iterator, props);
         if (!res) {
           reservations = [];
@@ -146,8 +148,8 @@ class ReservationList extends Component {
     }
 
     const scrollPosition = reservations.length;
-    const iterator = props.selectedDay.clone();
-    if (this.props.showOnlySelectedDayItems) {
+    const iterator = selectedDay.clone();
+    if (showOnlySelectedDayItems) {
       const res = this.getReservationsForDay(iterator, props);
 
       if (res) {
@@ -203,7 +205,7 @@ class ReservationList extends Component {
   onMoveShouldSetResponderCapture = () => {
     this.onListTouch();
     return false;
-  }
+  };
 
   renderRow = ({item, index}) => {
     const reservationUserProps = extractComponentProps(Reservation, this.props);
@@ -216,7 +218,7 @@ class ReservationList extends Component {
   };
 
   render() {
-    const {reservations, selectedDay, theme} = this.props;
+    const {reservations, selectedDay, theme, style} = this.props;
 
     if (!reservations || !reservations[selectedDay.toString('yyyy-MM-dd')]) {
       _.invoke(this.props, 'renderEmptyData');
@@ -227,7 +229,7 @@ class ReservationList extends Component {
     return (
       <FlatList
         ref={c => (this.list = c)}
-        style={this.props.style}
+        style={style}
         contentContainerStyle={this.style.content}
         data={this.state.reservations}
         renderItem={this.renderRow}
