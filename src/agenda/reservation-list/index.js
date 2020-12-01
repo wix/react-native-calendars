@@ -200,6 +200,11 @@ class ReservationList extends Component {
     this.heights[ind] = event.nativeEvent.layout.height;
   }
 
+  onMoveShouldSetResponderCapture = () => {
+    this.onListTouch();
+    return false;
+  }
+
   renderRow = ({item, index}) => {
     const reservationUserProps = extractComponentProps(Reservation, this.props);
 
@@ -229,10 +234,7 @@ class ReservationList extends Component {
         keyExtractor={(item, index) => String(index)}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
-        onMoveShouldSetResponderCapture={() => {
-          this.onListTouch();
-          return false;
-        }}
+        onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture}
         onScroll={this.onScroll}
         
         refreshControl={this.props.refreshControl}

@@ -126,18 +126,18 @@ class CalendarHeader extends Component {
     );
   };
 
-  renderArrow(left) {
+  renderArrow(direction) {
     const {hideArrows, disableArrowLeft, disableArrowRight, renderArrow, testID} = this.props;
     if (hideArrows) {
       return <View />;
     }
-
-    const id = left ? CHANGE_MONTH_LEFT_ARROW : CHANGE_MONTH_RIGHT_ARROW;
+    const isLeft = direction === 'left';
+    const id = isLeft ? CHANGE_MONTH_LEFT_ARROW : CHANGE_MONTH_RIGHT_ARROW;
     const testId = testID ? `${id}-${testID}` : id;
-    const onPress = left ? this.onPressLeft : this.onPressRight;
-    const imageSource = left ? require('../img/previous.png') : require('../img/next.png');
-    const renderArrowDirection = left ? 'left' : 'right';
-    const shouldDisable = left ? disableArrowLeft : disableArrowRight;
+    const onPress = isLeft ? this.onPressLeft : this.onPressRight;
+    const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
+    const renderArrowDirection = isLeft ? 'left' : 'right';
+    const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
 
     return (
       <TouchableOpacity
@@ -196,12 +196,12 @@ class CalendarHeader extends Component {
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
         <View style={this.style.header}>
-          {this.renderArrow(true)}
+          {this.renderArrow('left')}
           <View style={this.style.headerContainer}>
             {this.renderHeader()}
             {this.renderIndicator()}
           </View>
-          {this.renderArrow(false)}
+          {this.renderArrow('right')}
         </View>
         {this.renderDayNames()}
       </View>

@@ -273,7 +273,7 @@ export default class AgendaView extends Component {
 
     this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
     this.setState({
-      selectedDay: parseDate(day)
+      selectedDay: newDate
     });
 
     _.invoke(this.props, 'onDayChange', xdateToData(newDate));

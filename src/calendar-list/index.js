@@ -297,8 +297,8 @@ class CalendarList extends Component {
           initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
           showsVerticalScrollIndicator={this.props.showScrollIndicator}
           showsHorizontalScrollIndicator={horizontal && this.props.showScrollIndicator}
-          
           testID={this.props.testID}
+          
           onLayout={this.props.onLayout}
           horizontal={this.props.horizontal}
           pagingEnabled={this.props.pagingEnabled}
