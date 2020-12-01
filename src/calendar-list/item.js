@@ -83,8 +83,8 @@ class CalendarListItem extends Component {
       return (
         <Calendar
           {...calendarUserProps}
+          testID={testID}
           current={item}
-          testID={`${testID}_${item}`}
           style={[{height: calendarHeight, width: calendarWidth}, this.style.calendar, style]}
           headerStyle={horizontal ? headerStyle : undefined}
           disableMonthChange
