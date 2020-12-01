@@ -281,7 +281,7 @@ class CalendarList extends Component {
   }
 
   render() {
-    const {style, pastScrollRange, futureScrollRange, horizontal} = this.props;
+    const {style, pastScrollRange, futureScrollRange, horizontal, showScrollIndicator, testID} = this.props;
 
     return (
       <View>
@@ -295,18 +295,18 @@ class CalendarList extends Component {
           onViewableItemsChanged={this.onViewableItemsChanged}
           viewabilityConfig={this.viewabilityConfig}
           initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : false}
-          showsVerticalScrollIndicator={this.props.showScrollIndicator}
-          showsHorizontalScrollIndicator={horizontal && this.props.showScrollIndicator}
-          testID={this.props.testID}
+          showsVerticalScrollIndicator={showScrollIndicator}
+          showsHorizontalScrollIndicator={horizontal && showScrollIndicator}
+          testID={testID}
           
           onLayout={this.props.onLayout}
-          horizontal={this.props.horizontal}
+          removeClippedSubviews={this.props.removeClippedSubviews}
           pagingEnabled={this.props.pagingEnabled}
           scrollEnabled={this.props.scrollEnabled}
           scrollsToTop={this.props.scrollsToTop}
-          keyExtractor={this.props.keyExtractor}
-          removeClippedSubviews={this.props.removeClippedSubviews}
+          horizontal={this.props.horizontal}
           keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
+          keyExtractor={this.props.keyExtractor}
           onEndReachedThreshold={this.props.onEndReachedThreshold}
           onEndReached={this.props.onEndReached}
         />

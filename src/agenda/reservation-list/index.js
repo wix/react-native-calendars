@@ -26,12 +26,6 @@ class ReservationList extends Component {
     /** specify what should be rendered instead of ActivityIndicator */
     renderEmptyData: PropTypes.func,
 
-    /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
-    refreshControl: PropTypes.element,
-    /** Set this true while waiting for new data from a refresh. */
-    refreshing: PropTypes.bool,
-    /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly. */
-    onRefresh: PropTypes.func,
     /** onScroll ListView event */
     onScroll: PropTypes.func,
     /** Called when the user begins dragging the agenda list. **/
@@ -41,11 +35,18 @@ class ReservationList extends Component {
     /** Called when the momentum scroll starts for the agenda list. **/
     onMomentumScrollBegin: PropTypes.func,
     /** Called when the momentum scroll stops for the agenda list. **/
-    onMomentumScrollEnd: PropTypes.func
+    onMomentumScrollEnd: PropTypes.func,
+    /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
+    refreshControl: PropTypes.element,
+    /** Set this true while waiting for new data from a refresh. */
+    refreshing: PropTypes.bool,
+    /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly. */
+    onRefresh: PropTypes.func
   };
 
   static defaultProps = {
-    refreshing: false
+    refreshing: false,
+    selectedDay: XDate(true)
   };
 
   constructor(props) {
@@ -219,7 +220,6 @@ class ReservationList extends Component {
 
   render() {
     const {reservations, selectedDay, theme, style} = this.props;
-
     if (!reservations || !reservations[selectedDay.toString('yyyy-MM-dd')]) {
       _.invoke(this.props, 'renderEmptyData');
 
