@@ -20,7 +20,7 @@ class Week extends Component {
 
   static propTypes = {
     ...Calendar.propTypes,
-    // the current date
+    /** the current date */
     current: PropTypes.any
   };
 

@@ -409,5 +409,15 @@
 ### Fix
 - CalendarList - Forwarding missing 'disabledDaysIndexes' prop from CalendarListItem to Calendar (PR #1323).
 
-## [1.493.0] - 2020-11-29
+## [1.494.0] - 2020-11-29
 - Code cleanup.
+
+## [1.494.0] - 2020-11-29
+### Added
+- why-did-you-render setup.
+
+## [1.495.0] - 2020-12-01
+- Edit README. 
+
+## [1.496.0] - 2020-12-02
+- AgendaList, ExpandableCalendar, WeekCalendar - adding a note to wrap with CalendarProvider. 
