@@ -8,7 +8,7 @@ import styleConstructor from './style';
 
 class Day extends Component {
   static displayName = 'IGNORE';
-  
+
   static propTypes = {
     // TODO: disabled props should be removed
     state: PropTypes.oneOf(['disabled', 'today', '']),
@@ -94,9 +94,9 @@ class Day extends Component {
     }
     return (
       <View style={this.style.container}>
-        <TouchableOpacity 
-          testID={this.props.testID} 
-          style={containerStyle} 
+        <TouchableOpacity
+          testID={this.props.testID}
+          style={containerStyle}
           onPress={this.onDayPress}
           onLongPress={this.onDayLongPress}
           disabled={marking.disableTouchEvent}
@@ -108,7 +108,7 @@ class Day extends Component {
             {String(this.props.children)}
           </Text>
         </TouchableOpacity>
-        <View style={this.style.container}>
+        <View style={this.style.periods}>
           {periods}
         </View>
       </View>

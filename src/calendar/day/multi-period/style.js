@@ -8,6 +8,10 @@ export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     container: {
+      alignSelf: 'stretch',
+      alignItems: 'center'
+    },
+    periods: {
       alignSelf: 'stretch'
     },
     base: {
