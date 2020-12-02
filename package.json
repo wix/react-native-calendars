@@ -59,7 +59,8 @@
         "build": "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11"
+          "type": "iPhone 11",
+          "os": "iOS 13.7"
         }
       },
       "ios.sim.release": {
@@ -67,7 +68,8 @@
         "build": "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11"
+          "type": "iPhone 11",
+          "os": "iOS 13.7"
         }
       }
     },
