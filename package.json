@@ -35,6 +35,7 @@
     "immutable": "^4.0.0-rc.12"
   },
   "devDependencies": {
+    "@welldone-software/why-did-you-render": "^6.0.3",
     "babel-eslint": "^7.2.3",
     "detox": "^16.7.2",
     "eslint": "^6.5.1",

@@ -13,8 +13,8 @@ const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 
 /**
  * @description: AgendaList component
+ * @note: Should be wrapped with 'CalendarProvider'
  * @extends: SectionList
- * @notes: Should be wrapped in CalendarProvider component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 class AgendaList extends Component {
@@ -134,6 +134,10 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
+    if (this.props.renderSectionHeader) {
+      return this.props.renderSectionHeader();
+    }
+
     let sectionTitle = title;
 
     if (this.props.dayFormat) {

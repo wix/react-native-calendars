@@ -4,7 +4,6 @@ import {Agenda} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
 
-
 export default class AgendaScreen extends Component {
   constructor(props) {
     super(props);
@@ -59,7 +58,9 @@ export default class AgendaScreen extends Component {
         }
       }
       const newItems = {};
-      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+      Object.keys(this.state.items).forEach(key => {
+        newItems[key] = this.state.items[key];
+      });
       this.setState({
         items: newItems
       });
@@ -70,7 +71,7 @@ export default class AgendaScreen extends Component {
     return (
       <TouchableOpacity
         testID={testIDs.agenda.ITEM}
-        style={[styles.item, {height: item.height}]} 
+        style={[styles.item, {height: item.height}]}
         onPress={() => Alert.alert(item.name)}
       >
         <Text>{item.name}</Text>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
   },
   emptyDate: {
     height: 15,
-    flex:1,
+    flex: 1,
     paddingTop: 30
   }
 });
