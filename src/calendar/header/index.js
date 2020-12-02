@@ -5,7 +5,7 @@ import React, {Component, Fragment} from 'react';
 import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image} from 'react-native';
 import {shouldUpdate} from '../../component-updater';
 import {weekDayNames} from '../../dateutils';
-import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME} from '../../testIDs';
+import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_DAY_NAMES, HEADER_MONTH_NAME} from '../../testIDs';
 import styleConstructor from './style';
 
 class CalendarHeader extends Component {
@@ -47,11 +47,11 @@ class CalendarHeader extends Component {
       return true;
     }
     return shouldUpdate(this.props, nextProps, [
-      'showIndicator', 
-      'hideDayNames', 
-      'firstDay', 
-      'weekNumbers', 
-      'monthFormat', 
+      'showIndicator',
+      'hideDayNames',
+      'firstDay',
+      'weekNumbers',
+      'monthFormat',
       'renderArrow',
       'disableArrowLeft',
       'disableArrowRight'
@@ -141,7 +141,7 @@ class CalendarHeader extends Component {
 
     return (
       <TouchableOpacity
-        onPress={onPress}
+        onPress={!shouldDisable ? onPress : undefined}
         disabled={shouldDisable}
         style={this.style.arrow}
         hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
@@ -165,12 +165,12 @@ class CalendarHeader extends Component {
   }
 
   renderDayNames() {
-    const {firstDay, hideDayNames, weekNumbers} = this.props;
+    const {firstDay, hideDayNames, weekNumbers, testID} = this.props;
     const weekDaysNames = weekDayNames(firstDay);
 
     if (!hideDayNames) {
       return (
-        <View style={this.style.week}>
+        <View style={this.style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
           {weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
           {this.renderWeekDays(weekDaysNames)}
         </View>
