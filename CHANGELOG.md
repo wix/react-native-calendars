@@ -421,3 +421,19 @@
 
 ## [1.496.0] - 2020-12-02
 - AgendaList, ExpandableCalendar, WeekCalendar - adding a note to wrap with CalendarProvider. 
+
+## [1.497.0] - 2020-12-02
+### Fix
+- Day multi-period - Fix day text align on multi-period (PR #1344).
+ 
+## [1.498.0] - 2020-12-02
+### Added
+- ExpandableCalendar - added 'onCalendarToggled' prop (PR #1334).
+
+## [1.499.0] - 2020-12-02
+### Added
+- Detox configuration - run on iOS 13.7 simulator to fix CI builds.
+
+## [1.500.0] - 2020-12-02
+### Fix
+- CalendarHeader - Fix alignment for 'showWeekNumbers'.

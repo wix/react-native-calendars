@@ -21,7 +21,7 @@ class CalendarHeader extends Component {
     firstDay: PropTypes.number,
     renderArrow: PropTypes.func,
     hideDayNames: PropTypes.bool,
-    weekNumbers: PropTypes.bool,
+    showWeekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func,
     disableArrowLeft: PropTypes.bool,
@@ -50,7 +50,7 @@ class CalendarHeader extends Component {
       'showIndicator', 
       'hideDayNames', 
       'firstDay', 
-      'weekNumbers', 
+      'showWeekNumbers', 
       'monthFormat', 
       'renderArrow',
       'disableArrowLeft',
@@ -165,13 +165,13 @@ class CalendarHeader extends Component {
   }
 
   renderDayNames() {
-    const {firstDay, hideDayNames, weekNumbers} = this.props;
+    const {firstDay, hideDayNames, showWeekNumbers} = this.props;
     const weekDaysNames = weekDayNames(firstDay);
 
     if (!hideDayNames) {
       return (
         <View style={this.style.week}>
-          {weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
+          {showWeekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
           {this.renderWeekDays(weekDaysNames)}
         </View>
       );
