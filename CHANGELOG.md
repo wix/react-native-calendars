@@ -404,3 +404,10 @@
 ## [1.492.0] - 2020-11-29
 ### Fix
 - example - fix formatting.
+
+## [1.493.0] - 2020-11-29
+### Fix
+- CalendarList - Forwarding missing 'disabledDaysIndexes' prop from CalendarListItem to Calendar (PR #1323).
+
+## [1.493.0] - 2020-11-29
+- Code cleanup.
