@@ -60,7 +60,7 @@
         "type": "ios.simulator",
         "device": {
           "type": "iPhone 11",
-          "os": "iOS 13.3"
+          "os": "iOS 13.7"
         }
       },
       "ios.sim.release": {
@@ -69,7 +69,7 @@
         "type": "ios.simulator",
         "device": {
           "type": "iPhone 11",
-          "os": "iOS 13.3"
+          "os": "iOS 13.7"
         }
       }
     },
