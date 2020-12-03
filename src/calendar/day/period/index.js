@@ -213,7 +213,7 @@ class Day extends Component {
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
             <Dot
               theme={theme}
-              isMarked={marked}
+              marked={marked}
               dotColor={dotColor}
             />
           </View>

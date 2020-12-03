@@ -8,14 +8,11 @@ import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
 import shouldComponentUpdate from './updater';
 import {extractComponentProps} from '../component-updater';
-import {SELECT_DATE_SLOT} from '../testIDs';
 import styleConstructor from './style';
 import CalendarHeader from './header';
 import Day from './day/basic';
-import PeriodDay from './day/period';
-import MultiDotDay from './day/multi-dot';
-import MultiPeriodDay from './day/multi-period';
-import CustomDay from './day/custom';
+import DayComp from './day/index';
+
 
 //Fallback for react-native-web or when RN version is < 0.44
 const {View, ViewPropTypes} = ReactNative;
@@ -150,69 +147,6 @@ class Calendar extends Component {
     return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
   };
 
-  getAccessibilityLabel = (state, day) => {
-    const today = XDate.locales[XDate.defaultLocale].today;
-    const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel;
-    const isToday = state === 'today';
-    const markingLabel = this.getDateMarking(day);
-
-    if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
-    }
-
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
-  };
-
-  getMarkingLabel(day) {
-    let label = '';
-    const marking = this.getDateMarking(day);
-
-    if (marking.accessibilityLabel) {
-      return marking.accessibilityLabel;
-    }
-
-    if (marking.selected) {
-      label += 'selected ';
-      if (!marking.marked) {
-        label += 'You have no entries for this day ';
-      }
-    }
-    if (marking.marked) {
-      label += 'You have entries for this day ';
-    }
-    if (marking.startingDay) {
-      label += 'period start ';
-    }
-    if (marking.endingDay) {
-      label += 'period end ';
-    }
-    if (marking.disabled || marking.disableTouchEvent) {
-      label += 'disabled ';
-    }
-    return label;
-  }
-
-  getDayComponent() {
-    const {dayComponent, markingType} = this.props;
-
-    if (dayComponent) {
-      return dayComponent;
-    }
-
-    switch (markingType) {
-      case 'period':
-        return PeriodDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      case 'multi-period':
-        return MultiPeriodDay;
-      case 'custom':
-        return CustomDay;
-      default:
-        return Day;
-    }
-  }
-
   getDateMarking(day) {
     const {markedDates} = this.props;
 
@@ -256,15 +190,20 @@ class Calendar extends Component {
   renderWeekNumber(weekNumber) {
     return (
       <View style={this.style.dayContainer} key={`week-container-${weekNumber}`}>
-        <Day key={`week-${weekNumber}`} marking={{disableTouchEvent: true}} state="disabled" theme={this.props.theme}>
+        <Day 
+          key={`week-${weekNumber}`} 
+          marking={{disableTouchEvent: true}} 
+          state="disabled" 
+          theme={this.props.theme}
+        >
           {weekNumber}
         </Day>
       </View>
     );
   }
 
-  renderDay(day, id) {
-    const {disabledByDefault, hideExtraDays, theme, disableAllTouchEventsForDisabledDays} = this.props;
+  getState(day) {
+    const {disabledByDefault} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
@@ -278,31 +217,30 @@ class Calendar extends Component {
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
+    return state;
+  }
 
+  renderDay(day, id) {
+    const {hideExtraDays, dayComponent, theme, markingType, disabledByDefault, disableAllTouchEventsForDisabledDays} = this.props;
+    
     if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
     }
 
-    const DayComp = this.getDayComponent();
-    const date = day.getDate();
-    const dateAsObject = xdateToData(day);
-    const accessibilityLabel = this.getAccessibilityLabel(state, day);
-
     return (
       <View style={this.style.dayContainer} key={id}>
         <DayComp
-          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
-          state={state}
+          theme={theme}
+          day={day}
+          state={this.getState(day)}
+          marking={this.getDateMarking(day)}
+          markingType={markingType}
+          dayComponent={dayComponent}
+          disabledByDefault={disabledByDefault}
+          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
-          date={dateAsObject}
-          marking={this.getDateMarking(day)}
-          accessibilityLabel={accessibilityLabel}
-          theme={theme}
-          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
-        >
-          {date}
-        </DayComp>
+        />
       </View>
     );
   }

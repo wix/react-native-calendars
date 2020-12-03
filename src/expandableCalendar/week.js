@@ -3,15 +3,12 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
-import {SELECT_DATE_SLOT} from '../testIDs';
+import {parseDate} from '../interface';
 import styleConstructor from './style';
 import Calendar from '../calendar';
-import Day from '../calendar/day/basic';
-import PeriodDay from '../calendar/day/period';
-import MultiDotDay from '../calendar/day/multi-dot';
-import MultiPeriodDay from '../calendar/day/multi-period';
-import CustomDay from '../calendar/day/custom';
+// import Day from '../calendar/day/basic';
+import DayComp from '../calendar/day/index';
+
 
 const EmptyArray = [];
 
@@ -29,6 +26,10 @@ class Week extends Component {
 
     this.style = styleConstructor(props.theme);
   }
+
+  isDateNotInTheRange = (minDate, maxDate, date) => {
+    return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
+  };
 
   getWeek(date) {
     if (date) {
@@ -59,27 +60,6 @@ class Week extends Component {
     }
   }
 
-  getDayComponent() {
-    const {dayComponent, markingType} = this.props;
-    
-    if (dayComponent) {
-      return dayComponent;
-    }
-
-    switch (markingType) {
-      case 'period':
-        return PeriodDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      case 'multi-period':
-        return MultiPeriodDay;
-      case 'custom':
-        return CustomDay;
-      default:
-        return Day;
-    }
-  }
-
   getDateMarking(day) {
     const {markedDates} = this.props;
     if (!markedDates) {
@@ -94,51 +74,52 @@ class Week extends Component {
     }
   }
 
-  // renderWeekNumber (weekNumber) {
-  //   return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
-  // }
-
-  renderDay(day, id) {
-    const {current} = this.props;
+  getState(day) {
+    const {current, disabledByDefault} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
-
     let state = '';
-    if (this.props.disabledByDefault) {
+
+    if (disabledByDefault) {
       state = 'disabled';
-    } else if ((minDate && !dateutils.isGTE(day, minDate)) || (maxDate && !dateutils.isLTE(day, maxDate))) {
+    } else if (this.isDateNotInTheRange(minDate, maxDate, day)) {
       state = 'disabled';
-    } else if (!dateutils.sameMonth(day, parseDate(current))) { // for extra days
+    } else if (!dateutils.sameMonth(day, parseDate(current))) {
       state = 'disabled';
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
+    return state;
+  }
 
+  // renderWeekNumber (weekNumber) {
+  //   return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
+  // }
+  
+  renderDay(day, id) {
+    const {current, hideExtraDays, theme, markingType, dayComponent, disabledByDefault, disableAllTouchEventsForDisabledDays} = this.props;
+    
     // hide extra days
-    if (current && this.props.hideExtraDays) {
+    if (current && hideExtraDays) {
       if (!dateutils.sameMonth(day, parseDate(current))) {
         return (<View key={id} style={this.style.emptyDayContainer}/>);
       }
     }
 
-    const DayComp = this.getDayComponent();
-    const dayDate = day.getDate();
-    const dateAsObject = xdateToData(day);
-
     return (
       <View style={this.style.dayContainer} key={id}>
         <DayComp
-          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
-          date={dateAsObject}
+          theme={theme}
+          day={day}
+          state={this.getState(day)}
           marking={this.getDateMarking(day)}
-          state={state}
-          theme={this.props.theme}
-          onPress={this.props.onDayPress}
-          onLongPress={this.props.onDayPress}
-          disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
-        >
-          {dayDate}
-        </DayComp>
+          markingType={markingType}
+          dayComponent={dayComponent}
+          disabledByDefault={disabledByDefault}
+          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
+          onPress={this.pressDay}
+          onLongPress={this.longPressDay}
+        />
       </View>
     );
   }
