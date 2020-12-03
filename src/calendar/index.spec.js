@@ -235,17 +235,17 @@ describe('Calendar', () => {
     describe('Week days', () => {
       it('should render day names', () => {
         const drv = new CalendarDriver().withDefaultProps().render();
-        expect(getTextNodes(drv.getHeader().getDayNames())).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+        expect(drv.getHeader().getDayNames()).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
       });
 
       it('should support custom first day via `firstDay` prop', () => {
         const drv = new CalendarDriver().withDefaultProps({firstDay: 4}).render();
-        expect(getTextNodes(drv.getHeader().getDayNames())).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
+        expect(drv.getHeader().getDayNames()).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
       });
 
       it('should not render day names with `hideDayNames={true}`', () => {
         const drv = new CalendarDriver().withDefaultProps({hideDayNames: true}).render();
-        expect(getTextNodes(drv.getHeader().getDayNames())).toEqual([]);
+        expect(drv.getHeader().getDayNames()).toEqual([]);
       });
     });
 

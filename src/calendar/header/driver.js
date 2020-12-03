@@ -19,7 +19,7 @@ export class CalendarHeaderDriver extends ComponentDriver {
   }
 
   getDayNames() {
-    return this.getByID(this.getTestID(HEADER_DAY_NAMES));
+    return getTextNodes(this.getByID(this.getTestID(HEADER_DAY_NAMES)));
   }
 
   getLoadingIndicator() {
