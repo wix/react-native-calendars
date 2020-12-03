@@ -175,7 +175,7 @@ class Calendar extends Component {
     const today = XDate.locales[XDate.defaultLocale].today;
     const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel;
     const isToday = state === 'today';
-    const markingLabel = this.getDateMarking(day);
+    const markingLabel = this.getMarkingLabel(day);
 
     if (formatAccessibilityLabel) {
       return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
