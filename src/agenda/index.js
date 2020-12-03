@@ -49,7 +49,7 @@ export default class AgendaView extends Component {
     onDaychange: PropTypes.func, 
     /** specify how agenda knob should look like */
     renderKnob: PropTypes.func,
-    /** initially selected day */
+    /** initially selected day */ //TODO: Should be renamed 'selectedDay'
     selected: PropTypes.any,
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool

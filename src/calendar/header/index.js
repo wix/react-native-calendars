@@ -13,21 +13,32 @@ class CalendarHeader extends Component {
 
   static propTypes = {
     theme: PropTypes.object,
-    hideArrows: PropTypes.bool,
-    month: PropTypes.instanceOf(XDate),
-    monthFormat: PropTypes.string,
-    addMonth: PropTypes.func,
-    showIndicator: PropTypes.bool,
     firstDay: PropTypes.number,
-    renderArrow: PropTypes.func,
-    hideDayNames: PropTypes.bool,
+    displayLoadingIndicator: PropTypes.bool,
     showWeekNumbers: PropTypes.bool,
+    month: PropTypes.instanceOf(XDate),
+    addMonth: PropTypes.func,
+    /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
+    monthFormat: PropTypes.string,
+    /**  Hide day names. Default = false */
+    hideDayNames: PropTypes.bool,
+    /** Hide month navigation arrows. Default = false */
+    hideArrows: PropTypes.bool,
+    /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
+    renderArrow: PropTypes.func,
+    /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
     onPressArrowLeft: PropTypes.func,
+    /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
     onPressArrowRight: PropTypes.func,
+    /** Disable left arrow. Default = false */
     disableArrowLeft: PropTypes.bool,
+    /** Disable right arrow. Default = false */
     disableArrowRight: PropTypes.bool,
+    /** Apply custom disable color to selected day indexes */
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
+    /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
+    /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
     webAriaLevel: PropTypes.number
   };
 
@@ -47,7 +58,7 @@ class CalendarHeader extends Component {
       return true;
     }
     return shouldUpdate(this.props, nextProps, [
-      'showIndicator', 
+      'displayLoadingIndicator', 
       'hideDayNames', 
       'firstDay', 
       'showWeekNumbers', 
@@ -157,9 +168,9 @@ class CalendarHeader extends Component {
   }
 
   renderIndicator() {
-    const {showIndicator, theme} = this.props;
+    const {displayLoadingIndicator, theme} = this.props;
 
-    if (showIndicator) {
+    if (displayLoadingIndicator) {
       return <ActivityIndicator color={theme && theme.indicatorColor} />;
     }
   }
