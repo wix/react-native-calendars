@@ -32,10 +32,9 @@ class Calendar extends Component {
   static displayName = 'Calendar';
 
   static propTypes = {
+    ...CalendarHeader.propTypes,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
-    /** Collection of dates that have to be marked. Default = {} */
-    markedDates: PropTypes.object,
     /** Specify style for calendar container element. Default = {} */
     style: viewPropTypes.style,
     /** Initially visible month. Default = Date() */
@@ -46,12 +45,14 @@ class Calendar extends Component {
     maxDate: PropTypes.any,
     /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday. */
     firstDay: PropTypes.number,
+    /** Collection of dates that have to be marked. Default = {} */
+    markedDates: PropTypes.object,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
     markingType: PropTypes.string,
-    /** Hide month navigation arrows. Default = false */
-    hideArrows: PropTypes.bool,
     /** Display loading indicator. Default = false */
     displayLoadingIndicator: PropTypes.bool,
+    /** Show week numbers. Default = false */
+    showWeekNumbers: PropTypes.bool,
     /** Do not show days of other months in month page. Default = false */
     hideExtraDays: PropTypes.bool,
     /** Always show six weeks on each month (only when hideExtraDays = false). Default = false */
@@ -64,42 +65,20 @@ class Calendar extends Component {
     onMonthChange: PropTypes.func,
     /** Handler which gets executed when visible month changes in calendar. Default = undefined */
     onVisibleMonthsChange: PropTypes.func,
-    /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
-    renderArrow: PropTypes.func,
     /** Provide custom day rendering component */
     dayComponent: PropTypes.any,
-    /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
-    monthFormat: PropTypes.string,
     /** Disables changing month when click on days of other months (when hideExtraDays is false). Default = false */
     disableMonthChange: PropTypes.bool,
-    /**  Hide day names. Default = false */
-    hideDayNames: PropTypes.bool,
+    /** Enable the option to swipe between months. Default: false */
+    enableSwipeMonths: PropTypes.bool,
     /** Disable days by default. Default = false */
     disabledByDefault: PropTypes.bool,
-    /** Show week numbers. Default = false */
-    showWeekNumbers: PropTypes.bool,
-    /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
-    onPressArrowLeft: PropTypes.func,
-    /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
-    onPressArrowRight: PropTypes.func,
-    /** Disable left arrow. Default = false */
-    disableArrowLeft: PropTypes.bool,
-    /** Disable right arrow. Default = false */
-    disableArrowRight: PropTypes.bool,
-    /** Style passed to the header */
-    headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number,
-    /** Apply custom disable color to selected day indexes */
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
     /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
     disableAllTouchEventsForDisabledDays: PropTypes.bool,
-    /** Replace default month and year title with custom one. the function receive a date as parameter. */
-    renderHeader: PropTypes.any,
+    /** Style passed to the header */
+    headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Allow rendering of a totally custom header */
-    customHeader: PropTypes.any,
-    /** Enable the option to swipe between months. Default: false */
-    enableSwipeMonths: PropTypes.bool
+    customHeader: PropTypes.any
   };
 
   static defaultProps = {
@@ -379,9 +358,9 @@ class Calendar extends Component {
       testID: testID,
       style: headerStyle,
       ref: c => (this.header = c),
-      showIndicator: indicator,
       month: this.state.currentMonth,
-      addMonth: this.addMonth
+      addMonth: this.addMonth,
+      displayLoadingIndicator: indicator
     };
 
     const CustomHeader = customHeader;
