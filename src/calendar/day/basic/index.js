@@ -1,116 +1,138 @@
+import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {TouchableOpacity, Text} from 'react-native';
-import PropTypes from 'prop-types';
 import {shouldUpdate} from '../../../component-updater';
-import Dot from '../../dot';
 import styleConstructor from './style';
+import Dot from '../../dot';
 
 
 class Day extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    // TODO: disabled props should be removed
-    state: PropTypes.oneOf(['disabled', 'today', '']),
-    // Specify theme properties to override specific styles for calendar parts. Default = {}
-    theme: PropTypes.object,
+    date: PropTypes.object, // what is this for???
+    state: PropTypes.oneOf(['disabled', 'today', '']), //TODO: deprecate??
     marking: PropTypes.any,
+    theme: PropTypes.object,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object,
     disableAllTouchEventsForDisabledDays: PropTypes.bool
   };
 
   constructor(props) {
     super(props);
+    
     this.style = styleConstructor(props.theme);
-
-    this.onDayPress = this.onDayPress.bind(this);
-    this.onDayLongPress = this.onDayLongPress.bind(this);
-  }
-
-  onDayPress() {
-    this.props.onPress(this.props.date);
-  }
-  onDayLongPress() {
-    this.props.onLongPress(this.props.date);
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['children', 'state', 'marking', 'onPress', 'onLongPress']);
   }
 
-  render() {
-    const {theme, disableAllTouchEventsForDisabledDays} = this.props;
-    const containerStyle = [this.style.base];
-    const textStyle = [this.style.text];
+  onPress = () => {
+    _.invoke(this.props, 'onPress', this.props.date);
+  }
+  
+  onLongPress = () => {
+    _.invoke(this.props, 'onLongPress', this.props.date);
+  }
 
+  get marking() {
     let marking = this.props.marking || {};
     if (marking && marking.constructor === Array && marking.length) {
       marking = {
         marking: true
       };
     }
+    return marking;
+  }
 
-    const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
-    const isToday = this.props.state === 'today';
-
-    const {
-      marked,
-      dotColor,
-      selected,
-      selectedColor,
-      selectedTextColor,
-      activeOpacity,
-      disableTouchEvent
-    } = marking;
-
-    if (selected) {
-      containerStyle.push(this.style.selected);
-      textStyle.push(this.style.selectedText);
-
-      if (selectedColor) {
-        containerStyle.push({backgroundColor: selectedColor});
-      }
-
-      if (selectedTextColor) {
-        textStyle.push({color: selectedTextColor});
-      }
-
-    } else if (isDisabled) {
-      textStyle.push(this.style.disabledText);
-    } else if (isToday) {
-      containerStyle.push(this.style.today);
-      textStyle.push(this.style.todayText);
-    }
+  shouldDisableTouchEvent() {
+    const {disableAllTouchEventsForDisabledDays} = this.props;
+    const {disableTouchEvent} = this.marking;
 
     let shouldDisableTouchEvent = false;
     if (typeof disableTouchEvent === 'boolean') {
       shouldDisableTouchEvent = disableTouchEvent;
-    } else if (typeof disableAllTouchEventsForDisabledDays === 'boolean' && isDisabled) {
+    } else if (typeof disableAllTouchEventsForDisabledDays === 'boolean' && this.isDisabled()) {
       shouldDisableTouchEvent = disableAllTouchEventsForDisabledDays;
     }
+    return shouldDisableTouchEvent;
+  }
+
+  isToday() {
+    return this.props.state === 'today';
+  }
+
+  isDisabled() {
+    return typeof this.marking.disabled !== 'undefined' ? this.marking.disabled : this.props.state === 'disabled';
+  }
+
+  getContainerStyle() {
+    const {selected, selectedColor} = this.props.marking;
+    const style = [this.style.base];
+
+    if (selected) {
+      style.push(this.style.selected);
+      if (selectedColor) {
+        style.push({backgroundColor: selectedColor});
+      }
+    } else if (this.isToday()) {
+      style.push(this.style.today);
+    }
+    return style;
+  }
+
+  getTextStyle() {
+    const {selected, selectedTextColor} = this.props.marking;
+    const style = [this.style.text];
+
+    if (selected) {
+      style.push(this.style.selectedText);
+      if (selectedTextColor) {
+        style.push({color: selectedTextColor});
+      }
+    } else if (this.isDisabled()) {
+      style.push(this.style.disabledText);
+    } else if (this.isToday()) {
+      style.push(this.style.todayText);
+    }
+    return style;
+  }
+
+  renderMarking() {
+    const {theme} = this.props;
+    const {selected, marked, dotColor} = this.marking;
+
+    return (
+      <Dot
+        theme={theme}
+        selected={selected}
+        marked={marked}
+        dotColor={dotColor}
+        today={this.isToday()}
+        disabled={this.isDisabled()}
+      />
+    );
+  }
+
+  render() {
+    const {activeOpacity} = this.marking;
 
     return (
       <TouchableOpacity
         testID={this.props.testID}
-        style={containerStyle}
-        onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}
+        style={this.getContainerStyle()}
+        disabled={this.shouldDisableTouchEvent()}
         activeOpacity={activeOpacity}
-        disabled={shouldDisableTouchEvent}
-        accessibilityRole={isDisabled ? undefined : 'button'}
+        onPress={this.onPress}
+        onLongPress={this.onLongPress}
+        accessibilityRole={this.isDisabled() ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
-        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        <Dot
-          theme={theme}
-          isMarked={marked}
-          dotColor={dotColor}
-          isSelected={selected}
-          isToday={isToday}
-          isDisabled={isDisabled}
-        />
+        <Text allowFontScaling={false} style={this.getTextStyle()}>{String(this.props.children)}</Text>
+        {this.renderMarking()}
       </TouchableOpacity>
     );
   }
