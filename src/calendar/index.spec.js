@@ -129,9 +129,7 @@ describe('Calendar', () => {
       });
     });
 
-    // TODO: Unskip after #1353 is merged
-    // https://github.com/wix/react-native-calendars/pull/1353
-    describe.skip('Accessibility labels', () => {
+    describe('Accessibility labels', () => {
       it('should have default accessibility label', () => {
         const drv = new CalendarDriver().render();
         expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020');
