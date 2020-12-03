@@ -12,7 +12,7 @@ export class CalendarDriver extends ComponentDriver {
   }
 
   withDefaultProps(props) {
-    return this.setProps({...props, testID: this.testID});
+    return this.setProps({testID: this.testID, ...props});
   }
 
   isRootGestureRecognizer() {
