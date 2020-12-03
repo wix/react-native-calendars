@@ -8,8 +8,10 @@ import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
   HEADER_DAY_NAMES,
+  HEADER_LOADING_INDICATOR,
   HEADER_MONTH_NAME,
-  SELECT_DATE_SLOT
+  SELECT_DATE_SLOT,
+  WEEK_NUMBER
 } from '../testIDs';
 import {extractStyles, getDaysArray, partial} from '../../test';
 
@@ -26,7 +28,7 @@ describe('Calendar', () => {
   });
 
   describe('Month days', () => {
-    it('should display current month days including extra days from other months by default', () => {
+    it('should render current month days including extra days from other months by default', () => {
       let expectedDays = [];
       expectedDays.push(...getDaysArray(29, 31)); // March
       expectedDays.push(...getDaysArray(1, 30)); // April
@@ -45,6 +47,36 @@ describe('Calendar', () => {
       expectedDays.push(...getDaysArray(1, 4)); // April days
       const drv = new CalendarDriver().setProps({current: '2020-03-01'}).render();
       expect(getTextNodes(drv.getDays())).toEqual(expectedDays);
+    });
+
+    it('should render calendar with week numbers with `showWeekNumbers={true}` prop', () => {
+      const drv = new CalendarDriver().setProps({showWeekNumbers: true}).render();
+      expect(getTextNodes(drv.getWeekNumbers())).toEqual(['14', '15', '16', '17', '18']);
+    });
+
+    it('should gray out dates not in interval between `minDate` and `maxDate`', () => {
+      const textDisabledColor = '#AAAAAA';
+      const drv = new CalendarDriver()
+        .setProps({minDate: '2020-04-10', maxDate: '2020-04-11', theme: {textDisabledColor}})
+        .render();
+
+      // Disabled dates
+      expect(drv.getDayTextStyle('2020-04-09')).toEqual(partial({color: textDisabledColor}));
+      expect(drv.getDayTextStyle('2020-04-12')).toEqual(partial({color: textDisabledColor}));
+
+      // Enabled dates
+      expect(drv.getDayTextStyle('2020-04-10')).not.toEqual(partial({color: textDisabledColor}));
+      expect(drv.getDayTextStyle('2020-04-11')).not.toEqual(partial({color: textDisabledColor}));
+    });
+
+    it('should disable touch events for disabled dates with `disableAllTouchEventsForDisabledDays`', () => {
+      const date = '2020-04-10';
+      const onDayPress = jest.fn();
+      new CalendarDriver()
+        .setProps({onDayPress, markedDates: {[date]: {disabled: true}}, disableAllTouchEventsForDisabledDays: true})
+        .render()
+        .tapDay(date);
+      expect(onDayPress).not.toBeCalled();
     });
 
     describe('Basic Day', () => {
@@ -172,6 +204,32 @@ describe('Calendar', () => {
       const customHeader = props => React.createElement('Text', props, text);
       const drv = new CalendarDriver().setProps({customHeader}).render();
       expect(getTextNodes(drv.getComponent())).toContain(text);
+    });
+
+    it('should have loading indicator with `displayLoadingIndicator` prop when `markedDates` collection does not have a value for every day of the month', () => {
+      expect(
+        new CalendarDriver()
+          .setProps({current: currentDate, displayLoadingIndicator: true})
+          .render()
+          .getHeaderLoadingIndicator()
+      ).toBeDefined();
+    });
+
+    it('should not have loading indicator with `displayLoadingIndicator` prop when `markedDates` collection has a value for every day of the month', () => {
+      let date = currentDate;
+      const markedDates = {};
+      for (let i = 0; i < 30; i++) {
+        const string = date.toISOString().split('T')[0];
+        markedDates[string] = {};
+        date.setDate(date.getDate() + 1);
+      }
+
+      expect(
+        new CalendarDriver()
+          .setProps({current: '2020-04-01', displayLoadingIndicator: true, markedDates})
+          .render()
+          .getHeaderLoadingIndicator()
+      ).toBeUndefined();
     });
 
     describe('Week days', () => {
@@ -343,5 +401,13 @@ class CalendarDriver extends ComponentDriver {
 
   getDayTextStyle(dateString) {
     return extractStyles(this.getDayText(dateString));
+  }
+
+  getWeekNumbers() {
+    return this.filterByID(new RegExp(WEEK_NUMBER));
+  }
+
+  getHeaderLoadingIndicator() {
+    return this.getByID(HEADER_LOADING_INDICATOR);
   }
 }

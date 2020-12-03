@@ -5,7 +5,13 @@ import React, {Component, Fragment} from 'react';
 import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image} from 'react-native';
 import {shouldUpdate} from '../../component-updater';
 import {weekDayNames} from '../../dateutils';
-import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_DAY_NAMES, HEADER_MONTH_NAME} from '../../testIDs';
+import {
+  CHANGE_MONTH_LEFT_ARROW,
+  CHANGE_MONTH_RIGHT_ARROW,
+  HEADER_DAY_NAMES,
+  HEADER_LOADING_INDICATOR,
+  HEADER_MONTH_NAME
+} from '../../testIDs';
 import styleConstructor from './style';
 
 class CalendarHeader extends Component {
@@ -157,10 +163,15 @@ class CalendarHeader extends Component {
   }
 
   renderIndicator() {
-    const {showIndicator, theme} = this.props;
+    const {showIndicator, theme, testID} = this.props;
 
     if (showIndicator) {
-      return <ActivityIndicator color={theme && theme.indicatorColor} />;
+      return (
+        <ActivityIndicator
+          color={theme && theme.indicatorColor}
+          testID={testID ? `${HEADER_LOADING_INDICATOR}-${testID}` : HEADER_LOADING_INDICATOR}
+        />
+      );
     }
   }
 
