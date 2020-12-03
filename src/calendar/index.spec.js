@@ -207,7 +207,7 @@ describe('Calendar', () => {
     it('should have loading indicator with `displayLoadingIndicator` prop when `markedDates` collection does not have a value for every day of the month', () => {
       expect(
         new CalendarDriver()
-          .withDefaultProps({current: currentDate, displayLoadingIndicator: true})
+          .withDefaultProps({current: '2020-04-01', displayLoadingIndicator: true})
           .render()
           .getHeader()
           .getLoadingIndicator()
