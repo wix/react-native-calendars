@@ -8,6 +8,7 @@ ios/
 android/
 index.android.js
 index.ios.js
+jest-setup.js
 
 .nvmrc
 .*ignore
@@ -19,6 +20,7 @@ index.ios.js
 
 e2e
 spec
+test
 
 ISSUE_TEMPLATE.md
 
