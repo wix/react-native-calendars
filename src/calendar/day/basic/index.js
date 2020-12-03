@@ -86,7 +86,7 @@ class Day extends Component {
         testID={this.props.testID}
         style={containerStyle}
         onPress={!shouldDisableTouchEvent ? this.onDayPress : undefined}
-        onLongPress={this.onDayLongPress}
+        onLongPress={!shouldDisableTouchEvent ? this.onDayLongPress : undefined}
         activeOpacity={activeOpacity}
         disabled={shouldDisableTouchEvent}
         accessibilityRole={isDisabled ? undefined : 'button'}
