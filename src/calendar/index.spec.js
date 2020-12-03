@@ -10,7 +10,7 @@ describe('Calendar', () => {
   let currentDate;
 
   beforeEach(() => {
-    currentDate = Date.parse('2020-04-01');
+    currentDate = new Date('2020-04-01T12:00:00.002Z');
     advanceTo(currentDate);
   });
 
