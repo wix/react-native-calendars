@@ -16,8 +16,8 @@ export default class DayComp extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    day: PropTypes.object,
-    state: PropTypes.string,
+    date: PropTypes.object,
+    state: PropTypes.string, //TODO: deprecate??
     markingType: PropTypes.string,
     marking: PropTypes.any,
     theme: PropTypes.object,
@@ -34,7 +34,7 @@ export default class DayComp extends Component {
   // }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['day', 'markingType', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['date', 'markingType', 'marking', 'onPress', 'onLongPress']);
   }
 
   getMarkingLabel() {
@@ -66,17 +66,17 @@ export default class DayComp extends Component {
     return label;
   }
 
-  getAccessibilityLabel = (state, day) => {
+  getAccessibilityLabel = (state, date) => {
     const today = XDate.locales[XDate.defaultLocale].today;
     const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel;
     const isToday = state === 'today';
-    const markingLabel = this.getMarkingLabel(day);
+    const markingLabel = this.getMarkingLabel(date);
 
     if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
+      return `${isToday ? today : ''} ${date.toString(formatAccessibilityLabel)} ${markingLabel}`;
     }
 
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
+    return `${isToday ? 'today' : ''} ${date.toString('dddd d MMMM yyyy')} ${markingLabel}`;
   };
 
   getDayComponent() {
@@ -101,23 +101,23 @@ export default class DayComp extends Component {
   }
 
   render() {
-    const {day, state, marking, theme, disableAllTouchEventsForDisabledDays, onPress, onLongPress} = this.props;
-    const dateAsObject = xdateToData(day);
+    const {date, state, marking, theme, disableAllTouchEventsForDisabledDays, onPress, onLongPress} = this.props;
+    const dateAsObject = xdateToData(date);
     const Component = this.getDayComponent();
     
     return (
       <Component
-          date={dateAsObject}
+          date={date}
           theme={theme}
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
-          accessibilityLabel={this.getAccessibilityLabel(state, day)}
+          accessibilityLabel={this.getAccessibilityLabel(state, date)}
           state={state}
           marking={marking}
           onPress={onPress}
           onLongPress={onLongPress}
           disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
         >
-          {dateAsObject ? day.getDate() : day}
+          {dateAsObject ? date.getDate() : date}
       </Component>
     );
   }
