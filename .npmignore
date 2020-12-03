@@ -3,6 +3,7 @@
 .github
 src/**/*.spec.js
 src/**/*.driver.js
+src/**/driver.js
 example/
 demo/
 ios/

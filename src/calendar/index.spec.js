@@ -5,8 +5,9 @@ import {swipeDirections} from 'react-native-swipe-gestures';
 import {advanceTo, clear as clearDate} from 'jest-date-mock';
 import Calendar from '.';
 import {SELECT_DATE_SLOT, WEEK_NUMBER} from '../testIDs';
-import {extractStyles, getDaysArray, partial} from '../../test';
+import {getDaysArray, partial} from '../../test';
 import {CalendarHeaderDriver} from './header/driver';
+import {BasicDayDriver} from './day/basic/driver';
 
 describe('Calendar', () => {
   let currentDate;
@@ -31,44 +32,49 @@ describe('Calendar', () => {
     });
 
     it('should not include extra days with `hideExtraDays={true}` prop', () => {
-      const drv = new CalendarDriver().setProps({hideExtraDays: true}).render();
+      const drv = new CalendarDriver().withDefaultProps({hideExtraDays: true}).render();
       expect(getTextNodes(drv.getDays())).toEqual(getDaysArray(1, 30));
     });
 
     it('should render month from `current` prop date', () => {
       const expectedDays = getDaysArray(1, 31);
       expectedDays.push(...getDaysArray(1, 4)); // April days
-      const drv = new CalendarDriver().setProps({current: '2020-03-01'}).render();
+      const drv = new CalendarDriver().withDefaultProps({current: '2020-03-01'}).render();
       expect(getTextNodes(drv.getDays())).toEqual(expectedDays);
     });
 
     it('should render calendar with week numbers with `showWeekNumbers={true}` prop', () => {
-      const drv = new CalendarDriver().setProps({showWeekNumbers: true}).render();
+      const drv = new CalendarDriver().withDefaultProps({showWeekNumbers: true}).render();
       expect(getTextNodes(drv.getWeekNumbers())).toEqual(['14', '15', '16', '17', '18']);
     });
 
     it('should gray out dates not in interval between `minDate` and `maxDate`', () => {
       const textDisabledColor = '#AAAAAA';
       const drv = new CalendarDriver()
-        .setProps({minDate: '2020-04-10', maxDate: '2020-04-11', theme: {textDisabledColor}})
+        .withDefaultProps({minDate: '2020-04-10', maxDate: '2020-04-11', theme: {textDisabledColor}})
         .render();
 
       // Disabled dates
-      expect(drv.getDayTextStyle('2020-04-09')).toEqual(partial({color: textDisabledColor}));
-      expect(drv.getDayTextStyle('2020-04-12')).toEqual(partial({color: textDisabledColor}));
+      expect(drv.getDay('2020-04-09').getTextStyle()).toEqual(partial({color: textDisabledColor}));
+      expect(drv.getDay('2020-04-12').getTextStyle()).toEqual(partial({color: textDisabledColor}));
 
       // Enabled dates
-      expect(drv.getDayTextStyle('2020-04-10')).not.toEqual(partial({color: textDisabledColor}));
-      expect(drv.getDayTextStyle('2020-04-11')).not.toEqual(partial({color: textDisabledColor}));
+      expect(drv.getDay('2020-04-10').getTextStyle()).not.toEqual(partial({color: textDisabledColor}));
+      expect(drv.getDay('2020-04-11').getTextStyle()).not.toEqual(partial({color: textDisabledColor}));
     });
 
     it('should disable touch events for disabled dates with `disableAllTouchEventsForDisabledDays`', () => {
       const date = '2020-04-10';
       const onDayPress = jest.fn();
       new CalendarDriver()
-        .setProps({onDayPress, markedDates: {[date]: {disabled: true}}, disableAllTouchEventsForDisabledDays: true})
+        .withDefaultProps({
+          onDayPress,
+          markedDates: {[date]: {disabled: true}},
+          disableAllTouchEventsForDisabledDays: true
+        })
         .render()
-        .tapDay(date);
+        .getDay(date)
+        .tap();
       expect(onDayPress).not.toBeCalled();
     });
 
@@ -76,7 +82,7 @@ describe('Calendar', () => {
       it('should invoke `onDayPress` prop on day press', () => {
         const date = '2020-04-10';
         const onDayPress = jest.fn();
-        new CalendarDriver().setProps({onDayPress}).render().tapDay(date);
+        new CalendarDriver().withDefaultProps({onDayPress}).render().getDay(date).tap();
         expect(onDayPress).toBeCalledWith({
           dateString: date,
           day: 10,
@@ -90,9 +96,10 @@ describe('Calendar', () => {
         const date = '2020-04-10';
         const onDayPress = jest.fn();
         new CalendarDriver()
-          .setProps({onDayPress, markedDates: {[date]: {disableTouchEvent: true}}})
+          .withDefaultProps({onDayPress, markedDates: {[date]: {disableTouchEvent: true}}})
           .render()
-          .tapDay(date);
+          .getDay(date)
+          .tap();
         expect(onDayPress).not.toBeCalled();
       });
 
@@ -101,28 +108,28 @@ describe('Calendar', () => {
         const selectedColor = '#AAAAAA';
         const selectedTextColor = '#BBBBBB';
         const drv = new CalendarDriver()
-          .setProps({markedDates: {[date]: {selected: true, selectedColor, selectedTextColor}}})
+          .withDefaultProps({markedDates: {[date]: {selected: true, selectedColor, selectedTextColor}}})
           .render();
-        expect(drv.getDayStyle(date)).toEqual(partial({backgroundColor: selectedColor, borderRadius: 16}));
-        expect(drv.getDayTextStyle(date)).toEqual(partial({color: selectedTextColor}));
+        expect(drv.getDay(date).getStyle()).toEqual(partial({backgroundColor: selectedColor, borderRadius: 16}));
+        expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: selectedTextColor}));
       });
 
       it('should mark disabled day', () => {
         const date = '2020-04-10';
         const textDisabledColor = '#AAAAAA';
         const drv = new CalendarDriver()
-          .setProps({theme: {textDisabledColor}, markedDates: {[date]: {disabled: true}}})
+          .withDefaultProps({theme: {textDisabledColor}, markedDates: {[date]: {disabled: true}}})
           .render();
-        expect(drv.getDayTextStyle(date)).toEqual(partial({color: textDisabledColor}));
+        expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: textDisabledColor}));
       });
 
       it('should mark today day', () => {
         const date = '2020-04-01';
         const todayTextColor = '#AAAAAA';
         const todayBackgroundColor = '#BBBBBB';
-        const drv = new CalendarDriver().setProps({theme: {todayTextColor, todayBackgroundColor}}).render();
-        expect(drv.getDayStyle(date)).toEqual(partial({backgroundColor: todayBackgroundColor, borderRadius: 16}));
-        expect(drv.getDayTextStyle(date)).toEqual(partial({color: todayTextColor}));
+        const drv = new CalendarDriver().withDefaultProps({theme: {todayTextColor, todayBackgroundColor}}).render();
+        expect(drv.getDay(date).getStyle()).toEqual(partial({backgroundColor: todayBackgroundColor, borderRadius: 16}));
+        expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: todayTextColor}));
       });
     });
 
@@ -131,48 +138,50 @@ describe('Calendar', () => {
     describe.skip('Accessibility labels', () => {
       it('should have default accessibility label', () => {
         const drv = new CalendarDriver().render();
-        expect(drv.getDayAccessibilityLabel('2020-04-10')).toBe('Friday 10 April 2020');
+        expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020');
       });
 
       it('should have correct label for today date', () => {
-        const drv = new CalendarDriver().setProps().render();
-        expect(drv.getDayAccessibilityLabel('2020-04-01')).toBe('today Wednesday 1 April 2020');
+        const drv = new CalendarDriver().withDefaultProps().render();
+        expect(drv.getDay('2020-04-01').getAccessibilityLabel()).toBe('today Wednesday 1 April 2020');
       });
 
       it('should have correct label for selected date with no markings', () => {
-        const drv = new CalendarDriver().setProps({markedDates: {'2020-04-10': {selected: true}}}).render();
-        expect(drv.getDayAccessibilityLabel('2020-04-10')).toBe(
+        const drv = new CalendarDriver().withDefaultProps({markedDates: {'2020-04-10': {selected: true}}}).render();
+        expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe(
           'Friday 10 April 2020 selected You have no entries for this day'
         );
       });
 
       it('should have correct label for selected date with markings', () => {
         const drv = new CalendarDriver()
-          .setProps({markedDates: {'2020-04-10': {selected: true, marked: true}}})
+          .withDefaultProps({markedDates: {'2020-04-10': {selected: true, marked: true}}})
           .render();
-        expect(drv.getDayAccessibilityLabel('2020-04-10')).toBe(
+        expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe(
           'Friday 10 April 2020 selected You have entries for this day'
         );
       });
 
       it('should have correct label for disabled date', () => {
-        const drv = new CalendarDriver().setProps({markedDates: {'2020-04-10': {disabled: true}}}).render();
-        expect(drv.getDayAccessibilityLabel('2020-04-10')).toBe('Friday 10 April 2020 disabled');
+        const drv = new CalendarDriver().withDefaultProps({markedDates: {'2020-04-10': {disabled: true}}}).render();
+        expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020 disabled');
       });
 
       it('should have correct label for disabled touch event', () => {
-        const drv = new CalendarDriver().setProps({markedDates: {'2020-04-10': {disableTouchEvent: true}}}).render();
-        expect(drv.getDayAccessibilityLabel('2020-04-10')).toBe('Friday 10 April 2020 disabled');
+        const drv = new CalendarDriver()
+          .withDefaultProps({markedDates: {'2020-04-10': {disableTouchEvent: true}}})
+          .render();
+        expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020 disabled');
       });
 
       it('should have correct label for period start', () => {
-        const drv = new CalendarDriver().setProps({markedDates: {'2020-04-10': {startingDay: true}}}).render();
-        expect(drv.getDayAccessibilityLabel('2020-04-10')).toBe('Friday 10 April 2020 period start');
+        const drv = new CalendarDriver().withDefaultProps({markedDates: {'2020-04-10': {startingDay: true}}}).render();
+        expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020 period start');
       });
 
       it('should have correct label for period end', () => {
-        const drv = new CalendarDriver().setProps({markedDates: {'2020-04-10': {endingDay: true}}}).render();
-        expect(drv.getDayAccessibilityLabel('2020-04-10')).toBe('Friday 10 April 2020 period end');
+        const drv = new CalendarDriver().withDefaultProps({markedDates: {'2020-04-10': {endingDay: true}}}).render();
+        expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020 period end');
       });
     });
   });
@@ -195,7 +204,7 @@ describe('Calendar', () => {
     it('should render custom header component via `customHeader` prop', () => {
       const text = 'My Custom Header';
       const customHeader = props => React.createElement('Text', props, text);
-      const drv = new CalendarDriver().setProps({customHeader}).render();
+      const drv = new CalendarDriver().withDefaultProps({customHeader}).render();
       expect(getTextNodes(drv.getComponent())).toContain(text);
     });
 
@@ -294,11 +303,15 @@ describe('Calendar', () => {
     });
 
     it('should have `GestureRecognizer` root view with `enableSwipeMonths={true}` prop', () => {
-      expect(new CalendarDriver().setProps({enableSwipeMonths: true}).render().isRootGestureRecognizer()).toBe(true);
+      expect(new CalendarDriver().withDefaultProps({enableSwipeMonths: true}).render().isRootGestureRecognizer()).toBe(
+        true
+      );
     });
 
     it('should not have `GestureRecognizer` root view with `enableSwipeMonths={false}` prop', () => {
-      expect(new CalendarDriver().setProps({enableSwipeMonths: false}).render().isRootGestureRecognizer()).toBe(false);
+      expect(new CalendarDriver().withDefaultProps({enableSwipeMonths: false}).render().isRootGestureRecognizer()).toBe(
+        false
+      );
     });
 
     it('should go forward on left swipe', () => {
@@ -324,14 +337,6 @@ class CalendarDriver extends ComponentDriver {
     return this.setProps({...props, testID: this.testID});
   }
 
-  getHeader() {
-    const node = this.getByID(this.testID);
-    if (!node) {
-      throw new Error('Header not found.');
-    }
-    return new CalendarHeaderDriver(this.testID).attachTo(node);
-  }
-
   isRootGestureRecognizer() {
     return !!this.getComponent().props.onSwipe;
   }
@@ -351,37 +356,34 @@ class CalendarDriver extends ComponentDriver {
     return this;
   }
 
-  getDay(dateString) {
-    return this.getByID(`${SELECT_DATE_SLOT}-${dateString}`);
+  getHeader() {
+    const node = this.getByID(this.testID);
+    if (!node) {
+      throw new Error('Header not found.');
+    }
+    return new CalendarHeaderDriver(this.testID).attachTo(node);
   }
 
-  tapDay(dateString) {
-    const node = this.getDay(dateString);
+  getDay(dateString, type = 'basic') {
+    const node = this.getByID(`${SELECT_DATE_SLOT}-${dateString}`);
     if (!node) {
       throw new Error(`Date ${dateString} not found.`);
     }
-    node.props.onClick();
-    return this;
+
+    let dayDriver;
+    switch (type) {
+      case 'basic':
+        dayDriver = new BasicDayDriver();
+        break;
+      default:
+        throw new Error(`Day type ${type} is not supported.`);
+    }
+
+    return dayDriver.attachTo(node);
   }
 
   getDays() {
     return this.filterByID(new RegExp(SELECT_DATE_SLOT));
-  }
-
-  getDayAccessibilityLabel(dateString) {
-    return this.getDay(dateString).props.accessibilityLabel.trim();
-  }
-
-  getDayStyle(dateString) {
-    return extractStyles(this.getDay(dateString));
-  }
-
-  getDayText(dateString) {
-    return this.getDay(dateString).children.find(node => node.type === 'Text');
-  }
-
-  getDayTextStyle(dateString) {
-    return extractStyles(this.getDayText(dateString));
   }
 
   getWeekNumbers() {
