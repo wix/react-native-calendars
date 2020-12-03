@@ -46,11 +46,10 @@ export default class AgendaView extends Component {
     /** callback that gets called on day press */
     onDayPress: PropTypes.func,
     /** callback that gets called when day changes while scrolling agenda list */
-    onDaychange: PropTypes.func, 
+    onDaychange: PropTypes.func,
     /** specify how agenda knob should look like */
-    renderKnob: PropTypes.func,
-    /** initially selected day */ //TODO: Should be renamed 'selectedDay'
-    selected: PropTypes.any,
+    renderKnob: PropTypes.func, //TODO: Should be renamed 'selectedDay'
+    /** initially selected day */ selected: PropTypes.any,
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool
   };
@@ -205,7 +204,7 @@ export default class AgendaView extends Component {
 
   onCalendarListLayout = () => {
     this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
-  }
+  };
 
   onLayout = event => {
     this.viewHeight = event.nativeEvent.layout.height;
@@ -279,7 +278,6 @@ export default class AgendaView extends Component {
     _.invoke(this.props, 'onDayChange', xdateToData(newDate));
   };
 
-
   renderReservations() {
     const reservationListUserProps = extractComponentProps(ReservationList, this.props);
 
@@ -318,10 +316,10 @@ export default class AgendaView extends Component {
 
   renderKnob() {
     const {hideKnob, renderKnob} = this.props;
-    let knob = <View style={this.style.knobContainer}/>;
-    
+    let knob = <View style={this.style.knobContainer} />;
+
     if (!hideKnob) {
-      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
+      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
       knob = this.state.calendarScrollable ? null : (
         <View style={this.style.knobContainer}>
           <View ref={c => (this.knob = c)}>{knobView}</View>
@@ -365,9 +363,9 @@ export default class AgendaView extends Component {
       extrapolate: 'clamp'
     });
     const headerStyle = [
-      this.style.header, 
+      this.style.header,
       {
-        bottom: agendaHeight, 
+        bottom: agendaHeight,
         transform: [{translateY: headerTranslate}]
       }
     ];
@@ -390,11 +388,7 @@ export default class AgendaView extends Component {
     };
 
     return (
-      <View
-        testID={testID}
-        onLayout={this.onLayout}
-        style={[style, {flex: 1, overflow: 'hidden'}]}
-      >
+      <View testID={testID} onLayout={this.onLayout} style={[style, {flex: 1, overflow: 'hidden'}]}>
         <View style={this.style.reservations}>{this.renderReservations()}</View>
         <Animated.View style={headerStyle}>
           <Animated.View style={{flex: 1, transform: [{translateY: contentTranslate}]}}>
@@ -403,9 +397,7 @@ export default class AgendaView extends Component {
           {this.renderKnob()}
         </Animated.View>
         <Animated.View style={weekdaysStyle}>
-          {showWeekNumbers && (
-            <Text allowFontScaling={false} style={this.style.weekday} numberOfLines={1}></Text>
-          )}
+          {showWeekNumbers && <Text allowFontScaling={false} style={this.style.weekday} numberOfLines={1}></Text>}
           {weekDaysNames.map((day, index) => (
             <Text allowFontScaling={false} key={day + index} style={this.style.weekday} numberOfLines={1}>
               {day}

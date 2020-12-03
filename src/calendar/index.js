@@ -8,7 +8,7 @@ import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
 import shouldComponentUpdate from './updater';
 import {extractComponentProps} from '../component-updater';
-import {SELECT_DATE_SLOT} from '../testIDs';
+import {SELECT_DATE_SLOT, WEEK_NUMBER} from '../testIDs';
 import styleConstructor from './style';
 import CalendarHeader from './header';
 import Day from './day/basic';
@@ -256,7 +256,13 @@ class Calendar extends Component {
   renderWeekNumber(weekNumber) {
     return (
       <View style={this.style.dayContainer} key={`week-container-${weekNumber}`}>
-        <Day key={`week-${weekNumber}`} marking={{disableTouchEvent: true}} state="disabled" theme={this.props.theme}>
+        <Day
+          key={`week-${weekNumber}`}
+          marking={{disableTouchEvent: true}}
+          state="disabled"
+          theme={this.props.theme}
+          testID={`${WEEK_NUMBER}-${weekNumber}`}
+        >
           {weekNumber}
         </Day>
       </View>
