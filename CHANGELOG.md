@@ -437,3 +437,7 @@
 ## [1.500.0] - 2020-12-02
 ### Fix
 - CalendarHeader - Fix alignment for 'showWeekNumbers'.
+
+## [1.501.0] - 2020-12-03
+### Fix
+- Calendar - removing CalendarHeader props and extracting them from propTypes'.
