@@ -1,13 +1,9 @@
 import XDate from 'xdate';
 import React from 'react';
-import {ComponentDriver, getTextNodes} from 'react-component-driver';
-import {swipeDirections} from 'react-native-swipe-gestures';
+import {getTextNodes} from 'react-component-driver';
 import {advanceTo, clear as clearDate} from 'jest-date-mock';
-import Calendar from '.';
-import {SELECT_DATE_SLOT, WEEK_NUMBER} from '../testIDs';
 import {getDaysArray, partial} from '../../test';
-import {CalendarHeaderDriver} from './header/driver';
-import {BasicDayDriver} from './day/basic/driver';
+import {CalendarDriver} from './driver';
 
 describe('Calendar', () => {
   let currentDate;
@@ -28,24 +24,24 @@ describe('Calendar', () => {
       expectedDays.push(...getDaysArray(1, 30)); // April
       expectedDays.push(...getDaysArray(1, 2)); // May
       const drv = new CalendarDriver().render();
-      expect(getTextNodes(drv.getDays())).toEqual(expectedDays);
+      expect(drv.getDays()).toEqual(expectedDays);
     });
 
     it('should not include extra days with `hideExtraDays={true}` prop', () => {
       const drv = new CalendarDriver().withDefaultProps({hideExtraDays: true}).render();
-      expect(getTextNodes(drv.getDays())).toEqual(getDaysArray(1, 30));
+      expect(drv.getDays()).toEqual(getDaysArray(1, 30));
     });
 
     it('should render month from `current` prop date', () => {
       const expectedDays = getDaysArray(1, 31);
       expectedDays.push(...getDaysArray(1, 4)); // April days
       const drv = new CalendarDriver().withDefaultProps({current: '2020-03-01'}).render();
-      expect(getTextNodes(drv.getDays())).toEqual(expectedDays);
+      expect(drv.getDays()).toEqual(expectedDays);
     });
 
     it('should render calendar with week numbers with `showWeekNumbers={true}` prop', () => {
       const drv = new CalendarDriver().withDefaultProps({showWeekNumbers: true}).render();
-      expect(getTextNodes(drv.getWeekNumbers())).toEqual(['14', '15', '16', '17', '18']);
+      expect(drv.getWeekNumbers()).toEqual(['14', '15', '16', '17', '18']);
     });
 
     it('should gray out dates not in interval between `minDate` and `maxDate`', () => {
@@ -325,68 +321,3 @@ describe('Calendar', () => {
     });
   });
 });
-
-class CalendarDriver extends ComponentDriver {
-  testID = 'calendar';
-
-  constructor() {
-    super(Calendar);
-  }
-
-  withDefaultProps(props) {
-    return this.setProps({...props, testID: this.testID});
-  }
-
-  isRootGestureRecognizer() {
-    return !!this.getComponent().props.onSwipe;
-  }
-
-  swipe(direction, state) {
-    this.getComponent().props.onSwipe(direction, state);
-    return this;
-  }
-
-  swipeLeft() {
-    this.swipe(swipeDirections.SWIPE_LEFT);
-    return this;
-  }
-
-  swipeRight() {
-    this.swipe(swipeDirections.SWIPE_RIGHT);
-    return this;
-  }
-
-  getHeader() {
-    const node = this.getByID(this.testID);
-    if (!node) {
-      throw new Error('Header not found.');
-    }
-    return new CalendarHeaderDriver(this.testID).attachTo(node);
-  }
-
-  getDay(dateString, type = 'basic') {
-    const node = this.getByID(`${SELECT_DATE_SLOT}-${dateString}`);
-    if (!node) {
-      throw new Error(`Date ${dateString} not found.`);
-    }
-
-    let dayDriver;
-    switch (type) {
-      case 'basic':
-        dayDriver = new BasicDayDriver();
-        break;
-      default:
-        throw new Error(`Day type ${type} is not supported.`);
-    }
-
-    return dayDriver.attachTo(node);
-  }
-
-  getDays() {
-    return this.filterByID(new RegExp(SELECT_DATE_SLOT));
-  }
-
-  getWeekNumbers() {
-    return this.filterByID(new RegExp(WEEK_NUMBER));
-  }
-}
