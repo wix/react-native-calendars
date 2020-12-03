@@ -4,16 +4,9 @@ import {ComponentDriver, getTextNodes} from 'react-component-driver';
 import {swipeDirections} from 'react-native-swipe-gestures';
 import {advanceTo, clear as clearDate} from 'jest-date-mock';
 import Calendar from '.';
-import {
-  CHANGE_MONTH_LEFT_ARROW,
-  CHANGE_MONTH_RIGHT_ARROW,
-  HEADER_DAY_NAMES,
-  HEADER_LOADING_INDICATOR,
-  HEADER_MONTH_NAME,
-  SELECT_DATE_SLOT,
-  WEEK_NUMBER
-} from '../testIDs';
+import {SELECT_DATE_SLOT, WEEK_NUMBER} from '../testIDs';
 import {extractStyles, getDaysArray, partial} from '../../test';
+import {CalendarHeaderDriver} from './header/driver';
 
 describe('Calendar', () => {
   let currentDate;
@@ -186,17 +179,17 @@ describe('Calendar', () => {
 
   describe('Header', () => {
     it('should render month name and year in header', () => {
-      const drv = new CalendarDriver().render();
-      expect(drv.getHeaderText()).toBe('April 2020');
+      const drv = new CalendarDriver().withDefaultProps().render();
+      expect(drv.getHeader().getTitle()).toBe('April 2020');
     });
 
     it('should render custom header via `renderHeader` prop', () => {
       const text = 'My Custom Header';
       const renderHeader = jest.fn().mockReturnValue(React.createElement('Text', {}, text));
-      const drv = new CalendarDriver().setProps({renderHeader}).render();
+      const drv = new CalendarDriver().withDefaultProps({renderHeader}).render();
       expect(renderHeader).toBeCalledWith(XDate(currentDate));
       expect(getTextNodes(drv.getComponent())).toContain(text);
-      expect(drv.getHeaderText()).toBeFalsy();
+      expect(drv.getHeader().getTitle()).toBeFalsy();
     });
 
     it('should render custom header component via `customHeader` prop', () => {
@@ -209,9 +202,10 @@ describe('Calendar', () => {
     it('should have loading indicator with `displayLoadingIndicator` prop when `markedDates` collection does not have a value for every day of the month', () => {
       expect(
         new CalendarDriver()
-          .setProps({current: currentDate, displayLoadingIndicator: true})
+          .withDefaultProps({current: currentDate, displayLoadingIndicator: true})
           .render()
-          .getHeaderLoadingIndicator()
+          .getHeader()
+          .getLoadingIndicator()
       ).toBeDefined();
     });
 
@@ -226,61 +220,70 @@ describe('Calendar', () => {
 
       expect(
         new CalendarDriver()
-          .setProps({current: '2020-04-01', displayLoadingIndicator: true, markedDates})
+          .withDefaultProps({current: '2020-04-01', displayLoadingIndicator: true, markedDates})
           .render()
-          .getHeaderLoadingIndicator()
+          .getHeader()
+          .getLoadingIndicator()
       ).toBeUndefined();
     });
 
     describe('Week days', () => {
       it('should render day names', () => {
-        const drv = new CalendarDriver().render();
-        expect(getTextNodes(drv.getHeaderDayNames())).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+        const drv = new CalendarDriver().withDefaultProps().render();
+        expect(getTextNodes(drv.getHeader().getDayNames())).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
       });
 
       it('should support custom first day via `firstDay` prop', () => {
-        const drv = new CalendarDriver().setProps({firstDay: 4}).render();
-        expect(getTextNodes(drv.getHeaderDayNames())).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
+        const drv = new CalendarDriver().withDefaultProps({firstDay: 4}).render();
+        expect(getTextNodes(drv.getHeader().getDayNames())).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
       });
 
       it('should not render day names with `hideDayNames={true}`', () => {
-        const drv = new CalendarDriver().setProps({hideDayNames: true}).render();
-        expect(getTextNodes(drv.getHeaderDayNames())).toEqual([]);
+        const drv = new CalendarDriver().withDefaultProps({hideDayNames: true}).render();
+        expect(getTextNodes(drv.getHeader().getDayNames())).toEqual([]);
       });
     });
 
     describe('Arrows', () => {
       it('should not have arrows with `hideArrows={true}` prop', () => {
-        const drv = new CalendarDriver().setProps({hideArrows: true}).render();
-        expect(drv.getLeftArrow()).toBeUndefined();
-        expect(drv.getRightArrow()).toBeUndefined();
+        const drv = new CalendarDriver().withDefaultProps({hideArrows: true}).render();
+        expect(drv.getHeader().getLeftArrow()).toBeUndefined();
+        expect(drv.getHeader().getRightArrow()).toBeUndefined();
       });
 
       it('should change month on left arrow tap', () => {
-        expect(new CalendarDriver().render().tapLeftArrow().getHeaderText()).toBe('March 2020');
+        const drv = new CalendarDriver().withDefaultProps().render();
+        drv.getHeader().tapLeftArrow();
+        expect(drv.getHeader().getTitle()).toBe('March 2020');
       });
 
       it('should change month on right arrow tap', () => {
-        expect(new CalendarDriver().render().tapRightArrow().getHeaderText()).toBe('May 2020');
+        const drv = new CalendarDriver().withDefaultProps().render();
+        drv.getHeader().tapRightArrow();
+        expect(drv.getHeader().getTitle()).toBe('May 2020');
       });
 
       it('should have right arrow working but left arrow disabled with `disableArrowLeft` prop', () => {
-        const drv = new CalendarDriver().setProps({disableArrowLeft: true}).render();
-        expect(drv.tapLeftArrow().getHeaderText()).toBe('April 2020');
-        expect(drv.tapRightArrow().getHeaderText()).toBe('May 2020');
+        const drv = new CalendarDriver().withDefaultProps({disableArrowLeft: true}).render();
+        drv.getHeader().tapLeftArrow();
+        expect(drv.getHeader().getTitle()).toBe('April 2020');
+        drv.getHeader().tapRightArrow();
+        expect(drv.getHeader().getTitle()).toBe('May 2020');
       });
 
       it('should have left arrow working but right arrow disabled with `disableArrowRight` prop', () => {
-        const drv = new CalendarDriver().setProps({disableArrowRight: true}).render();
-        expect(drv.tapRightArrow().getHeaderText()).toBe('April 2020');
-        expect(drv.tapLeftArrow().getHeaderText()).toBe('March 2020');
+        const drv = new CalendarDriver().withDefaultProps({disableArrowRight: true}).render();
+        drv.getHeader().tapRightArrow();
+        expect(drv.getHeader().getTitle()).toBe('April 2020');
+        drv.getHeader().tapLeftArrow();
+        expect(drv.getHeader().getTitle()).toBe('March 2020');
       });
 
       it('should render custom arrows using `renderArrow` prop', () => {
         const renderArrow = jest.fn().mockImplementation(direction => React.createElement('Text', {}, direction));
-        const drv = new CalendarDriver().setProps({renderArrow}).render();
-        expect(getTextNodes(drv.getLeftArrow()).join('')).toBe('left');
-        expect(getTextNodes(drv.getRightArrow()).join('')).toBe('right');
+        const drv = new CalendarDriver().withDefaultProps({renderArrow}).render();
+        expect(getTextNodes(drv.getHeader().getLeftArrow()).join('')).toBe('left');
+        expect(getTextNodes(drv.getHeader().getRightArrow()).join('')).toBe('right');
       });
     });
   });
@@ -299,26 +302,34 @@ describe('Calendar', () => {
     });
 
     it('should go forward on left swipe', () => {
-      expect(new CalendarDriver().setProps({enableSwipeMonths: true}).render().swipeLeft().getHeaderText()).toBe(
-        'May 2020'
-      );
+      const drv = new CalendarDriver().withDefaultProps({enableSwipeMonths: true}).render();
+      expect(drv.swipeLeft().getHeader().getTitle()).toBe('May 2020');
     });
 
     it('should go back on right swipe', () => {
-      expect(new CalendarDriver().setProps({enableSwipeMonths: true}).render().swipeRight().getHeaderText()).toBe(
-        'March 2020'
-      );
+      const drv = new CalendarDriver().withDefaultProps({enableSwipeMonths: true}).render();
+      expect(drv.swipeRight().getHeader().getTitle()).toBe('March 2020');
     });
   });
 });
 
 class CalendarDriver extends ComponentDriver {
+  testID = 'calendar';
+
   constructor() {
     super(Calendar);
   }
 
-  getHeaderText() {
-    return getTextNodes(this.getByID(HEADER_MONTH_NAME)).join('');
+  withDefaultProps(props) {
+    return this.setProps({...props, testID: this.testID});
+  }
+
+  getHeader() {
+    const node = this.getByID(this.testID);
+    if (!node) {
+      throw new Error('Header not found.');
+    }
+    return new CalendarHeaderDriver(this.testID).attachTo(node);
   }
 
   isRootGestureRecognizer() {
@@ -338,36 +349,6 @@ class CalendarDriver extends ComponentDriver {
   swipeRight() {
     this.swipe(swipeDirections.SWIPE_RIGHT);
     return this;
-  }
-
-  getLeftArrow() {
-    return this.getByID(CHANGE_MONTH_LEFT_ARROW);
-  }
-
-  getRightArrow() {
-    return this.getByID(CHANGE_MONTH_RIGHT_ARROW);
-  }
-
-  tapLeftArrow() {
-    const node = this.getLeftArrow();
-    if (!node) {
-      throw new Error('Left arrow not found.');
-    }
-    node.props.onClick();
-    return this;
-  }
-
-  tapRightArrow() {
-    const node = this.getRightArrow();
-    if (!node) {
-      throw new Error('Right arrow not found.');
-    }
-    node.props.onClick();
-    return this;
-  }
-
-  getHeaderDayNames() {
-    return this.getByID(HEADER_DAY_NAMES);
   }
 
   getDay(dateString) {
@@ -405,9 +386,5 @@ class CalendarDriver extends ComponentDriver {
 
   getWeekNumbers() {
     return this.filterByID(new RegExp(WEEK_NUMBER));
-  }
-
-  getHeaderLoadingIndicator() {
-    return this.getByID(HEADER_LOADING_INDICATOR);
   }
 }
