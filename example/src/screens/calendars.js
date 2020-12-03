@@ -53,7 +53,7 @@ const CalendarsScreen = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with week numbers</Text>
-        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers/>
+        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers />
       </Fragment>
     );
   };
@@ -107,7 +107,8 @@ const CalendarsScreen = () => {
             // textDisabledColor: 'red',
             'stylesheet.calendar.header': {
               week: {
-                marginTop: 5,
+                marginTop: 30,
+                marginHorizontal: 12,
                 flexDirection: 'row',
                 justifyContent: 'space-between'
               }
