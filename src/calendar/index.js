@@ -71,6 +71,8 @@ class Calendar extends Component {
     disableMonthChange: PropTypes.bool,
     /** Enable the option to swipe between months. Default: false */
     enableSwipeMonths: PropTypes.bool,
+    /** A `react-native-swipe-gestures` config used to detect swipe of months. Default = undefined */
+    swipeMonthsConfig: PropTypes.object,
     /** Disable days by default. Default = false */
     disabledByDefault: PropTypes.bool,
     /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
@@ -376,9 +378,11 @@ class Calendar extends Component {
   }
 
   render() {
-    const {enableSwipeMonths, style} = this.props;
+    const {enableSwipeMonths, swipeMonthsConfig, style} = this.props;
     const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
-    const gestureProps = enableSwipeMonths ? {onSwipe: (direction, state) => this.onSwipe(direction, state)} : {};
+    const gestureProps = enableSwipeMonths
+      ? {onSwipe: (direction, state) => this.onSwipe(direction, state), config: swipeMonthsConfig}
+      : {};
 
     return (
       <GestureComponent {...gestureProps}>
