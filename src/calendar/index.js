@@ -113,8 +113,9 @@ class Calendar extends Component {
     );
   };
 
-  _handleDayInteraction(day, interaction) {
+  _handleDayInteraction(date, interaction) {
     const {disableMonthChange} = this.props;
+    const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
 
@@ -230,7 +231,7 @@ class Calendar extends Component {
       <View style={this.style.dayContainer} key={id}>
         <DayComp
           theme={theme}
-          date={day}
+          day={day}
           state={this.getState(day)}
           marking={this.getDateMarking(day)}
           markingType={markingType}
