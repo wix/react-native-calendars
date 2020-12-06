@@ -7,7 +7,6 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 // import styleConstructor from './style';
 import Day from './basic';
 import PeriodDay from './period';
-import MultiDotDay from './multi-dot';
 import MultiPeriodDay from './multi-period';
 import CustomDay from './custom';
 

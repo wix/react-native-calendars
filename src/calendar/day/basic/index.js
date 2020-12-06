@@ -149,7 +149,6 @@ class Day extends Component {
         {this.renderContent()}
       </TouchableOpacity>
     );
-
   }
 }
 
