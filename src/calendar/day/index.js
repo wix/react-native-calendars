@@ -79,7 +79,7 @@ export default class DayComp extends Component {
     return `${isToday ? 'today' : ''} ${date.toString('dddd d MMMM yyyy')} ${markingLabel}`;
   };
 
-  getDayComponent() {
+  getDayComponentByType() {
     const {dayComponent, markingType} = this.props;
 
     if (dayComponent) {
@@ -89,8 +89,6 @@ export default class DayComp extends Component {
     switch (markingType) {
       case 'period':
         return PeriodDay;
-      case 'multi-dot':
-        return MultiDotDay;
       case 'multi-period':
         return MultiPeriodDay;
       case 'custom':
@@ -101,9 +99,9 @@ export default class DayComp extends Component {
   }
 
   render() {
-    const {date, state, marking, theme, disableAllTouchEventsForDisabledDays, onPress, onLongPress} = this.props;
+    const {date, state, marking, markingType, theme, disableAllTouchEventsForDisabledDays, onPress, onLongPress} = this.props;
     const dateAsObject = xdateToData(date);
-    const Component = this.getDayComponent();
+    const Component = this.getDayComponentByType();
     
     return (
       <Component
@@ -113,6 +111,7 @@ export default class DayComp extends Component {
           accessibilityLabel={this.getAccessibilityLabel(state, date)}
           state={state}
           marking={marking}
+          markingType={markingType}
           onPress={onPress}
           onLongPress={onLongPress}
           disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}

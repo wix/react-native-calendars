@@ -3,7 +3,7 @@ import React from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
 
-const Dot = ({theme, marked, disabled, dotColor, today, selected}) => {
+const Dot = ({theme, marked, disabled, color, today, selected}) => {
   const style = styleConstructor(theme);
   const dotStyle = [style.dot];
 
@@ -22,11 +22,11 @@ const Dot = ({theme, marked, disabled, dotColor, today, selected}) => {
       dotStyle.push(style.selectedDot);
     }
 
-    if (dotColor) {
-      dotStyle.push({backgroundColor: dotColor});
+    if (color) {
+      dotStyle.push({backgroundColor: color});
     }
   }
-
+  
   return <View style={dotStyle}/>;
 };
 
@@ -34,9 +34,9 @@ export default Dot;
 
 Dot.propTypes = {
   theme: PropTypes.object,
+  color: PropTypes.string,
   marked: PropTypes.bool,
-  dotColor: PropTypes.string,
   selected: PropTypes.bool,
-  today: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  today: PropTypes.bool
 };

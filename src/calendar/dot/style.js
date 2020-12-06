@@ -10,6 +10,7 @@ export default function styleConstructor(theme={}) {
       width: 4,
       height: 4,
       marginTop: 1,
+      marginHorizontal: 1,
       borderRadius: 2,
       opacity: 0,
       ...appStyle.dotStyle

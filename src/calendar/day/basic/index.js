@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
-import Dot from '../../dot';
+import Marking from '../../marking';
 
 
 class Day extends Component {
@@ -14,6 +14,7 @@ class Day extends Component {
     date: PropTypes.object, // what is this for???
     state: PropTypes.oneOf(['disabled', 'today', '']), //TODO: deprecate??
     marking: PropTypes.any,
+    markingType: PropTypes.oneOf(Marking.markingTypes),
     theme: PropTypes.object,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
@@ -102,18 +103,31 @@ class Day extends Component {
   }
 
   renderMarking() {
-    const {theme} = this.props;
-    const {selected, marked, dotColor} = this.marking;
+    const {theme, markingType} = this.props;
+    const {selected, marked, dotColor, dots} = this.marking;
 
     return (
-      <Dot
+      <Marking
+        type={markingType}
         theme={theme}
         selected={selected}
-        marked={marked}
-        dotColor={dotColor}
-        today={this.isToday()}
+        marked={markingType === Marking.markingTypes.multiDot ? true : marked}
         disabled={this.isDisabled()}
+        today={this.isToday()}
+        dotColor={dotColor}
+        dots={dots}
       />
+    );
+  }
+
+  renderContent() {
+    return (
+      <Fragment>
+        <Text allowFontScaling={false} style={this.getTextStyle()}>
+          {String(this.props.children)}
+        </Text>
+        {this.renderMarking()}
+      </Fragment>
     );
   }
 
@@ -128,13 +142,14 @@ class Day extends Component {
         activeOpacity={activeOpacity}
         onPress={this.onPress}
         onLongPress={this.onLongPress}
+        accessible
         accessibilityRole={this.isDisabled() ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
-        <Text allowFontScaling={false} style={this.getTextStyle()}>{String(this.props.children)}</Text>
-        {this.renderMarking()}
+        {this.renderContent()}
       </TouchableOpacity>
     );
+
   }
 }
 
