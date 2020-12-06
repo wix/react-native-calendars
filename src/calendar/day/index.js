@@ -87,8 +87,6 @@ export default class DayComp extends Component {
     switch (markingType) {
       case 'period':
         return PeriodDay;
-      case 'multi-period':
-        return MultiPeriodDay;
       default:
         return Day;
     }

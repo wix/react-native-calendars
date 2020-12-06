@@ -20,6 +20,12 @@ const DOT = {
   selectedDotColor: PropTypes.string
 };
 
+const PERIOD = {
+  startingDay: PropTypes.bool,
+  endingDay: PropTypes.bool,
+  color: PropTypes.string
+};
+
 
 export default class Marking extends Component {
   static displayName = 'IGNORE';
@@ -39,12 +45,13 @@ export default class Marking extends Component {
     dotColor: PropTypes.string,
     //multi-dot
     dots: PropTypes.arrayOf(PropTypes.shape(DOT)),
-    
+    //multi-period
+    periods: PropTypes.arrayOf(PropTypes.shape(PERIOD)),
     
     //period
     textColor: PropTypes.string,
-    startingDate: PropTypes.string,
-    endingDate: PropTypes.string
+    startingDay: PropTypes.string,
+    endingDay: PropTypes.string
   };
 
   static markingTypes = MARKING_TYPES;
@@ -62,62 +69,74 @@ export default class Marking extends Component {
       case MARKING_TYPES.period:
         return this.renderDot();
       case MARKING_TYPES.multiPeriod:
-        return this.renderDot(); 
+        return this.renderMultiPeriod(); 
       case MARKING_TYPES.custom:
         return this.renderDot();   
       default:
         return this.renderDot();
     }
   }
-  
-  renderDots() {
-    const {dots} = this.props;
+
+  getItems() {
+    const {dots, periods} = this.props;
+    let array = dots || periods;
     
-    if (dots && Array.isArray(dots) && dots.length > 0) {
-      // Filter out dots so that we'll process only those items which have key and color property
-      const validDots = dots.filter(d => (d && d.color));
+    if (array && Array.isArray(array) && array.length > 0) {
+      // Filter out items so that we process only those which have color property
+      const validItems = array.filter(d => d && d.color);
       
-      return validDots.map((dot, index) => {
-        return this.renderDot(dot.key || index);
+      return validItems.map((item, index) => {
+        return dots ? this.renderDot(index, item) : this.renderPeriod(index, item);
       });
     }
-    return;
   }
 
-  getDots() {
-    const {dots} = this.props;
+  renderMultiPeriod() {
+    return (
+      <View style={this.style.periods}>
+        {this.getItems()}
+      </View>
+    );
+  }
 
-    if (dots && Array.isArray(dots) && dots.length > 0) {
-      // Filter out dots so that we we process only those items which have key and color property
-      const validDots = dots.filter(d => (d && d.color));
-
-      return validDots.map((dot, index) => {
-        return this.renderDot(index, dot);
-      });
+  renderPeriod(index, item) {
+    const {color, startingDay, endingDay} = item;
+    const baseStyle = [this.style.period];
+    const style = [
+      ...baseStyle,
+      {
+        backgroundColor: color
+      }
+    ];
+    if (startingDay) {
+      style.push(this.style.startingDay);
     }
-    return;
+    if (endingDay) {
+      style.push(this.style.endingDay);
+    }
+    return <View key={index} style={style}/>;
   }
 
   renderMultiDot() {
     return (
       <View style={this.style.dotContainer}>
-        {this.getDots()}
+        {this.getItems()}
       </View>
     );
   }
 
-  renderDot(index, dot) {
+  renderDot(index, item) {
     const {theme, selected, marked, dotColor, today, disabled} = this.props;
     let key = index;
     let color = dotColor;
     
-    if (dot) {
-      if (dot.key) {
-        key = dot.key;
+    if (item) {
+      if (item.key) {
+        key = item.key;
       }
-      color = selected && dot.selectedDotColor ? dot.selectedDotColor : dot.color;
+      color = selected && item.selectedDotColor ? item.selectedDotColor : item.color;
     }
-
+    
     return (
       <Dot
         key={key}

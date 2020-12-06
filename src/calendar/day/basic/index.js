@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
@@ -52,22 +52,22 @@ class Day extends Component {
   shouldDisableTouchEvent() {
     const {disableAllTouchEventsForDisabledDays} = this.props;
     const {disableTouchEvent} = this.marking;
+    let disableTouch = false;
 
-    let shouldDisableTouchEvent = false;
     if (typeof disableTouchEvent === 'boolean') {
-      shouldDisableTouchEvent = disableTouchEvent;
+      disableTouch = disableTouchEvent;
     } else if (typeof disableAllTouchEventsForDisabledDays === 'boolean' && this.isDisabled()) {
-      shouldDisableTouchEvent = disableAllTouchEventsForDisabledDays;
+      disableTouch = disableAllTouchEventsForDisabledDays;
     }
-    return shouldDisableTouchEvent;
-  }
-
-  isToday() {
-    return this.props.state === 'today';
+    return disableTouch;
   }
 
   isDisabled() {
     return typeof this.marking.disabled !== 'undefined' ? this.marking.disabled : this.props.state === 'disabled';
+  }
+
+  isToday() {
+    return this.props.state === 'today';
   }
 
   getContainerStyle() {
@@ -119,7 +119,7 @@ class Day extends Component {
 
   renderMarking() {
     const {theme, markingType} = this.props;
-    const {selected, marked, dotColor, dots} = this.marking;
+    const {selected, marked, dotColor, dots, periods} = this.marking;
 
     return (
       <Marking
@@ -131,22 +131,30 @@ class Day extends Component {
         today={this.isToday()}
         dotColor={dotColor}
         dots={dots}
+        periods={periods}
       />
+    );
+  }
+
+  renderText() {
+    return (
+      <Text allowFontScaling={false} style={this.getTextStyle()}>
+        {String(this.props.children)}
+      </Text>
     );
   }
 
   renderContent() {
     return (
       <Fragment>
-        <Text allowFontScaling={false} style={this.getTextStyle()}>
-          {String(this.props.children)}
-        </Text>
+        {this.renderText()}
         {this.renderMarking()}
       </Fragment>
     );
   }
 
-  render() {
+  renderContainer() {
+    const {markingType} = this.props;
     const {activeOpacity} = this.marking;
 
     return (
@@ -161,9 +169,23 @@ class Day extends Component {
         accessibilityRole={this.isDisabled() ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
-        {this.renderContent()}
+        {markingType === 'multi-period' ? this.renderText() : this.renderContent()}
       </TouchableOpacity>
     );
+  }
+
+  renderPeriodsContainer() {
+    return (
+      <View style={this.style.container}>
+        {this.renderContainer()}
+        {this.renderMarking()}
+      </View>
+    );
+  }
+
+  render() {
+    const {markingType} = this.props;
+    return markingType === 'multi-period' ? this.renderPeriodsContainer() : this.renderContainer();
   }
 }
 

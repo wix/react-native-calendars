@@ -6,6 +6,10 @@ const STYLESHEET_ID = 'stylesheet.day.basic';
 export default function styleConstructor(theme={}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
+    container: {
+      alignSelf: 'stretch',
+      alignItems: 'center'
+    },
     base: {
       width: 32,
       height: 32,
