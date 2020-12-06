@@ -71,7 +71,8 @@ class Day extends Component {
   }
 
   getContainerStyle() {
-    const {selected, selectedColor} = this.props.marking;
+    const {markingType} = this.props;
+    const {customStyles, selected, selectedColor} = this.props.marking;
     const style = [this.style.base];
 
     if (selected) {
@@ -82,11 +83,20 @@ class Day extends Component {
     } else if (this.isToday()) {
       style.push(this.style.today);
     }
+    
+    if (markingType === Marking.markingTypes.custom && customStyles && customStyles.container) {
+      if (customStyles.container.borderRadius === undefined) {
+        customStyles.container.borderRadius = 16;
+      }
+      style.push(customStyles.container);
+    }
+
     return style;
   }
 
   getTextStyle() {
-    const {selected, selectedTextColor} = this.props.marking;
+    const {markingType} = this.props;
+    const {customStyles, selected, selectedTextColor} = this.props.marking;
     const style = [this.style.text];
 
     if (selected) {
@@ -99,6 +109,11 @@ class Day extends Component {
     } else if (this.isToday()) {
       style.push(this.style.todayText);
     }
+
+    if (markingType === Marking.markingTypes.custom && customStyles && customStyles.text) {
+      style.push(customStyles.text);
+    }
+
     return style;
   }
 

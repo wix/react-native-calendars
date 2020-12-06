@@ -45,9 +45,7 @@ export default class Marking extends Component {
     //period
     textColor: PropTypes.string,
     startingDate: PropTypes.string,
-    endingDate: PropTypes.string,
-    //custom
-    customStyles: PropTypes.object
+    endingDate: PropTypes.string
   };
 
   static markingTypes = MARKING_TYPES;

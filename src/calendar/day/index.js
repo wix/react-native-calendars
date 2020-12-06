@@ -8,7 +8,6 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 import Day from './basic';
 import PeriodDay from './period';
 import MultiPeriodDay from './multi-period';
-import CustomDay from './custom';
 
 
 export default class DayComp extends Component {
@@ -90,8 +89,6 @@ export default class DayComp extends Component {
         return PeriodDay;
       case 'multi-period':
         return MultiPeriodDay;
-      case 'custom':
-        return CustomDay;
       default:
         return Day;
     }
