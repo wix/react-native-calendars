@@ -4,7 +4,7 @@ import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
-import Marking from '../../marking';
+import Marking from '../marking';
 
 
 class Day extends Component {

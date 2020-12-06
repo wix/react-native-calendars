@@ -5,7 +5,7 @@ import {TouchableWithoutFeedback, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
-import Dot from '../../dot';
+import Dot from '../dot';
 
 
 class Day extends Component {
