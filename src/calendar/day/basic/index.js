@@ -84,6 +84,7 @@ class Day extends Component {
       style.push(this.style.today);
     }
     
+    //Custom marking type
     if (markingType === Marking.markingTypes.custom && customStyles && customStyles.container) {
       if (customStyles.container.borderRadius === undefined) {
         customStyles.container.borderRadius = 16;
@@ -110,6 +111,7 @@ class Day extends Component {
       style.push(this.style.todayText);
     }
 
+    //Custom marking type
     if (markingType === Marking.markingTypes.custom && customStyles && customStyles.text) {
       style.push(customStyles.text);
     }

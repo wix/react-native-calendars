@@ -70,8 +70,8 @@ export default class Marking extends Component {
         return this.renderDot();
       case MARKING_TYPES.multiPeriod:
         return this.renderMultiPeriod(); 
-      case MARKING_TYPES.custom:
-        return this.renderDot();   
+      // case MARKING_TYPES.custom:
+      //   return this.renderDot();   
       default:
         return this.renderDot();
     }
