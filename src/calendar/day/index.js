@@ -7,7 +7,6 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 // import styleConstructor from './style';
 import Day from './basic';
 import PeriodDay from './period';
-import MultiPeriodDay from './multi-period';
 
 
 export default class DayComp extends Component {

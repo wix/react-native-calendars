@@ -136,7 +136,7 @@ export default class Marking extends Component {
       }
       color = selected && item.selectedDotColor ? item.selectedDotColor : item.color;
     }
-    
+
     return (
       <Dot
         key={key}

@@ -190,27 +190,6 @@ class Calendar extends Component {
     return label;
   }
 
-  getDayComponent() {
-    const {dayComponent, markingType} = this.props;
-
-    if (dayComponent) {
-      return dayComponent;
-    }
-
-    switch (markingType) {
-      case 'period':
-        return PeriodDay;
-      case 'multi-dot':
-        return MultiDotDay;
-      case 'multi-period':
-        return MultiPeriodDay;
-      case 'custom':
-        return CustomDay;
-      default:
-        return Day;
-    }
-  }
-
   getDateMarking(day) {
     const {markedDates} = this.props;
 
