@@ -52,7 +52,7 @@ const CalendarsScreen = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with week numbers</Text>
-        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers/>
+        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers />
       </Fragment>
     );
   };

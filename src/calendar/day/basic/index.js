@@ -6,7 +6,6 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
 
-
 class Day extends Component {
   static displayName = 'IGNORE';
 
