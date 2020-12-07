@@ -18,8 +18,7 @@ class Day extends Component {
     marking: PropTypes.any,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object,
-    markingExists: PropTypes.bool
+    date: PropTypes.object
   };
 
   constructor(props) {
@@ -27,6 +26,7 @@ class Day extends Component {
 
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
+    
     this.markingStyle = this.getDrawingStyle(props.marking || []);
   }
 
@@ -40,7 +40,6 @@ class Day extends Component {
 
   shouldComponentUpdate(nextProps) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marking);
-
     if (!_.isEqual(this.markingStyle, newMarkingStyle)) {
       this.markingStyle = newMarkingStyle;
       return true;
@@ -51,16 +50,20 @@ class Day extends Component {
 
   getDrawingStyle(marking) {
     const defaultStyle = {textStyle: {}, containerStyle: {}};
+    
     if (!marking) {
       return defaultStyle;
     }
+
     if (marking.disabled) {
-      defaultStyle.textStyle.color = this.theme.textDisabledColor;
+      defaultStyle.textStyle.color = this.style.disabledText.color;
     } else if (marking.selected) {
-      defaultStyle.textStyle.color = this.theme.selectedDayTextColor;
+      defaultStyle.textStyle.color = this.style.selectedText.color;
     }
+
     const resultStyle = ([marking]).reduce((prev, next) => {
-      if (next.quickAction) {
+      
+      if (next.quickAction) { //???
         if (next.first || next.last) {
           prev.containerStyle = this.style.firstQuickAction;
           prev.textStyle = this.style.firstQuickActionText;
@@ -79,24 +82,19 @@ class Day extends Component {
         return prev;
       }
 
-      const color = next.color;
-      if (next.status === 'NotAvailable') {
+      if (next.status === 'NotAvailable') { //???
         prev.textStyle = this.style.naText;
       }
+      
+      const color = next.color;
       if (next.startingDay) {
-        prev.startingDay = {
-          color
-        };
+        prev.startingDay = {color};
       }
       if (next.endingDay) {
-        prev.endingDay = {
-          color
-        };
+        prev.endingDay = {color};
       }
       if (!next.startingDay && !next.endingDay) {
-        prev.day = {
-          color
-        };
+        prev.day = {color};
       }
       if (next.textColor) {
         prev.textStyle.color = next.textColor;
@@ -169,7 +167,6 @@ class Day extends Component {
       } else if (flags.day) {
         leftFillerStyle = {backgroundColor: flags.day.color};
         rightFillerStyle = {backgroundColor: flags.day.color};
-        // #177 bug
         fillerStyle = {backgroundColor: flags.day.color};
       } else if (flags.endingDay && flags.startingDay) {
         rightFillerStyle = {
