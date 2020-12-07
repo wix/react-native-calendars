@@ -5,7 +5,13 @@ import React, {Component, Fragment} from 'react';
 import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image} from 'react-native';
 import {shouldUpdate} from '../../component-updater';
 import {weekDayNames} from '../../dateutils';
-import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME} from '../../testIDs';
+import {
+  CHANGE_MONTH_LEFT_ARROW,
+  CHANGE_MONTH_RIGHT_ARROW,
+  HEADER_DAY_NAMES,
+  HEADER_LOADING_INDICATOR,
+  HEADER_MONTH_NAME
+} from '../../testIDs';
 import styleConstructor from './style';
 
 class CalendarHeader extends Component {
@@ -58,11 +64,11 @@ class CalendarHeader extends Component {
       return true;
     }
     return shouldUpdate(this.props, nextProps, [
-      'displayLoadingIndicator', 
-      'hideDayNames', 
-      'firstDay', 
-      'showWeekNumbers', 
-      'monthFormat', 
+      'displayLoadingIndicator',
+      'hideDayNames',
+      'firstDay',
+      'showWeekNumbers',
+      'monthFormat',
       'renderArrow',
       'disableArrowLeft',
       'disableArrowRight'
@@ -152,7 +158,7 @@ class CalendarHeader extends Component {
 
     return (
       <TouchableOpacity
-        onPress={onPress}
+        onPress={!shouldDisable ? onPress : undefined}
         disabled={shouldDisable}
         style={this.style.arrow}
         hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
@@ -168,20 +174,25 @@ class CalendarHeader extends Component {
   }
 
   renderIndicator() {
-    const {displayLoadingIndicator, theme} = this.props;
+    const {displayLoadingIndicator, theme, testID} = this.props;
 
     if (displayLoadingIndicator) {
-      return <ActivityIndicator color={theme && theme.indicatorColor} />;
+      return (
+        <ActivityIndicator
+          color={theme && theme.indicatorColor}
+          testID={testID ? `${HEADER_LOADING_INDICATOR}-${testID}` : HEADER_LOADING_INDICATOR}
+        />
+      );
     }
   }
 
   renderDayNames() {
-    const {firstDay, hideDayNames, showWeekNumbers} = this.props;
+    const {firstDay, hideDayNames, showWeekNumbers, testID} = this.props;
     const weekDaysNames = weekDayNames(firstDay);
 
     if (!hideDayNames) {
       return (
-        <View style={this.style.week}>
+        <View style={this.style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
           {showWeekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
           {this.renderWeekDays(weekDaysNames)}
         </View>
