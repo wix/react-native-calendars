@@ -63,22 +63,22 @@ class ReservationList extends Component {
     this.scrollOver = true;
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!dateutils.sameDate(nextProps.topDay, this.props.topDay)) {
-      this.setState(
-        {
-          reservations: []
-        },
-        () => {
-          this.updateReservations(nextProps);
-        }
-      );
-    } else {
-      this.updateReservations(nextProps);
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      if (!dateutils.sameDate(prevProps.topDay, this.props.topDay)) {
+        this.setState(
+          {
+            reservations: []
+          },
+          () => this.updateReservations(this.props)
+        );
+      } else {
+        this.updateReservations(this.props);
+      }
     }
   }
 
@@ -238,7 +238,6 @@ class ReservationList extends Component {
         scrollEventThrottle={200}
         onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture}
         onScroll={this.onScroll}
-        
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing}
         onRefresh={this.props.onRefresh}

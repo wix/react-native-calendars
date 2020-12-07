@@ -91,14 +91,18 @@ export default class AgendaView extends Component {
     this.state.scrollY.removeAllListeners();
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.items) {
-      this.setState({
-        firstReservationLoad: false
-      });
-    } else {
-      this.loadReservations(nextProps);
+  componentDidUpdate(prevProps) {
+    if (!prevProps.items) {
+      this.loadReservations(this.props);
     }
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.items) {
+      return {firstReservationLoad: false};
+    }
+
+    return null;
   }
 
   calendarOffset() {

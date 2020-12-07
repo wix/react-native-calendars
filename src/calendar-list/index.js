@@ -111,28 +111,28 @@ class CalendarList extends Component {
     };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
+    const prevCurrent = parseDate(prevProps.current);
     const current = parseDate(this.props.current);
-    const nextCurrent = parseDate(nextProps.current);
 
-    if (nextCurrent && current && nextCurrent.getTime() !== current.getTime()) {
-      this.scrollToMonth(nextCurrent);
+    if (current && prevCurrent && current.getTime() !== prevCurrent.getTime()) {
+      this.scrollToMonth(current);
     }
+  }
 
-    const rowclone = this.state.rows;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const rowclone = prevState.rows;
     const newrows = [];
 
     for (let i = 0; i < rowclone.length; i++) {
-      let val = this.state.texts[i];
+      let val = prevState.texts[i];
       if (rowclone[i].getTime) {
         val = rowclone[i].clone();
         val.propbump = rowclone[i].propbump ? rowclone[i].propbump + 1 : 1;
       }
       newrows.push(val);
     }
-    this.setState({
-      rows: newrows
-    });
+    return {rows: newrows};
   }
 
   scrollToDay(d, offset, animated) {
@@ -247,7 +247,7 @@ class CalendarList extends Component {
 
   renderItem = ({item}) => {
     const {calendarStyle, horizontal, calendarWidth, testID, ...others} = this.props;
-    
+
     return (
       <CalendarListItem
         {...others}
@@ -298,7 +298,6 @@ class CalendarList extends Component {
           showsVerticalScrollIndicator={showScrollIndicator}
           showsHorizontalScrollIndicator={horizontal && showScrollIndicator}
           testID={testID}
-          
           onLayout={this.props.onLayout}
           removeClippedSubviews={this.props.removeClippedSubviews}
           pagingEnabled={this.props.pagingEnabled}
