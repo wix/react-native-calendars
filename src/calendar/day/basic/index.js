@@ -10,8 +10,8 @@ class Day extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    date: PropTypes.object, // what is this for???
-    state: PropTypes.oneOf(['disabled', 'today', '']), //TODO: deprecate??
+    date: PropTypes.object,
+    state: PropTypes.oneOf(['disabled', 'today', '']),
     marking: PropTypes.any,
     markingType: PropTypes.oneOf(Marking.markingTypes),
     theme: PropTypes.object,

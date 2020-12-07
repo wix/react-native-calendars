@@ -14,7 +14,6 @@ import CalendarHeader from './header';
 import Day from './day/basic';
 import DayComp from './day/index';
 
-
 //Fallback for react-native-web or when RN version is < 0.44
 const {View, ViewPropTypes} = ReactNative;
 const viewPropTypes =
@@ -265,8 +264,9 @@ class Calendar extends Component {
   }
 
   renderDay(day, id) {
-    const {hideExtraDays, dayComponent, theme, markingType, disabledByDefault, disableAllTouchEventsForDisabledDays} = this.props;
-    
+    const {hideExtraDays} = this.props;
+    const dayCompProps = extractComponentProps(DayComp, this.props);
+
     if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
     }
@@ -274,14 +274,10 @@ class Calendar extends Component {
     return (
       <View style={this.style.dayContainer} key={id}>
         <DayComp
-          theme={theme}
+          {...dayCompProps}
           day={day}
           state={this.getState(day)}
           marking={this.getDateMarking(day)}
-          markingType={markingType}
-          dayComponent={dayComponent}
-          disabledByDefault={disabledByDefault}
-          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
         />
@@ -333,10 +329,10 @@ class Calendar extends Component {
       }
     }
 
-    const headerUserProps = extractComponentProps(CalendarHeader, this.props);
+    const headerProps = extractComponentProps(CalendarHeader, this.props);
 
-    const headerProps = {
-      ...headerUserProps,
+    const props = {
+      ...headerProps,
       testID: testID,
       style: headerStyle,
       ref: c => (this.header = c),
@@ -348,7 +344,7 @@ class Calendar extends Component {
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
 
-    return <HeaderComponent {...headerProps} />;
+    return <HeaderComponent {...props} />;
   }
 
   render() {

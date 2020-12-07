@@ -77,12 +77,12 @@ class CalendarListItem extends Component {
       onPressArrowLeft,
       onPressArrowRight
     } = this.props;
-    const calendarUserProps = extractComponentProps(Calendar, this.props);
+    const calendarProps = extractComponentProps(Calendar, this.props);
 
     if (item.getTime) {
       return (
         <Calendar
-          {...calendarUserProps}
+          {...calendarProps}
           testID={testID}
           current={item}
           style={[{height: calendarHeight, width: calendarWidth}, this.style.calendar, style]}

@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {Component} from 'react';
-import {shouldUpdate} from '../../component-updater';
+import {shouldUpdate, extractComponentProps} from '../../component-updater';
 import {xdateToData} from '../../interface';
 import {SELECT_DATE_SLOT} from '../../testIDs';
-// import styleConstructor from './style';
 import Day from './basic';
 import PeriodDay from './period';
 
@@ -14,7 +13,7 @@ export default class DayComp extends Component {
 
   static propTypes = {
     day: PropTypes.object,
-    state: PropTypes.string,
+    state: PropTypes.string, // deprecate ???
     markingType: PropTypes.string,
     marking: PropTypes.any,
     theme: PropTypes.object,
@@ -23,12 +22,6 @@ export default class DayComp extends Component {
     disableAllTouchEventsForDisabledDays: PropTypes.bool,
     disabledByDefault: PropTypes.bool
   };
-
-  // constructor(props) {
-  //   super(props);
-    
-  //   this.style = styleConstructor(props.theme);
-  // }
 
   shouldComponentUpdate(nextProps) {
     return shouldUpdate(this.props, nextProps, ['day', 'markingType', 'marking', 'onPress', 'onLongPress']);
@@ -76,38 +69,18 @@ export default class DayComp extends Component {
     return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
   };
 
-  getDayComponentByType() {
-    const {dayComponent, markingType} = this.props;
-
-    if (dayComponent) {
-      return dayComponent;
-    }
-
-    switch (markingType) {
-      case 'period':
-        return PeriodDay;
-      default:
-        return Day;
-    }
-  }
-
   render() {
-    const {day, state, marking, markingType, theme, disableAllTouchEventsForDisabledDays, onPress, onLongPress} = this.props;
+    const {day, state, markingType} = this.props;
     const dateAsObject = xdateToData(day);
-    const Component = this.getDayComponentByType();
-    
+    const Component = markingType === 'period' ? PeriodDay : Day;
+    const dayProps = extractComponentProps(Component, this.props);
+
     return (
       <Component
+          {...dayProps}
           date={dateAsObject}
-          theme={theme}
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
           accessibilityLabel={this.getAccessibilityLabel(state, day)}
-          state={state}
-          marking={marking}
-          markingType={markingType}
-          onPress={onPress}
-          onLongPress={onLongPress}
-          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
         >
           {dateAsObject ? day.getDate() : day}
       </Component>

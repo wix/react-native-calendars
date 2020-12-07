@@ -283,11 +283,11 @@ export default class AgendaView extends Component {
   };
 
   renderReservations() {
-    const reservationListUserProps = extractComponentProps(ReservationList, this.props);
+    const reservationListProps = extractComponentProps(ReservationList, this.props);
 
     return (
       <ReservationList
-        {...reservationListUserProps}
+        {...reservationListProps}
         ref={c => (this.list = c)}
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
@@ -300,11 +300,11 @@ export default class AgendaView extends Component {
 
   renderCalendarList() {
     const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
-    const calendarListUserProps = extractComponentProps(CalendarList, this.props);
+    const calendarListProps = extractComponentProps(CalendarList, this.props);
 
     return (
       <CalendarList
-        {...calendarListUserProps}
+        {...calendarListProps}
         ref={c => (this.calendar = c)}
         current={this.currentMonth}
         markedDates={this.generateMarkings()}

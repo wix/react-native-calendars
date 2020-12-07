@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {View} from 'react-native';
-// import {shouldUpdate} from '../../../component-updater';
+import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
 import Dot from '../dot';
 
@@ -46,12 +46,7 @@ export default class Marking extends Component {
     //multi-dot
     dots: PropTypes.arrayOf(PropTypes.shape(DOT)),
     //multi-period
-    periods: PropTypes.arrayOf(PropTypes.shape(PERIOD)),
-    
-    //period
-    textColor: PropTypes.string,
-    startingDay: PropTypes.string,
-    endingDay: PropTypes.string
+    periods: PropTypes.arrayOf(PropTypes.shape(PERIOD))
   };
 
   static markingTypes = MARKING_TYPES;
@@ -60,6 +55,23 @@ export default class Marking extends Component {
     super(props);
     
     this.style = styleConstructor(props.theme);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return shouldUpdate(this.props, nextProps, [
+      'type', 
+      'selected', 
+      'marked', 
+      'today', 
+      'disabled', 
+      'disableTouchEvent', 
+      'activeOpacity', 
+      'selectedColor', 
+      'selectedTextColor', 
+      'dotColor',
+      'dots',
+      'periods'
+    ]);
   }
 
   renderMarkingByType() {
@@ -126,7 +138,8 @@ export default class Marking extends Component {
   }
 
   renderDot(index, item) {
-    const {theme, selected, marked, dotColor, today, disabled} = this.props;
+    const {selected, dotColor} = this.props;
+    const dotProps = extractComponentProps(Dot, this.props);
     let key = index;
     let color = dotColor;
     
@@ -139,13 +152,9 @@ export default class Marking extends Component {
 
     return (
       <Dot
+        {...dotProps}
         key={key}
-        theme={theme}
         color={color}
-        marked={marked}
-        selected={selected}
-        disabled={disabled}
-        today={today}
       />
     );
   }
