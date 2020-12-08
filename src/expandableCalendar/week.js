@@ -99,7 +99,7 @@ class Week extends Component {
   
   renderDay(day, id) {
     const {current, hideExtraDays} = this.props;
-    const dayCompProps = extractComponentProps(Day, this.props);
+    const dayProps = extractComponentProps(Day, this.props);
 
     // hide extra days
     if (current && hideExtraDays) {
@@ -111,7 +111,7 @@ class Week extends Component {
     return (
       <View style={this.style.dayContainer} key={id}>
         <Day
-          {...dayCompProps}
+          {...dayProps}
           day={day}
           state={this.getState(day)}
           marking={this.getDateMarking(day)}

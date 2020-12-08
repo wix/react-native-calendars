@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {Component} from 'react';
@@ -8,24 +9,21 @@ import BasicDay from './basic';
 import PeriodDay from './period';
 
 
+const basicDayProps = _.omit(BasicDay.propTypes, 'date');
+
 export default class Day extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
+    ...basicDayProps,
+    /** The day to render */
     day: PropTypes.object,
-    state: PropTypes.string, // deprecate ???
-    markingType: PropTypes.string,
-    marking: PropTypes.any,
-    theme: PropTypes.object,
-    onPress: PropTypes.func,
-    onLongPress: PropTypes.func,
-    dayComponent: PropTypes.any,
-    disableAllTouchEventsForDisabledDays: PropTypes.bool,
-    disabledByDefault: PropTypes.bool
+    /** Provide custom day rendering component */
+    dayComponent: PropTypes.any
   };
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['day', 'markingType', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['day', 'dayComponent', 'markingType', 'marking', 'onPress', 'onLongPress']);
   }
 
   getMarkingLabel() {

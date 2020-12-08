@@ -30,6 +30,7 @@ class Calendar extends Component {
 
   static propTypes = {
     ...CalendarHeader.propTypes,
+    ...Day.propTypes,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** Specify style for calendar container element. Default = {} */
@@ -44,8 +45,6 @@ class Calendar extends Component {
     firstDay: PropTypes.number,
     /** Collection of dates that have to be marked. Default = {} */
     markedDates: PropTypes.object,
-    /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
-    markingType: PropTypes.string,
     /** Display loading indicator. Default = false */
     displayLoadingIndicator: PropTypes.bool,
     /** Show week numbers. Default = false */
@@ -62,16 +61,12 @@ class Calendar extends Component {
     onMonthChange: PropTypes.func,
     /** Handler which gets executed when visible month changes in calendar. Default = undefined */
     onVisibleMonthsChange: PropTypes.func,
-    /** Provide custom day rendering component */
-    dayComponent: PropTypes.any,
     /** Disables changing month when click on days of other months (when hideExtraDays is false). Default = false */
     disableMonthChange: PropTypes.bool,
     /** Enable the option to swipe between months. Default: false */
     enableSwipeMonths: PropTypes.bool,
     /** Disable days by default. Default = false */
     disabledByDefault: PropTypes.bool,
-    /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
-    disableAllTouchEventsForDisabledDays: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Allow rendering of a totally custom header */
@@ -223,7 +218,7 @@ class Calendar extends Component {
 
   renderDay(day, id) {
     const {hideExtraDays} = this.props;
-    const dayCompProps = extractComponentProps(Day, this.props);
+    const dayProps = extractComponentProps(Day, this.props);
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
@@ -232,7 +227,7 @@ class Calendar extends Component {
     return (
       <View style={this.style.dayContainer} key={id}>
         <Day
-          {...dayCompProps}
+          {...dayProps}
           day={day}
           state={this.getState(day)}
           marking={this.getDateMarking(day)}

@@ -8,14 +8,13 @@ import styleConstructor from './style';
 import Dot from '../dot';
 
 
-class Day extends Component {
+export default class PeriodDay extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    // TODO: selected + disabled props should be removed
-    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
-    theme: PropTypes.object,
+    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']), //TODO: deprecate
     marking: PropTypes.any,
+    theme: PropTypes.object,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     date: PropTypes.object
@@ -45,7 +44,7 @@ class Day extends Component {
       return true;
     }
 
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['children', 'state', 'marking', 'onPress', 'onLongPress', 'date']);
   }
 
   getDrawingStyle(marking) {
@@ -215,5 +214,3 @@ class Day extends Component {
     );
   }
 }
-
-export default Day;
