@@ -6,7 +6,7 @@ const STYLESHEET_ID = 'stylesheet.marking';
 export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
-    dotContainer: {
+    dots: {
       flexDirection: 'row'
     },
     periods: {

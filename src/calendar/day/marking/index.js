@@ -74,14 +74,29 @@ export default class Marking extends Component {
     ]);
   }
 
+  getItems(items) {
+    const {type} = this.props;
+    
+    if (items && Array.isArray(items) && items.length > 0) {
+      // Filter out items so that we process only those which have color property
+      const validItems = items.filter(d => d && d.color);
+      
+      return validItems.map((item, index) => {
+        return type === MARKING_TYPES.multiDot ? this.renderDot(index, item) : this.renderPeriod(index, item);
+      });
+    }
+  }
+
   renderMarkingByType() {
-    switch (this.props.type) {
+    const {type, dots, periods} = this.props;
+
+    switch (type) {
       case MARKING_TYPES.multiDot:
-        return this.renderMultiDot();
-      case MARKING_TYPES.period:
-        return this.renderDot();
+        return this.renderMultiMarkings(this.style.dots, dots); 
+      // case MARKING_TYPES.period:
+      //   return this.renderDot();
       case MARKING_TYPES.multiPeriod:
-        return this.renderMultiPeriod(); 
+        return this.renderMultiMarkings(this.style.periods, periods); 
       // case MARKING_TYPES.custom:
       //   return this.renderDot();   
       default:
@@ -89,24 +104,10 @@ export default class Marking extends Component {
     }
   }
 
-  getItems() {
-    const {dots, periods} = this.props;
-    let array = dots || periods;
-    
-    if (array && Array.isArray(array) && array.length > 0) {
-      // Filter out items so that we process only those which have color property
-      const validItems = array.filter(d => d && d.color);
-      
-      return validItems.map((item, index) => {
-        return dots ? this.renderDot(index, item) : this.renderPeriod(index, item);
-      });
-    }
-  }
-
-  renderMultiPeriod() {
+  renderMultiMarkings(containerStyle, items) {
     return (
-      <View style={this.style.periods}>
-        {this.getItems()}
+      <View style={containerStyle}>
+        {this.getItems(items)}
       </View>
     );
   }
@@ -127,14 +128,6 @@ export default class Marking extends Component {
       style.push(this.style.endingDay);
     }
     return <View key={index} style={style}/>;
-  }
-
-  renderMultiDot() {
-    return (
-      <View style={this.style.dotContainer}>
-        {this.getItems()}
-      </View>
-    );
   }
 
   renderDot(index, item) {
