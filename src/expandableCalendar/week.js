@@ -117,8 +117,8 @@ class Week extends Component {
           dayComponent={dayComponent}
           disabledByDefault={disabledByDefault}
           disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
-          onPress={this.pressDay}
-          onLongPress={this.longPressDay}
+          onPress={this.props.onDayPress}
+          onLongPress={this.props.onDayPress}
         />
       </View>
     );
