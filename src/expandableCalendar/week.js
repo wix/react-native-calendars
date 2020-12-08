@@ -4,10 +4,11 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import dateutils from '../dateutils';
 import {parseDate} from '../interface';
+import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
 import Calendar from '../calendar';
-// import Day from '../calendar/day/basic';
 import DayComp from '../calendar/day/index';
+// import Day from '../calendar/day/basic';
 
 
 const EmptyArray = [];
@@ -97,8 +98,9 @@ class Week extends Component {
   // }
   
   renderDay(day, id) {
-    const {current, hideExtraDays, theme, markingType, dayComponent, disabledByDefault, disableAllTouchEventsForDisabledDays} = this.props;
-    
+    const {current, hideExtraDays} = this.props;
+    const dayCompProps = extractComponentProps(DayComp, this.props);
+
     // hide extra days
     if (current && hideExtraDays) {
       if (!dateutils.sameMonth(day, parseDate(current))) {
@@ -109,14 +111,10 @@ class Week extends Component {
     return (
       <View style={this.style.dayContainer} key={id}>
         <DayComp
-          theme={theme}
+          {...dayCompProps}
           day={day}
           state={this.getState(day)}
           marking={this.getDateMarking(day)}
-          markingType={markingType}
-          dayComponent={dayComponent}
-          disabledByDefault={disabledByDefault}
-          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
           onPress={this.props.onDayPress}
           onLongPress={this.props.onDayPress}
         />
