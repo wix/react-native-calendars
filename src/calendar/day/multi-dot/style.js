@@ -9,10 +9,11 @@ export default function styleConstructor(theme={}) {
     base: {
       width: 32,
       height: 32,
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: "center",
     },
     text: {
-      marginTop: 4,
+      // marginTop: 4,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
@@ -42,9 +43,9 @@ export default function styleConstructor(theme={}) {
       flexDirection: 'row'
     },
     dot: {
-      width: 4,
-      height: 4,
-      marginTop: 1,
+      width: 6,
+      height: 6,
+      marginTop: 2,
       marginLeft: 1,
       marginRight: 1,
       borderRadius: 2,

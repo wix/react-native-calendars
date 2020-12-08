@@ -78,6 +78,7 @@ class Day extends Component {
     }
     
     return (
+      <>
       <TouchableOpacity
         testID={this.props.testID}
         style={containerStyle}
@@ -88,8 +89,9 @@ class Day extends Component {
         accessibilityLabel={this.props.accessibilityLabel}
       >
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        <View style={this.style.dotContainer}>{dot}</View>
       </TouchableOpacity>
+      <View style={this.style.dotContainer}>{dot}</View>
+      </>
     );
   }
 }
