@@ -82,18 +82,18 @@ export default class DayComp extends Component {
 
   render() {
     const {day} = this.props;
-    const dateAsObject = xdateToData(day);
+    const date = xdateToData(day);
     const Component = this.getDayComponent();
     const dayProps = extractComponentProps(Component, this.props);
 
     return (
       <Component
           {...dayProps}
-          date={dateAsObject}
-          testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
+          date={date}
+          testID={`${SELECT_DATE_SLOT}-${date.dateString}`}
           accessibilityLabel={this.getAccessibilityLabel(day)}
         >
-          {dateAsObject ? day.getDate() : day}
+          {date ? day.getDate() : day}
       </Component>
     );
   }
