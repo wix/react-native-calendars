@@ -221,7 +221,9 @@ class ReservationList extends Component {
   render() {
     const {reservations, selectedDay, theme, style} = this.props;
     if (!reservations || !reservations[selectedDay.toString('yyyy-MM-dd')]) {
-      _.invoke(this.props, 'renderEmptyData');
+      if (_.isFunction(this.props.renderEmptyData)) {
+        return _.invoke(this.props, 'renderEmptyData');
+      }
 
       return <ActivityIndicator style={this.style.indicator} color={theme && theme.indicatorColor} />;
     }
