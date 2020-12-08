@@ -110,6 +110,7 @@ export default class PeriodDay extends Component {
   }
 
   render() {
+    const {state, marking} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     let leftFillerStyle = {};
@@ -117,14 +118,14 @@ export default class PeriodDay extends Component {
     let fillerStyle = {};
     let fillers;
 
-    if (this.props.state === 'disabled') {
+    if (state === 'disabled') {
       textStyle.push(this.style.disabledText);
-    } else if (this.props.state === 'today') {
+    } else if (state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
 
-    if (this.props.marking) {
+    if (marking) {
       containerStyle.push({
         borderRadius: 17
       });
@@ -187,17 +188,17 @@ export default class PeriodDay extends Component {
       );
     }
 
-    const {marking: {marked, dotColor}, theme} = this.props;
+    const {marking: {marked, dotColor, disableTouchEvent}, theme, accessibilityLabel, testID} = this.props;
 
     return (
       <TouchableWithoutFeedback
-        testID={this.props.testID}
+        testID={testID}
         onPress={this.onPress}
         onLongPress={this.onLongPress}
-        disabled={this.props.marking.disableTouchEvent}
+        disabled={disableTouchEvent}
         accessible
-        accessibilityRole={this.props.marking.disableTouchEvent ? undefined : 'button'}
-        accessibilityLabel={this.props.accessibilityLabel}
+        accessibilityRole={disableTouchEvent ? undefined : 'button'}
+        accessibilityLabel={accessibilityLabel}
       >
         <View style={this.style.wrapper}>
           {fillers}
