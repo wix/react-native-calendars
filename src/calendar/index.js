@@ -94,6 +94,14 @@ class Calendar extends Component {
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
 
+  isDateNotInTheRange = (minDate, maxDate, date) => {
+    return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
+  };
+  
+  addMonth = count => {
+    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+  };
+
   updateMonth = (day, doNotTriggerListeners) => {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
@@ -139,56 +147,6 @@ class Calendar extends Component {
     this._handleDayInteraction(date, this.props.onDayLongPress);
   };
 
-  addMonth = count => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
-  };
-
-  isDateNotInTheRange = (minDate, maxDate, date) => {
-    return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
-  };
-
-  getAccessibilityLabel = (state, day) => {
-    const today = XDate.locales[XDate.defaultLocale].today;
-    const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel;
-    const isToday = state === 'today';
-    const markingLabel = this.getMarkingLabel(day);
-
-    if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
-    }
-
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
-  };
-
-  getMarkingLabel(day) {
-    let label = '';
-    const marking = this.getDateMarking(day);
-
-    if (marking.accessibilityLabel) {
-      return marking.accessibilityLabel;
-    }
-
-    if (marking.selected) {
-      label += 'selected ';
-      if (!marking.marked) {
-        label += 'You have no entries for this day ';
-      }
-    }
-    if (marking.marked) {
-      label += 'You have entries for this day ';
-    }
-    if (marking.startingDay) {
-      label += 'period start ';
-    }
-    if (marking.endingDay) {
-      label += 'period end ';
-    }
-    if (marking.disabled || marking.disableTouchEvent) {
-      label += 'disabled ';
-    }
-    return label;
-  }
-
   getDateMarking(day) {
     const {markedDates} = this.props;
 
@@ -203,6 +161,24 @@ class Calendar extends Component {
     } else {
       return false;
     }
+  }
+
+  getState(day) {
+    const {disabledByDefault} = this.props;
+    const minDate = parseDate(this.props.minDate);
+    const maxDate = parseDate(this.props.maxDate);
+    let state = '';
+
+    if (disabledByDefault) {
+      state = 'disabled';
+    } else if (this.isDateNotInTheRange(minDate, maxDate, day)) {
+      state = 'disabled';
+    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
+      state = 'disabled';
+    } else if (dateutils.sameDate(day, XDate())) {
+      state = 'today';
+    }
+    return state;
   }
 
   onSwipe = gestureName => {
@@ -243,24 +219,6 @@ class Calendar extends Component {
         </Day>
       </View>
     );
-  }
-
-  getState(day) {
-    const {disabledByDefault} = this.props;
-    const minDate = parseDate(this.props.minDate);
-    const maxDate = parseDate(this.props.maxDate);
-    let state = '';
-
-    if (disabledByDefault) {
-      state = 'disabled';
-    } else if (this.isDateNotInTheRange(minDate, maxDate, day)) {
-      state = 'disabled';
-    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
-      state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
-      state = 'today';
-    }
-    return state;
   }
 
   renderDay(day, id) {

@@ -19,6 +19,7 @@ export default class DayComp extends Component {
     theme: PropTypes.object,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
+    dayComponent: PropTypes.any,
     disableAllTouchEventsForDisabledDays: PropTypes.bool,
     disabledByDefault: PropTypes.bool
   };
@@ -56,10 +57,11 @@ export default class DayComp extends Component {
     return label;
   }
 
-  getAccessibilityLabel = (state, day) => {
+  getAccessibilityLabel = (day) => {
+    const {state} = this.props;
     const today = XDate.locales[XDate.defaultLocale].today;
+    const isToday = state === 'today'; //TODO: check if 'day' equals 'today' and remove 'state' check
     const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel;
-    const isToday = state === 'today';
     const markingLabel = this.getMarkingLabel(day);
 
     if (formatAccessibilityLabel) {
@@ -69,10 +71,19 @@ export default class DayComp extends Component {
     return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
   };
 
+  getDayComponent() {
+    const {dayComponent, markingType} = this.props;
+
+    if (dayComponent) {
+      return dayComponent;
+    }
+    return markingType === 'period' ? PeriodDay : Day;
+  }
+
   render() {
-    const {day, state, markingType} = this.props;
+    const {day} = this.props;
     const dateAsObject = xdateToData(day);
-    const Component = markingType === 'period' ? PeriodDay : Day;
+    const Component = this.getDayComponent();
     const dayProps = extractComponentProps(Component, this.props);
 
     return (
@@ -80,7 +91,7 @@ export default class DayComp extends Component {
           {...dayProps}
           date={dateAsObject}
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
-          accessibilityLabel={this.getAccessibilityLabel(state, day)}
+          accessibilityLabel={this.getAccessibilityLabel(day)}
         >
           {dateAsObject ? day.getDate() : day}
       </Component>
