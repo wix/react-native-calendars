@@ -11,8 +11,8 @@ import {extractComponentProps} from '../component-updater';
 import {WEEK_NUMBER} from '../testIDs';
 import styleConstructor from './style';
 import CalendarHeader from './header';
-import Day from './day/basic';
-import DayComp from './day/index';
+import BasicDay from './day/basic';
+import Day from './day/index';
 
 //Fallback for react-native-web or when RN version is < 0.44
 const {View, ViewPropTypes} = ReactNative;
@@ -208,7 +208,7 @@ class Calendar extends Component {
   renderWeekNumber(weekNumber) {
     return (
       <View style={this.style.dayContainer} key={`week-container-${weekNumber}`}>
-        <Day
+        <BasicDay
           key={`week-${weekNumber}`}
           marking={{disableTouchEvent: true}}
           state="disabled"
@@ -216,14 +216,14 @@ class Calendar extends Component {
           testID={`${WEEK_NUMBER}-${weekNumber}`}
         >
           {weekNumber}
-        </Day>
+        </BasicDay>
       </View>
     );
   }
 
   renderDay(day, id) {
     const {hideExtraDays} = this.props;
-    const dayCompProps = extractComponentProps(DayComp, this.props);
+    const dayCompProps = extractComponentProps(Day, this.props);
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
@@ -231,7 +231,7 @@ class Calendar extends Component {
 
     return (
       <View style={this.style.dayContainer} key={id}>
-        <DayComp
+        <Day
           {...dayCompProps}
           day={day}
           state={this.getState(day)}

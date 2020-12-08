@@ -7,8 +7,8 @@ import {parseDate} from '../interface';
 import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
 import Calendar from '../calendar';
-import DayComp from '../calendar/day/index';
-// import Day from '../calendar/day/basic';
+import Day from '../calendar/day/index';
+// import BasicDay from '../calendar/day/basic';
 
 
 const EmptyArray = [];
@@ -94,12 +94,12 @@ class Week extends Component {
   }
 
   // renderWeekNumber (weekNumber) {
-  //   return <Day key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
+  //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
   // }
   
   renderDay(day, id) {
     const {current, hideExtraDays} = this.props;
-    const dayCompProps = extractComponentProps(DayComp, this.props);
+    const dayCompProps = extractComponentProps(Day, this.props);
 
     // hide extra days
     if (current && hideExtraDays) {
@@ -110,7 +110,7 @@ class Week extends Component {
 
     return (
       <View style={this.style.dayContainer} key={id}>
-        <DayComp
+        <Day
           {...dayCompProps}
           day={day}
           state={this.getState(day)}

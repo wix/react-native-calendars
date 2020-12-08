@@ -6,7 +6,7 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
 
-class Day extends Component {
+export default class BasicDay extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -197,5 +197,3 @@ class Day extends Component {
     return this.isMultiPeriod() ? this.renderPeriodsContainer() : this.renderContainer();
   }
 }
-
-export default Day;

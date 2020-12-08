@@ -4,11 +4,11 @@ import React, {Component} from 'react';
 import {shouldUpdate, extractComponentProps} from '../../component-updater';
 import {xdateToData} from '../../interface';
 import {SELECT_DATE_SLOT} from '../../testIDs';
-import Day from './basic';
+import BasicDay from './basic';
 import PeriodDay from './period';
 
 
-export default class DayComp extends Component {
+export default class Day extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -77,7 +77,7 @@ export default class DayComp extends Component {
     if (dayComponent) {
       return dayComponent;
     }
-    return markingType === 'period' ? PeriodDay : Day;
+    return markingType === 'period' ? PeriodDay : BasicDay;
   }
 
   render() {
