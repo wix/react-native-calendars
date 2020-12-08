@@ -69,8 +69,19 @@ class Day extends Component {
     return this.props.state === 'today';
   }
 
+  isMultiDot() {
+    return this.props.markingType === Marking.markingTypes.multiDot;
+  }
+
+  isMultiPeriod() {
+    return this.props.markingType === Marking.markingTypes.multiPeriod;
+  }
+
+  isCustom() {
+    return this.props.markingType === Marking.markingTypes.custom;
+  }
+
   getContainerStyle() {
-    const {markingType} = this.props;
     const {customStyles, selected, selectedColor} = this.props.marking;
     const style = [this.style.base];
 
@@ -84,7 +95,7 @@ class Day extends Component {
     }
     
     //Custom marking type
-    if (markingType === Marking.markingTypes.custom && customStyles && customStyles.container) {
+    if (this.isCustom() && customStyles && customStyles.container) {
       if (customStyles.container.borderRadius === undefined) {
         customStyles.container.borderRadius = 16;
       }
@@ -95,7 +106,6 @@ class Day extends Component {
   }
 
   getTextStyle() {
-    const {markingType} = this.props;
     const {customStyles, selected, selectedTextColor} = this.props.marking;
     const style = [this.style.text];
 
@@ -111,7 +121,7 @@ class Day extends Component {
     }
 
     //Custom marking type
-    if (markingType === Marking.markingTypes.custom && customStyles && customStyles.text) {
+    if (this.isCustom() && customStyles && customStyles.text) {
       style.push(customStyles.text);
     }
 
@@ -126,8 +136,8 @@ class Day extends Component {
       <Marking
         type={markingType}
         theme={theme}
+        marked={this.isMultiDot() ? true : marked}
         selected={selected}
-        marked={markingType === Marking.markingTypes.multiDot ? true : marked}
         disabled={this.isDisabled()}
         today={this.isToday()}
         dotColor={dotColor}
@@ -155,7 +165,6 @@ class Day extends Component {
   }
 
   renderContainer() {
-    const {markingType} = this.props;
     const {activeOpacity} = this.marking;
 
     return (
@@ -170,7 +179,7 @@ class Day extends Component {
         accessibilityRole={this.isDisabled() ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
-        {markingType === 'multi-period' ? this.renderText() : this.renderContent()}
+        {this.isMultiPeriod() ? this.renderText() : this.renderContent()}
       </TouchableOpacity>
     );
   }
@@ -185,8 +194,7 @@ class Day extends Component {
   }
 
   render() {
-    const {markingType} = this.props;
-    return markingType === 'multi-period' ? this.renderPeriodsContainer() : this.renderContainer();
+    return this.isMultiPeriod() ? this.renderPeriodsContainer() : this.renderContainer();
   }
 }
 
