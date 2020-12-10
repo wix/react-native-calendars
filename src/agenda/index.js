@@ -92,13 +92,8 @@ export default class AgendaView extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.selected &&
-      !dateutils.sameDate(
-        parseDate(this.props.selected), parseDate(prevProps.selected)
-      )
-    ) {
-      this.setState({ selectedDay: parseDate(this.props.selected) });
+    if (this.props.selected && !dateutils.sameDate(parseDate(this.props.selected), parseDate(prevProps.selected))) {
+      this.setState({selectedDay: parseDate(this.props.selected)});
     } else if (!prevProps.items) {
       this.loadReservations(this.props);
     }
