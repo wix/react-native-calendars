@@ -94,7 +94,9 @@ export default class AgendaView extends Component {
   componentDidUpdate(prevProps) {
     if (
       this.props.selected &&
-      !dateutils.sameDate(this.props.selected, prevProps.selected)
+      !dateutils.sameDate(
+        parseDate(this.props.selected), parseDate(prevProps.selected)
+      )
     ) {
       this.setState({ selectedDay: parseDate(this.props.selected) });
     } else if (!prevProps.items) {
@@ -232,7 +234,7 @@ export default class AgendaView extends Component {
     if (this.knob) {
       this.knob.setNativeProps({style: {opacity: 1}});
     }
-
+  
     if (this.headerState === 'touched') {
       this.setScrollPadPosition(0, true);
       this.enableCalendarScrolling();
