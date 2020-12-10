@@ -28,10 +28,6 @@ class Week extends Component {
     this.style = styleConstructor(props.theme);
   }
 
-  isDateNotInTheRange = (minDate, maxDate, date) => {
-    return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
-  };
-
   getWeek(date) {
     if (date) {
       const current = parseDate(date);
@@ -83,7 +79,7 @@ class Week extends Component {
 
     if (disabledByDefault) {
       state = 'disabled';
-    } else if (this.isDateNotInTheRange(minDate, maxDate, day)) {
+    } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, parseDate(current))) {
       state = 'disabled';

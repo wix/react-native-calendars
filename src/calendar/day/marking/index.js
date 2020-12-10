@@ -114,9 +114,8 @@ export default class Marking extends Component {
 
   renderPeriod(index, item) {
     const {color, startingDay, endingDay} = item;
-    const baseStyle = [this.style.period];
     const style = [
-      ...baseStyle,
+      this.style.period,
       {
         backgroundColor: color
       }

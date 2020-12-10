@@ -88,10 +88,6 @@ class Calendar extends Component {
 
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
-
-  isDateNotInTheRange = (minDate, maxDate, date) => {
-    return (minDate && !dateutils.isGTE(date, minDate)) || (maxDate && !dateutils.isLTE(date, maxDate));
-  };
   
   addMonth = count => {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
@@ -166,7 +162,7 @@ class Calendar extends Component {
 
     if (disabledByDefault) {
       state = 'disabled';
-    } else if (this.isDateNotInTheRange(minDate, maxDate, day)) {
+    } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
