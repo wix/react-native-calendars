@@ -90,7 +90,8 @@ function page(xd, firstDayOfWeek, showSixWeeks) {
 
 function isDateNotInTheRange(minDate, maxDate, date) {
   return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
-};
+}
+
 
 module.exports = {
   weekDayNames,
