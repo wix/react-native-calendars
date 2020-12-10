@@ -93,12 +93,8 @@ export default class Marking extends Component {
     switch (type) {
       case MARKING_TYPES.multiDot:
         return this.renderMultiMarkings(this.style.dots, dots); 
-      // case MARKING_TYPES.period:
-      //   return this.renderDot();
       case MARKING_TYPES.multiPeriod:
-        return this.renderMultiMarkings(this.style.periods, periods); 
-      // case MARKING_TYPES.custom:
-      //   return this.renderDot();   
+        return this.renderMultiMarkings(this.style.periods, periods);    
       default:
         return this.renderDot();
     }
