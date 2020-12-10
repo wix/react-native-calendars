@@ -234,7 +234,7 @@ export default class AgendaView extends Component {
     if (this.knob) {
       this.knob.setNativeProps({style: {opacity: 1}});
     }
-  
+
     if (this.headerState === 'touched') {
       this.setScrollPadPosition(0, true);
       this.enableCalendarScrolling();
