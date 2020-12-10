@@ -38,6 +38,9 @@ export default function styleConstructor(theme={}) {
     disabledText: {
       color: appStyle.textDisabledColor
     },
+    dotContainer: {
+      flexDirection: 'row'
+    },
     dot: {
       width: 4,
       height: 4,

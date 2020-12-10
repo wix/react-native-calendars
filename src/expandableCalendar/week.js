@@ -1,20 +1,17 @@
-import React, {Component} from 'react';
-import {View} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-
+import React, {Component} from 'react';
+import {View} from 'react-native';
 import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
 import {SELECT_DATE_SLOT} from '../testIDs';
 import styleConstructor from './style';
-
+import Calendar from '../calendar';
 import Day from '../calendar/day/basic';
-import UnitDay from '../calendar/day/period';
+import PeriodDay from '../calendar/day/period';
 import MultiDotDay from '../calendar/day/multi-dot';
 import MultiPeriodDay from '../calendar/day/multi-period';
-import SingleDay from '../calendar/day/custom';
-import Calendar from '../calendar';
-
+import CustomDay from '../calendar/day/custom';
 
 const EmptyArray = [];
 
@@ -23,7 +20,7 @@ class Week extends Component {
 
   static propTypes = {
     ...Calendar.propTypes,
-    // the current date
+    /** the current date */
     current: PropTypes.any
   };
 
@@ -57,27 +54,29 @@ class Week extends Component {
         daysArray.push(newDate);
         index += 1;
       }
+
       return daysArray;
     }
   }
 
   getDayComponent() {
-    const {dayComponent} = this.props;
+    const {dayComponent, markingType} = this.props;
+    
     if (dayComponent) {
       return dayComponent;
     }
 
-    switch (this.props.markingType) {
-    case 'period':
-      return UnitDay;
-    case 'multi-dot':
-      return MultiDotDay;
-    case 'multi-period':
-      return MultiPeriodDay;
-    case 'custom':
-      return SingleDay;
-    default:
-      return Day;
+    switch (markingType) {
+      case 'period':
+        return PeriodDay;
+      case 'multi-dot':
+        return MultiDotDay;
+      case 'multi-period':
+        return MultiPeriodDay;
+      case 'custom':
+        return CustomDay;
+      default:
+        return Day;
     }
   }
 
@@ -100,7 +99,7 @@ class Week extends Component {
   // }
 
   renderDay(day, id) {
-    const {current, disableAllTouchEventsForDisabledDays} = this.props;
+    const {current} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
 
@@ -118,7 +117,7 @@ class Week extends Component {
     // hide extra days
     if (current && this.props.hideExtraDays) {
       if (!dateutils.sameMonth(day, parseDate(current))) {
-        return (<View key={id} style={{flex: 1}}/>);
+        return (<View key={id} style={this.style.emptyDayContainer}/>);
       }
     }
 
@@ -127,16 +126,16 @@ class Week extends Component {
     const dateAsObject = xdateToData(day);
 
     return (
-      <View style={{flex: 1, alignItems: 'center'}} key={id}>
+      <View style={this.style.dayContainer} key={id}>
         <DayComp
           testID={`${SELECT_DATE_SLOT}-${dateAsObject.dateString}`}
+          date={dateAsObject}
+          marking={this.getDateMarking(day)}
           state={state}
           theme={this.props.theme}
           onPress={this.props.onDayPress}
           onLongPress={this.props.onDayPress}
-          date={dateAsObject}
-          marking={this.getDateMarking(day)}
-          disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
+          disableAllTouchEventsForDisabledDays={this.props.disableAllTouchEventsForDisabledDays}
         >
           {dayDate}
         </DayComp>

@@ -18,6 +18,7 @@ const NUMBER_OF_PAGES = 2; // must be a positive number
 
 /**
  * @description: Week calendar component
+ * @note: Should be wrapped with 'CalendarProvider'
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 class WeekCalendar extends Component {
@@ -25,7 +26,7 @@ class WeekCalendar extends Component {
 
   static propTypes = {
     ...CalendarList.propTypes,
-    // the current date
+    /** the current date */
     current: PropTypes.any,
     /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,

@@ -5,7 +5,6 @@ import {shouldUpdate} from '../../../component-updater';
 import Dot from '../../dot';
 import styleConstructor from './style';
 
-
 class Day extends Component {
   static displayName = 'IGNORE';
 
@@ -55,15 +54,7 @@ class Day extends Component {
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
     const isToday = this.props.state === 'today';
 
-    const {
-      marked,
-      dotColor,
-      selected,
-      selectedColor,
-      selectedTextColor,
-      activeOpacity,
-      disableTouchEvent
-    } = marking;
+    const {marked, dotColor, selected, selectedColor, selectedTextColor, activeOpacity, disableTouchEvent} = marking;
 
     if (selected) {
       containerStyle.push(this.style.selected);
@@ -76,7 +67,6 @@ class Day extends Component {
       if (selectedTextColor) {
         textStyle.push({color: selectedTextColor});
       }
-
     } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
     } else if (isToday) {
@@ -95,14 +85,16 @@ class Day extends Component {
       <TouchableOpacity
         testID={this.props.testID}
         style={containerStyle}
-        onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}
+        onPress={!shouldDisableTouchEvent ? this.onDayPress : undefined}
+        onLongPress={!shouldDisableTouchEvent ? this.onDayLongPress : undefined}
         activeOpacity={activeOpacity}
         disabled={shouldDisableTouchEvent}
         accessibilityRole={isDisabled ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
-        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+        <Text allowFontScaling={false} style={textStyle}>
+          {String(this.props.children)}
+        </Text>
         <Dot
           theme={theme}
           isMarked={marked}

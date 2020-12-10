@@ -88,7 +88,7 @@ class Day extends Component {
         accessibilityLabel={this.props.accessibilityLabel}
       >
         <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-        <View style={{flexDirection: 'row'}}>{dot}</View>
+        <View style={this.style.dotContainer}>{dot}</View>
       </TouchableOpacity>
     );
   }
