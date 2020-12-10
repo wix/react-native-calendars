@@ -209,11 +209,11 @@ class ReservationList extends Component {
   };
 
   renderRow = ({item, index}) => {
-    const reservationUserProps = extractComponentProps(Reservation, this.props);
+    const reservationProps = extractComponentProps(Reservation, this.props);
 
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
-        <Reservation {...reservationUserProps} item={item} />
+        <Reservation {...reservationProps} item={item} />
       </View>
     );
   };

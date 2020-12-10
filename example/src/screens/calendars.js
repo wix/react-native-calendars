@@ -34,7 +34,6 @@ const CalendarsScreen = () => {
           testID={testIDs.calendars.FIRST}
           current={'2020-02-02'}
           style={styles.calendar}
-          hideExtraDays
           onDayPress={onDayPress}
           markedDates={{
             [selected]: {
@@ -58,6 +57,21 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithMinAndMaxDates = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with min and max dates</Text>
+        <Calendar 
+          style={styles.calendar} 
+          hideExtraDays 
+          current={'2012-05-16'}
+          minDate={'2012-05-10'}
+          maxDate={'2012-05-20'}
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithMarkedDatesAndHiddenArrows = () => {
     return (
       <Fragment>
@@ -65,19 +79,47 @@ const CalendarsScreen = () => {
         <Calendar
           style={styles.calendar}
           current={'2012-05-16'}
-          minDate={'2012-05-10'}
-          maxDate={'2012-05-29'}
+          hideExtraDays
           disableAllTouchEventsForDisabledDays
           firstDay={1}
           markedDates={{
             '2012-05-23': {selected: true, marked: true, disableTouchEvent: true},
             '2012-05-24': {selected: true, marked: true, dotColor: 'red'},
-            '2012-05-25': {marked: true, dotColor: 'red'},
+            '2012-05-25': {marked: true, dotColor: 'red', disableTouchEvent: true},
             '2012-05-26': {marked: true},
             '2012-05-27': {disabled: true, activeOpacity: 0, disableTouchEvent: false}
           }}
           hideArrows={true}
           // disabledByDefault={true}
+        />
+      </Fragment>
+    );
+  };
+
+  const renderCalendarWithMultiDotMarking = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with multi-dot marking</Text>
+        <Calendar
+          style={styles.calendar}
+          current={'2012-05-16'}
+          markingType={'multi-dot'}
+          markedDates={{
+            '2012-05-08': {
+              selected: true,
+              dots: [
+                {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
+                {key: 'massage', color: 'red', selectedDotColor: 'white'}
+              ]
+            },
+            '2012-05-09': {
+              disabled: true,
+              dots: [
+                {key: 'vacation', color: 'green', selectedDotColor: 'red'},
+                {key: 'massage', color: 'red', selectedDotColor: 'green'}
+              ]
+            }
+          }}
         />
       </Fragment>
     );
@@ -162,35 +204,6 @@ const CalendarsScreen = () => {
               }
             },
             ...getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
-          }}
-        />
-      </Fragment>
-    );
-  };
-
-  const renderCalendarWithMultiDotMarking = () => {
-    return (
-      <Fragment>
-        <Text style={styles.text}>Calendar with multi-dot marking</Text>
-        <Calendar
-          style={styles.calendar}
-          current={'2012-05-16'}
-          markingType={'multi-dot'}
-          markedDates={{
-            '2012-05-08': {
-              selected: true,
-              dots: [
-                {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'white'}
-              ]
-            },
-            '2012-05-09': {
-              disabled: true,
-              dots: [
-                {key: 'vacation', color: 'green', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'green'}
-              ]
-            }
           }}
         />
       </Fragment>
@@ -346,7 +359,7 @@ const CalendarsScreen = () => {
           dayComponent={({date, state}) => {
             return (
               <View>
-                <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'black'}}>{date.day}</Text>
+                <Text style={{textAlign: 'center', color: state === 'disabled' ? 'gray' : 'purple'}}>{date.day}</Text>
               </View>
             );
           }}
@@ -370,7 +383,7 @@ const CalendarsScreen = () => {
           }}
         >
           <Text>This is a custom header!</Text>
-          <TouchableOpacity onPress={() => console.log('Tapped!')}>
+          <TouchableOpacity onPress={() => console.warn('Tapped!')}>
             <Text>Tap Me</Text>
           </TouchableOpacity>
         </View>
@@ -399,10 +412,11 @@ const CalendarsScreen = () => {
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
       {renderCalendarWithSelectableDate()}
       {renderCalendarWithWeekNumbers()}
+      {renderCalendarWithMinAndMaxDates()}
       {renderCalendarWithMarkedDatesAndHiddenArrows()}
+      {renderCalendarWithMultiDotMarking()}
       {renderCalendarWithPeriodMarkingAndSpinner()}
       {renderCalendarWithPeriodMarkingAndDotMarking()}
-      {renderCalendarWithMultiDotMarking()}
       {renderCalendarWithMultiPeriodMarking()}
       {renderCalendarWithCustomMarkingType()}
       {renderCalendarWithCustomDay()}

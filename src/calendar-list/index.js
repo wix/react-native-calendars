@@ -263,12 +263,12 @@ class CalendarList extends Component {
   renderStaticHeader() {
     const {staticHeader, horizontal, headerStyle} = this.props;
     const useStaticHeader = staticHeader && horizontal;
-    const headerUserProps = extractComponentProps(CalendarHeader, this.props);
+    const headerProps = extractComponentProps(CalendarHeader, this.props);
 
     if (useStaticHeader) {
       return (
         <CalendarHeader
-          {...headerUserProps}
+          {...headerProps}
           testID={STATIC_HEADER}
           style={[this.style.staticHeader, headerStyle]}
           month={this.state.currentMonth}

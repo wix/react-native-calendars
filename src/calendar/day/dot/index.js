@@ -3,30 +3,30 @@ import React from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
 
-const Dot = ({theme, isMarked, isDisabled, dotColor, isToday, isSelected}) => {
+const Dot = ({theme, marked, disabled, color, today, selected}) => {
   const style = styleConstructor(theme);
   const dotStyle = [style.dot];
 
-  if (isMarked) {
+  if (marked) {
     dotStyle.push(style.visibleDot);
 
-    if (isToday) {
+    if (today) {
       dotStyle.push(style.todayDot);
     }
 
-    if (isDisabled) {
+    if (disabled) {
       dotStyle.push(style.disabledDot);
     }
 
-    if (isSelected) {
+    if (selected) {
       dotStyle.push(style.selectedDot);
     }
 
-    if (dotColor) {
-      dotStyle.push({backgroundColor: dotColor});
+    if (color) {
+      dotStyle.push({backgroundColor: color});
     }
   }
-
+  
   return <View style={dotStyle}/>;
 };
 
@@ -34,9 +34,9 @@ export default Dot;
 
 Dot.propTypes = {
   theme: PropTypes.object,
-  isMarked: PropTypes.bool,
-  dotColor: PropTypes.string,
-  isSelected: PropTypes.bool,
-  isToday: PropTypes.bool,
-  isDisabled: PropTypes.bool
+  color: PropTypes.string,
+  marked: PropTypes.bool,
+  selected: PropTypes.bool,
+  disabled: PropTypes.bool,
+  today: PropTypes.bool
 };
