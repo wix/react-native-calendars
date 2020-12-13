@@ -13,17 +13,17 @@ class ReservationList extends Component {
 
   static propTypes = {
     ...Reservation.propTypes,
-    // the list of items that have to be displayed in agenda. If you want to render item as empty date
-    // the value of date key kas to be an empty array []. If there exists no value for date key it is
-    // considered that the date in question is not yet loaded
+    /** the list of items that have to be displayed in agenda. If you want to render item as empty date
+    the value of date key kas to be an empty array []. If there exists no value for date key it is
+    considered that the date in question is not yet loaded */ 
     reservations: PropTypes.object,
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
-    /** Show items only for the selected day. Default = false */
+    /** Show items only for the selected day. Default = false. */
     showOnlySelectedDayItems: PropTypes.bool,
-    // callback that gets called when day changes while scrolling agenda list
+    /** callback that gets called when day changes while scrolling agenda list. */ 
     onDayChange: PropTypes.func,
-    /** specify what should be rendered instead of ActivityIndicator */
+    /** specify what should be rendered instead of ActivityIndicator. */
     renderEmptyData: PropTypes.func,
 
     /** onScroll ListView event */
