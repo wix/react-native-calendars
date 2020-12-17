@@ -207,13 +207,13 @@ class ExpandableCalendar extends Component {
   }
 
   getMarkedDates() {
-    const {context, markedDates} = this.props;
+    const {context, markedDates, disabledByDefault} = this.props;
 
     if (markedDates) {
       const marked = _.cloneDeep(markedDates);
       if (marked[context.date]) {
         marked[context.date].selected = true;
-      } else {
+      } else if (!disabledByDefault) {
         marked[context.date] = {selected: true};
       }
       return marked;
