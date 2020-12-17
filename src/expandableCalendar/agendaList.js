@@ -24,16 +24,21 @@ class AgendaList extends Component {
     ...SectionList.propTypes,
     /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
     dayFormat: PropTypes.string,
+    /** a function to custom format the section header's title */
+    dayFormatter: PropTypes.func,
     /** whether to use moment.js for date string formatting 
      * (remember to pass 'dayFormat' with appropriate format, like 'dddd, MMM D') */
     useMoment: PropTypes.bool,
+    /** whether to mark today's title with the "Today, ..." string. Default = true */
+    markToday: PropTypes.bool,
     /** style passed to the section view */
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   }
 
   static defaultProps = {
     dayFormat: 'dddd, MMM d',
-    stickySectionHeadersEnabled: true
+    stickySectionHeadersEnabled: true,
+    markToday: true
   }
 
   constructor(props) {
@@ -134,35 +139,44 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
-    if (this.props.renderSectionHeader) {
-      return this.props.renderSectionHeader();
+    const {renderSectionHeader, dayFormatter, dayFormat, useMoment, markToday, sectionStyle} = this.props;
+
+    if (renderSectionHeader) {
+      return renderSectionHeader(title);
     }
 
     let sectionTitle = title;
 
-    if (this.props.dayFormat) {
-      let date;
-      let today;
-
-      if (this.props.useMoment) {
-        date = moment(title).format(this.props.dayFormat);
-        today = moment().format(this.props.dayFormat);
+    if (dayFormatter) {
+      sectionTitle = dayFormatter(title);
+    } else if (dayFormat) {
+      if (useMoment) {
+        sectionTitle = moment(title).format(dayFormat);
       } else {
-        date = XDate(title).toString(this.props.dayFormat);
-        today = XDate().toString(this.props.dayFormat);
+        sectionTitle = XDate(title).toString(dayFormat);
       }
+    }
 
+    if (markToday) {
       const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
-      sectionTitle = date === today ? `${todayString}, ${date}` : date;
+      const today = XDate().toString("yyyy-MM-d");
+      sectionTitle = title === today ? `${todayString}, ${sectionTitle}` : sectionTitle;
     }
 
     return (
-      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onHeaderLayout}>{sectionTitle}</Text>
+      <Text 
+        allowFontScaling={false} 
+        style={[this.style.sectionText, sectionStyle]} 
+        onLayout={this.onHeaderLayout}
+      >
+        {sectionTitle}
+      </Text>
     );
   }
 
   keyExtractor = (item, index) => {
-    return _.isFunction(this.props.keyExtractor) ? this.props.keyExtractor(item, index) : String(index);
+    const {keyExtractor} = this.props;
+    return _.isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
   }
 
   render() {
