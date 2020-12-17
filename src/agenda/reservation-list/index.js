@@ -19,28 +19,28 @@ class ReservationList extends Component {
     reservations: PropTypes.object,
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
-    /** Show items only for the selected day. Default = false. */
+    /** Show items only for the selected day. Default = false */
     showOnlySelectedDayItems: PropTypes.bool,
-    /** callback that gets called when day changes while scrolling agenda list. */ 
+    /** callback that gets called when day changes while scrolling agenda list */ 
     onDayChange: PropTypes.func,
-    /** specify what should be rendered instead of ActivityIndicator. */
+    /** specify what should be rendered instead of ActivityIndicator */
     renderEmptyData: PropTypes.func,
 
     /** onScroll ListView event */
     onScroll: PropTypes.func,
-    /** Called when the user begins dragging the agenda list. **/
+    /** Called when the user begins dragging the agenda list **/
     onScrollBeginDrag: PropTypes.func,
-    /** Called when the user stops dragging the agenda list. **/
+    /** Called when the user stops dragging the agenda list **/
     onScrollEndDrag: PropTypes.func,
-    /** Called when the momentum scroll starts for the agenda list. **/
+    /** Called when the momentum scroll starts for the agenda list **/
     onMomentumScrollBegin: PropTypes.func,
-    /** Called when the momentum scroll stops for the agenda list. **/
+    /** Called when the momentum scroll stops for the agenda list **/
     onMomentumScrollEnd: PropTypes.func,
-    /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
+    /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView */
     refreshControl: PropTypes.element,
-    /** Set this true while waiting for new data from a refresh. */
+    /** Set this true while waiting for new data from a refresh */
     refreshing: PropTypes.bool,
-    /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly. */
+    /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
     onRefresh: PropTypes.func
   };
 

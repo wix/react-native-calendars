@@ -672,3 +672,11 @@
 ### Change
 
 - Day components refactor.
+
+## [1.505.0] - 2020-12-17
+
+### Added
+
+- AgendaList - adding 'dayFormatter' prop to custom format section header's title.
+             - adding 'markToday' prop to control the "TODAY, ..." string appearance.
+             - passing 'title' as a param for 'renderSectionHeader' callback.
