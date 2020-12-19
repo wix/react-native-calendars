@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const {memoize} = require('./memoize-utils');
 
 function shouldUpdate(a, b, paths) {
   for (let i = 0; i < paths.length; i++) {
@@ -26,5 +25,5 @@ function extractComponentProps(component, props, ignoreProps) {
 
 module.exports = {
   shouldUpdate,
-  extractComponentProps: memoize(extractComponentProps)
+  extractComponentProps
 };
