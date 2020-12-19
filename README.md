@@ -1,4 +1,5 @@
 # React Native Calendars 🗓️ 📆
+
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
 [![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
 
@@ -26,7 +27,11 @@ This project is compatible with Expo/CRNA (without ejecting), and the examples h
 
 ## Installation
 
-See the installation guide [here](https://github.com/wix-private/wix-react-native-calendar/docs/Installation.md).
+```
+$ npm install --save react-native-calendars
+```
+
+The solution is implemented in JavaScript so no native module linking is required.
 
 ## Usage
 
@@ -48,8 +53,8 @@ Agenda [link](https://github.com/wix-private/wix-react-native-calendar/docs/Comp
 
 ## Authors
 
-* [Tautvilas Mecinskas](https://github.com/tautvilas/) - Initial code - [@tautvilas](https://twitter.com/Tautvilas)
-* Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
+- [Tautvilas Mecinskas](https://github.com/tautvilas/) - Initial code - [@tautvilas](https://twitter.com/Tautvilas)
+- Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
 
 See also the list of [contributors](https://github.com/wix/react-native-calendar-components/contributors) who participated in this project.
 
