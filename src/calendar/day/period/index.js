@@ -127,7 +127,8 @@ export default class PeriodDay extends Component {
 
     if (marking) {
       containerStyle.push({
-        borderRadius: 17
+        borderRadius: 17,
+        overflow: 'hidden'
       });
 
       const flags = this.markingStyle;
