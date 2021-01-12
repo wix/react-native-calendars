@@ -383,10 +383,10 @@ class ExpandableCalendar extends Component {
   onVisibleMonthsChange = (value) => {
     if (this.visibleMonth !== _.first(value).month) {
       this.visibleMonth = _.first(value).month; // equivalent to this.getMonth(value[0].dateString)
-      parseDate(this.props.context.date)
+      parseDate(this.props.context.date);
 
       // current date on the calendar
-      const currentDate = parseDate(value[0].dateString)
+      const currentDate = parseDate(value[0].dateString);
 
       // for horizontal scroll
       const {date, updateSource} = this.props.context;
