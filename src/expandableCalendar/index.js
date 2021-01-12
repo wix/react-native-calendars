@@ -101,7 +101,7 @@ class ExpandableCalendar extends Component {
         }
       }
     };
-
+    
     this.state = {
       deltaY: new Animated.Value(startHeight),
       headerDeltaY: new Animated.Value(props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT),
@@ -240,6 +240,7 @@ class ExpandableCalendar extends Component {
   /** Pan Gesture */
 
   handleMoveShouldSetPanResponder = (e, gestureState) => {
+
     if (this.props.disablePan) {
       return false;
     }
@@ -411,7 +412,6 @@ class ExpandableCalendar extends Component {
   }
 
   /** Renders */
-
   renderWeekDaysNames() {
     const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
 
