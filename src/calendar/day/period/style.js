@@ -14,11 +14,11 @@ export default function styleConstructor(theme={}) {
       marginLeft: -1
     },
     base: {
-      //borderWidth: 1,
       width: 38,
       height: FILLER_HEIGHT,
       alignItems: 'center'
     },
+
     fillers: {
       position: 'absolute',
       height: FILLER_HEIGHT,
@@ -34,6 +34,7 @@ export default function styleConstructor(theme={}) {
       height: FILLER_HEIGHT,
       flex: 1
     },
+
     text: {
       marginTop: 7,
       fontSize: appStyle.textDayFontSize,
@@ -48,11 +49,14 @@ export default function styleConstructor(theme={}) {
     todayText: {
       fontWeight: '500',
       color: theme.todayTextColor || appStyle.dayTextColor
-      //color: appStyle.textLinkColor
+    },
+    selectedText: {
+      color: appStyle.selectedDayTextColor
     },
     disabledText: {
       color: appStyle.textDisabledColor
     },
+    
     quickAction: {
       backgroundColor: 'white',
       borderWidth: 1,

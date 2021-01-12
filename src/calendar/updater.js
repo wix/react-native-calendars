@@ -12,7 +12,7 @@ export default function shouldComponentUpdate(nextProps, nextState) {
     return prev;
   }, {update: false});
 
-  shouldUpdate = ['markedDates', 'hideExtraDays', 'displayLoadingIndicator'].reduce((prev, next) => {
+  shouldUpdate = ['markedDates', 'hideExtraDays', 'displayLoadingIndicator', 'disableArrowLeft', 'disableArrowRight'].reduce((prev, next) => {
     if (!prev.update && nextProps[next] !== this.props[next]) {
       return {
         update: true,

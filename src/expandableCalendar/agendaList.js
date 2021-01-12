@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {SectionList, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-
+import moment from 'moment';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
 
@@ -13,8 +13,8 @@ const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 
 /**
  * @description: AgendaList component
+ * @note: Should be wrapped with 'CalendarProvider'
  * @extends: SectionList
- * @notes: Should be wraped in CalendarProvider component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 class AgendaList extends Component {
@@ -24,13 +24,21 @@ class AgendaList extends Component {
     ...SectionList.propTypes,
     /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
     dayFormat: PropTypes.string,
+    /** a function to custom format the section header's title */
+    dayFormatter: PropTypes.func,
+    /** whether to use moment.js for date string formatting 
+     * (remember to pass 'dayFormat' with appropriate format, like 'dddd, MMM D') */
+    useMoment: PropTypes.bool,
+    /** whether to mark today's title with the "Today, ..." string. Default = true */
+    markToday: PropTypes.bool,
     /** style passed to the section view */
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
   }
 
   static defaultProps = {
     dayFormat: 'dddd, MMM d',
-    stickySectionHeadersEnabled: true
+    stickySectionHeadersEnabled: true,
+    markToday: true
   }
 
   constructor(props) {
@@ -57,6 +65,16 @@ class AgendaList extends Component {
       }
     });
     return i;
+  }
+
+  componentDidMount() {
+    const {date} = this.props.context;
+    if (date !== this._topSection) {
+      setTimeout(() => {
+        const sectionIndex = this.getSectionIndex(date);
+        this.scrollToSection(sectionIndex);
+      }, 500);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -121,18 +139,44 @@ class AgendaList extends Component {
   }
 
   renderSectionHeader = ({section: {title}}) => {
-    const today = XDate().toString(this.props.dayFormat);
-    const date = XDate(title).toString(this.props.dayFormat);
-    const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
-    const sectionTitle = date === today ? `${todayString}, ${date}` : date;
-    
+    const {renderSectionHeader, dayFormatter, dayFormat, useMoment, markToday, sectionStyle} = this.props;
+
+    if (renderSectionHeader) {
+      return renderSectionHeader(title);
+    }
+
+    let sectionTitle = title;
+
+    if (dayFormatter) {
+      sectionTitle = dayFormatter(title);
+    } else if (dayFormat) {
+      if (useMoment) {
+        sectionTitle = moment(title).format(dayFormat);
+      } else {
+        sectionTitle = XDate(title).toString(dayFormat);
+      }
+    }
+
+    if (markToday) {
+      const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+      const today = XDate().toString("yyyy-MM-d");
+      sectionTitle = title === today ? `${todayString}, ${sectionTitle}` : sectionTitle;
+    }
+
     return (
-      <Text allowFontScaling={false} style={[this.style.sectionText, this.props.sectionStyle]} onLayout={this.onHeaderLayout}>{sectionTitle}</Text>
+      <Text 
+        allowFontScaling={false} 
+        style={[this.style.sectionText, sectionStyle]} 
+        onLayout={this.onHeaderLayout}
+      >
+        {sectionTitle}
+      </Text>
     );
   }
 
   keyExtractor = (item, index) => {
-    return _.isFunction(this.props.keyExtractor) ? this.props.keyExtractor(item, index) : String(index);
+    const {keyExtractor} = this.props;
+    return _.isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
   }
 
   render() {
@@ -148,7 +192,7 @@ class AgendaList extends Component {
         onScroll={this.onScroll}
         onMomentumScrollBegin={this.onMomentumScrollBegin}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
-        // onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
+        onScrollToIndexFailed={(info) => { console.warn('onScrollToIndexFailed info: ', info); }}
         // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
       />
     );
