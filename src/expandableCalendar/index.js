@@ -382,6 +382,10 @@ class ExpandableCalendar extends Component {
   onVisibleMonthsChange = (value) => {
     if (this.visibleMonth !== _.first(value).month) {
       this.visibleMonth = _.first(value).month; // equivalent to this.getMonth(value[0].dateString)
+      parseDate(this.props.context.date)
+
+      // current date on the calendar
+      const currentDate = parseDate(value[0].dateString)
 
       // for horizontal scroll
       const {date, updateSource} = this.props.context;
@@ -393,9 +397,10 @@ class ExpandableCalendar extends Component {
 
       // updating openHeight
       setTimeout(() => { // to wait for setDate() call in horizontal scroll (this.scrollPage())
-        const numberOfWeeks = this.getNumberOfWeeksInMonth(parseDate(this.props.context.date));
+        const numberOfWeeks = this.getNumberOfWeeksInMonth(parseDate(currentDate));
         if (numberOfWeeks !== this.numberOfWeeks) {
           this.numberOfWeeks = numberOfWeeks;
+          console.log('numberOfWeeks:', numberOfWeeks)
           this.openHeight = this.getOpenHeight();
           if (this.state.position === POSITIONS.OPEN) {
             this.bounceToPosition(this.openHeight);
