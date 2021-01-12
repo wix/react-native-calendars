@@ -49,7 +49,7 @@ function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-function page(xd, firstDayOfWeek) {
+function page(xd, firstDayOfWeek, showSixWeeks) {
   const days = month(xd);
   let before = [], after = [];
 
@@ -59,6 +59,8 @@ function page(xd, firstDayOfWeek) {
   firstDayOfWeek = firstDayOfWeek || 0;
 
   const from = days[0].clone();
+  const daysBefore = from.getDay();
+
   if (from.getDay() !== fdow) {
     from.addDays(-(from.getDay() + 7 - fdow) % 7);
   }
@@ -67,6 +69,12 @@ function page(xd, firstDayOfWeek) {
   const day = to.getDay();
   if (day !== ldow) {
     to.addDays((ldow + 7 - day) % 7);
+  }
+
+  const daysForSixWeeks = (((daysBefore + days.length) / 6) >= 6);
+
+  if (showSixWeeks && !daysForSixWeeks) {
+    to.addDays(7);
   }
 
   if (isLTE(from, days[0])) {
@@ -80,6 +88,11 @@ function page(xd, firstDayOfWeek) {
   return before.concat(days.slice(1, days.length - 1), after);
 }
 
+function isDateNotInTheRange(minDate, maxDate, date) {
+  return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
+}
+
+
 module.exports = {
   weekDayNames,
   sameMonth,
@@ -88,5 +101,6 @@ module.exports = {
   page,
   fromTo,
   isLTE,
-  isGTE
+  isGTE,
+  isDateNotInTheRange
 };
