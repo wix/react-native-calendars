@@ -9,7 +9,7 @@
     "test": "npm run lint && npm run unit && npm run e2e",
     "unit": "jest",
     "lint": "eslint src/ example/src",
-    "release": "node ./scripts/release.js",
+    "release": "",
     "start": "react-native start",
     "ios": "react-native run-ios",
     "android": "react-native run-android",
