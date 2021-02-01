@@ -680,3 +680,15 @@
 - AgendaList - adding 'dayFormatter' prop to custom format section header's title.
              - adding 'markToday' prop to control the "TODAY, ..." string appearance.
              - passing 'title' as a param for 'renderSectionHeader' callback.
+
+## [1.506.0] - 2020-12-28
+
+### Fix
+
+- Period - fix 'startingDate' and 'endingDate' style (PR #1300).
+
+## [1.1210.0] - 2021-2-1
+
+### Fix
+
+- AgendaList - fix 'markToday' check for today's date.
