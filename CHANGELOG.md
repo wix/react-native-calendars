@@ -691,4 +691,4 @@
 
 ### Fix
 
-- AgendaList - fix 'markToday' check for today's date.
+- AgendaList - fix 'markToday' check for today's date (equivalence).
