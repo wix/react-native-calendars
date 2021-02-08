@@ -15,7 +15,7 @@ import BasicDay from './day/basic';
 import Day from './day/index';
 
 //Fallback for react-native-web or when RN version is < 0.44
-const {View, ViewPropTypes} = ReactNative;
+const {View, ViewPropTypes, Platform} = ReactNative;
 const viewPropTypes = Platform.OS === "web" ? {style: PropTypes.array} : ViewPropTypes || View.propTypes;
 const EmptyArray = [];
 
