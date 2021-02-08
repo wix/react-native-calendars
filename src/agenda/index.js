@@ -17,8 +17,7 @@ const KNOB_HEIGHT = 24;
 
 //Fallback for react-native-web or when RN version is < 0.44
 const {Text, View, Dimensions, Animated, ViewPropTypes} = ReactNative;
-const viewPropTypes =
-  typeof document !== 'undefined' ? PropTypes.shape({style: PropTypes.object}) : ViewPropTypes || View.propTypes;
+const viewPropTypes = typeof document !== 'undefined' ? {style: PropTypes.object} : ViewPropTypes || View.propTypes;
 
 /**
  * @description: Agenda component

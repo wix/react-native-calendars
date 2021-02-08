@@ -16,8 +16,7 @@ import Day from './day/index';
 
 //Fallback for react-native-web or when RN version is < 0.44
 const {View, ViewPropTypes} = ReactNative;
-const viewPropTypes =
-  typeof document !== 'undefined' ? PropTypes.shape({style: PropTypes.object}) : ViewPropTypes || View.propTypes;
+const viewPropTypes = typeof document !== 'undefined' ? {style: PropTypes.array} : ViewPropTypes || View.propTypes;
 const EmptyArray = [];
 
 /**
