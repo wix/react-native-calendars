@@ -16,8 +16,8 @@ const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
 //Fallback for react-native-web or when RN version is < 0.44
-const {Text, View, Dimensions, Animated, ViewPropTypes} = ReactNative;
-const viewPropTypes = typeof document !== 'undefined' ? {style: PropTypes.object} : ViewPropTypes || View.propTypes;
+const {Text, View, Dimensions, Animated, ViewPropTypes, Platform} = ReactNative;
+const viewPropTypes = Platform.OS === "web" ? {style: PropTypes.object} : ViewPropTypes || View.propTypes;
 
 /**
  * @description: Agenda component
