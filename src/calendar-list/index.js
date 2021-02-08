@@ -284,7 +284,7 @@ class CalendarList extends Component {
     const {style, pastScrollRange, futureScrollRange, horizontal, showScrollIndicator, testID} = this.props;
 
     return (
-      <View>
+      <View style={this.style.flatListContainer}>
         <FlatList
           ref={c => (this.listView = c)}
           style={[this.style.container, style]}

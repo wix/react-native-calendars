@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import * as defaultStyle from '../style';
 
 const STYLESHEET_ID = 'stylesheet.calendar-list.main';
@@ -6,6 +6,9 @@ const STYLESHEET_ID = 'stylesheet.calendar-list.main';
 export default function getStyle(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
+    flatListContainer: {
+      flex: Platform.OS === 'web' ? 1 : undefined
+    },
     container: {
       backgroundColor: appStyle.calendarBackground
     },
