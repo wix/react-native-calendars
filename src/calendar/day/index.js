@@ -82,7 +82,7 @@ export default class Day extends Component {
     const {day} = this.props;
     const date = xdateToData(day);
     const Component = this.getDayComponent();
-    const dayProps = extractComponentProps(Component, this.props);
+    const dayProps = extractComponentProps(Day, this.props);
 
     return (
       <Component
