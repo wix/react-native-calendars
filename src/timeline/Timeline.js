@@ -126,7 +126,7 @@ export default class Timeline extends React.PureComponent {
         <View
           key={'timeNow'}
           style={[
-            this.styles.lineNow,
+            this.style.lineNow,
             {
               top: this.currentTimeOffset(),
               width: dimensionWidth - 20,
