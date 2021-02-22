@@ -26,6 +26,7 @@
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* CalendarsExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CalendarsExampleTests.m */; };
 		398EEBBF225A4017004C3591 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 398EEBBE225A4017004C3591 /* JavaScriptCore.framework */; };
+		39CBD92125E3A09900E725A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39CBD92025E3A09900E725A0 /* LaunchScreen.storyboard */; };
 		487E5AF35184A2C855EE7D1C /* libPods-CalendarsExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 460013679EC6EF672EE84B6E /* libPods-CalendarsExampleTests.a */; };
 		F9B5B8B4570FF18032DEFDE0 /* libPods-CalendarsExample-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C64726F99E7F45CCED79B2 /* libPods-CalendarsExample-tvOSTests.a */; };
 		FA2BCE77335351BEE723EFCF /* libPods-CalendarsExample-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B2B1D7F212F1999E5CE3C3D /* libPods-CalendarsExample-tvOS.a */; };
@@ -307,7 +308,6 @@
 		13B07F961A680F5B00A75B9A /* CalendarsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = CalendarsExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = CalendarsExample/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CalendarsExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CalendarsExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CalendarsExample/main.m; sourceTree = "<group>"; };
@@ -318,6 +318,7 @@
 		2D02E4901E0B4A5D006451C7 /* CalendarsExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CalendarsExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3297F784662D20D095BF1AFB /* Pods-CalendarsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample.debug.xcconfig"; path = "Target Support Files/Pods-CalendarsExample/Pods-CalendarsExample.debug.xcconfig"; sourceTree = "<group>"; };
 		398EEBBE225A4017004C3591 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		39CBD92025E3A09900E725A0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		460013679EC6EF672EE84B6E /* libPods-CalendarsExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CalendarsExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46A23C7C177DC438E0CBB3F9 /* Pods-CalendarsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarsExample.release.xcconfig"; path = "Target Support Files/Pods-CalendarsExample/Pods-CalendarsExample.release.xcconfig"; sourceTree = "<group>"; };
 		47F7CE6DB1E4FBB453CC30D5 /* libPods-CalendarsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CalendarsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -465,8 +466,8 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				39CBD92025E3A09900E725A0 /* LaunchScreen.storyboard */,
 			);
 			name = CalendarsExample;
 			sourceTree = "<group>";
@@ -1027,6 +1028,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39CBD92125E3A09900E725A0 /* LaunchScreen.storyboard in Resources */,
 				247F69DC2483A793006A1A73 /* main.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -1235,18 +1237,6 @@
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = CalendarsExample;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
@@ -1462,7 +1452,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1509,7 +1499,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
