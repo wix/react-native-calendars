@@ -32,7 +32,8 @@ export default class Timeline extends React.PureComponent {
       })
     ).isRequired,
     scrollToNow: PropTypes.bool,
-    currentDateString: PropTypes.string
+    currentDateString: PropTypes.string,
+    updateCurrentTimeIndicatorEveryMinute: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -74,10 +75,30 @@ export default class Timeline extends React.PureComponent {
   }
 
   componentDidMount() {
+    if (this.isCurrentDateStringForTimeIndicatorSet()) {
+      this.setState({
+        currentTimeIndicatorTopCoordinate: this.currentTimeOffset()
+      });
+
+      if (this.props.updateCurrentTimeIndicatorEveryMinute) {
+        this.interval = setInterval(() => {
+          this.setState({
+            currentTimeIndicatorTopCoordinate: this.currentTimeOffset()
+          });
+        }, 60000);
+      }
+    }
+
     if (this.props.scrollToFirst) {
       this.scrollToFirst();
     } else if (this.props.scrollToNow) {
       this.scrollToNow();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.updateCurrentTimeIndicatorEveryMinute) {
+      clearInterval(this.interval);
     }
   }
 
@@ -114,13 +135,14 @@ export default class Timeline extends React.PureComponent {
     return offset * (timeNowHour - start) + (offset * timeNowMin) / 60;
   }
 
-  _renderCurrentTimeIndicator() {
-    // currentDateString format YYYY-MM-DD, e.g. 2020-11-06
-    if (typeof this.props.currentDateString === 'undefined') {
-      return;
-    }
+  isCurrentDateStringForTimeIndicatorSet () {
+    return typeof this.props.currentDateString !== 'undefined';
+  }
 
-    if (this.props.currentDateString === moment().format('YYYY-MM-DD')) {
+  _renderCurrentTimeIndicator() {
+    if (this.isCurrentDateStringForTimeIndicatorSet() &&
+      this.props.currentDateString === moment().format('YYYY-MM-DD')) {
+      // currentDateString format YYYY-MM-DD, e.g. 2020-11-06
       // Time indicator should be displayed only on the current date
       return (
         <View
@@ -128,7 +150,7 @@ export default class Timeline extends React.PureComponent {
           style={[
             this.style.lineNow,
             {
-              top: this.currentTimeOffset(),
+              top: this.state.currentTimeIndicatorTopCoordinate,
               width: dimensionWidth - 20,
             },
           ]}

@@ -198,6 +198,7 @@ export default class TimelineCalendarScreen extends Component {
           // scrollToFirst={true}
           // scrollToNow={true}
           // currentDateString={this.state.currentDate}
+          // updateCurrentTimeIndicatorEveryMinute={true}
           // start={0}
           // end={24}
         />
