@@ -1,9 +1,3 @@
-**LOOKING FOR A MAINTAINER**
-We love this project, but currently we don’t have enough time to work on it. So we are looking for a maintainer. If you have enough time and knowledge and want to become one - please let us know (levv@wix.com, inbalti@wix.com, ethans@wix.com)
-
----
-
-
 # React Native Calendars 🗓️ 📆
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
 [![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
@@ -118,10 +112,12 @@ LocaleConfig.defaultLocale = 'fr';
   disableArrowRight={true}
   // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
   disableAllTouchEventsForDisabledDays={true}
-  /** Replace default month and year title with custom one. the function receive a date as parameter. */
+  // Replace default month and year title with custom one. the function receive a date as parameter.
   renderHeader={(date) => {/*Return JSX*/}}
   /** Replace default day of week with custom one. the function receive a day, index as parameters. */
   renderWeekDays={(day,idx) => {/*Return JSX*/}}
+  // Enable the option to swipe between months. Default = false
+  enableSwipeMonths={true}
 />
 ```
 

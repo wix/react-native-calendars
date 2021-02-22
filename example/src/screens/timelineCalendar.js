@@ -1,18 +1,7 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {
-  Platform,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Button
-} from 'react-native';
-import {
-  ExpandableCalendar,
-  Timeline,
-  CalendarProvider
-} from 'react-native-calendars';
+import {Platform, StyleSheet, View, Text, TouchableOpacity, Button} from 'react-native';
+import {ExpandableCalendar, Timeline, CalendarProvider} from 'react-native-calendars';
 import moment from 'moment';
 
 const EVENTS = [
@@ -92,9 +81,9 @@ const EVENTS = [
 export default class TimelineCalendarScreen extends Component {
   state = {
     currentDate: '2017-09-07'
-  }
-  
-  onDateChanged = (date) => {
+  };
+
+  onDateChanged = date => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
     this.setState({currentDate: date});
@@ -118,15 +107,14 @@ export default class TimelineCalendarScreen extends Component {
     }
 
     return (
-      <TouchableOpacity
-        style={styles.item}>
+      <TouchableOpacity style={styles.item}>
         <View>
           <Text style={styles.itemHourText}>{item.hour}</Text>
           <Text style={styles.itemDurationText}>{item.duration}</Text>
         </View>
         <Text style={styles.itemTitleText}>{item.title}</Text>
         <View style={styles.itemButtonContainer}>
-          <Button title={'Info'}/>
+          <Button title={'Info'} />
         </View>
       </TouchableOpacity>
     );
@@ -178,7 +166,7 @@ export default class TimelineCalendarScreen extends Component {
   render() {
     return (
       <CalendarProvider
-      // date={ITEMS[0].title}
+        // date={ITEMS[0].title}
         date={this.state.currentDate}
         onDateChanged={this.onDateChanged}
         onMonthChange={this.onMonthChange}

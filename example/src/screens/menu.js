@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 
@@ -11,35 +10,36 @@ export default class MenuScreen extends Component {
     return (
       <ScrollView>
         <View style={styles.container} testID={testIDs.menu.CONTAINER}>
-          <Image source={appIcon} style={styles.image}/>
+          <Image source={appIcon} style={styles.image} />
           <TouchableOpacity
             testID={testIDs.menu.CALENDARS}
             style={styles.menu}
-            onPress={this.onCalendarsPress.bind(this)}>
+            onPress={this.onCalendarsPress.bind(this)}
+          >
             <Text style={styles.menuText}>Calendars</Text>
           </TouchableOpacity>
           <TouchableOpacity
             testID={testIDs.menu.CALENDAR_LIST}
             style={styles.menu}
-            onPress={this.onCalendarListPress.bind(this)}>
+            onPress={this.onCalendarListPress.bind(this)}
+          >
             <Text style={styles.menuText}>Calendar List</Text>
           </TouchableOpacity>
           <TouchableOpacity
             testID={testIDs.menu.HORIZONTAL_LIST}
             style={styles.menu}
-            onPress={this.onHorizontalCalendarListPress.bind(this)}>
+            onPress={this.onHorizontalCalendarListPress.bind(this)}
+          >
             <Text style={styles.menuText}>Horizontal Calendar List</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            testID={testIDs.menu.AGENDA}
-            style={styles.menu}
-            onPress={this.onAgendaPress.bind(this)}>
+          <TouchableOpacity testID={testIDs.menu.AGENDA} style={styles.menu} onPress={this.onAgendaPress.bind(this)}>
             <Text style={styles.menuText}>Agenda</Text>
           </TouchableOpacity>
           <TouchableOpacity
             testID={testIDs.menu.EXPANDABLE_CALENDAR}
             style={styles.menu}
-            onPress={this.onExpandablePress.bind(this)}>
+            onPress={this.onExpandablePress.bind(this)}
+          >
             <Text style={styles.menuText}>Expandable Calendar</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.menu} onPress={this.onTimelinePress.bind(this)}>
@@ -48,7 +48,8 @@ export default class MenuScreen extends Component {
           <TouchableOpacity
             testID={testIDs.menu.WEEK_CALENDAR}
             style={styles.menu}
-            onPress={this.onWeekPress.bind(this)}>
+            onPress={this.onWeekPress.bind(this)}
+          >
             <Text style={styles.menuText}>Week Calendar</Text>
           </TouchableOpacity>
         </View>
