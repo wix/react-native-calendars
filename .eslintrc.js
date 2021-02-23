@@ -23,6 +23,7 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     'no-unused-vars': 2,
     'object-curly-spacing': ['error', 'never'],
+    'no-undef': ['off'],
     semi: ['error', 'always'],
     'react/jsx-uses-react': 2,
     'react/jsx-uses-vars': 2
