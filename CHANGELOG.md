@@ -692,3 +692,16 @@
 ### Fix
 
 - AgendaList - fix 'markToday' check for today's date (equivalence).
+
+
+## [1.1250.0] - 2021-2-22
+
+### Changed
+
+- react-native upgrade to version 63.4.0.
+
+## [1.1251.0] - 2021-2-23
+
+### Changed
+
+- detox upgrade to version 18.6.2.
