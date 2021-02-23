@@ -61,9 +61,9 @@ const CalendarsScreen = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with min and max dates</Text>
-        <Calendar 
-          style={styles.calendar} 
-          hideExtraDays 
+        <Calendar
+          style={styles.calendar}
+          hideExtraDays
           current={'2012-05-16'}
           minDate={'2012-05-10'}
           maxDate={'2012-05-20'}
@@ -408,8 +408,15 @@ const CalendarsScreen = () => {
       </Fragment>
     );
   };
+
+  const initialNumToRender = 100; // Workaround for Detox 18 migration bug
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      testID={testIDs.calendars.CONTAINER}
+      initialNumToRender={initialNumToRender}
+    >
       {renderCalendarWithSelectableDate()}
       {renderCalendarWithWeekNumbers()}
       {renderCalendarWithMinAndMaxDates()}
