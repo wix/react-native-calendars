@@ -700,7 +700,13 @@
 
 - react-native upgrade to version 63.4.0.
 
-## [1.1251.0] - 2021-2-23
+## [1.1251.0] - 2021-2-22
+
+### Changed
+
+- eslint rule 'no-undef' to 'off'.
+
+## [1.1252.0] - 2021-2-23
 
 ### Changed
 
