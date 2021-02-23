@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React, {Component} from 'react';
 import {Platform, Alert, StyleSheet, View, Text, TouchableOpacity, Button} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
-import {isAndroid, isRTL} from '../../../src/expandableCalendar/commons';
 
 const testIDs = require('../testIDs');
 
@@ -196,8 +195,8 @@ export default class ExpandableCalendarScreen extends Component {
             // initialPosition={ExpandableCalendar.positions.OPEN}
             // calendarStyle={styles.calendar}
             // headerStyle={styles.calendar} // for horizontal only
+            // disableWeekScroll
             // theme={this.getTheme()}
-            disableWeekScroll={isRTL && isAndroid}
             disableAllTouchEventsForDisabledDays
             firstDay={1}
             markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};

@@ -13,6 +13,7 @@ import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
 import WeekCalendar from './weekCalendar';
 import Week from './week';
+import {isAndroid, isRTL} from './commons';
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -430,7 +431,7 @@ class ExpandableCalendar extends Component {
 
   renderWeekCalendar() {
     const {position} = this.state;
-    const {disableWeekScroll} = this.props;
+    const disableWeekScroll = this.props.disableWeekScroll || (isRTL && isAndroid);
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
 
     return (
