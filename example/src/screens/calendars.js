@@ -1,13 +1,19 @@
 import _ from 'lodash';
 import moment from 'moment';
 import React, {useState, Fragment} from 'react';
-import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
 
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState('');
+  const [showMarkedDatesExamples, setShowMarkedDatesExamples] = useState(false);
+
+
+  const toggleSwitch = () => {
+    setShowMarkedDatesExamples(!showMarkedDatesExamples);
+  };
 
   const onDayPress = day => {
     setSelected(day.dateString);
@@ -409,6 +415,44 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderMarkedDatesExamples = () => {
+    return (
+      <Fragment>
+        {renderCalendarWithMarkedDatesAndHiddenArrows()}
+        {renderCalendarWithMultiDotMarking()}
+        {renderCalendarWithPeriodMarkingAndSpinner()}
+        {renderCalendarWithPeriodMarkingAndDotMarking()}
+        {renderCalendarWithMultiPeriodMarking()}
+        {renderCalendarWithCustomMarkingType()}
+      </Fragment>
+    );
+  };
+
+  const renderExamples = () => {
+    return (
+      <Fragment>
+        {renderCalendarWithSelectableDate()}
+        {renderCalendarWithWeekNumbers()}
+        {renderCalendarWithMinAndMaxDates()}
+        {renderCalendarWithCustomDay()}
+        {renderCalendarWithCustomHeader()}
+      </Fragment>
+    );
+  };
+
+  const renderSwitch = () => { // Workaround for Detox 18 migration bug
+    return (
+      <View style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
+        <Switch
+          trackColor={{false: '#d9e1e8', true: '#00BBF2'}}
+          onValueChange={toggleSwitch}
+          value={showMarkedDatesExamples}
+        />
+        <Text style={{margin: 10, fontSize: 16}}>Show markings examples</Text>
+      </View>
+    );
+  };
+
   const initialNumToRender = 100; // Workaround for Detox 18 migration bug
 
   return (
@@ -417,17 +461,9 @@ const CalendarsScreen = () => {
       testID={testIDs.calendars.CONTAINER}
       initialNumToRender={initialNumToRender}
     >
-      {renderCalendarWithSelectableDate()}
-      {renderCalendarWithWeekNumbers()}
-      {renderCalendarWithMinAndMaxDates()}
-      {renderCalendarWithMarkedDatesAndHiddenArrows()}
-      {renderCalendarWithMultiDotMarking()}
-      {renderCalendarWithPeriodMarkingAndSpinner()}
-      {renderCalendarWithPeriodMarkingAndDotMarking()}
-      {renderCalendarWithMultiPeriodMarking()}
-      {renderCalendarWithCustomMarkingType()}
-      {renderCalendarWithCustomDay()}
-      {renderCalendarWithCustomHeader()}
+      {renderSwitch()}
+      {showMarkedDatesExamples && renderMarkedDatesExamples()}
+      {!showMarkedDatesExamples && renderExamples()}
     </ScrollView>
   );
 };

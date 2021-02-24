@@ -706,7 +706,14 @@
 
 - eslint rule 'no-undef' to 'off'.
 
-## [1.1252.0] - 2021-2-23
+## [1.1252.0] - 2021-2-22
+
+### Changed
+
+- installing @babel/eslint-parser@7.13.4.
+- eslint rule 'no-undef' remove disabling.
+
+## [1.1253.0] - 2021-2-24
 
 ### Changed
 
