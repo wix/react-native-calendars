@@ -2,7 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {Component} from 'react';
-import * as ReactNative from 'react-native';
+import {View} from 'react-native';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import dateutils from '../dateutils';
 import {xdateToData, parseDate} from '../interface';
@@ -14,10 +14,6 @@ import CalendarHeader from './header';
 import BasicDay from './day/basic';
 import Day from './day/index';
 
-//Fallback for react-native-web or when RN version is < 0.44
-const {View, ViewPropTypes} = ReactNative;
-const viewPropTypes =
-  typeof document !== 'undefined' ? PropTypes.shape({style: PropTypes.object}) : ViewPropTypes || View.propTypes;
 const EmptyArray = [];
 
 /**
@@ -34,7 +30,7 @@ class Calendar extends Component {
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
     theme: PropTypes.object,
     /** Specify style for calendar container element. Default = {} */
-    style: viewPropTypes.style,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     /** Initially visible month. Default = Date() */
     current: PropTypes.any,
     /** Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined */
