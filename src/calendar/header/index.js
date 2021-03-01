@@ -148,6 +148,7 @@ class CalendarHeader extends Component {
     let rightArrow = <View/>;
     let weekDaysNames = weekDayNames(this.props.firstDay);
     const {testID} = this.props;
+    const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
 
     if (!this.props.hideArrows) {
       leftArrow = (
@@ -155,7 +156,7 @@ class CalendarHeader extends Component {
           onPress={this.onPressLeft}
           disabled={this.props.disableArrowLeft}
           style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          hitSlop={hitSlop}
           testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
         >
           {this.props.renderArrow
@@ -171,7 +172,7 @@ class CalendarHeader extends Component {
           onPress={this.onPressRight}
           disabled={this.props.disableArrowRight}
           style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          hitSlop={hitSlop}
           testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
         >
           {this.props.renderArrow
