@@ -15,6 +15,7 @@ export default function(theme={}) {
       alignItems: 'center'
     },
     headerContainer: {
+      flex: 1,
       flexDirection: 'row'
     },
     monthText: {
