@@ -42,7 +42,7 @@ class CalendarHeader extends Component {
     disableArrowRight: PropTypes.bool,
     /** Apply custom disable color to selected day indexes */
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
-    renderWeekDays: PropTypes.any
+    renderWeekDays: PropTypes.any,
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
