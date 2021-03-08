@@ -80,7 +80,7 @@ class Calendar extends Component {
     /** Replace default day of week with custom one. the function receive a day, index as parameters. */
     renderWeekDays: PropTypes.any,
     /** Enable the option to swipe between months. Default: false */
-    enableSwipeMonths: PropTypes.bool
+    enableSwipeMonths: PropTypes.bool,
     /** Allow rendering of a totally custom header */
     customHeader: PropTypes.any
   };
