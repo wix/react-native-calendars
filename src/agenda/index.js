@@ -271,11 +271,11 @@ export default class AgendaView extends Component {
     }
   };
 
-  onDayChange = (day, f = true) => {
+  onDayChange = day => {
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
 
-    this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation && f);
+    this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
     this.setState({
       selectedDay: newDate
     });

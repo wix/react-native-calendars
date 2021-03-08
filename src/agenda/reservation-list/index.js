@@ -218,41 +218,6 @@ class ReservationList extends Component {
     );
   };
 
-  _onRefresh = () => {
-    let h = 0;
-    let scrollPosition = 0;
-    const selectedDay = this.props.selectedDay.clone();
-    const iterator = parseDate(this.props.selectedDay.clone().getTime()-3600*24*10*1000);
-    let reservations = [];
-    for (let i = 0; i < 10; i++) {
-      const res = this.getReservationsForDay(iterator, this.props);
-      if (res) {
-        reservations = reservations.concat(res);
-      }
-      iterator.addDays(1);
-    }
-    scrollPosition = reservations.length;
-    for (let i = 10; i < 30; i++) {
-      const res = this.getReservationsForDay(iterator, this.props);
-      if (res) {
-        reservations = reservations.concat(res);
-      }
-      iterator.addDays(1);
-    }
-    this.setState({
-      reservations
-    }, () => {
-      setTimeout(() => {
-        let h = 0;
-        for (let i = 0; i < scrollPosition; i++) {
-          h += this.heights[i] || 0;
-        }
-        this.list.scrollToOffset({offset: h, animated: false});
-        this.props.onDayChange(selectedDay, false);
-      }, 100);
-    });
-  };
-
   render() {
     const {reservations, selectedDay, theme, style} = this.props;
     if (!reservations || !reservations[selectedDay.toString('yyyy-MM-dd')]) {
@@ -277,7 +242,7 @@ class ReservationList extends Component {
         onScroll={this.onScroll}
         refreshControl={this.props.refreshControl}
         refreshing={this.props.refreshing}
-        onRefresh={this._onRefresh}
+        onRefresh={this.props.onRefresh}
         onScrollBeginDrag={this.props.onScrollBeginDrag}
         onScrollEndDrag={this.props.onScrollEndDrag}
         onMomentumScrollBegin={this.props.onMomentumScrollBegin}
