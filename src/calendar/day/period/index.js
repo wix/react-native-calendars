@@ -3,24 +3,21 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
-import Dot from '../../dot';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
+import Dot from '../dot';
 
 
-class Day extends Component {
+export default class PeriodDay extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    // TODO: selected + disabled props should be removed
-    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
-    // Specify theme properties to override specific styles for calendar parts. Default = {}
-    theme: PropTypes.object,
+    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']), //TODO: deprecate
     marking: PropTypes.any,
+    theme: PropTypes.object,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object,
-    markingExists: PropTypes.bool
+    date: PropTypes.object
   };
 
   constructor(props) {
@@ -28,43 +25,44 @@ class Day extends Component {
 
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
-
+    
     this.markingStyle = this.getDrawingStyle(props.marking || []);
-    this.onDayPress = this.onDayPress.bind(this);
-    this.onDayLongPress = this.onDayLongPress.bind(this);
   }
 
-  onDayPress() {
+  onPress = () => {
     this.props.onPress(this.props.date);
   }
 
-  onDayLongPress() {
+  onLongPress = () => {
     this.props.onLongPress(this.props.date);
   }
 
   shouldComponentUpdate(nextProps) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marking);
-
     if (!_.isEqual(this.markingStyle, newMarkingStyle)) {
       this.markingStyle = newMarkingStyle;
       return true;
     }
 
-    return shouldUpdate(this.props, nextProps, ['state', 'children', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['children', 'state', 'marking', 'onPress', 'onLongPress', 'date']);
   }
 
   getDrawingStyle(marking) {
     const defaultStyle = {textStyle: {}, containerStyle: {}};
+    
     if (!marking) {
       return defaultStyle;
     }
+
     if (marking.disabled) {
-      defaultStyle.textStyle.color = this.theme.textDisabledColor;
+      defaultStyle.textStyle.color = this.style.disabledText.color;
     } else if (marking.selected) {
-      defaultStyle.textStyle.color = this.theme.selectedDayTextColor;
+      defaultStyle.textStyle.color = this.style.selectedText.color;
     }
+
     const resultStyle = ([marking]).reduce((prev, next) => {
-      if (next.quickAction) {
+      
+      if (next.quickAction) { //???
         if (next.first || next.last) {
           prev.containerStyle = this.style.firstQuickAction;
           prev.textStyle = this.style.firstQuickActionText;
@@ -83,24 +81,19 @@ class Day extends Component {
         return prev;
       }
 
-      const color = next.color;
-      if (next.status === 'NotAvailable') {
+      if (next.status === 'NotAvailable') { //???
         prev.textStyle = this.style.naText;
       }
+      
+      const color = next.color;
       if (next.startingDay) {
-        prev.startingDay = {
-          color
-        };
+        prev.startingDay = {color};
       }
       if (next.endingDay) {
-        prev.endingDay = {
-          color
-        };
+        prev.endingDay = {color};
       }
       if (!next.startingDay && !next.endingDay) {
-        prev.day = {
-          color
-        };
+        prev.day = {color};
       }
       if (next.textColor) {
         prev.textStyle.color = next.textColor;
@@ -117,6 +110,7 @@ class Day extends Component {
   }
 
   render() {
+    const {state, marking} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     let leftFillerStyle = {};
@@ -124,16 +118,17 @@ class Day extends Component {
     let fillerStyle = {};
     let fillers;
 
-    if (this.props.state === 'disabled') {
+    if (state === 'disabled') {
       textStyle.push(this.style.disabledText);
-    } else if (this.props.state === 'today') {
+    } else if (state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);
     }
 
-    if (this.props.marking) {
+    if (marking) {
       containerStyle.push({
-        borderRadius: 17
+        borderRadius: 17,
+        overflow: 'hidden'
       });
 
       const flags = this.markingStyle;
@@ -173,7 +168,6 @@ class Day extends Component {
       } else if (flags.day) {
         leftFillerStyle = {backgroundColor: flags.day.color};
         rightFillerStyle = {backgroundColor: flags.day.color};
-        // #177 bug
         fillerStyle = {backgroundColor: flags.day.color};
       } else if (flags.endingDay && flags.startingDay) {
         rightFillerStyle = {
@@ -195,17 +189,17 @@ class Day extends Component {
       );
     }
 
-    const {marking: {marked, dotColor}, theme} = this.props;
+    const {marking: {marked, dotColor, disableTouchEvent}, theme, accessibilityLabel, testID} = this.props;
 
     return (
       <TouchableWithoutFeedback
-        testID={this.props.testID}
-        onPress={this.onDayPress}
-        onLongPress={this.onDayLongPress}
-        disabled={this.props.marking.disableTouchEvent}
+        testID={testID}
+        onPress={this.onPress}
+        onLongPress={this.onLongPress}
+        disabled={disableTouchEvent}
         accessible
-        accessibilityRole={this.props.marking.disableTouchEvent ? undefined : 'button'}
-        accessibilityLabel={this.props.accessibilityLabel}
+        accessibilityRole={disableTouchEvent ? undefined : 'button'}
+        accessibilityLabel={accessibilityLabel}
       >
         <View style={this.style.wrapper}>
           {fillers}
@@ -213,8 +207,8 @@ class Day extends Component {
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
             <Dot
               theme={theme}
-              isMarked={marked}
-              dotColor={dotColor}
+              color={dotColor}
+              marked={marked}
             />
           </View>
         </View>
@@ -222,5 +216,3 @@ class Day extends Component {
     );
   }
 }
-
-export default Day;

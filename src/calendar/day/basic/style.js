@@ -3,12 +3,16 @@ import * as defaultStyle from '../../../style';
 
 const STYLESHEET_ID = 'stylesheet.day.basic';
 
-export default function styleConstructor(theme={}) {
+export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     dayContainer: {
       alignItems: 'center',
-      ...appStyle.dayContainerStyle
+      ...appStyle.dayContainerStyle,
+    },
+    container: {
+      alignSelf: 'stretch',
+      alignItems: 'center'
     },
     base: {
       width: appStyle.daySideLength || 32,
