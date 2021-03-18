@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import XDate from 'xdate';
 import React, {useState, Fragment} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
 import {Calendar} from 'react-native-calendars';
@@ -9,7 +9,6 @@ const testIDs = require('../testIDs');
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState('');
   const [showMarkedDatesExamples, setShowMarkedDatesExamples] = useState(false);
-
 
   const toggleSwitch = () => {
     setShowMarkedDatesExamples(!showMarkedDatesExamples);
@@ -21,12 +20,12 @@ const CalendarsScreen = () => {
 
   const getDisabledDates = (startDate, endDate, daysToDisable) => {
     const disabledDates = {};
-    const start = moment(startDate);
-    const end = moment(endDate);
+    const start = XDate(startDate);
+    const end = XDate(endDate);
 
-    for (let m = moment(start); m.diff(end, 'days') <= 0; m.add(1, 'days')) {
+    for (let m = XDate(start); m.diffDays(end) <= 0; m.addDays(1)) {
       if (_.includes(daysToDisable, m.weekday())) {
-        disabledDates[m.format('YYYY-MM-DD')] = {disabled: true};
+        disabledDates[m.toString('YYYY-MM-DD')] = {disabled: true};
       }
     }
     return disabledDates;
@@ -440,7 +439,8 @@ const CalendarsScreen = () => {
     );
   };
 
-  const renderSwitch = () => { // Workaround for Detox 18 migration bug
+  const renderSwitch = () => {
+    // Workaround for Detox 18 migration bug
     return (
       <View style={{flexDirection: 'row', margin: 10, alignItems: 'center'}}>
         <Switch

@@ -1,16 +1,16 @@
 // @flow
-import moment from 'moment';
+import XDate from 'xdate';
 
 const offset = 100;
 
 function buildEvent(column, left, width, dayStart) {
-  const startTime = moment(column.start);
-  const endTime = column.end ? moment(column.end) : startTime.clone().add(1, 'hour');
-  const dayStartTime = startTime.clone().hour(dayStart).minute(0);
-  const diffHours = startTime.diff(dayStartTime, 'hours', true);
+  const startTime = XDate(column.start);
+  const endTime = column.end ? XDate(column.end) : XDate(startTime).addHours(1);
 
-  column.top = diffHours * offset;
-  column.height = endTime.diff(startTime, 'hours', true) * offset;
+  const dayStartTime = XDate(dayStart).clearTime();
+
+  column.top = startTime.diffHours(dayStartTime) * offset;
+  column.height = endTime.diffHours(startTime) * offset;
   column.width = width;
   column.left = left;
   return column;
