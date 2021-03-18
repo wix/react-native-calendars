@@ -723,4 +723,4 @@
 ## [1.1255.0] - 
 
 ## Added
-- AgendaList - 'blockDateUpdate' prop to block the date updates to CalendarContextProvider when list scrolls.
+- AgendaList - 'avoidDateUpdates' prop to block the date updates to CalendarContextProvider when list scrolls.
