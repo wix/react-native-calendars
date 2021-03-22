@@ -718,3 +718,9 @@
 ### Changed
 
 - detox upgrade to version 18.6.2.
+
+
+## [1.1255.0] - 
+
+## Added
+- AgendaList - 'avoidDateUpdates' prop to block the date updates to CalendarContextProvider when list scrolls.
