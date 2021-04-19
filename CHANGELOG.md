@@ -618,6 +618,5 @@
 ## [1.1256.0] - 2021-4-19
 
 ### Fix
-- Calendar & Agenda - fix undefined style props web (PR #1406).
 - ExpandableCalendar - static header month update.
 
