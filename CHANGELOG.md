@@ -619,4 +619,3 @@
 
 ### Fix
 - ExpandableCalendar - static header month update.
-
