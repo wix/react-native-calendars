@@ -610,6 +610,14 @@
 ## [1.1255.0] - 2021-4-4
 ### Added
 - AgendaList - 'avoidDateUpdates' prop to block the date updates to CalendarContextProvider when list scrolls.
-- 
+
 ### Fix
 - ExpandableCalendar - Android RTL issues (PR #1449).
+
+
+## [1.1256.0] - 2021-4-19
+
+### Fix
+- Calendar & Agenda - fix undefined style props web (PR #1406).
+- ExpandableCalendar - static header month update.
+

@@ -91,6 +91,7 @@ class CalendarHeader extends Component {
     if (typeof onPressArrowLeft === 'function') {
       return onPressArrowLeft(this.subtractMonth, month);
     }
+
     return this.subtractMonth();
   };
 
@@ -100,6 +101,7 @@ class CalendarHeader extends Component {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(this.addMonth, month);
     }
+    
     return this.addMonth();
   };
 

@@ -191,11 +191,7 @@ class CalendarList extends Component {
       return;
     }
 
-    this.setState(
-      {
-        currentMonth: day.clone()
-      },
-      () => {
+    this.setState({currentMonth: day.clone()}, () => {
         this.scrollToMonth(this.state.currentMonth);
 
         if (!doNotTriggerListeners) {
