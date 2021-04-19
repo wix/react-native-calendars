@@ -340,11 +340,13 @@ class ExpandableCalendar extends Component {
 
   /** Events */
 
-  onPressArrowLeft = () => {
+  onPressArrowLeft = (addMonth) => {
+    addMonth();
     this.scrollPage(false);
   };
 
-  onPressArrowRight = () => {
+  onPressArrowRight = (addMonth) => {
+    addMonth();
     this.scrollPage(true);
   };
 
