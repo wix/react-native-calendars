@@ -250,6 +250,7 @@ class CalendarList extends Component {
         item={item}
         testID={`${testID}_${item}`}
         style={calendarStyle}
+        horizontal={horizontal}
         calendarWidth={horizontal ? calendarWidth : undefined}
         scrollToMonth={this.scrollToMonth}
       />
