@@ -619,3 +619,4 @@
 
 ### Fix
 - ExpandableCalendar - static header month update.
+- Calendar & Agenda - remove usage of ViewPropTypes (PR #1424).
