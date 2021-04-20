@@ -619,6 +619,10 @@
 
 ### Fix
 - ExpandableCalendar - static header month update.
+
+## [1.1257.0] - 2021-4-20
+
+### Fix
 - Calendar & Agenda - remove usage of ViewPropTypes (PR #1424).
 - CalendarList - fix FlatList not rendering on web (PR #1405).
 - CalendarList - fix undefined horizontal prop in CalendarListItem (PR #1451).
