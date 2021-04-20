@@ -615,8 +615,11 @@
 - ExpandableCalendar - Android RTL issues (PR #1449).
 
 
-## [1.1256.0] - 2021-4-19
+## [1.1256.0] - 2021-4-20
 
 ### Fix
 - ExpandableCalendar - static header month update.
 - Calendar & Agenda - remove usage of ViewPropTypes (PR #1424).
+- CalendarList - fix FlatList not rendering on web (PR #1405).
+- CalendarList - fix undefined horizontal prop in CalendarListItem (PR #1451).
+- Agenda - update 'selectedDate' on state when prop changes (PR #1080).
