@@ -32,8 +32,10 @@ class AgendaList extends Component {
     /** whether to mark today's title with the "Today, ..." string. Default = true */
     markToday: PropTypes.bool,
     /** style passed to the section view */
-    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array])
-  };
+    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+    /** whether to block the date change in calendar (and calendar context provider) when agenda scrolls */
+    avoidDateUpdates: PropTypes.bool
+  }
 
   static defaultProps = {
     dayFormat: 'dddd, MMM d',
@@ -108,8 +110,7 @@ class AgendaList extends Component {
       const topSection = _.get(viewableItems[0], 'section.title');
       if (topSection && topSection !== this._topSection) {
         this._topSection = topSection;
-        if (this.didScroll) {
-          // to avoid setDate() on first load (while setting the initial context.date value)
+        if (this.didScroll && !this.props.avoidDateUpdates) { // to avoid setDate() on first load (while setting the initial context.date value)
           _.invoke(this.props.context, 'setDate', this._topSection, UPDATE_SOURCES.LIST_DRAG);
         }
       }

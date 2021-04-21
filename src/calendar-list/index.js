@@ -191,11 +191,7 @@ class CalendarList extends Component {
       return;
     }
 
-    this.setState(
-      {
-        currentMonth: day.clone()
-      },
-      () => {
+    this.setState({currentMonth: day.clone()}, () => {
         this.scrollToMonth(this.state.currentMonth);
 
         if (!doNotTriggerListeners) {
@@ -254,6 +250,7 @@ class CalendarList extends Component {
         item={item}
         testID={`${testID}_${item}`}
         style={calendarStyle}
+        horizontal={horizontal}
         calendarWidth={horizontal ? calendarWidth : undefined}
         scrollToMonth={this.scrollToMonth}
       />
@@ -284,7 +281,7 @@ class CalendarList extends Component {
     const {style, pastScrollRange, futureScrollRange, horizontal, showScrollIndicator, testID} = this.props;
 
     return (
-      <View>
+      <View style={this.style.flatListContainer}>
         <FlatList
           ref={c => (this.listView = c)}
           style={[this.style.container, style]}
