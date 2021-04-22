@@ -627,3 +627,8 @@
 - CalendarList - fix FlatList not rendering on web (PR #1405).
 - CalendarList - fix undefined horizontal prop in CalendarListItem (PR #1451).
 - Agenda - update 'selectedDate' on state when prop changes (PR #1080).
+
+## [1.1258.0] - 2021-4-22
+
+### Fix
+- Reverting: ExpandableCalendar - static header month update (version 1.1256.0).
