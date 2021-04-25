@@ -1,4 +1,4 @@
-const {SELECT_DATE_SLOT, RESERVATION_DATE} = require('../src/testIDs');
+const {SELECT_DATE_SLOT, RESERVATION_DATE, AGENDA_CALENDAR_KNOB} = require('../src/testIDs');
 const testIDs = require('../example/src/testIDs');
 
 describe('Agenda', () => {
