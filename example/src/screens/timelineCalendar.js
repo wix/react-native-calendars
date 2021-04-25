@@ -1,8 +1,9 @@
 import _ from 'lodash';
+import XDate from 'xdate';
 import React, {Component} from 'react';
 import {Platform, StyleSheet, View, Text, TouchableOpacity, Button} from 'react-native';
 import {ExpandableCalendar, Timeline, CalendarProvider} from 'react-native-calendars';
-import moment from 'moment';
+import {sameDate} from '../../../src/dateutils';
 
 const EVENTS = [
   {
@@ -194,7 +195,7 @@ export default class TimelineCalendarScreen extends Component {
         <Timeline
           format24h={true}
           eventTapped={e => e}
-          events={EVENTS.filter(event => moment(event.start).isSame(this.state.currentDate, 'day'))}
+          events={EVENTS.filter(event => sameDate(XDate(event.start), XDate(this.state.currentDate)))}
           // scrollToFirst={true}
           // start={0}
           // end={24}
