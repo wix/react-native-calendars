@@ -22,4 +22,9 @@ describe('Agenda', () => {
 
     await element(by.text('OK')).tap();
   });
+
+  it('should tap knob and open calendar', async () => {
+    await element(by.id(AGENDA_CALENDAR_KNOB)).tap();
+    await element(by.id(`${SELECT_DATE_SLOT}-2017-05-21`)).tap();
+  });
 });
