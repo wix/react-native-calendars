@@ -386,6 +386,11 @@ theme={{
 }}
 ```
 
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/day-header-style.png?raw=true">
+</kbd>
+<p></p>
+
 **Disclaimer**: Issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
 
 #### Overriding day component
