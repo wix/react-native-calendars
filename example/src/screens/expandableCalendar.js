@@ -202,6 +202,7 @@ export default class ExpandableCalendarScreen extends Component {
             markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
             leftArrowImageSource={require('../img/previous.png')}
             rightArrowImageSource={require('../img/next.png')}
+            // animateScroll
           />
         )}
         <AgendaList
