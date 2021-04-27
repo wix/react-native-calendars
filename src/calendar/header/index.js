@@ -113,8 +113,8 @@ class CalendarHeader extends Component {
         dayStyle.push(this.style.disabledDayHeader);
       }
 
-      if (this.style[`day${idx}Text`]) {
-        dayStyle.push(this.style[`day${idx}Text`]);
+      if (this.style[`dayTextAtIndex${idx}`]) {
+        dayStyle.push(this.style[`dayTextAtIndex${idx}`]);
       }
 
       return (
