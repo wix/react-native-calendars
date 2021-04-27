@@ -377,10 +377,10 @@ Using the above advanced styling, it is possible to set styles independently for
 theme={{
   'stylesheet.calendar.header': {
     dayTextAtIndex0: {
-      color: red
+      color: 'red'
     },
     dayTextAtIndex6: {
-      color: blue
+      color: 'blue'
     }
   }
 }}
