@@ -88,6 +88,11 @@ function page(xd, firstDayOfWeek, showSixWeeks) {
   return before.concat(days.slice(1, days.length - 1), after);
 }
 
+function isDateNotInTheRange(minDate, maxDate, date) {
+  return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
+}
+
+
 module.exports = {
   weekDayNames,
   sameMonth,
@@ -96,5 +101,6 @@ module.exports = {
   page,
   fromTo,
   isLTE,
-  isGTE
+  isGTE,
+  isDateNotInTheRange
 };

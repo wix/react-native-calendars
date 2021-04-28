@@ -94,6 +94,13 @@ export default function styleConstructor(theme = {}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+    dayContainer: {
+      flex: 1, 
+      alignItems: 'center'
+    },
+    emptyDayContainer: {
+      flex: 1
+    },
     dayHeader: {
       width: 32,
       textAlign: 'center',

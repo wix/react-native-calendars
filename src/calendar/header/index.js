@@ -239,3 +239,4 @@ class CalendarHeader extends Component {
 }
 
 export default CalendarHeader;
+

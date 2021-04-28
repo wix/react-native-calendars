@@ -12,13 +12,14 @@ import Week from '../expandableCalendar/week';
 import asCalendarConsumer from './asCalendarConsumer';
 import {weekDayNames} from '../dateutils';
 
-
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const NUMBER_OF_PAGES = 2; // must be a positive number
+const applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
 
 /**
  * @description: Week calendar component
+ * @note: Should be wrapped with 'CalendarProvider'
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 class WeekCalendar extends Component {
@@ -26,7 +27,7 @@ class WeekCalendar extends Component {
 
   static propTypes = {
     ...CalendarList.propTypes,
-    // the current date
+    /** the current date */
     current: PropTypes.any,
     /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
@@ -37,7 +38,7 @@ class WeekCalendar extends Component {
   static defaultProps = {
     firstDay: 0,
     allowShadow: true
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -46,6 +47,8 @@ class WeekCalendar extends Component {
 
     this.list = React.createRef();
     this.page = NUMBER_OF_PAGES;
+    // On Android+RTL there's an initial scroll that cause issues
+    this.firstAndroidRTLScrollIgnored = !applyAndroidRtlFix;
 
     this.state = {
       items: this.getDatesArray()
@@ -86,7 +89,7 @@ class WeekCalendar extends Component {
     // leave the current date in the visible week as is
     const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
     const newDate = dd.addWeeks(weekIndex);
-    return  newDate.toString('yyyy-MM-dd');
+    return newDate.toString('yyyy-MM-dd');
   }
 
   getMarkedDates() {
@@ -105,11 +108,27 @@ class WeekCalendar extends Component {
     return {[context.date]: {selected: true}};
   }
 
-  onDayPress = (value) => {
+  onDayPress = value => {
     _.invoke(this.props.context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
-  }
+  };
 
-  onScroll = ({nativeEvent: {contentOffset: {x}}}) => {
+  onScroll = ({
+    nativeEvent: {
+      contentOffset: {x}
+    }
+  }) => {
+    if (!this.firstAndroidRTLScrollIgnored) {
+      this.firstAndroidRTLScrollIgnored = true;
+      return;
+    }
+
+    // Fix reversed offset on Android+RTL
+    if (applyAndroidRtlFix) {
+      const numOfPages = this.state.items.length - 1;
+      const overallWidth = numOfPages * this.containerWidth;
+      x = overallWidth - x;
+    }
+
     const newPage = Math.round(x / this.containerWidth);
 
     if (this.page !== newPage) {
@@ -130,7 +149,7 @@ class WeekCalendar extends Component {
         this.setState({items: [...items]});
       }
     }
-  }
+  };
 
   onMomentumScrollEnd = () => {
     const {items} = this.state;
@@ -156,7 +175,7 @@ class WeekCalendar extends Component {
         this.setState({items: [...items]});
       }, 100);
     }
-  }
+  };
 
   renderItem = ({item}) => {
     const {calendarWidth, style, onDayPress, onDayLongPress, markedDates, ...others} = this.props;
@@ -172,7 +191,7 @@ class WeekCalendar extends Component {
         onDayLongPress={onDayLongPress}
       />
     );
-  }
+  };
 
   getItemLayout = (data, index) => {
     return {
@@ -180,7 +199,7 @@ class WeekCalendar extends Component {
       offset: this.containerWidth * index,
       index
     };
-  }
+  };
 
   keyExtractor = (item, index) => index.toString();
 
@@ -196,7 +215,7 @@ class WeekCalendar extends Component {
     return (
       <View testID={this.props.testID} style={[allowShadow && this.style.containerShadow, !hideDayNames && {paddingBottom: 6}]}>
         {/* {<Text style={[this.style.headerTitle, {paddingBottom: 0, paddingTop: 0, fontSize: 12, lineHeight: 30}]}>{moment(this.props.context.date).format('MMM YYYY')}</Text>} */}
-        {!hideDayNames &&
+        {!hideDayNames && (
           <View style={[this.style.week, {marginTop: 10, marginBottom: -2}]}>
             {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
             {weekDaysNames.map((day, idx) => (
@@ -212,7 +231,8 @@ class WeekCalendar extends Component {
                 {day}
               </Text>
             ))}
-          </View>}
+          </View>
+        )}
         <FlatList
           ref={this.list}
           data={items}

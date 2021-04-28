@@ -20,6 +20,7 @@ export default function styleConstructor(theme={}) {
       alignItems: 'center',
       overflow: 'hidden'
     },
+
     fillers: {
       position: 'absolute',
       height: FILLER_HEIGHT,
@@ -35,6 +36,7 @@ export default function styleConstructor(theme={}) {
       height: FILLER_HEIGHT,
       flex: 1
     },
+
     text: {
       marginTop: 7,
       fontSize: appStyle.textDayFontSize,
@@ -49,11 +51,14 @@ export default function styleConstructor(theme={}) {
     todayText: {
       fontWeight: '500',
       color: theme.todayTextColor || appStyle.dayTextColor
-      //color: appStyle.textLinkColor
+    },
+    selectedText: {
+      color: appStyle.selectedDayTextColor
     },
     disabledText: {
       color: appStyle.textDisabledColor
     },
+    
     quickAction: {
       backgroundColor: 'white',
       borderWidth: 1,

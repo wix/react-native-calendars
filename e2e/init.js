@@ -4,6 +4,7 @@ const adapter = require('detox/runners/mocha/adapter');
 
 before(async () => {
   await detox.init(config);
+  await device.launchApp();
 });
 
 beforeEach(async function () {

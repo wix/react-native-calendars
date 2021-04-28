@@ -3,7 +3,7 @@ import * as defaultStyle from '../../style';
 
 const STYLESHEET_ID = 'stylesheet.calendar.header';
 
-export default function(theme={}) {
+export default function (theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     header: {
@@ -36,7 +36,7 @@ export default function(theme={}) {
           width: appStyle.arrowWidth,
           height: appStyle.arrowHeight
         }
-      }),
+      })
     },
     disabledArrowImage: {
       tintColor: appStyle.disabledArrowColor
