@@ -93,27 +93,39 @@ export default function styleConstructor(
     line: {
       height: 1,
       position: 'absolute',
-      backgroundColor: 'rgb(216,216,216)',
+      backgroundColor: 'rgb(238, 241, 246);',
       left: offsetLeft + timeTextWidth,
       right: offsetRight,
       ...theme.line
     },
-    lineNow: {
+    specialLine: {
       height: 2,
       position: 'absolute',
-      backgroundColor: 'red',
       left: offsetLeft + timeTextWidth - 10,
       right: offsetRight - 10,
-      ...theme.lineNow
+    },
+    specialLineTime: {
+      position:'absolute',
+      right: offsetRight - 10,
+      borderBottomLeftRadius: 5,
+      borderBottomRightRadius: 5,
+      paddingTop:0,
+      paddingHorizontal:4,
+      paddingBottom:3,
+    },
+    specialLineTimeText: {
+      fontSize:10,
+      fontFamily: 'Muli-Regular',
+      color: '#354354',
     },
     timeLabel: {
       position: 'absolute',
       left: offsetLeft,
       width: timeTextWidth,
       textAlign: 'left',
-      color: 'rgb(170,170,170)',
+      color: '#354354',
       fontSize: 10,
-      fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',
+      fontFamily: 'Muli-Regular',
       fontWeight: '500',
       ...theme.timeLabel
     }

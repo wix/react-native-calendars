@@ -9,7 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import populateEvents from './Packer';
 import React from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import _ from 'lodash';
 import styleConstructor from './style';
 
@@ -135,29 +135,15 @@ export default class Timeline extends React.PureComponent {
     }, 1);
   }
 
-  getTimeHeightOffset (date) {
-    const {start = 0, end = 24} = this.props;
-    const timeHoursFromDayStart = moment(date).diff(moment(date).startOf('day'), 'minutes') / 60;
+  getTimeHeightOffset (date, ignoreTimezone = false) {
+    const {start = 0, end = 24, timezone} = this.props;
+    let momentDate = moment(date);
+    if (timezone && !ignoreTimezone){
+      momentDate = moment(date).tz(timezone)
+    }
+
+    const timeHoursFromDayStart = momentDate.diff(momentDate.clone().startOf('day'), 'minutes') / 60;
     return this.calendarHeight * timeHoursFromDayStart / (end - start);
-  }
-
-  getNowOffset(){
-    return this.getTimeHeightOffset(Date.now());
-  }
-
-  _renderNowLine(){
-    if (!this.props.renderNowLine) return null;
-    const offset = this.getNowOffset();
-
-    return (
-      <View 
-        style={[
-          this.styles.line, 
-          this.styles.lineNow,
-          {top: offset}
-        ]}
-      />
-    );
   }
 
   _renderLines() {
@@ -198,6 +184,39 @@ export default class Timeline extends React.PureComponent {
     if(this.props.eventTapped) {
       this.props.eventTapped(event);
     }
+  }
+
+  _renderSpecialLines() {
+    if (!this.props.lines) return null;
+    return this.props.lines.map(lineConfig => this._renderSpecialLine(lineConfig))
+  }
+
+  _renderSpecialLine(lineConfig){
+    const {date, ignoreTimezone, timeTextColor, color, showTime} = lineConfig
+    const offset = this.getTimeHeightOffset(date, ignoreTimezone)
+    let momentDate = moment(date)
+    if (this.props.timezone && !ignoreTimezone){
+      momentDate = momentDate.tz(this.props.timezone)
+    }
+    
+    return (
+      <>
+        <View 
+          style={[
+            this.styles.line,
+            this.styles.specialLine,
+            {top: offset, backgroundColor: color}
+          ]}
+        />
+        {showTime && (
+          <View style={[this.styles.specialLineTime, {top:offset + 2, backgroundColor: color}]}>
+            <Text style={[this.styles.specialLineTimeText, {color:timeTextColor}]}>
+              {momentDate.format('HH:mm')}
+            </Text>
+          </View>
+        )}
+      </>
+    );
   }
 
   _renderEvents() {
@@ -274,7 +293,7 @@ export default class Timeline extends React.PureComponent {
         ]}>
           {this._renderLines()}
           {this._renderEvents()}
-          {this._renderNowLine()}
+          {this._renderSpecialLines()}
         </View>
       </ScrollView>
     );
