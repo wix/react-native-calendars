@@ -103,9 +103,11 @@ export default function styleConstructor(
       position: 'absolute',
       left: offsetLeft + timeTextWidth - 10,
       right: offsetRight - 10,
+      elevation:2,
     },
     specialLineTime: {
       position:'absolute',
+      elevation:2,
       right: offsetRight - 10,
       borderBottomLeftRadius: 5,
       borderBottomRightRadius: 5,
