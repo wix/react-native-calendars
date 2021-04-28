@@ -210,7 +210,7 @@ export default class Timeline extends React.PureComponent {
         />
         {showTime && (
           <View style={[this.styles.specialLineTime, {top:offset + 2, backgroundColor: color}]}>
-            <Text style={[this.styles.specialLineTimeText, {color:timeTextColor}]}>
+            <Text style={[this.styles.specialLineTimeText, timeTextColor ? {color:timeTextColor} : undefined]}>
               {momentDate.format('HH:mm')}
             </Text>
           </View>
