@@ -27,6 +27,7 @@ const WEEK_HEIGHT = 46;
 const KNOB_CONTAINER_HEIGHT = 20;
 const HEADER_HEIGHT = 68;
 const DAY_NAMES_PADDING = 24;
+const PAN_GESTURE_THRESHOLD = 30;
 
 /**
  * @description: Expandable calendar component
@@ -55,7 +56,11 @@ class ExpandableCalendar extends Component {
     /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
     /** whether to disable the week scroll in closed position */
-    disableWeekScroll: PropTypes.bool
+    disableWeekScroll: PropTypes.bool,
+    /** a threshold for opening the calendar with the pan gesture */
+    openThreshold: PropTypes.number,
+    /** a threshold for closing the calendar with the pan gesture */
+    closeThreshold: PropTypes.number
   };
 
   static defaultProps = {
@@ -64,7 +69,9 @@ class ExpandableCalendar extends Component {
     firstDay: 0,
     leftArrowImageSource: require('../calendar/img/previous.png'),
     rightArrowImageSource: require('../calendar/img/next.png'),
-    allowShadow: true
+    allowShadow: true,
+    openThreshold: PAN_GESTURE_THRESHOLD,
+    closeThreshold: PAN_GESTURE_THRESHOLD
   };
 
   static positions = POSITIONS;
@@ -282,8 +289,10 @@ class ExpandableCalendar extends Component {
 
   bounceToPosition(toValue) {
     if (!this.props.disablePan) {
-      const {deltaY} = this.state;
-      const threshold = this.openHeight / 1.75;
+      const {deltaY, position} = this.state;
+      const {openThreshold, closeThreshold} = this.props;
+      const threshold =
+        position === POSITIONS.OPEN ? this.openHeight - closeThreshold : this.closedHeight + openThreshold;
 
       let isOpen = this._height >= threshold;
       const newValue = isOpen ? this.openHeight : this.closedHeight;
