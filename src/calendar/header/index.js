@@ -115,6 +115,10 @@ class CalendarHeader extends Component {
         dayStyle.push(this.style.disabledDayHeader);
       }
 
+      if (this.style[`dayTextAtIndex${idx}`]) {
+        dayStyle.push(this.style[`dayTextAtIndex${idx}`]);
+      }
+
       return (
         <Text allowFontScaling={false} key={idx} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
           {day}
