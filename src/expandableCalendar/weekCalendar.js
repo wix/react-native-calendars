@@ -182,7 +182,7 @@ class WeekCalendar extends Component {
   };
 
   renderItem = ({item}) => {
-    const {calendarWidth, style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
+    const {style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
 
     const weekDates = getWeekDates(item, others.firstDay, 'yyyy-MM-dd');
     const currentWeek = _.includes(weekDates, this.props.context.date);
@@ -193,7 +193,7 @@ class WeekCalendar extends Component {
         {...others}
         key={item}
         current={item}
-        style={this.getWeekStyle(calendarWidth || this.containerWidth, style)}
+        style={this.getWeekStyle(this.containerWidth, style)}
         markedDates={fixedMarkedDates}
         onDayPress={onDayPress || this.onDayPress}
       />
