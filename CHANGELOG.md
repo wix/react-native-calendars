@@ -650,3 +650,4 @@
 
 ### Changed
 - Update gradle version to 6.3 (PR #1479).
+- Moving inline styles to StyleSheet.
