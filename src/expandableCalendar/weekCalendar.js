@@ -4,12 +4,14 @@ import {FlatList, View, Text} from 'react-native';
 import {Map} from 'immutable';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+import memoize from 'memoize-one';
 
 import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import Week from '../expandableCalendar/week';
 import asCalendarConsumer from './asCalendarConsumer';
-import {weekDayNames} from '../dateutils';
+import {weekDayNames, getWeekDates} from '../dateutils';
+import {extractComponentProps} from '../component-updater';
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -91,9 +93,8 @@ class WeekCalendar extends Component {
     return newDate.toString('yyyy-MM-dd');
   }
 
-  getMarkedDates() {
+  getMarkedDates = () => {
     const {context, markedDates} = this.props;
-
     if (markedDates) {
       const marked = _.cloneDeep(markedDates);
 
@@ -105,7 +106,11 @@ class WeekCalendar extends Component {
       return marked;
     }
     return {[context.date]: {selected: true}};
-  }
+  };
+
+  getWeekStyle = memoize((width, style) => {
+    return [{width}, style];
+  });
 
   onDayPress = value => {
     _.invoke(this.props.context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
@@ -177,15 +182,19 @@ class WeekCalendar extends Component {
   };
 
   renderItem = ({item}) => {
-    const {calendarWidth, style, onDayPress, ...others} = this.props;
+    const {calendarWidth, style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
+
+    const weekDates = getWeekDates(item, others.firstDay, 'yyyy-MM-dd');
+    const currentWeek = _.includes(weekDates, this.props.context.date);
+    const fixedMarkedDates = currentWeek ? this.getMarkedDates() : markedDates;
 
     return (
       <Week
         {...others}
         key={item}
         current={item}
-        style={[{width: calendarWidth || this.containerWidth}, style]}
-        markedDates={this.getMarkedDates()}
+        style={this.getWeekStyle(calendarWidth || this.containerWidth, style)}
+        markedDates={fixedMarkedDates}
         onDayPress={onDayPress || this.onDayPress}
       />
     );

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {View} from 'react-native';
 import dateutils from '../dateutils';
 import {parseDate} from '../interface';
@@ -10,10 +10,9 @@ import Calendar from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
-
 const EmptyArray = [];
 
-class Week extends Component {
+class Week extends PureComponent {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -29,32 +28,7 @@ class Week extends Component {
   }
 
   getWeek(date) {
-    if (date) {
-      const current = parseDate(date);
-      const daysArray = [current];
-      let dayOfTheWeek = current.getDay() - this.props.firstDay;
-      if (dayOfTheWeek < 0) { // to handle firstDay > 0
-        dayOfTheWeek = 7 + dayOfTheWeek;
-      }
-
-      let newDate = current;
-      let index = dayOfTheWeek - 1;
-      while (index >= 0) {
-        newDate = parseDate(newDate).addDays(-1);
-        daysArray.unshift(newDate);
-        index -= 1;
-      }
-
-      newDate = current;
-      index = dayOfTheWeek + 1;
-      while (index < 7) {
-        newDate = parseDate(newDate).addDays(1);
-        daysArray.push(newDate);
-        index += 1;
-      }
-
-      return daysArray;
-    }
+    return dateutils.getWeekDates(date, this.props.firstDay);
   }
 
   getDateMarking(day) {
@@ -92,7 +66,7 @@ class Week extends Component {
   // renderWeekNumber (weekNumber) {
   //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
   // }
-  
+
   renderDay(day, id) {
     const {current, hideExtraDays} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
@@ -100,7 +74,7 @@ class Week extends Component {
     // hide extra days
     if (current && hideExtraDays) {
       if (!dateutils.sameMonth(day, parseDate(current))) {
-        return (<View key={id} style={this.style.emptyDayContainer}/>);
+        return <View key={id} style={this.style.emptyDayContainer} />;
       }
     }
 
