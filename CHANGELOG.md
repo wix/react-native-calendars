@@ -646,3 +646,7 @@
 ### Added
 - CalendarHeader - individual day header style overrides (PR #1465).
 - ExpandableCalendar - 'openThreshold' and 'closeThreshold' props (PR #1476).
+- 'eslint-plugin-react-native' to dev-dependencies.
+
+### Changed
+- Update gradle version to 6.3 (PR #1479).
