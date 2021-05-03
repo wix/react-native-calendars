@@ -1,13 +1,13 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
-
+import {HEADER_HEIGHT} from './index.js';
 
 const commons = require('./commons');
 const STYLESHEET_ID = 'stylesheet.expandable.main';
 
 export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
-  
+
   return StyleSheet.create({
     containerShadow: {
       backgroundColor: appStyle.calendarBackground,
@@ -23,6 +23,9 @@ export default function styleConstructor(theme = {}) {
           elevation: 3
         }
       })
+    },
+    containerWrapper: {
+      paddingBottom: 6
     },
     container: {
       backgroundColor: appStyle.calendarBackground
@@ -85,6 +88,16 @@ export default function styleConstructor(theme = {}) {
     },
     monthView: {
       backgroundColor: appStyle.calendarBackground
+    },
+    weekContainer: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: HEADER_HEIGHT + (commons.isAndroid ? 8 : 4), // align row on top of calendar's first row
+    },
+    weekCalendar: {
+      marginTop: 12, 
+      marginBottom: -2
     },
     week: {
       marginTop: 7,

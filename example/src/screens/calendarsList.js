@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {CalendarList} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
@@ -25,16 +25,10 @@ const CalendarsList = () => {
 
         return (
           <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'space-between',
-              marginTop: 10,
-              marginBottom: 10
-            }}
+            style={styles.header}
           >
-            <Text style={{marginLeft: 5, ...textStyle}}>{`${month}`}</Text>
-            <Text style={{marginRight: 5, ...textStyle}}>{year}</Text>
+            <Text style={[styles.month, {...textStyle}]}>{`${month}`}</Text>
+            <Text style={[styles.year, {...textStyle}]}>{year}</Text>
           </View>
         );
       }}
@@ -61,3 +55,19 @@ const CalendarsList = () => {
 };
 
 export default CalendarsList;
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 10
+  },
+  month: {
+    marginLeft: 5
+  },
+  year: {
+    marginRight: 5
+  }
+});

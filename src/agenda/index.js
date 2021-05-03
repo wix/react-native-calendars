@@ -390,10 +390,10 @@ export default class AgendaView extends Component {
     };
 
     return (
-      <View testID={testID} onLayout={this.onLayout} style={[style, {flex: 1, overflow: 'hidden'}]}>
+      <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
         <View style={this.style.reservations}>{this.renderReservations()}</View>
         <Animated.View style={headerStyle}>
-          <Animated.View style={{flex: 1, transform: [{translateY: contentTranslate}]}}>
+          <Animated.View style={[this.style.animatedContainer, {transform: [{translateY: contentTranslate}]}]}>
             {this.renderCalendarList()}
           </Animated.View>
           {this.renderKnob()}
