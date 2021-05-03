@@ -640,3 +640,9 @@
 
 ### Added
 - CalendarList - 'animateScroll' prop to allow animation on ato list scroll (i.e. on arrow press).
+
+## [1.1260.0] - 2021-5-2
+
+### Added
+- CalendarHeader - individual day header style overrides (PR #1465).
+- ExpandableCalendar - 'openThreshold' and 'closeThreshold' props (PR #1476).
