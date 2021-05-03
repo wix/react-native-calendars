@@ -7,7 +7,7 @@ import {CALENDAR_KNOB} from '../testIDs';
 
 import dateutils from '../dateutils';
 import {parseDate} from '../interface';
-import styleConstructor from './style';
+import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList from '../calendar-list';
 import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -25,7 +25,6 @@ const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120; // header + 1 week
 const WEEK_HEIGHT = 46;
 const KNOB_CONTAINER_HEIGHT = 20;
-const HEADER_HEIGHT = 68;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
 
@@ -445,13 +444,7 @@ class ExpandableCalendar extends Component {
     return (
       <Animated.View
         ref={e => (this.weekCalendar = e)}
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: HEADER_HEIGHT + (commons.isAndroid ? 8 : 4), // align row on top of calendar's first row
-          opacity: position === POSITIONS.OPEN ? 0 : 1
-        }}
+        style={[this.style.weekContainer, position === POSITIONS.OPEN ? this.style.hidden : this.style.visible]}
         pointerEvents={position === POSITIONS.CLOSED ? 'auto' : 'none'}
       >
         <WeekComponent

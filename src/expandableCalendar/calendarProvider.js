@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {Animated, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Animated, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -166,7 +166,7 @@ class CalendarProvider extends Component {
   render() {
     return (
       <CalendarContext.Provider value={this.getProviderContextValue()}>
-        <View style={[{flex: 1}, this.props.style]}>
+        <View style={[styles.container, this.props.style]}>
           {this.props.children}
         </View>
         {this.props.showTodayButton && this.renderTodayButton()}
@@ -176,3 +176,9 @@ class CalendarProvider extends Component {
 }
 
 export default CalendarProvider;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});

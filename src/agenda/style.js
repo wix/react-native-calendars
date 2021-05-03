@@ -9,6 +9,13 @@ export default function styleConstructor(theme = {}) {
   const {knob, weekdays} = platformStyles(appStyle);
 
   return StyleSheet.create({
+    container: {
+      flex: 1, 
+      overflow: 'hidden'
+    },
+    animatedContiner: {
+      flex: 1
+    },
     knob,
     weekdays,
     header: {
