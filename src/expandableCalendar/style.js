@@ -1,9 +1,9 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
-import {HEADER_HEIGHT} from './index.js';
 
 const commons = require('./commons');
 const STYLESHEET_ID = 'stylesheet.expandable.main';
+export const HEADER_HEIGHT = 68;
 
 export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -94,6 +94,12 @@ export default function styleConstructor(theme = {}) {
       left: 0,
       right: 0,
       top: HEADER_HEIGHT + (commons.isAndroid ? 8 : 4), // align row on top of calendar's first row
+    },
+    hidden: {
+      opacity: 0
+    },
+    visible: {
+      opacity: 1
     },
     weekCalendar: {
       marginTop: 12, 

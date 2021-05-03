@@ -360,7 +360,7 @@ const CalendarsScreen = () => {
           dayComponent={({date, state}) => {
             return (
               <View>
-                <Text style={[styles.customDay, {color: state === 'disabled' ? 'gray' : 'purple'}]}>{date.day}</Text>
+                <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>{date.day}</Text>
               </View>
             );
           }}
@@ -474,6 +474,12 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'lightgrey',
     fontSize: 16
+  },
+  disabledText: {
+    color: 'grey'
+  },
+  defaultText: {
+    color: 'purple'
   },
   customCalendar: {
     height: 250,
