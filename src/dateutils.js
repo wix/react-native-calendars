@@ -1,16 +1,20 @@
 const XDate = require('xdate');
+import {parseDate} from './interface';
 
 function sameMonth(a, b) {
-  return a instanceof XDate && b instanceof XDate &&
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth();
+  return (
+    a instanceof XDate && b instanceof XDate && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
+  );
 }
 
 function sameDate(a, b) {
-  return a instanceof XDate && b instanceof XDate &&
+  return (
+    a instanceof XDate &&
+    b instanceof XDate &&
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
+    a.getDate() === b.getDate()
+  );
 }
 
 function isGTE(a, b) {
@@ -23,7 +27,8 @@ function isLTE(a, b) {
 
 function fromTo(a, b) {
   const days = [];
-  let from = +a, to = +b;
+  let from = +a,
+    to = +b;
   for (; from <= to; from = new XDate(from, true).addDays(1).getTime()) {
     days.push(new XDate(from, true));
   }
@@ -31,7 +36,8 @@ function fromTo(a, b) {
 }
 
 function month(xd) {
-  const year = xd.getFullYear(), month = xd.getMonth();
+  const year = xd.getFullYear(),
+    month = xd.getMonth();
   const days = new Date(year, month + 1, 0).getDate();
 
   const firstDay = new XDate(year, month, 1, 0, 0, 0, true);
@@ -51,9 +57,10 @@ function weekDayNames(firstDayOfWeek = 0) {
 
 function page(xd, firstDayOfWeek, showSixWeeks) {
   const days = month(xd);
-  let before = [], after = [];
+  let before = [],
+    after = [];
 
-  const fdow = ((7 + firstDayOfWeek) % 7) || 7;
+  const fdow = (7 + firstDayOfWeek) % 7 || 7;
   const ldow = (fdow + 6) % 7;
 
   firstDayOfWeek = firstDayOfWeek || 0;
@@ -71,7 +78,7 @@ function page(xd, firstDayOfWeek, showSixWeeks) {
     to.addDays((ldow + 7 - day) % 7);
   }
 
-  const daysForSixWeeks = (((daysBefore + days.length) / 6) >= 6);
+  const daysForSixWeeks = (daysBefore + days.length) / 6 >= 6;
 
   if (showSixWeeks && !daysForSixWeeks) {
     to.addDays(7);
@@ -92,6 +99,39 @@ function isDateNotInTheRange(minDate, maxDate, date) {
   return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
 }
 
+function getWeekDates(date, firstDay, format) {
+  if (date) {
+    const current = parseDate(date);
+    const daysArray = [current];
+    let dayOfTheWeek = current.getDay() - firstDay;
+    if (dayOfTheWeek < 0) {
+      // to handle firstDay > 0
+      dayOfTheWeek = 7 + dayOfTheWeek;
+    }
+
+    let newDate = current;
+    let index = dayOfTheWeek - 1;
+    while (index >= 0) {
+      newDate = parseDate(newDate).addDays(-1);
+      daysArray.unshift(newDate);
+      index -= 1;
+    }
+
+    newDate = current;
+    index = dayOfTheWeek + 1;
+    while (index < 7) {
+      newDate = parseDate(newDate).addDays(1);
+      daysArray.push(newDate);
+      index += 1;
+    }
+
+    if (format) {
+      return daysArray.map(d => d.toString(format));
+    }
+
+    return daysArray;
+  }
+}
 
 module.exports = {
   weekDayNames,
@@ -102,5 +142,6 @@ module.exports = {
   fromTo,
   isLTE,
   isGTE,
-  isDateNotInTheRange
+  isDateNotInTheRange,
+  getWeekDates
 };
