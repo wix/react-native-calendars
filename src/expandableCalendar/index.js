@@ -212,6 +212,7 @@ class ExpandableCalendar extends Component {
     return days.length / 7;
   }
 
+  // TODO: this logic repeat itself in WeekCalendar - consider moving to a presenter
   getMarkedDates() {
     const {context, markedDates} = this.props;
 
@@ -438,8 +439,9 @@ class ExpandableCalendar extends Component {
 
   renderWeekCalendar() {
     const {position} = this.state;
-    const {disableWeekScroll} = this.props;
+    const {disableWeekScroll, markedDates: propsMarkedDates} = this.props;
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
+    const markedDates = disableWeekScroll ? this.getMarkedDates() : propsMarkedDates;
 
     return (
       <Animated.View
@@ -451,7 +453,7 @@ class ExpandableCalendar extends Component {
           {...this.props}
           current={this.props.context.date}
           onDayPress={this.onDayPress}
-          markedDates={this.getMarkedDates()} // for Week component
+          markedDates={markedDates} // for Week component
           style={this.props.calendarStyle}
           allowShadow={false}
           hideDayNames={true}
