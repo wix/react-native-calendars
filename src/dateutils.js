@@ -17,6 +17,11 @@ function sameDate(a, b) {
   );
 }
 
+function sameWeek(d1, d2, firstDayOfWeek) {
+  const weekDates = getWeekDates(d1, firstDayOfWeek, 'yyyy-MM-dd');
+  return weekDates?.includes(d2);
+}
+
 function isGTE(a, b) {
   return b.diffDays(a) > -1;
 }
@@ -136,6 +141,7 @@ function getWeekDates(date, firstDay, format) {
 module.exports = {
   weekDayNames,
   sameMonth,
+  sameWeek,
   sameDate,
   month,
   page,
