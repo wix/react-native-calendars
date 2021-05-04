@@ -10,7 +10,7 @@ import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import Week from '../expandableCalendar/week';
 import asCalendarConsumer from './asCalendarConsumer';
-import {weekDayNames, getWeekDates} from '../dateutils';
+import {weekDayNames, sameWeek} from '../dateutils';
 import {extractComponentProps} from '../component-updater';
 
 const commons = require('./commons');
@@ -59,9 +59,7 @@ class WeekCalendar extends Component {
   componentDidUpdate(prevProps) {
     const {firstDay, context} = this.props;
     const {updateSource, date, prevDate} = context;
-
-    const weekDates = getWeekDates(date, firstDay, 'yyyy-MM-dd');
-    const isSameWeek = _.includes(weekDates, prevDate);
+    const isSameWeek = sameWeek(date, prevDate, firstDay);
 
     if (date !== prevProps.context.date && updateSource !== UPDATE_SOURCES.WEEK_SCROLL && !isSameWeek) {
       this.setState({items: this.getDatesArray()});
@@ -187,10 +185,8 @@ class WeekCalendar extends Component {
 
   renderItem = ({item}) => {
     const {style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
-
-    const weekDates = getWeekDates(item, others.firstDay, 'yyyy-MM-dd');
-    const currentWeek = _.includes(weekDates, this.props.context.date);
-    const fixedMarkedDates = currentWeek ? this.getMarkedDates() : markedDates;
+    const isCurrentWeek = sameWeek(item, this.props.context.date, others.firstDay);
+    const fixedMarkedDates = isCurrentWeek ? this.getMarkedDates() : markedDates;
 
     return (
       <Week
