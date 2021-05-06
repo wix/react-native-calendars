@@ -1,13 +1,15 @@
 import _ from 'lodash';
-import React, {Component} from 'react';
-import {StyleSheet, Animated, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
+import React, {Component} from 'react';
+import {StyleSheet, Animated, TouchableOpacity, View} from 'react-native';
+
 import dateutils from '../dateutils';
-import {xdateToData} from '../interface';
+import {xdateToData, toMarkingFormat} from '../interface';
 import styleConstructor from './style';
 import CalendarContext from './calendarContext';
+
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -44,8 +46,8 @@ class CalendarProvider extends Component {
     this.style = styleConstructor(props.theme);
 
     this.state = {
-      prevDate: this.props.date || XDate().toString('yyyy-MM-dd'),
-      date: this.props.date || XDate().toString('yyyy-MM-dd'),
+      prevDate: this.props.date || toMarkingFormat(XDate()),
+      date: this.props.date || toMarkingFormat(XDate()),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-props.todayBottomMargin || -TOP_POSITION),
       buttonIcon: this.getButtonIcon(props.date),
@@ -121,7 +123,7 @@ class CalendarProvider extends Component {
 
   animateTodayButton(date) {
     if (this.props.showTodayButton) {
-      const today = XDate().toString('yyyy-MM-dd');
+      const today = toMarkingFormat(XDate());
       const isToday = today === date;
 
       Animated.spring(this.state.buttonY, {
@@ -145,7 +147,7 @@ class CalendarProvider extends Component {
   }
 
   onTodayPress = () => {
-    const today = XDate().toString('yyyy-MM-dd');
+    const today = toMarkingFormat(XDate());
     this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   };
 

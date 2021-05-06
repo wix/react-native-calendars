@@ -1,12 +1,15 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+import memoize from 'memoize-one';
+
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+
 import dateutils from '../dateutils';
-import {xdateToData, parseDate} from '../interface';
-import shouldComponentUpdate from './updater';
+import {xdateToData, parseDate, toMarkingFormat} from '../interface';
+// import shouldComponentUpdate from './updater';
 import {extractComponentProps} from '../component-updater';
 import {WEEK_NUMBER} from '../testIDs';
 import styleConstructor from './style';
@@ -14,7 +17,6 @@ import CalendarHeader from './header';
 import BasicDay from './day/basic';
 import Day from './day/index';
 
-const EmptyArray = [];
 
 /**
  * @description: Calendar component
@@ -82,7 +84,7 @@ class Calendar extends Component {
       currentMonth: props.current ? parseDate(props.current) : XDate()
     };
 
-    this.shouldComponentUpdate = shouldComponentUpdate;
+    // this.shouldComponentUpdate = shouldComponentUpdate;
   }
   
   addMonth = count => {
@@ -104,7 +106,7 @@ class Calendar extends Component {
     );
   };
 
-  _handleDayInteraction(date, interaction) {
+  handleDayInteraction(date, interaction) {
     const {disableMonthChange} = this.props;
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
@@ -123,28 +125,12 @@ class Calendar extends Component {
   }
 
   pressDay = date => {
-    this._handleDayInteraction(date, this.props.onDayPress);
+    this.handleDayInteraction(date, this.props.onDayPress);
   };
 
   longPressDay = date => {
-    this._handleDayInteraction(date, this.props.onDayLongPress);
+    this.handleDayInteraction(date, this.props.onDayLongPress);
   };
-
-  getDateMarking(day) {
-    const {markedDates} = this.props;
-
-    if (!markedDates) {
-      return false;
-    }
-
-    const dates = markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
-
-    if (dates.length || dates) {
-      return dates;
-    } else {
-      return false;
-    }
-  }
 
   getState(day) {
     const {disabledByDefault} = this.props;
@@ -158,11 +144,13 @@ class Calendar extends Component {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
+    } else if (dateutils.isToday(day)) {
       state = 'today';
     }
     return state;
   }
+
+  swipeProps = {onSwipe: (direction, state) => this.onSwipe(direction, state)};
 
   onSwipe = gestureName => {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
@@ -188,13 +176,13 @@ class Calendar extends Component {
     this.header.onPressLeft();
   };
 
-  renderWeekNumber(weekNumber) {
+  renderWeekNumber = memoize((weekNumber) => {
     return (
       <View style={this.style.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
           key={`week-${weekNumber}`}
-          marking={{disableTouchEvent: true}}
-          state="disabled"
+          marking={{disabled: true, disableTouchEvent: true}}
+          // state="disabled"
           theme={this.props.theme}
           testID={`${WEEK_NUMBER}-${weekNumber}`}
         >
@@ -202,10 +190,10 @@ class Calendar extends Component {
         </BasicDay>
       </View>
     );
-  }
+  });
 
   renderDay(day, id) {
-    const {hideExtraDays} = this.props;
+    const {hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
     if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
@@ -218,7 +206,7 @@ class Calendar extends Component {
           {...dayProps}
           day={day}
           state={this.getState(day)}
-          marking={this.getDateMarking(day)}
+          marking={markedDates && markedDates[toMarkingFormat(day)]}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
         />
@@ -264,34 +252,33 @@ class Calendar extends Component {
     let indicator;
 
     if (current) {
-      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
+      const lastMonthOfDay = toMarkingFormat(current.clone().addMonths(1, true).setDate(1).addDays(-1));
       if (displayLoadingIndicator && !(markedDates && markedDates[lastMonthOfDay])) {
         indicator = true;
       }
     }
 
     const headerProps = extractComponentProps(CalendarHeader, this.props);
-
-    const props = {
-      ...headerProps,
-      testID: testID,
-      style: headerStyle,
-      ref: c => (this.header = c),
-      month: this.state.currentMonth,
-      addMonth: this.addMonth,
-      displayLoadingIndicator: indicator
-    };
-
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
 
-    return <HeaderComponent {...props} />;
+    return (
+      <HeaderComponent 
+        {...headerProps}
+        testID={testID}
+        style={headerStyle}
+        ref={r => this.header = r}
+        month={this.state.currentMonth}
+        addMonth={this.addMonth}
+        displayLoadingIndicator={indicator}
+      />
+    );
   }
 
   render() {
     const {enableSwipeMonths, style} = this.props;
     const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
-    const gestureProps = enableSwipeMonths ? {onSwipe: (direction, state) => this.onSwipe(direction, state)} : {};
+    const gestureProps = enableSwipeMonths ? this.swipeProps : undefined;
 
     return (
       <GestureComponent {...gestureProps}>

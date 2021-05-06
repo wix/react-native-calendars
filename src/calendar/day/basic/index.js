@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
+
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
@@ -11,7 +13,7 @@ export default class BasicDay extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    state: PropTypes.oneOf(['disabled', 'today', '']), //TODO: deprecate
+    state: PropTypes.oneOf(['disabled', 'today', '']),
     /** The marking object */
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
@@ -90,7 +92,7 @@ export default class BasicDay extends Component {
   }
 
   getContainerStyle() {
-    const {customStyles, selected, selectedColor} = this.props.marking;
+    const {customStyles, selected, selectedColor} = this.marking;
     const style = [this.style.base];
 
     if (selected) {
@@ -114,7 +116,7 @@ export default class BasicDay extends Component {
   }
 
   getTextStyle() {
-    const {customStyles, selected, selectedTextColor} = this.props.marking;
+    const {customStyles, selected, selectedTextColor} = this.marking;
     const style = [this.style.text];
 
     if (selected) {

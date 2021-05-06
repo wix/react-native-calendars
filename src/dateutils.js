@@ -1,6 +1,7 @@
 const XDate = require('xdate');
 import {parseDate} from './interface';
 
+
 function sameMonth(a, b) {
   return (
     a instanceof XDate && b instanceof XDate && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
@@ -20,6 +21,10 @@ function sameDate(a, b) {
 function sameWeek(d1, d2, firstDayOfWeek) {
   const weekDates = getWeekDates(d1, firstDayOfWeek, 'yyyy-MM-dd');
   return weekDates?.includes(d2);
+}
+
+function isToday(day) {
+  return sameDate(XDate(day), XDate.today());
 }
 
 function isGTE(a, b) {
@@ -146,6 +151,7 @@ module.exports = {
   month,
   page,
   fromTo,
+  isToday,
   isLTE,
   isGTE,
   isDateNotInTheRange,

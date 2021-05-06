@@ -1,18 +1,21 @@
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import memoize from 'memoize-one';
+import XDate from 'xdate';
+
 import React, {Component} from 'react';
 import {AccessibilityInfo, PanResponder, Animated, View, Text, Image} from 'react-native';
-import PropTypes from 'prop-types';
-import XDate from 'xdate';
-import {CALENDAR_KNOB} from '../testIDs';
 
+import {CALENDAR_KNOB} from '../testIDs';
 import dateutils from '../dateutils';
-import {parseDate} from '../interface';
+import {parseDate, toMarkingFormat} from '../interface';
 import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList from '../calendar-list';
 import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
 import WeekCalendar from './weekCalendar';
 import Week from './week';
+
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -180,7 +183,7 @@ class ExpandableCalendar extends Component {
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
         d.addDays(firstDayOfWeek);
       }
-      _.invoke(this.props.context, 'setDate', this.getDateString(d), UPDATE_SOURCES.PAGE_SCROLL);
+      _.invoke(this.props.context, 'setDate', toMarkingFormat(d), UPDATE_SOURCES.PAGE_SCROLL);
     }
   }
 
@@ -190,10 +193,6 @@ class ExpandableCalendar extends Component {
       return Math.max(commons.screenHeight, commons.screenWidth);
     }
     return CLOSED_HEIGHT + WEEK_HEIGHT * (this.numberOfWeeks - 1) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
-  }
-
-  getDateString(date) {
-    return date.toString('yyyy-MM-dd');
   }
 
   getYear(date) {
@@ -398,16 +397,14 @@ class ExpandableCalendar extends Component {
 
   /** Renders */
 
-  renderWeekDaysNames() {
-    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
-
+  renderWeekDaysNames = memoize((weekDaysNames) => {
     return (
       <View
         style={[
           this.style.weekDayNames,
           {
-            paddingLeft: _.get(this.props, 'calendarStyle.paddingLeft') + 6 || DAY_NAMES_PADDING,
-            paddingRight: _.get(this.props, 'calendarStyle.paddingRight') + 6 || DAY_NAMES_PADDING
+            paddingLeft: (this.props.calendarStyle?.paddingLeft + 6) || DAY_NAMES_PADDING,
+            paddingRight: (this.props.calendarStyle?.paddingRight + 6) || DAY_NAMES_PADDING
           }
         ]}
       >
@@ -418,10 +415,11 @@ class ExpandableCalendar extends Component {
         ))}
       </View>
     );
-  }
+  })
 
   renderHeader() {
     const monthYear = XDate(this.props.context.date).toString('MMMM yyyy');
+    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
 
     return (
       <Animated.View
@@ -432,7 +430,7 @@ class ExpandableCalendar extends Component {
         <Text allowFontScaling={false} style={this.style.headerTitle}>
           {monthYear}
         </Text>
-        {this.renderWeekDaysNames()}
+        {this.renderWeekDaysNames(weekDaysNames)}
       </Animated.View>
     );
   }

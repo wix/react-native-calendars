@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+
 import React, {PureComponent} from 'react';
 import {View} from 'react-native';
+
 import dateutils from '../dateutils';
-import {parseDate} from '../interface';
+import {parseDate, toMarkingFormat} from '../interface';
 import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
 import Calendar from '../calendar';
@@ -31,20 +33,6 @@ class Week extends PureComponent {
     return dateutils.getWeekDates(date, this.props.firstDay);
   }
 
-  getDateMarking(day) {
-    const {markedDates} = this.props;
-    if (!markedDates) {
-      return false;
-    }
-
-    const dates = markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
-    if (dates.length || dates) {
-      return dates;
-    } else {
-      return false;
-    }
-  }
-
   getState(day) {
     const {current, disabledByDefault} = this.props;
     const minDate = parseDate(this.props.minDate);
@@ -57,18 +45,18 @@ class Week extends PureComponent {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, parseDate(current))) {
       state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
+    } else if (dateutils.isToday(day)) {
       state = 'today';
     }
     return state;
   }
 
   // renderWeekNumber (weekNumber) {
-  //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
+  //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
   // }
 
   renderDay(day, id) {
-    const {current, hideExtraDays} = this.props;
+    const {current, hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
     // hide extra days
@@ -84,7 +72,7 @@ class Week extends PureComponent {
           {...dayProps}
           day={day}
           state={this.getState(day)}
-          marking={this.getDateMarking(day)}
+          marking={markedDates && markedDates[toMarkingFormat(day)]}
           onPress={this.props.onDayPress}
           onLongPress={this.props.onDayPress}
         />
