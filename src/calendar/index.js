@@ -66,7 +66,9 @@ class Calendar extends Component {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Allow rendering of a totally custom header */
-    customHeader: PropTypes.any
+    customHeader: PropTypes.any,
+    /** Show week instead of month view. Requires "current" prop to be set */
+    weekView: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -79,12 +81,12 @@ class Calendar extends Component {
     this.style = styleConstructor(props.theme);
 
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate()
+      currentMonth: props.current ? parseDate(props.current) : XDate(),
     };
 
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
-  
+
   addMonth = count => {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   };
@@ -108,17 +110,40 @@ class Calendar extends Component {
     );
   };
 
+  addWeek = count => {
+    const nextWeek = this.state.currentMonth.clone().addWeeks(count, true);
+    this.updateWeek(nextWeek);
+  };
+
+  updateWeek = (day, doNotTriggerListeners) => {
+    this.setState(
+      {
+        currentMonth: day.clone()
+      },
+      () => {
+        if (!doNotTriggerListeners) {
+          const currMont = this.state.currentMonth.clone();
+          _.invoke(this.props, 'onWeekChange', xdateToData(currMont));
+          _.invoke(this.props, 'onVisibleWeeksChange', [xdateToData(currMont)]);
+        }
+      }
+    );
+  };
+
   _handleDayInteraction(date, interaction) {
-    const {disableMonthChange} = this.props;
+    const {disableMonthChange, weekView} = this.props;
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
 
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
-      const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
-
+      const shouldUpdateMonth = disableMonthChange === undefined || !weekView || !disableMonthChange;
+      const shouldUpdateWeek = weekView;
       if (shouldUpdateMonth) {
         this.updateMonth(day);
+      }
+      if (shouldUpdateWeek) {
+        this.updateWeek(day);
       }
       if (interaction) {
         interaction(xdateToData(day));
@@ -148,6 +173,30 @@ class Calendar extends Component {
     } else {
       return false;
     }
+  }
+
+  sameWeek(selectedDate, calendarDate) {
+    const formattedSelDate = selectedDate.toString('ww MM yyyy');
+    const formattedCalDate = calendarDate.toString('ww MM yyyy');
+
+    // ISO weeks start on Monday, but XDate weeks start on Sunday.
+    // This handles treating Sundays like the start of the week.
+    const [selectedWeek] = formattedSelDate.split(' ');
+    const [calWeek] = formattedCalDate.split(' ');
+
+    // case: if both days are Sundays, they should have the same week num already
+    if (selectedDate.getDay() === 0 && calendarDate.getDay() === 0) {
+      return selectedWeek === calWeek;
+    // case: if only one is a Sunday, check if it is "off by one"
+    } else if (selectedDate.getDay() === 0) {
+      return calWeek - selectedWeek === 1;
+    // case: ditto above
+    } else if (calendarDate.getDay() === 0) {
+      return selectedWeek - calWeek === 1;
+    }
+
+    // all other cases
+    return formattedSelDate === formattedCalDate
   }
 
   getState(day) {
@@ -231,7 +280,16 @@ class Calendar extends Component {
   }
 
   renderWeek(days, id) {
+    const { currentMonth } = this.state;
+    const { weekView } = this.props;
+
     const week = [];
+    const [startOfWeek] = days;
+
+    const isCurrentWeek = this.sameWeek(currentMonth, startOfWeek);
+    if (weekView && !isCurrentWeek) {
+      return null;
+    }
 
     days.forEach((day, id2) => {
       week.push(this.renderDay(day, id2));
@@ -249,7 +307,7 @@ class Calendar extends Component {
   }
 
   renderMonth() {
-    const {currentMonth} = this.state;
+    const {currentMonth, currentWeek} = this.state;
     const {firstDay, showSixWeeks, hideExtraDays} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
     const days = dateutils.page(currentMonth, firstDay, shouldShowSixWeeks);
@@ -263,7 +321,7 @@ class Calendar extends Component {
   }
 
   renderHeader() {
-    const {customHeader, headerStyle, displayLoadingIndicator, markedDates, testID} = this.props;
+    const {customHeader, headerStyle, displayLoadingIndicator, markedDates, weekView, testID} = this.props;
     const current = parseDate(this.props.current);
     let indicator;
 
@@ -283,6 +341,9 @@ class Calendar extends Component {
       ref: c => (this.header = c),
       month: this.state.currentMonth,
       addMonth: this.addMonth,
+      addWeek: this.addWeek,
+      markedDates: markedDates,
+      weekView: weekView,
       displayLoadingIndicator: indicator
     };
 
@@ -300,7 +361,7 @@ class Calendar extends Component {
     return (
       <GestureComponent {...gestureProps}>
         <View
-          style={[this.style.container, style]}
+          style={[style, this.style.container]}
           accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
           importantForAccessibility={this.props.importantForAccessibility} // Android
         >

@@ -24,12 +24,16 @@ export default function (theme = {}) {
       color: appStyle.monthTextColor,
       margin: 10
     },
+    arrowsContainerStyle: {
+      ...appStyle.arrowsContainerStyle,
+    },
     arrow: {
       padding: 10,
       ...appStyle.arrowStyle
     },
     arrowImage: {
       tintColor: appStyle.arrowColor,
+      ...appStyle.arrowImage,
       ...Platform.select({
         web: {
           width: appStyle.arrowWidth,

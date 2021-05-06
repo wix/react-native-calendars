@@ -5,6 +5,7 @@ import React, {Component, Fragment} from 'react';
 import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image} from 'react-native';
 import {shouldUpdate} from '../../component-updater';
 import {weekDayNames} from '../../dateutils';
+import {parseDate} from '../../interface';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
@@ -22,8 +23,12 @@ class CalendarHeader extends Component {
     firstDay: PropTypes.number,
     displayLoadingIndicator: PropTypes.bool,
     showWeekNumbers: PropTypes.bool,
+    markedDates: PropTypes.object,
     month: PropTypes.instanceOf(XDate),
     addMonth: PropTypes.func,
+    addWeek: PropTypes.func,
+    /** Position the calendar arrows on the left or right (optional) */
+    arrowPosition: PropTypes.oneOf(['left', 'right']),
     /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
     monthFormat: PropTypes.string,
     /**  Hide day names. Default = false */
@@ -45,7 +50,8 @@ class CalendarHeader extends Component {
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    weekView: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -59,7 +65,43 @@ class CalendarHeader extends Component {
     this.style = styleConstructor(props.theme);
   }
 
+  shouldUpdateMonth(prevMonth, nextMonth) {
+    return true;
+  }
+
+  shouldUpdateMarkings(prevMarkings, nextMarkings) {
+    const prevKeys = Object.keys(prevMarkings);
+    const nextKeys = Object.keys(nextMarkings);
+
+    if (prevKeys.length !== nextKeys.length) {
+      return true;
+    }
+
+    for (const prevKey of prevKeys) {
+      if (!nextKeys.includes(prevKey)) {
+        return true;
+      }
+    }
+
+    for (const nextKey of nextKeys) {
+      if (!prevKeys.includes(nextKey)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  shouldUpdateWeek(nextProps) {
+    const { markedDates, month } = this.props;
+    return this.shouldUpdateMarkings(markedDates, nextProps.markedDates)
+      || this.shouldUpdateMonth(month, nextProps.month);
+  }
+
   shouldComponentUpdate(nextProps) {
+    if (this.props.weekView && this.shouldUpdateWeek(nextProps)) {
+      return true;
+    }
     if (nextProps.month.toString('yyyy MM') !== this.props.month.toString('yyyy MM')) {
       return true;
     }
@@ -85,28 +127,43 @@ class CalendarHeader extends Component {
     addMonth(-1);
   };
 
+  addWeek = () => {
+    const {addWeek} = this.props;
+    addWeek(1);
+  };
+
+  subtractWeek = () => {
+    const {addWeek} = this.props;
+    addWeek(-1);
+  };
+
   onPressLeft = () => {
-    const {onPressArrowLeft, month} = this.props;
+    const {onPressArrowLeft, month, weekView} = this.props;
+    const handlerFunc = weekView ? this.subtractWeek : this.subtractMonth;
 
     if (typeof onPressArrowLeft === 'function') {
-      return onPressArrowLeft(this.subtractMonth, month);
+      return onPressArrowLeft(handlerFunc, month);
     }
 
-    return this.subtractMonth();
+    return handlerFunc();
   };
 
   onPressRight = () => {
-    const {onPressArrowRight, month} = this.props;
+    const {onPressArrowRight, month, weekView} = this.props;
+    const handlerFunc = weekView ? this.addWeek : this.addMonth;
 
     if (typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.addMonth, month);
+      return onPressArrowRight(handlerFunc, month);
     }
-    
-    return this.addMonth();
+
+    return handlerFunc();
   };
 
   renderWeekDays = weekDaysNames => {
-    const {disabledDaysIndexes} = this.props;
+    const {disabledDaysIndexes, month, markedDates, weekView} = this.props;
+    const [date] = Object.entries(markedDates).find(([date, value]) => value.selected === true) || [];
+    const selectedDate = date ? parseDate(date) : null;
+    const sameDate = month.toString('yyyy MM dd') === selectedDate?.toString('yyyy MM dd');
 
     return weekDaysNames.map((day, idx) => {
       const dayStyle = [this.style.dayHeader];
@@ -115,10 +172,17 @@ class CalendarHeader extends Component {
         dayStyle.push(this.style.disabledDayHeader);
       }
 
+      const selected = weekView && sameDate && selectedDate?.getDay() === idx;
+      if (selected) {
+        dayStyle.push(this.style.selectedDayHeaderText);
+      }
+
       return (
-        <Text allowFontScaling={false} key={idx} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
-          {day}
-        </Text>
+        <View key={idx} style={[this.style.dayHeaderContainer, selected && this.style.selectedDayHeader]}>
+          <Text allowFontScaling={false} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
+            {day}
+          </Text>
+        </View>
       );
     });
   };
@@ -202,6 +266,54 @@ class CalendarHeader extends Component {
     }
   }
 
+  renderHeaderContents() {
+    const {style, arrowPosition} = this.props;
+
+    const ArrowContainer = () => (
+      <View style={this.style.arrowsContainerStyle}>
+        {this.renderArrow('left')}
+        {this.renderArrow('right')}
+      </View>
+    );
+
+    const Title = () => (
+      <View style={this.style.headerContainer}>
+        {this.renderHeader()}
+        {this.renderIndicator()}
+      </View>
+    );
+
+    const HeaderContents = () => {
+      if (arrowPosition === 'left') {
+        return (
+          <>
+            <ArrowContainer />
+            <Title />
+          </>
+        );
+      }
+
+      if (arrowPosition === 'right') {
+        return (
+          <>
+            <Title />
+            <ArrowContainer />
+          </>
+        );
+      }
+
+      return (
+        <>
+          {this.renderArrow('left')}
+          <Title />
+          {this.renderArrow('right')}
+        </>
+      );
+    };
+
+    return <HeaderContents />;
+  }
+
   render() {
     const {style, testID} = this.props;
 
@@ -220,12 +332,7 @@ class CalendarHeader extends Component {
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
         <View style={this.style.header}>
-          {this.renderArrow('left')}
-          <View style={this.style.headerContainer}>
-            {this.renderHeader()}
-            {this.renderIndicator()}
-          </View>
-          {this.renderArrow('right')}
+          {this.renderHeaderContents()}
         </View>
         {this.renderDayNames()}
       </View>

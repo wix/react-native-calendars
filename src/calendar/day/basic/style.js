@@ -42,7 +42,9 @@ export default function styleConstructor(theme = {}) {
       color: appStyle.selectedDayTextColor
     },
     disabledText: {
-      color: appStyle.textDisabledColor
+      color: appStyle.textDisabledColor,
+      fontFamily: appStyle.textDisabledFontFamily || null,
+      fontSize: appStyle.textDisabledFontSize || null,
     },
     dot: {
       width: 4,
