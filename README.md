@@ -85,10 +85,14 @@ LocaleConfig.defaultLocale = 'fr';
   onDayLongPress={(day) => {console.log('selected day', day)}}
   // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
   monthFormat={'yyyy MM'}
+  // Display the calendar in week view rather than month view
+  weekView={false}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
   onMonthChange={(month) => {console.log('month changed', month)}}
   // Hide month navigation arrows. Default = false
   hideArrows={true}
+  // Position the calendar arrows on the left or right ("left", "right")
+  arrowPosition={""}
   // Replace default arrows with custom ones (direction can be 'left' or 'right')
   renderArrow={(direction) => (<Arrow/>)}
   // Do not show days of other months in month page. Default = false
@@ -151,7 +155,7 @@ Multi-Dot marking
 </kbd>
 <p></p>
 
-Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop. 
+Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop.
 The property `color` is mandatory while `key` and `selectedColor` are optional. If key is omitted then the array index is used as key. If `selectedColor` is omitted then `color` will be used for selected dates.
 
 ```javascript
@@ -534,6 +538,6 @@ See also the list of [contributors](https://github.com/wix/react-native-calendar
 
 ## Contributing
 
-Pull requests are most welcome! 
+Pull requests are most welcome!
 Please `npm run test` and `npm run lint` before push.
 Don't forget to add a **title** and a **description** that explain the issue you're trying to solve and your suggested solution. Screenshots and gifs are very helpful.
