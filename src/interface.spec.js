@@ -70,7 +70,7 @@ describe('calendar interface', () => {
     it('should convert date to yyyy-MM-dd format string', () => {
       const time = 1479772800000;
       const testDate = XDate(time);
-      expect(iface.toMarkingFormat(testDate)).toEqual('2016-11-22');
+      expect(iface.toMarkingFormat(testDate)).toEqual(testDate.toString('yyyy-MM-dd'));
     });
   });
 });
