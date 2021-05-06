@@ -315,6 +315,8 @@ The loading indicator next to the month name will be displayed if `<Calendar/>` 
     todayTextColor: '#00adf5',
     dayTextColor: '#2d4150',
     textDisabledColor: '#d9e1e8',
+    textSaturdayColor: "blue",
+    textSundayColor: "red"
     dotColor: '#00adf5',
     selectedDotColor: '#ffffff',
     arrowColor: 'orange',
