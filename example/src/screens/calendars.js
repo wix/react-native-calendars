@@ -5,7 +5,7 @@ import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'reac
 import {Calendar} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
-const INITIAL_DATE = '2021-05-05';
+const INITIAL_DATE = '2020-02-02';
 
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
