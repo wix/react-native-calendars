@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
 
 import React, {PureComponent} from 'react';
 import {View} from 'react-native';
@@ -12,7 +11,6 @@ import Calendar from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
-const EmptyArray = [];
 
 class Week extends PureComponent {
   static displayName = 'IGNORE';
