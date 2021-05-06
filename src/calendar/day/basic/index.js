@@ -11,7 +11,7 @@ export default class BasicDay extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    state: PropTypes.oneOf(['disabled', 'today', '']), //TODO: deprecate
+    state: PropTypes.oneOf(['disabled', 'today', 'saturday', "sunday", ""]), //TODO: deprecate
     /** The marking object */
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
@@ -77,6 +77,14 @@ export default class BasicDay extends Component {
     return this.props.state === 'today';
   }
 
+  isSaturday() {
+    return this.props.state === 'saturday';
+  }
+
+  isSunday() {
+    return this.props.state === 'sunday';
+  }
+
   isMultiDot() {
     return this.props.markingType === Marking.markingTypes.multiDot;
   }
@@ -122,6 +130,10 @@ export default class BasicDay extends Component {
       if (selectedTextColor) {
         style.push({color: selectedTextColor});
       }
+    } else if (this.isSaturday()) {
+      style.push(this.style.saturdayText);
+    } else if (this.isSunday()) {
+      style.push(this.style.sundayText);
     } else if (this.isDisabled()) {
       style.push(this.style.disabledText);
     } else if (this.isToday()) {

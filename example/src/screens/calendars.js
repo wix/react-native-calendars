@@ -53,6 +53,30 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarCustomStyleWeekend = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with custom style weekend</Text>
+        <Calendar
+          current={'2020-02-02'}
+          style={styles.calendar}
+          theme={{
+            'stylesheet.calendar.header': {
+              dayTextAtIndex0: {
+                color: 'red'
+              },
+              dayTextAtIndex6: {
+                color: 'blue'
+              }
+            },
+            textSaturdayColor: "blue",
+            textSundayColor: "red"
+          }}          
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithWeekNumbers = () => {
     return (
       <Fragment>
@@ -417,6 +441,7 @@ const CalendarsScreen = () => {
     return (
       <Fragment>
         {renderCalendarWithSelectableDate()}
+        {renderCalendarCustomStyleWeekend()}
         {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}

@@ -138,6 +138,18 @@ function getWeekDates(date, firstDay, format) {
   }
 }
 
+function isSaturday(a){
+  return (
+    a instanceof XDate && a.getDay() === 6
+  ); 
+ }
+ 
+ function isSunday(a){
+   return (
+     a instanceof XDate && a.getDay() === 0
+   ); 
+  }
+
 module.exports = {
   weekDayNames,
   sameMonth,
@@ -149,5 +161,7 @@ module.exports = {
   isLTE,
   isGTE,
   isDateNotInTheRange,
-  getWeekDates
+  getWeekDates,
+  isSaturday,
+  isSunday,
 };

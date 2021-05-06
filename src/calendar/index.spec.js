@@ -127,6 +127,16 @@ describe('Calendar', () => {
         expect(drv.getDay(date).getStyle()).toEqual(partial({backgroundColor: todayBackgroundColor, borderRadius: 16}));
         expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: todayTextColor}));
       });
+
+      it('should mark saturday and sunday day', () => {
+        const saturdayDate = '2020-04-04';
+        const sundayDate = '2020-04-05';
+        const textSaturdayColor = 'blue';
+        const textSundayColor = 'red';        
+        const drv = new CalendarDriver().withDefaultProps({theme: {textSaturdayColor, textSundayColor}}).render();
+        expect(drv.getDay(saturdayDate).getTextStyle()).toEqual(partial({color: textSaturdayColor}));
+        expect(drv.getDay(sundayDate).getTextStyle()).toEqual(partial({color: textSundayColor}));
+      });
     });
 
     describe('Accessibility labels', () => {

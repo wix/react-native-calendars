@@ -160,6 +160,10 @@ class Calendar extends Component {
       state = 'disabled';
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
+    } else if (dateutils.isSaturday(day, XDate())) {
+      state = 'saturday';
+    } else if (dateutils.isSunday(day, XDate())) {
+      state = 'sunday';
     }
     return state;
   }

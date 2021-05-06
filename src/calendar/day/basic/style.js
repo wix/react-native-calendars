@@ -44,6 +44,12 @@ export default function styleConstructor(theme = {}) {
     disabledText: {
       color: appStyle.textDisabledColor
     },
+    saturdayText: {
+      color: appStyle.textSaturdayColor
+    },
+    sundayText: {
+      color: appStyle.textSundayColor
+    },
     dot: {
       width: 4,
       height: 4,
