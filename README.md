@@ -44,6 +44,7 @@ Event handler callbacks are called with `calendar objects` like this:
   year: 2017,  // year
   timestamp,   // UTC timestamp representing 00:00 AM of this date
   dateString: '2016-05-13' // date formatted as 'YYYY-MM-DD' string
+  dayNameIndex: 0 // for Sunday(0) -> Saturday(6)
 }
 ```
 
@@ -397,7 +398,7 @@ theme={{
 
 #### Individual day header and days styling based on day name index
 
-Using the above advanced styling, it is possible to set styles independently for each day's header. If we wanted to make the header for Sunday red, and Saturday blue, we could write something like the following:
+Using the above advanced styling, it is possible to set styles independently for each day's header. If we wanted to make the header for Sunday red, and Saturday blue and make all Sunday days red and Saturday days blue, we could write something like the following:
 
 ```javascript
 theme={{
