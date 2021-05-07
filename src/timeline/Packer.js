@@ -7,10 +7,13 @@ function buildEvent(column, left, width, dayStart) {
   const startTime = XDate(column.start);
   const endTime = column.end ? XDate(column.end) : XDate(startTime).addHours(1);
 
-  const dayStartTime = XDate(dayStart).clearTime();
+  const dayStartTime = XDate(startTime)
+    .clone()
+    .clearTime()
+    .setHours(dayStart);
 
-  column.top = startTime.diffHours(dayStartTime) * offset;
-  column.height = endTime.diffHours(startTime) * offset;
+  column.top = dayStartTime.diffHours(startTime) * offset;
+  column.height = startTime.diffHours(endTime) * offset;
   column.width = width;
   column.left = left;
   return column;
@@ -58,7 +61,7 @@ function populateEvents(events, screenWidth, dayStart) {
   let calculatedEvents = [];
 
   events = events
-    .map((ev, index) => ({...ev, index: index}))
+    .map((ev, index) => ({ ...ev, index: index }))
     .sort(function (a, b) {
       if (a.start < b.start) return -1;
       if (a.start > b.start) return 1;
