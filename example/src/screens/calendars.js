@@ -53,6 +53,36 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarCustomStyleWeekend = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with custom style weekend</Text>
+        <Calendar
+          current={'2020-02-02'}
+          style={styles.calendar}
+          theme={{
+            'stylesheet.calendar.header': {
+              dayTextAtIndex0: {
+                color: 'red'
+              },
+              dayTextAtIndex6: {
+                color: 'blue'
+              }
+            },
+            'stylesheet.day.basic': {
+              dayTextAtIndex0: {
+                color: 'red'
+              },
+              dayTextAtIndex6: {
+                color: 'blue'
+              }
+            }
+          }}
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithWeekNumbers = () => {
     return (
       <Fragment>
@@ -353,14 +383,13 @@ const CalendarsScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
-          style={[
-            styles.calendar,
-            styles.customCalendar
-          ]}
+          style={[styles.calendar, styles.customCalendar]}
           dayComponent={({date, state}) => {
             return (
               <View>
-                <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>{date.day}</Text>
+                <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
+                  {date.day}
+                </Text>
               </View>
             );
           }}
@@ -372,11 +401,7 @@ const CalendarsScreen = () => {
   const renderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
       return (
-        <View
-          ref={ref}
-          {...props}
-          style={styles.customHeader}
-        >
+        <View ref={ref} {...props} style={styles.customHeader}>
           <Text>This is a custom header!</Text>
           <TouchableOpacity onPress={() => console.warn('Tapped!')}>
             <Text>Tap Me</Text>
@@ -390,10 +415,7 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with custom header component</Text>
         <Calendar
           testID={testIDs.calendars.LAST}
-          style={[
-            styles.calendar,
-            styles.customCalendar
-          ]}
+          style={[styles.calendar, styles.customCalendar]}
           customHeader={CustomHeader}
         />
       </Fragment>
@@ -417,6 +439,7 @@ const CalendarsScreen = () => {
     return (
       <Fragment>
         {renderCalendarWithSelectableDate()}
+        {renderCalendarCustomStyleWeekend()}
         {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}
@@ -461,12 +484,12 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   switchContainer: {
-    flexDirection: 'row', 
-    margin: 10, 
+    flexDirection: 'row',
+    margin: 10,
     alignItems: 'center'
   },
   switchText: {
-    margin: 10, 
+    margin: 10,
     fontSize: 16
   },
   text: {

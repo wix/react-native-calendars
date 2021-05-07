@@ -6,7 +6,6 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
 
-
 export default class BasicDay extends Component {
   static displayName = 'IGNORE';
 
@@ -30,21 +29,29 @@ export default class BasicDay extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.style = styleConstructor(props.theme);
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['children', 'state', 'markingType', 'marking', 'onPress', 'onLongPress', 'date']);
+    return shouldUpdate(this.props, nextProps, [
+      'children',
+      'state',
+      'markingType',
+      'marking',
+      'onPress',
+      'onLongPress',
+      'date'
+    ]);
   }
 
   onPress = () => {
     _.invoke(this.props, 'onPress', this.props.date);
-  }
-  
+  };
+
   onLongPress = () => {
     _.invoke(this.props, 'onLongPress', this.props.date);
-  }
+  };
 
   get marking() {
     let marking = this.props.marking || {};
@@ -101,7 +108,7 @@ export default class BasicDay extends Component {
     } else if (this.isToday()) {
       style.push(this.style.today);
     }
-    
+
     //Custom marking type
     if (this.isCustom() && customStyles && customStyles.container) {
       if (customStyles.container.borderRadius === undefined) {
@@ -116,6 +123,32 @@ export default class BasicDay extends Component {
   getTextStyle() {
     const {customStyles, selected, selectedTextColor} = this.props.marking;
     const style = [this.style.text];
+
+    switch (this.props.date?.dayNameIndex) {
+      case 0:
+        style.push(this.style['dayTextAtIndex0']);
+        break;
+      case 1:
+        style.push(this.style['dayTextAtIndex1']);
+        break;
+      case 2:
+        style.push(this.style['dayTextAtIndex2']);
+        break;
+      case 3:
+        style.push(this.style['dayTextAtIndex3']);
+        break;
+      case 4:
+        style.push(this.style['dayTextAtIndex4']);
+        break;
+      case 5:
+        style.push(this.style['dayTextAtIndex5']);
+        break;
+      case 6:
+        style.push(this.style['dayTextAtIndex6']);
+        break;
+      default:
+        break;
+    }
 
     if (selected) {
       style.push(this.style.selectedText);
