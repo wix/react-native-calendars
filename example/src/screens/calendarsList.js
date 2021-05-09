@@ -4,7 +4,7 @@ import {CalendarList} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
 const RANGE = 24;
-const initialDate = '2020-03-15';
+const initialDate = '2020-06-10';
 
 const CalendarsList = () => {
   const [selected, setSelected] = useState(initialDate);
