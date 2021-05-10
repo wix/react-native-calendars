@@ -425,7 +425,7 @@ class ExpandableCalendar extends Component {
 
   renderWeekCalendar() {
     const {position} = this.state;
-    const {disableWeekScroll, markedDates} = this.props;
+    const {disableWeekScroll} = this.props;
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
 
     return (
@@ -438,7 +438,6 @@ class ExpandableCalendar extends Component {
           {...this.props}
           current={this.props.context.date}
           onDayPress={this.onDayPress}
-          markedDates={markedDates} // for Week component
           style={this.props.calendarStyle}
           allowShadow={false}
           hideDayNames={true}
