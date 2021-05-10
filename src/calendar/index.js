@@ -132,12 +132,16 @@ class Calendar extends Component {
     this.handleDayInteraction(date, this.props.onDayLongPress);
   };
 
+  //TODO: this method has a duplication in Week component - consider moving to presenter/state manager
   getState(day) {
-    const {disabledByDefault} = this.props;
+    const {disabledByDefault, context} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
-
+    
+    if (context?.date === toMarkingFormat(day)) {
+      state = 'selected';
+    }
     if (disabledByDefault) {
       state = 'disabled';
     } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {

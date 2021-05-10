@@ -91,6 +91,7 @@ class ExpandableCalendar extends Component {
     this._wrapperStyles = {style: {height: startHeight}};
     this._headerStyles = {style: {top: props.initialPosition === POSITIONS.CLOSED ? 0 : -HEADER_HEIGHT}};
     this._weekCalendarStyles = {style: {}};
+
     this.wrapper = undefined;
     this.calendar = undefined;
     this.visibleMonth = this.getMonth(this.props.context.date);
@@ -209,22 +210,6 @@ class ExpandableCalendar extends Component {
   getNumberOfWeeksInMonth(month) {
     const days = dateutils.page(month, this.props.firstDay);
     return days.length / 7;
-  }
-
-  // TODO: this logic repeat itself in WeekCalendar - consider moving to a presenter
-  getMarkedDates() {
-    const {context, markedDates} = this.props;
-
-    if (markedDates) {
-      const marked = _.cloneDeep(markedDates);
-      if (marked[context.date]) {
-        marked[context.date].selected = true;
-      } else {
-        marked[context.date] = {selected: true};
-      }
-      return marked;
-    }
-    return {[context.date]: {selected: true}};
   }
 
   shouldHideArrows() {
@@ -440,9 +425,8 @@ class ExpandableCalendar extends Component {
 
   renderWeekCalendar() {
     const {position} = this.state;
-    const {disableWeekScroll, markedDates: propsMarkedDates} = this.props;
+    const {disableWeekScroll, markedDates} = this.props;
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
-    const markedDates = disableWeekScroll ? this.getMarkedDates() : propsMarkedDates;
 
     return (
       <Animated.View
@@ -502,7 +486,6 @@ class ExpandableCalendar extends Component {
             {...others}
             theme={themeObject}
             onDayPress={this.onDayPress}
-            markedDates={this.getMarkedDates()}
             hideExtraDays
             renderArrow={this.renderArrow}
           />
@@ -525,7 +508,6 @@ class ExpandableCalendar extends Component {
               onVisibleMonthsChange={this.onVisibleMonthsChange}
               pagingEnabled
               scrollEnabled={isOpen}
-              markedDates={this.getMarkedDates()}
               hideArrows={this.shouldHideArrows()}
               onPressArrowLeft={this.onPressArrowLeft}
               onPressArrowRight={this.onPressArrowRight}

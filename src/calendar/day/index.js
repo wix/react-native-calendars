@@ -27,7 +27,7 @@ export default class Day extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['day', 'dayComponent', 'markingType', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, ['day', 'dayComponent', 'state', 'markingType', 'marking', 'onPress', 'onLongPress']);
   }
 
   getMarkingLabel(marking) {

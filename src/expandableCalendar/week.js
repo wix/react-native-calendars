@@ -32,11 +32,14 @@ class Week extends PureComponent {
   }
 
   getState(day) {
-    const {current, disabledByDefault} = this.props;
+    const {current, disabledByDefault, context} = this.props;
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
     let state = '';
 
+    if (context?.date === toMarkingFormat(day)) {
+      state = 'selected';
+    }
     if (disabledByDefault) {
       state = 'disabled';
     } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {

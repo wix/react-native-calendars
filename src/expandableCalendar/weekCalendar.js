@@ -98,21 +98,6 @@ class WeekCalendar extends Component {
     return toMarkingFormat(newDate);
   }
 
-  getMarkedDates = () => {
-    const {context, markedDates} = this.props;
-    if (markedDates) {
-      const marked = _.cloneDeep(markedDates);
-
-      if (marked[context.date]) {
-        marked[context.date].selected = true;
-      } else {
-        marked[context.date] = {selected: true};
-      }
-      return marked;
-    }
-    return {[context.date]: {selected: true}};
-  };
-
   getWeekStyle = memoize((width, style) => {
     return [{width}, style];
   });
@@ -188,8 +173,6 @@ class WeekCalendar extends Component {
 
   renderItem = ({item}) => {
     const {style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
-    const isCurrentWeek = sameWeek(item, this.props.context.date, others.firstDay);
-    const fixedMarkedDates = isCurrentWeek ? this.getMarkedDates() : markedDates;
 
     return (
       <Week
@@ -197,8 +180,9 @@ class WeekCalendar extends Component {
         key={item}
         current={item}
         style={this.getWeekStyle(this.containerWidth, style)}
-        markedDates={fixedMarkedDates}
+        markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
+        context={this.props.context}
       />
     );
   };

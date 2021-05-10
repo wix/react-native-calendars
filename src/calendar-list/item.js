@@ -83,7 +83,8 @@ class CalendarListItem extends Component {
       style,
       headerStyle,
       onPressArrowLeft,
-      onPressArrowRight
+      onPressArrowRight,
+      context
     } = this.props;
     const calendarProps = extractComponentProps(Calendar, this.props);
     const calStyle = this.getCalendarStyle(calendarWidth, calendarHeight, style);
@@ -99,6 +100,7 @@ class CalendarListItem extends Component {
           disableMonthChange
           onPressArrowLeft={horizontal ? this.onPressArrowLeft : onPressArrowLeft}
           onPressArrowRight={horizontal ? this.onPressArrowRight : onPressArrowRight}
+          context={context}
         />
       );
     } else {
