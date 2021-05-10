@@ -39,6 +39,8 @@ class Week extends PureComponent {
 
     if (context?.date === toMarkingFormat(day)) {
       state = 'selected';
+    } else if (dateutils.isToday(day)) {
+      state = 'today';
     }
     if (disabledByDefault) {
       state = 'disabled';
@@ -46,9 +48,8 @@ class Week extends PureComponent {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, parseDate(current))) {
       state = 'disabled';
-    } else if (dateutils.isToday(day)) {
-      state = 'today';
-    }
+    } 
+    
     return state;
   }
 

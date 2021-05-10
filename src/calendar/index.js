@@ -141,6 +141,8 @@ class Calendar extends Component {
     
     if (context?.date === toMarkingFormat(day)) {
       state = 'selected';
+    } else if (dateutils.isToday(day)) {
+      state = 'today';
     }
     if (disabledByDefault) {
       state = 'disabled';
@@ -148,9 +150,8 @@ class Calendar extends Component {
       state = 'disabled';
     } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
       state = 'disabled';
-    } else if (dateutils.isToday(day)) {
-      state = 'today';
     }
+
     return state;
   }
 
