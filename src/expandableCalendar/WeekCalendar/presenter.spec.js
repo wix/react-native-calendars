@@ -355,7 +355,5 @@ describe('WeekCalendar presenter tests', () => {
         expect(_mergeArraysFromTop(arr, newArr)).toEqual(['10', '11']);
       });
     });
-
-    it('', () => {});
   });
 });
