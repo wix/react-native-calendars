@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {CalendarList} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
-const initialDate = '2020-03-15';
+const initialDate = '2020-05-16';
 
 
 const HorizontalCalendarList = () => {
