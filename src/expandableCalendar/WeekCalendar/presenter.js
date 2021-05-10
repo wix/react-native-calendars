@@ -1,0 +1,187 @@
+import _ from 'lodash';
+import React from 'react';
+import {sameWeek} from '../../dateutils';
+const commons = require('../commons');
+import XDate from 'xdate';
+
+const UPDATE_SOURCES = commons.UPDATE_SOURCES;
+// must be a positive number
+const NUMBER_OF_PAGES = 2;
+
+class Presenter {
+  constructor(props) {
+    this.list = React.createRef();
+    this.props = props;
+    this._applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
+    // On Android+RTL there's an initial scroll that cause issues
+    this._firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
+  }
+
+  updateWith = props => {
+    this.props = props;
+  };
+
+  scrollToIndex = animated => {
+    this.list.current.scrollToIndex({animated, index: NUMBER_OF_PAGES});
+  };
+
+  isSameWeek = (date, prevDate, firstDay) => {
+    return sameWeek(date, prevDate, firstDay);
+  };
+
+  // Events
+
+  onDayPressed = (context, value) => {
+    _.invoke(context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
+  };
+
+  onScroll = ({context, updateState, x, page, items, width}) => {
+    if (!this._firstAndroidRTLScrollIgnored) {
+      this._firstAndroidRTLScrollIgnored = true;
+      return;
+    }
+
+    x = this._getX(x, items?.length, width);
+    const newPage = this._getNewPage(x, width);
+
+    if (this._shouldUpdateState(page)) {
+      this._invokeSetDate(context, items[newPage]);
+      const data = this._getItemsForPage(page, items);
+      updateState(data, newPage);
+    }
+  };
+
+  onMomentumScrollEnd = ({items, props, page, updateState}) => {
+    if (this._isFirstPage(page) || this._isLastPage(page, items)) {
+      this.scrollToIndex(false);
+
+      const newWeekArray = this.getDatesArray(props);
+      let updatedItems;
+      if (this._isLastPage(page, items)) {
+        updatedItems = this._mergeArraysFromEnd(items, newWeekArray);
+      } else {
+        updatedItems = this._mergeArraysFromTop(items, newWeekArray);
+      }
+
+      updateState(updatedItems);
+    }
+  };
+
+  shouldComponentUpdate = (context, prevContext, firstDay) => {
+    const {date, prevDate, updateSource} = context;
+    return (
+      date !== prevContext.date &&
+      updateSource !== UPDATE_SOURCES.WEEK_SCROLL &&
+      !this.isSameWeek(date, prevDate, firstDay)
+    );
+  };
+
+  getDate({current, context, firstDay}, weekIndex) {
+    const d = XDate(current || context.date);
+    // get the first day of the week as date (for the on scroll mark)
+    let dayOfTheWeek = d.getDay();
+    if (dayOfTheWeek < firstDay && firstDay > 0) {
+      dayOfTheWeek = 7 + dayOfTheWeek;
+    }
+
+    // leave the current date in the visible week as is
+    const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+    const newDate = dd.addWeeks(weekIndex);
+    return newDate.toString('yyyy-MM-dd');
+  }
+
+  getDatesArray = args => {
+    const array = [];
+    for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
+      const d = this.getDate(args, index);
+      array.push(d);
+    }
+    return array;
+  };
+
+  getMarkedDates = (context, markedDates) => {
+    if (markedDates) {
+      const marked = _.cloneDeep(markedDates);
+
+      if (marked[context.date]) {
+        marked[context.date].selected = true;
+      } else {
+        marked[context.date] = {selected: true};
+      }
+      return marked;
+    }
+    return {[context.date]: {selected: true}};
+  };
+
+  getFixedMarkedDates = (context, markedDates, item, firstDay) => {
+    return this.isSameWeek(item, context.date, firstDay) ? this.getMarkedDates(context, markedDates) : markedDates;
+  };
+
+  _invokeSetDate = (context, item) => {
+    _.invoke(context, 'setDate', item, UPDATE_SOURCES.WEEK_SCROLL);
+  };
+
+  _shouldUpdateState = (page, newPage) => {
+    return page !== newPage;
+  };
+
+  _getX = (x, itemsCount, containerWidth) => {
+    if (this._applyAndroidRtlFix) {
+      const numberOfPages = itemsCount - 1;
+      const overallWidth = numberOfPages * containerWidth;
+      return overallWidth - x;
+    }
+    return x;
+  };
+
+  _getNewPage = (x, containerWidth) => {
+    return Math.round(x / containerWidth);
+  };
+
+  _isFirstPage = page => {
+    return page === 0;
+  };
+
+  _isLastPage = (page, items) => {
+    return page === items.length - 1;
+  };
+
+  _getNexPageItems = items => {
+    return items.map((_, i) => {
+      const index = i <= NUMBER_OF_PAGES ? i + NUMBER_OF_PAGES : i;
+      return items[index];
+    });
+  };
+
+  _getFirstPageItems = items => {
+    return items.map((_, i) => {
+      const index = i >= NUMBER_OF_PAGES ? i - NUMBER_OF_PAGES : i;
+      return items[index];
+    });
+  };
+
+  _mergeArraysFromEnd = (items, newArray) => {
+    for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
+      items[i] = newArray[i];
+    }
+    return items;
+  };
+
+  _mergeArraysFromTop = (items, newArray) => {
+    for (let i = 0; i < NUMBER_OF_PAGES; i++) {
+      items[i] = newArray[i];
+    }
+    return items;
+  };
+
+  _getItemsForPage = (page, items) => {
+    if (this._isLastPage(page, items)) {
+      return this._getNexPageItems(items);
+    } else if (this._isFirstPage(page)) {
+      return this._getFirstPageItems(items);
+    }
+    return items;
+  };
+}
+
+export default Presenter;
