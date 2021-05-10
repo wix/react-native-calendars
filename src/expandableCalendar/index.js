@@ -396,16 +396,19 @@ class ExpandableCalendar extends Component {
   };
 
   /** Renders */
+  getWeekDaysStyle = memoize((calendarStyle) => {
+    return {
+      paddingLeft: calendarStyle?.paddingLeft + 6 || DAY_NAMES_PADDING,
+      paddingRight: calendarStyle?.paddingRight + 6 || DAY_NAMES_PADDING
+    };
+  });
 
-  renderWeekDaysNames = memoize((weekDaysNames) => {
+  renderWeekDaysNames = memoize((weekDaysNames, calendarStyle) => {
     return (
       <View
         style={[
           this.style.weekDayNames,
-          {
-            paddingLeft: (this.props.calendarStyle?.paddingLeft + 6) || DAY_NAMES_PADDING,
-            paddingRight: (this.props.calendarStyle?.paddingRight + 6) || DAY_NAMES_PADDING
-          }
+          this.getWeekDaysStyle(calendarStyle)
         ]}
       >
         {weekDaysNames.map((day, index) => (
@@ -430,7 +433,7 @@ class ExpandableCalendar extends Component {
         <Text allowFontScaling={false} style={this.style.headerTitle}>
           {monthYear}
         </Text>
-        {this.renderWeekDaysNames(weekDaysNames)}
+        {this.renderWeekDaysNames(weekDaysNames, this.props.calendarStyle)}
       </Animated.View>
     );
   }
