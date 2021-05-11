@@ -7,12 +7,12 @@ describe('WeekCalendar presenter tests', () => {
     prevDate: '2021-01-02'
   };
 
-  const twoDaysNotSameWeek = {
+  const twoDaysDifferentWeek = {
     date: '2021-01-01',
     prevDate: '2021-01-05'
   };
 
-  const twoOtherDays = {
+  const twoSomeDays = {
     date: '2021-01-12',
     prevDate: '2021-01-13'
   };
@@ -42,8 +42,8 @@ describe('WeekCalendar presenter tests', () => {
     });
 
     it('Expect component to not update when on same update source', () => {
-      const context = makeContext(twoDaysNotSameWeek);
-      const prevContext = makeContext(twoOtherDays);
+      const context = makeContext(twoDaysDifferentWeek);
+      const prevContext = makeContext(twoSomeDays);
       const {shouldComponentUpdate} = makeUUT();
       const shouldUpdate = shouldComponentUpdate(context, prevContext, 2);
 
@@ -59,8 +59,8 @@ describe('WeekCalendar presenter tests', () => {
     });
 
     it('Expect component to update when dates are not in the same week', () => {
-      const context = makeContext(twoDaysNotSameWeek, UPDATE_SOURCES.PAGE_SCROLL);
-      const prevContext = makeContext(twoOtherDays);
+      const context = makeContext(twoDaysDifferentWeek, UPDATE_SOURCES.PAGE_SCROLL);
+      const prevContext = makeContext(twoSomeDays);
       const {shouldComponentUpdate} = makeUUT();
       const shouldUpdate = shouldComponentUpdate(context, prevContext, 2);
 
@@ -169,7 +169,7 @@ describe('WeekCalendar presenter tests', () => {
     });
   });
 
-  describe('Event - onDatPressed', () => {
+  describe('Event - onDatePressed', () => {
     it('onDayPressed', () => {
       const setDate = jest.fn();
       const context = {date: '2021-02-02', setDate};

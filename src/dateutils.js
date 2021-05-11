@@ -19,7 +19,7 @@ function sameDate(a, b) {
 
 function sameWeek(d1, d2, firstDayOfWeek) {
   const weekDates = getWeekDates(d1, firstDayOfWeek, 'yyyy-MM-dd');
-  return weekDates?.includes(d2);
+  return weekDates && weekDates.includes(d2);
 }
 
 function isGTE(a, b) {
@@ -105,7 +105,7 @@ function isDateNotInTheRange(minDate, maxDate, date) {
 }
 
 function getWeekDates(date, firstDay, format) {
-  if (date) {
+  if (date && parseDate(date).valid()) {
     const current = parseDate(date);
     const daysArray = [current];
     let dayOfTheWeek = current.getDay() - firstDay;

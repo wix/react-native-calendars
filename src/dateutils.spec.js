@@ -21,23 +21,23 @@ describe('dateutils', function () {
   });
 
   describe('sameWeek tests', () => {
-    it('Expect sameWeek to return true, for two days on the same week ', () => {
+    it('Expect sameWeek to return true, for two days on the same week', () => {
       const {sameWeek} = dateutils;
       const a = '2021-01-05';
       const b = '2021-01-06';
       expect(sameWeek(a, b, 1)).toBe(true);
     });
 
-    it('Expect sameWeek to return true, for two days on the same week ', () => {
+    it('Expect sameWeek to return true, for two days on the same week, when', () => {
       const {sameWeek} = dateutils;
       const date = '2021-01-01';
       const prevDate = '2021-01-02';
-      expect(sameWeek(date, prevDate, 1)).toBe(true);
+      expect(sameWeek(prevDate, date, 1)).toBe(true);
     });
 
     it('Expect sameWeek to return false, on non XDate values', () => {
       const {sameWeek} = dateutils;
-      expect(sameWeek('a', 'a')).toBe(false);
+      expect(sameWeek('a', 'a')).toBe(undefined);
       expect(sameWeek(1, 1)).toBe(false);
       expect(sameWeek(false, false)).toBe(undefined);
       expect(sameWeek(true, true)).toBe(false);
