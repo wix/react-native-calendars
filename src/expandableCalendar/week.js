@@ -74,7 +74,7 @@ class Week extends PureComponent {
           {...dayProps}
           day={day}
           state={this.getState(day)}
-          marking={markedDates && markedDates[toMarkingFormat(day)]}
+          marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.props.onDayPress}
           onLongPress={this.props.onDayPress}
         />
