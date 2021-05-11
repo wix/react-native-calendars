@@ -147,7 +147,7 @@ class ExpandableCalendar extends Component {
   };
 
   updateNativeStyles() {
-    this.wrapper && this.wrapper.setNativeProps(this._wrapperStyles);
+    this.wrapper?.setNativeProps(this._wrapperStyles);
     if (!this.props.horizontal) {
       this.header && this.header.setNativeProps(this._headerStyles);
     } else {
@@ -382,20 +382,18 @@ class ExpandableCalendar extends Component {
 
   /** Renders */
   getWeekDaysStyle = memoize((calendarStyle) => {
-    return {
-      paddingLeft: calendarStyle?.paddingLeft + 6 || DAY_NAMES_PADDING,
-      paddingRight: calendarStyle?.paddingRight + 6 || DAY_NAMES_PADDING
-    };
+    return [
+      this.style.weekDayNames,
+      {
+        paddingLeft: calendarStyle?.paddingLeft + 6 || DAY_NAMES_PADDING,
+        paddingRight: calendarStyle?.paddingRight + 6 || DAY_NAMES_PADDING
+      }
+    ];
   });
 
   renderWeekDaysNames = memoize((weekDaysNames, calendarStyle) => {
     return (
-      <View
-        style={[
-          this.style.weekDayNames,
-          this.getWeekDaysStyle(calendarStyle)
-        ]}
-      >
+      <View style={this.getWeekDaysStyle(calendarStyle)}>
         {weekDaysNames.map((day, index) => (
           <Text allowFontScaling={false} key={day + index} style={this.style.weekday} numberOfLines={1}>
             {day}
@@ -490,9 +488,7 @@ class ExpandableCalendar extends Component {
           />
         ) : (
           <Animated.View
-            ref={e => {
-              this.wrapper = e;
-            }}
+            ref={e => this.wrapper = e}
             style={{height: deltaY}}
             {...this.panResponder.panHandlers}
           >
@@ -501,7 +497,7 @@ class ExpandableCalendar extends Component {
               horizontal={horizontal}
               {...others}
               theme={themeObject}
-              ref={r => (this.calendar = r)}
+              ref={r => this.calendar = r}
               current={this.initialDate}
               onDayPress={this.onDayPress}
               onVisibleMonthsChange={this.onVisibleMonthsChange}

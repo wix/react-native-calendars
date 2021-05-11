@@ -187,7 +187,7 @@ class Calendar extends Component {
         <BasicDay
           key={`week-${weekNumber}`}
           marking={{disabled: true, disableTouchEvent: true}}
-          // state="disabled"
+          // state='disabled'
           theme={this.props.theme}
           testID={`${WEEK_NUMBER}-${weekNumber}`}
         >
