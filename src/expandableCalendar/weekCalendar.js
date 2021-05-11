@@ -174,6 +174,10 @@ class WeekCalendar extends Component {
   renderItem = ({item}) => {
     const {style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
 
+    const {context, firstDay} = this.props;
+    const isCurrentWeek = sameWeek(item, context.date, firstDay);
+    const currentContext = isCurrentWeek ? context : undefined;
+
     return (
       <Week
         {...others}
@@ -182,7 +186,7 @@ class WeekCalendar extends Component {
         style={this.getWeekStyle(this.containerWidth, style)}
         markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
-        context={this.props.context}
+        context={currentContext}
       />
     );
   };
