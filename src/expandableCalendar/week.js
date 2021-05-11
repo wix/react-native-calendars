@@ -5,6 +5,7 @@ import {View} from 'react-native';
 
 import dateutils from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
+import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
 import Calendar from '../calendar';
@@ -31,28 +32,6 @@ class Week extends PureComponent {
     return dateutils.getWeekDates(date, this.props.firstDay);
   }
 
-  getState(day) {
-    const {current, disabledByDefault, context} = this.props;
-    const minDate = parseDate(this.props.minDate);
-    const maxDate = parseDate(this.props.maxDate);
-    let state = '';
-
-    if (context?.date === toMarkingFormat(day)) {
-      state = 'selected';
-    } else if (dateutils.isToday(day)) {
-      state = 'today';
-    }
-    if (disabledByDefault) {
-      state = 'disabled';
-    } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {
-      state = 'disabled';
-    } else if (!dateutils.sameMonth(day, parseDate(current))) {
-      state = 'disabled';
-    } 
-    
-    return state;
-  }
-
   // renderWeekNumber (weekNumber) {
   //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
   // }
@@ -73,7 +52,7 @@ class Week extends PureComponent {
         <Day
           {...dayProps}
           day={day}
-          state={this.getState(day)}
+          state={getState(day, parseDate(current), this.props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.props.onDayPress}
           onLongPress={this.props.onDayPress}

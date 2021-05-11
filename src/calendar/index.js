@@ -9,6 +9,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import dateutils from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
+import {getState} from '../day-state-manager';
 // import shouldComponentUpdate from './updater';
 import {extractComponentProps} from '../component-updater';
 import {WEEK_NUMBER} from '../testIDs';
@@ -132,29 +133,6 @@ class Calendar extends Component {
     this.handleDayInteraction(date, this.props.onDayLongPress);
   };
 
-  //TODO: this method has a duplication in Week component - consider moving to presenter/state manager
-  getState(day) {
-    const {disabledByDefault, context} = this.props;
-    const minDate = parseDate(this.props.minDate);
-    const maxDate = parseDate(this.props.maxDate);
-    let state = '';
-    
-    if (context?.date === toMarkingFormat(day)) {
-      state = 'selected';
-    } else if (dateutils.isToday(day)) {
-      state = 'today';
-    }
-    if (disabledByDefault) {
-      state = 'disabled';
-    } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {
-      state = 'disabled';
-    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
-      state = 'disabled';
-    }
-
-    return state;
-  }
-
   swipeProps = {onSwipe: (direction, state) => this.onSwipe(direction, state)};
 
   onSwipe = gestureName => {
@@ -210,7 +188,7 @@ class Calendar extends Component {
         <Day
           {...dayProps}
           day={day}
-          state={this.getState(day)}
+          state={getState(day, this.state.currentMonth, this.props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
