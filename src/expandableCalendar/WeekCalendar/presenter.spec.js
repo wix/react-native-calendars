@@ -175,8 +175,8 @@ describe('WeekCalendar presenter tests', () => {
       const context = {date: '2021-02-02', setDate};
       const {onDayPressed} = makeUUT();
 
-      onDayPressed(context, {dateString: '2021-01-12'});
-      expect(setDate).toBeCalled();
+      onDayPressed(context, {dateString: '2021-01-22'});
+      expect(setDate).toBeCalledWith('2021-01-22', UPDATE_SOURCES.DAY_PRESS);
     });
   });
 
