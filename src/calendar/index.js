@@ -89,6 +89,23 @@ class Calendar extends Component {
     this.updateMonth(this.state.currentDate.clone().addMonths(count, true));
   };
 
+  addYear = count => {
+    this.updateYear(this.state.currentDate.clone().addYears(count, true));
+  };
+
+  updateYear = (day, doNotTriggerListeners) => {
+    if (day.toString('yyyy') === this.state.currentDate.toString('yyyy')) {
+      return;
+    }
+
+    this.setState({currentDate: day.clone()}, () => {
+        if (!doNotTriggerListeners) {
+          const currentDate = this.state.currentDate.clone();
+          _.invoke(this.props, 'onYearsChange', xdateToData(currentDate));
+          _.invoke(this.props, 'onVisibleYearsChange', [xdateToData(currentDate)]);
+        }
+      }
+    );
   };
 
   updateMonth = (day, doNotTriggerListeners) => {
@@ -281,6 +298,7 @@ class Calendar extends Component {
       ref: c => (this.header = c),
       month: this.state.currentDate,
       addMonth: this.addMonth,
+      addYear: this.addYear,
       displayLoadingIndicator: indicator
     };
 
