@@ -124,16 +124,20 @@ class Calendar extends Component {
   };
 
   _handleDayInteraction(date, interaction) {
-    const {disableMonthChange} = this.props;
+    const {disableMonthChange, disableYearChange} = this.props;
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
 
     if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
       const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
+      const shouldUpdateYear = disableYearChange === undefined || !disableYearChange;
 
       if (shouldUpdateMonth) {
         this.updateMonth(day);
+      }
+      if (shouldUpdateYear) {
+        this.updateYear(day);
       }
       if (interaction) {
         interaction(xdateToData(day));
