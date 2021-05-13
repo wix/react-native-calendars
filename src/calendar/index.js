@@ -79,24 +79,26 @@ class Calendar extends Component {
     this.style = styleConstructor(props.theme);
 
     this.state = {
-      currentMonth: props.current ? parseDate(props.current) : XDate()
+      currentDate: props.current ? parseDate(props.current) : XDate()
     };
 
     this.shouldComponentUpdate = shouldComponentUpdate;
   }
-  
+
   addMonth = count => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
+    this.updateMonth(this.state.currentDate.clone().addMonths(count, true));
+  };
+
   };
 
   updateMonth = (day, doNotTriggerListeners) => {
-    if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+    if (day.toString('yyyy MM') === this.state.currentDate.toString('yyyy MM')) {
       return;
     }
 
-    this.setState({currentMonth: day.clone()}, () => {
+    this.setState({currentDate: day.clone()}, () => {
         if (!doNotTriggerListeners) {
-          const currMont = this.state.currentMonth.clone();
+          const currMont = this.state.currentDate.clone();
           _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
           _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
         }
@@ -156,7 +158,7 @@ class Calendar extends Component {
       state = 'disabled';
     } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {
       state = 'disabled';
-    } else if (!dateutils.sameMonth(day, this.state.currentMonth)) {
+    } else if (!dateutils.sameMonth(day, this.state.currentDate)) {
       state = 'disabled';
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
@@ -208,7 +210,7 @@ class Calendar extends Component {
     const {hideExtraDays} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
-    if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
+    if (!dateutils.sameMonth(day, this.state.currentDate) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
     }
 
@@ -245,10 +247,10 @@ class Calendar extends Component {
   }
 
   renderMonth() {
-    const {currentMonth} = this.state;
+    const {currentDate} = this.state;
     const {firstDay, showSixWeeks, hideExtraDays} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
-    const days = dateutils.page(currentMonth, firstDay, shouldShowSixWeeks);
+    const days = dateutils.page(currentDate, firstDay, shouldShowSixWeeks);
     const weeks = [];
 
     while (days.length) {
@@ -277,7 +279,7 @@ class Calendar extends Component {
       testID: testID,
       style: headerStyle,
       ref: c => (this.header = c),
-      month: this.state.currentMonth,
+      month: this.state.currentDate,
       addMonth: this.addMonth,
       displayLoadingIndicator: indicator
     };
