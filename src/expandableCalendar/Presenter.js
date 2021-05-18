@@ -1,13 +1,14 @@
 import _ from 'lodash';
 import XDate from 'xdate';
-import dateutils from '../../dateutils';
-import {xdateToData} from '../../interface';
-import {DATE_FORMATS} from '../Consts';
+import dateutils from '../dateutils';
+import {xdateToData} from '../interface';
+import {DATE_FORMATS} from './Consts';
 
-const commons = require('../commons');
+const commons = require('./commons');
 const TOP_POSITION = 65;
 
 class Presenter {
+
   _isPastDate(date) {
     const today = XDate();
     const d = XDate(date);
@@ -29,19 +30,19 @@ class Presenter {
   }
 
   _getIconDown = () => {
-    return '../../img/down.png';
+    return require('../../img/down.png');
   };
 
   _getIconUp = () => {
-    return '../../img/up.png';
+    return require('../../img/up.png');
   };
 
   getButtonIcon = (date, showTodayButton = true) => {
     if (!showTodayButton) {
       return undefined;
     }
-    const iconPath = this._isPastDate(date) ? this._getIconDown() : this._getIconUp();
-    return require(iconPath);
+    const icon = this._isPastDate(date) ? this._getIconDown() : this._getIconUp();
+    return icon;
   };
 
   setDate = (props, date, newDate, updateState, updateSource) => {

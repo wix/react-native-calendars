@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import hoistNonReactStatic from 'hoist-non-react-statics';
-import CalendarContext from './Context/calendarContext';
+import CalendarContext from './calendarContext';
 
 function asCalendarConsumer(WrappedComponent) {
   class CalendarConsumer extends Component {

@@ -1,7 +1,7 @@
-const {default: Presenter} = require('./presenter');
+const {default: Presenter} = require('./Presenter');
 import XDate from 'xdate';
-import {UPDATE_SOURCES} from '../commons';
-import {DATE_FORMATS} from '../Consts';
+import {UPDATE_SOURCES} from './commons';
+import {DATE_FORMATS} from './Consts';
 
 describe('Context provider tests', () => {
   const makeUUT = () => {
