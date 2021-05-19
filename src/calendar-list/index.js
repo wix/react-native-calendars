@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, View} from 'react-native';
+
 import {extractComponentProps} from '../component-updater';
 import {xdateToData, parseDate} from '../interface';
 import dateutils from '../dateutils';

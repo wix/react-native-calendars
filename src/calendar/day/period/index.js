@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+
 import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View} from 'react-native';
+
 import {shouldUpdate} from '../../../component-updater';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
@@ -12,7 +14,7 @@ export default class PeriodDay extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']), //TODO: deprecate
+    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
     marking: PropTypes.any,
     theme: PropTypes.object,
     onPress: PropTypes.func,
@@ -189,16 +191,16 @@ export default class PeriodDay extends Component {
       );
     }
 
-    const {marking: {marked, dotColor, disableTouchEvent}, theme, accessibilityLabel, testID} = this.props;
+    const {theme, accessibilityLabel, testID} = this.props;
 
     return (
       <TouchableWithoutFeedback
         testID={testID}
         onPress={this.onPress}
         onLongPress={this.onLongPress}
-        disabled={disableTouchEvent}
+        disabled={marking?.disableTouchEvent}
         accessible
-        accessibilityRole={disableTouchEvent ? undefined : 'button'}
+        accessibilityRole={marking?.disableTouchEvent ? undefined : 'button'}
         accessibilityLabel={accessibilityLabel}
       >
         <View style={this.style.wrapper}>
@@ -207,8 +209,8 @@ export default class PeriodDay extends Component {
             <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
             <Dot
               theme={theme}
-              color={dotColor}
-              marked={marked}
+              color={marking?.dotColor}
+              marked={marking?.marked}
             />
           </View>
         </View>

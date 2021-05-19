@@ -1,17 +1,20 @@
 import _ from 'lodash';
+import memoize from 'memoize-one';
+import PropTypes from 'prop-types';
+import XDate from 'xdate';
+
 import React, {Component} from 'react';
 import {FlatList, View, Text} from 'react-native';
 import {Map} from 'immutable';
-import PropTypes from 'prop-types';
-import XDate from 'xdate';
-import memoize from 'memoize-one';
 
+import {extractComponentProps} from '../component-updater';
+import {weekDayNames, sameWeek} from '../dateutils';
+import {toMarkingFormat} from '../interface';
 import styleConstructor from './style';
+import asCalendarConsumer from './asCalendarConsumer';
 import CalendarList from '../calendar-list';
 import Week from '../expandableCalendar/week';
-import asCalendarConsumer from './asCalendarConsumer';
-import {weekDayNames, sameWeek} from '../dateutils';
-import {extractComponentProps} from '../component-updater';
+
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -92,23 +95,8 @@ class WeekCalendar extends Component {
     // leave the current date in the visible week as is
     const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
     const newDate = dd.addWeeks(weekIndex);
-    return newDate.toString('yyyy-MM-dd');
+    return toMarkingFormat(newDate);
   }
-
-  getMarkedDates = () => {
-    const {context, markedDates} = this.props;
-    if (markedDates) {
-      const marked = _.cloneDeep(markedDates);
-
-      if (marked[context.date]) {
-        marked[context.date].selected = true;
-      } else {
-        marked[context.date] = {selected: true};
-      }
-      return marked;
-    }
-    return {[context.date]: {selected: true}};
-  };
 
   getWeekStyle = memoize((width, style) => {
     return [{width}, style];
@@ -185,8 +173,10 @@ class WeekCalendar extends Component {
 
   renderItem = ({item}) => {
     const {style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
-    const isCurrentWeek = sameWeek(item, this.props.context.date, others.firstDay);
-    const fixedMarkedDates = isCurrentWeek ? this.getMarkedDates() : markedDates;
+
+    const {context, firstDay} = this.props;
+    const isCurrentWeek = sameWeek(item, context.date, firstDay);
+    const currentContext = isCurrentWeek ? context : undefined;
 
     return (
       <Week
@@ -194,8 +184,9 @@ class WeekCalendar extends Component {
         key={item}
         current={item}
         style={this.getWeekStyle(this.containerWidth, style)}
-        markedDates={fixedMarkedDates}
+        markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
+        context={currentContext}
       />
     );
   };
@@ -210,15 +201,32 @@ class WeekCalendar extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
+  renderWeekDaysNames = memoize((weekDaysNames) => {
+    return weekDaysNames.map((day, idx) => (
+      <Text
+        allowFontScaling={false}
+        key={idx}
+        style={this.style.dayHeader}
+        numberOfLines={1}
+        accessibilityLabel={''}
+        // accessible={false} // not working
+        // importantForAccessibility='no'
+      >
+        {day}
+      </Text>
+    ));
+  });
+
   render() {
     const {allowShadow, firstDay, hideDayNames, current, context} = this.props;
     const {items} = this.state;
-    let weekDaysNames = weekDayNames(firstDay);
+    const weekDaysNames = weekDayNames(firstDay);
     const extraData = Map({
       current,
       date: context.date,
       firstDay
     });
+    
     return (
       <View
         testID={this.props.testID}
@@ -227,19 +235,7 @@ class WeekCalendar extends Component {
         {!hideDayNames && (
           <View style={[this.style.week, this.style.weekCalendar]}>
             {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
-            {weekDaysNames.map((day, idx) => (
-              <Text
-                allowFontScaling={false}
-                key={idx}
-                style={this.style.dayHeader}
-                numberOfLines={1}
-                accessibilityLabel={''}
-                // accessible={false} // not working
-                // importantForAccessibility='no'
-              >
-                {day}
-              </Text>
-            ))}
+            {this.renderWeekDaysNames(weekDaysNames)}
           </View>
         )}
         <FlatList

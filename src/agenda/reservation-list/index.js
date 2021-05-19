@@ -1,10 +1,13 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+
 import React, {Component} from 'react';
 import {FlatList, ActivityIndicator, View} from 'react-native';
+
 import {extractComponentProps} from '../../component-updater';
 import dateutils from '../../dateutils';
+import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation from './reservation';
 
@@ -105,7 +108,7 @@ class ReservationList extends Component {
 
   getReservationsForDay(iterator, props) {
     const day = iterator.clone();
-    const res = props.reservations[day.toString('yyyy-MM-dd')];
+    const res = props.reservations[toMarkingFormat(day)];
     if (res && res.length) {
       return res.map((reservation, i) => {
         return {
@@ -218,9 +221,11 @@ class ReservationList extends Component {
     );
   };
 
+  keyExtractor = (item, index) => String(index);
+
   render() {
     const {reservations, selectedDay, theme, style} = this.props;
-    if (!reservations || !reservations[selectedDay.toString('yyyy-MM-dd')]) {
+    if (!reservations || !reservations[toMarkingFormat(selectedDay)]) {
       if (_.isFunction(this.props.renderEmptyData)) {
         return _.invoke(this.props, 'renderEmptyData');
       }
@@ -235,7 +240,7 @@ class ReservationList extends Component {
         contentContainerStyle={this.style.content}
         data={this.state.reservations}
         renderItem={this.renderRow}
-        keyExtractor={(item, index) => String(index)}
+        keyExtractor={this.keyExtractor}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
         onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture}

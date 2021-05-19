@@ -641,7 +641,7 @@
 ### Added
 - CalendarList - 'animateScroll' prop to allow animation on ato list scroll (i.e. on arrow press).
 
-## [1.1260.0] - 2021-5-2
+## [1.1260.0] - 2021-5-5
 
 ### Added
 - CalendarHeader - individual day header style overrides (PR #1465).
@@ -651,3 +651,8 @@
 ### Changed
 - Update gradle version to 6.3 (PR #1479).
 - Moving inline styles to StyleSheet.
+- CalendarList example screen - adding functionality.
+
+### Fix
+- WeekCalendar - avoid updating when staying on the same week (PR #1482).
+- ExpandableCalendar - fix the markedDates we pass to WeekCalendar (PR #1483).

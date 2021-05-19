@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
+
 import React, {PureComponent} from 'react';
 import {View} from 'react-native';
+
 import dateutils from '../dateutils';
-import {parseDate} from '../interface';
+import {parseDate, toMarkingFormat} from '../interface';
+import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
 import Calendar from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
-const EmptyArray = [];
 
 class Week extends PureComponent {
   static displayName = 'IGNORE';
@@ -31,44 +32,12 @@ class Week extends PureComponent {
     return dateutils.getWeekDates(date, this.props.firstDay);
   }
 
-  getDateMarking(day) {
-    const {markedDates} = this.props;
-    if (!markedDates) {
-      return false;
-    }
-
-    const dates = markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
-    if (dates.length || dates) {
-      return dates;
-    } else {
-      return false;
-    }
-  }
-
-  getState(day) {
-    const {current, disabledByDefault} = this.props;
-    const minDate = parseDate(this.props.minDate);
-    const maxDate = parseDate(this.props.maxDate);
-    let state = '';
-
-    if (disabledByDefault) {
-      state = 'disabled';
-    } else if (dateutils.isDateNotInTheRange(minDate, maxDate, day)) {
-      state = 'disabled';
-    } else if (!dateutils.sameMonth(day, parseDate(current))) {
-      state = 'disabled';
-    } else if (dateutils.sameDate(day, XDate())) {
-      state = 'today';
-    }
-    return state;
-  }
-
   // renderWeekNumber (weekNumber) {
-  //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</Day>;
+  //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
   // }
 
   renderDay(day, id) {
-    const {current, hideExtraDays} = this.props;
+    const {current, hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
     // hide extra days
@@ -83,8 +52,8 @@ class Week extends PureComponent {
         <Day
           {...dayProps}
           day={day}
-          state={this.getState(day)}
-          marking={this.getDateMarking(day)}
+          state={getState(day, parseDate(current), this.props)}
+          marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.props.onDayPress}
           onLongPress={this.props.onDayPress}
         />

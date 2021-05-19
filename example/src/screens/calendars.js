@@ -5,9 +5,10 @@ import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'reac
 import {Calendar} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
+const INITIAL_DATE = '2020-02-02';
 
 const CalendarsScreen = () => {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(INITIAL_DATE);
   const [showMarkedDatesExamples, setShowMarkedDatesExamples] = useState(false);
 
   const toggleSwitch = () => {
@@ -37,7 +38,7 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
-          current={'2020-02-02'}
+          current={INITIAL_DATE}
           style={styles.calendar}
           onDayPress={onDayPress}
           markedDates={{

@@ -162,7 +162,7 @@ class AgendaList extends Component {
 
     if (markToday) {
       const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
-      const isToday = dateutils.sameDate(XDate(), XDate(title));
+      const isToday = dateutils.isToday(XDate(title));
       sectionTitle = isToday ? `${todayString}, ${sectionTitle}` : sectionTitle;
     }
 
