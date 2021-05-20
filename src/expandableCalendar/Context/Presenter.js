@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import XDate from 'xdate';
-import dateutils from '../dateutils';
-import {xdateToData} from '../interface';
-import {DATE_FORMATS} from './Consts';
+import dateutils from '../../dateutils';
+import {xdateToData} from '../../interface';
+import {DATE_FORMATS} from '../Consts';
 
-const commons = require('./commons');
+const commons = require('../commons');
 const TOP_POSITION = 65;
 
 class Presenter {
@@ -29,11 +29,11 @@ class Presenter {
   }
 
   _getIconDown = () => {
-    return require('../img/down.png');
+    return require('../../img/down.png');
   };
 
   _getIconUp = () => {
-    return require('../img/up.png');
+    return require('../../img/up.png');
   };
 
   getButtonIcon = (date, showTodayButton = true) => {

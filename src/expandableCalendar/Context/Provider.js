@@ -2,15 +2,13 @@ import React, {Component} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-import styleConstructor from './style';
-import CalendarContext from './calendarContext';
-import {DATE_FORMATS} from './Consts';
+import styleConstructor from '../style';
+import CalendarContext from '.';
+import {DATE_FORMATS} from '../Consts';
 import Presenter from './Presenter';
 
-const commons = require('./commons');
+const commons = require('../commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
-const iconDown = require('../img/down.png');
-const iconUp = require('../img/up.png');
 const TOP_POSITION = 65;
 
 /**
@@ -93,34 +91,6 @@ class CalendarProvider extends Component {
 
     setDisabled(showTodayButton, disabled, this.state.disabled, updateState);
   };
-
-  getButtonIcon(date) {
-    if (!this.props.showTodayButton) {
-      return;
-    }
-    const isPastDate = this.isPastDate(date);
-    return isPastDate ? iconDown : iconUp;
-  }
-
-  isPastDate(date) {
-    const today = XDate();
-    const d = XDate(date);
-
-    if (today.getFullYear() > d.getFullYear()) {
-      return true;
-    }
-    if (today.getFullYear() === d.getFullYear()) {
-      if (today.getMonth() > d.getMonth()) {
-        return true;
-      }
-      if (today.getMonth() === d.getMonth()) {
-        if (today.getDate() > d.getDate()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
   animateTodayButton(date) {
     const {shouldAnimateTodayButton, getPositionAnimation} = this.presenter;
