@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import styleConstructor from '../style';
 import CalendarContext from '.';
-import {DATE_FORMATS} from '../Consts';
 import Presenter from './Presenter';
+import {toMarkingFormat} from '../../interface';
 
 const commons = require('../commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -42,8 +42,8 @@ class CalendarProvider extends Component {
     const {showTodayButton} = props;
 
     this.state = {
-      prevDate: this.props.date || XDate().toString(DATE_FORMATS.yyyy_MM_DD),
-      date: this.props.date || XDate().toString(DATE_FORMATS.yyyy_MM_DD),
+      prevDate: this.props.date || toMarkingFormat(XDate()),
+      date: this.props.date || toMarkingFormat(XDate()),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-props.todayBottomMargin || -TOP_POSITION),
       buttonIcon: this.presenter.getButtonIcon(props.date, showTodayButton),

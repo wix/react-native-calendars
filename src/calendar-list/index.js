@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, View} from 'react-native';
+
 import {extractComponentProps} from '../component-updater';
 import {xdateToData, parseDate} from '../interface';
 import dateutils from '../dateutils';
@@ -193,16 +195,15 @@ class CalendarList extends Component {
     }
 
     this.setState({currentMonth: day.clone()}, () => {
-        this.scrollToMonth(this.state.currentMonth);
+      this.scrollToMonth(this.state.currentMonth);
 
-        if (!doNotTriggerListeners) {
-          const currMont = this.state.currentMonth.clone();
+      if (!doNotTriggerListeners) {
+        const currMont = this.state.currentMonth.clone();
 
-          _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
-          _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
-        }
+        _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
+        _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
-    );
+    });
   }
 
   onViewableItemsChanged = ({viewableItems}) => {

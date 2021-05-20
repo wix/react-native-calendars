@@ -1,17 +1,18 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
+
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
-
 
 export default class BasicDay extends Component {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    state: PropTypes.oneOf(['disabled', 'today', '']), //TODO: deprecate
+    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
     /** The marking object */
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
@@ -30,21 +31,29 @@ export default class BasicDay extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.style = styleConstructor(props.theme);
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['children', 'state', 'markingType', 'marking', 'onPress', 'onLongPress', 'date']);
+    return shouldUpdate(this.props, nextProps, [
+      'children',
+      'state',
+      'markingType',
+      'marking',
+      'onPress',
+      'onLongPress',
+      'date'
+    ]);
   }
 
   onPress = () => {
     _.invoke(this.props, 'onPress', this.props.date);
-  }
-  
+  };
+
   onLongPress = () => {
     _.invoke(this.props, 'onLongPress', this.props.date);
-  }
+  };
 
   get marking() {
     let marking = this.props.marking || {};
@@ -69,6 +78,10 @@ export default class BasicDay extends Component {
     return disableTouch;
   }
 
+  isSelected() {
+    return this.marking.selected || this.props.state === 'selected';
+  }
+
   isDisabled() {
     return typeof this.marking.disabled !== 'undefined' ? this.marking.disabled : this.props.state === 'disabled';
   }
@@ -90,10 +103,10 @@ export default class BasicDay extends Component {
   }
 
   getContainerStyle() {
-    const {customStyles, selected, selectedColor} = this.props.marking;
+    const {customStyles, selectedColor} = this.marking;
     const style = [this.style.base];
 
-    if (selected) {
+    if (this.isSelected()) {
       style.push(this.style.selected);
       if (selectedColor) {
         style.push({backgroundColor: selectedColor});
@@ -101,7 +114,7 @@ export default class BasicDay extends Component {
     } else if (this.isToday()) {
       style.push(this.style.today);
     }
-    
+
     //Custom marking type
     if (this.isCustom() && customStyles && customStyles.container) {
       if (customStyles.container.borderRadius === undefined) {
@@ -114,10 +127,10 @@ export default class BasicDay extends Component {
   }
 
   getTextStyle() {
-    const {customStyles, selected, selectedTextColor} = this.props.marking;
+    const {customStyles, selectedTextColor} = this.marking;
     const style = [this.style.text];
 
-    if (selected) {
+    if (this.isSelected()) {
       style.push(this.style.selectedText);
       if (selectedTextColor) {
         style.push({color: selectedTextColor});
@@ -138,14 +151,14 @@ export default class BasicDay extends Component {
 
   renderMarking() {
     const {theme, markingType} = this.props;
-    const {selected, marked, dotColor, dots, periods} = this.marking;
+    const {marked, dotColor, dots, periods} = this.marking;
 
     return (
       <Marking
         type={markingType}
         theme={theme}
         marked={this.isMultiDot() ? true : marked}
-        selected={selected}
+        selected={this.isSelected()}
         disabled={this.isDisabled()}
         today={this.isToday()}
         dotColor={dotColor}

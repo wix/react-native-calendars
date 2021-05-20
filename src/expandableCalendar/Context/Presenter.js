@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import XDate from 'xdate';
 import dateutils from '../../dateutils';
-import {xdateToData} from '../../interface';
-import {DATE_FORMATS} from '../Consts';
+import {xdateToData, toMarkingFormat} from '../../interface';
 
 const commons = require('../commons');
 const TOP_POSITION = 65;
@@ -69,12 +68,12 @@ class Presenter {
   };
 
   _isToday = date => {
-    const today = XDate().toString(DATE_FORMATS.yyyy_MM_DD);
+    const today = toMarkingFormat(XDate());
     return today === date;
   };
 
   getTodayDate = () => {
-    return XDate().toString(DATE_FORMATS.yyyy_MM_DD);
+    return toMarkingFormat(XDate());
   };
 
   getPositionAnimation = (date, todayBottomMargin) => {

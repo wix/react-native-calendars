@@ -5,9 +5,10 @@ import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'reac
 import {Calendar} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
+const INITIAL_DATE = '2020-02-02';
 
 const CalendarsScreen = () => {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(INITIAL_DATE);
   const [showMarkedDatesExamples, setShowMarkedDatesExamples] = useState(false);
 
   const toggleSwitch = () => {
@@ -37,7 +38,7 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
-          current={'2020-02-02'}
+          current={INITIAL_DATE}
           style={styles.calendar}
           onDayPress={onDayPress}
           markedDates={{
@@ -353,14 +354,13 @@ const CalendarsScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
-          style={[
-            styles.calendar,
-            styles.customCalendar
-          ]}
+          style={[styles.calendar, styles.customCalendar]}
           dayComponent={({date, state}) => {
             return (
               <View>
-                <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>{date.day}</Text>
+                <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
+                  {date.day}
+                </Text>
               </View>
             );
           }}
@@ -372,11 +372,7 @@ const CalendarsScreen = () => {
   const renderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
       return (
-        <View
-          ref={ref}
-          {...props}
-          style={styles.customHeader}
-        >
+        <View ref={ref} {...props} style={styles.customHeader}>
           <Text>This is a custom header!</Text>
           <TouchableOpacity onPress={() => console.warn('Tapped!')}>
             <Text>Tap Me</Text>
@@ -390,10 +386,7 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with custom header component</Text>
         <Calendar
           testID={testIDs.calendars.LAST}
-          style={[
-            styles.calendar,
-            styles.customCalendar
-          ]}
+          style={[styles.calendar, styles.customCalendar]}
           customHeader={CustomHeader}
         />
       </Fragment>
@@ -461,12 +454,12 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   switchContainer: {
-    flexDirection: 'row', 
-    margin: 10, 
+    flexDirection: 'row',
+    margin: 10,
     alignItems: 'center'
   },
   switchText: {
-    margin: 10, 
+    margin: 10,
     fontSize: 16
   },
   text: {

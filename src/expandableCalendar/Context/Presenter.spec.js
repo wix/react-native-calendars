@@ -1,7 +1,7 @@
 const {default: Presenter} = require('./Presenter');
 import XDate from 'xdate';
 import {UPDATE_SOURCES} from '../commons';
-import {DATE_FORMATS} from '../Consts';
+import {toMarkingFormat} from '../../interface';
 
 describe('Context provider tests', () => {
   const makeUUT = () => {
@@ -16,7 +16,7 @@ describe('Context provider tests', () => {
 
   const today2 = new Date();
 
-  const todayDate = XDate().toString(DATE_FORMATS.yyyy_MM_DD);
+  const todayDate = toMarkingFormat(XDate());
 
   const updateSource = UPDATE_SOURCES.CALENDAR_INIT;
 
