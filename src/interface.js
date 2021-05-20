@@ -7,12 +7,12 @@ function padNumber(n) {
   return n;
 }
 
-function xdateToData(xdate) {
-  const dateString = xdate.toString('yyyy-MM-dd');
+function xdateToData(d) {
+  const dateString = toMarkingFormat(d);
   return {
-    year: xdate.getFullYear(),
-    month: xdate.getMonth() + 1,
-    day: xdate.getDate(),
+    year: d.getFullYear(),
+    month: d.getMonth() + 1,
+    day: d.getDate(),
     timestamp: XDate(dateString, true).getTime(),
     dateString: dateString
   };
@@ -21,23 +21,31 @@ function xdateToData(xdate) {
 function parseDate(d) {
   if (!d) {
     return;
-  } else if (d.timestamp) { // conventional data timestamp
+  } else if (d.timestamp) {
+    // conventional data timestamp
     return XDate(d.timestamp, true);
-  } else if (d instanceof XDate) { // xdate
-    return XDate(d.toString('yyyy-MM-dd'), true);
-  } else if (d.getTime) { // javascript date
-    const dateString = d.getFullYear() + '-' + padNumber((d.getMonth() + 1)) + '-' + padNumber(d.getDate());
+  } else if (d instanceof XDate) {
+    // xdate
+    return XDate(toMarkingFormat(d), true);
+  } else if (d.getTime) {
+    // javascript date
+    const dateString = d.getFullYear() + '-' + padNumber(d.getMonth() + 1) + '-' + padNumber(d.getDate());
     return XDate(dateString, true);
   } else if (d.year) {
     const dateString = d.year + '-' + padNumber(d.month) + '-' + padNumber(d.day);
     return XDate(dateString, true);
-  } else if (d) { // timestamp number or date formatted as string
+  } else if (d) {
+    // timestamp number or date formatted as string
     return XDate(d, true);
   }
 }
 
+function toMarkingFormat(d) {
+  return d instanceof XDate && d.toString('yyyy-MM-dd');
+}
+
 module.exports = {
   xdateToData,
-  parseDate
+  parseDate,
+  toMarkingFormat
 };
-

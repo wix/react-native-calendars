@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
+import memoize from 'memoize-one';
+
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
+
 import {extractComponentProps} from '../component-updater';
 import Calendar from '../calendar';
 import styleConstructor from './style';
@@ -65,6 +68,10 @@ class CalendarListItem extends Component {
     }
   };
 
+  getCalendarStyle = memoize((width, height, style) => {
+    return [{width, height}, this.style.calendar, style];
+  });
+
   render() {
     const {
       item,
@@ -75,9 +82,11 @@ class CalendarListItem extends Component {
       style,
       headerStyle,
       onPressArrowLeft,
-      onPressArrowRight
+      onPressArrowRight,
+      context
     } = this.props;
     const calendarProps = extractComponentProps(Calendar, this.props);
+    const calStyle = this.getCalendarStyle(calendarWidth, calendarHeight, style);
 
     if (item.getTime) {
       return (
@@ -85,11 +94,12 @@ class CalendarListItem extends Component {
           {...calendarProps}
           testID={testID}
           current={item}
-          style={[{height: calendarHeight, width: calendarWidth}, this.style.calendar, style]}
+          style={calStyle}
           headerStyle={horizontal ? headerStyle : undefined}
           disableMonthChange
           onPressArrowLeft={horizontal ? this.onPressArrowLeft : onPressArrowLeft}
           onPressArrowRight={horizontal ? this.onPressArrowRight : onPressArrowRight}
+          context={context}
         />
       );
     } else {

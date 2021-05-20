@@ -1,34 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {CalendarList} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
+const initialDate = '2020-05-16';
 
 const HorizontalCalendarList = () => {
-  const [selectedDate, setSelectedDate] = React.useState('2020-05-16');
-  const [markedDates, setMarkedDates] = React.useState({});
-
-  const setNewDaySelected = date => {
-    const markedDate = Object.assign({});
-    markedDate[date] = {
+  const [selected, setSelected] = useState(initialDate);
+  const markedDates = {
+    [selected]: {
       selected: true,
       selectedColor: '#DFA460'
-    };
-    setSelectedDate(date);
-    setMarkedDates(markedDate);
+    }
+  };
+
+  const onDayPress = day => {
+    setSelected(day.dateString);
   };
 
   return (
     <CalendarList
       testID={testIDs.horizontalList.CONTAINER}
       markedDates={markedDates}
-      current={selectedDate}
+      current={initialDate}
       pastScrollRange={24}
       futureScrollRange={24}
       horizontal
       pagingEnabled
-      onDayPress={day => {
-        setNewDaySelected(day.dateString);
-      }}
+      onDayPress={onDayPress}
     />
   );
 };
