@@ -8,7 +8,6 @@ const commons = require('./commons');
 const TOP_POSITION = 65;
 
 class Presenter {
-
   _isPastDate(date) {
     const today = XDate();
     const d = XDate(date);
@@ -30,11 +29,11 @@ class Presenter {
   }
 
   _getIconDown = () => {
-    return require('../../img/down.png');
+    return require('../img/down.png');
   };
 
   _getIconUp = () => {
-    return require('../../img/up.png');
+    return require('../img/up.png');
   };
 
   getButtonIcon = (date, showTodayButton = true) => {
