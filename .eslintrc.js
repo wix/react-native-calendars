@@ -18,8 +18,9 @@ module.exports = {
     },
     sourceType: 'module'
   },
-  plugins: ['react', 'jest'],
+  plugins: ['react', 'react-native', 'jest'],
   rules: {
+    'react-native/no-inline-styles': 1,
     'linebreak-style': ['error', 'unix'],
     'no-unused-vars': 2,
     'object-curly-spacing': ['error', 'never'],

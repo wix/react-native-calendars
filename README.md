@@ -369,6 +369,28 @@ theme={{
 }}
 ```
 
+#### Individual day header styling
+
+Using the above advanced styling, it is possible to set styles independently for each day's header. If we wanted to make the header for Sunday red, and Saturday blue, we could write something like the following:
+
+```javascript
+theme={{
+  'stylesheet.calendar.header': {
+    dayTextAtIndex0: {
+      color: 'red'
+    },
+    dayTextAtIndex6: {
+      color: 'blue'
+    }
+  }
+}}
+```
+
+<kbd>
+  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/day-header-style.png?raw=true">
+</kbd>
+<p></p>
+
 **Disclaimer**: Issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
 
 #### Overriding day component

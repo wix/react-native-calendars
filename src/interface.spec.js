@@ -65,4 +65,12 @@ describe('calendar interface', () => {
       });
     });
   });
+
+  describe('toMarkingFormat', () => {
+    it('should convert date to yyyy-MM-dd format string', () => {
+      const time = 1479772800000;
+      const testDate = XDate(time);
+      expect(iface.toMarkingFormat(testDate)).toEqual(testDate.toString('yyyy-MM-dd'));
+    });
+  });
 });
