@@ -641,7 +641,7 @@
 ### Added
 - CalendarList - 'animateScroll' prop to allow animation on ato list scroll (i.e. on arrow press).
 
-## [1.1260.0] - 2021-5-5
+## [1.1260.0] - 2021-5-20
 
 ### Added
 - CalendarHeader - individual day header style overrides (PR #1465).
@@ -656,3 +656,11 @@
 ### Fix
 - WeekCalendar - avoid updating when staying on the same week (PR #1482).
 - ExpandableCalendar - fix the markedDates we pass to WeekCalendar (PR #1483).
+
+### Performance
+- Remove inline style.
+- Remove Remove object creation on passed props.
+- Improve examples.
+- Memoize methods and styles.
+- Additional tools - toMarkingFormat, isToday.
+- ExpandableCalendar - setting selected date using 'state' prop instead of 'markedDates'.
