@@ -10,7 +10,6 @@ import {xdateToData, toMarkingFormat} from '../interface';
 import styleConstructor from './style';
 import CalendarContext from './calendarContext';
 
-
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const iconDown = require('../img/down.png');
