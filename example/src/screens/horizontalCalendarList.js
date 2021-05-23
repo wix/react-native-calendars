@@ -4,7 +4,6 @@ import {CalendarList} from 'react-native-calendars';
 const testIDs = require('../testIDs');
 const initialDate = '2020-05-16';
 
-
 const HorizontalCalendarList = () => {
   const [selected, setSelected] = useState(initialDate);
   const markedDates = {
@@ -13,7 +12,7 @@ const HorizontalCalendarList = () => {
       selectedColor: '#DFA460'
     }
   };
-  
+
   const onDayPress = day => {
     setSelected(day.dateString);
   };
