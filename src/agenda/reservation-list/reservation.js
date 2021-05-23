@@ -60,7 +60,7 @@ class Reservation extends Component {
     }
 
     const today = dateutils.isToday(date) ? this.style.today : undefined;
-    
+
     if (date) {
       return (
         <View style={this.style.day} testID={RESERVATION_DATE}>
