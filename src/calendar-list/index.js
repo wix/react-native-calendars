@@ -195,16 +195,15 @@ class CalendarList extends Component {
     }
 
     this.setState({currentMonth: day.clone()}, () => {
-        this.scrollToMonth(this.state.currentMonth);
+      this.scrollToMonth(this.state.currentMonth);
 
-        if (!doNotTriggerListeners) {
-          const currMont = this.state.currentMonth.clone();
+      if (!doNotTriggerListeners) {
+        const currMont = this.state.currentMonth.clone();
 
-          _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
-          _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
-        }
+        _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
+        _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
-    );
+    });
   }
 
   onViewableItemsChanged = ({viewableItems}) => {
