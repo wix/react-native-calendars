@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {Platform, Alert, StyleSheet, View, Text, TouchableOpacity, Button} from 'react-native';
+import {Platform, StyleSheet, View, Text, TouchableOpacity, Button} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
@@ -145,11 +145,11 @@ export default class ExpandableCalendarScreen extends Component {
   };
 
   buttonPressed() {
-    Alert.alert('show more');
+    console.warn('show more');
   }
 
   itemPressed(id) {
-    Alert.alert(id);
+    console.warn(id);
   }
 
   renderEmptyItem() {
@@ -214,7 +214,6 @@ export default class ExpandableCalendarScreen extends Component {
         )}
         <AgendaList
           sections={ITEMS}
-          extraData={this.state}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
         />
