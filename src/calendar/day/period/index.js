@@ -9,7 +9,6 @@ import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 import Dot from '../dot';
 
-
 export default class PeriodDay extends Component {
   static displayName = 'IGNORE';
 
@@ -27,17 +26,17 @@ export default class PeriodDay extends Component {
 
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
-    
+
     this.markingStyle = this.getDrawingStyle(props.marking || []);
   }
 
   onPress = () => {
     this.props.onPress(this.props.date);
-  }
+  };
 
   onLongPress = () => {
     this.props.onLongPress(this.props.date);
-  }
+  };
 
   shouldComponentUpdate(nextProps) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marking);
@@ -51,7 +50,7 @@ export default class PeriodDay extends Component {
 
   getDrawingStyle(marking) {
     const defaultStyle = {textStyle: {}, containerStyle: {}};
-    
+
     if (!marking) {
       return defaultStyle;
     }
@@ -62,9 +61,9 @@ export default class PeriodDay extends Component {
       defaultStyle.textStyle.color = this.style.selectedText.color;
     }
 
-    const resultStyle = ([marking]).reduce((prev, next) => {
-      
-      if (next.quickAction) { //???
+    const resultStyle = [marking].reduce((prev, next) => {
+      if (next.quickAction) {
+        //???
         if (next.first || next.last) {
           prev.containerStyle = this.style.firstQuickAction;
           prev.textStyle = this.style.firstQuickActionText;
@@ -83,10 +82,11 @@ export default class PeriodDay extends Component {
         return prev;
       }
 
-      if (next.status === 'NotAvailable') { //???
+      if (next.status === 'NotAvailable') {
+        //???
         prev.textStyle = this.style.naText;
       }
-      
+
       const color = next.color;
       if (next.startingDay) {
         prev.startingDay = {color};
@@ -185,8 +185,8 @@ export default class PeriodDay extends Component {
 
       fillers = (
         <View style={[this.style.fillers, fillerStyle]}>
-          <View style={[this.style.leftFiller, leftFillerStyle]}/>
-          <View style={[this.style.rightFiller, rightFillerStyle]}/>
+          <View style={[this.style.leftFiller, leftFillerStyle]} />
+          <View style={[this.style.rightFiller, rightFillerStyle]} />
         </View>
       );
     }
@@ -206,12 +206,10 @@ export default class PeriodDay extends Component {
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
-            <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
-            <Dot
-              theme={theme}
-              color={marking?.dotColor}
-              marked={marking?.marked}
-            />
+            <Text allowFontScaling={false} style={textStyle}>
+              {String(this.props.children)}
+            </Text>
+            <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked} />
           </View>
         </View>
       </TouchableWithoutFeedback>

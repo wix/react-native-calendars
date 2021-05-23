@@ -8,7 +8,6 @@ import {extractComponentProps} from '../component-updater';
 import Calendar from '../calendar';
 import styleConstructor from './style';
 
-
 class CalendarListItem extends Component {
   static displayName = 'IGNORE';
 

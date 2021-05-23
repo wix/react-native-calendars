@@ -12,7 +12,6 @@ import Calendar from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
-
 class Week extends PureComponent {
   static displayName = 'IGNORE';
 

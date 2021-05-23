@@ -16,7 +16,6 @@ import asCalendarConsumer from './asCalendarConsumer';
 import WeekCalendar from './weekCalendar';
 import Week from './week';
 
-
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const POSITIONS = {
@@ -381,7 +380,7 @@ class ExpandableCalendar extends Component {
   };
 
   /** Renders */
-  getWeekDaysStyle = memoize((calendarStyle) => {
+  getWeekDaysStyle = memoize(calendarStyle => {
     return [
       this.style.weekDayNames,
       {
@@ -401,7 +400,7 @@ class ExpandableCalendar extends Component {
         ))}
       </View>
     );
-  })
+  });
 
   renderHeader() {
     const monthYear = XDate(this.props.context.date).toString('MMMM yyyy');
@@ -487,17 +486,13 @@ class ExpandableCalendar extends Component {
             renderArrow={this.renderArrow}
           />
         ) : (
-          <Animated.View
-            ref={e => this.wrapper = e}
-            style={{height: deltaY}}
-            {...this.panResponder.panHandlers}
-          >
+          <Animated.View ref={e => (this.wrapper = e)} style={{height: deltaY}} {...this.panResponder.panHandlers}>
             <CalendarList
               testID="calendar"
               horizontal={horizontal}
               {...others}
               theme={themeObject}
-              ref={r => this.calendar = r}
+              ref={r => (this.calendar = r)}
               current={this.initialDate}
               onDayPress={this.onDayPress}
               onVisibleMonthsChange={this.onVisibleMonthsChange}

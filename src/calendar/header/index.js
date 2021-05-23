@@ -17,7 +17,6 @@ import {
 } from '../../testIDs';
 import styleConstructor from './style';
 
-
 class CalendarHeader extends Component {
   static displayName = 'IGNORE';
 
@@ -105,7 +104,7 @@ class CalendarHeader extends Component {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(this.addMonth, month);
     }
-    
+
     return this.addMonth();
   };
 
