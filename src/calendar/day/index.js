@@ -12,7 +12,6 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay from './basic';
 import PeriodDay from './period';
 
-
 const basicDayProps = _.omit(BasicDay.propTypes, 'date');
 
 export default class Day extends Component {
@@ -27,17 +26,25 @@ export default class Day extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['day', 'dayComponent', 'state', 'markingType', 'marking', 'onPress', 'onLongPress']);
+    return shouldUpdate(this.props, nextProps, [
+      'day',
+      'dayComponent',
+      'state',
+      'markingType',
+      'marking',
+      'onPress',
+      'onLongPress'
+    ]);
   }
 
   getMarkingLabel(marking) {
     let label = '';
-    
+
     if (marking) {
       if (marking.accessibilityLabel) {
         return marking.accessibilityLabel;
       }
-  
+
       if (marking.selected) {
         label += 'selected ';
         if (!marking.marked) {
@@ -91,12 +98,12 @@ export default class Day extends Component {
 
     return (
       <Component
-          {...dayProps}
-          date={date}
-          testID={`${SELECT_DATE_SLOT}-${date.dateString}`}
-          accessibilityLabel={accessibilityLabel}
-        >
-          {date ? day.getDate() : day}
+        {...dayProps}
+        date={date}
+        testID={`${SELECT_DATE_SLOT}-${date.dateString}`}
+        accessibilityLabel={accessibilityLabel}
+      >
+        {date ? day.getDate() : day}
       </Component>
     );
   }
