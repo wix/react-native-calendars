@@ -673,5 +673,4 @@
 ## [1.1262.0] - 2021-5-23
 
 ### Changed
-- AgendaList demo - replace alerts with console.
 - AgendaList - Remove arrow function from `onScrollToIndexFailed` and omit `context` passed to SectionList.
