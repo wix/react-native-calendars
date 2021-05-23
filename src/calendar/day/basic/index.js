@@ -8,7 +8,6 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
 
-
 export default class BasicDay extends Component {
   static displayName = 'IGNORE';
 
@@ -32,21 +31,29 @@ export default class BasicDay extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.style = styleConstructor(props.theme);
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldUpdate(this.props, nextProps, ['children', 'state', 'markingType', 'marking', 'onPress', 'onLongPress', 'date']);
+    return shouldUpdate(this.props, nextProps, [
+      'children',
+      'state',
+      'markingType',
+      'marking',
+      'onPress',
+      'onLongPress',
+      'date'
+    ]);
   }
 
   onPress = () => {
     _.invoke(this.props, 'onPress', this.props.date);
-  }
-  
+  };
+
   onLongPress = () => {
     _.invoke(this.props, 'onLongPress', this.props.date);
-  }
+  };
 
   get marking() {
     let marking = this.props.marking || {};
@@ -107,7 +114,7 @@ export default class BasicDay extends Component {
     } else if (this.isToday()) {
       style.push(this.style.today);
     }
-    
+
     //Custom marking type
     if (this.isCustom() && customStyles && customStyles.container) {
       if (customStyles.container.borderRadius === undefined) {

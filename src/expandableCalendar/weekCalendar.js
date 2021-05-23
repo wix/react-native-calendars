@@ -15,7 +15,6 @@ import asCalendarConsumer from './asCalendarConsumer';
 import CalendarList from '../calendar-list';
 import Week from '../expandableCalendar/week';
 
-
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const NUMBER_OF_PAGES = 2; // must be a positive number
@@ -201,7 +200,7 @@ class WeekCalendar extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
-  renderWeekDaysNames = memoize((weekDaysNames) => {
+  renderWeekDaysNames = memoize(weekDaysNames => {
     return weekDaysNames.map((day, idx) => (
       <Text
         allowFontScaling={false}
@@ -226,7 +225,7 @@ class WeekCalendar extends Component {
       date: context.date,
       firstDay
     });
-    
+
     return (
       <View
         testID={this.props.testID}

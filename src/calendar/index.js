@@ -18,7 +18,6 @@ import CalendarHeader from './header';
 import BasicDay from './day/basic';
 import Day from './day/index';
 
-
 /**
  * @description: Calendar component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
@@ -87,7 +86,7 @@ class Calendar extends Component {
 
     // this.shouldComponentUpdate = shouldComponentUpdate;
   }
-  
+
   addMonth = count => {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   };
@@ -98,13 +97,12 @@ class Calendar extends Component {
     }
 
     this.setState({currentMonth: day.clone()}, () => {
-        if (!doNotTriggerListeners) {
-          const currMont = this.state.currentMonth.clone();
-          _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
-          _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
-        }
+      if (!doNotTriggerListeners) {
+        const currMont = this.state.currentMonth.clone();
+        _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
+        _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
-    );
+    });
   };
 
   handleDayInteraction(date, interaction) {
@@ -159,7 +157,7 @@ class Calendar extends Component {
     this.header.onPressLeft();
   };
 
-  renderWeekNumber = memoize((weekNumber) => {
+  renderWeekNumber = memoize(weekNumber => {
     return (
       <View style={this.style.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
@@ -246,11 +244,11 @@ class Calendar extends Component {
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
 
     return (
-      <HeaderComponent 
+      <HeaderComponent
         {...headerProps}
         testID={testID}
         style={headerStyle}
-        ref={r => this.header = r}
+        ref={r => (this.header = r)}
         month={this.state.currentMonth}
         addMonth={this.addMonth}
         displayLoadingIndicator={indicator}

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
-import {Platform, Alert, StyleSheet, View, Text, TouchableOpacity, Button} from 'react-native';
+import {Platform, StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
@@ -133,7 +133,7 @@ export default class ExpandableCalendarScreen extends Component {
   theme = getTheme();
   todayBtnTheme = {
     todayButtonTextColor: themeColor
-  }
+  };
 
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
@@ -191,7 +191,7 @@ export default class ExpandableCalendarScreen extends Component {
         // todayBottomMargin={16}
       >
         {this.props.weekView ? (
-          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked}/>
+          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked} />
         ) : (
           <ExpandableCalendar
             testID={testIDs.expandableCalendar.CONTAINER}
@@ -214,7 +214,6 @@ export default class ExpandableCalendarScreen extends Component {
         )}
         <AgendaList
           sections={ITEMS}
-          extraData={this.state}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
         />

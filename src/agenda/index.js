@@ -15,7 +15,6 @@ import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import ReservationList from './reservation-list';
 
-
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
@@ -47,8 +46,8 @@ export default class AgendaView extends Component {
     /** callback that gets called when day changes while scrolling agenda list */
     onDaychange: PropTypes.func, //TODO: Should be renamed 'onDayChange'
     /** specify how agenda knob should look like */
-    renderKnob: PropTypes.func, 
-    /** initially selected day */ 
+    renderKnob: PropTypes.func,
+    /** initially selected day */
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay'
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool
@@ -333,7 +332,7 @@ export default class AgendaView extends Component {
     return knob;
   }
 
-  renderWeekDaysNames = memoize((weekDaysNames) => {    
+  renderWeekDaysNames = memoize(weekDaysNames => {
     return weekDaysNames.map((day, index) => (
       <Text allowFontScaling={false} key={day + index} style={this.style.weekday} numberOfLines={1}>
         {day}
@@ -342,7 +341,7 @@ export default class AgendaView extends Component {
   });
 
   renderWeekNumbersSpace = () => {
-    return this.props.showWeekNumbers && <View allowFontScaling={false} style={this.style.weekday} numberOfLines={1}/>;
+    return this.props.showWeekNumbers && <View allowFontScaling={false} style={this.style.weekday} numberOfLines={1} />;
   };
 
   render() {
