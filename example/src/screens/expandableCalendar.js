@@ -133,7 +133,7 @@ export default class ExpandableCalendarScreen extends Component {
   theme = getTheme();
   todayBtnTheme = {
     todayButtonTextColor: themeColor
-  }
+  };
 
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
@@ -191,7 +191,7 @@ export default class ExpandableCalendarScreen extends Component {
         // todayBottomMargin={16}
       >
         {this.props.weekView ? (
-          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked}/>
+          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked} />
         ) : (
           <ExpandableCalendar
             testID={testIDs.expandableCalendar.CONTAINER}
