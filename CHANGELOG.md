@@ -680,3 +680,6 @@
 ## Changed
 - Files formatting (PR #1513).
 - ExpandableCalendar demo - improving 'renderItem' example.
+
+## Fixed
+- Day - passed props for custom 'dayComponent'.
