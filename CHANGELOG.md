@@ -673,4 +673,10 @@
 ## [1.1262.0] - 2021-5-23
 
 ### Changed
-- AgendaList - Remove arrow function from `onScrollToIndexFailed` and omit `context` passed to SectionList.
+- AgendaList - Remove arrow function from 'onScrollToIndexFailed' and omit 'context' passed to SectionList.
+
+## [1.1263.0] - 2021-x-x
+
+## Changed
+- Files formatting (PR #1513).
+- ExpandableCalendar demo - improving 'renderItem' example.
