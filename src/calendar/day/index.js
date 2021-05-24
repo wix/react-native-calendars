@@ -5,7 +5,7 @@ import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
 
-import {shouldUpdate, extractComponentProps} from '../../component-updater';
+import {shouldUpdate} from '../../component-updater';
 import dateutils from '../../dateutils';
 import {xdateToData} from '../../interface';
 import {SELECT_DATE_SLOT} from '../../testIDs';
