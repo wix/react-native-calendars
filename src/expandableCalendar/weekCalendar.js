@@ -15,7 +15,6 @@ import asCalendarConsumer from './asCalendarConsumer';
 import CalendarList from '../calendar-list';
 import Week from '../expandableCalendar/week';
 
-
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const NUMBER_OF_PAGES = 2; // must be a positive number
@@ -65,8 +64,9 @@ class WeekCalendar extends Component {
     const isSameWeek = sameWeek(date, prevDate, firstDay);
 
     if (date !== prevProps.context.date && updateSource !== UPDATE_SOURCES.WEEK_SCROLL && !isSameWeek) {
-      this.setState({items: this.getDatesArray()});
-      this.list.current.scrollToIndex({animated: false, index: NUMBER_OF_PAGES});
+      // this.setState({items: this.getDatesArray()});
+      this.list.current.scrollToIndex({animated: false, index: this.page + (date > prevDate ? 1 : -1)});
+      this.triggerOnMomentum = true;
     }
   }
 
@@ -125,6 +125,8 @@ class WeekCalendar extends Component {
 
     const newPage = Math.round(x / this.containerWidth);
 
+    // console.warn('ethan - newPage', newPage)
+
     if (this.page !== newPage) {
       const {items} = this.state;
       this.page = newPage;
@@ -143,9 +145,12 @@ class WeekCalendar extends Component {
         this.setState({items: [...items]});
       }
     }
+
+    this.triggerOnMomentum && this.onMomentumScrollEnd();
   };
 
   onMomentumScrollEnd = () => {
+    this.triggerOnMomentum = false;
     const {items} = this.state;
     const isFirstPage = this.page === 0;
     const isLastPage = this.page === items.length - 1;
@@ -201,7 +206,7 @@ class WeekCalendar extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
-  renderWeekDaysNames = memoize((weekDaysNames) => {
+  renderWeekDaysNames = memoize(weekDaysNames => {
     return weekDaysNames.map((day, idx) => (
       <Text
         allowFontScaling={false}
@@ -226,7 +231,7 @@ class WeekCalendar extends Component {
       date: context.date,
       firstDay
     });
-    
+
     return (
       <View
         testID={this.props.testID}
