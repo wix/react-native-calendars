@@ -65,6 +65,8 @@ class Calendar extends Component {
     enableSwipeMonths: PropTypes.bool,
     /** Disable days by default. Default = false */
     disabledByDefault: PropTypes.bool,
+    /** Disable all touch events for disabled days. Default = false */
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Allow rendering of a totally custom header */
