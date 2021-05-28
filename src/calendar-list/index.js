@@ -60,7 +60,7 @@ class CalendarList extends Component {
     onEndReachedThreshold: PropTypes.number,
     /** Called once when the scroll position gets within onEndReachedThreshold */
     onEndReached: PropTypes.func,
-    /** To put directly in flatList */
+    /** Allows FlatList to be displayed on scrollView */
     nestedScrollEnabled: PropTypes.bool
   };
 
