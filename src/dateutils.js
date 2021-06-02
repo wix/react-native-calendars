@@ -22,6 +22,10 @@ function sameWeek(d1, d2, firstDayOfWeek) {
   return weekDates?.includes(d2);
 }
 
+function isToday(day) {
+  return sameDate(XDate(day), XDate.today());
+}
+
 function isGTE(a, b) {
   return b.diffDays(a) > -1;
 }
@@ -146,6 +150,7 @@ module.exports = {
   month,
   page,
   fromTo,
+  isToday,
   isLTE,
   isGTE,
   isDateNotInTheRange,

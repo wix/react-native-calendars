@@ -641,7 +641,13 @@
 ### Added
 - CalendarList - 'animateScroll' prop to allow animation on ato list scroll (i.e. on arrow press).
 
-## [1.1260.0] - 2021-5-2
+
+## [1.1260.0] - 2021-5-5
+
+### Added
+- Export CalendarContext.
+
+## [1.1261.0] - 2021-5-20
 
 ### Added
 - CalendarHeader - individual day header style overrides (PR #1465).
@@ -650,4 +656,30 @@
 
 ### Changed
 - Update gradle version to 6.3 (PR #1479).
-- Moving inline styles to StyleSheet.
+- CalendarList example screen - adding functionality.
+
+### Fix
+- WeekCalendar - avoid updating when staying on the same week (PR #1482).
+- ExpandableCalendar - fix the markedDates we pass to WeekCalendar (PR #1483).
+
+### Performance
+- Remove inline style.
+- Remove object creation on passed props.
+- Improve examples.
+- Memoize methods and styles.
+- Additional tools - 'toMarkingFormat', 'isToday'.
+- ExpandableCalendar - setting selected date using 'state' prop instead of 'markedDates'.
+
+## [1.1262.0] - 2021-5-23
+
+### Changed
+- AgendaList - Remove arrow function from 'onScrollToIndexFailed' and omit 'context' passed to SectionList.
+
+## [1.1263.0] - 2021-x-x
+
+## Changed
+- Files formatting (PR #1513).
+- ExpandableCalendar demo - improving 'renderItem' example.
+
+## Fixed
+- Day - passed props for custom 'dayComponent'.

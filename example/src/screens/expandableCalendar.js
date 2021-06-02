@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import React, {Component} from 'react';
-import {Platform, Alert, StyleSheet, View, Text, TouchableOpacity, Button} from 'react-native';
+import React, {Component, useCallback} from 'react';
+import {Platform, StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 
 const testIDs = require('../testIDs');
@@ -76,7 +76,65 @@ const ITEMS = [
   {title: dates[10], data: [{hour: '12am', duration: '1h', title: 'Last Yoga'}]}
 ];
 
+function getMarkedDates(items) {
+  const marked = {};
+  items.forEach(item => {
+    // NOTE: only mark dates with data
+    if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
+      marked[item.title] = {marked: true};
+    } else {
+      marked[item.title] = {disabled: true};
+    }
+  });
+  return marked;
+}
+
+function getTheme() {
+  const disabledColor = 'grey';
+
+  return {
+    // arrows
+    arrowColor: 'black',
+    arrowStyle: {padding: 0},
+    // month
+    monthTextColor: 'black',
+    textMonthFontSize: 16,
+    textMonthFontFamily: 'HelveticaNeue',
+    textMonthFontWeight: 'bold',
+    // day names
+    textSectionTitleColor: 'black',
+    textDayHeaderFontSize: 12,
+    textDayHeaderFontFamily: 'HelveticaNeue',
+    textDayHeaderFontWeight: 'normal',
+    // dates
+    dayTextColor: themeColor,
+    textDayFontSize: 18,
+    textDayFontFamily: 'HelveticaNeue',
+    textDayFontWeight: '500',
+    textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
+    // selected date
+    selectedDayBackgroundColor: themeColor,
+    selectedDayTextColor: 'white',
+    // disabled date
+    textDisabledColor: disabledColor,
+    // dot (marked date)
+    dotColor: themeColor,
+    selectedDotColor: 'white',
+    disabledDotColor: disabledColor,
+    dotStyle: {marginTop: -2}
+  };
+}
+
+const leftArrowIcon = require('../img/previous.png');
+const rightArrowIcon = require('../img/next.png');
+
 export default class ExpandableCalendarScreen extends Component {
+  marked = getMarkedDates(ITEMS);
+  theme = getTheme();
+  todayBtnTheme = {
+    todayButtonTextColor: themeColor
+  };
+
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
@@ -86,88 +144,8 @@ export default class ExpandableCalendarScreen extends Component {
     // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
   };
 
-  buttonPressed() {
-    Alert.alert('show more');
-  }
-
-  itemPressed(id) {
-    Alert.alert(id);
-  }
-
-  renderEmptyItem() {
-    return (
-      <View style={styles.emptyItem}>
-        <Text style={styles.emptyItemText}>No Events Planned</Text>
-      </View>
-    );
-  }
-
   renderItem = ({item}) => {
-    if (_.isEmpty(item)) {
-      return this.renderEmptyItem();
-    }
-
-    return (
-      <TouchableOpacity onPress={() => this.itemPressed(item.title)} style={styles.item} testID={testIDs.agenda.ITEM}>
-        <View>
-          <Text style={styles.itemHourText}>{item.hour}</Text>
-          <Text style={styles.itemDurationText}>{item.duration}</Text>
-        </View>
-        <Text style={styles.itemTitleText}>{item.title}</Text>
-        <View style={styles.itemButtonContainer}>
-          <Button color={'grey'} title={'Info'} onPress={this.buttonPressed} />
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  getMarkedDates = () => {
-    const marked = {};
-    ITEMS.forEach(item => {
-      // NOTE: only mark dates with data
-      if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
-        marked[item.title] = {marked: true};
-      } else {
-        marked[item.title] = {disabled: true};
-      }
-    });
-    return marked;
-  };
-
-  getTheme = () => {
-    const disabledColor = 'grey';
-
-    return {
-      // arrows
-      arrowColor: 'black',
-      arrowStyle: {padding: 0},
-      // month
-      monthTextColor: 'black',
-      textMonthFontSize: 16,
-      textMonthFontFamily: 'HelveticaNeue',
-      textMonthFontWeight: 'bold',
-      // day names
-      textSectionTitleColor: 'black',
-      textDayHeaderFontSize: 12,
-      textDayHeaderFontFamily: 'HelveticaNeue',
-      textDayHeaderFontWeight: 'normal',
-      // dates
-      dayTextColor: themeColor,
-      textDayFontSize: 18,
-      textDayFontFamily: 'HelveticaNeue',
-      textDayFontWeight: '500',
-      textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
-      // selected date
-      selectedDayBackgroundColor: themeColor,
-      selectedDayTextColor: 'white',
-      // disabled date
-      textDisabledColor: disabledColor,
-      // dot (marked date)
-      dotColor: themeColor,
-      selectedDotColor: 'white',
-      disabledDotColor: disabledColor,
-      dotStyle: {marginTop: -2}
-    };
+    return <AgendaItem item={item}/>;
   };
 
   render() {
@@ -178,13 +156,11 @@ export default class ExpandableCalendarScreen extends Component {
         onMonthChange={this.onMonthChange}
         showTodayButton
         disabledOpacity={0.6}
-        // theme={{
-        //   todayButtonTextColor: themeColor
-        // }}
+        // theme={this.todayBtnTheme}
         // todayBottomMargin={16}
       >
         {this.props.weekView ? (
-          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.getMarkedDates()} />
+          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked} />
         ) : (
           <ExpandableCalendar
             testID={testIDs.expandableCalendar.CONTAINER}
@@ -196,18 +172,17 @@ export default class ExpandableCalendarScreen extends Component {
             // calendarStyle={styles.calendar}
             // headerStyle={styles.calendar} // for horizontal only
             // disableWeekScroll
-            // theme={this.getTheme()}
+            // theme={this.theme}
             disableAllTouchEventsForDisabledDays
             firstDay={1}
-            markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-            leftArrowImageSource={require('../img/previous.png')}
-            rightArrowImageSource={require('../img/next.png')}
+            markedDates={this.marked}
+            leftArrowImageSource={leftArrowIcon}
+            rightArrowImageSource={rightArrowIcon}
             // animateScroll
           />
         )}
         <AgendaList
           sections={ITEMS}
-          extraData={this.state}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
         />
@@ -215,6 +190,40 @@ export default class ExpandableCalendarScreen extends Component {
     );
   }
 }
+
+const AgendaItem = React.memo(function AgendaItem(props) {
+  // console.warn('item rendered', Date.now());
+  const {item} = props;
+
+  const buttonPressed = useCallback(() => {
+    Alert.alert('Show me more');
+  }, []);
+
+  const itemPressed = useCallback(() => {
+    Alert.alert(item.title);
+  }, []);
+
+  if (_.isEmpty(item)) {
+    return(
+      <View style={styles.emptyItem}>
+        <Text style={styles.emptyItemText}>No Events Planned Today</Text>
+      </View>
+    );
+  }
+
+  return (
+    <TouchableOpacity onPress={itemPressed} style={styles.item} testID={testIDs.agenda.ITEM}>
+      <View>
+        <Text style={styles.itemHourText}>{item.hour}</Text>
+        <Text style={styles.itemDurationText}>{item.duration}</Text>
+      </View>
+      <Text style={styles.itemTitleText}>{item.title}</Text>
+      <View style={styles.itemButtonContainer}>
+        <Button color={'grey'} title={'Info'} onPress={buttonPressed}/>
+      </View>
+    </TouchableOpacity>
+  );
+});
 
 const styles = StyleSheet.create({
   calendar: {

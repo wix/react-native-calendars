@@ -59,7 +59,8 @@ class Reservation extends Component {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
 
-    const today = dateutils.sameDate(date, XDate()) ? this.style.today : undefined;
+    const today = dateutils.isToday(date) ? this.style.today : undefined;
+
     if (date) {
       return (
         <View style={this.style.day} testID={RESERVATION_DATE}>
