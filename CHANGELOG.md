@@ -683,3 +683,4 @@
 
 ## Fixed
 - Day - passed props for custom 'dayComponent'.
+- WeekCalendar - update marking on disabled day press.
