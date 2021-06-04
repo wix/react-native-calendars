@@ -32,7 +32,7 @@ export default class Timeline extends React.PureComponent {
       end: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       summary: PropTypes.string,
-      color: PropTypes.string
+      style: PropTypes.any
     })).isRequired,
     offsetLeft: PropTypes.number,
     offsetRight: PropTypes.number,
@@ -227,7 +227,7 @@ export default class Timeline extends React.PureComponent {
         height: event.height,
         width: event.width,
         top: event.top,
-        backgroundColor: event.color ? event.color : '#add8e6'
+        ...event.style,
       };
 
       // Fixing the number of lines for the event title makes this calculation easier.
