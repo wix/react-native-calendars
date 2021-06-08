@@ -126,7 +126,7 @@ class AgendaList extends Component {
         sectionIndex: sectionIndex,
         itemIndex: 0,
         viewPosition: 0, // position at the top
-        viewOffset: commons.isAndroid ? this.sectionHeight : 0
+        viewOffset: (commons.isAndroid ? this.sectionHeight : 0) + this.props.viewOffset
       });
     }
   }
@@ -163,9 +163,9 @@ class AgendaList extends Component {
     _.invoke(this.props, 'onMomentumScrollEnd', event);
   };
 
-  onScrollToIndexFailed = (info) => {
+  onScrollToIndexFailed = info => {
     console.warn('onScrollToIndexFailed info: ', info);
-  }
+  };
 
   onHeaderLayout = ({nativeEvent}) => {
     this.sectionHeight = nativeEvent.layout.height;
