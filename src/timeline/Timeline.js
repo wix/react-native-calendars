@@ -27,6 +27,7 @@ export default class Timeline extends React.PureComponent {
     end: PropTypes.number,
     eventTapped: PropTypes.func,
     format24h: PropTypes.bool,
+    specialFirstLine: PropTypes.elementType,
     events: PropTypes.arrayOf(PropTypes.shape({
       start: PropTypes.string.isRequired,
       end: PropTypes.string.isRequired,
@@ -45,6 +46,7 @@ export default class Timeline extends React.PureComponent {
     end: 24,
     events: [],
     format24h: true,
+    specialFirstLine: null,
     offsetLeft: 16,
     offsetRight: 20,
     offsetBottom: 0,
@@ -147,7 +149,7 @@ export default class Timeline extends React.PureComponent {
   }
 
   _renderLines() {
-    const {format24h, start = 0, end = 24} = this.props;
+    const {format24h, start = 0, end = 24, specialFirstLine} = this.props;
     const offset = this.calendarHeight / (end - start);
 
     return range(start, end + 1).map((i, index) => {
@@ -163,7 +165,13 @@ export default class Timeline extends React.PureComponent {
       } else {
         timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
       }
-      return [
+      return specialFirstLine && i === start ? [
+        <>
+          {
+            specialFirstLine
+          }
+        </>
+      ] : [
         <Text
           key={`timeLabel${i}`}
           style={[this.styles.timeLabel, {top: offset * index - 9}]}>
