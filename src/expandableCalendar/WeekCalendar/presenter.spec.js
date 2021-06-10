@@ -173,7 +173,7 @@ describe('WeekCalendar presenter tests', () => {
     it('onDayPressed', () => {
       const setDate = jest.fn();
       const context = {date: '2021-02-02', setDate};
-      const {onDayPressed} = makeUUT();
+      const {onDayPressed} = makeUUT({context});
 
       onDayPressed(context, {dateString: '2021-01-22'});
       expect(setDate).toBeCalledWith('2021-01-22', UPDATE_SOURCES.DAY_PRESS);
