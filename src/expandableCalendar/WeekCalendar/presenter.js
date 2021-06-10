@@ -3,6 +3,7 @@ import React from 'react';
 import {sameWeek} from '../../dateutils';
 const commons = require('../commons');
 import XDate from 'xdate';
+import {toMarkingFormat} from '../../interface';
 
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 // must be a positive number
@@ -87,7 +88,7 @@ class Presenter {
     // leave the current date in the visible week as is
     const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
     const newDate = dd.addWeeks(weekIndex);
-    return newDate.toString('yyyy-MM-dd');
+    return toMarkingFormat(newDate);
   }
 
   getDatesArray = args => {
