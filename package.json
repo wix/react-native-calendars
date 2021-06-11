@@ -63,7 +63,7 @@
   },
   "peerDependencies": {
     "react": ">=16.x",
-    "react-native": ">=0.60",
+    "react-native": ">=0.60"
   },
   "optionalDependencies": {
     "moment": "^2.24.0"
