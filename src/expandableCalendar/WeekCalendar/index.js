@@ -60,13 +60,13 @@ class WeekCalendar extends Component {
 
   componentDidUpdate(prevProps) {
     const {firstDay, context} = this.props;
-    const {shouldComponentUpdate, getDatesArray, scrollToIndex, updateWith} = this.presenter;
+    const {shouldComponentUpdate, getDatesArray, scrollToIndex, setProps} = this.presenter;
 
     if (shouldComponentUpdate(context, prevProps.context, firstDay)) {
       this.setState({items: getDatesArray(this.props)});
       scrollToIndex(false);
     }
-    updateWith(this.props);
+    setProps(this.props);
   }
 
   get containerWidth() {
@@ -113,14 +113,14 @@ class WeekCalendar extends Component {
     const {onScroll} = this.presenter;
     const {context} = this.props;
     const {items} = this.state;
-    const {containerWidth: width, page} = this;
+    const {containerWidth, page} = this;
 
     const updateState = (newData, newPage) => {
       this.page = newPage;
       this.setState({items: [...newData]});
     };
 
-    onScroll({context, updateState, x, page, items, width});
+    onScroll({context, updateState, x, page, items, width: containerWidth});
   };
 
   onMomentumScrollEnd = () => {
@@ -138,8 +138,7 @@ class WeekCalendar extends Component {
 
   renderItem = ({item}) => {
     const {style, onDayPress, markedDates, ...others} = extractComponentProps(Week, this.props);
-    const {getFixedMarkedDates, isCurrentWeek} = this.presenter;
-    const fixedMarkedDates = getFixedMarkedDates(this.props.context, markedDates, item, others.firstDay);
+    const {isCurrentWeek} = this.presenter;
     
     const {context} = this.props;
     const currentContext = isCurrentWeek ? context : undefined;
@@ -150,7 +149,7 @@ class WeekCalendar extends Component {
         key={item}
         current={item}
         style={this.getWeekStyle(this.containerWidth, style)}
-        markedDates={fixedMarkedDates}
+        markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
         context={currentContext}
       />

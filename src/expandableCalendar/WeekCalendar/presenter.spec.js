@@ -138,37 +138,6 @@ describe('WeekCalendar presenter tests', () => {
     });
   });
 
-  describe('getMarkedDates test', () => {
-    const markedDates = {
-      markedDates: {'2021-01-10': {marked: true}, '2021-01-11': {endingDay: false}, '2021-01-12': {endingDay: true}}
-    };
-
-    it('Expect getMarkedDates to be current date, when passing context and markedDates are null', () => {
-      const context = {date: '2021-01-12'};
-      const {getMarkedDates} = makeUUT();
-      expect(getMarkedDates(context, undefined)).toEqual({'2021-01-12': {selected: true}});
-    });
-
-    it('Expect getMarkedDate to return the passed markedDates value when available', () => {
-      const context = {date: '2021-01-11'};
-      const {getMarkedDates} = makeUUT();
-      expect(getMarkedDates(context, markedDates)).toEqual({
-        '2021-01-11': {selected: true},
-        ...markedDates
-      });
-    });
-
-    it('Expect getMarkedDate to return the passed markedDates value when available', () => {
-      const markedDates = {markedDates: {'2021-01-11': {endingDay: false}, '2021-01-12': {endingDay: true}}};
-      const context = {date: '2021-01-11'};
-      const {getMarkedDates} = makeUUT();
-      expect(getMarkedDates(context, markedDates)).toEqual({
-        '2021-01-11': {selected: true},
-        markedDates: {'2021-01-11': {endingDay: false}, '2021-01-12': {endingDay: true}}
-      });
-    });
-  });
-
   describe('Event - onDatePressed', () => {
     it('onDayPressed', () => {
       const setDate = jest.fn();

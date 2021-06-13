@@ -18,7 +18,7 @@ class Presenter {
     this._firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
   }
 
-  updateWith = props => {
+  setProps = props => {
     this.props = props;
   };
 
@@ -46,7 +46,7 @@ class Presenter {
     const newPage = this._getNewPage(x, width);
 
     if (this._shouldUpdateState(page)) {
-      this._invokeSetDate(context, items[newPage]);
+      _.invoke(context, 'setDate', items[newPage], UPDATE_SOURCES.WEEK_SCROLL);
       const data = this._getItemsForPage(page, items);
       updateState(data, newPage);
     }
@@ -98,28 +98,6 @@ class Presenter {
       array.push(d);
     }
     return array;
-  };
-
-  getMarkedDates = (context, markedDates) => {
-    if (markedDates) {
-      const marked = _.cloneDeep(markedDates);
-
-      if (marked[context.date]) {
-        marked[context.date].selected = true;
-      } else {
-        marked[context.date] = {selected: true};
-      }
-      return marked;
-    }
-    return {[context.date]: {selected: true}};
-  };
-
-  getFixedMarkedDates = (context, markedDates, item, firstDay) => {
-    return this.isSameWeek(item, context.date, firstDay) ? this.getMarkedDates(context, markedDates) : markedDates;
-  };
-
-  _invokeSetDate = (context, item) => {
-    _.invoke(context, 'setDate', item, UPDATE_SOURCES.WEEK_SCROLL);
   };
 
   _shouldUpdateState = (page, newPage) => {
