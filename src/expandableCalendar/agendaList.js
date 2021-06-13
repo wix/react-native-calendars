@@ -126,7 +126,7 @@ class AgendaList extends Component {
         sectionIndex: sectionIndex,
         itemIndex: 0,
         viewPosition: 0, // position at the top
-        viewOffset: commons.isAndroid ? this.sectionHeight : 0
+        viewOffset: (commons.isAndroid ? this.sectionHeight : 0) + this.props.viewOffset
       });
     }
   }

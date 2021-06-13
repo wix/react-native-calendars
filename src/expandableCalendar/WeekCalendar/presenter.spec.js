@@ -36,7 +36,7 @@ describe('WeekCalendar presenter tests', () => {
     it('Expect component to not update when on same week', () => {
       const context = makeContext();
       const {shouldComponentUpdate} = makeUUT();
-      const shouldUpdate = shouldComponentUpdate(context, context, 1);
+      const shouldUpdate = shouldComponentUpdate(context, context);
 
       expect(shouldUpdate).toBe(false);
     });
@@ -45,7 +45,7 @@ describe('WeekCalendar presenter tests', () => {
       const context = makeContext(twoDaysDifferentWeek);
       const prevContext = makeContext(twoSomeDays);
       const {shouldComponentUpdate} = makeUUT();
-      const shouldUpdate = shouldComponentUpdate(context, prevContext, 2);
+      const shouldUpdate = shouldComponentUpdate(context, prevContext);
 
       expect(shouldUpdate).toBe(false);
     });
@@ -53,7 +53,7 @@ describe('WeekCalendar presenter tests', () => {
     it('Expect component to not update when on same date and prev-date', () => {
       const context = makeContext(twoDaysSameWeek);
       const {shouldComponentUpdate} = makeUUT();
-      const shouldUpdate = shouldComponentUpdate(context, context, 2);
+      const shouldUpdate = shouldComponentUpdate(context, context);
 
       expect(shouldUpdate).toBe(false);
     });
@@ -62,7 +62,7 @@ describe('WeekCalendar presenter tests', () => {
       const context = makeContext(twoDaysDifferentWeek, UPDATE_SOURCES.PAGE_SCROLL);
       const prevContext = makeContext(twoSomeDays);
       const {shouldComponentUpdate} = makeUUT();
-      const shouldUpdate = shouldComponentUpdate(context, prevContext, 2);
+      const shouldUpdate = shouldComponentUpdate(context, prevContext);
 
       expect(shouldUpdate).toBe(true);
     });

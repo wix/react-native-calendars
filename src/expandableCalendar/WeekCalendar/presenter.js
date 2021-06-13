@@ -68,12 +68,11 @@ class Presenter {
     }
   };
 
-  shouldComponentUpdate = (context, prevContext, firstDay) => {
-    const {date, prevDate, updateSource} = context;
+  shouldComponentUpdate = (context, prevContext) => {
+    const {date, updateSource} = context;
     return (
       date !== prevContext.date &&
-      updateSource !== UPDATE_SOURCES.WEEK_SCROLL &&
-      !this.isSameWeek(date, prevDate, firstDay)
+      updateSource !== UPDATE_SOURCES.WEEK_SCROLL
     );
   };
 

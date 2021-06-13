@@ -59,10 +59,10 @@ class WeekCalendar extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {firstDay, context} = this.props;
+    const {context} = this.props;
     const {shouldComponentUpdate, getDatesArray, scrollToIndex, setProps} = this.presenter;
 
-    if (shouldComponentUpdate(context, prevProps.context, firstDay)) {
+    if (shouldComponentUpdate(context, prevProps.context)) {
       this.setState({items: getDatesArray(this.props)});
       scrollToIndex(false);
     }
