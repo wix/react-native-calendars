@@ -52,7 +52,7 @@ class Presenter {
     }
   };
 
-  onMomentumScrollEnd = ({items, props, page, updateState}) => {
+  onMomentumScrollEnd = ({items, props, page, updateItems}) => {
     if (this._isFirstPage(page) || this._isLastPage(page, items)) {
       this.scrollToIndex(false);
 
@@ -64,7 +64,7 @@ class Presenter {
         updatedItems = this._mergeArraysFromTop(items, newWeekArray);
       }
 
-      updateState(updatedItems);
+      updateItems(updatedItems);
     }
   };
 

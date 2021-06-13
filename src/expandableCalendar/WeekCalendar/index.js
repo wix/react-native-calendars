@@ -127,13 +127,13 @@ class WeekCalendar extends Component {
     const {items} = this.state;
     const {onMomentumScrollEnd} = this.presenter;
 
-    const updateState = updatedItems => {
+    const updatedItems = items => {
       setTimeout(() => {
-        this.setState({items: [...updatedItems]});
+        this.setState({items: [...items]});
       }, 100);
     };
 
-    onMomentumScrollEnd({items, props: this.props, page: this.page, updateState});
+    onMomentumScrollEnd({items, props: this.props, page: this.page, updatedItems});
   };
 
   renderItem = ({item}) => {
