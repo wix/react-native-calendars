@@ -60,13 +60,12 @@ class WeekCalendar extends Component {
 
   componentDidUpdate(prevProps) {
     const {context} = this.props;
-    const {shouldComponentUpdate, getDatesArray, scrollToIndex, setProps} = this.presenter;
+    const {shouldComponentUpdate, getDatesArray, scrollToIndex} = this.presenter;
 
     if (shouldComponentUpdate(context, prevProps.context)) {
       this.setState({items: getDatesArray(this.props)});
       scrollToIndex(false);
     }
-    setProps(this.props);
   }
 
   get containerWidth() {
@@ -138,8 +137,9 @@ class WeekCalendar extends Component {
 
   renderItem = ({item}) => {
     const {style, onDayPress, markedDates, firstDay, ...others} = extractComponentProps(Week, this.props);
-    const isCurrentWeek = this.presenter.isSameWeek(item, context.date, firstDay);
     const {context} = this.props;
+
+    const isCurrentWeek = this.presenter.isSameWeek(item, context.date, firstDay);
     const currentContext = isCurrentWeek ? context : undefined;
 
     return (
