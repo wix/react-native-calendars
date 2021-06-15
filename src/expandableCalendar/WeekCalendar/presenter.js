@@ -10,17 +10,12 @@ const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 const NUMBER_OF_PAGES = 2;
 
 class Presenter {
-  constructor(props) {
+  constructor() {
     this.list = React.createRef();
-    this.props = props;
     this._applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
     // On Android+RTL there's an initial scroll that cause issues
     this._firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
   }
-
-  setProps = props => {
-    this.props = props;
-  };
 
   scrollToIndex = animated => {
     this.list.current.scrollToIndex({animated, index: NUMBER_OF_PAGES});
