@@ -61,7 +61,8 @@
     "react-native-navigation": "^6.7.1",
     "react-test-renderer": "^17.0.1",
     "semver": "5.x.x",
-    "shell-utils": "1.x.x"
+    "shell-utils": "1.x.x",
+    "typescript": "^4.3.3"
   },
   "optionalDependencies": {
     "moment": "^2.24.0"
