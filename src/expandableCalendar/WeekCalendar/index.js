@@ -132,7 +132,7 @@ class WeekCalendar extends Component {
       }, 100);
     };
 
-    onMomentumScrollEnd({items, props: this.props, page: this.page, updatedItems});
+    onMomentumScrollEnd({items, props: this.props, page: this.page, updateItems});
   };
 
   renderItem = ({item}) => {
