@@ -20,6 +20,46 @@ describe('dateutils', function () {
     });
   });
 
+  describe('sameWeek tests', () => {
+    it('Expect sameWeek to return true, for two days on the same week', () => {
+      const {sameWeek} = dateutils;
+      const a = '2021-01-05';
+      const b = '2021-01-06';
+      expect(sameWeek(a, b, 1)).toBe(true);
+    });
+
+    it('Expect sameWeek to return true, for two days on the same week, when', () => {
+      const {sameWeek} = dateutils;
+      const date = '2021-01-01';
+      const prevDate = '2021-01-02';
+      expect(sameWeek(prevDate, date, 1)).toBe(true);
+    });
+
+    it('Expect sameWeek to return false, on non XDate values', () => {
+      const {sameWeek} = dateutils;
+      expect(sameWeek('a', 'a')).toBe(undefined);
+      expect(sameWeek(1, 1)).toBe(false);
+      expect(sameWeek(false, false)).toBe(undefined);
+      expect(sameWeek(true, true)).toBe(false);
+    });
+
+    it('Expect sameWeek to return true, on first date is after second date', () => {
+      const {sameWeek} = dateutils;
+      const a = '2021-01-07';
+      const b = '2021-01-05';
+      expect(sameWeek(a, b, 1)).toBe(true);
+    });
+
+    it('Expect sameWeek to return false, on Sunday when firstDay is Monday', () => {
+      const {sameWeek} = dateutils;
+      const a = '2021-01-04';
+      const b = '2021-01-05';
+      expect(sameWeek(a, b, 1)).toBe(true);
+
+      expect(sameWeek(a, b, 2)).toBe(false);
+    });
+  });
+
   describe('isLTE()', function () {
     it('2014-01-20 >= 2013-12-31', function () {
       const a = XDate(2013, 12, 31);
@@ -90,10 +130,8 @@ describe('dateutils', function () {
     it('2014 March', function () {
       const days = dateutils.page(XDate(2014, 2, 23, true));
       expect(days.length).toBe(42);
-      expect(days[0].toString())
-        .toBe(XDate(2014, 1, 23, 0, 0, 0, true).toString());
-      expect(days[days.length - 1].toString())
-        .toBe(XDate(2014, 3, 5, 0, 0, 0, true).toString());
+      expect(days[0].toString()).toBe(XDate(2014, 1, 23, 0, 0, 0, true).toString());
+      expect(days[days.length - 1].toString()).toBe(XDate(2014, 3, 5, 0, 0, 0, true).toString());
     });
 
     it('2014 May', function () {
@@ -129,5 +167,4 @@ describe('dateutils', function () {
       }
     });
   });
-
 });

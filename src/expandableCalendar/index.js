@@ -13,7 +13,7 @@ import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList from '../calendar-list';
 import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
-import WeekCalendar from './weekCalendar';
+import WeekCalendar from './WeekCalendar';
 import Week from './week';
 
 const commons = require('./commons');
