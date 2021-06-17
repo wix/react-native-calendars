@@ -73,7 +73,7 @@ function versionTagAndPublish() {
 }
 
 function findCurrentPublishedVersion() {
-  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
+  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.latest`);
 }
 
 function tryPublishAndTag(version) {
