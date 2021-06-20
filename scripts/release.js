@@ -5,14 +5,15 @@ const semver = require('semver');
 const exec = require('shell-utils').exec;
 
 const ONLY_ON_BRANCH = 'origin/release';
-const VERSION_TAG = 'latest';
+const isSnapshotBuild = process.env.RELEASE_SNAPSHOT_VERSION;
+const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
 const VERSION_INC = 'minor';
 
 function run() {
   if (!validateEnv()) {
     return;
   }
-  
+
   setupGit();
   createNpmRc();
   versionTagAndPublish();
@@ -28,7 +29,7 @@ function validateEnv() {
     return false;
   }
 
-  if (process.env.GIT_BRANCH !== ONLY_ON_BRANCH) {
+  if (process.env.GIT_BRANCH !== ONLY_ON_BRANCH && !isSnapshotBuild) {
     console.log(`not publishing on branch ${process.env.GIT_BRANCH}`);
     return false;
   }
@@ -61,12 +62,18 @@ function versionTagAndPublish() {
   const currentPublished = findCurrentPublishedVersion();
   console.log(`current published version: ${currentPublished}`);
 
-  const version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  let version;
+  if (isSnapshotBuild) {
+    version = `${currentPublished}-snapshot.${process.env.BUILD_ID}`;
+  } else {
+    version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  }
+
   tryPublishAndTag(version);
 }
 
 function findCurrentPublishedVersion() {
-  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
+  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.latest`);
 }
 
 function tryPublishAndTag(version) {
