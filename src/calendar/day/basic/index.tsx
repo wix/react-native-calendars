@@ -8,7 +8,29 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking from '../marking';
 
-export default class BasicDay extends Component {
+interface BasicDayProps {
+  state?: 'selected' | 'disabled' | 'today';
+  /** The marking object */
+  marking: any;
+  /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
+  markingType: MarkingTypes;
+  /** Theme object */
+  theme: Object;
+  /** onPress callback */
+  onPress: (date: Object) => void;
+  /** onLongPress callback */
+  onLongPress: (date: Object) => void;
+  /** The date to return from press callbacks */
+  date: Object;
+  /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
+  disableAllTouchEventsForDisabledDays: boolean;
+  /** Test ID*/
+  testID: string;
+  /** Accessibility label */
+  accessibilityLabel: string;
+}
+
+export default class BasicDay extends Component<BasicDayProps> {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -29,13 +51,9 @@ export default class BasicDay extends Component {
     disableAllTouchEventsForDisabledDays: PropTypes.bool
   };
 
-  constructor(props) {
-    super(props);
+  style = styleConstructor(this.props.theme);
 
-    this.style = styleConstructor(props.theme);
-  }
-
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: BasicDayProps) {
     return shouldUpdate(this.props, nextProps, [
       'children',
       'state',
