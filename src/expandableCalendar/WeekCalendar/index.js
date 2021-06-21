@@ -147,6 +147,7 @@ class WeekCalendar extends Component {
         {...others}
         key={item}
         current={item}
+        firstDay={firstDay}
         style={this.getWeekStyle(this.containerWidth, style)}
         markedDates={markedDates}
         onDayPress={onDayPress || this.onDayPress}
