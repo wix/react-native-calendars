@@ -5,7 +5,8 @@ const semver = require('semver');
 const exec = require('shell-utils').exec;
 
 const ONLY_ON_BRANCH = 'origin/release';
-const isSnapshotBuild = process.env.RELEASE_SNAPSHOT_VERSION;
+console.log('ethan - type of snapshot', typeof process.env.RELEASE_SNAPSHOT_VERSION);
+const isSnapshotBuild = process.env.RELEASE_SNAPSHOT_VERSION === 'true';
 const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
 const VERSION_INC = 'minor';
 
