@@ -499,7 +499,7 @@ An advanced `Agenda` component that can display interactive listings for calenda
   // Hide knob button. Default = false
   hideKnob={true}
   // When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false
-  knobCanCloseCalendar={false}
+  showClosingKnob={false}
   // By default, agenda dates are marked if they have at least one item, but you can override this if needed
   markedDates={{
     '2012-05-16': {selected: true, marked: true},

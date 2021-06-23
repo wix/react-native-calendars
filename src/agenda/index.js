@@ -48,13 +48,13 @@ export default class AgendaView extends Component {
     /** callback that gets called when day changes while scrolling agenda list */
     onDaychange: PropTypes.func, //TODO: Should be renamed 'onDayChange'
     /** specify how agenda knob should look like */
-    renderKnob: PropTypes.func, 
-    /** initially selected day */ 
+    renderKnob: PropTypes.func,
+    /** initially selected day */
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay'
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool,
     /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
-    knobCanCloseCalendar: PropTypes.bool
+    showClosingKnob: PropTypes.bool
   };
 
   constructor(props) {
@@ -125,20 +125,11 @@ export default class AgendaView extends Component {
     }
   };
 
-  /**
-   * Opens/closes the calendar programmatically.
-   * @param {bool} open `true` when calendar should open. Otherwise `false`.
-   */
-  setCalendarOpen = (open) => {
+  toggleCalendarPosition = open => {
     const maxY = this.initialScrollPadPosition();
-      if (open) {
-        this.setScrollPadPosition(0, true);
-        this.enableCalendarScrolling(true);
-      } else {
-        this.setScrollPadPosition(maxY, true);
-        this.enableCalendarScrolling(false);
-      }
-  }
+    this.setScrollPadPosition(open ? 0 : maxY, true);
+    this.enableCalendarScrolling(open);
+  };
 
   enableCalendarScrolling(enable = true) {
     this.setState({
@@ -248,7 +239,7 @@ export default class AgendaView extends Component {
 
     if (this.headerState === 'touched') {
       const isOpen = this.state.calendarScrollable;
-      this.setCalendarOpen(!isOpen);
+      this.toggleCalendarPosition(!isOpen);
     }
 
     this.headerState = 'idle';
@@ -269,11 +260,7 @@ export default class AgendaView extends Component {
     const snapY = projectedY > maxY / 2 ? maxY : 0;
     this.setScrollPadPosition(snapY, true);
 
-    if (snapY === 0) {
-      this.enableCalendarScrolling(true);
-    } else {
-      this.enableCalendarScrolling(false);
-    }
+    this.enableCalendarScrolling(snapY === 0);
   };
 
   onVisibleMonthsChange = months => {
@@ -339,12 +326,12 @@ export default class AgendaView extends Component {
   }
 
   renderKnob() {
-    const {knobCanCloseCalendar, hideKnob, renderKnob} = this.props;
+    const {showClosingKnob, hideKnob, renderKnob} = this.props;
     let knob = <View style={this.style.knobContainer} />;
 
     if (!hideKnob) {
       const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
-      knob = !this.state.calendarScrollable || knobCanCloseCalendar ? (
+      knob = !this.state.calendarScrollable || showClosingKnob ? (
         <View style={this.style.knobContainer}>
           <View ref={c => (this.knob = c)}>{knobView}</View>
         </View>
@@ -401,7 +388,7 @@ export default class AgendaView extends Component {
       weekdaysStyle.push({height: HEADER_HEIGHT});
     }
 
-    const openCalendarScrollPadPosition = !hideKnob && this.state.calendarScrollable && this.props.knobCanCloseCalendar ? agendaHeight + HEADER_HEIGHT : 0;
+    const openCalendarScrollPadPosition = !hideKnob && this.state.calendarScrollable && this.props.showClosingKnob ? agendaHeight + HEADER_HEIGHT : 0;
     const shouldAllowDragging = !hideKnob && !this.state.calendarScrollable;
     const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT : openCalendarScrollPadPosition) - KNOB_HEIGHT;
     const scrollPadStyle = {
