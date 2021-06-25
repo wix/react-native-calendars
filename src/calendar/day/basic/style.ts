@@ -1,4 +1,5 @@
 import {StyleSheet, Platform} from 'react-native';
+// @ts-expect-error
 import * as defaultStyle from '../../../style';
 
 const STYLESHEET_ID = 'stylesheet.day.basic';

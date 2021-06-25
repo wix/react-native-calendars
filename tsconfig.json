@@ -11,16 +11,16 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noEmit": true,
+    "noEmit": false,
     "checkJs": false,
-    "allowJs": true,
+    "allowJs": false,
     // "emitDeclarationOnly": true,
     // "noImplicitAny": false
     "declaration": true,
-    "declarationDir": "./generatedTypes",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {}
   },
-  "include": ["src/calendar/day/basic", "src/global.d.ts"],
-  "exclude": ["node_modules"]
+  // "include": ["src/calendar/day/basic", "src/global.d.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test"]
 }
