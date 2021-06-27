@@ -333,10 +333,12 @@ class ExpandableCalendar extends Component {
   /** Events */
 
   onPressArrowLeft = () => {
+    _.invoke(this.props, 'onPressArrowLeft');
     this.scrollPage(false);
   };
 
   onPressArrowRight = () => {
+    _.invoke(this.props, 'onPressArrowRight');
     this.scrollPage(true);
   };
 
