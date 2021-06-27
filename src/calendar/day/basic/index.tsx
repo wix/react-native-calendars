@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
-
+// @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
+// @ts-expect-error
 import Marking from '../marking';
 
 interface BasicDayProps {
