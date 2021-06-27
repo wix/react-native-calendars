@@ -13,7 +13,7 @@ import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList from '../calendar-list';
 import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
-import WeekCalendar from './weekCalendar';
+import WeekCalendar from './WeekCalendar';
 import Week from './week';
 
 const commons = require('./commons');
@@ -333,10 +333,12 @@ class ExpandableCalendar extends Component {
   /** Events */
 
   onPressArrowLeft = () => {
+    _.invoke(this.props, 'onPressArrowLeft');
     this.scrollPage(false);
   };
 
   onPressArrowRight = () => {
+    _.invoke(this.props, 'onPressArrowRight');
     this.scrollPage(true);
   };
 

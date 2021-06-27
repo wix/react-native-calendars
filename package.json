@@ -5,6 +5,7 @@
   "description": "React Native Calendar Components",
   "scripts": {
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
+    "build:ts": "tsc",
     "e2e": "node ./scripts/test-e2e.js --release",
     "test": "npm run lint && npm run unit && npm run e2e",
     "unit": "jest",
@@ -39,6 +40,8 @@
     "@babel/core": "^7.12.9",
     "@babel/eslint-parser": "^7.13.4",
     "@babel/runtime": "^7.12.5",
+    "@types/lodash": "^4.14.170",
+    "@types/react-native": "^0.63.52",
     "@welldone-software/why-did-you-render": "^6.0.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
@@ -61,7 +64,8 @@
     "react-native-navigation": "^6.7.1",
     "react-test-renderer": "^17.0.1",
     "semver": "5.x.x",
-    "shell-utils": "1.x.x"
+    "shell-utils": "1.x.x",
+    "typescript": "^4.3.3"
   },
   "optionalDependencies": {
     "moment": "^2.24.0"

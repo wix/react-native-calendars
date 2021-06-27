@@ -1,19 +1,14 @@
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import XDate from 'xdate';
-
 import React, {Component} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, View} from 'react-native';
+import PropTypes from 'prop-types';
+import XDate from 'xdate';
+import styleConstructor from '../style';
+import CalendarContext from '.';
+import Presenter from './Presenter';
+import {toMarkingFormat} from '../../interface';
 
-import dateutils from '../dateutils';
-import {xdateToData, toMarkingFormat} from '../interface';
-import styleConstructor from './style';
-import CalendarContext from './calendarContext';
-
-const commons = require('./commons');
+const commons = require('../commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
-const iconDown = require('../img/down.png');
-const iconUp = require('../img/up.png');
 const TOP_POSITION = 65;
 
 /**
@@ -43,13 +38,15 @@ class CalendarProvider extends Component {
   constructor(props) {
     super(props);
     this.style = styleConstructor(props.theme);
+    this.presenter = new Presenter();
+    const {showTodayButton} = props;
 
     this.state = {
       prevDate: this.props.date || toMarkingFormat(XDate()),
       date: this.props.date || toMarkingFormat(XDate()),
       updateSource: UPDATE_SOURCES.CALENDAR_INIT,
       buttonY: new Animated.Value(-props.todayBottomMargin || -TOP_POSITION),
-      buttonIcon: this.getButtonIcon(props.date),
+      buttonIcon: this.presenter.getButtonIcon(props.date, showTodayButton),
       disabled: false,
       opacity: new Animated.Value(1)
     };
@@ -72,88 +69,62 @@ class CalendarProvider extends Component {
   };
 
   setDate = (date, updateSource) => {
-    const sameMonth = dateutils.sameMonth(XDate(date), XDate(this.state.date));
+    const {setDate} = this.presenter;
 
-    this.setState({date, prevDate: this.state.date, updateSource, buttonIcon: this.getButtonIcon(date)}, () => {
-      this.animateTodayButton(date);
-    });
+    const updateState = buttonIcon => {
+      this.setState({date, prevDate: this.state.date, updateSource, buttonIcon}, () => {
+        this.animateTodayButton(date);
+      });
+    };
 
-    _.invoke(this.props, 'onDateChanged', date, updateSource);
-
-    if (!sameMonth) {
-      _.invoke(this.props, 'onMonthChange', xdateToData(XDate(date)), updateSource);
-    }
+    setDate(this.props, date, this.state.date, updateState, updateSource);
   };
 
   setDisabled = disabled => {
-    if (this.props.showTodayButton && disabled !== this.state.disabled) {
+    const {setDisabled} = this.presenter;
+    const {showTodayButton} = this.props;
+
+    const updateState = disabled => {
       this.setState({disabled});
       this.animateOpacity(disabled);
-    }
+    };
+
+    setDisabled(showTodayButton, disabled, this.state.disabled, updateState);
   };
 
-  getButtonIcon(date) {
-    if (!this.props.showTodayButton) {
-      return;
-    }
-    const isPastDate = this.isPastDate(date);
-    return isPastDate ? iconDown : iconUp;
-  }
-
-  isPastDate(date) {
-    const today = XDate();
-    const d = XDate(date);
-
-    if (today.getFullYear() > d.getFullYear()) {
-      return true;
-    }
-    if (today.getFullYear() === d.getFullYear()) {
-      if (today.getMonth() > d.getMonth()) {
-        return true;
-      }
-      if (today.getMonth() === d.getMonth()) {
-        if (today.getDate() > d.getDate()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   animateTodayButton(date) {
-    if (this.props.showTodayButton) {
-      const today = toMarkingFormat(XDate());
-      const isToday = today === date;
+    const {shouldAnimateTodayButton, getPositionAnimation} = this.presenter;
+
+    if (shouldAnimateTodayButton(this.props)) {
+      const animationData = getPositionAnimation(date, this.props.todayBottomMargin);
 
       Animated.spring(this.state.buttonY, {
-        toValue: isToday ? TOP_POSITION : -this.props.todayBottomMargin || -TOP_POSITION,
-        tension: 30,
-        friction: 8,
-        useNativeDriver: true
+        ...animationData
       }).start();
     }
   }
 
   animateOpacity(disabled) {
-    const {disabledOpacity} = this.props;
-    if (disabledOpacity) {
+    const {shouldAnimateOpacity, getOpacityAnimation} = this.presenter;
+
+    if (shouldAnimateOpacity(this.props)) {
+      const animationData = getOpacityAnimation(this.props, disabled);
+
       Animated.timing(this.state.opacity, {
-        toValue: disabled ? disabledOpacity : 1,
-        duration: 500,
-        useNativeDriver: true
+        ...animationData
       }).start();
     }
   }
 
   onTodayPress = () => {
-    const today = toMarkingFormat(XDate());
+    const today = this.presenter.getTodayDate();
     this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   };
 
   renderTodayButton() {
     const {disabled, opacity, buttonY, buttonIcon} = this.state;
-    const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
-    const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
+    const {getTodayFormatted} = this.presenter;
+    const today = getTodayFormatted();
 
     return (
       <Animated.View style={[this.style.todayButtonContainer, {transform: [{translateY: buttonY}]}]}>
