@@ -6,7 +6,7 @@ import memoize from 'memoize-one';
 import React, {Component} from 'react';
 
 import {shouldUpdate} from '../../component-updater';
-import dateutils from '../../dateutils';
+import {isToday as dateutils_isToday} from '../../dateutils';
 import {xdateToData} from '../../interface';
 import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay from './basic';
@@ -91,7 +91,7 @@ export default class Day extends Component {
   render() {
     const {day, marking} = this.props;
     const date = xdateToData(day);
-    const isToday = dateutils.isToday(day);
+    const isToday = dateutils_isToday(day);
     const Component = this.getDayComponent();
     const dayProps = _.omit(this.props, 'day');
     const accessibilityLabel = this.getAccessibilityLabel(day, marking, isToday);

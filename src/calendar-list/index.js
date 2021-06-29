@@ -7,7 +7,7 @@ import {FlatList, Platform, Dimensions, View} from 'react-native';
 
 import {extractComponentProps} from '../component-updater';
 import {xdateToData, parseDate} from '../interface';
-import dateutils from '../dateutils';
+import {page, sameDate} from '../dateutils';
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar from '../calendar';
@@ -147,10 +147,10 @@ class CalendarList extends Component {
 
     if (!horizontal) {
       let week = 0;
-      const days = dateutils.page(day, firstDay);
+      const days = page(day, firstDay);
       for (let i = 0; i < days.length; i++) {
         week = Math.floor(i / 7);
-        if (dateutils.sameDate(days[i], day)) {
+        if (sameDate(days[i], day)) {
           scrollAmount += 46 * week;
           break;
         }
