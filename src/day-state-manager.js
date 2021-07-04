@@ -1,5 +1,5 @@
-import {isToday, isDateNotInTheRange, sameMonth} from './dateutils';
-import {parseDate, toMarkingFormat} from './interface';
+const {isToday, isDateNotInTheRange, sameMonth} = require('./dateutils');
+const {parseDate, toMarkingFormat} = require('./interface');
 
 function getState(day, current, props) {
   const {minDate, maxDate, disabledByDefault, context} = props;
