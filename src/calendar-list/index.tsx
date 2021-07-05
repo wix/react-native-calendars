@@ -23,37 +23,37 @@ const {width} = Dimensions.get('window');
 
 export type CalendarListProps = CalendarProps & {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
-  pastScrollRange: number;
+  pastScrollRange?: number;
   /** Max amount of months allowed to scroll to the future. Default = 50 */
-  futureScrollRange: number;
+  futureScrollRange?: number;
   /** Used when calendar scroll is horizontal, default is device width, pagination should be disabled */
-  calendarWidth: number;
+  calendarWidth?: number;
   /** Dynamic calendar height */
-  calendarHeight: number;
+  calendarHeight?: number;
   /** Style for the List item (the calendar) */
-  calendarStyle: number | Array<any> | Object;
+  calendarStyle?: number | Array<any> | Object;
   /** Whether to use static header that will not scroll with the list (horizontal only) */
-  staticHeader: boolean;
+  staticHeader?: boolean;
   /** Enable or disable vertical / horizontal scroll indicator. Default = false */
-  showScrollIndicator: boolean;
+  showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
-  animateScroll: boolean;
+  animateScroll?: boolean;
   /** Enable or disable scrolling of calendar list */
-  scrollEnabled: boolean;
+  scrollEnabled?: boolean;
   /** When true, the calendar list scrolls to top when the status bar is tapped. Default = true */
-  scrollsToTop: boolean;
+  scrollsToTop?: boolean;
   /** Enable or disable paging on scroll */
-  pagingEnabled: boolean;
+  pagingEnabled?: boolean;
   /** Whether the scroll is horizontal */
-  horizontal: boolean;
+  horizontal?: boolean;
   /** Should Keyboard persist taps */
-  keyboardShouldPersistTaps: 'never' | 'always' | 'handled';
+  keyboardShouldPersistTaps?: 'never' | 'always' | 'handled';
   /** A custom key extractor for the generated calendar months */
-  keyExtractor: (item: any, index: number) => string;
+  keyExtractor?: (item: any, index: number) => string;
   /** How far from the end to trigger the onEndReached callback */
-  onEndReachedThreshold: number;
+  onEndReachedThreshold?: number;
   /** Called once when the scroll position gets within onEndReachedThreshold */
-  onEndReached: () => void;
+  onEndReached?: () => void;
 };
 
 type XDateAndBump = XDate & {propBump?: number} ;

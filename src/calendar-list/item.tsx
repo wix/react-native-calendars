@@ -11,10 +11,10 @@ import styleConstructor from './style';
 
 export type CalendarListItemProps = CalendarProps & {
   item: any;
-  calendarWidth: number;
-  calendarHeight: number;
-  horizontal: boolean;
-  theme: any;
+  calendarWidth?: number;
+  calendarHeight?: number;
+  horizontal?: boolean;
+  theme?: any;
 }
 
 type CalendarListItemState = {
