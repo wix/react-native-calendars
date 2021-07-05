@@ -9,7 +9,7 @@ import {extractComponentProps} from '../component-updater';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
 
-export type CalendarListProps = CalendarProps & {
+export type CalendarListItemProps = CalendarProps & {
   item: any;
   calendarWidth: number;
   calendarHeight: number;
@@ -17,12 +17,12 @@ export type CalendarListProps = CalendarProps & {
   theme: any;
 }
 
-type CalendarListState = {
+type CalendarListItemState = {
   hideArrows: boolean;
   hideExtraDays: boolean;
 }
 
-class CalendarListItem extends Component<CalendarListProps, CalendarListState> {
+class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
   static displayName = 'IGNORE';
 
   static defaultProps = {
@@ -32,13 +32,13 @@ class CalendarListItem extends Component<CalendarListProps, CalendarListState> {
 
   style: any;
 
-  constructor(props: CalendarListProps) {
+  constructor(props: CalendarListItemProps) {
     super(props);
 
     this.style = styleConstructor(props.theme);
   }
 
-  shouldComponentUpdate(nextProps: CalendarListProps) {
+  shouldComponentUpdate(nextProps: CalendarListItemProps) {
     const r1 = this.props.item;
     const r2 = nextProps.item;
 
