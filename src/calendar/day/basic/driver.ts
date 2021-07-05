@@ -1,19 +1,21 @@
-import {ComponentDriver} from 'react-component-driver';
-import Day from '.';
+import _ from 'lodash';
+import {ComponentDriver, RenderedNode} from 'react-component-driver';
+import Day, {BasicDayProps} from '.';
+// @ts-expect-error
 import {extractStyles} from '../../../../test';
 
-export class BasicDayDriver extends ComponentDriver {
+export class BasicDayDriver extends ComponentDriver<BasicDayProps> {
   constructor() {
     super(Day);
   }
 
   tap() {
-    this.getComponent().props.onClick();
+    _.get(this.getComponent(), 'props.onClick');
     return this;
   }
 
   getAccessibilityLabel() {
-    return this.getComponent().props.accessibilityLabel.trim();
+    return _.get(this.getComponent(), 'props.accessibilityLabel.trim')();
   }
 
   getStyle() {
@@ -21,7 +23,7 @@ export class BasicDayDriver extends ComponentDriver {
   }
 
   getTextView() {
-    return this.getComponent().children.find(node => node.type === 'Text');
+    return _.get(this.getComponent(), 'children.find')((node: RenderedNode) => node.type === 'Text');
   }
 
   getTextStyle() {

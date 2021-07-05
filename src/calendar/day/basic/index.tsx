@@ -7,9 +7,9 @@ import {TouchableOpacity, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 // @ts-expect-error
-import Marking from '../marking';
+import Marking, {MarkingTypes} from '../marking';
 
-interface BasicDayProps {
+export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
   marking: any;
