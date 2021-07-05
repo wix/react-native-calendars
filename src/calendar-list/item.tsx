@@ -42,7 +42,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
     const r1 = this.props.item;
     const r2 = nextProps.item;
 
-    return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
+    return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propBump && r2.propBump !== r1.propBump);
   }
 
   onPressArrowLeft = (_: any, month: any) => {
