@@ -6,7 +6,7 @@ import styleConstructor from './style';
 // @ts-expect-error
 import Dot from '../dot';
 
-export enum MARKING_TYPES {
+export enum MarkingTypes {
   DOT = 'dot',
   MULTI_DOT = 'multi-dot',
   PERIOD = 'period',
@@ -27,7 +27,7 @@ type PERIOD = {
 };
 
 interface MarkingProps extends Dot.propTypes {
-  type?: MARKING_TYPES;
+  type?: MarkingTypes;
   theme?: Object;
   selected?: boolean;
   marked?: boolean;
@@ -47,7 +47,7 @@ interface MarkingProps extends Dot.propTypes {
 export default class Marking extends Component<MarkingProps> {
   static displayName = 'IGNORE';
 
-  static markingTypes = MARKING_TYPES;
+  static markingTypes = MarkingTypes;
   style: any;
 
   constructor(props: MarkingProps) {
@@ -81,7 +81,7 @@ export default class Marking extends Component<MarkingProps> {
       const validItems = items.filter(d => d && d.color);
 
       return validItems.map((item, index) => {
-        return type === MARKING_TYPES.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);
+        return type === MarkingTypes.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);
       });
     }
   }
@@ -89,9 +89,9 @@ export default class Marking extends Component<MarkingProps> {
   renderMarkingByType() {
     const {type, dots, periods} = this.props;
     switch (type) {
-      case MARKING_TYPES.MULTI_DOT:
+      case MarkingTypes.MULTI_DOT:
         return this.renderMultiMarkings(this.style.dots, dots);
-      case MARKING_TYPES.MULTI_PERIOD:
+      case MarkingTypes.MULTI_PERIOD:
         return this.renderMultiMarkings(this.style.periods, periods);
       default:
         return this.renderDot();

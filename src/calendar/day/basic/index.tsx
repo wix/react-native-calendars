@@ -6,14 +6,14 @@ import {TouchableOpacity, Text, View} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
-import Marking, {MARKING_TYPES} from '../marking';
+import Marking, {MarkingTypes} from '../marking';
 
 interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
   marking: any;
   /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
-  markingType: MARKING_TYPES;
+  markingType: MarkingTypes;
   /** Theme object */
   theme: Object;
   /** onPress callback */
