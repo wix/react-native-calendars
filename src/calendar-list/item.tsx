@@ -1,6 +1,7 @@
 import memoize from 'memoize-one';
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
+import PropTypes from 'prop-types';
 
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
@@ -24,6 +25,14 @@ type CalendarListItemState = {
 
 class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
   static displayName = 'IGNORE';
+
+  static propTypes = {
+    ...Calendar.propTypes,
+    item: PropTypes.any,
+    calendarWidth: PropTypes.number,
+    calendarHeight: PropTypes.number,
+    horizontal: PropTypes.bool
+  };
 
   static defaultProps = {
     hideArrows: true,
