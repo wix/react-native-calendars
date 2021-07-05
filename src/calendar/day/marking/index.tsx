@@ -3,8 +3,7 @@ import {View} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
-// @ts-expect-error
-import Dot from '../dot';
+import Dot, {DotProps} from '../dot';
 
 export enum MarkingTypes {
   DOT = 'dot',
@@ -26,7 +25,7 @@ type PERIOD = {
   color?: string;
 };
 
-interface MarkingProps extends Dot.propTypes {
+interface MarkingProps extends DotProps {
   type?: MarkingTypes;
   theme?: Object;
   selected?: boolean;
