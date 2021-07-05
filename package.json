@@ -6,6 +6,7 @@
   "scripts": {
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
     "build:ts": "tsc",
+    "build:dev": "tsc --noEmit",
     "e2e": "node ./scripts/test-e2e.js --release",
     "test": "npm run lint && npm run unit && npm run e2e",
     "unit": "jest",
