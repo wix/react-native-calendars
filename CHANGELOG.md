@@ -684,3 +684,21 @@
 ## Fixed
 - Day - passed props for custom 'dayComponent'.
 - WeekCalendar - update marking on disabled day press.
+
+## [1.1264.0] - 2021-6-27
+
+## Added
+- WeekCalendar - adding presenter and unit tests (PR #1499).
+- CalendarContextProvider - adding presenter and unit tests (PR #1503).
+- Release snapshot versions (PR #1536 and PR #1538).
+- Typescript setup and DayBasic migration to TS (PR #1539).
+- Agenda - 'showClosingKnob' prop to use knob for closing the calendar (PR #1430).
+
+## Changed
+- Updating Cocoapods version to 1.10.1.
+
+## Fixed
+- Timeline - fix event height and top calculations (PR #1498).
+- TS - Fix build process (PR #1545).
+- ExpandableCalendar - fix arrow press callbacks (PR #1489).
+- README & ISSUE_TEMPLATE - edit.

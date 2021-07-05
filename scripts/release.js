@@ -43,7 +43,7 @@ function setupGit() {
   exec.execSyncSilent(`git config --global user.name "${process.env.GIT_USER}"`);
   const remoteUrl = new RegExp('https?://(\\S+)').exec(exec.execSyncRead('git remote -v'))[1];
   exec.execSyncSilent(`git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`);
-  exec.execSync(`git checkout ${ONLY_ON_BRANCH}`);
+  exec.execSync(`git checkout ${process.env.GIT_BRANCH}`);
 }
 
 function createNpmRc() {

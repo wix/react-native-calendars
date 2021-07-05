@@ -36,7 +36,7 @@ All parameters for components are optional. By default the month of current loca
 
 Event handler callbacks are called with `calendar objects` like this:
 
-```javasctipt
+```javascript
 {
   day: 1,      // day of month (1-31)
   month: 1,    // month of year (1-12)
@@ -46,7 +46,7 @@ Event handler callbacks are called with `calendar objects` like this:
 }
 ```
 
-Parameters that require date types accept `YYYY-MM-DD` formated `date-strings`, JavaScript date objects, `calendar objects` and `UTC timestamps`.
+Parameters that require date types accept `YYYY-MM-DD` formatted `date-strings`, JavaScript date objects, `calendar objects` and `UTC timestamps`.
 
 Calendars can be localized by adding custom locales to `LocaleConfig` object:
 
@@ -93,10 +93,10 @@ LocaleConfig.defaultLocale = 'fr';
   renderArrow={(direction) => (<Arrow/>)}
   // Do not show days of other months in month page. Default = false
   hideExtraDays={true}
-  // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
+  // If hideArrows = false and hideExtraDays = false do not switch month when tapping on greyed out
   // day from another month that is visible in calendar page. Default = false
   disableMonthChange={true}
-  // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+  // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday
   firstDay={1}
   // Hide day names. Default = false
   hideDayNames={true}
@@ -112,7 +112,7 @@ LocaleConfig.defaultLocale = 'fr';
   disableArrowRight={true}
   // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
   disableAllTouchEventsForDisabledDays={true}
-  // Replace default month and year title with custom one. the function receive a date as parameter.
+  // Replace default month and year title with custom one. the function receive a date as parameter
   renderHeader={(date) => {/*Return JSX*/}}
   // Enable the option to swipe between months. Default = false
   enableSwipeMonths={true}
@@ -151,20 +151,20 @@ Multi-Dot marking
 </kbd>
 <p></p>
 
-Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop. 
+Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop.
 The property `color` is mandatory while `key` and `selectedColor` are optional. If key is omitted then the array index is used as key. If `selectedColor` is omitted then `color` will be used for selected dates.
 
 ```javascript
-const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
-const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
-const workout = {key:'workout', color: 'green'};
+const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
+const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
+const workout = {key: 'workout', color: 'green'};
 
 <Calendar
+  markingType={'multi-dot'}
   markedDates={{
     '2017-10-25': {dots: [vacation, massage, workout], selected: true, selectedColor: 'red'},
     '2017-10-26': {dots: [massage, workout], disabled: true}
   }}
-  markingType={'multi-dot'}
 />
 ```
 
@@ -181,15 +181,13 @@ Period marking
 
 ```javascript
 <Calendar
-  // Collection of dates that have to be colored in a special way. Default = {}
+  markingType={'period'}
   markedDates={{
     '2012-05-20': {textColor: 'green'},
     '2012-05-22': {startingDay: true, color: 'green'},
     '2012-05-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
     '2012-05-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
   }}
-  // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
-  markingType={'period'}
 />
 ```
 
@@ -204,6 +202,7 @@ Multi-period marking
 
 ```javascript
 <Calendar
+  markingType='multi-period'
   markedDates={{
     '2017-12-14': {
       periods: [
@@ -220,8 +219,6 @@ Multi-period marking
       ]
     }
   }}
-  // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
-  markingType='multi-period'
 />
 ```
 
@@ -234,7 +231,6 @@ Custom marking allows you to customize each marker with custom styles.
 
 ```javascript
 <Calendar
-  // Date marking style [simple/period/multi-dot/single]. Default = 'simple'
   markingType={'custom'}
   markedDates={{
     '2018-03-28': {
@@ -274,7 +270,7 @@ Custom marking allows you to customize each marker with custom styles.
     '2012-05-22': {color: '#70d7c7', textColor: 'white'},
     '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
     '2012-05-24': {color: '#70d7c7', textColor: 'white'},
-    '2012-05-25': {endingDay: true, color: '#50cebb', textColor: 'white'},
+    '2012-05-25': {endingDay: true, color: '#50cebb', textColor: 'white'}
   }}
 />
 ```
@@ -336,13 +332,13 @@ The loading indicator next to the month name will be displayed if `<Calendar/>` 
 #### Customize days titles with disabled styling
 ```javascript
 <Calendar
-    theme={{
-     textSectionTitleDisabledColor: '#d9e1e8'
-    }}
-    disabledDaysIndexes={[0, 6]}
-    markedDates={{
+  theme={{
+    textSectionTitleDisabledColor: '#d9e1e8'
+  }}
+  markedDates={{
     ...this.getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
-    }}
+  }}
+  disabledDaysIndexes={[0, 6]}
 />
 ```
 
@@ -493,9 +489,9 @@ An advanced `Agenda` component that can display interactive listings for calenda
   // Callback that fires when the calendar is opened or closed
   onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
   // Callback that gets called on day press
-  onDayPress={(day)=>{console.log('day pressed')}}
+  onDayPress={(day) => {console.log('day pressed')}}
   // Callback that gets called when day changes while scrolling agenda list
-  onDayChange={(day)=>{console.log('day changed')}}
+  onDayChange={(day) => {console.log('day changed')}}
   // Initially selected day
   selected={'2012-05-16'}
   // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
@@ -508,7 +504,7 @@ An advanced `Agenda` component that can display interactive listings for calenda
   futureScrollRange={50}
   // Specify how each item should be rendered in agenda
   renderItem={(item, firstItemInDay) => {return (<View />);}}
-  // Specify how each date should be rendered. day can be undefined if the item is not first in that day.
+  // Specify how each date should be rendered. day can be undefined if the item is not first in that day
   renderDay={(day, item) => {return (<View />);}}
   // Specify how empty date content with no items should be rendered
   renderEmptyDate={() => {return (<View />);}}
@@ -520,6 +516,8 @@ An advanced `Agenda` component that can display interactive listings for calenda
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
   hideKnob={true}
+  // When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false
+  showClosingKnob={false}
   // By default, agenda dates are marked if they have at least one item, but you can override this if needed
   markedDates={{
     '2012-05-16': {selected: true, marked: true},
@@ -528,11 +526,11 @@ An advanced `Agenda` component that can display interactive listings for calenda
   }}
   // If disabledByDefault={true} dates flagged as not disabled will be enabled. Default = false
   disabledByDefault={true}
-  // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
+  // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly
   onRefresh={() => console.log('refreshing...')}
   // Set this true while waiting for new data from a refresh
   refreshing={false}
-  // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
+  // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView
   refreshControl={null}
   // Agenda theme
   theme={{
@@ -556,6 +554,8 @@ See also the list of [contributors](https://github.com/wix/react-native-calendar
 
 ## Contributing
 
-Pull requests are most welcome! 
+Pull requests are most welcome!
 Please `npm run test` and `npm run lint` before push.
-Don't forget to add a **title** and a **description** that explain the issue you're trying to solve and your suggested solution. Screenshots and gifs are very helpful.
+Don't forget to add a **title** and a **description** that explain the issue you're trying to solve and your suggested solution. 
+Screenshots and gifs are VERY helpful.
+Please do NOT format the files as we are trying to keep a unified syntax and the reviewing process fast and simple.
