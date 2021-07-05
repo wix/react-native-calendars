@@ -3,12 +3,12 @@ import {View} from 'react-native';
 import styleConstructor from './style';
 
 interface DotProps {
-  theme: Object;
-  color: String;
-  marked: Boolean;
-  selected: Boolean;
-  disabled: Boolean;
-  today: Boolean;
+  theme?: Object;
+  color?: String;
+  marked?: Boolean;
+  selected?: Boolean;
+  disabled?: Boolean;
+  today?: Boolean;
 }
 
 const Dot = ({theme, marked, disabled, color, today, selected}: DotProps) => {
