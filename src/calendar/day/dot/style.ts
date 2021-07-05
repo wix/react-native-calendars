@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
+// @ts-expect-error
 import * as defaultStyle from '../../../style';
 
 const STYLESHEET_ID = 'stylesheet.dot';
 
-export default function styleConstructor(theme = {}) {
+export default function styleConstructor(theme: any = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     dot: {
