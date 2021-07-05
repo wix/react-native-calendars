@@ -2,7 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
 
-interface DotProps {
+export interface DotProps {
   theme?: Object;
   color?: String;
   marked?: Boolean;
