@@ -17,7 +17,7 @@ import PeriodDay from './period';
 
 const basicDayPropsTypes = _.omit(BasicDay.propTypes, 'date');
 
-interface DayProps extends BasicDayProps {
+interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
   day?: Date;
   /** Provide custom day rendering component */
