@@ -8,7 +8,7 @@ import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking, {MarkingTypes} from '../marking';
 
-interface BasicDayProps {
+export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
   marking: any;
