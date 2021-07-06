@@ -10,7 +10,7 @@ module.exports = {
     describe: true
   },
   extends: ['eslint:recommended'],
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       experimentalObjectRestSpread: true,
@@ -18,7 +18,7 @@ module.exports = {
     },
     sourceType: 'module'
   },
-  plugins: ['react', 'react-native', 'jest'],
+  plugins: ['react', 'react-native', 'jest', '@typescript-eslint'],
   rules: {
     'react-native/no-inline-styles': 1,
     'linebreak-style': ['error', 'unix'],
