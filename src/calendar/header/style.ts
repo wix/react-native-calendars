@@ -1,9 +1,10 @@
 import {StyleSheet, Platform} from 'react-native';
+// @ts-expect-error
 import * as defaultStyle from '../../style';
 
 const STYLESHEET_ID = 'stylesheet.calendar.header';
 
-export default function (theme = {}) {
+export default function (theme: any = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     header: {
