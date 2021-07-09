@@ -559,3 +559,9 @@ Please `npm run test` and `npm run lint` before push.
 Don't forget to add a **title** and a **description** that explain the issue you're trying to solve and your suggested solution. 
 Screenshots and gifs are VERY helpful.
 Please do NOT format the files as we are trying to keep a unified syntax and the reviewing process fast and simple.
+
+## Sponsor
+![Scheduling API](https://user-images.githubusercontent.com/9488406/125080407-0dd25780-e0c5-11eb-9f70-ef958968674a.png)
+
+This repo is sponsored by [**Spurwing**](https://www.spurwing.io/), where their API Makes Adding Scheduling Quick, Reliable and Scalable.
+Use Spurwing to build and integrate Scheduling, Booking & Calendar features in your project. Read more about Spurwing [**Scheduling API on GitHub**](https://github.com/Spurwing/Appointment-Scheduling-API).
