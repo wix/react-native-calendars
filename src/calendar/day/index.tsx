@@ -78,7 +78,7 @@ export default class Day extends Component<DayProps> {
   }
 
   getAccessibilityLabel = memoize((day, marking, isToday) => {
-    const today = _.get(XDate, 'locales.[XDate.defaultLocale].today');
+    const today = _.get(XDate, 'locales[XDate.defaultLocale].today');
     const formatAccessibilityLabel = _.get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
     const markingLabel = this.getMarkingLabel(marking);
 
