@@ -4,7 +4,7 @@ import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {Component, Fragment, ReactNode} from 'react';
-import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, ColorValue, ViewStyle, AccessibilityActionEvent} from 'react-native';
+import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, ViewStyle, AccessibilityActionEvent} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 // @ts-expect-error
@@ -18,10 +18,11 @@ import {
   // @ts-expect-error
 } from '../../testIDs';
 import styleConstructor from './style';
+import {Theme} from '../../commons/types';
 
 type Direction = 'left' | 'right';
 export interface CalendarHeaderProps {
-  theme?: any;
+  theme?: Theme;
   firstDay?: number;
   displayLoadingIndicator?: boolean;
   showWeekNumbers?: boolean;
@@ -227,7 +228,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     if (displayLoadingIndicator) {
       return (
         <ActivityIndicator
-          color={theme?.indicatorColor as ColorValue}
+          color={theme?.indicatorColor}
           testID={testID ? `${HEADER_LOADING_INDICATOR}-${testID}` : HEADER_LOADING_INDICATOR}
         />
       );

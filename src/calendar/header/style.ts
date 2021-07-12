@@ -1,10 +1,9 @@
 import {StyleSheet, Platform} from 'react-native';
 // @ts-expect-error
 import * as defaultStyle from '../../style';
+import {Theme} from '../../commons/types';
 
-const STYLESHEET_ID = 'stylesheet.calendar.header';
-
-export default function (theme: any = {}) {
+export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     header: {
@@ -59,6 +58,6 @@ export default function (theme: any = {}) {
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
     },
-    ...(theme[STYLESHEET_ID] || {})
+    ...(theme.stylesheet?.calendar?.header || {})
   });
 }
