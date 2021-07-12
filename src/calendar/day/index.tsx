@@ -14,6 +14,7 @@ import {xdateToData} from '../../interface';
 import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
+import {MarkingProps} from './marking';
 
 const basicDayPropsTypes = _.omit(BasicDay.propTypes, 'date');
 
@@ -47,7 +48,7 @@ export default class Day extends Component<DayProps> {
     ]);
   }
 
-  getMarkingLabel(marking: any) {
+  getMarkingLabel(marking: MarkingProps) {
     let label = '';
 
     if (marking) {
