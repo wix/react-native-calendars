@@ -20,7 +20,7 @@ import {
 import styleConstructor from './style';
 
 type Direction = 'left' | 'right';
-interface CalendarHeaderProps {
+export interface CalendarHeaderProps {
   theme?: any;
   firstDay?: number;
   displayLoadingIndicator?: boolean;
@@ -46,7 +46,7 @@ interface CalendarHeaderProps {
   /** Apply custom disable color to selected day indexes */
   disabledDaysIndexes?: number[];
   /** Replace default month and year title with custom one. the function receive a date as parameter. */
-  renderHeader?: any;
+  renderHeader?: (date?: XDate) => ReactNode;
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
   testID?: string;
@@ -150,7 +150,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
   renderWeekDays = memoize(weekDaysNames => {
     const {disabledDaysIndexes} = this.props;
 
-    return weekDaysNames.map((day: any, idx: any) => {
+    return weekDaysNames.map((day: string, idx: number) => {
       const dayStyle = [this.style.dayHeader];
 
       if (_.includes(disabledDaysIndexes, idx)) {
