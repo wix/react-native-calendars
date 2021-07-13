@@ -6,6 +6,7 @@
   "scripts": {
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
     "build:ts": "tsc",
+    "build:dev": "tsc --noEmit",
     "e2e": "node ./scripts/test-e2e.js --release",
     "test": "npm run lint && npm run unit && npm run e2e",
     "unit": "jest",
@@ -42,7 +43,10 @@
     "@babel/runtime": "^7.12.5",
     "@types/lodash": "^4.14.170",
     "@types/react-native": "^0.63.52",
+    "@types/xdate": "^0.8.32",
     "@welldone-software/why-did-you-render": "^6.0.3",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "detox": "^18.0.0",

@@ -6,8 +6,7 @@ import {TouchableOpacity, Text, View} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
-// @ts-expect-error
-import Marking from '../marking';
+import Marking, {MarkingTypes} from '../marking';
 
 interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
@@ -110,15 +109,15 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   isMultiDot() {
-    return this.props.markingType === Marking.markingTypes.multiDot;
+    return this.props.markingType === Marking.markingTypes.MULTI_DOT;
   }
 
   isMultiPeriod() {
-    return this.props.markingType === Marking.markingTypes.multiPeriod;
+    return this.props.markingType === Marking.markingTypes.MULTI_PERIOD;
   }
 
   isCustom() {
-    return this.props.markingType === Marking.markingTypes.custom;
+    return this.props.markingType === Marking.markingTypes.CUSTOM;
   }
 
   getContainerStyle() {

@@ -1,14 +1,29 @@
-import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
-
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
+import PropTypes from 'prop-types';
 
+// @ts-expect-error
 import {extractComponentProps} from '../component-updater';
-import Calendar from '../calendar';
+
+// @ts-expect-error
+import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
 
-class CalendarListItem extends Component {
+export type CalendarListItemProps = CalendarProps & {
+  item: any;
+  calendarWidth?: number;
+  calendarHeight?: number;
+  horizontal?: boolean;
+  theme?: any;
+}
+
+type CalendarListItemState = {
+  hideArrows: boolean;
+  hideExtraDays: boolean;
+}
+
+class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -24,20 +39,22 @@ class CalendarListItem extends Component {
     hideExtraDays: true
   };
 
-  constructor(props) {
+  style: any;
+
+  constructor(props: CalendarListItemProps) {
     super(props);
 
     this.style = styleConstructor(props.theme);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: CalendarListItemProps) {
     const r1 = this.props.item;
     const r2 = nextProps.item;
 
-    return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
+    return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propBump && r2.propBump !== r1.propBump);
   }
 
-  onPressArrowLeft = (_, month) => {
+  onPressArrowLeft = (_: any, month: any) => {
     const {onPressArrowLeft, scrollToMonth} = this.props;
     const monthClone = month.clone();
 
@@ -56,7 +73,7 @@ class CalendarListItem extends Component {
     }
   };
 
-  onPressArrowRight = (_, month) => {
+  onPressArrowRight = (_: any, month: any) => {
     const {onPressArrowRight, scrollToMonth} = this.props;
     const monthClone = month.clone();
 

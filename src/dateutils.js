@@ -1,5 +1,5 @@
 const XDate = require('xdate');
-import {parseDate} from './interface';
+const {parseDate} = require('./interface');
 
 function sameMonth(a, b) {
   return (
