@@ -1,9 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
+import {Theme} from '../../../commons/types';
 
 export interface DotProps {
-  theme?: Object;
+  theme?: Theme;
   color?: String;
   marked?: Boolean;
   selected?: Boolean;
