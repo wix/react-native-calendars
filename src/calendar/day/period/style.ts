@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-// @ts-expect-error
 import * as defaultStyle from '../../../style';
 
 
@@ -57,7 +56,7 @@ export default function styleConstructor(theme: any = {}) {
     disabledText: {
       color: appStyle.textDisabledColor
     },
-    
+
     quickAction: {
       backgroundColor: 'white',
       borderWidth: 1,
