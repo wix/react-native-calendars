@@ -47,4 +47,24 @@ export interface Theme {
   agendaDayNumColor?: string;
   agendaTodayColor?: string;
   agendaKnobColor?: string;
+  foregroundColor?: string;
+  separatorColor?: string;
+  processedColor?: string;
+  processingColor?: string;
+  failedColor?: string;
+  textSecondaryColor?: string;
+  textDefaultColor?: string;
+  textColor?: string;
+  textLinkColor?: string;
+  todayButtonFontFamily?: string;
+  todayButtonFontWeight?: string;
+  todayButtonFontSize?: number;
+  textDayStyle?: object;
+  dotStyle?: object;
+  arrowStyle?: object;
+  todayBackgroundColor?: string;
+  disabledDotColor?: string;
+  todayDotColor?: string;
+  todayButtonTextColor?: string;
+  todayButtonPosition?: string;
 }
