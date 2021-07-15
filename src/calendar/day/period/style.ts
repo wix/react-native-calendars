@@ -1,11 +1,10 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
+import {Theme} from '../../../commons/types';
 
-
-const STYLESHEET_ID = 'stylesheet.day.period';
 const FILLER_HEIGHT = 34;
 
-export default function styleConstructor(theme: any = {}) {
+export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     wrapper: {
@@ -75,6 +74,6 @@ export default function styleConstructor(theme: any = {}) {
     naText: {
       color: '#b6c1cd'
     },
-    ...(theme[STYLESHEET_ID] || {})
+    ...(theme.stylesheet?.day?.period || {})
   });
 }

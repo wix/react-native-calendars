@@ -1,9 +1,8 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../../style';
+import {Theme} from '../../../commons/types';
 
-const STYLESHEET_ID = 'stylesheet.day.basic';
-
-export default function styleConstructor(theme: any = {}) {
+export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     container: {
@@ -65,6 +64,6 @@ export default function styleConstructor(theme: any = {}) {
     todayDot: {
       backgroundColor: appStyle.todayDotColor || appStyle.dotColor
     },
-    ...(theme[STYLESHEET_ID] || {})
+    ...(theme.stylesheet?.day?.basic || {})
   });
 }

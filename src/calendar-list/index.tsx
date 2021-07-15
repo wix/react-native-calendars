@@ -17,7 +17,6 @@ import styleConstructor from './style';
 // @ts-expect-error
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
-// @ts-expect-error
 import CalendarHeader from '../calendar/header/index';
 
 const {width} = Dimensions.get('window');
