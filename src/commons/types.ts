@@ -14,7 +14,7 @@ export interface Theme {
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
-  indicatorColor?: ColorValue;
+  indicatorColor?: ColorValue | object;
   stylesheet?: {
     calendar?: {header?: object};
     day?: {basic?: object; period?: object};
@@ -22,4 +22,29 @@ export interface Theme {
     marking?: object;
     'calendar-list'?: {main?: object};
   };
+  textSectionTitleColor?: string;
+  textSectionTitleDisabledColor?: string;
+  dayTextColor?: string;
+  selectedDayTextColor?: string;
+  monthTextColor?: string;
+  selectedDayBackgroundColor?: string;
+  arrowColor?: string;
+  textDisabledColor?: string;
+  backgroundColor?: string;
+  dotColor?: string;
+  selectedDotColor?: string;
+  disabledArrowColor?: string;
+  textDayFontFamily?: string;
+  textMonthFontFamily?: string;
+  textDayHeaderFontFamily?: string;
+  textDayFontWeight?: string;
+  textMonthFontWeight?: string;
+  textDayHeaderFontWeight?: string;
+  textDayFontSize?: number;
+  textMonthFontSize?: number;
+  textDayHeaderFontSize?: number;
+  agendaDayTextColor?: string;
+  agendaDayNumColor?: string;
+  agendaTodayColor?: string;
+  agendaKnobColor?: string;
 }

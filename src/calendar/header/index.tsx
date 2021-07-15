@@ -4,7 +4,7 @@ import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {Component, Fragment, ReactNode} from 'react';
-import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, ViewStyle, AccessibilityActionEvent} from 'react-native';
+import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 // @ts-expect-error
@@ -228,7 +228,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     if (displayLoadingIndicator) {
       return (
         <ActivityIndicator
-          color={theme?.indicatorColor}
+          color={theme?.indicatorColor as ColorValue}
           testID={testID ? `${HEADER_LOADING_INDICATOR}-${testID}` : HEADER_LOADING_INDICATOR}
         />
       );
