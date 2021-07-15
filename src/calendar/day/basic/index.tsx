@@ -9,7 +9,7 @@ import styleConstructor from './style';
 import Marking, {MarkingTypes} from '../marking';
 import {Theme} from '../../../commons/types';
 
-interface BasicDayProps {
+export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
   marking: any;

@@ -42,6 +42,9 @@ export interface MarkingProps extends DotProps {
   dots?: DOT;
   //multi-period
   periods?: PERIOD;
+  startingDay?: boolean;
+  endingDay?: boolean;
+  accessibilityLabel?: string;
 }
 
 export default class Marking extends Component<MarkingProps> {
