@@ -2,18 +2,19 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
-import {TouchableWithoutFeedback, Text, View} from 'react-native';
+import {TouchableWithoutFeedback, Text, View, ViewStyle} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 // @ts-expect-error
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 import Dot from '../dot';
+import {Theme} from '../../../commons/types';
 
 interface PeriodDayProps {
   state?: 'selected' | 'disabled' | 'today' | '';
   marking?: any;
-  theme?: Object;
+  theme?: Theme;
   onPress?: (date?: Object) => void;
   onLongPress?: (date?: Object) => void;
   date?: Object;
@@ -21,7 +22,7 @@ interface PeriodDayProps {
   testID?: string;
 }
 
-export default class PeriodDay extends Component<PeriodDayProps>{
+export default class PeriodDay extends Component<PeriodDayProps> {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -32,7 +33,7 @@ export default class PeriodDay extends Component<PeriodDayProps>{
     onLongPress: PropTypes.func,
     date: PropTypes.object
   };
-  theme: any;
+  theme: Theme;
   style: any;
   markingStyle: any;
 
@@ -130,8 +131,8 @@ export default class PeriodDay extends Component<PeriodDayProps>{
     const {state, marking} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
-    let leftFillerStyle = {backgroundColor: undefined};
-    let rightFillerStyle = {backgroundColor: undefined};
+    let leftFillerStyle: ViewStyle = {backgroundColor: undefined};
+    let rightFillerStyle: ViewStyle = {backgroundColor: undefined};
     let fillerStyle = {};
     let fillers;
 

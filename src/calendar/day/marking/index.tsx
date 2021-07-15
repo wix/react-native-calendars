@@ -4,6 +4,7 @@ import {View} from 'react-native';
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
+import {Theme} from '../../../commons/types';
 
 export enum MarkingTypes {
   DOT = 'dot',
@@ -25,9 +26,9 @@ type PERIOD = {
   color?: string;
 };
 
-interface MarkingProps extends DotProps {
+export interface MarkingProps extends DotProps {
   type?: MarkingTypes;
-  theme?: Object;
+  theme?: Theme;
   selected?: boolean;
   marked?: boolean;
   today?: boolean;
@@ -41,6 +42,9 @@ interface MarkingProps extends DotProps {
   dots?: DOT;
   //multi-period
   periods?: PERIOD;
+  startingDay?: boolean;
+  endingDay?: boolean;
+  accessibilityLabel?: string;
 }
 
 export default class Marking extends Component<MarkingProps> {

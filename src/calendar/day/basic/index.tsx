@@ -7,15 +7,16 @@ import {TouchableOpacity, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking, {MarkingTypes} from '../marking';
+import {Theme} from '../../../commons/types';
 
-interface BasicDayProps {
+export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
   marking: any;
   /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
   markingType: MarkingTypes;
   /** Theme object */
-  theme: Object;
+  theme: Theme;
   /** onPress callback */
   onPress: (date: Object) => void;
   /** onLongPress callback */
@@ -122,7 +123,7 @@ export default class BasicDay extends Component<BasicDayProps> {
 
   getContainerStyle() {
     const {customStyles, selectedColor} = this.marking;
-    const style = [this.style.base];
+    const style: object[] = [this.style.base];
 
     if (this.isSelected()) {
       style.push(this.style.selected);
