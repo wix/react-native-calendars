@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../style';
 import platformStyles from './platform-style';
+import {Theme} from '../commons/types';
 
-const STYLESHEET_ID = 'stylesheet.agenda.main';
 
-export default function styleConstructor(theme: any = {}) {
+export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   const {knob, weekdays} = platformStyles(appStyle);
 
@@ -48,6 +48,6 @@ export default function styleConstructor(theme: any = {}) {
       marginTop: 104,
       backgroundColor: appStyle.backgroundColor
     },
-    ...(theme[STYLESHEET_ID] || {})
+    ...(theme.stylesheet?.agenda?.main || {})
   });
 }

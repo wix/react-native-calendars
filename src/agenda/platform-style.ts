@@ -1,9 +1,7 @@
-interface AppStyle {
-  agendaKnobColor: string;
-  calendarBackground: string;
-}
+import {ViewStyle} from 'react-native';
+import {Theme} from '../commons/types';
 
-export default function platformStyles(appStyle: AppStyle) {
+export default function platformStyles(appStyle: Theme) {
   return {
     knob: {
       width: 38,
@@ -25,5 +23,5 @@ export default function platformStyles(appStyle: AppStyle) {
       paddingBottom: 7,
       backgroundColor: appStyle.calendarBackground
     }
-  };
+  } as {[key: string]: ViewStyle};
 }

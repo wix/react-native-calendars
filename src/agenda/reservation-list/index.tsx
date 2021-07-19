@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import XDate from 'xdate';
 
-import {Component} from 'react';
-import {ActivityIndicator, View, FlatList} from 'react-native';
+import React, {Component} from 'react';
+import {ActivityIndicator, View, FlatList, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
 // @ts-expect-error
@@ -11,13 +11,20 @@ import dateutils from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
+import {ReservationItemType, ReservationsType} from 'agenda';
 
+
+interface DayReservations {
+  reservation?: ReservationItemType;
+  date: XDate | boolean;
+  day: XDate;
+}
 
 export type ReservactionListProps = ReservationProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
   the value of date key kas to be an empty array []. If there exists no value for date key it is
   considered that the date in question is not yet loaded */
-  reservations: any[];
+  reservations: ReservationsType;
   selectedDay: XDate;
   topDay: XDate;
   /** Show items only for the selected day. Default = false */
@@ -26,20 +33,20 @@ export type ReservactionListProps = ReservationProps & {
   onDayChange?: (day: Date) => void;
   /** specify what should be rendered instead of ActivityIndicator */
   renderEmptyData: () => JSX.Element;
-  style?: any;
+  style?: ViewStyle;
 
   /** onScroll ListView event */
   onScroll?: (yOffset: number) => void;
   /** Called when the user begins dragging the agenda list **/
-  onScrollBeginDrag?: (event: any) => void;
+  onScrollBeginDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** Called when the user stops dragging the agenda list **/
-  onScrollEndDrag?: (event: any) => void;
+  onScrollEndDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** Called when the momentum scroll starts for the agenda list **/
-  onMomentumScrollBegin?: (event: any) => void;
+  onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** Called when the momentum scroll stops for the agenda list **/
-  onMomentumScrollEnd?: (event: any) => void;
+  onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView */
-  refreshControl?: any;
+  refreshControl?: JSX.Element;
   /** Set this true while waiting for new data from a refresh */
   refreshing?: boolean,
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
@@ -47,7 +54,7 @@ export type ReservactionListProps = ReservationProps & {
 }
 
 interface ReservationsListState {
-  reservations: any[];
+  reservations: DayReservations[];
 }
 
 class ReservationList extends Component<ReservactionListProps, ReservationsListState> {
@@ -57,11 +64,11 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     refreshing: false,
     selectedDay: new XDate(true),
   };
-  style: any;
-  heights: number[];
-  selectedDay: XDate;
-  scrollOver: boolean;
-  list: any;
+  private style: {[key: string]: ViewStyle | TextStyle};
+  private heights: number[];
+  private selectedDay: XDate;
+  private scrollOver: boolean;
+  private list?: FlatList<DayReservations> | null;
 
   constructor(props: ReservactionListProps) {
     super(props);
@@ -96,7 +103,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     }
   }
 
-  updateDataSource(reservations: any[]) {
+  updateDataSource(reservations: DayReservations[]) {
     this.setState({
       reservations
     });
@@ -146,7 +153,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
       return {reservations: [], scrollPosition: 0};
     }
 
-    let reservations: any[] = [];
+    let reservations: DayReservations[] = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
 
@@ -185,7 +192,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     return {reservations, scrollPosition};
   }
 
-  onScroll = (event: any) => {
+  onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const yOffset = event.nativeEvent.contentOffset.y;
     _.invoke(this.props, 'onScroll', yOffset);
 
@@ -213,7 +220,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     this.scrollOver = true;
   }
 
-  onRowLayoutChange(index: number, event: any) {
+  onRowLayoutChange(index: number, event: LayoutChangeEvent) {
     this.heights[index] = event.nativeEvent.layout.height;
   }
 
@@ -222,7 +229,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     return false;
   };
 
-  renderRow = ({item, index}: {item: any, index: number}) => {
+  renderRow = ({item, index}: {item: DayReservations, index: number}) => {
     const reservationProps = extractComponentProps(Reservation, this.props);
 
     return (
@@ -232,11 +239,10 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     );
   };
 
-  keyExtractor = (_item: any, index: number) => String(index);
+  keyExtractor = (_item: DayReservations, index: number) => String(index);
 
   render() {
     const {reservations, selectedDay, theme, style} = this.props;
-    console.log('type reservation', reservations);
     if (!reservations || !reservations[toMarkingFormat(selectedDay)]) {
       if (_.isFunction(this.props.renderEmptyData)) {
         return _.invoke(this.props, 'renderEmptyData');

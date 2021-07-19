@@ -1,9 +1,9 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../style';
+import {Theme} from '../../commons/types';
 
-const STYLESHEET_ID = 'stylesheet.agenda.list';
 
-export default function styleConstructor(theme: any = {}) {
+export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     container: {
@@ -38,6 +38,6 @@ export default function styleConstructor(theme: any = {}) {
     indicator: {
       marginTop: 80
     },
-    ...(theme[STYLESHEET_ID] || {})
+    ...(theme.stylesheet?.agenda?.list || {})
   });
 }
