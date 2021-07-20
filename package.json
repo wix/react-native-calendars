@@ -3,6 +3,7 @@
   "version": "1.22.0",
   "main": "src/index.js",
   "description": "React Native Calendar Components",
+  "sideEffects": false,
   "scripts": {
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
     "build:ts": "tsc",
