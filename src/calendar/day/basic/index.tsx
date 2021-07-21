@@ -12,23 +12,23 @@ import {Theme} from '../../../commons/types';
 export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
-  marking: any;
+  marking?: object;
   /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
-  markingType: MarkingTypes;
+  markingType?: MarkingTypes;
   /** Theme object */
-  theme: Theme;
+  theme?: Theme;
   /** onPress callback */
-  onPress: (date: Object) => void;
+  onPress?: (date: Date) => void;
   /** onLongPress callback */
-  onLongPress: (date: Object) => void;
+  onLongPress?: (date: Date) => void;
   /** The date to return from press callbacks */
-  date: Object;
+  date?: Date;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
-  disableAllTouchEventsForDisabledDays: boolean;
+  disableAllTouchEventsForDisabledDays?: boolean;
   /** Test ID*/
-  testID: string;
+  testID?: string;
   /** Accessibility label */
-  accessibilityLabel: string;
+  accessibilityLabel?: string;
 }
 
 export default class BasicDay extends Component<BasicDayProps> {

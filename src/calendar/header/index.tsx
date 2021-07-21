@@ -30,9 +30,9 @@ export interface CalendarHeaderProps {
   addMonth?: (num: number) => void;
   /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
   monthFormat?: string;
-  /**  Hide day names. Default = false */
+  /**  Hide day names */
   hideDayNames?: boolean;
-  /** Hide month navigation arrows. Default = false */
+  /** Hide month navigation arrows */
   hideArrows?: boolean;
   /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
   renderArrow?: (direction: Direction) => ReactNode;
@@ -40,13 +40,13 @@ export interface CalendarHeaderProps {
   onPressArrowLeft?: (method: () => void, month?: XDate) => void;
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void;
-  /** Disable left arrow. Default = false */
+  /** Disable left arrow */
   disableArrowLeft?: boolean;
-  /** Disable right arrow. Default = false */
+  /** Disable right arrow */
   disableArrowRight?: boolean;
   /** Apply custom disable color to selected day indexes */
   disabledDaysIndexes?: number[];
-  /** Replace default month and year title with custom one. the function receive a date as parameter. */
+  /** Replace default month and year title with custom one. the function receive a date as parameter */
   renderHeader?: (date?: XDate) => ReactNode;
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
