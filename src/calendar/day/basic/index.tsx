@@ -75,13 +75,7 @@ export default class BasicDay extends Component<BasicDayProps> {
   };
 
   get marking() {
-    let marking = this.props.marking || {};
-    if (marking && marking.constructor === Array && marking.length) {
-      marking = {
-        marking: true
-      };
-    }
-    return marking;
+    return this.props.marking || {};
   }
 
   shouldDisableTouchEvent() {
