@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, ViewStyle, TextStyle} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
@@ -12,6 +12,11 @@ export enum MarkingTypes {
   PERIOD = 'period',
   MULTI_PERIOD = 'multi-period',
   CUSTOM = 'custom'
+}
+
+type CustomStyle = {
+  container?: ViewStyle,
+  text?: TextStyle
 }
 
 type DOT = {
@@ -45,14 +50,16 @@ export interface MarkingProps extends DotProps {
   startingDay?: boolean;
   endingDay?: boolean;
   accessibilityLabel?: string;
+  customStyles?: CustomStyle;
 }
 
 export default class Marking extends Component<MarkingProps> {
   static displayName = 'IGNORE';
 
   static markingTypes = MarkingTypes;
+  
   style: any;
-
+  
   constructor(props: MarkingProps) {
     super(props);
 

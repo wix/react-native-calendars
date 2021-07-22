@@ -155,7 +155,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     });
   };
 
-  handleDayInteraction(date: any, interaction?: (date: any) => any) {
+  handleDayInteraction(date: Date, interaction?: (date: Date) => any) {
     const {disableMonthChange} = this.props;
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
@@ -173,11 +173,11 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     }
   }
 
-  pressDay = (date: any) => {
+  pressDay = (date: Date) => {
     this.handleDayInteraction(date, this.props.onDayPress);
   };
 
-  longPressDay = (date: any) => {
+  longPressDay = (date: Date) => {
     this.handleDayInteraction(date, this.props.onDayLongPress);
   };
 

@@ -6,13 +6,13 @@ import {TouchableOpacity, Text, View} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
-import Marking, {MarkingTypes} from '../marking';
+import Marking, {MarkingTypes, MarkingProps} from '../marking';
 import {Theme} from '../../../commons/types';
 
 export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
-  marking?: object;
+  marking?: MarkingProps;
   /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
   markingType?: MarkingTypes;
   /** Theme object */
@@ -48,7 +48,7 @@ export default class BasicDay extends Component<BasicDayProps> {
     onLongPress: PropTypes.func,
     /** The date to return from press callbacks */
     date: PropTypes.object,
-    /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
+    /** Disable all touch events for disabled days. Can be override with disableTouchEvent in markedDates*/
     disableAllTouchEventsForDisabledDays: PropTypes.bool
   };
 
