@@ -16,7 +16,7 @@ export interface Theme {
   calendarBackground?: string;
   indicatorColor?: ColorValue | object;
   stylesheet?: {
-    calendar?: {header?: object};
+    calendar?: {main?: object, header?: object};
     day?: {basic?: object; period?: object};
     dot?: object;
     marking?: object;

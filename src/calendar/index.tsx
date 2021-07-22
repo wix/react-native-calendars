@@ -22,7 +22,7 @@ import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
-import {Theme} from '../../commons/types';
+import {Theme} from '../commons/types';
 
 
 type MarkedDatesType = {
