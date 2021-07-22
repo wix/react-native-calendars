@@ -14,7 +14,7 @@ export interface Theme {
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
-  indicatorColor?: ColorValue | object;
+  indicatorColor?: ColorValue;
   stylesheet?: {
     calendar?: {header?: object};
     day?: {basic?: object; period?: object};

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
-import React, {Component, LegacyRef, RefObject} from 'react';
+import React, {Component} from 'react';
 import {Text, View, Dimensions, Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent, StyleSheet} from 'react-native';
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater.js';
@@ -434,15 +434,11 @@ export default class AgendaView extends Component<AgendaProps, AgendaState> {
     const openCalendarScrollPadPosition = !hideKnob && this.state.calendarScrollable && this.props.showClosingKnob ? agendaHeight + HEADER_HEIGHT : 0;
     const shouldAllowDragging = !hideKnob && !this.state.calendarScrollable;
     const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT : openCalendarScrollPadPosition) - KNOB_HEIGHT;
-    const scrollPadStyle = StyleSheet.create({
-      main: {
-        position: 'absolute',
-        width: 80,
-        height: KNOB_HEIGHT,
-        top: scrollPadPosition,
-        left: (this.viewWidth - 80) / 2
-      }
-    });
+    const scrollPadStyle = {
+      height: KNOB_HEIGHT,
+      top: scrollPadPosition,
+      left: (this.viewWidth - 80) / 2,
+    }
 
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
@@ -459,7 +455,7 @@ export default class AgendaView extends Component<AgendaProps, AgendaState> {
         </Animated.View>
         <Animated.ScrollView
           ref={(ref: any) => (this.scrollPad = ref)}
-          style={scrollPadStyle.main}
+          style={[this.style.scrollPadStyle, scrollPadStyle]}
           overScrollMode="never"
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}

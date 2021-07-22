@@ -9,20 +9,21 @@ import dateutils from '../../dateutils';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
-
+import {Theme} from '../../commons/types';
+import {DayReservations} from './index';
 
 export interface ReservationProps {
-  item: any;
+  item: DayReservations;
   /** Specify theme properties to override specific styles for reservation parts. Default = {} */
-  theme: any;
+  theme: Theme;
   /** specify your item comparison function for increased performance */
   rowHasChanged?: (a: any, b: any) => boolean;
   /** specify how each date should be rendered. day can be undefined if the item is not first in that day */
-  renderDay?: (date: XDate, item: any) => React.Component;
+  renderDay?: (date: XDate, item?: DayReservations) => React.Component;
   /** specify how each item should be rendered in agenda */
   renderItem?: (reservation: any, isFirst: boolean) => React.Component;
   /** specify how empty date content with no items should be rendered */
-  renderEmptyDate?: (date: XDate) => React.Component
+  renderEmptyDate?: (date?: XDate) => React.Component
 }
 
 class Reservation extends Component<ReservationProps> {
@@ -57,7 +58,7 @@ class Reservation extends Component<ReservationProps> {
     return changed;
   }
 
-  renderDate(date: XDate, item: any) {
+  renderDate(date?: XDate, item?: DayReservations) {
     if (_.isFunction(this.props.renderDay)) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }

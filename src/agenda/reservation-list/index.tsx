@@ -14,9 +14,9 @@ import Reservation, {ReservationProps} from './reservation';
 import {ReservationItemType, ReservationsType} from 'agenda';
 
 
-interface DayReservations {
+export interface DayReservations {
   reservation?: ReservationItemType;
-  date: XDate | boolean;
+  date?: XDate;
   day: XDate;
 }
 
@@ -128,10 +128,10 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     const day = iterator.clone();
     const res = props.reservations[toMarkingFormat(day)];
     if (res && res.length) {
-      return res.map((reservation: any, i: number) => {
+      return res.map((reservation: ReservationItemType, i: number) => {
         return {
           reservation,
-          date: i ? false : day,
+          date: i ? undefined : day,
           day
         };
       });

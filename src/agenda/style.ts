@@ -48,6 +48,10 @@ export default function styleConstructor(theme: Theme = {}) {
       marginTop: 104,
       backgroundColor: appStyle.backgroundColor
     },
+    scrollPadStyle: {
+      position: 'absolute',
+      width: 80,
+    },
     ...(theme.stylesheet?.agenda?.main || {})
   });
 }
