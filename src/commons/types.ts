@@ -67,4 +67,6 @@ export interface Theme {
   todayDotColor?: string;
   todayButtonTextColor?: string;
   todayButtonPosition?: string;
+  arrowHeight?: number;
+  arrowWidth?: number;
 }

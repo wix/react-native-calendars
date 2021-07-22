@@ -141,7 +141,7 @@ export default class BasicDay extends Component<BasicDayProps> {
 
   getTextStyle() {
     const {customStyles, selectedTextColor} = this.marking;
-    const style = [this.style.text];
+    const style = [this.style.text] as object[];
 
     if (this.isSelected()) {
       style.push(this.style.selectedText);
