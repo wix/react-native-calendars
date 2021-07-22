@@ -352,6 +352,10 @@ class ExpandableCalendar extends Component {
         this.bounceToPosition(this.closedHeight);
       }
     }, 0);
+    
+    if (this.props.onDayPress) {
+      this.props.onDayPress(value);
+    }
   };
 
   onVisibleMonthsChange = value => {
