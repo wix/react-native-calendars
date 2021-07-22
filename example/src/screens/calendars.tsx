@@ -1,5 +1,3 @@
-import _ from 'lodash';
-import XDate from 'xdate';
 import React, {useState, Fragment} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
 import {Calendar} from 'react-native-calendars';
