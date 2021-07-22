@@ -19,19 +19,6 @@ const CalendarsScreen = () => {
     setSelected(day.dateString);
   };
 
-  const getDisabledDates = (startDate, endDate, daysToDisable) => {
-    const disabledDates = {};
-    const start = XDate(startDate);
-    const end = XDate(endDate);
-
-    for (let m = XDate(start); m.diffDays(end) <= 0; m.addDays(1)) {
-      if (_.includes(daysToDisable, m.weekday())) {
-        disabledDates[m.toString('YYYY-MM-DD')] = {disabled: true};
-      }
-    }
-    return disabledDates;
-  };
-
   const renderCalendarWithSelectableDate = () => {
     return (
       <Fragment>
@@ -185,7 +172,6 @@ const CalendarsScreen = () => {
         <Calendar
           current={'2012-05-16'}
           minDate={'2012-05-01'}
-          disabledDaysIndexes={[0, 6]}
           markingType={'period'}
           markedDates={{
             '2012-05-15': {marked: true, dotColor: '#50cebb'},
@@ -209,7 +195,12 @@ const CalendarsScreen = () => {
                 borderBottomRightRadius: 5
               }
             },
-            ...getDisabledDates('2012-05-01', '2012-05-30', [0, 6])
+            '2012-05-30': {disabled: true, disableTouchEvent: true}
+          }}
+          disabledDaysIndexes={[0, 6]}
+          theme={{
+            textSectionTitleDisabledColor: 'grey',
+            textSectionTitleColor: '#00BBF2'
           }}
         />
       </Fragment>
@@ -257,7 +248,6 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Custom calendar with custom marking type</Text>
         <Calendar
           style={styles.calendar}
-          onDayLongPress={this.onDayLongPress}
           hideExtraDays
           current={'2018-03-01'}
           minDate={'2018-03-01'}
@@ -432,13 +422,10 @@ const CalendarsScreen = () => {
     );
   };
 
-  const initialNumToRender = 100; // Workaround for Detox 18 migration bug
-
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       testID={testIDs.calendars.CONTAINER}
-      initialNumToRender={initialNumToRender}
     >
       {renderSwitch()}
       {showMarkedDatesExamples && renderMarkedDatesExamples()}
