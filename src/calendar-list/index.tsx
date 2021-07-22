@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import XDate from 'xdate';
 import PropTypes from 'prop-types';
+import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, View} from 'react-native';
+import {FlatList, Platform, Dimensions, View, ViewStyle} from 'react-native';
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
@@ -14,7 +14,6 @@ import dateutils from '../dateutils';
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 
-// @ts-expect-error
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
@@ -31,7 +30,7 @@ export type CalendarListProps = CalendarProps & {
   /** Dynamic calendar height */
   calendarHeight?: number;
   /** Style for the List item (the calendar) */
-  calendarStyle?: number | Array<any> | Object;
+  calendarStyle?: ViewStyle;
   /** Whether to use static header that will not scroll with the list (horizontal only) */
   staticHeader?: boolean;
   /** Enable or disable vertical / horizontal scroll indicator. Default = false */
