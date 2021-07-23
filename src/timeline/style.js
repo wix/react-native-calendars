@@ -1,7 +1,7 @@
 // @flow
 import {Platform, StyleSheet} from 'react-native';
 
-const CALENDAR_VERTICAL_OFFSET = 15;
+export const CALENDAR_VERTICAL_OFFSET = 15;
 
 export default function styleConstructor(
   theme = {},
@@ -92,6 +92,7 @@ export default function styleConstructor(
     },
     line: {
       height: 1,
+      zIndex: 10, // PAY ATTENTION: done for overlowing over stroke resttime lines
       position: 'absolute',
       backgroundColor: 'rgb(238, 241, 246);',
       left: offsetLeft + timeTextWidth,

@@ -12,6 +12,7 @@ import React from 'react';
 import moment from 'moment-timezone';
 import _ from 'lodash';
 import styleConstructor from './style';
+import { CALENDAR_VERTICAL_OFFSET } from './style';
 
 const TEXT_LINE_HEIGHT = 17;
 
@@ -27,6 +28,12 @@ export default class Timeline extends React.PureComponent {
     end: PropTypes.number,
     eventTapped: PropTypes.func,
     format24h: PropTypes.bool,
+    /* restTime type 
+    {
+      Component: ({ top, height }: Props) => JSX.Element;
+      endTime: number;
+    } */
+    restTime: PropTypes.object,
     events: PropTypes.arrayOf(PropTypes.shape({
       start: PropTypes.string.isRequired,
       end: PropTypes.string.isRequired,
@@ -45,6 +52,7 @@ export default class Timeline extends React.PureComponent {
     end: 24,
     events: [],
     format24h: true,
+    restTime: null,
     offsetLeft: 16,
     offsetRight: 20,
     offsetBottom: 0,
@@ -191,6 +199,20 @@ export default class Timeline extends React.PureComponent {
     return this.props.lines.map(lineConfig => this._renderSpecialLine(lineConfig))
   }
 
+  _renderRestTimeBlock() {
+    if (!this.props.restTime) return null;
+
+    const { restTime: { restEndTime, Component } } = this.props;
+    const offset = this.getTimeHeightOffset(restEndTime, true);
+    
+    return (
+      <Component
+        height={offset}
+        offset={CALENDAR_VERTICAL_OFFSET}
+      />
+    );
+  }
+
   _renderSpecialLine(lineConfig){
     const {date, ignoreTimezone, timeTextColor, color, showTime} = lineConfig
     const offset = this.getTimeHeightOffset(date, ignoreTimezone)
@@ -294,6 +316,7 @@ export default class Timeline extends React.PureComponent {
           {this._renderLines()}
           {this._renderEvents()}
           {this._renderSpecialLines()}
+          {this._renderRestTimeBlock()}
         </View>
       </ScrollView>
     );
