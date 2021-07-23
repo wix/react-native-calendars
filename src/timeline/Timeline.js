@@ -155,7 +155,7 @@ export default class Timeline extends React.PureComponent {
   }
 
   _renderLines() {
-    const {format24h, start = 0, end = 24, specialFirstLine} = this.props;
+    const {format24h, start = 0, end = 24} = this.props;
     const offset = this.calendarHeight / (end - start);
 
     return range(start, end + 1).map((i, index) => {
