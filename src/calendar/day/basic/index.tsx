@@ -145,6 +145,16 @@ export default class BasicDay extends Component<BasicDayProps> {
     return style;
   }
 
+  getOuterContainerStyle() {
+        const { customStyles } = this.marking;
+        const style = [];
+        if (this.isCustom() && customStyles && customStyles.outerContainer) {
+            style.push(customStyles.outerContainer);
+        }
+
+        return style;
+    }
+
   getTextStyle() {
     const {customStyles, selectedTextColor} = this.marking;
     const style = [this.style.text];
@@ -207,20 +217,23 @@ export default class BasicDay extends Component<BasicDayProps> {
   renderContainer() {
     const {activeOpacity} = this.marking;
 
+
     return (
-      <TouchableOpacity
-        testID={this.props.testID}
-        style={this.getContainerStyle()}
-        disabled={this.shouldDisableTouchEvent()}
-        activeOpacity={activeOpacity}
-        onPress={!this.shouldDisableTouchEvent() ? this.onPress : undefined}
-        onLongPress={!this.shouldDisableTouchEvent() ? this.onLongPress : undefined}
-        accessible
-        accessibilityRole={this.isDisabled() ? undefined : 'button'}
-        accessibilityLabel={this.props.accessibilityLabel}
-      >
-        {this.isMultiPeriod() ? this.renderText() : this.renderContent()}
-      </TouchableOpacity>
+      <View style={this.getOuterContainerStyle()}>
+        <TouchableOpacity
+          testID={this.props.testID}
+          style={this.getContainerStyle()}
+          disabled={this.shouldDisableTouchEvent()}
+          activeOpacity={activeOpacity}
+          onPress={!this.shouldDisableTouchEvent() ? this.onPress : undefined}
+          onLongPress={!this.shouldDisableTouchEvent() ? this.onLongPress : undefined}
+          accessible
+          accessibilityRole={this.isDisabled() ? undefined : 'button'}
+          accessibilityLabel={this.props.accessibilityLabel}
+        >
+          {this.isMultiPeriod() ? this.renderText() : this.renderContent()}
+        </TouchableOpacity>
+      </View>
     );
   }
 
