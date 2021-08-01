@@ -1,14 +1,36 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
+
+// @ts-expect-error
 import {xdateToData} from '../../interface';
+// @ts-expect-error
 import dateutils from '../../dateutils';
+// @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
+import {Theme} from '../../commons/types';
+import {DayReservations} from './index';
 
-class Reservation extends Component {
+
+export interface ReservationProps {
+  item: DayReservations;
+  /** Specify theme properties to override specific styles for reservation parts. Default = {} */
+  theme: Theme;
+  /** specify your item comparison function for increased performance */
+  rowHasChanged?: (a: any, b: any) => boolean;
+  /** specify how each date should be rendered. day can be undefined if the item is not first in that day */
+  renderDay?: (date: XDate, item?: DayReservations) => React.Component;
+  /** specify how each item should be rendered in agenda */
+  renderItem?: (reservation: any, isFirst: boolean) => React.Component;
+  /** specify how empty date content with no items should be rendered */
+  renderEmptyDate?: (date?: XDate) => React.Component
+}
+
+class Reservation extends Component<ReservationProps> {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -23,15 +45,16 @@ class Reservation extends Component {
     renderItem: PropTypes.func,
     /** specify how empty date content with no items should be rendered */
     renderEmptyDate: PropTypes.func
-  };
+  }
 
-  constructor(props) {
+  style;
+
+  constructor(props: ReservationProps) {
     super(props);
-
     this.style = styleConstructor(props.theme);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: ReservationProps) {
     const r1 = this.props.item;
     const r2 = nextProps.item;
     let changed = true;
@@ -54,12 +77,13 @@ class Reservation extends Component {
     return changed;
   }
 
-  renderDate(date, item) {
+  renderDate(date?: XDate, item?: DayReservations) {
     if (_.isFunction(this.props.renderDay)) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
 
     const today = dateutils.isToday(date) ? this.style.today : undefined;
+    const dayNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
 
     if (date) {
       return (
@@ -68,14 +92,15 @@ class Reservation extends Component {
             {date.getDate()}
           </Text>
           <Text allowFontScaling={false} style={[this.style.dayText, today]}>
-            {XDate.locales[XDate.defaultLocale].dayNamesShort[date.getDay()]}
+            {dayNames ? dayNames[date.getDay()] : undefined}
           </Text>
         </View>
       );
     } else {
-      return <View style={this.style.day} />;
+      return <View style={this.style.day}/>;
     }
   }
+
 
   render() {
     const {reservation, date} = this.props.item;
