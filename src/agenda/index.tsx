@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
+
 import React, {Component} from 'react';
 import {Text, View, Dimensions, Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent, StyleSheet} from 'react-native';
 
@@ -17,7 +18,7 @@ import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import {VelocityTracker} from '../input';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import styleConstructor from './style';
-import ReservationList, {ReservactionListProps}  from './reservation-list';
+import ReservationList, {ReservationListProps}  from './reservation-list';
 
 
 const HEADER_HEIGHT = 104;
@@ -33,7 +34,7 @@ export type ReservationsType = {
   [date: string]: ReservationItemType[]
 }
 
-export type AgendaProps = CalendarListProps & ReservactionListProps & {
+export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** agenda container style */
   style?: ViewStyle;
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
@@ -467,7 +468,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       height: KNOB_HEIGHT,
       top: scrollPadPosition,
       left: (this.viewWidth - 80) / 2,
-    }
+    };
 
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>

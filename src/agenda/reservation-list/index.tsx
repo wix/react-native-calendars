@@ -21,7 +21,7 @@ export interface DayReservations {
   day: XDate;
 }
 
-export type ReservactionListProps = ReservationProps & {
+export type ReservationListProps = ReservationProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
   the value of date key kas to be an empty array []. If there exists no value for date key it is
   considered that the date in question is not yet loaded */
@@ -58,7 +58,7 @@ interface ReservationsListState {
   reservations: DayReservations[];
 }
 
-class ReservationList extends Component<ReservactionListProps, ReservationsListState> {
+class ReservationList extends Component<ReservationListProps, ReservationsListState> {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -104,7 +104,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
   private scrollOver: boolean;
   private list?: FlatList<DayReservations> | null;
 
-  constructor(props: ReservactionListProps) {
+  constructor(props: ReservationListProps) {
     super(props);
 
     this.style = styleConstructor(props.theme);
@@ -122,7 +122,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     this.updateDataSource(this.getReservations(this.props).reservations);
   }
 
-  componentDidUpdate(prevProps: ReservactionListProps) {
+  componentDidUpdate(prevProps: ReservationListProps) {
     if (prevProps !== this.props) {
       if (!dateutils.sameDate(prevProps.topDay, this.props.topDay)) {
         this.setState(
@@ -143,7 +143,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     });
   }
 
-  updateReservations(props: ReservactionListProps) {
+  updateReservations(props: ReservationListProps) {
     const {selectedDay} = props;
     const reservations = this.getReservations(props);
     if (this.list && !dateutils.sameDate(selectedDay, this.selectedDay)) {
@@ -158,7 +158,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     this.updateDataSource(reservations.reservations);
   }
 
-  getReservationsForDay(iterator: XDate, props: ReservactionListProps) {
+  getReservationsForDay(iterator: XDate, props: ReservationListProps) {
     const day = iterator.clone();
     const res = props.reservations[toMarkingFormat(day)];
     if (res && res.length) {
@@ -181,7 +181,7 @@ class ReservationList extends Component<ReservactionListProps, ReservationsListS
     }
   }
 
-  getReservations(props: ReservactionListProps) {
+  getReservations(props: ReservationListProps) {
     const {selectedDay, showOnlySelectedDayItems} = props;
     if (!props.reservations || !selectedDay) {
       return {reservations: [], scrollPosition: 0};
