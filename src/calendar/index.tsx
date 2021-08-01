@@ -5,6 +5,7 @@ import memoize from 'memoize-one';
 
 import React, {Component, RefObject} from 'react';
 import {View, ViewStyle} from 'react-native';
+// @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 // @ts-expect-error
@@ -22,11 +23,12 @@ import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
+import {MarkingProps} from './day/marking';
 import {Theme} from '../commons/types';
 
 
 type MarkedDatesType = {
-  [key: string]: object
+  [key: string]: MarkingProps
 }
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
