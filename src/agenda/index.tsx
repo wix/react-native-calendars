@@ -1,8 +1,10 @@
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
 import React, {Component} from 'react';
 import {Text, View, Dimensions, Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent, StyleSheet} from 'react-native';
+
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater.js';
 // @ts-expect-error
@@ -16,6 +18,7 @@ import {VelocityTracker} from '../input';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import styleConstructor from './style';
 import ReservationList, {ReservactionListProps}  from './reservation-list';
+
 
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
@@ -64,7 +67,6 @@ type AgendaState = {
   topDay: XDate;
 }
 
-
 /**
  * @description: Agenda component
  * @extends: CalendarList
@@ -72,8 +74,36 @@ type AgendaState = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/agenda.gif
  */
-export default class AgendaView extends Component<AgendaProps, AgendaState> {
+export default class Agenda extends Component<AgendaProps, AgendaState> {
   static displayName = 'Agenda';
+
+  static propTypes = {
+    ...CalendarList.propTypes,
+    ...ReservationList.propTypes,
+    /** agenda container style */
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
+    /** the list of items that have to be displayed in agenda. If you want to render item as empty date
+     the value of date key has to be an empty array []. If there exists no value for date key it is
+     considered that the date in question is not yet loaded */
+    items: PropTypes.object,
+    /** callback that gets called when items for a certain month should be loaded (month became visible) */
+    loadItemsForMonth: PropTypes.func,
+    /** callback that fires when the calendar is opened or closed */
+    onCalendarToggled: PropTypes.func,
+    /** callback that gets called on day press */
+    onDayPress: PropTypes.func,
+    /** callback that gets called when day changes while scrolling agenda list */
+    onDaychange: PropTypes.func, //TODO: Should be renamed 'onDayChange'
+    /** specify how agenda knob should look like */
+    renderKnob: PropTypes.func,
+    /** initially selected day */
+    selected: PropTypes.any, //TODO: Should be renamed 'selectedDay'
+    /** Hide knob button. Default = false */
+    hideKnob: PropTypes.bool,
+    /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
+    showClosingKnob: PropTypes.bool
+  }
+
   private style: {[key: string]: ViewStyle};
   private viewHeight: number;
   private viewWidth: number;
@@ -379,8 +409,7 @@ export default class AgendaView extends Component<AgendaProps, AgendaState> {
   });
 
   renderWeekNumbersSpace = () => {
-    // @ts-expect-error
-    return this.props.showWeekNumbers && <View allowFontScaling={false} style={this.style.weekday} numberOfLines={1} />;
+    return this.props.showWeekNumbers && <View style={this.style.weekday}/>;
   };
 
   render() {
