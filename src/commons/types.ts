@@ -1,4 +1,4 @@
-import {ColorValue} from 'react-native';
+import {ColorValue, TextStyle} from 'react-native';
 export interface Theme {
   container?: object;
   contentStyle?: object;
@@ -14,13 +14,14 @@ export interface Theme {
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
-  indicatorColor?: ColorValue | object;
+  indicatorColor?: ColorValue;
   stylesheet?: {
     calendar?: {header?: object};
     day?: {basic?: object; period?: object};
     dot?: object;
     marking?: object;
     'calendar-list'?: {main?: object};
+    agenda?: {main?: object, list?: object};
   };
   textSectionTitleColor?: string;
   textSectionTitleDisabledColor?: string;
@@ -39,7 +40,7 @@ export interface Theme {
   textDayHeaderFontFamily?: string;
   textDayFontWeight?: string;
   textMonthFontWeight?: string;
-  textDayHeaderFontWeight?: string;
+  textDayHeaderFontWeight?: TextStyle['fontWeight'];
   textDayFontSize?: number;
   textMonthFontSize?: number;
   textDayHeaderFontSize?: number;
