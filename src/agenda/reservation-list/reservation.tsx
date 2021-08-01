@@ -15,6 +15,7 @@ import styleConstructor from './style';
 import {Theme} from '../../commons/types';
 import {DayReservations} from './index';
 
+
 export interface ReservationProps {
   item: DayReservations;
   /** Specify theme properties to override specific styles for reservation parts. Default = {} */
@@ -96,7 +97,7 @@ class Reservation extends Component<ReservationProps> {
         </View>
       );
     } else {
-      return <View style={this.style.day} />;
+      return <View style={this.style.day}/>;
     }
   }
 

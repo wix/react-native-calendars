@@ -4,7 +4,7 @@ import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
-import {Text, View, Dimensions, Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent, StyleSheet} from 'react-native';
+import {Text, View, Dimensions, Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater.js';
@@ -388,10 +388,10 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
 
   renderKnob() {
     const {showClosingKnob, hideKnob, renderKnob} = this.props;
-    let knob: JSX.Element | null = <View style={this.style.knobContainer} />;
+    let knob: JSX.Element | null = <View style={this.style.knobContainer}/>;
 
     if (!hideKnob) {
-      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
+      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
       knob = !this.state.calendarScrollable || showClosingKnob ? (
         <View style={this.style.knobContainer}>
           <View ref={c => (this.knob = c)}>{knobView}</View>

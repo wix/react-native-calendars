@@ -4,6 +4,7 @@ import XDate from 'xdate';
 
 import React, {Component} from 'react';
 import {ActivityIndicator, View, FlatList, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
+
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
 // @ts-expect-error
@@ -268,7 +269,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
-        <Reservation {...reservationProps} item={item} />
+        <Reservation {...reservationProps} item={item}/>
       </View>
     );
   };
@@ -282,7 +283,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         return _.invoke(this.props, 'renderEmptyData');
       }
 
-      return <ActivityIndicator style={this.style.indicator} color={theme && theme.indicatorColor} />;
+      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
     }
 
     return (
