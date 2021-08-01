@@ -111,7 +111,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
   private headerState: string;
   private currentMonth: XDate;
   private knobTracker: any;
-  private isMounted: boolean | undefined;
+  private _isMounted: boolean | undefined;
   private scrollPad: any;
   private calendar: any;
   private knob: any;
@@ -145,12 +145,12 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
   }
 
   componentDidMount() {
-    this.isMounted = true;
+    this._isMounted = true;
     this.loadReservations(this.props);
   }
 
   componentWillUnmount() {
-    this.isMounted = false;
+    this._isMounted = false;
     this.state.scrollY.removeAllListeners();
   }
 
@@ -329,7 +329,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       clearTimeout(this.scrollTimeout);
 
       this.scrollTimeout = setTimeout(() => {
-        if (this.isMounted) {
+        if (this._isMounted) {
           _.invoke(this.props, 'loadItemsForMonth', months[0]);
         }
       }, 200);
@@ -467,7 +467,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       height: KNOB_HEIGHT,
       top: scrollPadPosition,
       left: (this.viewWidth - 80) / 2,
-    };
+    }
 
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
