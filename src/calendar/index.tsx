@@ -138,10 +138,10 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   header: RefObject<CalendarHeader> = React.createRef();
 
   addMonth = (count: number) => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true), false);
+    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   };
 
-  updateMonth = (day: any, doNotTriggerListeners: boolean) => {
+  updateMonth = (day: any, doNotTriggerListeners = false) => {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
@@ -165,7 +165,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
       const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
 
       if (shouldUpdateMonth) {
-        this.updateMonth(day, false);
+        this.updateMonth(day);
       }
       if (interaction) {
         interaction(xdateToData(day));

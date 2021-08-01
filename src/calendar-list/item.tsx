@@ -101,7 +101,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
       headerStyle,
       onPressArrowLeft,
       onPressArrowRight,
-      //@ts-ignore
+      // @ts-expect-error
       context
     } = this.props;
     const calendarProps = extractComponentProps(Calendar, this.props);
