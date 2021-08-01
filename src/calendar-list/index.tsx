@@ -19,6 +19,10 @@ import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
 
 const {width} = Dimensions.get('window');
+const CALENDAR_WIDTH = width;
+const CALENDAR_HEIGHT = 360;
+const PAST_SCROLL_RANGE = 50;
+const FUTURE_SCROLL_RANGE = 50;
 
 export type CalendarListProps = CalendarProps & {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
@@ -114,10 +118,10 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   static defaultProps = {
-    calendarWidth: width,
-    calendarHeight: 360,
-    pastScrollRange: 50,
-    futureScrollRange: 50,
+    calendarWidth: CALENDAR_WIDTH,
+    calendarHeight: CALENDAR_HEIGHT,
+    pastScrollRange: PAST_SCROLL_RANGE,
+    futureScrollRange: FUTURE_SCROLL_RANGE,
     showScrollIndicator: false,
     horizontal: false,
     scrollsToTop: false,
@@ -140,7 +144,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     const rows = [];
     const texts = [];
     const date = parseDate(props.current) || new XDate();
-    const {pastScrollRange = 50, futureScrollRange = 50} = props;
+    const {pastScrollRange = PAST_SCROLL_RANGE, futureScrollRange = FUTURE_SCROLL_RANGE} = props;
 
     for (let i = 0; i <= pastScrollRange + futureScrollRange; i++) {
       const rangeDate = date.clone().addMonths(i - pastScrollRange, true);
@@ -195,7 +199,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   }
 
   scrollToDay(d: XDate, offset: number, animated: boolean) {
-    const {horizontal, calendarHeight = 360, calendarWidth = width, pastScrollRange = 50, firstDay} = this.props;
+    const {horizontal, calendarHeight = CALENDAR_HEIGHT, calendarWidth = CALENDAR_WIDTH, pastScrollRange = PAST_SCROLL_RANGE, firstDay} = this.props;
     const day = parseDate(d);
     const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(day.clone().setDate(1)));
     const size = horizontal ? calendarWidth : calendarHeight;
@@ -216,7 +220,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   }
 
   scrollToMonth = (m: XDate) => {
-    const {horizontal, calendarHeight = 360, calendarWidth = width, pastScrollRange = 50, animateScroll = false} = this.props;
+    const {horizontal, calendarHeight = CALENDAR_HEIGHT, calendarWidth = CALENDAR_WIDTH, pastScrollRange = PAST_SCROLL_RANGE, animateScroll = false} = this.props;
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
     let diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
@@ -227,7 +231,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   getItemLayout = (_: Array<XDateAndBump> | undefined | null, index: number) => {
-    const {horizontal, calendarHeight = 360, calendarWidth = width} = this.props;
+    const {horizontal, calendarHeight = CALENDAR_HEIGHT, calendarWidth = CALENDAR_WIDTH} = this.props;
     const size = horizontal ? calendarWidth : calendarHeight;
 
     return {
@@ -238,7 +242,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   getMonthIndex(month: XDate) {
-    const {pastScrollRange = 50} = this.props;
+    const {pastScrollRange = PAST_SCROLL_RANGE} = this.props;
     let diffMonths = this.state.openDate.diffMonths(month) + pastScrollRange;
     return diffMonths;
   }
@@ -281,7 +285,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     for (let i = 0; i < rowclone.length; i++) {
       let val: XDate | string = rowclone[i];
       const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
-      const {pastScrollRange = 50} = this.props;
+      const {pastScrollRange = PAST_SCROLL_RANGE} = this.props;
 
       if (rowShouldBeRendered && !rowclone[i].getTime) {
         val = this.state.openDate.clone().addMonths(i - pastScrollRange, true);
