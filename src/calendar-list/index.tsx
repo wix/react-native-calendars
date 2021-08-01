@@ -4,6 +4,7 @@ import XDate from 'xdate';
 
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent} from 'react-native';
+
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
@@ -13,7 +14,6 @@ import dateutils from '../dateutils';
 // @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
-
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
