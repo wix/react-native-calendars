@@ -5,8 +5,8 @@ module.exports = {
       build: "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
       type: "ios.simulator",
       device: {
-        type: "iPhone 11",
-        os: "iOS 13.7"
+        type: "iPhone 12",
+        os: "iOS 14.4"
       }
     },
     "ios.sim.release": {
@@ -14,8 +14,8 @@ module.exports = {
       build: "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
       type: "ios.simulator",
       device: {
-        type: "iPhone 11",
-        os: "iOS 13.7"
+        type: "iPhone 12",
+        os: "iOS 14.4"
       }
     }
   },
