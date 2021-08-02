@@ -6,7 +6,7 @@ module.exports = {
       type: "ios.simulator",
       device: {
         type: "iPhone 12",
-        os: "iOS 14.4"
+        os: "iOS 14.2"
       }
     },
     "ios.sim.release": {
@@ -15,7 +15,7 @@ module.exports = {
       type: "ios.simulator",
       device: {
         type: "iPhone 12",
-        os: "iOS 14.4"
+        os: "iOS 14.2"
       }
     }
   },
