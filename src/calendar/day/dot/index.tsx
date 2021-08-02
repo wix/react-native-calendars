@@ -15,7 +15,7 @@ export interface DotProps {
 
 const Dot = ({theme, marked, disabled, color, today, selected}: DotProps) => {
   const style = styleConstructor(theme);
-  const dotStyle = [style.dot];
+  const dotStyle = [style.dot] as object[];
 
   if (marked) {
     dotStyle.push(style.visibleDot);

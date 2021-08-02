@@ -1,4 +1,6 @@
-export default function platformStyles(appStyle) {
+import {Theme} from '../commons/types';
+
+export default function platformStyles(appStyle: Theme) {
   return {
     knob: {
       width: 38,
@@ -13,9 +15,9 @@ export default function platformStyles(appStyle) {
       right: 0,
       top: 0,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingLeft: 24,
-      paddingRight: 24,
+      justifyContent: 'space-around',
+      marginLeft: 15,
+      marginRight: 15,
       paddingTop: 15,
       paddingBottom: 7,
       backgroundColor: appStyle.calendarBackground
