@@ -55,25 +55,25 @@ export default function styleConstructor(theme: Theme = {}) {
     disabledText: {
       color: appStyle.textDisabledColor
     },
-
-    quickAction: {
-      backgroundColor: 'white',
-      borderWidth: 1,
-      borderColor: '#c1e4fe'
-    },
-    quickActionText: {
-      marginTop: 6,
-      color: appStyle.textColor
-    },
-    firstQuickAction: {
-      backgroundColor: appStyle.textLinkColor
-    },
-    firstQuickActionText: {
-      color: 'white'
-    },
-    naText: {
-      color: '#b6c1cd'
-    },
+    
+    // quickAction: {
+    //   backgroundColor: 'white',
+    //   borderWidth: 1,
+    //   borderColor: '#c1e4fe'
+    // },
+    // quickActionText: {
+    //   marginTop: 6,
+    //   color: appStyle.textColor
+    // },
+    // firstQuickAction: {
+    //   backgroundColor: appStyle.textLinkColor
+    // },
+    // firstQuickActionText: {
+    //   color: 'white'
+    // },
+    // naText: {
+    //   color: '#b6c1cd'
+    // },
     ...(theme.stylesheet?.day?.period || {})
   });
 }

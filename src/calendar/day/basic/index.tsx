@@ -6,29 +6,29 @@ import {TouchableOpacity, Text, View} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
-import Marking, {MarkingTypes} from '../marking';
+import Marking, {MarkingTypes, MarkingProps} from '../marking';
 import {Theme} from '../../../commons/types';
 
 export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
   /** The marking object */
-  marking: any;
+  marking?: MarkingProps;
   /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
-  markingType: MarkingTypes;
+  markingType?: MarkingTypes;
   /** Theme object */
-  theme: Theme;
+  theme?: Theme;
   /** onPress callback */
-  onPress: (date: Object) => void;
+  onPress?: (date: Date) => void;
   /** onLongPress callback */
-  onLongPress: (date: Object) => void;
+  onLongPress?: (date: Date) => void;
   /** The date to return from press callbacks */
-  date: Object;
+  date?: Date;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
-  disableAllTouchEventsForDisabledDays: boolean;
+  disableAllTouchEventsForDisabledDays?: boolean;
   /** Test ID*/
-  testID: string;
+  testID?: string;
   /** Accessibility label */
-  accessibilityLabel: string;
+  accessibilityLabel?: string;
 }
 
 export default class BasicDay extends Component<BasicDayProps> {
@@ -48,7 +48,7 @@ export default class BasicDay extends Component<BasicDayProps> {
     onLongPress: PropTypes.func,
     /** The date to return from press callbacks */
     date: PropTypes.object,
-    /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
+    /** Disable all touch events for disabled days. Can be override with disableTouchEvent in markedDates*/
     disableAllTouchEventsForDisabledDays: PropTypes.bool
   };
 
@@ -75,13 +75,7 @@ export default class BasicDay extends Component<BasicDayProps> {
   };
 
   get marking() {
-    let marking = this.props.marking || {};
-    if (marking && marking.constructor === Array && marking.length) {
-      marking = {
-        marking: true
-      };
-    }
-    return marking;
+    return this.props.marking || {};
   }
 
   shouldDisableTouchEvent() {
@@ -147,7 +141,7 @@ export default class BasicDay extends Component<BasicDayProps> {
 
   getTextStyle() {
     const {customStyles, selectedTextColor} = this.marking;
-    const style = [this.style.text];
+    const style = [this.style.text] as object[];
 
     if (this.isSelected()) {
       style.push(this.style.selectedText);

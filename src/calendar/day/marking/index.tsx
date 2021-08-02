@@ -1,5 +1,8 @@
+import _ from 'lodash';
+
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, ViewStyle, TextStyle} from 'react-native';
+
 // @ts-expect-error
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
@@ -14,16 +17,21 @@ export enum MarkingTypes {
   CUSTOM = 'custom'
 }
 
+type CustomStyle = {
+  container?: ViewStyle,
+  text?: TextStyle
+}
+
 type DOT = {
   key?: string;
-  color?: string;
+  color: string;
   selectedDotColor?: string;
 };
 
 type PERIOD = {
+  color: string;
   startingDay?: boolean;
   endingDay?: boolean;
-  color?: string;
 };
 
 export interface MarkingProps extends DotProps {
@@ -39,20 +47,22 @@ export interface MarkingProps extends DotProps {
   selectedTextColor?: string;
   dotColor?: string;
   //multi-dot
-  dots?: DOT;
+  dots?: DOT[];
   //multi-period
-  periods?: PERIOD;
+  periods?: PERIOD[];
   startingDay?: boolean;
   endingDay?: boolean;
   accessibilityLabel?: string;
+  customStyles?: CustomStyle;
 }
 
 export default class Marking extends Component<MarkingProps> {
   static displayName = 'IGNORE';
 
   static markingTypes = MarkingTypes;
+  
   style: any;
-
+  
   constructor(props: MarkingProps) {
     super(props);
 
@@ -76,12 +86,12 @@ export default class Marking extends Component<MarkingProps> {
     ]);
   }
 
-  getItems(items: DOT | PERIOD) {
+  getItems(items?: DOT[] | PERIOD[]) {
     const {type} = this.props;
 
     if (items && Array.isArray(items) && items.length > 0) {
       // Filter out items so that we process only those which have color property
-      const validItems = items.filter(d => d && d.color);
+      const validItems = _.filter(items, function(o: DOT | PERIOD) { return !o.color; });
 
       return validItems.map((item, index) => {
         return type === MarkingTypes.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);
@@ -101,7 +111,7 @@ export default class Marking extends Component<MarkingProps> {
     }
   }
 
-  renderMultiMarkings(containerStyle: Object, items: any) {
+  renderMultiMarkings(containerStyle: Object, items?: DOT[] | PERIOD[]) {
     return <View style={containerStyle}>{this.getItems(items)}</View>;
   }
 
@@ -119,7 +129,7 @@ export default class Marking extends Component<MarkingProps> {
     if (endingDay) {
       style.push(this.style.endingDay);
     }
-    return <View key={index} style={style} />;
+    return <View key={index} style={style}/>;
   }
 
   renderDot(index?: number, item?: any) {

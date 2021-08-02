@@ -16,7 +16,7 @@ export interface Theme {
   calendarBackground?: string;
   indicatorColor?: ColorValue;
   stylesheet?: {
-    calendar?: {header?: object};
+    calendar?: {main?: object, header?: object};
     day?: {basic?: object; period?: object};
     dot?: object;
     marking?: object;
@@ -68,4 +68,6 @@ export interface Theme {
   todayDotColor?: string;
   todayButtonTextColor?: string;
   todayButtonPosition?: string;
+  arrowHeight?: number;
+  arrowWidth?: number;
 }
