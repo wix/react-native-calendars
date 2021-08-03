@@ -11,12 +11,9 @@ module.exports = {
     },
     "ios.sim.release": {
       binaryPath: "ios/build/Build/Products/Release-iphonesimulator/CalendarsExample.app",
-      build: "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Release -destination 'platform=iOS Simulator,name=iPhone 12' -derivedDataPath ios/build",
+      build: "xcodebuild -workspace ios/CalendarsExample.xcworkspace -scheme CalendarsExample -configuration Release -destination 'platform=iOS Simulator,name=iPhone 11' -derivedDataPath ios/build",
       type: "ios.simulator",
-      device: {
-        type: "iPhone 12",
-        os: "iOS 14.2"
-      }
+      name: "iPhone 11"
     }
   },
   artifacts: {
