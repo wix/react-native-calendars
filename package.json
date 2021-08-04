@@ -82,6 +82,9 @@
     ],
     "testMatch": [
       "<rootDir>/src/**/?(*.)(spec|test).{js,jsx}"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native|react-native|react-native-swipe-gestures)/)"
     ]
   },
   "husky": {
