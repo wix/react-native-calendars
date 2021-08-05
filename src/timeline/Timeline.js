@@ -31,7 +31,7 @@ export default class Timeline extends React.PureComponent {
     /* restTime type 
     {
       Component: ({ top, height }: Props) => JSX.Element;
-      endTime: number;
+      restEndTime: number;
     } */
     restTime: PropTypes.object,
     events: PropTypes.arrayOf(PropTypes.shape({
@@ -171,11 +171,14 @@ export default class Timeline extends React.PureComponent {
       } else {
         timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
       }
+
+      const isTimeTextBeforeRestTime = this.props.restTime ? Number(moment(this.props.restTime.restEndTime).format("h")) >= Number(timeText.substring(0, 2)) : false;
+
       return [
         <Text
           key={`timeLabel${i}`}
-          style={[this.styles.timeLabel, {top: offset * index - 9}]}>
-          {timeText}
+          style={[isTimeTextBeforeRestTime ? {...this.styles.timeLabel, color: '#A4A4A4' } : this.styles.timeLabel, {top: offset * index - 9}]}>
+            {timeText}
         </Text>,
         <View
           key={`line${i}`}
@@ -313,10 +316,10 @@ export default class Timeline extends React.PureComponent {
           this.styles.innerContentStyle,
           {width: dimensionWidth}
         ]}>
+          {this._renderRestTimeBlock()}
           {this._renderLines()}
           {this._renderEvents()}
           {this._renderSpecialLines()}
-          {this._renderRestTimeBlock()}
         </View>
       </ScrollView>
     );
