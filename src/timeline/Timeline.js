@@ -15,6 +15,7 @@ import styleConstructor from './style';
 import { CALENDAR_VERTICAL_OFFSET } from './style';
 
 const TEXT_LINE_HEIGHT = 17;
+const REST_TIMETEXT_COLOR = '#A4A4A4';
 
 function range(from, to) {
   return Array.from(Array(to), (_, i) => from + i);
@@ -157,7 +158,8 @@ export default class Timeline extends React.PureComponent {
   _renderLines() {
     const {format24h, start = 0, end = 24} = this.props;
     const offset = this.calendarHeight / (end - start);
-
+    const restTimeOffset = this.props.restTime ? this.getTimeHeightOffset(this.props.restTime.restEndTime, true) : -1;
+    
     return range(start, end + 1).map((i, index) => {
       let timeText;
       if (i === start) {
@@ -172,12 +174,12 @@ export default class Timeline extends React.PureComponent {
         timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
       }
 
-      const isTimeTextBeforeRestTime = this.props.restTime ? Number(moment(this.props.restTime.restEndTime).format("h")) >= Number(timeText.substring(0, 2)) : false;
+      const isTimeTextBeforeRestTime = restTimeOffset >= offset * index - 9;
 
       return [
         <Text
           key={`timeLabel${i}`}
-          style={[isTimeTextBeforeRestTime ? {...this.styles.timeLabel, color: '#A4A4A4' } : this.styles.timeLabel, {top: offset * index - 9}]}>
+          style={[isTimeTextBeforeRestTime ? {...this.styles.timeLabel, color: REST_TIMETEXT_COLOR } : this.styles.timeLabel, {top: offset * index - 9}]}>
             {timeText}
         </Text>,
         <View
