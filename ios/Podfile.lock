@@ -267,13 +267,13 @@ PODS:
     - React-cxxreact (= 0.64.2)
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
-  - ReactNativeNavigation (6.12.2):
-    - React
+  - ReactNativeNavigation (7.6.0):
+    - React-Core
     - React-RCTImage
     - React-RCTText
-    - ReactNativeNavigation/Core (= 6.12.2)
-  - ReactNativeNavigation/Core (6.12.2):
-    - React
+    - ReactNativeNavigation/Core (= 7.6.0)
+  - ReactNativeNavigation/Core (7.6.0):
+    - React-Core
     - React-RCTImage
     - React-RCTText
   - Yoga (1.14.0)
@@ -377,10 +377,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: 92869e54fbef651850edc0f8ad2e5e53421f5fbe
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
   RCTTypeSafety: c1f31d19349c6b53085766359caac425926fafaa
@@ -404,9 +404,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: 24600e3b1aaa77126989bc58b6747509a1ba14f3
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
-  ReactNativeNavigation: aefc8debafb4a374575adafb44a3352b9d5b618a
+  ReactNativeNavigation: 91c082139a6ee8ef7d5c04c70995fdd2e8ababc9
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
-PODFILE CHECKSUM: d441a6b04db6a2cce6e0186dd6232f7e6ba9e257
+PODFILE CHECKSUM: 18eda97847d2efc053b18d81cc7f0abd0f57db97
 
 COCOAPODS: 1.10.1

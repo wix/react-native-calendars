@@ -1,7 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 target 'CalendarsExample' do
   config = use_native_modules!
@@ -17,3 +17,11 @@ target 'CalendarsExample' do
     # Pods for testing
   end
 end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+   target.build_configurations.each do |config|
+    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+   end
+  end
+ end
