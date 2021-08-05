@@ -8,8 +8,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [ReactNativeNavigation bootstrapWithDelegate:self launchOptions:launchOptions];
-
+  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+  
   
 //  NSURL *jsCodeLocation;
 //#ifdef DEBUG
