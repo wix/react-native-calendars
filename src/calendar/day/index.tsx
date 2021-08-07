@@ -16,7 +16,7 @@ import {MarkingProps} from './marking';
 
 const basicDayPropsTypes = _.omit(BasicDay.propTypes, 'date');
 
-interface DayProps extends Omit<BasicDayProps, 'date'> {
+export interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
   day?: Date;
   /** Provide custom day rendering component */

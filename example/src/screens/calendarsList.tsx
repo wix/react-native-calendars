@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+// @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
+
 
 const testIDs = require('../testIDs');
 const RANGE = 24;
