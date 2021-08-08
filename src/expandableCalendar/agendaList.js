@@ -163,10 +163,6 @@ class AgendaList extends Component {
     _.invoke(this.props, 'onMomentumScrollEnd', event);
   };
 
-  onScrollToIndexFailed = info => {
-    console.warn('onScrollToIndexFailed info: ', info);
-  };
-
   onHeaderLayout = ({nativeEvent}) => {
     this.sectionHeight = nativeEvent.layout.height;
   };
@@ -205,7 +201,6 @@ class AgendaList extends Component {
         onScroll={this.onScroll}
         onMomentumScrollBegin={this.onMomentumScrollBegin}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
-        onScrollToIndexFailed={this.onScrollToIndexFailed}
         // getItemLayout={this.getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
       />
     );
