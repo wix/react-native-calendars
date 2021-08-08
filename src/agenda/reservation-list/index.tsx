@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {ActivityIndicator, View, FlatList, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
+import {ActivityIndicator, View, FlatList, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent, ColorValue} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
@@ -283,7 +283,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         return _.invoke(this.props, 'renderEmptyData');
       }
 
-      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
+      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor as ColorValue}/>;
     }
 
     return (

@@ -2,21 +2,43 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity, Dimensions} from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import styleConstructor from './style';
 import populateEvents from './Packer';
 
 const LEFT_MARGIN = 60 - 1;
 const TEXT_LINE_HEIGHT = 17;
 
-function range(from, to) {
+function range(from: number, to: number) {
   return Array.from(Array(to), (_, i) => from + i);
 }
 
 let {width: dimensionWidth} = Dimensions.get('window');
 
-export default class Timeline extends React.PureComponent {
+export interface TimelineProps {
+  start?: number;
+  end?: number;
+  eventTapped?: (event: any) => void;
+  format24h?: boolean;
+  events: {
+    start: string;
+    end: string;
+    title: string;
+    summary: string;
+    color?: string;
+  }[];
+  styles?: any;
+  scrollToFirst?: boolean;
+  renderEvent?: (event: any) => JSX.Element;
+}
+
+interface State {
+  _scrollY: any;
+  packedEvents: any;
+}
+
+export default class Timeline extends Component<TimelineProps, State> {
   static propTypes = {
     start: PropTypes.number,
     end: PropTypes.number,
@@ -39,11 +61,14 @@ export default class Timeline extends React.PureComponent {
     events: [],
     format24h: true
   };
+  calendarHeight: number;
+  private _scrollView: any;
+  style: any;
 
-  constructor(props) {
+  constructor(props: TimelineProps) {
     super(props);
 
-    const {start, end} = this.props;
+    const {start = 0, end = 0} = this.props;
     this.calendarHeight = (end - start) * 100;
 
     this.style = styleConstructor(props.styles, this.calendarHeight);
@@ -59,7 +84,7 @@ export default class Timeline extends React.PureComponent {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: TimelineProps) {
     const width = dimensionWidth - LEFT_MARGIN;
     const {events: prevEvents, start: prevStart = 0} = prevProps;
     const {events, start = 0} = this.props;
@@ -122,7 +147,7 @@ export default class Timeline extends React.PureComponent {
     });
   }
 
-  _onEventTapped(event) {
+  _onEventTapped(event: any) {
     if (this.props.eventTapped) {
       this.props.eventTapped(event);
     }
@@ -130,7 +155,7 @@ export default class Timeline extends React.PureComponent {
 
   _renderEvents() {
     const {packedEvents} = this.state;
-    let events = packedEvents.map((event, i) => {
+    let events = packedEvents.map((event: any, i: number) => {
       const style = {
         left: event.left,
         height: event.height,
@@ -165,7 +190,7 @@ export default class Timeline extends React.PureComponent {
               ) : null}
               {numberOfLines > 2 ? (
                 <Text style={this.style.eventTimes} numberOfLines={1}>
-                  {XDate(event.start).toString(formatTime)} - {XDate(event.end).toString(formatTime)}
+                  {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
                 </Text>
               ) : null}
             </View>

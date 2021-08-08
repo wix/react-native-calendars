@@ -1,4 +1,4 @@
-import {ColorValue, TextStyle} from 'react-native';
+import {TextStyle} from 'react-native';
 export interface Theme {
   container?: object;
   contentStyle?: object;
@@ -14,7 +14,7 @@ export interface Theme {
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
-  indicatorColor?: ColorValue;
+  indicatorColor?: any;
   stylesheet?: {
     calendar?: {main?: object, header?: object};
     day?: {basic?: object; period?: object};
