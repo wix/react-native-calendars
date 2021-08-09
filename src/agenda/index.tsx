@@ -318,7 +318,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     this.enableCalendarScrolling(snapY === 0);
   };
 
-  onVisibleMonthsChange = (months: string[]) => {
+  onVisibleMonthsChange = (months: DateData[]) => {
     _.invoke(this.props, 'onVisibleMonthsChange', months);
 
     if (this.props.items && !this.state.firstReservationLoad) {
