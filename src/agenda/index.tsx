@@ -45,7 +45,7 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** callback that fires when the calendar is opened or closed */
   onCalendarToggled?: (enabled: boolean) => void;
   /** callback that gets called on day press */
-  onDayPress?: (data: any) => DateData;
+  onDayPress?: (data: DateData) => void;
   /** callback that gets called when day changes while scrolling agenda list */
   onDayChange?: (data: any) => void;
   /** specify how agenda knob should look like */

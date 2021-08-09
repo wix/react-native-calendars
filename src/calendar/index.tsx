@@ -55,9 +55,9 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Always show six weeks on each month (only when hideExtraDays = false) */
   showSixWeeks?: boolean;
   /** Handler which gets executed on day press */
-  onDayPress?: (date: Date) => DateData;
+  onDayPress?: (date: DateData) => void;
   /** Handler which gets executed on day long press */
-  onDayLongPress?: (date: Date) => any;
+  onDayLongPress?: (date: DateData) => void;
   /** Handler which gets executed when month changes in calendar */
   onMonthChange?: () => DateData;
   /** Handler which gets executed when visible month changes in calendar */
@@ -157,7 +157,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     });
   };
 
-  handleDayInteraction(date: Date, interaction?: (date: Date) => DateData) {
+  handleDayInteraction(date: Date, interaction?: (date: DateData) => void) {
     const {disableMonthChange} = this.props;
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
