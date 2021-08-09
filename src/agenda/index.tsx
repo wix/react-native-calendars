@@ -4,7 +4,7 @@ import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
-import {Text, View, Dimensions, Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
+import {Text, View, Dimensions, Animated, StyleProp, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater.js';
@@ -36,8 +36,6 @@ export type ReservationsType = {
 }
 
 export type AgendaProps = CalendarListProps & ReservationListProps & {
-  /** agenda container style */
-  style?: ViewStyle;
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
    the value of date key has to be an empty array []. If there exists no value for date key it is
    considered that the date in question is not yet loaded */
@@ -47,9 +45,9 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** callback that fires when the calendar is opened or closed */
   onCalendarToggled?: (enabled: boolean) => void;
   /** callback that gets called on day press */
-  onDayPress?: (data: any) => void;
+  onDayPress?: (data: any) => DateData;
   /** callback that gets called when day changes while scrolling agenda list */
-  onDaychange?: (data: any) => void; //TODO: Should be renamed 'onDayChange'
+  onDayChange?: (data: any) => void;
   /** specify how agenda knob should look like */
   renderKnob?: () => JSX.Element;
   /** initially selected day */
@@ -95,7 +93,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     /** callback that gets called on day press */
     onDayPress: PropTypes.func,
     /** callback that gets called when day changes while scrolling agenda list */
-    onDaychange: PropTypes.func, //TODO: Should be renamed 'onDayChange'
+    onDayChange: PropTypes.func,
     /** specify how agenda knob should look like */
     renderKnob: PropTypes.func,
     /** initially selected day */

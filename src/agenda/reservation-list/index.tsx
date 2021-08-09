@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {ActivityIndicator, View, FlatList, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
+import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
@@ -35,7 +35,7 @@ export type ReservationListProps = ReservationProps & {
   onDayChange?: (day: Date) => void;
   /** specify what should be rendered instead of ActivityIndicator */
   renderEmptyData: () => JSX.Element;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 
   /** onScroll ListView event */
   onScroll?: (yOffset: number) => void;
