@@ -18,9 +18,8 @@ import {
   // @ts-expect-error
 } from '../../testIDs';
 import styleConstructor from './style';
-import {Theme} from '../../types';
+import {Theme, Direction} from '../../types';
 
-type Direction = 'left' | 'right';
 interface Props {
   theme?: Theme;
   firstDay?: number;
