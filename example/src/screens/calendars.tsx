@@ -3,7 +3,6 @@ import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'reac
 // @ts-expect-error
 import {Calendar} from 'react-native-calendars';
 
-
 const testIDs = require('../testIDs');
 const INITIAL_DATE = '2020-02-02';
 
@@ -24,7 +23,6 @@ const CalendarsScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
-          disableAllTouchEventsForInactiveDays
           testID={testIDs.calendars.FIRST}
           current={INITIAL_DATE}
           style={styles.calendar}
@@ -35,12 +33,6 @@ const CalendarsScreen = () => {
               disableTouchEvent: true,
               selectedColor: 'orange',
               selectedTextColor: 'red'
-            },
-            '2020-02-10': {
-              inactive: true
-            },
-            '2020-02-11': {
-              inactive: true
             }
           }}
         />
@@ -390,6 +382,27 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithInactiveDays = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with inactive days</Text>
+        <Calendar
+          style={styles.calendar}
+          disableAllTouchEventsForInactiveDays
+          current={INITIAL_DATE}
+          markedDates={{
+            '2020-02-10': {
+              inactive: true
+            },
+            '2020-02-11': {
+              inactive: true
+            }
+          }}
+        />
+      </Fragment>
+    );
+  };
+
   const renderMarkedDatesExamples = () => {
     return (
       <Fragment>
@@ -411,6 +424,7 @@ const CalendarsScreen = () => {
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}
         {renderCalendarWithCustomHeader()}
+        {renderCalendarWithInactiveDays()}
       </Fragment>
     );
   };
@@ -430,10 +444,7 @@ const CalendarsScreen = () => {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      testID={testIDs.calendars.CONTAINER}
-    >
+    <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
       {renderSwitch()}
       {showMarkedDatesExamples && renderMarkedDatesExamples()}
       {!showMarkedDatesExamples && renderExamples()}
