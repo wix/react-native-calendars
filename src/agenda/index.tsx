@@ -113,10 +113,10 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
   private currentMonth: XDate;
   private knobTracker: any;
   private _isMounted: boolean | undefined;
-  private scrollPad: any;
-  private calendar: any;
-  private knob: any;
-  public list: any;
+  private scrollPad: React.RefObject<any> = React.createRef();
+  private calendar: React.RefObject<CalendarList> = React.createRef();
+  private knob: React.RefObject<any> = React.createRef();
+  public list: React.RefObject<ReservationList> = React.createRef();
 
   constructor(props: AgendaProps) {
     super(props);
@@ -180,11 +180,11 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
   };
 
   setScrollPadPosition = (y: number, animated: boolean) => {
-    if (this.scrollPad?.scrollTo) {
-      this.scrollPad.scrollTo({x: 0, y, animated});
+    if (this.scrollPad?.current?.scrollTo) {
+      this.scrollPad.current.scrollTo({x: 0, y, animated});
     } else {
       // Support for RN O.61 (Expo 37)
-      this.scrollPad.getNode().scrollTo({x: 0, y, animated});
+      this.scrollPad?.current?.getNode().scrollTo({x: 0, y, animated});
     }
   };
 
@@ -209,7 +209,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     // in CalendarList listView, but that might impact performance when scrolling
     // month list in expanded CalendarList.
     // Further info https://github.com/facebook/react-native/issues/1831
-    this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
+    this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
   }
 
   loadReservations(props: AgendaProps) {
@@ -246,7 +246,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     }
 
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
-    this.calendar.scrollToDay(day, this.calendarOffset(), true);
+    this.calendar?.current?.scrollToDay(day, this.calendarOffset(), true);
 
     _.invoke(this.props, 'loadItemsForMonth', xdateToData(day));
     _.invoke(this.props, 'onDayPress', xdateToData(day));
@@ -276,7 +276,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
   };
 
   onCalendarListLayout = () => {
-    this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+    this.calendar?.current?.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
   };
 
   onLayout = (event: LayoutChangeEvent) => {
@@ -287,15 +287,11 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
 
   onTouchStart = () => {
     this.headerState = 'touched';
-    if (this.knob) {
-      this.knob.setNativeProps({style: {opacity: 0.5}});
-    }
+    this.knob?.current?.setNativeProps({style: {opacity: 0.5}});
   };
 
   onTouchEnd = () => {
-    if (this.knob) {
-      this.knob.setNativeProps({style: {opacity: 1}});
-    }
+    this.knob?.current?.setNativeProps({style: {opacity: 1}});
 
     if (this.headerState === 'touched') {
       const isOpen = this.state.calendarScrollable;
@@ -341,7 +337,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
 
-    this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
+    this.calendar?.current?.scrollToDay(day, this.calendarOffset(), withAnimation);
     this.setState({
       selectedDay: newDate
     });
@@ -355,7 +351,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     return (
       <ReservationList
         {...reservationListProps}
-        ref={c => (this.list = c)}
+        ref={this.list}
         reservations={this.props.items}
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
@@ -373,7 +369,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     return (
       <CalendarList
         {...calendarListProps}
-        ref={c => (this.calendar = c)}
+        ref={this.calendar}
         current={this.currentMonth}
         markedDates={this.generateMarkings(this.state.selectedDay, markedDates, items)}
         calendarWidth={this.viewWidth}
@@ -394,7 +390,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
       knob = !this.state.calendarScrollable || showClosingKnob ? (
         <View style={this.style.knobContainer}>
-          <View ref={c => (this.knob = c)}>{knobView}</View>
+          <View ref={this.knob}>{knobView}</View>
         </View>
       ) : null;
     }
@@ -484,7 +480,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
           {this.renderWeekDaysNames(weekDaysNames)}
         </Animated.View>
         <Animated.ScrollView
-          ref={(ref: any) => (this.scrollPad = ref)}
+          ref={this.scrollPad}
           style={[this.style.scrollPadStyle, scrollPadStyle]}
           overScrollMode="never"
           showsHorizontalScrollIndicator={false}

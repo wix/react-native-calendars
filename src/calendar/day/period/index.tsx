@@ -10,7 +10,7 @@ import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 import Dot from '../dot';
 import {MarkingProps} from '../marking';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 interface PeriodDayProps {
   state?: 'selected' | 'disabled' | 'today' | '';

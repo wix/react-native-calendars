@@ -103,7 +103,8 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
   private heights: number[];
   private selectedDay: XDate;
   private scrollOver: boolean;
-  private list?: FlatList<DayReservations> | null;
+  private list: React.RefObject<FlatList> = React.createRef();
+
 
   constructor(props: ReservationListProps) {
     super(props);
@@ -153,7 +154,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.scrollToOffset({offset: scrollPosition, animated: true});
+      this.list?.current?.scrollToOffset({offset: scrollPosition, animated: true});
     }
     this.selectedDay = selectedDay;
     this.updateDataSource(reservations.reservations);
@@ -288,7 +289,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
     return (
       <FlatList
-        ref={c => (this.list = c)}
+        ref={this.list}
         style={style}
         contentContainerStyle={this.style.content}
         data={this.state.reservations}

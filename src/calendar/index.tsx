@@ -24,7 +24,7 @@ import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
-import {Theme} from '../commons/types';
+import {Theme} from '../types';
 
 
 type MarkedDatesType = {
@@ -59,7 +59,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Handler which gets executed on day long press */
   onDayLongPress?: (date: Date) => any;
   /** Handler which gets executed when month changes in calendar */
-  onMonthChange?: () => void;
+  onMonthChange?: () => object;
   /** Handler which gets executed when visible month changes in calendar */
   onVisibleMonthsChange?: () => void;
   /** Disables changing month when click on days of other months (when hideExtraDays is false) */

@@ -7,7 +7,7 @@ import {View, ViewStyle, TextStyle} from 'react-native';
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 export enum MarkingTypes {
   DOT = 'dot',

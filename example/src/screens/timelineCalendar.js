@@ -85,13 +85,13 @@ export default class TimelineCalendarScreen extends Component {
   };
 
   onDateChanged = date => {
-    // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
+    // console.warn('TimelineCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
     this.setState({currentDate: date});
   };
 
   onMonthChange = (/* month, updateSource */) => {
-    // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
+    // console.warn('TimelineCalendarScreen onMonthChange: ', month, updateSource);
   };
 
   renderEmptyItem() {

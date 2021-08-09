@@ -18,7 +18,7 @@ import {
   // @ts-expect-error
 } from '../../testIDs';
 import styleConstructor from './style';
-import {Theme} from '../../commons/types';
+import {Theme} from '../../types';
 
 type Direction = 'left' | 'right';
 export interface CalendarHeaderProps {

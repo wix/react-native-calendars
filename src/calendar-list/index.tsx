@@ -131,7 +131,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   style: any;
-  listView: FlatList<XDateAndBump> | undefined | null;
+  list: React.RefObject<FlatList> = React.createRef();
   viewabilityConfig = {
     itemVisiblePercentThreshold: 20
   };
@@ -216,7 +216,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
         }
       }
     }
-    this.listView?.scrollToOffset({offset: scrollAmount, animated});
+    this.list?.current?.scrollToOffset({offset: scrollAmount, animated});
   }
 
   scrollToMonth = (m: XDate) => {
@@ -227,7 +227,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     const size = horizontal ? calendarWidth : calendarHeight;
     const scrollAmount = size * pastScrollRange + diffMonths * size;
 
-    this.listView?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
+    this.list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
   };
 
   getItemLayout = (_: Array<XDateAndBump> | undefined | null, index: number) => {
@@ -349,7 +349,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     return (
       <View style={this.style.flatListContainer}>
         <FlatList
-          ref={c => (this.listView = c)}
+          ref={this.list}
           style={[this.style.container, style]}
           // @ts-ignore
           initialListSize={pastScrollRange + futureScrollRange + 1} // ListView deprecated

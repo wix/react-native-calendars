@@ -7,7 +7,7 @@ import {TouchableOpacity, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking, {MarkingTypes, MarkingProps} from '../marking';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';

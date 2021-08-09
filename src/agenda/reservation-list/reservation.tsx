@@ -12,7 +12,7 @@ import dateutils from '../../dateutils';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
-import {Theme} from '../../commons/types';
+import {Theme} from '../../types';
 import {DayReservations} from './index';
 
 
