@@ -15,8 +15,8 @@ import dateutils from '../dateutils';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 // @ts-expect-error
-import {DateData} from '../types';
 import {VelocityTracker} from '../input';
+import {DateData} from '../types';
 import styleConstructor from './style';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
