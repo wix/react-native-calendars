@@ -39,6 +39,7 @@ export const todayBackgroundColor = undefined;
 export const todayTextColor = textLinkColor;
 export const dayTextColor = textDefaultColor;
 export const textDisabledColor = '#d9e1e8';
+export const textInactiveColor = '#d9e1e8';
 export const dotColor = textLinkColor;
 export const selectedDotColor = foregroundColor;
 export const disabledDotColor = undefined;

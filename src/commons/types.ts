@@ -31,6 +31,7 @@ export interface Theme {
   selectedDayBackgroundColor?: string;
   arrowColor?: string;
   textDisabledColor?: string;
+  textInactiveColor?: string;
   backgroundColor?: string;
   dotColor?: string;
   selectedDotColor?: string;

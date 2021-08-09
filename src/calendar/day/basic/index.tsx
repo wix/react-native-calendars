@@ -10,7 +10,7 @@ import Marking, {MarkingTypes, MarkingProps} from '../marking';
 import {Theme} from '../../../commons/types';
 
 export interface BasicDayProps {
-  state?: 'selected' | 'disabled' | 'today';
+  state?: 'selected' | 'disabled' | 'inactive' | 'today';
   /** The marking object */
   marking?: MarkingProps;
   /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
@@ -25,6 +25,8 @@ export interface BasicDayProps {
   date?: Date;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
+  /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
+  disableAllTouchEventsForInactiveDays?: boolean;
   /** Test ID*/
   testID?: string;
   /** Accessibility label */
@@ -35,7 +37,7 @@ export default class BasicDay extends Component<BasicDayProps> {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+    state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
     /** The marking object */
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
@@ -49,7 +51,10 @@ export default class BasicDay extends Component<BasicDayProps> {
     /** The date to return from press callbacks */
     date: PropTypes.object,
     /** Disable all touch events for disabled days. Can be override with disableTouchEvent in markedDates*/
-    disableAllTouchEventsForDisabledDays: PropTypes.bool
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
+    /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
+    disableAllTouchEventsForInactiveDays: PropTypes.bool
+
   };
 
   style = styleConstructor(this.props.theme);
@@ -79,7 +84,7 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   shouldDisableTouchEvent() {
-    const {disableAllTouchEventsForDisabledDays} = this.props;
+    const {disableAllTouchEventsForDisabledDays, disableAllTouchEventsForInactiveDays} = this.props;
     const {disableTouchEvent} = this.marking;
     let disableTouch = false;
 
@@ -87,6 +92,8 @@ export default class BasicDay extends Component<BasicDayProps> {
       disableTouch = disableTouchEvent;
     } else if (typeof disableAllTouchEventsForDisabledDays === 'boolean' && this.isDisabled()) {
       disableTouch = disableAllTouchEventsForDisabledDays;
+    } else if (typeof disableAllTouchEventsForInactiveDays === 'boolean' && this.isInactive()) {
+      disableTouch = disableAllTouchEventsForInactiveDays;
     }
     return disableTouch;
   }
@@ -97,6 +104,10 @@ export default class BasicDay extends Component<BasicDayProps> {
 
   isDisabled() {
     return typeof this.marking.disabled !== 'undefined' ? this.marking.disabled : this.props.state === 'disabled';
+  }
+
+  isInactive() {
+    return this.marking?.inactive;
   }
 
   isToday() {
@@ -152,6 +163,8 @@ export default class BasicDay extends Component<BasicDayProps> {
       style.push(this.style.disabledText);
     } else if (this.isToday()) {
       style.push(this.style.todayText);
+    } else if (this.isInactive()) {
+      style.push(this.style.inactiveText);
     }
 
     //Custom marking type

@@ -41,6 +41,7 @@ export interface MarkingProps extends DotProps {
   marked?: boolean;
   today?: boolean;
   disabled?: boolean;
+  inactive?: boolean;
   disableTouchEvent?: boolean;
   activeOpacity?: number;
   selectedColor?: string;
