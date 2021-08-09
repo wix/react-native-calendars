@@ -8,9 +8,7 @@ import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
-// @ts-expect-error
-import dateutils from '../dateutils';
-// @ts-expect-error
+import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 // @ts-expect-error
 import {getState} from '../day-state-manager';
@@ -26,10 +24,9 @@ import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
 
-
 type MarkedDatesType = {
-  [key: string]: MarkingProps
-}
+  [key: string]: MarkingProps;
+};
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
@@ -75,7 +72,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
 }
 
 interface CalendarState {
-  currentMonth: any
+  currentMonth: any;
 }
 /**
  * @description: Calendar component
@@ -163,7 +160,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
 
-    if (!(minDate && !dateutils.isGTE(day, minDate)) && !(maxDate && !dateutils.isLTE(day, maxDate))) {
+    if (!(minDate && !isGTE(day, minDate)) && !(maxDate && !isLTE(day, maxDate))) {
       const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
 
       if (shouldUpdateMonth) {
@@ -229,7 +226,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     const {hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
-    if (!dateutils.sameMonth(day, this.state.currentMonth) && hideExtraDays) {
+    if (!sameMonth(day, this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
     }
 
@@ -269,7 +266,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     const {currentMonth} = this.state;
     const {firstDay, showSixWeeks, hideExtraDays} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
-    const days = dateutils.page(currentMonth, firstDay, shouldShowSixWeeks);
+    const days = page(currentMonth, firstDay, shouldShowSixWeeks);
     const weeks = [];
 
     while (days.length) {
@@ -286,7 +283,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
 
     if (current) {
       const lastMonthOfDay = toMarkingFormat(current.clone().addMonths(1, true).setDate(1).addDays(-1));
-      if (displayLoadingIndicator && !(markedDates?.[lastMonthOfDay])) {
+      if (displayLoadingIndicator && !markedDates?.[lastMonthOfDay]) {
         indicator = true;
       }
     }

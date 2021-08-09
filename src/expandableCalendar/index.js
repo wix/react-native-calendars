@@ -7,7 +7,7 @@ import React, {Component} from 'react';
 import {AccessibilityInfo, PanResponder, Animated, View, Text, Image} from 'react-native';
 
 import {CALENDAR_KNOB} from '../testIDs';
-import dateutils from '../dateutils';
+import {page, weekDayNames} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList from '../calendar-list';
@@ -207,7 +207,7 @@ class ExpandableCalendar extends Component {
   }
 
   getNumberOfWeeksInMonth(month) {
-    const days = dateutils.page(month, this.props.firstDay);
+    const days = page(month, this.props.firstDay);
     return days.length / 7;
   }
 
@@ -352,15 +352,16 @@ class ExpandableCalendar extends Component {
         this.bounceToPosition(this.closedHeight);
       }
     }, 0);
-    
+
     if (this.props.onDayPress) {
       this.props.onDayPress(value);
     }
   };
 
   onVisibleMonthsChange = value => {
-    if (this.visibleMonth !== _.first(value).month) {
-      this.visibleMonth = _.first(value).month; // equivalent to this.getMonth(value[0].dateString)
+    const month = _.first(value) && _.first(value).month;
+    if (month && this.visibleMonth !== month) {
+      this.visibleMonth = month; // equivalent to this.getMonth(value[0].dateString)
 
       // for horizontal scroll
       const {date, updateSource} = this.props.context;
@@ -410,7 +411,7 @@ class ExpandableCalendar extends Component {
 
   renderHeader() {
     const monthYear = XDate(this.props.context.date).toString('MMMM yyyy');
-    const weekDaysNames = dateutils.weekDayNames(this.props.firstDay);
+    const weekDaysNames = weekDayNames(this.props.firstDay);
 
     return (
       <Animated.View

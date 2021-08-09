@@ -9,9 +9,7 @@ import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, Flat
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
 import {xdateToData, parseDate} from '../interface';
-// @ts-expect-error
-import dateutils from '../dateutils';
-// @ts-expect-error
+import {page, sameDate} from '../dateutils';
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
@@ -63,14 +61,14 @@ interface Props extends CalendarProps, FlatListProps<any> {
 }
 export type CalendarListProps = Props;
 
-type XDateAndBump = XDate & {propBump?: number} ;
+type XDateAndBump = XDate & {propBump?: number};
 
 type State = {
   rows: Array<XDateAndBump>;
   texts: Array<string>;
   openDate: XDate;
   currentMonth: XDate;
-}
+};
 
 /**
  * @description: Calendar List component for both vertical and horizontal calendars
@@ -188,7 +186,7 @@ class CalendarList extends Component<Props, State> {
 
     for (let i = 0; i < rowClone.length; i++) {
       let val: XDate | string = prevState.texts[i];
-        // @ts-ignore
+      // @ts-ignore
       if (rowClone[i].getTime) {
         val = rowClone[i].clone();
         // @ts-ignore
@@ -208,10 +206,10 @@ class CalendarList extends Component<Props, State> {
 
     if (!horizontal) {
       let week = 0;
-      const days = dateutils.page(day, firstDay);
+      const days = page(day, firstDay);
       for (let i = 0; i < days.length; i++) {
         week = Math.floor(i / 7);
-        if (dateutils.sameDate(days[i], day)) {
+        if (sameDate(days[i], day)) {
           scrollAmount += 46 * week;
           break;
         }
