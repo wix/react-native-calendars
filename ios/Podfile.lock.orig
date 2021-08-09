@@ -377,6 +377,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+<<<<<<< HEAD
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: 92869e54fbef651850edc0f8ad2e5e53421f5fbe
@@ -404,6 +405,33 @@ SPEC CHECKSUMS:
   React-RCTVibration: 24600e3b1aaa77126989bc58b6747509a1ba14f3
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
+=======
+  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
+  FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
+  FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
+  Folly: b73c3869541e86821df3c387eb0af5f65addfab4
+  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
+  RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
+  React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
+  React-callinvoker: c3f44dd3cb195b6aa46621fff95ded79d59043fe
+  React-Core: d3b2a1ac9a2c13c3bcde712d9281fc1c8a5b315b
+  React-CoreModules: 0581ff36cb797da0943d424f69e7098e43e9be60
+  React-cxxreact: c1480d4fda5720086c90df537ee7d285d4c57ac3
+  React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
+  React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
+  React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
+  React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
+  React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
+  React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
+  React-RCTImage: c1b1f2d3f43a4a528c8946d6092384b5c880d2f0
+  React-RCTLinking: 35ae4ab9dc0410d1fcbdce4d7623194a27214fb2
+  React-RCTNetwork: 29ec2696f8d8cfff7331fac83d3e893c95ef43ae
+  React-RCTSettings: 60f0691bba2074ef394f95d4c2265ec284e0a46a
+  React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
+  React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
+  ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
+>>>>>>> dff4fc1476ca0b900823b7b97e18f0ba646f1753
   ReactNativeNavigation: aefc8debafb4a374575adafb44a3352b9d5b618a
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
