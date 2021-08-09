@@ -4,7 +4,7 @@ import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
-import {Text, View, Dimensions, Animated, StyleProp, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
+import {Text, View, Dimensions, Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater.js';
