@@ -15,9 +15,10 @@ import dateutils from '../dateutils';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 // @ts-expect-error
+import {DateData} from '../types';
 import {VelocityTracker} from '../input';
-import CalendarList, {CalendarListProps} from '../calendar-list';
 import styleConstructor from './style';
+import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
 
@@ -42,7 +43,7 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
    considered that the date in question is not yet loaded */
   items: ReservationsType;
   /** callback that gets called when items for a certain month should be loaded (month became visible) */
-  loadItemsForMonth?: (data: any) => void;
+  loadItemsForMonth?: (data: any) => DateData;
   /** callback that fires when the calendar is opened or closed */
   onCalendarToggled?: (enabled: boolean) => void;
   /** callback that gets called on day press */

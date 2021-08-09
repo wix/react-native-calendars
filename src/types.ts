@@ -1,7 +1,16 @@
+import { string } from 'prop-types';
 import {ColorValue, ViewStyle, TextStyle} from 'react-native';
 import {UPDATE_SOURCES} from './expandableCalendar/commons';
 
 
+export type UpdateSource = keyof typeof UPDATE_SOURCES;
+export type DateData = {
+  year: number,
+  month: number,
+  day: number,
+  timestamp: number,
+  dateString: string
+}
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;
@@ -75,4 +84,3 @@ export interface Theme {
   arrowHeight?: number;
   arrowWidth?: number;
 }
-export type UpdateSource = keyof typeof UPDATE_SOURCES;
