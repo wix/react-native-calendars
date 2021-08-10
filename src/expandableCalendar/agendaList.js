@@ -164,7 +164,11 @@ class AgendaList extends Component {
   };
 
   onScrollToIndexFailed = info => {
-    console.warn('onScrollToIndexFailed info: ', info);
+    if (this.props.onScrollToIndexFailed) {
+      this.props.onScrollToIndexFailed(info);
+    } else {
+      console.warn('onScrollToIndexFailed info: ', info);
+    }
   };
 
   onHeaderLayout = ({nativeEvent}) => {
