@@ -38,15 +38,13 @@ interface Props extends SectionListProps<any, DefaultSectionT> {
 }
 export type AgendaListProps = Props;
 
-interface State {}
-
 /**
  * @description: AgendaList component
  * @note: Should be wrapped with 'CalendarProvider'
  * @extends: SectionList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-class AgendaList extends Component<Props, State> {
+class AgendaList extends Component<Props> {
   static displayName = 'AgendaList';
 
   static propTypes = {
@@ -199,7 +197,11 @@ class AgendaList extends Component<Props, State> {
     highestMeasuredFrameIndex: number;
     averageItemLength: number;
 }) => {
-    console.warn('onScrollToIndexFailed info: ', info);
+    if (this.props.onScrollToIndexFailed) {
+      this.props.onScrollToIndexFailed(info);
+    } else {
+      console.warn('onScrollToIndexFailed info: ', info);
+    }  
   };
 
   onHeaderLayout = (event: LayoutChangeEvent) => {
