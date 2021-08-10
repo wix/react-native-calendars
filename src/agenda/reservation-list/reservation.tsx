@@ -7,11 +7,14 @@ import {View, Text} from 'react-native';
 
 // @ts-expect-error
 import {xdateToData} from '../../interface';
+// @ts-expect-error
 import {isToday} from '../../dateutils';
+// @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
 import {Theme} from '../../types';
 import {DayReservations} from './index';
+
 
 export interface ReservationProps {
   item: DayReservations;

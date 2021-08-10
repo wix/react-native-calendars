@@ -8,7 +8,9 @@ import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
+// @ts-expect-error
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
+// @ts-expect-error
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 // @ts-expect-error
 import {getState} from '../day-state-manager';

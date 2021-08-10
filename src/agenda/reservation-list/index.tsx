@@ -7,11 +7,14 @@ import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, Nati
 
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
+// @ts-expect-error
 import {sameDate} from '../../dateutils';
+// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
 import {ReservationItemType, ReservationsType} from 'agenda';
+
 
 export interface DayReservations {
   reservation?: ReservationItemType;
