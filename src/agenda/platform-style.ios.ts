@@ -1,4 +1,4 @@
-import {Theme} from '../commons/types';
+import {Theme} from '../types';
 
 export default function platformStyles(appStyle: Theme) {
   return {

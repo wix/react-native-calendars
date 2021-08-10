@@ -4,7 +4,7 @@ import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {Component, Fragment, ReactNode} from 'react';
-import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
+import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, StyleProp, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 // @ts-expect-error
@@ -18,10 +18,9 @@ import {
   // @ts-expect-error
 } from '../../testIDs';
 import styleConstructor from './style';
-import {Theme} from '../../commons/types';
+import {Theme, Direction} from '../../types';
 
-type Direction = 'left' | 'right';
-export interface CalendarHeaderProps {
+interface Props {
   theme?: Theme;
   firstDay?: number;
   displayLoadingIndicator?: boolean;
@@ -51,12 +50,13 @@ export interface CalendarHeaderProps {
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
   testID?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   accessibilityElementsHidden?: boolean;
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
 }
+export type CalendarHeaderProps = Props;
 
-class CalendarHeader extends Component<CalendarHeaderProps> {
+class CalendarHeader extends Component<Props> {
   static displayName = 'IGNORE';
 
   static propTypes = {
@@ -96,13 +96,13 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
   };
   style: any;
 
-  constructor(props: CalendarHeaderProps) {
+  constructor(props: Props) {
     super(props);
 
     this.style = styleConstructor(props.theme);
   }
 
-  shouldComponentUpdate(nextProps: CalendarHeaderProps) {
+  shouldComponentUpdate(nextProps: Props) {
     if (nextProps.month?.toString('yyyy MM') !== this.props.month?.toString('yyyy MM')) {
       return true;
     }

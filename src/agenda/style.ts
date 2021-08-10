@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../style';
 import platformStyles from './platform-style';
-import {Theme} from '../commons/types';
+import {Theme} from '../types';
 
 
 export default function styleConstructor(theme: Theme = {}) {

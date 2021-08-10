@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {SectionList, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-import dateutils from '../dateutils';
+import {isToday as dateutils_isToday} from '../dateutils';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
 import {getMoment} from '../momentResolver';
@@ -109,7 +109,7 @@ class AgendaList extends Component {
 
     if (markToday) {
       const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
-      const isToday = dateutils.isToday(XDate(title));
+      const isToday = dateutils_isToday(XDate(title));
       sectionTitle = isToday ? `${todayString}, ${sectionTitle}` : sectionTitle;
     }
 
@@ -164,7 +164,11 @@ class AgendaList extends Component {
   };
 
   onScrollToIndexFailed = info => {
-    console.warn('onScrollToIndexFailed info: ', info);
+    if (this.props.onScrollToIndexFailed) {
+      this.props.onScrollToIndexFailed(info);
+    } else {
+      console.warn('onScrollToIndexFailed info: ', info);
+    }
   };
 
   onHeaderLayout = ({nativeEvent}) => {
