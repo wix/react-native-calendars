@@ -4,11 +4,13 @@ import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component, RefObject} from 'react';
-import {View, ViewStyle} from 'react-native';
+import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
+// @ts-expect-error
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
+// @ts-expect-error
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 // @ts-expect-error
 import {getState} from '../day-state-manager';
@@ -17,12 +19,12 @@ import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
+import {Theme, DateData} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
-import {Theme} from '../commons/types';
 
 type MarkedDatesType = {
   [key: string]: MarkingProps;
@@ -32,7 +34,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
   /** Specify style for calendar container element */
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   /** Initially visible month */
   current?: XDate;
   /** Minimum date that can be selected, dates before minDate will be grayed out */
@@ -52,13 +54,13 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Always show six weeks on each month (only when hideExtraDays = false) */
   showSixWeeks?: boolean;
   /** Handler which gets executed on day press */
-  onDayPress?: (date: Date) => any;
+  onDayPress?: (date: DateData) => void;
   /** Handler which gets executed on day long press */
-  onDayLongPress?: (date: Date) => any;
+  onDayLongPress?: (date: DateData) => void;
   /** Handler which gets executed when month changes in calendar */
-  onMonthChange?: () => void;
+  onMonthChange?: () => DateData;
   /** Handler which gets executed when visible month changes in calendar */
-  onVisibleMonthsChange?: () => void;
+  onVisibleMonthsChange?: (months: DateData[]) => void;
   /** Disables changing month when click on days of other months (when hideExtraDays is false) */
   disableMonthChange?: boolean;
   /** Enable the option to swipe between months */
@@ -154,7 +156,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     });
   };
 
-  handleDayInteraction(date: Date, interaction?: (date: Date) => any) {
+  handleDayInteraction(date: Date, interaction?: (date: DateData) => void) {
     const {disableMonthChange} = this.props;
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);

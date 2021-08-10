@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
+
+import {Theme, DateData} from '../../../types';
 // @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking, {MarkingTypes, MarkingProps} from '../marking';
-import {Theme} from '../../../commons/types';
 
 export interface BasicDayProps {
   state?: 'selected' | 'disabled' | 'today';
@@ -18,7 +19,7 @@ export interface BasicDayProps {
   /** Theme object */
   theme?: Theme;
   /** onPress callback */
-  onPress?: (date: Date) => void;
+  onPress?: (date: DateData) => void;
   /** onLongPress callback */
   onLongPress?: (date: Date) => void;
   /** The date to return from press callbacks */

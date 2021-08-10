@@ -3,18 +3,21 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent} from 'react-native';
+import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
 import {xdateToData, parseDate} from '../interface';
+// @ts-expect-error
 import {page, sameDate} from '../dateutils';
+// @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+
 
 const {width} = Dimensions.get('window');
 const CALENDAR_WIDTH = width;
@@ -22,7 +25,7 @@ const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
 
-export type CalendarListProps = CalendarProps & {
+interface Props extends CalendarProps, FlatListProps<any> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
   pastScrollRange?: number;
   /** Max amount of months allowed to scroll to the future. Default = 50 */
@@ -58,11 +61,12 @@ export type CalendarListProps = CalendarProps & {
   /** onLayout event */
   onLayout?: (event: LayoutChangeEvent) => void;
   removeClippedSubviews: boolean;
-};
+}
+export type CalendarListProps = Props;
 
 type XDateAndBump = XDate & {propBump?: number};
 
-type CalendarListState = {
+type State = {
   rows: Array<XDateAndBump>;
   texts: Array<string>;
   openDate: XDate;
@@ -76,7 +80,7 @@ type CalendarListState = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar-list.gif
  */
-class CalendarList extends Component<CalendarListProps, CalendarListState> {
+class CalendarList extends Component<Props, State> {
   static displayName = 'CalendarList';
 
   static propTypes = {
@@ -129,12 +133,12 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   style: any;
-  listView: FlatList<XDateAndBump> | undefined | null;
+  list: React.RefObject<FlatList> = React.createRef();
   viewabilityConfig = {
     itemVisiblePercentThreshold: 20
   };
 
-  constructor(props: CalendarListProps) {
+  constructor(props: Props) {
     super(props);
 
     this.style = styleConstructor(props.theme);
@@ -170,7 +174,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     };
   }
 
-  componentDidUpdate(prevProps: CalendarListProps) {
+  componentDidUpdate(prevProps: Props) {
     const prevCurrent = parseDate(prevProps.current);
     const current = parseDate(this.props.current);
 
@@ -179,7 +183,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     }
   }
 
-  static getDerivedStateFromProps(_: CalendarListProps, prevState: CalendarListState) {
+  static getDerivedStateFromProps(_: Props, prevState: State) {
     const rowClone = prevState.rows;
     const newRows = [];
 
@@ -214,7 +218,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
         }
       }
     }
-    this.listView?.scrollToOffset({offset: scrollAmount, animated});
+    this.list?.current?.scrollToOffset({offset: scrollAmount, animated});
   }
 
   scrollToMonth = (m: XDate) => {
@@ -225,7 +229,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     const size = horizontal ? calendarWidth : calendarHeight;
     const scrollAmount = size * pastScrollRange + diffMonths * size;
 
-    this.listView?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
+    this.list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
   };
 
   getItemLayout = (_: Array<XDateAndBump> | undefined | null, index: number) => {
@@ -347,7 +351,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
     return (
       <View style={this.style.flatListContainer}>
         <FlatList
-          ref={c => (this.listView = c)}
+          ref={this.list}
           style={[this.style.container, style]}
           // @ts-ignore
           initialListSize={pastScrollRange + futureScrollRange + 1} // ListView deprecated

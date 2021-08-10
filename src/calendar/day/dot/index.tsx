@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 export interface DotProps {
   theme?: Theme;

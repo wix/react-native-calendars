@@ -3,24 +3,18 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {
-  ActivityIndicator,
-  View,
-  FlatList,
-  ViewStyle,
-  TextStyle,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  LayoutChangeEvent
-} from 'react-native';
+import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
+// @ts-expect-error
 import {sameDate} from '../../dateutils';
+// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
 import {ReservationItemType, ReservationsType} from 'agenda';
+
 
 export interface DayReservations {
   reservation?: ReservationItemType;
@@ -41,7 +35,7 @@ export type ReservationListProps = ReservationProps & {
   onDayChange?: (day: Date) => void;
   /** specify what should be rendered instead of ActivityIndicator */
   renderEmptyData: () => JSX.Element;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 
   /** onScroll ListView event */
   onScroll?: (yOffset: number) => void;
@@ -109,7 +103,8 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
   private heights: number[];
   private selectedDay: XDate;
   private scrollOver: boolean;
-  private list?: FlatList<DayReservations> | null;
+  private list: React.RefObject<FlatList> = React.createRef();
+
 
   constructor(props: ReservationListProps) {
     super(props);
@@ -159,7 +154,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.scrollToOffset({offset: scrollPosition, animated: true});
+      this.list?.current?.scrollToOffset({offset: scrollPosition, animated: true});
     }
     this.selectedDay = selectedDay;
     this.updateDataSource(reservations.reservations);
@@ -294,7 +289,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
     return (
       <FlatList
-        ref={c => (this.list = c)}
+        ref={this.list}
         style={style}
         contentContainerStyle={this.style.content}
         data={this.state.reservations}
