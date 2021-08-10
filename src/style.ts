@@ -43,6 +43,7 @@ export const textInactiveColor = '#d9e1e8';
 export const dotColor = textLinkColor;
 export const selectedDotColor = foregroundColor;
 export const disabledDotColor = undefined;
+export const inactiveDotColor = undefined;
 export const todayDotColor = undefined;
 export const arrowColor = textLinkColor;
 export const disabledArrowColor = '#d9e1e8';

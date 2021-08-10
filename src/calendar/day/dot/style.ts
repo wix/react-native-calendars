@@ -24,6 +24,9 @@ export default function styleConstructor(theme: Theme = {}) {
     disabledDot: {
       backgroundColor: appStyle.disabledDotColor || appStyle.dotColor
     },
+    inactiveDot: {
+      backgroundColor: appStyle.inactiveDotColor || appStyle.dotColor
+    },
     todayDot: {
       backgroundColor: appStyle.todayDotColor || appStyle.dotColor
     },

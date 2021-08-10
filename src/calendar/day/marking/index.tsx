@@ -77,6 +77,7 @@ export default class Marking extends Component<MarkingProps> {
       'marked',
       'today',
       'disabled',
+      'inactive',
       'disableTouchEvent',
       'activeOpacity',
       'selectedColor',

@@ -80,6 +80,7 @@ export interface Theme {
   arrowStyle?: ViewStyle;
   todayBackgroundColor?: string;
   disabledDotColor?: string;
+  inactiveDotColor?: string;
   todayDotColor?: string;
   todayButtonTextColor?: string;
   todayButtonPosition?: string;
