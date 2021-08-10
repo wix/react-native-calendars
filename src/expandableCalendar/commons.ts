@@ -8,15 +8,16 @@ export const isIos = Platform.OS === 'ios';
 export const screenWidth = width;
 export const screenHeight = height;
 export const screenAspectRatio = screenWidth < screenHeight ? screenHeight / screenWidth : screenWidth / screenHeight;
+// @ts-expect-error
 export const isTablet = Platform.isPad || (screenAspectRatio < 1.6 && Math.max(screenWidth, screenHeight) >= 900);
 export const todayString = 'today';
 
-export const UPDATE_SOURCES = {
-  CALENDAR_INIT: 'calendarInit',
-  TODAY_PRESS: 'todayPress',
-  LIST_DRAG: 'listDrag',
-  DAY_PRESS: 'dayPress',
-  PAGE_SCROLL: 'pageScroll',
-  WEEK_SCROLL: 'weekScroll',
-  PROP_UPDATE: 'propUpdate'
-};
+export enum UPDATE_SOURCES {
+  CALENDAR_INIT = 'calendarInit',
+  TODAY_PRESS = 'todayPress',
+  LIST_DRAG = 'listDrag',
+  DAY_PRESS = 'dayPress',
+  PAGE_SCROLL = 'pageScroll',
+  WEEK_SCROLL = 'weekScroll',
+  PROP_UPDATE = 'propUpdate'
+}

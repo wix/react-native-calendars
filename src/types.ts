@@ -1,5 +1,4 @@
 import {ColorValue, ViewStyle, TextStyle} from 'react-native';
-// @ts-expect-error
 import {UPDATE_SOURCES} from './expandableCalendar/commons';
 
 

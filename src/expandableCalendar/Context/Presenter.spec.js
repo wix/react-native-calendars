@@ -3,22 +3,18 @@ import XDate from 'xdate';
 import {UPDATE_SOURCES} from '../commons';
 import {toMarkingFormat} from '../../interface';
 
+
 describe('Context provider tests', () => {
   const makeUUT = () => {
     return new Presenter();
   };
 
   const pastDate = '2021-04-04';
-
   const futureDate = '2050-04-04';
-
   const today1 = XDate();
-
   const today2 = new Date();
-
   const todayDate = toMarkingFormat(XDate());
-
-  const updateSource = UPDATE_SOURCES.CALENDAR_INIT;
+  const updateSources = UPDATE_SOURCES.CALENDAR_INIT;
 
   describe('isPastDate function tests', () => {
     it('Expect to get true while passing a past date', () => {
@@ -35,7 +31,6 @@ describe('Context provider tests', () => {
   describe('Button Icon test', () => {
     it('Expect to get down button on past date', () => {
       const {getButtonIcon} = makeUUT();
-
       const imageUp = '../../../src/img/up.png';
       const imageDown = '../../../src/img/down.png';
 
@@ -62,12 +57,12 @@ describe('Context provider tests', () => {
       const {setDate} = makeUUT();
       const date = '2021-01-01';
       const sameMonthDate = '2021-01-20';
-
       const props = {onDateChanged, onMonthChange, showTodayButton: false};
-      setDate(props, date, sameMonthDate, updateState, updateSource);
+      
+      setDate(props, date, sameMonthDate, updateState, updateSources);
 
       expect(updateState).toBeCalled();
-      expect(onDateChanged).toBeCalledWith(date, updateSource);
+      expect(onDateChanged).toBeCalledWith(date, updateSources);
       expect(onMonthChange).not.toBeCalled();
     });
 
@@ -75,12 +70,12 @@ describe('Context provider tests', () => {
       const {setDate} = makeUUT();
       const date = '2021-01-01';
       const differentMonth = '2021-02-20';
-
       const props = {onDateChanged, onMonthChange, showTodayButton: false};
-      setDate(props, date, differentMonth, updateState, updateSource);
+      
+      setDate(props, date, differentMonth, updateState, updateSources);
 
       expect(updateState).toBeCalled();
-      expect(onDateChanged).toBeCalledWith(date, updateSource);
+      expect(onDateChanged).toBeCalledWith(date, updateSources);
       expect(onMonthChange).toBeCalled();
     });
   });
@@ -138,8 +133,8 @@ describe('Context provider tests', () => {
     it("Expect animation value to be top position when today's date passed", () => {
       const {getPositionAnimation} = makeUUT();
       const TOP_POSITION = 65;
-
       const {tension, friction, useNativeDriver} = getPositionAnimation(todayDate, 10);
+      
       expect(tension).toEqual(30);
       expect(friction).toEqual(8);
       expect(useNativeDriver).toBe(true);
@@ -159,8 +154,8 @@ describe('Context provider tests', () => {
     it('Expect opacity animation value', () => {
       const {getOpacityAnimation} = makeUUT();
       const disabledOpacity = 0.5;
-
       let data = getOpacityAnimation({disabledOpacity}, true);
+      
       expect(data.toValue).toBe(0.5);
 
       data = getOpacityAnimation({disabledOpacity}, false);
@@ -174,7 +169,6 @@ describe('Context provider tests', () => {
   describe('onTodayPressed tests', () => {
     it("Expect return value to be XDate today's date", () => {
       const {getTodayDate} = makeUUT();
-
       expect(getTodayDate()).toEqual(todayDate);
     });
   });

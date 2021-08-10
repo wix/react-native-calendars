@@ -1,37 +1,42 @@
 import _ from 'lodash';
-import React from 'react';
-import {sameWeek} from '../../dateutils';
-const commons = require('../commons');
 import XDate from 'xdate';
-import {toMarkingFormat} from '../../interface';
 
-const UPDATE_SOURCES = commons.UPDATE_SOURCES;
+import React from 'react';
+
+// @ts-expect-error
+import {sameWeek} from '../../dateutils';
+// @ts-expect-error
+import {toMarkingFormat} from '../../interface';
+import {DateData} from '../../types';
+import {WeekCalendarProps} from './index';
+
+
+const commons = require('../commons');
+const updateSources = commons.UPDATE_SOURCES;
 // must be a positive number
 const NUMBER_OF_PAGES = 2;
 
 class Presenter {
-  constructor() {
-    this.list = React.createRef();
-    this._applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
-    // On Android+RTL there's an initial scroll that cause issues
-    this._firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
-  }
 
-  scrollToIndex = animated => {
-    this.list.current.scrollToIndex({animated, index: NUMBER_OF_PAGES});
+  private _applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
+  // On Android+RTL there's an initial scroll that cause issues
+  private _firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
+  public list: React.RefObject<any> = React.createRef();
+
+  scrollToIndex = (animated: boolean) => {
+    this.list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
   };
 
-  isSameWeek = (date, prevDate, firstDay) => {
+  isSameWeek = (date: Date, prevDate: Date, firstDay: number) => {
     return sameWeek(date, prevDate, firstDay);
   };
 
   // Events
-
-  onDayPressed = (context, value) => {
-    _.invoke(context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
+  onDayPress = (context: any, value: DateData) => {
+    _.invoke(context, 'setDate', value.dateString, updateSources.DAY_PRESS);
   };
 
-  onScroll = ({context, updateState, x, page, items, width}) => {
+  onScroll = ({context, updateState, x, page, items, width}: any) => {
     if (!this._firstAndroidRTLScrollIgnored) {
       this._firstAndroidRTLScrollIgnored = true;
       return;
@@ -40,14 +45,14 @@ class Presenter {
     x = this._getX(x, items?.length, width);
     const newPage = this._getNewPage(x, width);
 
-    if (this._shouldUpdateState(page)) {
-      _.invoke(context, 'setDate', items[newPage], UPDATE_SOURCES.WEEK_SCROLL);
+    if (this._shouldUpdateState(page, newPage)) {
+      _.invoke(context, 'setDate', items[newPage], updateSources.WEEK_SCROLL);
       const data = this._getItemsForPage(page, items);
       updateState(data, newPage);
     }
   };
 
-  onMomentumScrollEnd = ({items, props, page, updateItems}) => {
+  onMomentumScrollEnd = ({items, props, page, updateItems}: any) => {
     if (this._isFirstPage(page) || this._isLastPage(page, items)) {
       this.scrollToIndex(false);
 
@@ -63,16 +68,16 @@ class Presenter {
     }
   };
 
-  shouldComponentUpdate = (context, prevContext) => {
+  shouldComponentUpdate = (context: any, prevContext: any) => {
     const {date, updateSource} = context;
     return (
       date !== prevContext.date &&
-      updateSource !== UPDATE_SOURCES.WEEK_SCROLL
+      updateSource !== updateSources.WEEK_SCROLL
     );
   };
 
-  getDate({current, context, firstDay}, weekIndex) {
-    const d = XDate(current || context.date);
+  getDate({current, context, firstDay = 0}: WeekCalendarProps, weekIndex: number) {
+    const d = new XDate(current || context.date);
     // get the first day of the week as date (for the on scroll mark)
     let dayOfTheWeek = d.getDay();
     if (dayOfTheWeek < firstDay && firstDay > 0) {
@@ -85,7 +90,7 @@ class Presenter {
     return toMarkingFormat(newDate);
   }
 
-  getDatesArray = args => {
+  getDatesArray = (args: WeekCalendarProps) => {
     const array = [];
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
       const d = this.getDate(args, index);
@@ -94,11 +99,11 @@ class Presenter {
     return array;
   };
 
-  _shouldUpdateState = (page, newPage) => {
+  _shouldUpdateState = (page: number, newPage: number) => {
     return page !== newPage;
   };
 
-  _getX = (x, itemsCount, containerWidth) => {
+  _getX = (x: number, itemsCount: number, containerWidth: number) => {
     if (this._applyAndroidRtlFix) {
       const numberOfPages = itemsCount - 1;
       const overallWidth = numberOfPages * containerWidth;
@@ -107,47 +112,47 @@ class Presenter {
     return x;
   };
 
-  _getNewPage = (x, containerWidth) => {
+  _getNewPage = (x: number, containerWidth: number) => {
     return Math.round(x / containerWidth);
   };
 
-  _isFirstPage = page => {
+  _isFirstPage = (page: number) => {
     return page === 0;
   };
 
-  _isLastPage = (page, items) => {
+  _isLastPage = (page: number, items: Date[]) => {
     return page === items.length - 1;
   };
 
-  _getNexPageItems = items => {
+  _getNexPageItems = (items: Date[]) => {
     return items.map((_, i) => {
       const index = i <= NUMBER_OF_PAGES ? i + NUMBER_OF_PAGES : i;
       return items[index];
     });
   };
 
-  _getFirstPageItems = items => {
+  _getFirstPageItems = (items: Date[]) => {
     return items.map((_, i) => {
       const index = i >= NUMBER_OF_PAGES ? i - NUMBER_OF_PAGES : i;
       return items[index];
     });
   };
 
-  _mergeArraysFromEnd = (items, newArray) => {
+  _mergeArraysFromEnd = (items: Date[], newArray: Date[]) => {
     for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
       items[i] = newArray[i];
     }
     return items;
   };
 
-  _mergeArraysFromTop = (items, newArray) => {
+  _mergeArraysFromTop = (items: Date[], newArray: Date[]) => {
     for (let i = 0; i < NUMBER_OF_PAGES; i++) {
       items[i] = newArray[i];
     }
     return items;
   };
 
-  _getItemsForPage = (page, items) => {
+  _getItemsForPage = (page: number, items: Date[]) => {
     if (this._isLastPage(page, items)) {
       return this._getNexPageItems(items);
     } else if (this._isFirstPage(page)) {
