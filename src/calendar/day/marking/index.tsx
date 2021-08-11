@@ -41,6 +41,7 @@ export interface MarkingProps extends DotProps {
   marked?: boolean;
   today?: boolean;
   disabled?: boolean;
+  inactive?: boolean;
   disableTouchEvent?: boolean;
   activeOpacity?: number;
   selectedColor?: string;
@@ -76,6 +77,7 @@ export default class Marking extends Component<MarkingProps> {
       'marked',
       'today',
       'disabled',
+      'inactive',
       'disableTouchEvent',
       'activeOpacity',
       'selectedColor',

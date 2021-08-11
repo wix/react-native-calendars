@@ -10,10 +10,10 @@ import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 import Dot from '../dot';
 import {MarkingProps} from '../marking';
-import {Theme} from '../../../types';
+import {Theme, DayState} from '../../../types';
 
 interface PeriodDayProps {
-  state?: 'selected' | 'disabled' | 'today' | '';
+  state?: DayState;
   marking?: MarkingProps;
   theme?: Theme;
   onPress?: (date?: Date) => void;
@@ -27,7 +27,7 @@ export default class PeriodDay extends Component<PeriodDayProps> {
   static displayName = 'IGNORE';
 
   static propTypes = {
-    state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+    state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
     marking: PropTypes.any,
     theme: PropTypes.object,
     onPress: PropTypes.func,
@@ -75,6 +75,8 @@ export default class PeriodDay extends Component<PeriodDayProps> {
 
     if (marking.disabled) {
       defaultStyle.textStyle.color = this.style.disabledText.color;
+    } else if (marking.inactive) {
+      defaultStyle.textStyle.color = this.style.inactiveText.color;
     } else if (marking.selected) {
       defaultStyle.textStyle.color = this.style.selectedText.color;
     }
@@ -141,6 +143,8 @@ export default class PeriodDay extends Component<PeriodDayProps> {
     // TODO: refactor - move all styling logic out of render()
     if (state === 'disabled') {
       textStyle.push(this.style.disabledText);
+    } else if (state === 'inactive') {
+      textStyle.push(this.style.inactiveText);
     } else if (state === 'today') {
       containerStyle.push(this.style.today);
       textStyle.push(this.style.todayText);

@@ -12,6 +12,8 @@ export type DateData = {
   timestamp: number,
   dateString: string
 }
+export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
+
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;
@@ -45,6 +47,7 @@ export interface Theme {
   selectedDayBackgroundColor?: string;
   arrowColor?: string;
   textDisabledColor?: string;
+  textInactiveColor?: string;
   backgroundColor?: string;
   dotColor?: string;
   selectedDotColor?: string;
@@ -79,6 +82,7 @@ export interface Theme {
   arrowStyle?: ViewStyle;
   todayBackgroundColor?: string;
   disabledDotColor?: string;
+  inactiveDotColor?: string;
   todayDotColor?: string;
   todayButtonTextColor?: string;
   todayButtonPosition?: string;
