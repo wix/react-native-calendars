@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 const FILLER_HEIGHT = 34;
 
@@ -55,7 +55,10 @@ export default function styleConstructor(theme: Theme = {}) {
     disabledText: {
       color: appStyle.textDisabledColor
     },
-    
+    inactiveText: {
+      color: appStyle.textInactiveColor
+    },
+
     // quickAction: {
     //   backgroundColor: 'white',
     //   borderWidth: 1,

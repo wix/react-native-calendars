@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 export interface DotProps {
   theme?: Theme;
@@ -10,10 +10,11 @@ export interface DotProps {
   marked?: Boolean;
   selected?: Boolean;
   disabled?: Boolean;
+  inactive?: Boolean;
   today?: Boolean;
 }
 
-const Dot = ({theme, marked, disabled, color, today, selected}: DotProps) => {
+const Dot = ({theme, marked, disabled, inactive, color, today, selected}: DotProps) => {
   const style = styleConstructor(theme);
   const dotStyle = [style.dot] as object[];
 
@@ -26,6 +27,10 @@ const Dot = ({theme, marked, disabled, color, today, selected}: DotProps) => {
 
     if (disabled) {
       dotStyle.push(style.disabledDot);
+    }
+
+    if (inactive) {
+      dotStyle.push(style.inactiveDot);
     }
 
     if (selected) {
@@ -48,5 +53,6 @@ Dot.propTypes = {
   marked: PropTypes.bool,
   selected: PropTypes.bool,
   disabled: PropTypes.bool,
+  inactive: PropTypes.bool,
   today: PropTypes.bool
 };

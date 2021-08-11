@@ -7,7 +7,7 @@ import {View, ViewStyle, TextStyle} from 'react-native';
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 export enum MarkingTypes {
   DOT = 'dot',
@@ -41,6 +41,7 @@ export interface MarkingProps extends DotProps {
   marked?: boolean;
   today?: boolean;
   disabled?: boolean;
+  inactive?: boolean;
   disableTouchEvent?: boolean;
   activeOpacity?: number;
   selectedColor?: string;
@@ -76,6 +77,7 @@ export default class Marking extends Component<MarkingProps> {
       'marked',
       'today',
       'disabled',
+      'inactive',
       'disableTouchEvent',
       'activeOpacity',
       'selectedColor',
@@ -91,7 +93,7 @@ export default class Marking extends Component<MarkingProps> {
 
     if (items && Array.isArray(items) && items.length > 0) {
       // Filter out items so that we process only those which have color property
-      const validItems = _.filter(items, function(o: DOT | PERIOD) { return !o.color; });
+      const validItems = _.filter(items, function(o: DOT | PERIOD) { return o.color; });
 
       return validItems.map((item, index) => {
         return type === MarkingTypes.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);

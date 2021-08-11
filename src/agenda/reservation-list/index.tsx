@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {ActivityIndicator, View, FlatList, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent, ColorValue} from 'react-native';
+import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
 // @ts-expect-error
-import dateutils from '../../dateutils';
+import {sameDate} from '../../dateutils';
 // @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
@@ -35,7 +35,7 @@ export type ReservationListProps = ReservationProps & {
   onDayChange?: (day: Date) => void;
   /** specify what should be rendered instead of ActivityIndicator */
   renderEmptyData: () => JSX.Element;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 
   /** onScroll ListView event */
   onScroll?: (yOffset: number) => void;
@@ -50,10 +50,10 @@ export type ReservationListProps = ReservationProps & {
   /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView */
   refreshControl?: JSX.Element;
   /** Set this true while waiting for new data from a refresh */
-  refreshing?: boolean,
+  refreshing?: boolean;
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
-}
+};
 
 interface ReservationsListState {
   reservations: DayReservations[];
@@ -93,17 +93,18 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     refreshing: PropTypes.bool,
     /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
     onRefresh: PropTypes.func
-  }
+  };
 
   static defaultProps = {
     refreshing: false,
-    selectedDay: new XDate(true),
+    selectedDay: new XDate(true)
   };
   private style: {[key: string]: ViewStyle | TextStyle};
   private heights: number[];
   private selectedDay: XDate;
   private scrollOver: boolean;
-  private list?: FlatList<DayReservations> | null;
+  private list: React.RefObject<FlatList> = React.createRef();
+
 
   constructor(props: ReservationListProps) {
     super(props);
@@ -125,7 +126,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
   componentDidUpdate(prevProps: ReservationListProps) {
     if (prevProps !== this.props) {
-      if (!dateutils.sameDate(prevProps.topDay, this.props.topDay)) {
+      if (!sameDate(prevProps.topDay, this.props.topDay)) {
         this.setState(
           {
             reservations: []
@@ -147,13 +148,13 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
   updateReservations(props: ReservationListProps) {
     const {selectedDay} = props;
     const reservations = this.getReservations(props);
-    if (this.list && !dateutils.sameDate(selectedDay, this.selectedDay)) {
+    if (this.list && !sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
-      this.list.scrollToOffset({offset: scrollPosition, animated: true});
+      this.list?.current?.scrollToOffset({offset: scrollPosition, animated: true});
     }
     this.selectedDay = selectedDay;
     this.updateDataSource(reservations.reservations);
@@ -244,8 +245,8 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     if (!row) return;
 
     const day = row.day;
-    const sameDate = dateutils.sameDate(day, this.selectedDay);
-    if (!sameDate && this.scrollOver) {
+    const dateIsSame = sameDate(day, this.selectedDay);
+    if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
       _.invoke(this.props, 'onDayChange', day.clone());
     }
@@ -264,12 +265,12 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     return false;
   };
 
-  renderRow = ({item, index}: {item: DayReservations, index: number}) => {
+  renderRow = ({item, index}: {item: DayReservations; index: number}) => {
     const reservationProps = extractComponentProps(Reservation, this.props);
 
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
-        <Reservation {...reservationProps} item={item}/>
+        <Reservation {...reservationProps} item={item} />
       </View>
     );
   };
@@ -283,12 +284,12 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         return _.invoke(this.props, 'renderEmptyData');
       }
 
-      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor as ColorValue}/>;
+      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor} />;
     }
 
     return (
       <FlatList
-        ref={c => (this.list = c)}
+        ref={this.list}
         style={style}
         contentContainerStyle={this.style.content}
         data={this.state.reservations}

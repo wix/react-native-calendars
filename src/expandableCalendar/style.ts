@@ -1,11 +1,12 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
+import {Theme} from '../types';
+
 
 const commons = require('./commons');
-const STYLESHEET_ID = 'stylesheet.expandable.main';
 export const HEADER_HEIGHT = 68;
 
-export default function styleConstructor(theme = {}) {
+export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
 
   return StyleSheet.create({
@@ -170,6 +171,6 @@ export default function styleConstructor(theme = {}) {
       marginLeft: appStyle.todayButtonPosition === 'right' ? 7 : undefined,
       marginRight: appStyle.todayButtonPosition === 'right' ? undefined : 7
     },
-    ...(theme[STYLESHEET_ID] || {})
+    ...(theme?.stylesheet?.expandable?.main || {})
   });
 }

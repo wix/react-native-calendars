@@ -1,6 +1,6 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../../style';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -42,6 +42,9 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     disabledText: {
       color: appStyle.textDisabledColor
+    },
+    inactiveText: {
+      color: appStyle.textInactiveColor
     },
     dot: {
       width: 4,
