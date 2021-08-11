@@ -187,6 +187,7 @@ export default class BasicDay extends Component<BasicDayProps> {
         marked={this.isMultiDot() ? true : marked}
         selected={this.isSelected()}
         disabled={this.isDisabled()}
+        inactive={this.isInactive()}
         today={this.isToday()}
         dotColor={dotColor}
         dots={dots}
