@@ -12,6 +12,8 @@ export type DateData = {
   timestamp: number,
   dateString: string
 }
+export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
+
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;

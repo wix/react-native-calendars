@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 
-import {Theme, DateData} from '../../../types';
+import {Theme, DateData, DayState} from '../../../types';
 // @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import styleConstructor from './style';
 import Marking, {MarkingTypes, MarkingProps} from '../marking';
 
 export interface BasicDayProps {
-  state?: 'selected' | 'disabled' | 'inactive' | 'today';
+  state?: DayState;
   /** The marking object */
   marking?: MarkingProps;
   /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */

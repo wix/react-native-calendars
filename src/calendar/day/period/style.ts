@@ -55,7 +55,10 @@ export default function styleConstructor(theme: Theme = {}) {
     disabledText: {
       color: appStyle.textDisabledColor
     },
-    
+    inactiveText: {
+      color: appStyle.textInactiveColor
+    },
+
     // quickAction: {
     //   backgroundColor: 'white',
     //   borderWidth: 1,
