@@ -15,7 +15,7 @@ import asCalendarConsumer from './asCalendarConsumer';
 
 
 const commons = require('./commons');
-const updateSources = commons.UPDATE_SOURCES;
+const updateSources = commons.UpdateSources;
 
 interface Props extends SectionListProps<any, DefaultSectionT> {
   /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */

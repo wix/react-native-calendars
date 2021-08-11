@@ -1,4 +1,4 @@
-import {Platform, Dimensions, I18nManager} from 'react-native';
+import {Platform, Dimensions, I18nManager, PlatformIOSStatic} from 'react-native';
 
 const {height, width} = Dimensions.get('window');
 
@@ -8,11 +8,10 @@ export const isIos = Platform.OS === 'ios';
 export const screenWidth = width;
 export const screenHeight = height;
 export const screenAspectRatio = screenWidth < screenHeight ? screenHeight / screenWidth : screenWidth / screenHeight;
-// @ts-expect-error
-export const isTablet = Platform.isPad || (screenAspectRatio < 1.6 && Math.max(screenWidth, screenHeight) >= 900);
+export const isTablet = (Platform as PlatformIOSStatic).isPad || (screenAspectRatio < 1.6 && Math.max(screenWidth, screenHeight) >= 900);
 export const todayString = 'today';
 
-export enum UPDATE_SOURCES {
+export enum UpdateSources {
   CALENDAR_INIT = 'calendarInit',
   TODAY_PRESS = 'todayPress',
   LIST_DRAG = 'listDrag',

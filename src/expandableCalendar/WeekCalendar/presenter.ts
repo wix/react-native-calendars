@@ -12,7 +12,7 @@ import {WeekCalendarProps} from './index';
 
 
 const commons = require('../commons');
-const updateSources = commons.UPDATE_SOURCES;
+const updateSources = commons.UpdateSources;
 // must be a positive number
 const NUMBER_OF_PAGES = 2;
 

@@ -13,7 +13,7 @@ import Presenter from './Presenter';
 
 
 const commons = require('../commons');
-const updateSources = commons.UPDATE_SOURCES;
+const updateSources = commons.UpdateSources;
 const TOP_POSITION = 65;
 
 interface Props {

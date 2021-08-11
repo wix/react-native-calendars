@@ -1,9 +1,9 @@
 import {ColorValue, ViewStyle, TextStyle} from 'react-native';
-import {UPDATE_SOURCES} from './expandableCalendar/commons';
+import {UpdateSources} from './expandableCalendar/commons';
 
 
 export type Direction = 'left' | 'right';
-export type UpdateSource = keyof typeof UPDATE_SOURCES;
+export type UpdateSource = keyof typeof UpdateSources;
 export type DateData = {
   year: number,
   month: number,

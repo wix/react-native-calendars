@@ -1,4 +1,4 @@
-const {UPDATE_SOURCES} = require('../commons');
+const {UpdateSources} = require('../commons');
 const {default: Presenter} = require('./presenter');
 
 describe('WeekCalendar presenter tests', () => {
@@ -17,7 +17,7 @@ describe('WeekCalendar presenter tests', () => {
     prevDate: '2021-01-13'
   };
 
-  const makeContext = (datesInWeek = twoDaysSameWeek, updateSource = UPDATE_SOURCES.WEEK_SCROLL) => {
+  const makeContext = (datesInWeek = twoDaysSameWeek, updateSource = UpdateSources.WEEK_SCROLL) => {
     return {
       ...datesInWeek,
       updateSource
@@ -59,7 +59,7 @@ describe('WeekCalendar presenter tests', () => {
     });
 
     it('Expect component to update when dates are not in the same week', () => {
-      const context = makeContext(twoDaysDifferentWeek, UPDATE_SOURCES.PAGE_SCROLL);
+      const context = makeContext(twoDaysDifferentWeek, UpdateSources.PAGE_SCROLL);
       const prevContext = makeContext(twoSomeDays);
       const {shouldComponentUpdate} = makeUUT();
       const shouldUpdate = shouldComponentUpdate(context, prevContext);
@@ -145,7 +145,7 @@ describe('WeekCalendar presenter tests', () => {
       const {onDayPress} = makeUUT({context});
 
       onDayPress(context, {dateString: '2021-01-22'});
-      expect(setDate).toBeCalledWith('2021-01-22', UPDATE_SOURCES.DAY_PRESS);
+      expect(setDate).toBeCalledWith('2021-01-22', UpdateSources.DAY_PRESS);
     });
   });
 

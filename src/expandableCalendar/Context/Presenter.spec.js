@@ -1,6 +1,6 @@
 const {default: Presenter} = require('./Presenter');
 import XDate from 'xdate';
-import {UPDATE_SOURCES} from '../commons';
+import {UpdateSources} from '../commons';
 import {toMarkingFormat} from '../../interface';
 
 
@@ -14,7 +14,7 @@ describe('Context provider tests', () => {
   const today1 = XDate();
   const today2 = new Date();
   const todayDate = toMarkingFormat(XDate());
-  const updateSources = UPDATE_SOURCES.CALENDAR_INIT;
+  const updateSources = UpdateSources.CALENDAR_INIT;
 
   describe('isPastDate function tests', () => {
     it('Expect to get true while passing a past date', () => {

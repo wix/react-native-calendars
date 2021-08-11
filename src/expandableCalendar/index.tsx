@@ -22,7 +22,7 @@ import Week from './week';
 
 
 const commons = require('./commons');
-const updateSources = commons.UPDATE_SOURCES;
+const updateSources = commons.UpdateSources;
 enum Positions {
   CLOSED = 'closed',
   OPEN = 'open'
