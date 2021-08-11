@@ -1,6 +1,6 @@
 // @flow
 import {Platform, StyleSheet} from 'react-native';
-import {Theme} from '../commons/types';
+import {Theme} from '../types';
 
 // const eventPaddingLeft = 4
 const leftMargin = 50 - 1;

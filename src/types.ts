@@ -1,4 +1,4 @@
-import {ColorValue, ViewStyle, TextStyle} from 'react-native';
+import {ViewStyle, TextStyle} from 'react-native';
 import {UpdateSources} from './expandableCalendar/commons';
 
 
