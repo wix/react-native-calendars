@@ -96,7 +96,7 @@ class Presenter {
     return props.disabledOpacity;
   };
 
-  getOpacityAnimation = (props: CalendarContextProviderProps, disabled: boolean) => {
+  getOpacityAnimation = ({disabledOpacity = 0}: CalendarContextProviderProps, disabled: boolean) => {
     return {
       toValue: disabled ? props.disabledOpacity || 0 : 1,
       duration: 500,
