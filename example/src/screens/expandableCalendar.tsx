@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import React, {Component, useCallback} from 'react';
 import {Platform, StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
+// @ts-expect-error
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
+
 
 const testIDs = require('../testIDs');
 
@@ -128,7 +130,11 @@ function getTheme() {
 const leftArrowIcon = require('../img/previous.png');
 const rightArrowIcon = require('../img/next.png');
 
-export default class ExpandableCalendarScreen extends Component {
+interface Props {
+  weekView?: boolean
+}
+
+export default class ExpandableCalendarScreen extends Component<Props> {
   marked = getMarkedDates(ITEMS);
   theme = getTheme();
   todayBtnTheme = {
@@ -144,7 +150,7 @@ export default class ExpandableCalendarScreen extends Component {
     // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
   };
 
-  renderItem = ({item}) => {
+  renderItem = ({item}: any) => {
     return <AgendaItem item={item}/>;
   };
 
@@ -191,7 +197,11 @@ export default class ExpandableCalendarScreen extends Component {
   }
 }
 
-const AgendaItem = React.memo(function AgendaItem(props) {
+interface ItemProps {
+  item: any
+}
+
+const AgendaItem = React.memo(function AgendaItem(props: ItemProps) {
   // console.warn('item rendered', Date.now());
   const {item} = props;
 

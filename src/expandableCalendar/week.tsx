@@ -3,31 +3,37 @@ import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 import {View} from 'react-native';
 
+// @ts-expect-error
 import {getWeekDates, sameMonth} from '../dateutils';
+// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
+// @ts-expect-error
 import {getState} from '../day-state-manager';
+// @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
-import Calendar from '../calendar';
+import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
-class Week extends PureComponent {
+
+interface Props extends CalendarProps {
+  current: XDate
+}
+export type WeekProps = Props;
+
+
+class Week extends PureComponent<Props> {
   static displayName = 'IGNORE';
 
   static propTypes = {
     ...Calendar.propTypes,
-    /** the current date */
     current: PropTypes.any
   };
 
-  constructor(props) {
-    super(props);
+  style = styleConstructor(this.props.theme);
 
-    this.style = styleConstructor(props.theme);
-  }
-
-  getWeek(date) {
+  getWeek(date: XDate) {
     return getWeekDates(date, this.props.firstDay);
   }
 
@@ -35,7 +41,7 @@ class Week extends PureComponent {
   //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
   // }
 
-  renderDay(day, id) {
+  renderDay(day: XDate, id: number) {
     const {current, hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
@@ -63,10 +69,10 @@ class Week extends PureComponent {
   render() {
     const {current} = this.props;
     const dates = this.getWeek(current);
-    const week = [];
+    const week: any[] = [];
 
     if (dates) {
-      dates.forEach((day, id) => {
+      dates.forEach((day: XDate, id: number) => {
         week.push(this.renderDay(day, id));
       }, this);
     }
