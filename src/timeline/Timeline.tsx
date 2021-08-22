@@ -2,10 +2,14 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
+
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, Dimensions, ScrollView, TextStyle, ViewStyle} from 'react-native';
+
+import {Theme} from '../types';
 import styleConstructor from './style';
 import populateEvents from './Packer';
+
 
 const LEFT_MARGIN = 60 - 1;
 const TEXT_LINE_HEIGHT = 17;
@@ -16,25 +20,28 @@ function range(from: number, to: number) {
 
 let {width: dimensionWidth} = Dimensions.get('window');
 
+export type Event = {
+  start: string;
+  end: string;
+  title: string;
+  summary: string;
+  color?: string;
+};
+
 export interface TimelineProps {
   start?: number;
   end?: number;
-  eventTapped?: (event: any) => void;
+  eventTapped?: (event: Event) => void;
   format24h?: boolean;
-  events: {
-    start: string;
-    end: string;
-    title: string;
-    summary: string;
-    color?: string;
-  }[];
-  styles?: any;
+  events: Event[];
+  styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
+  theme?: Theme;
   scrollToFirst?: boolean;
-  renderEvent?: (event: any) => JSX.Element;
+  renderEvent?: (event: Event) => JSX.Element;
 }
 
 interface State {
-  _scrollY: any;
+  _scrollY: number;
   packedEvents: any;
 }
 
@@ -61,9 +68,10 @@ export default class Timeline extends Component<TimelineProps, State> {
     events: [],
     format24h: true
   };
+
+  private scrollView: React.RefObject<any> = React.createRef();
+  style: {[key: string]: ViewStyle | TextStyle};
   calendarHeight: number;
-  private _scrollView: any;
-  style: any;
 
   constructor(props: TimelineProps) {
     super(props);
@@ -71,7 +79,7 @@ export default class Timeline extends Component<TimelineProps, State> {
     const {start = 0, end = 0} = this.props;
     this.calendarHeight = (end - start) * 100;
 
-    this.style = styleConstructor(props.styles, this.calendarHeight);
+    this.style = styleConstructor(props.theme || props.styles, this.calendarHeight);
 
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
@@ -102,8 +110,8 @@ export default class Timeline extends Component<TimelineProps, State> {
 
   scrollToFirst() {
     setTimeout(() => {
-      if (this.state && this.state._scrollY && this._scrollView) {
-        this._scrollView.scrollTo({
+      if (this.state && this.state._scrollY && this.scrollView) {
+        this.scrollView?.current?.scrollTo({
           x: 0,
           y: this.state._scrollY,
           animated: true
@@ -147,7 +155,7 @@ export default class Timeline extends Component<TimelineProps, State> {
     });
   }
 
-  _onEventTapped(event: any) {
+  _onEventTapped(event: Event) {
     if (this.props.eventTapped) {
       this.props.eventTapped(event);
     }
@@ -209,7 +217,7 @@ export default class Timeline extends Component<TimelineProps, State> {
   render() {
     return (
       <ScrollView
-        ref={ref => (this._scrollView = ref)}
+        ref={this.scrollView}
         contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}
       >
         {this._renderLines()}
