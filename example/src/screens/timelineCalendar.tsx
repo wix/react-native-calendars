@@ -7,8 +7,8 @@ import {sameDate} from '../../../src/dateutils';
 
 const EVENTS = [
   {
-    start: '2017-09-06 22:30:00',
-    end: '2017-09-06 23:30:00',
+    start: '2017-09-06 01:30:00',
+    end: '2017-09-06 02:30:00',
     title: 'Dr. Mariana Joseph',
     summary: '3412 Piedmont Rd NE, GA 3032',
     color: '#e6add8'
@@ -84,6 +84,13 @@ export default class TimelineCalendarScreen extends Component {
     currentDate: '2017-09-07'
   };
 
+  marked = {
+    '2017-09-06': {marked: true},
+    '2017-09-07': {marked: true},
+    '2017-09-08': {marked: true},
+    '2017-09-10': {marked: true}
+  };
+
   onDateChanged = date => {
     // console.warn('TimelineCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
@@ -107,6 +114,7 @@ export default class TimelineCalendarScreen extends Component {
           firstDay={1}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
+          markedDates={this.marked}
         />
         <Timeline
           format24h={true}
