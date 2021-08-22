@@ -29,27 +29,29 @@ export type Event = {
 };
 
 export interface TimelineProps {
+  events: Event[];
   start?: number;
   end?: number;
-  eventTapped?: (event: Event) => void;
-  format24h?: boolean;
-  events: Event[];
+  eventTapped?: (event: Event) => void; //TODO: deprecate (prop renamed 'onEventPress', as in the other components).
+  onEventPress?: (event: Event) => void;
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
   theme?: Theme;
   scrollToFirst?: boolean;
+  format24h?: boolean;
   renderEvent?: (event: Event) => JSX.Element;
 }
 
 interface State {
   _scrollY: number;
-  packedEvents: any;
+  packedEvents: Event[];
 }
 
 export default class Timeline extends Component<TimelineProps, State> {
   static propTypes = {
     start: PropTypes.number,
     end: PropTypes.number,
-    eventTapped: PropTypes.func,
+    eventTapped: PropTypes.func, // TODO: remove after deprecation
+    onEventPress: PropTypes.func,
     format24h: PropTypes.bool,
     events: PropTypes.arrayOf(
       PropTypes.shape({
@@ -155,9 +157,11 @@ export default class Timeline extends Component<TimelineProps, State> {
     });
   }
 
-  _onEventTapped(event: Event) {
-    if (this.props.eventTapped) {
+  _onEventPress(event: Event) {
+    if (this.props.eventTapped) { //TODO: remove after deprecation
       this.props.eventTapped(event);
+    } else {
+      _.invoke(this.props, 'onEventPress', event);
     }
   }
 
@@ -180,7 +184,7 @@ export default class Timeline extends Component<TimelineProps, State> {
       return (
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => this._onEventTapped(this.props.events[event.index])}
+          onPress={() => this._onEventPress(this.props.events[event.index])}
           key={i}
           style={[this.style.event, style]}
         >
