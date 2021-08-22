@@ -2,25 +2,56 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity, Dimensions} from 'react-native';
+
+import React, {Component} from 'react';
+import {View, Text, TouchableOpacity, Dimensions, ScrollView, TextStyle, ViewStyle} from 'react-native';
+
+import {Theme} from '../types';
 import styleConstructor from './style';
 import populateEvents from './Packer';
+
 
 const LEFT_MARGIN = 60 - 1;
 const TEXT_LINE_HEIGHT = 17;
 
-function range(from, to) {
+function range(from: number, to: number) {
   return Array.from(Array(to), (_, i) => from + i);
 }
 
 let {width: dimensionWidth} = Dimensions.get('window');
 
-export default class Timeline extends React.PureComponent {
+export type Event = {
+  start: string;
+  end: string;
+  title: string;
+  summary: string;
+  color?: string;
+};
+
+export interface TimelineProps {
+  events: Event[];
+  start?: number;
+  end?: number;
+  eventTapped?: (event: Event) => void; //TODO: deprecate (prop renamed 'onEventPress', as in the other components).
+  onEventPress?: (event: Event) => void;
+  styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
+  theme?: Theme;
+  scrollToFirst?: boolean;
+  format24h?: boolean;
+  renderEvent?: (event: Event) => JSX.Element;
+}
+
+interface State {
+  _scrollY: number;
+  packedEvents: Event[];
+}
+
+export default class Timeline extends Component<TimelineProps, State> {
   static propTypes = {
     start: PropTypes.number,
     end: PropTypes.number,
-    eventTapped: PropTypes.func,
+    eventTapped: PropTypes.func, // TODO: remove after deprecation
+    onEventPress: PropTypes.func,
     format24h: PropTypes.bool,
     events: PropTypes.arrayOf(
       PropTypes.shape({
@@ -40,13 +71,17 @@ export default class Timeline extends React.PureComponent {
     format24h: true
   };
 
-  constructor(props) {
+  private scrollView: React.RefObject<any> = React.createRef();
+  style: {[key: string]: ViewStyle | TextStyle};
+  calendarHeight: number;
+
+  constructor(props: TimelineProps) {
     super(props);
 
-    const {start, end} = this.props;
+    const {start = 0, end = 0} = this.props;
     this.calendarHeight = (end - start) * 100;
 
-    this.style = styleConstructor(props.styles, this.calendarHeight);
+    this.style = styleConstructor(props.theme || props.styles, this.calendarHeight);
 
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
@@ -59,7 +94,7 @@ export default class Timeline extends React.PureComponent {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: TimelineProps) {
     const width = dimensionWidth - LEFT_MARGIN;
     const {events: prevEvents, start: prevStart = 0} = prevProps;
     const {events, start = 0} = this.props;
@@ -77,8 +112,8 @@ export default class Timeline extends React.PureComponent {
 
   scrollToFirst() {
     setTimeout(() => {
-      if (this.state && this.state._scrollY && this._scrollView) {
-        this._scrollView.scrollTo({
+      if (this.state && this.state._scrollY && this.scrollView) {
+        this.scrollView?.current?.scrollTo({
           x: 0,
           y: this.state._scrollY,
           animated: true
@@ -122,15 +157,17 @@ export default class Timeline extends React.PureComponent {
     });
   }
 
-  _onEventTapped(event) {
-    if (this.props.eventTapped) {
+  _onEventPress(event: Event) {
+    if (this.props.eventTapped) { //TODO: remove after deprecation
       this.props.eventTapped(event);
+    } else {
+      _.invoke(this.props, 'onEventPress', event);
     }
   }
 
   _renderEvents() {
     const {packedEvents} = this.state;
-    let events = packedEvents.map((event, i) => {
+    let events = packedEvents.map((event: any, i: number) => {
       const style = {
         left: event.left,
         height: event.height,
@@ -147,7 +184,7 @@ export default class Timeline extends React.PureComponent {
       return (
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => this._onEventTapped(this.props.events[event.index])}
+          onPress={() => this._onEventPress(this.props.events[event.index])}
           key={i}
           style={[this.style.event, style]}
         >
@@ -165,7 +202,7 @@ export default class Timeline extends React.PureComponent {
               ) : null}
               {numberOfLines > 2 ? (
                 <Text style={this.style.eventTimes} numberOfLines={1}>
-                  {XDate(event.start).toString(formatTime)} - {XDate(event.end).toString(formatTime)}
+                  {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
                 </Text>
               ) : null}
             </View>
@@ -184,7 +221,7 @@ export default class Timeline extends React.PureComponent {
   render() {
     return (
       <ScrollView
-        ref={ref => (this._scrollView = ref)}
+        ref={this.scrollView}
         contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}
       >
         {this._renderLines()}

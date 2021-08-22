@@ -1,4 +1,4 @@
-import {ColorValue, ViewStyle, TextStyle} from 'react-native';
+import {ViewStyle, TextStyle} from 'react-native';
 import {UpdateSources} from './expandableCalendar/commons';
 
 
@@ -28,7 +28,7 @@ export interface Theme {
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
-  indicatorColor?: ColorValue;
+  indicatorColor?: string;
   stylesheet?: {
     calendar?: {main?: object, header?: object};
     day?: {basic?: object; period?: object};

@@ -1,13 +1,15 @@
 // @flow
 import XDate from 'xdate';
+import {Event} from './Timeline';
+
 
 const offset = 100;
 
-function buildEvent(column, left, width, dayStart) {
-  const startTime = XDate(column.start);
-  const endTime = column.end ? XDate(column.end) : XDate(startTime).addHours(1);
+function buildEvent(column: any, left: number, width: number, dayStart: number) {
+  const startTime = new XDate(column.start);
+  const endTime = column.end ? new XDate(column.end) : new XDate(startTime).addHours(1);
 
-  const dayStartTime = XDate(startTime).clearTime();
+  const dayStartTime = new XDate(startTime).clearTime();
 
   column.top = (dayStartTime.diffHours(startTime) - dayStart) * offset;
   column.height = startTime.diffHours(endTime) * offset;
@@ -16,11 +18,11 @@ function buildEvent(column, left, width, dayStart) {
   return column;
 }
 
-function collision(a, b) {
+function collision(a: Event, b: Event) {
   return a.end > b.start && a.start < b.end;
 }
 
-function expand(ev, column, columns) {
+function expand(ev: Event, column: any, columns: any) {
   let colSpan = 1;
 
   for (let i = column + 1; i < columns.length; i++) {
@@ -37,7 +39,7 @@ function expand(ev, column, columns) {
   return colSpan;
 }
 
-function pack(columns, width, calculatedEvents, dayStart) {
+function pack(columns: any, width: number, calculatedEvents: Event[], dayStart: number) {
   let colLength = columns.length;
 
   for (let i = 0; i < colLength; i++) {
@@ -52,14 +54,14 @@ function pack(columns, width, calculatedEvents, dayStart) {
   }
 }
 
-function populateEvents(events, screenWidth, dayStart) {
-  let lastEnd;
-  let columns;
-  let calculatedEvents = [];
+function populateEvents(events: Event[], screenWidth: number, dayStart: number) {
+  let lastEnd: any;
+  let columns: any;
+  let calculatedEvents: Event[] = [];
 
   events = events
-    .map((ev, index) => ({...ev, index: index}))
-    .sort(function (a, b) {
+    .map((ev: Event, index: number) => ({...ev, index: index}))
+    .sort(function (a: Event, b: Event) {
       if (a.start < b.start) return -1;
       if (a.start > b.start) return 1;
       if (a.end < b.end) return -1;
@@ -70,7 +72,7 @@ function populateEvents(events, screenWidth, dayStart) {
   columns = [];
   lastEnd = null;
 
-  events.forEach(function (ev) {
+  events.forEach(function (ev: Event) {
     if (lastEnd !== null && ev.start >= lastEnd) {
       pack(columns, screenWidth, calculatedEvents, dayStart);
       columns = [];

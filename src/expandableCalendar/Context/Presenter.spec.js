@@ -3,7 +3,6 @@ import XDate from 'xdate';
 import {UpdateSources} from '../commons';
 import {toMarkingFormat} from '../../interface';
 
-
 describe('Context provider tests', () => {
   const makeUUT = () => {
     return new Presenter();
@@ -58,7 +57,7 @@ describe('Context provider tests', () => {
       const date = '2021-01-01';
       const sameMonthDate = '2021-01-20';
       const props = {onDateChanged, onMonthChange, showTodayButton: false};
-      
+
       setDate(props, date, sameMonthDate, updateState, updateSources);
 
       expect(updateState).toBeCalled();
@@ -71,7 +70,7 @@ describe('Context provider tests', () => {
       const date = '2021-01-01';
       const differentMonth = '2021-02-20';
       const props = {onDateChanged, onMonthChange, showTodayButton: false};
-      
+
       setDate(props, date, differentMonth, updateState, updateSources);
 
       expect(updateState).toBeCalled();
@@ -134,7 +133,7 @@ describe('Context provider tests', () => {
       const {getPositionAnimation} = makeUUT();
       const TOP_POSITION = 65;
       const {tension, friction, useNativeDriver} = getPositionAnimation(todayDate, 10);
-      
+
       expect(tension).toEqual(30);
       expect(friction).toEqual(8);
       expect(useNativeDriver).toBe(true);
@@ -155,7 +154,7 @@ describe('Context provider tests', () => {
       const {getOpacityAnimation} = makeUUT();
       const disabledOpacity = 0.5;
       let data = getOpacityAnimation({disabledOpacity}, true);
-      
+
       expect(data.toValue).toBe(0.5);
 
       data = getOpacityAnimation({disabledOpacity}, false);
