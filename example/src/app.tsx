@@ -2,6 +2,7 @@ import './wdyr'; // <--- must be first import
 
 import {Navigation} from 'react-native-navigation';
 // import {I18nManager} from 'react-native'; // <--- In order to test RTL
+//@ts-expect-error
 import {LocaleConfig} from 'react-native-calendars';
 import {registerScreens} from './screens';
 

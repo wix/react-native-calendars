@@ -24,6 +24,7 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
+          enableSwipeMonths
           current={INITIAL_DATE}
           style={styles.calendar}
           onDayPress={onDayPress}

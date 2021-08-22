@@ -2,10 +2,16 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 
+
 const appIcon = require('../img/app-icon-120x120.png');
 const testIDs = require('../testIDs');
 
-export default class MenuScreen extends Component {
+interface Props {
+  componentId?: string;
+  weekView?: boolean;
+}
+
+export default class MenuScreen extends Component<Props> {
   render() {
     return (
       <ScrollView>
@@ -57,7 +63,7 @@ export default class MenuScreen extends Component {
     );
   }
 
-  pushScreen(screen, props) {
+  pushScreen(screen: string, props?: Props) {
     Navigation.push(this.props.componentId, {
       component: {
         name: screen,
@@ -68,7 +74,7 @@ export default class MenuScreen extends Component {
               text: props?.weekView ? 'WeekCalendar' : screen
             },
             backButton: {
-              accessibilityLabel: 'back',
+              testID: 'back',
               showTitle: false, // iOS only
               color: Platform.OS === 'ios' ? '#2d4150' : undefined
             }
