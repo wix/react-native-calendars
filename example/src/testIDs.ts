@@ -1,4 +1,4 @@
-module.exports = {
+exports = {
   menu: {
     CONTAINER: 'menu',
     CALENDARS: 'calendars_btn',
