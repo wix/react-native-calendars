@@ -710,6 +710,7 @@
 - Change import to require - solved "Cannot assign to read only property 'exports' of object '#<Object>'" (PR #1553).
 - TS migration for all Calendars components.
 - Upgrading to react-native 0.64.2.
+- Disabling Detox e2e tests.
 
 ## Added
 - AgendaList - support offset scroll to section (PR #1526).
