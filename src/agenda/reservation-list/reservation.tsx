@@ -8,11 +8,11 @@ import {View, Text} from 'react-native';
 // @ts-expect-error
 import {xdateToData} from '../../interface';
 // @ts-expect-error
-import dateutils from '../../dateutils';
+import {isToday} from '../../dateutils';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
-import {Theme} from '../../commons/types';
+import {Theme} from '../../types';
 import {DayReservations} from './index';
 
 
@@ -27,7 +27,7 @@ export interface ReservationProps {
   /** specify how each item should be rendered in agenda */
   renderItem?: (reservation: any, isFirst: boolean) => React.Component;
   /** specify how empty date content with no items should be rendered */
-  renderEmptyDate?: (date?: XDate) => React.Component
+  renderEmptyDate?: (date?: XDate) => React.Component;
 }
 
 class Reservation extends Component<ReservationProps> {
@@ -45,7 +45,7 @@ class Reservation extends Component<ReservationProps> {
     renderItem: PropTypes.func,
     /** specify how empty date content with no items should be rendered */
     renderEmptyDate: PropTypes.func
-  }
+  };
 
   style;
 
@@ -82,7 +82,7 @@ class Reservation extends Component<ReservationProps> {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
 
-    const today = dateutils.isToday(date) ? this.style.today : undefined;
+    const today = isToday(date) ? this.style.today : undefined;
     const dayNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
 
     if (date) {
@@ -97,10 +97,9 @@ class Reservation extends Component<ReservationProps> {
         </View>
       );
     } else {
-      return <View style={this.style.day}/>;
+      return <View style={this.style.day} />;
     }
   }
-
 
   render() {
     const {reservation, date} = this.props.item;

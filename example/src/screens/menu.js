@@ -65,7 +65,7 @@ export default class MenuScreen extends Component {
         options: {
           topBar: {
             title: {
-              text: screen
+              text: props?.weekView ? 'WeekCalendar' : screen
             },
             backButton: {
               accessibilityLabel: 'back',

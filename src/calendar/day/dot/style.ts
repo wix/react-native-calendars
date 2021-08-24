@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
-import {Theme} from '../../../commons/types';
+import {Theme} from '../../../types';
 
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -23,6 +23,9 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     disabledDot: {
       backgroundColor: appStyle.disabledDotColor || appStyle.dotColor
+    },
+    inactiveDot: {
+      backgroundColor: appStyle.inactiveDotColor || appStyle.dotColor
     },
     todayDot: {
       backgroundColor: appStyle.todayDotColor || appStyle.dotColor

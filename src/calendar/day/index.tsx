@@ -4,10 +4,11 @@ import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
+
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 // @ts-expect-error
-import dateutils from '../../dateutils';
+import {isToday as dateutils_isToday} from '../../dateutils';
 // @ts-expect-error
 import {xdateToData} from '../../interface';
 // @ts-expect-error
@@ -15,6 +16,7 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 import {MarkingProps} from './marking';
+
 
 const basicDayPropsTypes = _.omit(BasicDay.propTypes, 'date');
 
@@ -102,7 +104,7 @@ export default class Day extends Component<DayProps> {
   render() {
     const {day, marking} = this.props;
     const date = xdateToData(day);
-    const isToday = dateutils.isToday(day);
+    const isToday = dateutils_isToday(day);
     const Component = this.getDayComponent();
     const dayProps = _.omit(this.props, 'day');
     const accessibilityLabel = this.getAccessibilityLabel(day, marking, isToday);

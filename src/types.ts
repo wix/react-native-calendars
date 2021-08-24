@@ -1,7 +1,21 @@
-import {ColorValue, TextStyle} from 'react-native';
+import {ViewStyle, TextStyle} from 'react-native';
+import {UpdateSources} from './expandableCalendar/commons';
+
+
+export type Direction = 'left' | 'right';
+export type UpdateSource = keyof typeof UpdateSources;
+export type DateData = {
+  year: number,
+  month: number,
+  day: number,
+  timestamp: number,
+  dateString: string
+}
+export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
+
 export interface Theme {
   container?: object;
-  contentStyle?: object;
+  contentStyle?: ViewStyle;
   header?: object;
   headerText?: object;
   arrowButton?: object;
@@ -14,7 +28,7 @@ export interface Theme {
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
-  indicatorColor?: ColorValue;
+  indicatorColor?: string;
   stylesheet?: {
     calendar?: {main?: object, header?: object};
     day?: {basic?: object; period?: object};
@@ -22,6 +36,7 @@ export interface Theme {
     marking?: object;
     'calendar-list'?: {main?: object};
     agenda?: {main?: object, list?: object};
+    expandable?: {main?: object}
   };
   textSectionTitleColor?: string;
   textSectionTitleDisabledColor?: string;
@@ -31,15 +46,16 @@ export interface Theme {
   selectedDayBackgroundColor?: string;
   arrowColor?: string;
   textDisabledColor?: string;
+  textInactiveColor?: string;
   backgroundColor?: string;
   dotColor?: string;
   selectedDotColor?: string;
   disabledArrowColor?: string;
-  textDayFontFamily?: string;
-  textMonthFontFamily?: string;
-  textDayHeaderFontFamily?: string;
-  textDayFontWeight?: string;
-  textMonthFontWeight?: string;
+  textDayFontFamily?: TextStyle['fontFamily'];
+  textMonthFontFamily?: TextStyle['fontFamily'];
+  textDayHeaderFontFamily?: TextStyle['fontFamily'];
+  textDayFontWeight?: TextStyle['fontWeight'];
+  textMonthFontWeight?: TextStyle['fontWeight'];
   textDayHeaderFontWeight?: TextStyle['fontWeight'];
   textDayFontSize?: number;
   textMonthFontSize?: number;
@@ -57,14 +73,15 @@ export interface Theme {
   textDefaultColor?: string;
   textColor?: string;
   textLinkColor?: string;
-  todayButtonFontFamily?: string;
-  todayButtonFontWeight?: string;
+  todayButtonFontFamily?: TextStyle['fontFamily'];
+  todayButtonFontWeight?: TextStyle['fontWeight'];
   todayButtonFontSize?: number;
-  textDayStyle?: object;
+  textDayStyle?: TextStyle;
   dotStyle?: object;
-  arrowStyle?: object;
+  arrowStyle?: ViewStyle;
   todayBackgroundColor?: string;
   disabledDotColor?: string;
+  inactiveDotColor?: string;
   todayDotColor?: string;
   todayButtonTextColor?: string;
   todayButtonPosition?: string;
