@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../commons/types';
 
-
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
@@ -38,6 +37,7 @@ export default function styleConstructor(theme: Theme = {}) {
     indicator: {
       marginTop: 80
     },
-    ...(theme.stylesheet?.agenda?.list || {})
+    // @ts-ignore
+    ...(theme['stylesheet.agenda.list'] || {})
   });
 }

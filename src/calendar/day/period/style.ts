@@ -55,7 +55,7 @@ export default function styleConstructor(theme: Theme = {}) {
     disabledText: {
       color: appStyle.textDisabledColor
     },
-    
+
     // quickAction: {
     //   backgroundColor: 'white',
     //   borderWidth: 1,
@@ -74,6 +74,7 @@ export default function styleConstructor(theme: Theme = {}) {
     // naText: {
     //   color: '#b6c1cd'
     // },
-    ...(theme.stylesheet?.day?.period || {})
+    // @ts-ignore
+    ...(theme['stylesheet.day.period'] || {})
   });
 }
