@@ -710,7 +710,6 @@
 - Change import to require - solved "Cannot assign to read only property 'exports' of object '#<Object>'" (PR #1553).
 - TS migration for all Calendars components.
 - Upgrading to react-native 0.64.2.
-- Disabling Detox e2e tests.
 
 ## Added
 - AgendaList - support offset scroll to section (PR #1526).
@@ -720,3 +719,8 @@
 ## Fixed
 - ExpandableCalendar - 'onDayPress' not called (PR #1584).
 - Fixed issue with 'dateutils' export (PR #1548).
+
+## [1.1266.0] - 2021-8-24
+
+## Changed
+- Disabling Detox e2e tests.
