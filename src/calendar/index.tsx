@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
@@ -150,8 +150,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     this.setState({currentMonth: day.clone()}, () => {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
-        _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
-        _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
+        invoke(this.props, 'onMonthChange', xdateToData(currMont));
+        invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
     });
   };

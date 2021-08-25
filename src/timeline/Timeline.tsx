@@ -1,5 +1,7 @@
 // @flow
-import _ from 'lodash';
+import min from 'lodash/min';
+import map from 'lodash/map';
+import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -85,7 +87,7 @@ export default class Timeline extends Component<TimelineProps, State> {
 
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
-    let initPosition = _.min(_.map(packedEvents, 'top')) - this.calendarHeight / (end - start);
+    let initPosition = min(map(packedEvents, 'top')) - this.calendarHeight / (end - start);
     const verifiedInitPosition = initPosition < 0 ? 0 : initPosition;
 
     this.state = {
@@ -161,7 +163,7 @@ export default class Timeline extends Component<TimelineProps, State> {
     if (this.props.eventTapped) { //TODO: remove after deprecation
       this.props.eventTapped(event);
     } else {
-      _.invoke(this.props, 'onEventPress', event);
+      invoke(this.props, 'onEventPress', event);
     }
   }
 

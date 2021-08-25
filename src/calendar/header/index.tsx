@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import includes from 'lodash/includes';
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
 import XDate from 'xdate';
@@ -154,7 +154,7 @@ class CalendarHeader extends Component<Props> {
     return weekDaysNames.map((day: string, idx: number) => {
       const dayStyle = [this.style.dayHeader];
 
-      if (_.includes(disabledDaysIndexes, idx)) {
+      if (includes(disabledDaysIndexes, idx)) {
         dayStyle.push(this.style.disabledDayHeader);
       }
 
