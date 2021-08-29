@@ -1,4 +1,4 @@
-exports = {
+export default {
   menu: {
     CONTAINER: 'menu',
     CALENDARS: 'calendars_btn',

@@ -3,9 +3,9 @@ import React, {Component, useCallback} from 'react';
 import {Platform, StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 // @ts-expect-error
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
+import testIDs from '../testIDs';
 
 
-const testIDs = require('../testIDs');
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
