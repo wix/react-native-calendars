@@ -71,6 +71,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   headerStyle?: ViewStyle;
   /** Allow rendering of a totally custom header */
   customHeader?: any;
+  /** Allow selection of dates before minDate or after maxDate */
+  allowSelectionOutOfRange?: boolean;
 }
 
 interface CalendarState {
@@ -126,7 +128,9 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Allow rendering of a totally custom header */
-    customHeader: PropTypes.any
+    customHeader: PropTypes.any,
+    /** Allow selection of dates before minDate or after maxDate */
+    allowSelectionOutOfRange: PropTypes.bool
   };
   static defaultProps = {
     enableSwipeMonths: false
@@ -157,12 +161,12 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   };
 
   handleDayInteraction(date: Date, interaction?: (date: DateData) => void) {
-    const {disableMonthChange} = this.props;
+    const {disableMonthChange, allowSelectionOutOfRange} = this.props;
     const day = parseDate(date);
     const minDate = parseDate(this.props.minDate);
     const maxDate = parseDate(this.props.maxDate);
 
-    if (!(minDate && !isGTE(day, minDate)) && !(maxDate && !isLTE(day, maxDate))) {
+    if (allowSelectionOutOfRange || !(minDate && !isGTE(day, minDate)) && !(maxDate && !isLTE(day, maxDate))) {
       const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
 
       if (shouldUpdateMonth) {
