@@ -20,7 +20,7 @@ function extractComponentProps(component, props, ignoreProps) {
       .value();
     return componentProps;
   }
-  return {};
+  return {...props};
 }
 
 module.exports = {
