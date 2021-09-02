@@ -264,7 +264,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
     const day = row.day;
     const dateIsSame = sameDate(day, this.selectedDay);
-    if (!dateIsSame && this.scrollOver && this.scrollBetweenWeeks) {
+    if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
       _.invoke(this.props, 'onDayChange', day.clone());
     }
