@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-//import {Agenda} from 'react-native-calendars';
-import {Agenda} from "../../../src/index";
+// @ts-expect-error
+import {Agenda} from 'react-native-calendars';
 
 
 const testIDs = require('../testIDs');
