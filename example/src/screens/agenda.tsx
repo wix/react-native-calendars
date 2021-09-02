@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-// @ts-expect-error
-import {Agenda} from 'react-native-calendars';
+//import {Agenda} from 'react-native-calendars';
+import {Agenda} from "../../../src/index";
 
 
 const testIDs = require('../testIDs');
@@ -22,6 +22,7 @@ export default class AgendaScreen extends Component {
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         showClosingKnob={true}
+        // scrollBetweenWeeks={false}
         // markingType={'period'}
         // markedDates={{
         //    '2017-05-08': {textColor: '#43515c'},

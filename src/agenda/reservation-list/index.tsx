@@ -53,6 +53,8 @@ export type ReservationListProps = ReservationProps & {
   refreshing?: boolean;
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
+  /** Disables scrolling between weeks in the main agenda view. Default = false */
+  scrollBetweenWeeks?: boolean;
 };
 
 interface ReservationsListState {
@@ -92,7 +94,9 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     /** Set this true while waiting for new data from a refresh */
     refreshing: PropTypes.bool,
     /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
-    onRefresh: PropTypes.func
+    onRefresh: PropTypes.func,
+    /** Disables scrolling between weeks in the main agenda view. Default = false */
+    scrollBetweenWeeks: PropTypes.bool
   };
 
   static defaultProps = {
@@ -104,6 +108,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
   private selectedDay: XDate;
   private scrollOver: boolean;
   private list: React.RefObject<FlatList> = React.createRef();
+  private scrollBetweenWeeks: boolean;
 
 
   constructor(props: ReservationListProps) {
@@ -118,6 +123,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     this.heights = [];
     this.selectedDay = props.selectedDay;
     this.scrollOver = true;
+    this.scrollBetweenWeeks = Boolean(props.scrollBetweenWeeks);
   }
 
   componentDidMount() {
@@ -214,6 +220,18 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         reservations = res;
       }
       iterator.addDays(1);
+    } else if(!this.scrollBetweenWeeks) {
+      iterator.addDays(-iterator.getDay());
+      reservations = [];
+
+      for (let i = 0; i < 7; i++) {
+        const res = this.getReservationsForDay(iterator, props);
+
+        if (res) {
+          reservations = reservations.concat(res);
+        }
+        iterator.addDays(1);
+      }
     } else {
       for (let i = 0; i < 31; i++) {
         const res = this.getReservationsForDay(iterator, props);
@@ -246,7 +264,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
     const day = row.day;
     const dateIsSame = sameDate(day, this.selectedDay);
-    if (!dateIsSame && this.scrollOver) {
+    if (!dateIsSame && this.scrollOver && this.scrollBetweenWeeks) {
       this.selectedDay = day.clone();
       _.invoke(this.props, 'onDayChange', day.clone());
     }
