@@ -123,7 +123,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     this.heights = [];
     this.selectedDay = props.selectedDay;
     this.scrollOver = true;
-    this.scrollBetweenWeeks = Boolean(props.scrollBetweenWeeks);
+    this.scrollBetweenWeeks = props.scrollBetweenWeeks ? props.scrollBetweenWeeks : true;
   }
 
   componentDidMount() {
