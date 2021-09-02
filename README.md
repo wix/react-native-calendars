@@ -138,8 +138,6 @@ LocaleConfig.defaultLocale = 'fr';
   }}
   // Enable the option to swipe between months. Default = false
   enableSwipeMonths={true}
-  // Toggles the agenda moving automatically between weeks
-  scrollBetweenWeeks={true}
 />
 ```
 
@@ -589,6 +587,8 @@ An advanced `Agenda` component that can display interactive listings for calenda
   }}
   // Agenda container style
   style={{}}
+  // Toggles the agenda moving automatically between weeks
+  scrollBetweenWeeks={true}
 />
 ```
 
