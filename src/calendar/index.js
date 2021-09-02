@@ -238,7 +238,7 @@ class Calendar extends Component {
     const startDate = moment().add(26, 'days');
     let disMonth = startDate.month();
     const calMonth = this.state.currentMonth.getMonth();
-    let top = 80;
+    let top = 81;
     if (startDate.date() > 21) {
       disMonth =
         (startDate.date() > 21 &&
@@ -247,7 +247,7 @@ class Calendar extends Component {
             .month()) ||
         startDate.month();
     } else {
-      top = 190;
+      top = 189;
     }
     if (calMonth === disMonth) {
       return (

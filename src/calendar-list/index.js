@@ -308,6 +308,7 @@ class CalendarList extends Component {
             paddingHorizontal: 20,
             borderRadius: 30,
             backgroundColor: this.props.theme?.todayTextColor,
+            marginBottom: 20,
           }}>
           <Text
             style={{
@@ -323,6 +324,7 @@ class CalendarList extends Component {
     }
     return null;
   };
+
   render() {
     const {
       style,
