@@ -87,7 +87,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
   };
 
   getCalendarStyle = memoize((width, height, style) => {
-    return [{width, height}, this.style.calendar, style];
+    return [{width, minHeight: height}, this.style.calendar, style];
   });
 
   render() {
