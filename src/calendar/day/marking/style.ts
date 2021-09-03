@@ -27,6 +27,6 @@ export default function styleConstructor(theme: Theme = {}) {
       marginRight: 4
     },
     //@ts-ignore
-    ...(theme['stylesheet.marking '] || {})
+    ...(theme['stylesheet.marking'] || {})
   });
 }
