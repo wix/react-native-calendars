@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
+import values from 'lodash/values';
 import PropTypes from 'prop-types';
 
 import React, {Component, Fragment} from 'react';
@@ -42,7 +43,7 @@ export default class BasicDay extends Component<BasicDayProps> {
     /** The marking object */
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
-    markingType: PropTypes.oneOf(_.values(Marking.markingTypes)),
+    markingType: PropTypes.oneOf(values(Marking.markingTypes)),
     /** Theme object */
     theme: PropTypes.object,
     /** onPress callback */
@@ -73,11 +74,11 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   onPress = () => {
-    _.invoke(this.props, 'onPress', this.props.date);
+    invoke(this.props, 'onPress', this.props.date);
   };
 
   onLongPress = () => {
-    _.invoke(this.props, 'onLongPress', this.props.date);
+    invoke(this.props, 'onLongPress', this.props.date);
   };
 
   get marking() {

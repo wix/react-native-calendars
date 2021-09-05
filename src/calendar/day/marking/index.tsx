@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import filter from 'lodash/filter';
 
 import React, {Component} from 'react';
 import {View, ViewStyle, TextStyle} from 'react-native';
@@ -93,7 +93,7 @@ export default class Marking extends Component<MarkingProps> {
 
     if (items && Array.isArray(items) && items.length > 0) {
       // Filter out items so that we process only those which have color property
-      const validItems = _.filter(items, function(o: DOT | PERIOD) { return o.color; });
+      const validItems = filter(items, function(o: DOT | PERIOD) { return o.color; });
 
       return validItems.map((item, index) => {
         return type === MarkingTypes.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);

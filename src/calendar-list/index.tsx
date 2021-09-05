@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -264,8 +264,8 @@ class CalendarList extends Component<Props, State> {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
 
-        _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
-        _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
+        invoke(this.props, 'onMonthChange', xdateToData(currMont));
+        invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
     });
   }
@@ -300,7 +300,7 @@ class CalendarList extends Component<Props, State> {
       }
     }
 
-    _.invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
+    invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
 
     this.setState({
       // @ts-ignore

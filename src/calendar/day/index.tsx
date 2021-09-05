@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import get from 'lodash/get';
+import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
@@ -18,7 +19,7 @@ import PeriodDay from './period';
 import {MarkingProps} from './marking';
 
 
-const basicDayPropsTypes = _.omit(BasicDay.propTypes, 'date');
+const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
 
 export interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
@@ -81,8 +82,8 @@ export default class Day extends Component<DayProps> {
   }
 
   getAccessibilityLabel = memoize((day, marking, isToday) => {
-    const today = _.get(XDate, 'locales[XDate.defaultLocale].today');
-    const formatAccessibilityLabel = _.get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
+    const today = get(XDate, 'locales[XDate.defaultLocale].today');
+    const formatAccessibilityLabel = get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
     const markingLabel = this.getMarkingLabel(marking);
 
     if (formatAccessibilityLabel) {
@@ -106,7 +107,7 @@ export default class Day extends Component<DayProps> {
     const date = xdateToData(day);
     const isToday = dateutils_isToday(day);
     const Component = this.getDayComponent();
-    const dayProps = _.omit(this.props, 'day');
+    const dayProps = omit(this.props, 'day');
     const accessibilityLabel = this.getAccessibilityLabel(day, marking, isToday);
 
     return (

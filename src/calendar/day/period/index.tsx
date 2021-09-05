@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
@@ -57,7 +57,7 @@ export default class PeriodDay extends Component<PeriodDayProps> {
 
   shouldComponentUpdate(nextProps: PeriodDayProps) {
     const newMarkingStyle = this.getDrawingStyle(nextProps.marking);
-    if (!_.isEqual(this.markingStyle, newMarkingStyle)) {
+    if (!isEqual(this.markingStyle, newMarkingStyle)) {
       this.markingStyle = newMarkingStyle;
       return true;
     }

@@ -1,4 +1,8 @@
-import _ from 'lodash';
+import get from 'lodash/get';
+import map from 'lodash/map';
+import omit from 'lodash/omit';
+import invoke from 'lodash/invoke';
+import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -71,7 +75,7 @@ class AgendaList extends Component<Props> {
   };
 
   style = styleConstructor(this.props.theme);
-  _topSection = _.get(this.props, 'sections[0].title');
+  _topSection = get(this.props, 'sections[0].title');
   didScroll = false;
   sectionScroll = false;
   viewabilityConfig = {
@@ -107,7 +111,7 @@ class AgendaList extends Component<Props> {
 
   getSectionIndex(date: Date) {
     let i;
-    _.map(this.props.sections, (section, index) => {
+    map(this.props.sections, (section, index) => {
       // NOTE: sections titles should match current date format!!!
       if (section.title === date) {
         i = index;
@@ -162,12 +166,12 @@ class AgendaList extends Component<Props> {
 
   onViewableItemsChanged = ((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !this.sectionScroll) {
-      const topSection = _.get(info?.viewableItems[0], 'section.title');
+      const topSection = get(info?.viewableItems[0], 'section.title');
       if (topSection && topSection !== this._topSection) {
         this._topSection = topSection;
         if (this.didScroll && !this.props.avoidDateUpdates) {
           // to avoid setDate() on first load (while setting the initial context.date value)
-          _.invoke(this.props.context, 'setDate', this._topSection, updateSources.LIST_DRAG);
+          invoke(this.props.context, 'setDate', this._topSection, updateSources.LIST_DRAG);
         }
       }
     }
@@ -177,19 +181,19 @@ class AgendaList extends Component<Props> {
     if (!this.didScroll) {
       this.didScroll = true;
     }
-    _.invoke(this.props, 'onScroll', event);
+    invoke(this.props, 'onScroll', event);
   };
 
   onMomentumScrollBegin = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    _.invoke(this.props.context, 'setDisabled', true);
-    _.invoke(this.props, 'onMomentumScrollBegin', event);
+    invoke(this.props.context, 'setDisabled', true);
+    invoke(this.props, 'onMomentumScrollBegin', event);
   };
 
   onMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     // when list momentum ends AND when scrollToSection scroll ends
     this.sectionScroll = false;
-    _.invoke(this.props.context, 'setDisabled', false);
-    _.invoke(this.props, 'onMomentumScrollEnd', event);
+    invoke(this.props.context, 'setDisabled', false);
+    invoke(this.props, 'onMomentumScrollEnd', event);
   };
 
   onScrollToIndexFailed = (info: {
@@ -225,11 +229,11 @@ class AgendaList extends Component<Props> {
 
   keyExtractor = (item: any, index: number) => {
     const {keyExtractor} = this.props;
-    return _.isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
+    return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
   };
 
   render() {
-    const props = _.omit(this.props, 'context');
+    const props = omit(this.props, 'context');
 
     return (
       <SectionList
