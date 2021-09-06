@@ -26,6 +26,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'never'],
     semi: ['error', 'always'],
     'react/jsx-uses-react': 2,
-    'react/jsx-uses-vars': 2
+    'react/jsx-uses-vars': 2,
+    "@typescript-eslint/no-unused-vars" : "off"
   }
 };
