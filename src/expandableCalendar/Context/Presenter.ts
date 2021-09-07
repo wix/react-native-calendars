@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
 // @ts-expect-error
@@ -55,10 +55,10 @@ class Presenter {
 
     updateState(buttonIcon);
 
-    _.invoke(props, 'onDateChanged', date, updateSource);
+    invoke(props, 'onDateChanged', date, updateSource);
 
     if (!isSameMonth) {
-      _.invoke(props, 'onMonthChange', xdateToData(new XDate(date)), updateSource);
+      invoke(props, 'onMonthChange', xdateToData(new XDate(date)), updateSource);
     }
   };
 

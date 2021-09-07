@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -68,7 +68,7 @@ class Reservation extends Component<ReservationProps> {
         changed = false;
       } else if (r1.reservation && r2.reservation) {
         if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
-          if (_.isFunction(this.props.rowHasChanged)) {
+          if (isFunction(this.props.rowHasChanged)) {
             changed = this.props.rowHasChanged(r1.reservation, r2.reservation);
           }
         }
@@ -78,7 +78,7 @@ class Reservation extends Component<ReservationProps> {
   }
 
   renderDate(date?: XDate, item?: DayReservations) {
-    if (_.isFunction(this.props.renderDay)) {
+    if (isFunction(this.props.renderDay)) {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
 
@@ -107,10 +107,10 @@ class Reservation extends Component<ReservationProps> {
 
     if (reservation) {
       const firstItem = date ? true : false;
-      if (_.isFunction(this.props.renderItem)) {
+      if (isFunction(this.props.renderItem)) {
         content = this.props.renderItem(reservation, firstItem);
       }
-    } else if (_.isFunction(this.props.renderEmptyDate)) {
+    } else if (isFunction(this.props.renderEmptyDate)) {
       content = this.props.renderEmptyDate(date);
     }
 
