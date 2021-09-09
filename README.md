@@ -12,7 +12,9 @@ You can run example module by performing these steps:
 
 ```
 $ git clone git@github.com:wix/react-native-calendars.git
+$ cd react-native-calendars
 $ npm install
+$ cd ios && pod install && cd ..
 $ react-native run-ios
 ```
 
