@@ -1,15 +1,15 @@
 import invoke from 'lodash/invoke';
+import includes from 'lodash/includes';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
-
 import React, {Component, RefObject} from 'react';
 import {View, ViewStyle, StyleProp, Text} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 // @ts-expect-error
-import {page, isGTE, isLTE, sameMonth} from '../dateutils';
+import {page, isGTE, isLTE, sameMonth, weekDayNames} from '../dateutils';
 // @ts-expect-error
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 // @ts-expect-error
@@ -18,7 +18,7 @@ import {getState} from '../day-state-manager';
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
-import {WEEK_NUMBER} from '../testIDs';
+import {WEEK_NUMBER, HEADER_DAY_NAMES} from '../testIDs';
 import {Theme, DateData} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
@@ -73,6 +73,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
+  /** Toggle Calendar view */
+  showCalendar?: boolean;
 }
 
 interface CalendarState {
@@ -132,14 +134,18 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     /** Allow selection of dates before minDate or after maxDate */
     allowSelectionOutOfRange: PropTypes.bool,
     showWeeklyTotal: PropTypes.bool,
+    /** Toggle Calendar view */
+    showCalendar: PropTypes.bool,
   };
   static defaultProps = {
-    enableSwipeMonths: false
+    enableSwipeMonths: false,
+    showCalendar: true
   };
 
   state = {
     currentMonth: this.props.current ? parseDate(this.props.current) : new XDate()
   };
+
   style = styleConstructor(this.props.theme);
   header: RefObject<CalendarHeader> = React.createRef();
 
@@ -292,6 +298,47 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     );
   }
 
+  renderWeekDays = memoize(weekDaysNames => {
+    const {disabledDaysIndexes} = this.props;
+
+    return weekDaysNames.map((day: string, idx: number) => {
+      const dayStyle = [this.style.dayHeader];
+
+      if (includes(disabledDaysIndexes, idx)) {
+        dayStyle.push(this.style.disabledDayHeader);
+      }
+
+      if (this.style[`dayTextAtIndex${idx}`]) {
+        dayStyle.push(this.style[`dayTextAtIndex${idx}`]);
+      }
+
+      return (
+        <Text allowFontScaling={false} key={idx} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
+          {day}
+        </Text>
+      );
+    });
+  });
+
+  renderDayNames() {
+    const {firstDay, hideDayNames, showWeekNumbers, testID, showWeeklyTotal} = this.props;
+    const weekDaysNames = weekDayNames(firstDay);
+
+    if (!hideDayNames) {
+      return (
+        <View style={this.style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
+          {showWeekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
+          {this.renderWeekDays(weekDaysNames)}
+          {showWeeklyTotal && (
+             <Text allowFontScaling={false} numberOfLines={1} style={this.style.dayHeader}>
+               Tot
+             </Text>
+           )}
+        </View>
+      );
+    }
+  }
+
   renderMonth() {
     const {currentMonth} = this.state;
     const {firstDay, showSixWeeks, hideExtraDays} = this.props;
@@ -337,7 +384,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   }
 
   render() {
-    const {enableSwipeMonths, style} = this.props;
+    const {enableSwipeMonths, style, showCalendar} = this.props;
     const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
     const gestureProps = enableSwipeMonths ? this.swipeProps : undefined;
 
@@ -349,7 +396,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
           importantForAccessibility={this.props.importantForAccessibility} // Android
         >
           {this.renderHeader()}
-          {this.renderMonth()}
+          {showCalendar && this.renderDayNames()}
+          {showCalendar && this.renderMonth()}
         </View>
       </GestureComponent>
     );

@@ -1,18 +1,13 @@
-import includes from 'lodash/includes';
 import PropTypes from 'prop-types';
-import memoize from 'memoize-one';
 import XDate from 'xdate';
-
 import React, {Component, Fragment, ReactNode} from 'react';
 import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, StyleProp, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
+
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
-// @ts-expect-error
-import {weekDayNames} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
-  HEADER_DAY_NAMES,
   HEADER_LOADING_INDICATOR,
   HEADER_MONTH_NAME
   // @ts-expect-error
@@ -54,6 +49,8 @@ interface Props {
   accessibilityElementsHidden?: boolean;
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
   showWeeklyTotal: boolean;
+  /** Handler which gets executed when press Month name */
+  onMonthPress: () => void;
 }
 export type CalendarHeaderProps = Props;
 
@@ -91,6 +88,7 @@ class CalendarHeader extends Component<Props> {
     webAriaLevel: PropTypes.number,
     showWeeklyTotal: PropTypes.bool,
     testID: PropTypes.string,
+    onMonthPress: PropTypes.func,
   };
 
   static defaultProps = {
@@ -117,7 +115,8 @@ class CalendarHeader extends Component<Props> {
       'monthFormat',
       'renderArrow',
       'disableArrowLeft',
-      'disableArrowRight'
+      'disableArrowRight',
+      'onMonthPress'
     ]);
   }
 
@@ -151,30 +150,8 @@ class CalendarHeader extends Component<Props> {
     return this.addMonth();
   };
 
-  renderWeekDays = memoize(weekDaysNames => {
-    const {disabledDaysIndexes} = this.props;
-
-    return weekDaysNames.map((day: string, idx: number) => {
-      const dayStyle = [this.style.dayHeader];
-
-      if (includes(disabledDaysIndexes, idx)) {
-        dayStyle.push(this.style.disabledDayHeader);
-      }
-
-      if (this.style[`dayTextAtIndex${idx}`]) {
-        dayStyle.push(this.style[`dayTextAtIndex${idx}`]);
-      }
-
-      return (
-        <Text allowFontScaling={false} key={idx} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
-          {day}
-        </Text>
-      );
-    });
-  });
-
   renderHeader = () => {
-    const {renderHeader, month, monthFormat, testID, webAriaLevel} = this.props;
+    const {renderHeader, month, monthFormat, testID, webAriaLevel, onMonthPress} = this.props;
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
 
     if (renderHeader) {
@@ -182,7 +159,7 @@ class CalendarHeader extends Component<Props> {
     }
 
     return (
-      <Fragment>
+      <TouchableOpacity onPress={() => onMonthPress()} disabled={!onMonthPress}>
         <Text
           allowFontScaling={false}
           style={this.style.monthText}
@@ -191,7 +168,7 @@ class CalendarHeader extends Component<Props> {
         >
           {month?.toString(monthFormat)}
         </Text>
-      </Fragment>
+      </TouchableOpacity>
     );
   };
 
@@ -238,25 +215,6 @@ class CalendarHeader extends Component<Props> {
     }
   }
 
-  renderDayNames() {
-    const {firstDay, hideDayNames, showWeekNumbers, testID, showWeeklyTotal} = this.props;
-    const weekDaysNames = weekDayNames(firstDay);
-
-    if (!hideDayNames) {
-      return (
-        <View style={this.style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
-          {showWeekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
-          {this.renderWeekDays(weekDaysNames)}
-          {showWeeklyTotal && (
-             <Text allowFontScaling={false} numberOfLines={1} style={this.style.dayHeader}>
-               Tot
-             </Text>
-           )}
-        </View>
-      );
-    }
-  }
-
   render() {
     const {style, testID} = this.props;
 
@@ -282,7 +240,6 @@ class CalendarHeader extends Component<Props> {
           </View>
           {this.renderArrow('right')}
         </View>
-        {this.renderDayNames()}
       </View>
     );
   }
