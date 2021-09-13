@@ -141,6 +141,10 @@ export default class BasicDay extends Component<BasicDayProps> {
       style.push(this.style.today);
     }
 
+    if(this.marking.marked) {
+      style.push(this.style.marked);
+    }
+
     //Custom marking type
     if (this.isCustom() && customStyles && customStyles.container) {
       if (customStyles.container.borderRadius === undefined) {
@@ -185,7 +189,7 @@ export default class BasicDay extends Component<BasicDayProps> {
       <Marking
         type={markingType}
         theme={theme}
-        marked={this.isMultiDot() ? true : marked}
+        marked={this.isMultiDot() ? true : false}
         selected={this.isSelected()}
         disabled={this.isDisabled()}
         inactive={this.isInactive()}

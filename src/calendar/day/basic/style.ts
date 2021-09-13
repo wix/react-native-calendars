@@ -30,12 +30,18 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.selectedDayBackgroundColor,
       borderRadius: 16
     },
+    marked: {
+      borderWidth: 1,
+      borderRadius: 20,
+      borderColor: '#C2C8CC',
+    },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
       borderRadius: 16
     },
     todayText: {
-      color: appStyle.todayTextColor
+      color: appStyle.todayTextColor,
+      fontFamily: appStyle.todayTextFontFamily
     },
     selectedText: {
       color: appStyle.selectedDayTextColor
