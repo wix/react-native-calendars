@@ -53,6 +53,7 @@ interface Props {
   style?: StyleProp<ViewStyle>;
   accessibilityElementsHidden?: boolean;
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
+  showWeeklyTotal: boolean;
 }
 export type CalendarHeaderProps = Props;
 
@@ -87,7 +88,9 @@ class CalendarHeader extends Component<Props> {
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    showWeeklyTotal: PropTypes.bool,
+    testID: PropTypes.string,
   };
 
   static defaultProps = {
@@ -236,7 +239,7 @@ class CalendarHeader extends Component<Props> {
   }
 
   renderDayNames() {
-    const {firstDay, hideDayNames, showWeekNumbers, testID} = this.props;
+    const {firstDay, hideDayNames, showWeekNumbers, testID, showWeeklyTotal} = this.props;
     const weekDaysNames = weekDayNames(firstDay);
 
     if (!hideDayNames) {
@@ -244,6 +247,11 @@ class CalendarHeader extends Component<Props> {
         <View style={this.style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
           {showWeekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
           {this.renderWeekDays(weekDaysNames)}
+          {showWeeklyTotal && (
+             <Text allowFontScaling={false} numberOfLines={1} style={this.style.dayHeader}>
+               Tot
+             </Text>
+           )}
         </View>
       );
     }

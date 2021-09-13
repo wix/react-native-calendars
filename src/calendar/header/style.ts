@@ -8,10 +8,12 @@ export default function (theme: Theme = {}) {
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingLeft: 10,
-      paddingRight: 10,
-      marginTop: 6,
-      alignItems: 'center'
+      // paddingLeft: 10,
+      // paddingRight: 10,
+      // marginTop: 6,
+      padding: 10,
+      alignItems: 'center',
+      backgroundColor: appStyle.HeaderBGColor,
     },
     headerContainer: {
       flexDirection: 'row'
@@ -24,7 +26,8 @@ export default function (theme: Theme = {}) {
       margin: 10
     },
     arrow: {
-      padding: 10,
+      // padding: 10,
+      padding: 5,
       ...appStyle.arrowStyle
     },
     arrowImage: {
@@ -45,17 +48,22 @@ export default function (theme: Theme = {}) {
       justifyContent: 'space-around'
     },
     dayHeader: {
-      marginTop: 2,
-      marginBottom: 7,
-      width: 32,
+      // marginTop: 2,
+      // marginBottom: 7,
+      // width: 32,
+      marginTop: 10,
+      marginBottom: 5,
+      width: 30,
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
+      color: appStyle.textDayHeaderColor,
+      // color: appStyle.textSectionTitleColor
     },
     disabledDayHeader: {
-      color: appStyle.textSectionTitleDisabledColor
+      color: appStyle.weekendTextDayHeaderColor,
+      // color: appStyle.textSectionTitleDisabledColor
     },
     ...(theme.stylesheet?.calendar?.header || {})
   });

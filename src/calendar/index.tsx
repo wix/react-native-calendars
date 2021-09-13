@@ -4,7 +4,7 @@ import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component, RefObject} from 'react';
-import {View, ViewStyle, StyleProp} from 'react-native';
+import {View, ViewStyle, StyleProp, Text} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
@@ -130,7 +130,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     /** Allow rendering of a totally custom header */
     customHeader: PropTypes.any,
     /** Allow selection of dates before minDate or after maxDate */
-    allowSelectionOutOfRange: PropTypes.bool
+    allowSelectionOutOfRange: PropTypes.bool,
+    showWeeklyTotal: PropTypes.bool,
   };
   static defaultProps = {
     enableSwipeMonths: false
@@ -261,6 +262,15 @@ class Calendar extends Component<CalendarProps, CalendarState> {
       week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
     }
 
+    if (this.props.showWeeklyTotal) {
+      const uniqueKey = `weektotal-${id}`;
+      week.push(
+        <View key={uniqueKey} style={this.style.dayContainer}>
+          <Text style={this.style.dayHeader}>{'0'}</Text>
+        </View>
+      );
+    }
+
     return (
       <View style={this.style.week} key={id}>
         {week}
@@ -307,6 +317,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         month={this.state.currentMonth}
         addMonth={this.addMonth}
         displayLoadingIndicator={indicator}
+        showWeeklyTotal={this.props.showWeeklyTotal}
       />
     );
   }

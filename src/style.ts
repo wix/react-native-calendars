@@ -1,5 +1,6 @@
 export const foregroundColor = 'white';
 export const backgroundColor = '#f2F4f5'; // Agenda's reservations bg color
+export const HeaderBGColor = '#2F3941';
 
 export const separatorColor = '#f2F4f5'; // not in use
 export const processedColor = '#a7e0a3'; // not in use
@@ -32,6 +33,8 @@ export const arrowStyle = undefined;
 
 export const calendarBackground = foregroundColor;
 export const textSectionTitleColor = '#b6c1cd';
+export const textDayHeaderColor = '#1B1F23'; // calendar
+export const weekendTextDayHeaderColor = '#87929D'; // calendar
 export const textSectionTitleDisabledColor = '#d9e1e8';
 export const selectedDayBackgroundColor = textLinkColor;
 export const selectedDayTextColor = foregroundColor;
@@ -47,7 +50,7 @@ export const inactiveDotColor = undefined;
 export const todayDotColor = undefined;
 export const arrowColor = textLinkColor;
 export const disabledArrowColor = '#d9e1e8';
-export const monthTextColor = textDefaultColor;
+export const monthTextColor = foregroundColor;
 export const indicatorColor = undefined; // use the default color of React Native ActivityIndicator
 export const agendaDayTextColor = '#7a92a5';
 export const agendaDayNumColor = '#7a92a5';

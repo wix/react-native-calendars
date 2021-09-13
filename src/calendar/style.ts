@@ -6,8 +6,8 @@ export default function getStyle(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     container: {
-      paddingLeft: 5,
-      paddingRight: 5,
+      // paddingLeft: 5,
+      // paddingRight: 5,
       backgroundColor: appStyle.calendarBackground
     },
     dayContainer: {
@@ -22,9 +22,19 @@ export default function getStyle(theme: Theme = {}) {
     },
     week: {
       marginTop: 7,
-      marginBottom: 7,
+      // marginBottom: 7,
       flexDirection: 'row',
       justifyContent: 'space-around'
+    },
+    dayHeader: {
+      marginTop: 7,
+      // marginBottom: 7,
+      width: 30,
+      textAlign: 'center',
+      fontSize: appStyle.textDayFontSize,
+      fontFamily: appStyle.textDayHeaderFontFamily,
+      fontWeight: appStyle.textDayHeaderFontWeight,
+      color: appStyle.textDayHeaderColor,
     },
     ...(theme.stylesheet?.calendar?.main || {})
   });
