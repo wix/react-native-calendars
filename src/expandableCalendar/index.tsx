@@ -135,7 +135,8 @@ class ExpandableCalendar extends Component<Props, State> {
   _weekCalendarStyles: {
     style: ViewStyle;
   };
-  visibleMonth: any;
+  visibleMonth: number;
+  visibleYear: number;
   initialDate: XDate;
   headerStyleOverride: Theme;
   header: React.RefObject<any> = React.createRef();
@@ -157,6 +158,7 @@ class ExpandableCalendar extends Component<Props, State> {
     this._weekCalendarStyles = {style: {}};
 
     this.visibleMonth = this.getMonth(this.props.context.date);
+    this.visibleYear = this.getYear(this.props.context.date);
     this.initialDate = new XDate(props.context.date); // should be set only once!!!
     this.headerStyleOverride = {
       stylesheet: {
@@ -227,7 +229,7 @@ class ExpandableCalendar extends Component<Props, State> {
   scrollToDate(date: Date) {
     if (!this.props.horizontal) {
       this.calendar?.current?.scrollToDay(new XDate(date), 0, true);
-    } else if (this.getMonth(date) !== this.visibleMonth) {
+    } else if (this.getYear(date) !== this.visibleYear || this.getMonth(date) !== this.visibleMonth) {
       // don't scroll if the month is already visible
       this.calendar?.current?.scrollToMonth(new XDate(date));
     }
@@ -427,8 +429,10 @@ class ExpandableCalendar extends Component<Props, State> {
   };
 
   onVisibleMonthsChange = (value: DateData[]) => {
-    if (this.visibleMonth !== first(value)?.month) {
-      this.visibleMonth = first(value)?.month; // equivalent to this.getMonth(value[0].dateString)
+    const month = first(value)?.month;
+    if (month && this.visibleMonth !== month) {
+      this.visibleMonth = month; // equivalent to this.getMonth(value[0].dateString)
+      this.visibleYear = first(value)?.year || this.getYear(new Date());
 
       // for horizontal scroll
       const {date, updateSource} = this.props.context;
