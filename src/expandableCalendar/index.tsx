@@ -429,10 +429,13 @@ class ExpandableCalendar extends Component<Props, State> {
   };
 
   onVisibleMonthsChange = (value: DateData[]) => {
-    const month = first(value)?.month;
+    const month = first(value)?.month; // equivalent to this.getMonth(value[0].dateString)
     if (month && this.visibleMonth !== month) {
-      this.visibleMonth = month; // equivalent to this.getMonth(value[0].dateString)
-      this.visibleYear = first(value)?.year || this.getYear(new Date());
+      this.visibleMonth = month; 
+      if (first(value)?.year) {
+        // @ts-expect-error
+        this.visibleYear = first(value)?.year;
+      }
 
       // for horizontal scroll
       const {date, updateSource} = this.props.context;
