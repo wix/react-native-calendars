@@ -251,6 +251,20 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     );
   }
 
+  round = (value, decimals = 2) => {
+    return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+  };
+
+  calculateWeeklyTotal(days: any) {
+    return this.round(
+      days.reduce((current: any, day: any) => {
+        const date = this.props.markedDates?.[day.toString('yyyy-MM-dd')] || {};
+        return (date.hours || 0) + current;
+      }, 0),
+      2
+    );
+  }
+
   renderWeek(days: any, id: number) {
     const week = [];
 
@@ -266,7 +280,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
       const uniqueKey = `weektotal-${id}`;
       week.push(
         <View key={uniqueKey} style={this.style.dayContainer}>
-          <Text style={this.style.dayHeader}>{'0'}</Text>
+          <Text style={this.style.dayHeader}>{this.calculateWeeklyTotal(days)}</Text>
         </View>
       );
     }

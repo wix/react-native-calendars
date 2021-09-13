@@ -29,7 +29,7 @@ export default function getStyle(theme: Theme = {}) {
     dayHeader: {
       marginTop: 7,
       // marginBottom: 7,
-      width: 30,
+      width: 45,
       textAlign: 'center',
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
