@@ -75,6 +75,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   allowSelectionOutOfRange?: boolean;
   /** Toggle Calendar view */
   showCalendar?: boolean;
+  /** Function that updates given date */
+  updateSelectedDate: (date: DateData) => void;
 }
 
 interface CalendarState {
@@ -136,6 +138,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     showWeeklyTotal: PropTypes.bool,
     /** Toggle Calendar view */
     showCalendar: PropTypes.bool,
+    /** Update the date that is selected by pressing on left or right arrow */
+    updateSelectedDate: PropTypes.func
   };
   static defaultProps = {
     enableSwipeMonths: false,
@@ -158,13 +162,26 @@ class Calendar extends Component<CalendarProps, CalendarState> {
       return;
     }
 
-    this.setState({currentMonth: day.clone()}, () => {
+    this.setState({currentMonth: day.clone().setDate(1)}, () => {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
         invoke(this.props, 'onMonthChange', xdateToData(currMont));
         invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
     });
+  };
+
+  addDay = (count: number) => {
+    const currentDate = new XDate(new Date(this.props.selectedDate).toISOString());
+    this.updateDay(currentDate.clone().addDays(count));
+  };
+
+  updateDay = (day: any) => {
+    const currentDate = day.clone();
+    this.setState({currentMonth: currentDate}, () => {
+      invoke(this.props, 'onDayPress', xdateToData(currentDate));
+    });
+    this.props.updateSelectedDate(day.toString('yyyy-MM-dd'));
   };
 
   handleDayInteraction(date: Date, interaction?: (date: DateData) => void) {
@@ -300,7 +317,6 @@ class Calendar extends Component<CalendarProps, CalendarState> {
 
   renderWeekDays = memoize(weekDaysNames => {
     const {disabledDaysIndexes} = this.props;
-
     return weekDaysNames.map((day: string, idx: number) => {
       const dayStyle = [this.style.dayHeader];
 
@@ -354,7 +370,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   }
 
   renderHeader() {
-    const {customHeader, headerStyle, displayLoadingIndicator, markedDates, testID} = this.props;
+    const {customHeader, headerStyle, displayLoadingIndicator, markedDates, testID, selectedDate, showCalendar} = this.props;
     const current = parseDate(this.props.current);
     let indicator;
 
@@ -376,7 +392,10 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         style={headerStyle}
         ref={this.header}
         month={this.state.currentMonth}
+        selectedDate={selectedDate}
+        showCalendar={showCalendar}
         addMonth={this.addMonth}
+        addDay={this.addDay}
         displayLoadingIndicator={indicator}
         showWeeklyTotal={this.props.showWeeklyTotal}
       />

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {Component, Fragment, ReactNode} from 'react';
 import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, StyleProp, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
+import moment from 'moment';
 
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
@@ -51,6 +52,11 @@ interface Props {
   showWeeklyTotal: boolean;
   /** Handler which gets executed when press Month name */
   onMonthPress: () => void;
+  showCalendar: boolean;
+  selectedDate: string;
+  dayFormat: string;
+  addDay?: (num: number) => void;
+
 }
 export type CalendarHeaderProps = Props;
 
@@ -88,12 +94,18 @@ class CalendarHeader extends Component<Props> {
     webAriaLevel: PropTypes.number,
     showWeeklyTotal: PropTypes.bool,
     testID: PropTypes.string,
+    /** Handler which gets executed when press Month name */
     onMonthPress: PropTypes.func,
+    showCalendar: PropTypes.bool,
+    selectedDate: PropTypes.string,
+    dayFormat: PropTypes.string,
+    addDay: PropTypes.func,
   };
 
   static defaultProps = {
     monthFormat: 'MMMM yyyy',
-    webAriaLevel: 1
+    webAriaLevel: 1,
+    dayFormat: 'dddd, DD MMMM YYYY',
   };
   style: any;
 
@@ -116,44 +128,49 @@ class CalendarHeader extends Component<Props> {
       'renderArrow',
       'disableArrowLeft',
       'disableArrowRight',
-      'onMonthPress'
+      'onMonthPress',
+      'showCalendar',
+      'selectedDate',
     ]);
   }
 
-  addMonth = () => {
-    const {addMonth} = this.props;
-    addMonth?.(1);
+  addMonthOrDay = () => {
+    const {addMonth, showCalendar, addDay} = this.props;
+    if (showCalendar) addMonth?.(1);
+    else addDay?.(1);
   };
 
-  subtractMonth = () => {
-    const {addMonth} = this.props;
-    addMonth?.(-1);
+  subtractMonthOrDay = () => {
+    const {addMonth, showCalendar, addDay} = this.props;
+    if (showCalendar) addMonth?.(-1);
+    else addDay?.(-1);
   };
 
   onPressLeft = () => {
     const {onPressArrowLeft, month} = this.props;
 
     if (typeof onPressArrowLeft === 'function') {
-      return onPressArrowLeft(this.subtractMonth, month);
+      return onPressArrowLeft(this.subtractMonthOrDay, month);
     }
 
-    return this.subtractMonth();
+    return this.subtractMonthOrDay();
   };
 
   onPressRight = () => {
     const {onPressArrowRight, month} = this.props;
 
     if (typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.addMonth, month);
+      return onPressArrowRight(this.addMonthOrDay, month);
     }
 
-    return this.addMonth();
+    return this.addMonthOrDay();
   };
 
   renderHeader = () => {
-    const {renderHeader, month, monthFormat, testID, webAriaLevel, onMonthPress} = this.props;
+    const {renderHeader, month, monthFormat, testID, webAriaLevel, onMonthPress, showCalendar, selectedDate, dayFormat} = this.props;
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
 
+    const headerText = showCalendar ? month?.toString(monthFormat) : moment(selectedDate)?.format(dayFormat);
     if (renderHeader) {
       return renderHeader(month);
     }
@@ -166,7 +183,7 @@ class CalendarHeader extends Component<Props> {
           testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
           {...webProps}
         >
-          {month?.toString(monthFormat)}
+          {headerText}
         </Text>
       </TouchableOpacity>
     );
