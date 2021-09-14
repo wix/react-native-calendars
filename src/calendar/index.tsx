@@ -77,6 +77,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   showCalendar?: boolean;
   /** Function that updates given date */
   updateSelectedDate: (date: DateData) => void;
+  /** Apply custom disable color to selected day indexes */
+  disabledDaysIndexes?: number[];
 }
 
 interface CalendarState {
@@ -139,7 +141,9 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     /** Toggle Calendar view */
     showCalendar: PropTypes.bool,
     /** Update the date that is selected by pressing on left or right arrow */
-    updateSelectedDate: PropTypes.func
+    updateSelectedDate: PropTypes.func,
+     /** Apply custom disable color to selected day indexes */
+     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
   };
   static defaultProps = {
     enableSwipeMonths: false,
@@ -303,7 +307,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
       const uniqueKey = `weektotal-${id}`;
       week.push(
         <View key={uniqueKey} style={this.style.dayContainer}>
-          <Text style={this.style.dayHeader}>{this.calculateWeeklyTotal(days)}</Text>
+          <Text style={this.style.total}>{this.calculateWeeklyTotal(days)}</Text>
         </View>
       );
     }
@@ -343,7 +347,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     if (!hideDayNames) {
       return (
         <View style={this.style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
-          {showWeekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
+          {showWeekNumbers && <Text allowFontScaling={false} style={this.style.total}></Text>}
           {this.renderWeekDays(weekDaysNames)}
           {showWeeklyTotal && (
              <Text allowFontScaling={false} numberOfLines={1} style={this.style.dayHeader}>

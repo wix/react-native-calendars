@@ -29,15 +29,27 @@ export default function getStyle(theme: Theme = {}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
-    dayHeader: {
+    total: {
       marginTop: 7,
-      // marginBottom: 7,
       width: 45,
       textAlign: 'center',
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
       color: appStyle.textDayHeaderColor,
+    },
+    dayHeader: {
+      marginTop: 10,
+      marginBottom: 5,
+      width: 30,
+      textAlign: 'center',
+      fontSize: appStyle.textDayHeaderFontSize,
+      fontFamily: appStyle.textDayHeaderFontFamily,
+      fontWeight: appStyle.textDayHeaderFontWeight,
+      color: appStyle.textDayHeaderColor,
+    },
+    disabledDayHeader: {
+      color: appStyle.weekendTextDayHeaderColor,
     },
     ...(theme.stylesheet?.calendar?.main || {})
   });

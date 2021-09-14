@@ -39,8 +39,6 @@ interface Props {
   disableArrowLeft?: boolean;
   /** Disable right arrow */
   disableArrowRight?: boolean;
-  /** Apply custom disable color to selected day indexes */
-  disabledDaysIndexes?: number[];
   /** Replace default month and year title with custom one. the function receive a date as parameter */
   renderHeader?: (date?: XDate) => ReactNode;
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
@@ -86,8 +84,6 @@ class CalendarHeader extends Component<Props> {
     disableArrowLeft: PropTypes.bool,
     /** Disable right arrow. Default = false */
     disableArrowRight: PropTypes.bool,
-    /** Apply custom disable color to selected day indexes */
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
     /** Replace default month and year title with custom one. the function receive a date as parameter. */
     renderHeader: PropTypes.any,
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
