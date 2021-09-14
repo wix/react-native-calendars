@@ -1,4 +1,4 @@
-import testIDs from '../example/src/testIDs';
+import {testIDs} from '../example/src/testIDs';
 
 describe('Example app', () => {
   beforeEach(async () => {
