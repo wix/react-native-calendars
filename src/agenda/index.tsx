@@ -65,6 +65,8 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   hideKnob: boolean,
   /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
   showClosingKnob: boolean
+  /** On end scroll */
+  onEndReached?: () => void;
 }
 
 type AgendaState = {
@@ -110,7 +112,9 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool,
     /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
-    showClosingKnob: PropTypes.bool
+    showClosingKnob: PropTypes.bool,
+    /** On end scroll */
+    onEndReached: PropTypes.func,
   };
 
   private style: {[key: string]: ViewStyle};
@@ -365,6 +369,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
         topDay={this.state.topDay}
         onDayChange={this.onDayChange}
         onScroll={() => {}}
+        onEndReached={this.props.onEndReached}
       />
     );
   }

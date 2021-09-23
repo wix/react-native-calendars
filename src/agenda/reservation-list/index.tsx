@@ -97,7 +97,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
     onRefresh: PropTypes.func,
     /** On end scroll */
-    onEndReached: PropTypes.func
+    onEndReached: PropTypes.func,
   };
 
   static defaultProps = {
