@@ -45,10 +45,31 @@ export type ReservationsType = {
 };
 
 export type AgendaProps = CalendarListProps & ReservationListProps & {
+  /** the list of items that have to be displayed in agenda. If you want to render item as empty date
+   the value of date key has to be an empty array []. If there exists no value for date key it is
+   considered that the date in question is not yet loaded */
+  items: ReservationsType;
+  /** callback that gets called when items for a certain month should be loaded (month became visible) */
+  loadItemsForMonth?: (data: any) => DateData;
+  /** callback that fires when the calendar is opened or closed */
+  onCalendarToggled?: (enabled: boolean) => void;
+  /** callback that gets called on day press */
+  onDayPress?: (data: DateData) => void;
+  /** callback that gets called when day changes while scrolling agenda list */
+  onDayChange?: (data: any) => void;
+  /** specify how agenda knob should look like */
+  renderKnob?: () => JSX.Element;
   /** How far from the end to trigger the onEndReached callback */
   onEndReachedThreshold?: number;
   /** Called once when the scroll position gets within onEndReachedThreshold */
   onEndReached?: () => void;
+  /** initially selected day */
+  selected: boolean, //TODO: Should be renamed 'selectedDay'
+  /** Hide knob button. Default = false */
+  hideKnob: boolean,
+  /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
+  showClosingKnob: boolean
+  
 }
 
 type AgendaState = {
