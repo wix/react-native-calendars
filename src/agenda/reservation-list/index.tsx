@@ -54,6 +54,8 @@ export type ReservationListProps = ReservationProps & {
   refreshing?: boolean;
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
+  /** On end scroll */
+  onEndReached: () => void;
 };
 
 interface ReservationsListState {
@@ -93,7 +95,9 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     /** Set this true while waiting for new data from a refresh */
     refreshing: PropTypes.bool,
     /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
-    onRefresh: PropTypes.func
+    onRefresh: PropTypes.func,
+    /** On end scroll */
+    onEndReached: PropTypes.func
   };
 
   static defaultProps = {
@@ -307,6 +311,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         onScrollEndDrag={this.props.onScrollEndDrag}
         onMomentumScrollBegin={this.props.onMomentumScrollBegin}
         onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        onEndReached={this.props.onEndReached}
       />
     );
   }
