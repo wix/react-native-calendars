@@ -52,10 +52,10 @@ export type ReservationListProps = ReservationProps & {
   refreshControl?: JSX.Element;
   /** Set this true while waiting for new data from a refresh */
   refreshing?: boolean;
+  /** If scroll until the end will toggle this function */
+  onEndReached?: () => void;
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
-  /** On end scroll */
-  onEndReached?: () => void;
 };
 
 interface ReservationsListState {
