@@ -59,12 +59,17 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   onDayChange?: (data: any) => void;
   /** specify how agenda knob should look like */
   renderKnob?: () => JSX.Element;
+  /** How far from the end to trigger the onEndReached callback */
+  onEndReachedThreshold?: number;
+  /** Called once when the scroll position gets within onEndReachedThreshold */
+  onEndReached?: () => void;
   /** initially selected day */
   selected: boolean, //TODO: Should be renamed 'selectedDay'
   /** Hide knob button. Default = false */
   hideKnob: boolean,
   /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
   showClosingKnob: boolean
+  
 }
 
 type AgendaState = {
@@ -111,6 +116,10 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     hideKnob: PropTypes.bool,
     /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
     showClosingKnob: PropTypes.bool,
+    /** How far from the end to trigger the onEndReached callback */
+    onEndReachedThreshold: PropTypes.number,
+    /** Called once when the scroll position gets within onEndReachedThreshold */
+    onEndReached: PropTypes.func
   };
 
   private style: {[key: string]: ViewStyle};
@@ -365,6 +374,8 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
         topDay={this.state.topDay}
         onDayChange={this.onDayChange}
         onScroll={() => {}}
+        onEndReached={this.props.onEndReached}
+        onEndReachedThreshold={this.props.onEndReachedThreshold}
       />
     );
   }
