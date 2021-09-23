@@ -55,7 +55,7 @@ export type ReservationListProps = ReservationProps & {
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
   /** On end scroll */
-  onEndReached: () => void;
+  onEndReached?: () => void;
 };
 
 interface ReservationsListState {
