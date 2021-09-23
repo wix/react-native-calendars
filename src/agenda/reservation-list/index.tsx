@@ -52,7 +52,9 @@ export type ReservationListProps = ReservationProps & {
   refreshControl?: JSX.Element;
   /** Set this true while waiting for new data from a refresh */
   refreshing?: boolean;
-  /** If scroll until the end will toggle this function */
+  /** How far from the end to trigger the onEndReached callback */
+  onEndReachedThreshold?: number;
+  /** Called once when the scroll position gets within onEndReachedThreshold */
   onEndReached?: () => void;
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
@@ -96,8 +98,10 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     refreshing: PropTypes.bool,
     /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
     onRefresh: PropTypes.func,
-    /** On end scroll */
-    onEndReached: PropTypes.func,
+    /** How far from the end to trigger the onEndReached callback */
+    onEndReachedThreshold: PropTypes.number,
+    /** Called once when the scroll position gets within onEndReachedThreshold */
+    onEndReached: PropTypes.func
   };
 
   static defaultProps = {
@@ -311,6 +315,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
         onScrollEndDrag={this.props.onScrollEndDrag}
         onMomentumScrollBegin={this.props.onMomentumScrollBegin}
         onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        onEndReachedThreshold={this.props.onEndReachedThreshold}
         onEndReached={this.props.onEndReached}
       />
     );
