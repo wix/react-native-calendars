@@ -6,7 +6,18 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {Text, SectionList, SectionListProps, DefaultSectionT, SectionListData, ViewStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent, ViewToken} from 'react-native';
+import {
+  Text,
+  SectionList,
+  SectionListProps,
+  DefaultSectionT,
+  SectionListData,
+  ViewStyle,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  LayoutChangeEvent,
+  ViewToken
+} from 'react-native';
 
 // @ts-expect-error
 import {isToday, isGTE, sameDate} from '../dateutils';
@@ -17,7 +28,6 @@ import {parseDate} from '../interface';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
-
 
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
@@ -166,7 +176,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  onViewableItemsChanged = ((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
+  onViewableItemsChanged = (info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !this.sectionScroll) {
       const topSection = get(info?.viewableItems[0], 'section.title');
       if (topSection && topSection !== this._topSection) {
@@ -177,7 +187,7 @@ class AgendaList extends Component<Props> {
         }
       }
     }
-  });
+  };
 
   onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!this.didScroll) {
@@ -198,16 +208,12 @@ class AgendaList extends Component<Props> {
     invoke(this.props, 'onMomentumScrollEnd', event);
   };
 
-  onScrollToIndexFailed = (info: {
-    index: number;
-    highestMeasuredFrameIndex: number;
-    averageItemLength: number;
-}) => {
+  onScrollToIndexFailed = (info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
     if (this.props.onScrollToIndexFailed) {
       this.props.onScrollToIndexFailed(info);
     } else {
       console.warn('onScrollToIndexFailed info: ', info);
-    }  
+    }
   };
 
   onHeaderLayout = (event: LayoutChangeEvent) => {
@@ -217,7 +223,7 @@ class AgendaList extends Component<Props> {
   renderSectionHeader = (info: {section: SectionListData<any, DefaultSectionT>}) => {
     const {renderSectionHeader, sectionStyle} = this.props;
     const title = info?.section?.title;
-    
+
     if (renderSectionHeader) {
       return renderSectionHeader(title);
     }
