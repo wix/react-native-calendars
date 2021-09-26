@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import map from 'lodash/map';
 import omit from 'lodash/omit';
 import invoke from 'lodash/invoke';
 import isFunction from 'lodash/isFunction';
@@ -10,9 +9,11 @@ import React, {Component} from 'react';
 import {Text, SectionList, SectionListProps, DefaultSectionT, SectionListData, ViewStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent, ViewToken} from 'react-native';
 
 // @ts-expect-error
-import {isToday} from '../dateutils';
+import {isToday, isGTE, sameDate} from '../dateutils';
 // @ts-expect-error
 import {getMoment} from '../momentResolver';
+// @ts-expect-error
+import {parseDate} from '../interface';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -89,9 +90,7 @@ class AgendaList extends Component<Props> {
     if (date !== this._topSection) {
       setTimeout(() => {
         const sectionIndex = this.getSectionIndex(date);
-        if (sectionIndex) {
-          this.scrollToSection(sectionIndex);
-        }
+        this.scrollToSection(sectionIndex);
       }, 500);
     }
   }
@@ -102,22 +101,25 @@ class AgendaList extends Component<Props> {
       // NOTE: on first init data should set first section to the current date!!!
       if (updateSource !== updateSources.LIST_DRAG && updateSource !== updateSources.CALENDAR_INIT) {
         const sectionIndex = this.getSectionIndex(date);
-        if (sectionIndex) {
-          this.scrollToSection(sectionIndex);
-        }
+        this.scrollToSection(sectionIndex);
       }
     }
   }
 
   getSectionIndex(date: Date) {
-    let i;
-    map(this.props.sections, (section, index) => {
-      // NOTE: sections titles should match current date format!!!
-      if (section.title === date) {
-        i = index;
-        return;
+    let i = 0;
+    const {sections} = this.props;
+    for (let j = 1; j < sections.length; j++) {
+      const prev = parseDate(sections[j - 1].title);
+      const next = parseDate(sections[j].title);
+      const cur = parseDate(date);
+      if (isGTE(cur, prev) && isGTE(next, cur)) {
+        i = sameDate(prev, cur) ? j - 1 : j;
+        break;
+      } else if (isGTE(cur, next)) {
+        i = j;
       }
-    });
+    }
     return i;
   }
 
