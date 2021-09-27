@@ -235,19 +235,21 @@ class Calendar extends Component {
     const { isExtended, onExtended } = this.props;
     if (isExtended) return null;
     const moment = getMoment();
+    // Start date of extended days
     const startDate = moment().add(26, 'days');
     let disMonth = startDate.month();
+    // In which month extended button will display
     const calMonth = this.state.currentMonth.getMonth();
+    // Top Position of button
     let top = 81;
     if (startDate.date() > 21) {
-      disMonth =
-        (startDate.date() > 21 &&
-          moment()
-            .add(1, 'month')
-            .month()) ||
-        startDate.month();
+      disMonth = startDate.add(1, 'month').month();
     } else {
-      top = 189;
+      if (startDate.date() > 15) {
+        top = 242;
+      } else {
+        top = 189;
+      }
     }
     if (calMonth === disMonth) {
       return (
