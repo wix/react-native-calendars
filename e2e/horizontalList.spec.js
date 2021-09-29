@@ -1,4 +1,4 @@
-import {testIDs} from '../example/src/testIDs';
+import testIDs from '../example/src/testIDs';
 
 const {HEADER_MONTH_NAME} = require('../src/testIDs');
 
