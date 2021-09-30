@@ -1,7 +1,9 @@
 import get from 'lodash/get';
+import map from 'lodash/map';
 import omit from 'lodash/omit';
 import invoke from 'lodash/invoke';
 import isFunction from 'lodash/isFunction';
+import isUndefined from 'lodash/isUndefined';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -48,6 +50,8 @@ interface Props extends SectionListProps<any, DefaultSectionT> {
   avoidDateUpdates?: boolean;
   /** offset scroll to section */
   viewOffset?: number;
+  /** enable scrolling the agenda list to the next date with events while pressing a date without events */
+  scrollToFutureEvents?: boolean;
   theme?: Theme;
   context?: any;
 }
@@ -97,26 +101,44 @@ class AgendaList extends Component<Props> {
 
   componentDidMount() {
     const {date} = this.props.context;
+    const {scrollToFutureEvents} = this.props;
     if (date !== this._topSection) {
       setTimeout(() => {
-        const sectionIndex = this.getSectionIndex(date);
-        this.scrollToSection(sectionIndex);
+        const sectionIndex = scrollToFutureEvents ? this.getNextSectionIndex(date) : this.getSectionIndex(date);
+        if (!isUndefined(sectionIndex)) {
+          this.scrollToSection(sectionIndex);
+        }
       }, 500);
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     const {updateSource, date} = this.props.context;
+    const {scrollToFutureEvents} = this.props;
     if (date !== prevProps.context.date) {
       // NOTE: on first init data should set first section to the current date!!!
       if (updateSource !== updateSources.LIST_DRAG && updateSource !== updateSources.CALENDAR_INIT) {
-        const sectionIndex = this.getSectionIndex(date);
-        this.scrollToSection(sectionIndex);
+        const sectionIndex = scrollToFutureEvents ? this.getNextSectionIndex(date) : this.getSectionIndex(date);
+        if (!isUndefined(sectionIndex)) {
+          this.scrollToSection(sectionIndex);
+        }
       }
     }
   }
 
   getSectionIndex(date: Date) {
+    let i;
+    map(this.props.sections, (section, index) => {
+      // NOTE: sections titles should match current date format!!!
+      if (section.title === date) {
+        i = index;
+        return;
+      }
+    });
+    return i;
+  }
+
+  getNextSectionIndex(date: Date) {
     let i = 0;
     const {sections} = this.props;
     for (let j = 1; j < sections.length; j++) {
