@@ -34,6 +34,7 @@ export default function getStyle(theme: Theme = {}) {
       paddingLeft: 15,
       paddingRight: 15
     },
-    ...(theme.stylesheet?.['calendar-list']?.main || {})
+    // @ts-ignore
+    ...(theme['stylesheet.calendar-list.main'] || {})
   });
 }
