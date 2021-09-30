@@ -47,7 +47,7 @@ class Presenter {
 
     if (this._shouldUpdateState(page, newPage)) {
       invoke(context, 'setDate', items[newPage], updateSources.WEEK_SCROLL);
-      const data = this._getItemsForPage(page, items);
+      const data = this._getItemsForPage(newPage, items);
       updateState(data, newPage);
     }
   };
@@ -124,7 +124,7 @@ class Presenter {
     return page === items.length - 1;
   };
 
-  _getNexPageItems = (items: Date[]) => {
+  _getNextPageItems = (items: Date[]) => {
     return items.map((_, i) => {
       const index = i <= NUMBER_OF_PAGES ? i + NUMBER_OF_PAGES : i;
       return items[index];
@@ -154,7 +154,7 @@ class Presenter {
 
   _getItemsForPage = (page: number, items: Date[]) => {
     if (this._isLastPage(page, items)) {
-      return this._getNexPageItems(items);
+      return this._getNextPageItems(items);
     } else if (this._isFirstPage(page)) {
       return this._getFirstPageItems(items);
     }
