@@ -235,14 +235,14 @@ describe('WeekCalendar presenter tests', () => {
     });
 
     it('Expect to fill the array without the first two (NUMBER_OF_PAGES)', () => {
-      const {_getNexPageItems} = makeUUT();
+      const {_getNextPageItems} = makeUUT();
       let items = ['1', '2', '3'];
-      let nextItems = _getNexPageItems(items);
+      let nextItems = _getNextPageItems(items);
 
       expect(nextItems).toEqual(['3', undefined, undefined]);
 
       items = ['1', '2', '3', '4', '5', '6'];
-      nextItems = _getNexPageItems(items);
+      nextItems = _getNextPageItems(items);
       expect(nextItems).toEqual(['3', '4', '5', '4', '5', '6']);
     });
 
