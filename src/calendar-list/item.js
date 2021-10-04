@@ -75,7 +75,6 @@ class CalendarListItem extends Component {
       testID,
       style,
       headerStyle,
-      numbers,
       onPressArrowLeft,
       onPressArrowRight
     } = this.props;
