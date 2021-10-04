@@ -114,7 +114,8 @@ class CalendarHeader extends Component<Props> {
       'monthFormat',
       'renderArrow',
       'disableArrowLeft',
-      'disableArrowRight'
+      'disableArrowRight',
+      'renderHeader'
     ]);
   }
 
