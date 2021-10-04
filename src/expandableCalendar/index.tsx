@@ -433,7 +433,6 @@ class ExpandableCalendar extends Component<Props, State> {
     if (month && this.visibleMonth !== month) {
       this.visibleMonth = month; 
       if (first(value)?.year) {
-        // @ts-expect-error
         this.visibleYear = first(value)?.year;
       }
 
