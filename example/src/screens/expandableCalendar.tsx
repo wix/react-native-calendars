@@ -192,6 +192,7 @@ export default class ExpandableCalendarScreen extends Component<Props> {
           renderItem={this.renderItem}
           // scrollToNextEvent
           // sectionStyle={styles.section}
+          // dayFormat={'YYYY-MM-d'}
         />
       </CalendarProvider>
     );
