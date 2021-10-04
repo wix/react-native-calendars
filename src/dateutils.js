@@ -21,10 +21,6 @@ function isLTE(a, b) {
   return a.diffDays(b) > -1;
 }
 
-function formatStringNumbers(text, numbers) {
-  return numbers ? text.replace(/[0-9]/g, char => numbers[+char]) : text;
-}
-
 function fromTo(a, b) {
   const days = [];
   let from = +a, to = +b;
@@ -103,7 +99,6 @@ module.exports = {
   sameDate,
   month,
   page,
-  formatStringNumbers,
   fromTo,
   isLTE,
   isGTE,

@@ -4,7 +4,6 @@ import {Text, View} from 'react-native';
 import {extractComponentProps} from '../component-updater';
 import Calendar from '../calendar';
 import styleConstructor from './style';
-import {formatStringNumbers} from '../dateutils';
 
 class CalendarListItem extends Component {
   static displayName = 'IGNORE';
@@ -94,7 +93,7 @@ class CalendarListItem extends Component {
         />
       );
     } else {
-      const text = formatStringNumbers(item.toString(), numbers);
+      const text = item.toString();
 
       return (
         <View style={[{height: calendarHeight, width: calendarWidth}, this.style.placeholder]}>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 import {shouldUpdate} from '../../../component-updater';
-import {formatStringNumbers} from '../../../dateutils';
 import styleConstructor from './style';
 import Marking from '../marking';
 
@@ -17,8 +16,6 @@ export default class BasicDay extends Component {
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
     markingType: PropTypes.oneOf(_.values(Marking.markingTypes)),
-    /** Number array, used to localize non-latin numbers */
-    numbers: PropTypes.array,
     /** Theme object */
     theme: PropTypes.object,
     /** onPress callback */
@@ -33,7 +30,7 @@ export default class BasicDay extends Component {
 
   constructor(props) {
     super(props);
-
+    
     this.style = styleConstructor(props.theme);
   }
 
@@ -44,7 +41,7 @@ export default class BasicDay extends Component {
   onPress = () => {
     _.invoke(this.props, 'onPress', this.props.date);
   }
-
+  
   onLongPress = () => {
     _.invoke(this.props, 'onLongPress', this.props.date);
   }
@@ -104,7 +101,7 @@ export default class BasicDay extends Component {
     } else if (this.isToday()) {
       style.push(this.style.today);
     }
-
+    
     //Custom marking type
     if (this.isCustom() && customStyles && customStyles.container) {
       if (customStyles.container.borderRadius === undefined) {
@@ -159,11 +156,9 @@ export default class BasicDay extends Component {
   }
 
   renderText() {
-    const {children, numbers} = this.props;
-
     return (
       <Text allowFontScaling={false} style={this.getTextStyle()}>
-        {formatStringNumbers(String(children), numbers)}
+        {String(this.props.children)}
       </Text>
     );
   }
