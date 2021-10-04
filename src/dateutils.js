@@ -1,6 +1,8 @@
 const XDate = require('xdate');
 const {parseDate} = require('./interface');
 
+const latinNumbersPattern = /[0-9]/g;
+
 export function sameMonth(a, b) {
   return (
     a instanceof XDate && b instanceof XDate && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
