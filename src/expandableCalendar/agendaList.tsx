@@ -50,8 +50,8 @@ interface Props extends SectionListProps<any, DefaultSectionT> {
   avoidDateUpdates?: boolean;
   /** offset scroll to section */
   viewOffset?: number;
-  /** enable scrolling the agenda list to the next date with events while pressing a date without events */
-  scrollToFutureEvents?: boolean;
+  /** enable scrolling the agenda list to the next date with content when pressing a day without content */
+  scrollToNextEvent?: boolean;
   theme?: Theme;
   context?: any;
 }
@@ -101,27 +101,19 @@ class AgendaList extends Component<Props> {
 
   componentDidMount() {
     const {date} = this.props.context;
-    const {scrollToFutureEvents} = this.props;
     if (date !== this._topSection) {
       setTimeout(() => {
-        const sectionIndex = scrollToFutureEvents ? this.getNextSectionIndex(date) : this.getSectionIndex(date);
-        if (!isUndefined(sectionIndex)) {
-          this.scrollToSection(sectionIndex);
-        }
+        this.scrollToSection();
       }, 500);
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     const {updateSource, date} = this.props.context;
-    const {scrollToFutureEvents} = this.props;
     if (date !== prevProps.context.date) {
       // NOTE: on first init data should set first section to the current date!!!
       if (updateSource !== updateSources.LIST_DRAG && updateSource !== updateSources.CALENDAR_INIT) {
-        const sectionIndex = scrollToFutureEvents ? this.getNextSectionIndex(date) : this.getSectionIndex(date);
-        if (!isUndefined(sectionIndex)) {
-          this.scrollToSection(sectionIndex);
-        }
+        this.scrollToSection();
       }
     }
   }
@@ -182,9 +174,14 @@ class AgendaList extends Component<Props> {
     return sectionTitle;
   }
 
-  scrollToSection(sectionIndex: number) {
+  scrollToSection() {
+    const {date} = this.props.context;
+    const {scrollToNextEvent, sections, viewOffset = 0} = this.props;
+    const sectionIndex = scrollToNextEvent ? this.getNextSectionIndex(date) : this.getSectionIndex(date);
+    if (isUndefined(sectionIndex)) {
+      return;
+    }
     if (this.list?.current && sectionIndex !== undefined) {
-      const {sections, viewOffset = 0} = this.props;
       this.sectionScroll = true; // to avoid setDate() in onViewableItemsChanged
       this._topSection = sections[sectionIndex].title;
 

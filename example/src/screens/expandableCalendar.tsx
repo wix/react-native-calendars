@@ -190,7 +190,7 @@ export default class ExpandableCalendarScreen extends Component<Props> {
         <AgendaList
           sections={ITEMS}
           renderItem={this.renderItem}
-          // scrollToFutureEvents
+          // scrollToNextEvent
           // sectionStyle={styles.section}
         />
       </CalendarProvider>
