@@ -4,11 +4,22 @@ import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {Component, Fragment, ReactNode} from 'react';
-import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, StyleProp, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleProp,
+  ViewStyle,
+  AccessibilityActionEvent,
+  ColorValue
+} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 // @ts-expect-error
-import {weekDayNames} from '../../dateutils';
+import {formatNumbers, weekDayNames} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
@@ -187,7 +198,7 @@ class CalendarHeader extends Component<Props> {
           testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
           {...webProps}
         >
-          {month?.toString(monthFormat)}
+          {formatNumbers(month?.toString(monthFormat))}
         </Text>
       </Fragment>
     );

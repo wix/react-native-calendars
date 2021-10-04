@@ -34,6 +34,11 @@ export function isLTE(a, b) {
   return a.diffDays(b) > -1;
 }
 
+export function formatNumbers(value) {
+  const numbers = XDate.locales[XDate.defaultLocale].numbers;
+  return numbers ? value.toString().replace(latinNumbersPattern, char => numbers[+char]) : value;
+}
+
 export function fromTo(a, b) {
   const days = [];
   let from = +a,
