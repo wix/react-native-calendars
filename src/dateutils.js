@@ -1,6 +1,8 @@
 const XDate = require('xdate');
 const {parseDate} = require('./interface');
 
+const latinNumbersPattern = /[0-9]/g;
+
 export function sameMonth(a, b) {
   return (
     a instanceof XDate && b instanceof XDate && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
@@ -32,6 +34,11 @@ export function isGTE(a, b) {
 
 export function isLTE(a, b) {
   return a.diffDays(b) > -1;
+}
+
+export function formatNumbers(value) {
+  const numbers = XDate.locales[XDate.defaultLocale].numbers;
+  return numbers ? value.toString().replace(latinNumbersPattern, char => numbers[+char]) : value;
 }
 
 export function fromTo(a, b) {
