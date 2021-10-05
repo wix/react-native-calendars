@@ -21,6 +21,7 @@ export default class Timeline extends React.PureComponent {
     start: PropTypes.number,
     end: PropTypes.number,
     eventTapped: PropTypes.func,
+    theme: PropTypes.object,
     format24h: PropTypes.bool,
     events: PropTypes.arrayOf(
       PropTypes.shape({
@@ -33,7 +34,7 @@ export default class Timeline extends React.PureComponent {
     ).isRequired,
     scrollToNow: PropTypes.bool,
     currentDateString: PropTypes.string,
-    updateCurrentTimeIndicatorEveryMinute: PropTypes.bool,
+    updateCurrentTimeIndicatorEveryMinute: PropTypes.bool
   };
 
   static defaultProps = {
@@ -49,7 +50,7 @@ export default class Timeline extends React.PureComponent {
     const {start, end} = this.props;
     this.calendarHeight = (end - start) * 100;
 
-    this.style = styleConstructor(props.styles, this.calendarHeight);
+    this.style = styleConstructor(props.theme, this.calendarHeight);
 
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
@@ -108,7 +109,7 @@ export default class Timeline extends React.PureComponent {
         this._scrollView.scrollTo({
           x: 0,
           y: this.currentTimeOffset(),
-          animated: true,
+          animated: true
         });
       }
     }, 1);
@@ -135,13 +136,15 @@ export default class Timeline extends React.PureComponent {
     return offset * (timeNowHour - start) + (offset * timeNowMin) / 60;
   }
 
-  isCurrentDateStringForTimeIndicatorSet () {
+  isCurrentDateStringForTimeIndicatorSet() {
     return typeof this.props.currentDateString !== 'undefined';
   }
 
   _renderCurrentTimeIndicator() {
-    if (this.isCurrentDateStringForTimeIndicatorSet() &&
-      this.props.currentDateString === moment().format('YYYY-MM-DD')) {
+    if (
+      this.isCurrentDateStringForTimeIndicatorSet() &&
+      this.props.currentDateString === moment().format('YYYY-MM-DD')
+    ) {
       // currentDateString format YYYY-MM-DD, e.g. 2020-11-06
       // Time indicator should be displayed only on the current date
       return (
@@ -151,8 +154,8 @@ export default class Timeline extends React.PureComponent {
             this.style.lineNow,
             {
               top: this.state.currentTimeIndicatorTopCoordinate,
-              width: dimensionWidth - 20,
-            },
+              width: dimensionWidth - 20
+            }
           ]}
         />
       );
