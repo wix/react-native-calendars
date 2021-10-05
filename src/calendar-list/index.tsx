@@ -25,7 +25,7 @@ const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
 
-interface Props extends CalendarProps, FlatListProps<any> {
+interface Props extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
   pastScrollRange?: number;
   /** Max amount of months allowed to scroll to the future. Default = 50 */
@@ -60,7 +60,7 @@ interface Props extends CalendarProps, FlatListProps<any> {
   onEndReached?: () => void;
   /** onLayout event */
   onLayout?: (event: LayoutChangeEvent) => void;
-  removeClippedSubviews: boolean;
+  removeClippedSubviews?: boolean;
 }
 export type CalendarListProps = Props;
 
