@@ -740,6 +740,7 @@
 - Calendar - 'allowSelectionOutOfRange' prop (PR #1618).
 - AgendaList - 'scrollToNextEvent' prop (PR #1636).
 - Number localization (PR #1369).
+- TS types release.
 
 ## Changed
 - Use modern export keyword (PR #1615).
