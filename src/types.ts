@@ -3,6 +3,7 @@ import {UpdateSources} from './expandableCalendar/commons';
 
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
+export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 export type Direction = 'left' | 'right';
 export type UpdateSource = keyof typeof UpdateSources;
 export type DateData = {
@@ -12,8 +13,6 @@ export type DateData = {
   timestamp: number,
   dateString: string
 }
-export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
-
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;
