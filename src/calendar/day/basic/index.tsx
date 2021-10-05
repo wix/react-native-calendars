@@ -43,7 +43,7 @@ export default class BasicDay extends Component<BasicDayProps> {
     /** The marking object */
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
-    markingType: PropTypes.oneOf(values(Marking.markingTypes)),
+    markingType: PropTypes.oneOf(values(Marking.markings)),
     /** Theme object */
     theme: PropTypes.object,
     /** onPress callback */
@@ -117,15 +117,15 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   isMultiDot() {
-    return this.props.markingType === Marking.markingTypes.MULTI_DOT;
+    return this.props.markingType === Marking.markings.MULTI_DOT;
   }
 
   isMultiPeriod() {
-    return this.props.markingType === Marking.markingTypes.MULTI_PERIOD;
+    return this.props.markingType === Marking.markings.MULTI_PERIOD;
   }
 
   isCustom() {
-    return this.props.markingType === Marking.markingTypes.CUSTOM;
+    return this.props.markingType === Marking.markings.CUSTOM;
   }
 
   getContainerStyle() {

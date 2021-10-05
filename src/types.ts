@@ -2,6 +2,7 @@ import {ViewStyle, TextStyle} from 'react-native';
 import {UpdateSources} from './expandableCalendar/commons';
 
 
+export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type Direction = 'left' | 'right';
 export type UpdateSource = keyof typeof UpdateSources;
 export type DateData = {
