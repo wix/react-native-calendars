@@ -3,20 +3,33 @@ import map from 'lodash/map';
 import omit from 'lodash/omit';
 import invoke from 'lodash/invoke';
 import isFunction from 'lodash/isFunction';
+import isUndefined from 'lodash/isUndefined';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {Text, SectionList, SectionListProps, DefaultSectionT, SectionListData, ViewStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent, ViewToken} from 'react-native';
+import {
+  Text,
+  SectionList,
+  SectionListProps,
+  DefaultSectionT,
+  SectionListData,
+  ViewStyle,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  LayoutChangeEvent,
+  ViewToken
+} from 'react-native';
 
 // @ts-expect-error
-import {isToday} from '../dateutils';
+import {isToday, isGTE, sameDate} from '../dateutils';
 // @ts-expect-error
 import {getMoment} from '../momentResolver';
+// @ts-expect-error
+import {parseDate} from '../interface';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
-
 
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
@@ -37,6 +50,8 @@ interface Props extends SectionListProps<any, DefaultSectionT> {
   avoidDateUpdates?: boolean;
   /** offset scroll to section */
   viewOffset?: number;
+  /** enable scrolling the agenda list to the next date with content when pressing a day without content */
+  scrollToNextEvent?: boolean;
   theme?: Theme;
   context?: any;
 }
@@ -88,10 +103,7 @@ class AgendaList extends Component<Props> {
     const {date} = this.props.context;
     if (date !== this._topSection) {
       setTimeout(() => {
-        const sectionIndex = this.getSectionIndex(date);
-        if (sectionIndex) {
-          this.scrollToSection(sectionIndex);
-        }
+        this.scrollToSection();
       }, 500);
     }
   }
@@ -101,10 +113,7 @@ class AgendaList extends Component<Props> {
     if (date !== prevProps.context.date) {
       // NOTE: on first init data should set first section to the current date!!!
       if (updateSource !== updateSources.LIST_DRAG && updateSource !== updateSources.CALENDAR_INIT) {
-        const sectionIndex = this.getSectionIndex(date);
-        if (sectionIndex) {
-          this.scrollToSection(sectionIndex);
-        }
+        this.scrollToSection();
       }
     }
   }
@@ -118,6 +127,23 @@ class AgendaList extends Component<Props> {
         return;
       }
     });
+    return i;
+  }
+
+  getNextSectionIndex(date: Date) {
+    let i = 0;
+    const {sections} = this.props;
+    for (let j = 1; j < sections.length; j++) {
+      const prev = parseDate(sections[j - 1].title);
+      const next = parseDate(sections[j].title);
+      const cur = parseDate(date);
+      if (isGTE(cur, prev) && isGTE(next, cur)) {
+        i = sameDate(prev, cur) ? j - 1 : j;
+        break;
+      } else if (isGTE(cur, next)) {
+        i = j;
+      }
+    }
     return i;
   }
 
@@ -148,9 +174,14 @@ class AgendaList extends Component<Props> {
     return sectionTitle;
   }
 
-  scrollToSection(sectionIndex: number) {
+  scrollToSection() {
+    const {date} = this.props.context;
+    const {scrollToNextEvent, sections, viewOffset = 0} = this.props;
+    const sectionIndex = scrollToNextEvent ? this.getNextSectionIndex(date) : this.getSectionIndex(date);
+    if (isUndefined(sectionIndex)) {
+      return;
+    }
     if (this.list?.current && sectionIndex !== undefined) {
-      const {sections, viewOffset = 0} = this.props;
       this.sectionScroll = true; // to avoid setDate() in onViewableItemsChanged
       this._topSection = sections[sectionIndex].title;
 
@@ -164,7 +195,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  onViewableItemsChanged = ((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
+  onViewableItemsChanged = (info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !this.sectionScroll) {
       const topSection = get(info?.viewableItems[0], 'section.title');
       if (topSection && topSection !== this._topSection) {
@@ -175,7 +206,7 @@ class AgendaList extends Component<Props> {
         }
       }
     }
-  });
+  };
 
   onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!this.didScroll) {
@@ -196,16 +227,12 @@ class AgendaList extends Component<Props> {
     invoke(this.props, 'onMomentumScrollEnd', event);
   };
 
-  onScrollToIndexFailed = (info: {
-    index: number;
-    highestMeasuredFrameIndex: number;
-    averageItemLength: number;
-}) => {
+  onScrollToIndexFailed = (info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
     if (this.props.onScrollToIndexFailed) {
       this.props.onScrollToIndexFailed(info);
     } else {
       console.warn('onScrollToIndexFailed info: ', info);
-    }  
+    }
   };
 
   onHeaderLayout = (event: LayoutChangeEvent) => {
@@ -215,7 +242,7 @@ class AgendaList extends Component<Props> {
   renderSectionHeader = (info: {section: SectionListData<any, DefaultSectionT>}) => {
     const {renderSectionHeader, sectionStyle} = this.props;
     const title = info?.section?.title;
-    
+
     if (renderSectionHeader) {
       return renderSectionHeader(title);
     }

@@ -3,13 +3,14 @@ import filter from 'lodash/filter';
 import React, {Component} from 'react';
 import {View, ViewStyle, TextStyle} from 'react-native';
 
+import {Theme, MarkingTypes} from '../../../types';
 // @ts-expect-error
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
-import {Theme} from '../../../types';
 
-export enum MarkingTypes {
+
+export enum Markings {
   DOT = 'dot',
   MULTI_DOT = 'multi-dot',
   PERIOD = 'period',
@@ -60,7 +61,7 @@ export interface MarkingProps extends DotProps {
 export default class Marking extends Component<MarkingProps> {
   static displayName = 'IGNORE';
 
-  static markingTypes = MarkingTypes;
+  static markings = Markings;
   
   style: any;
   
@@ -96,7 +97,7 @@ export default class Marking extends Component<MarkingProps> {
       const validItems = filter(items, function(o: DOT | PERIOD) { return o.color; });
 
       return validItems.map((item, index) => {
-        return type === MarkingTypes.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);
+        return type === Markings.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);
       });
     }
   }
@@ -104,9 +105,9 @@ export default class Marking extends Component<MarkingProps> {
   renderMarkingByType() {
     const {type, dots, periods} = this.props;
     switch (type) {
-      case MarkingTypes.MULTI_DOT:
+      case Markings.MULTI_DOT:
         return this.renderMultiMarkings(this.style.dots, dots);
-      case MarkingTypes.MULTI_PERIOD:
+      case Markings.MULTI_PERIOD:
         return this.renderMultiMarkings(this.style.periods, periods);
       default:
         return this.renderDot();

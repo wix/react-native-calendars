@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
+import XDate from 'xdate';
 
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
@@ -7,6 +8,8 @@ import {Text, View} from 'react-native';
 import {Theme} from '../types';
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
+// @ts-expect-error
+import {formatNumbers} from '../dateutils';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
 
@@ -16,13 +19,13 @@ export type CalendarListItemProps = CalendarProps & {
   calendarHeight?: number;
   horizontal?: boolean;
   theme?: Theme;
-  scrollToMonth?: (date: XDate) => void
-}
+  scrollToMonth?: (date: XDate) => void;
+};
 
 type CalendarListItemState = {
   hideArrows: boolean;
   hideExtraDays: boolean;
-}
+};
 
 class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
   static displayName = 'IGNORE';
@@ -122,7 +125,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
         />
       );
     } else {
-      const text = item.toString();
+      const text = formatNumbers(item.toString());
 
       return (
         <View style={[{height: calendarHeight, width: calendarWidth}, this.style.placeholder]}>

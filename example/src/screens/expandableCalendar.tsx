@@ -190,7 +190,9 @@ export default class ExpandableCalendarScreen extends Component<Props> {
         <AgendaList
           sections={ITEMS}
           renderItem={this.renderItem}
+          // scrollToNextEvent
           // sectionStyle={styles.section}
+          // dayFormat={'YYYY-MM-d'}
         />
       </CalendarProvider>
     );
