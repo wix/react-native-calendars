@@ -1,3 +1,5 @@
+## See [github releases](https://github.com/wix/react-native-calendars/releases) for newer versions
+
 # Changelog
 
 ## [1.188.0] - 2019-6-16
