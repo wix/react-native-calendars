@@ -9,7 +9,7 @@ import {Theme} from '../types';
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
-import {formatNumbers} from '../../dateutils';
+import {formatNumbers} from '../dateutils';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
 
