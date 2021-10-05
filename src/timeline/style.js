@@ -3,7 +3,7 @@ import {Platform, StyleSheet} from 'react-native';
 
 // const eventPaddingLeft = 4
 const leftMargin = 50 - 1;
-
+const STYLESHEET_ID = 'stylesheet.timeline.main';
 export default function styleConstructor(theme = {}, calendarHeight) {
   let style = {
     container: {
@@ -104,7 +104,8 @@ export default function styleConstructor(theme = {}, calendarHeight) {
       fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',
       fontWeight: '500',
       ...theme.timeLabel
-    }
+    },
+    ...(theme[STYLESHEET_ID] || {})
   };
   return StyleSheet.create(style);
 }
