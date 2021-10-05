@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
 
-import React, {Component, RefObject} from 'react';
+import React, {Component} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -140,7 +140,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     currentMonth: this.props.current ? parseDate(this.props.current) : new XDate()
   };
   style = styleConstructor(this.props.theme);
-  header: RefObject<CalendarHeader> = React.createRef();
+  header: React.RefObject<any> = React.createRef();
 
   addMonth = (count: number) => {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
@@ -297,13 +297,14 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     const headerProps = extractComponentProps(CalendarHeader, this.props);
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-
+    const ref = customHeader ?  undefined : this.header;
+    
     return (
       <HeaderComponent
         {...headerProps}
         testID={testID}
         style={headerStyle}
-        ref={this.header}
+        ref={ref}
         month={this.state.currentMonth}
         addMonth={this.addMonth}
         displayLoadingIndicator={indicator}
