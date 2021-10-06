@@ -8,7 +8,7 @@ import {StyleSheet, Animated, TouchableOpacity, View, StyleProp, ViewStyle} from
 import {toMarkingFormat} from '../../interface';
 import {Theme, UpdateSource, DateData} from '../../types';
 import styleConstructor from '../style';
-import CalendarContext from '.';
+import CalendarContext from './index';
 import Presenter from './Presenter';
 
 
