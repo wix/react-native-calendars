@@ -49,7 +49,8 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     scrollPadStyle: {
       position: 'absolute',
-      width: 80
+      width: 80,
+      alignSelf: 'center'
     },
     // @ts-ignore
     ...(theme['stylesheet.agenda.main'] || {})
