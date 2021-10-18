@@ -2,7 +2,7 @@ Please make our job easier by filling this template out to completion. If you're
 
 ## Description
 
-1-2 sentences describing the problem you're having or the feature you'd like to request
+1-2 sentences describing the problem you're having or the feature you'd like to request.
 
 ## Expected Behavior
 
@@ -27,10 +27,14 @@ Please run these commands in the project folder and fill in their results:
 
 Also specify:
 
-1. Phone/emulator/simulator & version:
+1. Device/emulator/simulator & OS version:
 
 ## Reproducible Demo
 
 Please provide a minimized reproducible demonstration of the problem you're reporting.
 
 Issues that come with minimal repro's are resolved much more quickly than issues where a maintainer has to reproduce themselves.
+
+## Screenshots
+
+Screenshots or gifs of the issue and the suggested fix will help us move faster with the review process.

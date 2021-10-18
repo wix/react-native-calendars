@@ -675,7 +675,7 @@
 ### Changed
 - AgendaList - Remove arrow function from 'onScrollToIndexFailed' and omit 'context' passed to SectionList.
 
-## [1.1263.0] - 2021-x-x
+## [1.1263.0] - 2021-6-3
 
 ## Changed
 - Files formatting (PR #1513).
@@ -683,3 +683,65 @@
 
 ## Fixed
 - Day - passed props for custom 'dayComponent'.
+- WeekCalendar - update marking on disabled day press.
+
+## [1.1264.0] - 2021-6-27
+
+## Added
+- WeekCalendar - adding presenter and unit tests (PR #1499).
+- CalendarContextProvider - adding presenter and unit tests (PR #1503).
+- Release snapshot versions (PR #1536 and PR #1538).
+- Typescript setup and DayBasic migration to TS (PR #1539).
+- Agenda - 'showClosingKnob' prop to use knob for closing the calendar (PR #1430).
+
+## Changed
+- Updating Cocoapods version to 1.10.1.
+
+## Fixed
+- Timeline - fix event height and top calculations (PR #1498).
+- TS - Fix build process (PR #1545).
+- ExpandableCalendar - fix arrow press callbacks (PR #1489).
+- README & ISSUE_TEMPLATE - edit.
+
+
+## [1.1265.0] - 2021-8-23
+
+## Changed
+- Change import to require - solved "Cannot assign to read only property 'exports' of object '#<Object>'" (PR #1553).
+- TS migration for all Calendars components.
+- Upgrading to react-native 0.64.2.
+
+## Added
+- AgendaList - support offset scroll to section (PR #1526).
+- AgendaList - allow passing 'onScrollToIndexFailed' (PR #1594).
+- Day - support 'inactive' state and add 'disableAllTouchEventsForInactiveDays' prop (PR #1596).
+
+## Fixed
+- ExpandableCalendar - 'onDayPress' not called (PR #1584).
+- Fixed issue with 'dateutils' export (PR #1548).
+
+## [1.1266.0] - 2021-8-24
+
+## Changed
+- Disabling Detox e2e tests.
+
+## [1.1267.0] - 2021-10-5
+
+## Fixed
+- CalendarListItem - height issue (PR #1614).
+- README - links for typescript (PR #1611).
+- lodash - change imports to make it tree-shakeable (PR #1613).
+- ExpandableCalendar - 'today' button bug (PR #1627).
+- CalendarHeader - 'renderHeader' updates.
+- Calendar - 'customHeader' ref.
+- CalendarList - fix types.
+
+## Added
+- Calendar - 'allowSelectionOutOfRange' prop (PR #1618).
+- AgendaList - 'scrollToNextEvent' prop (PR #1636).
+- Number localization (PR #1369).
+- TS types release.
+
+## Changed
+- Use modern export keyword (PR #1615).
+- Remove global and move types to types.ts.
