@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    // "outDir": "dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "jsx": "react-native",
+    "skipLibCheck": true,
+    // "resolveJsonModule": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": false,
+    "checkJs": false,
+    "allowJs": false,
+    // "emitDeclarationOnly": true,
+    // "noImplicitAny": false
+    "declaration": true,
+    "baseUrl": "src",
+    "paths": {}
+  },
+  // "include": ["src/calendar/day/basic", "src/global.d.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test"]
+}
