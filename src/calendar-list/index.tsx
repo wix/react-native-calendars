@@ -117,7 +117,7 @@ class CalendarList extends Component<Props, State> {
     onEndReachedThreshold: PropTypes.number,
     /** Called once when the scroll position gets within onEndReachedThreshold */
     onEndReached: PropTypes.func,
-    /** Allows FlatList to be displayed on scrollView */
+    /** Enables nested scrolling for Android API level 21+ */
     nestedScrollEnabled: PropTypes.bool
   };
 
