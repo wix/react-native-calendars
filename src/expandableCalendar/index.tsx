@@ -2,6 +2,7 @@ import first from 'lodash/first';
 import invoke from 'lodash/invoke';
 import values from 'lodash/values';
 import isFunction from 'lodash/isFunction';
+import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
 import XDate from 'xdate';
@@ -428,7 +429,7 @@ class ExpandableCalendar extends Component<Props, State> {
     }
   };
 
-  onVisibleMonthsChange = (value: DateData[]) => {
+  onVisibleMonthsChange = throttle((value: DateData[]) => {
     const month = first(value)?.month; // equivalent to this.getMonth(value[0].dateString)
     if (month && this.visibleMonth !== month) {
       this.visibleMonth = month; 
@@ -458,7 +459,7 @@ class ExpandableCalendar extends Component<Props, State> {
         }
       }, 0);
     }
-  };
+  }, 100, {trailing: true, leading: false});
 
   /** Renders */
   getWeekDaysStyle = memoize(calendarStyle => {
