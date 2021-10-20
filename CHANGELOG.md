@@ -745,3 +745,9 @@
 ## Changed
 - Use modern export keyword (PR #1615).
 - Remove global and move types to types.ts.
+
+## [1.1268.0] - 2021-10-11
+
+## Fixed
+- Demo app load.
+- ExpandableCalendar - add throttle to onVisibleMonthsChange callback.
