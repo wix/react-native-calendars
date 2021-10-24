@@ -3,7 +3,6 @@ import React, {PureComponent} from 'react';
 import {View} from 'react-native';
 
 import {getWeekDates, sameMonth} from '../dateutils';
-// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
 // @ts-expect-error
 import {getState} from '../day-state-manager';

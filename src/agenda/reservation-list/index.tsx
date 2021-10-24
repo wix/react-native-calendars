@@ -9,7 +9,6 @@ import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, Nati
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
 import {sameDate} from '../../dateutils';
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';

@@ -9,7 +9,6 @@ import {FlatList, View, Text, NativeSyntheticEvent, NativeScrollEvent} from 'rea
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
 import {weekDayNames} from '../../dateutils';
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
