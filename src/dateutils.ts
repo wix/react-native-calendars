@@ -41,7 +41,7 @@ export function formatNumbers(date: any) {
   return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
 }
 
-export function fromTo(a: XDate, b: XDate) {
+function fromTo(a: XDate, b: XDate) {
   const days = [];
   let from = +a,
     to = +b;
@@ -51,7 +51,7 @@ export function fromTo(a: XDate, b: XDate) {
   return days;
 }
 
-export function month(date: XDate) {
+function month(date: XDate) {
   const year = date.getFullYear(),
     month = date.getMonth();
   const days = new Date(year, month + 1, 0).getDate();
@@ -109,10 +109,6 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   }
 
   return before.concat(days.slice(1, days.length - 1), after);
-}
-
-export function isDateNotInTheRange(minDate: XDate, maxDate: XDate, date: XDate) {
-  return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
 }
 
 export function getWeekDates(date: XDate, firstDay = 0, format?: string) {
