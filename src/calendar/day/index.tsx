@@ -103,7 +103,7 @@ export default class Day extends Component<DayProps> {
   render() {
     const {day, marking} = this.props;
     const date = xdateToData(day);
-    const isToday = dateutils_isToday(day);
+    const isToday = day ? dateutils_isToday(new XDate(day)) : undefined;
     const Component = this.getDayComponent();
     const dayProps = omit(this.props, 'day');
     const accessibilityLabel = this.getAccessibilityLabel(day, marking, isToday);

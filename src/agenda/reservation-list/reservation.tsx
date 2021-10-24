@@ -81,7 +81,7 @@ class Reservation extends Component<ReservationProps> {
       return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
 
-    const today = isToday(date) ? this.style.today : undefined;
+    const today = date && isToday(date) ? this.style.today : undefined;
     const dayNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
 
     if (date) {

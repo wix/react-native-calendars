@@ -231,7 +231,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     const {hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
-    if (!sameMonth(day, this.state.currentMonth) && hideExtraDays) {
+    if (!sameMonth(new XDate(day), this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
     }
 

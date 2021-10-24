@@ -26,7 +26,7 @@ class Presenter {
     this.list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
   };
 
-  isSameWeek = (date: Date, prevDate: Date, firstDay: number) => {
+  isSameWeek = (date: XDate, prevDate: XDate, firstDay: number) => {
     return sameWeek(date, prevDate, firstDay);
   };
 

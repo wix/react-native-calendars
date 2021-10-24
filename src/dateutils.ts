@@ -36,9 +36,9 @@ export function isLTE(a: XDate, b: XDate) {
   return a.diffDays(b) > -1;
 }
 
-export function formatNumbers(date: XDate) {
+export function formatNumbers(date: any) {
   const numbers = XDate.locales[XDate.defaultLocale].numbers;
-  return numbers ? date.toString().replace(latinNumbersPattern, char => numbers[+char]) : date;
+  return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
 }
 
 export function fromTo(a: XDate, b: XDate) {
@@ -71,7 +71,7 @@ export function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-export function page(date: XDate, firstDayOfWeek: number, showSixWeeks: boolean) {
+export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   const days = month(date);
   let before = [],
     after = [];
@@ -115,7 +115,7 @@ export function isDateNotInTheRange(minDate: XDate, maxDate: XDate, date: XDate)
   return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
 }
 
-export function getWeekDates(date: XDate, firstDay: number, format: string) {
+export function getWeekDates(date: XDate, firstDay = 0, format?: string) {
   if (date && parseDate(date).valid()) {
     const current = parseDate(date);
     const daysArray = [current];
