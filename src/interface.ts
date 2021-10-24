@@ -41,5 +41,5 @@ export function parseDate(d: any) {
 }
 
 export function toMarkingFormat(d: XDate) {
-  return d instanceof XDate && d.toString('yyyy-MM-dd');
+  return d.toString('yyyy-MM-dd');
 }
