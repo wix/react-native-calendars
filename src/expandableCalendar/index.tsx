@@ -13,7 +13,6 @@ import {AccessibilityInfo, PanResponder, Animated, View, ViewStyle, Text, Image,
 // @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
 import {page, weekDayNames} from '../dateutils';
-// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
 import {Theme, DateData, Direction} from 'types';
 import styleConstructor, {HEADER_HEIGHT} from './style';

@@ -24,7 +24,6 @@ import {
 import {isToday, isGTE, sameDate} from '../dateutils';
 // @ts-expect-error
 import {getMoment} from '../momentResolver';
-// @ts-expect-error
 import {parseDate} from '../interface';
 import {Theme} from '../types';
 import styleConstructor from './style';
