@@ -21,7 +21,6 @@ import {
   ViewToken
 } from 'react-native';
 
-// @ts-expect-error
 import {isToday, isGTE, sameDate} from '../dateutils';
 // @ts-expect-error
 import {getMoment} from '../momentResolver';

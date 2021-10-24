@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
-// @ts-expect-error
 import {formatNumbers, isToday as dateutils_isToday} from '../../dateutils';
 // @ts-expect-error
 import {xdateToData} from '../../interface';

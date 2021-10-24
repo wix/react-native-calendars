@@ -18,7 +18,6 @@ import {
 } from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
-// @ts-expect-error
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,

@@ -1,7 +1,6 @@
 import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
-// @ts-expect-error
 import {sameMonth} from '../../dateutils';
 // @ts-expect-error
 import {xdateToData, toMarkingFormat} from '../../interface';

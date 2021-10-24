@@ -7,7 +7,6 @@ import {View, Text} from 'react-native';
 
 // @ts-expect-error
 import {xdateToData} from '../../interface';
-// @ts-expect-error
 import {isToday} from '../../dateutils';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';

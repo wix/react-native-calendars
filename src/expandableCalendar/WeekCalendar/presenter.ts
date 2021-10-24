@@ -3,7 +3,6 @@ import XDate from 'xdate';
 
 import React from 'react';
 
-// @ts-expect-error
 import {sameWeek} from '../../dateutils';
 // @ts-expect-error
 import {toMarkingFormat} from '../../interface';

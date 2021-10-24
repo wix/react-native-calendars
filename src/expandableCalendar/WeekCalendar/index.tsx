@@ -8,7 +8,6 @@ import {FlatList, View, Text, NativeSyntheticEvent, NativeScrollEvent} from 'rea
 
 // @ts-expect-error
 import {extractComponentProps} from '../../component-updater';
-// @ts-expect-error
 import {weekDayNames} from '../../dateutils';
 // @ts-expect-error
 import {toMarkingFormat} from '../../interface';

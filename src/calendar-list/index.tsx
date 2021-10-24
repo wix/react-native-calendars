@@ -9,7 +9,6 @@ import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, Flat
 import {extractComponentProps} from '../component-updater';
 // @ts-expect-error
 import {xdateToData, parseDate} from '../interface';
-// @ts-expect-error
 import {page, sameDate} from '../dateutils';
 // @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';

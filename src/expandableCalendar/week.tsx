@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 import {View} from 'react-native';
 
-// @ts-expect-error
 import {getWeekDates, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';

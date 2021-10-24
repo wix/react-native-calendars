@@ -12,7 +12,6 @@ import {AccessibilityInfo, PanResponder, Animated, View, ViewStyle, Text, Image,
 
 // @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
-// @ts-expect-error
 import {page, weekDayNames} from '../dateutils';
 // @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
