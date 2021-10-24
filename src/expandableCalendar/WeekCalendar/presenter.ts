@@ -4,6 +4,7 @@ import XDate from 'xdate';
 import React from 'react';
 
 import {sameWeek} from '../../dateutils';
+// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';

@@ -5,6 +5,7 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
+// @ts-expect-error
 import {xdateToData} from '../../interface';
 import {isToday} from '../../dateutils';
 // @ts-expect-error

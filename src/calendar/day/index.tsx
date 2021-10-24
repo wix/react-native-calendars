@@ -9,6 +9,7 @@ import React, {Component} from 'react';
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 import {formatNumbers, isToday as dateutils_isToday} from '../../dateutils';
+// @ts-expect-error
 import {xdateToData} from '../../interface';
 // @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';

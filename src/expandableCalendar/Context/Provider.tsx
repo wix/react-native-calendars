@@ -4,6 +4,7 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, View, StyleProp, ViewStyle} from 'react-native';
 
+// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import {Theme, UpdateSource, DateData} from '../../types';
 import styleConstructor from '../style';

@@ -2,6 +2,7 @@ import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
 import {sameMonth} from '../../dateutils';
+// @ts-expect-error
 import {xdateToData, toMarkingFormat} from '../../interface';
 import {CalendarContextProviderProps} from './Provider';
 import {UpdateSource} from '../../types';
