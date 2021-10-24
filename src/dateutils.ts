@@ -111,10 +111,6 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   return before.concat(days.slice(1, days.length - 1), after);
 }
 
-export function isDateNotInTheRange(minDate: XDate, maxDate: XDate, date: XDate) {
-  return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
-}
-
 export function getWeekDates(date: XDate, firstDay = 0, format?: string) {
   if (date && parseDate(date).valid()) {
     const current = parseDate(date);
