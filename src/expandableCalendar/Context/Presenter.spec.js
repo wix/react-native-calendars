@@ -122,13 +122,6 @@ describe('Context provider tests', () => {
       expect(shouldAnimateTodayButton({showTodayButton: true})).toBe(true);
     });
 
-    it("Expect isToday to return true when passing XDate formatted today's date", () => {
-      const {_isToday} = makeUUT();
-
-      expect(_isToday(pastDate)).toBe(false);
-      expect(_isToday(todayDate)).toBe(true);
-    });
-
     it("Expect animation value to be top position when today's date passed", () => {
       const {getPositionAnimation} = makeUUT();
       const TOP_POSITION = 65;

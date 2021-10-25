@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
-import {formatNumbers, isToday as dateutils_isToday} from '../../dateutils';
+import {formatNumbers, isToday} from '../../dateutils';
 import {xdateToData} from '../../interface';
 // @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';
@@ -102,10 +102,10 @@ export default class Day extends Component<DayProps> {
   render() {
     const {day, marking} = this.props;
     const date = day && xdateToData(new XDate(day));
-    const isToday = day ? dateutils_isToday(new XDate(day)) : undefined;
+    const _isToday = day ? isToday(new XDate(day)) : undefined;
     const Component = this.getDayComponent();
     const dayProps = omit(this.props, 'day');
-    const accessibilityLabel = this.getAccessibilityLabel(day, marking, isToday);
+    const accessibilityLabel = this.getAccessibilityLabel(day, marking, _isToday);
 
     return (
       <Component
