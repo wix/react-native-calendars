@@ -294,7 +294,8 @@ class CalendarList extends Component<Props, State> {
       }
       newrows.push(val);
       if (rowIsCloseToViewable(i, 0)) {
-        visibleMonths.push(xdateToData(val));
+        const v = (val instanceof XDate) ? val : new XDate(val);
+        visibleMonths.push(xdateToData(v));
       }
     }
 

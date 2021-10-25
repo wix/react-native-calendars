@@ -137,8 +137,7 @@ class CalendarProvider extends Component<Props> {
   }
 
   onTodayPress = () => {
-    const today = this.presenter.getTodayDate();
-    this.setDate(today, updateSources.TODAY_PRESS);
+    this.setDate(new Date(), updateSources.TODAY_PRESS);
   };
 
   renderTodayButton() {

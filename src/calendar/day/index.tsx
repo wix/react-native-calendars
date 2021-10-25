@@ -101,7 +101,7 @@ export default class Day extends Component<DayProps> {
 
   render() {
     const {day, marking} = this.props;
-    const date = xdateToData(day);
+    const date = day && xdateToData(new XDate(day));
     const isToday = day ? dateutils_isToday(new XDate(day)) : undefined;
     const Component = this.getDayComponent();
     const dayProps = omit(this.props, 'day');
@@ -111,7 +111,7 @@ export default class Day extends Component<DayProps> {
       <Component
         {...dayProps}
         date={date}
-        testID={`${SELECT_DATE_SLOT}-${date.dateString}`}
+        testID={`${SELECT_DATE_SLOT}-${date?.dateString}`}
         accessibilityLabel={accessibilityLabel}
       >
         {formatNumbers(date ? day?.getDate() : day)}
