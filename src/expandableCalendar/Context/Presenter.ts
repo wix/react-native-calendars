@@ -1,7 +1,7 @@
 import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
-import {sameMonth} from '../../dateutils';
+import {sameMonth, isToday} from '../../dateutils';
 import {xdateToData, toMarkingFormat} from '../../interface';
 import {CalendarContextProviderProps} from './Provider';
 import {UpdateSource} from '../../types';
@@ -71,16 +71,12 @@ class Presenter {
     return props.showTodayButton;
   };
 
-  _isToday = (date: Date) => {
-    return date === new Date();
-  };
-
   getTodayDate = () => {
     return toMarkingFormat(new XDate());
   };
 
   getPositionAnimation = (date: Date, todayBottomMargin = 0) => {
-    const toValue = this._isToday(date) ? TOP_POSITION : -todayBottomMargin || -TOP_POSITION;
+    const toValue = isToday(new XDate(date)) ? TOP_POSITION : -todayBottomMargin || -TOP_POSITION;
     return {
       toValue,
       tension: 30,
