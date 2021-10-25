@@ -8,7 +8,7 @@ function padNumber(n: number) {
 }
 
 export function xdateToData(d: XDate) {
-  const dateString = toMarkingFormat(d) || '';
+  const dateString = toMarkingFormat(d);
   return {
     year: d.getFullYear(),
     month: d.getMonth() + 1,
@@ -26,7 +26,7 @@ export function parseDate(d: any) {
     return new XDate(d.timestamp, true);
   } else if (d instanceof XDate) {
     // xdate
-    return new XDate(toMarkingFormat(d) || '', true);
+    return new XDate(toMarkingFormat(d), true);
   } else if (d.getTime) {
     // javascript date
     const dateString = d.getFullYear() + '-' + padNumber(d.getMonth() + 1) + '-' + padNumber(d.getDate());
