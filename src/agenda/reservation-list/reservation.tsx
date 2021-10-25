@@ -5,6 +5,7 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
+import {xdateToData} from '../../interface';
 import {isToday} from '../../dateutils';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
@@ -75,8 +76,8 @@ class Reservation extends Component<ReservationProps> {
   }
 
   renderDate(date?: XDate, item?: DayReservations) {
-    if (isFunction(this.props.renderDay) && date) {
-      return this.props.renderDay(date, item);
+    if (isFunction(this.props.renderDay)) {
+      return this.props.renderDay(date ? xdateToData(date) : undefined, item);
     }
 
     const today = date && isToday(date) ? this.style.today : undefined;

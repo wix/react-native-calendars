@@ -240,7 +240,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
           {...dayProps}
           day={day}
           state={getState(day, this.state.currentMonth, this.props)}
-          marking={markedDates?.[toMarkingFormat(new XDate(day))]}
+          marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
         />
