@@ -91,7 +91,7 @@ class Presenter {
   getDatesArray = (args: WeekCalendarProps) => {
     const array = [];
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
-      const d = this.getDate(args, index);
+      const d = new Date(this.getDate(args, index));
       array.push(d);
     }
     return array;

@@ -72,11 +72,10 @@ class Presenter {
   };
 
   _isToday = (date: Date) => {
-    const today = toMarkingFormat(new XDate());
-    return today === date;
+    return date === new Date();
   };
 
-  getTodayDate = () => {
+  getTodayDate = () => { //unused
     return toMarkingFormat(new XDate());
   };
 
