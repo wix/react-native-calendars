@@ -75,7 +75,7 @@ class Presenter {
     return date === new Date();
   };
 
-  getTodayDate = () => { //unused
+  getTodayDate = () => {
     return toMarkingFormat(new XDate());
   };
 
