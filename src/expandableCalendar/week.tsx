@@ -6,7 +6,6 @@ import {getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 // @ts-expect-error
 import {getState} from '../day-state-manager';
-// @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';

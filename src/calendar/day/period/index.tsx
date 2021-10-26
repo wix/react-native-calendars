@@ -5,7 +5,6 @@ import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View, ViewStyle} from 'react-native';
 
 import {Theme, DayState} from '../../../types';
-// @ts-expect-error
 import {shouldUpdate} from '../../../component-updater';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';

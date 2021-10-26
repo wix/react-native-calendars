@@ -15,8 +15,7 @@ import {
   NativeScrollEvent
 } from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater.js';
+import {extractComponentProps} from '../component-updater';
 import {parseDate, xdateToData, toMarkingFormat} from '../interface';
 import {weekDayNames, sameDate, sameMonth} from '../dateutils';
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';

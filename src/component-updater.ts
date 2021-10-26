@@ -4,9 +4,10 @@ const pickBy = require('lodash/pickBy');
 const isEqual = require('lodash/isEqual');
 const includes = require('lodash/includes');
 
-function shouldUpdate(a, b, paths) {
+
+export function shouldUpdate(props: any, newProps: any, paths: string[]) {
   for (let i = 0; i < paths.length; i++) {
-    const equals = isEqual(get(a, paths[i]), get(b, paths[i]));
+    const equals = isEqual(get(props, paths[i]), get(newProps, paths[i]));
     if (!equals) {
       return true;
     }
@@ -14,20 +15,15 @@ function shouldUpdate(a, b, paths) {
   return false;
 }
 
-function extractComponentProps(component, props, ignoreProps) {
+export function extractComponentProps(component: any, props: any, ignoreProps?: string[]) {
   const componentPropTypes = component.propTypes;
   if (componentPropTypes) {
     const keys = Object.keys(componentPropTypes);
     const componentProps = omit(
-      pickBy(props, (_value, key) => includes(keys, key)),
+      pickBy(props, (_value: any, key: any) => includes(keys, key)),
       ignoreProps
     );
     return componentProps;
   }
   return {};
 }
-
-module.exports = {
-  shouldUpdate,
-  extractComponentProps
-};

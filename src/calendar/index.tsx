@@ -13,7 +13,6 @@ import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 // @ts-expect-error
 import {getState} from '../day-state-manager';
 // import shouldComponentUpdate from './updater';
-// @ts-expect-error
 import {extractComponentProps} from '../component-updater';
 import {WEEK_NUMBER} from '../testIDs';
 import {Theme, DateData} from '../types';

@@ -6,7 +6,6 @@ import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
 
-// @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 import {formatNumbers, isToday} from '../../dateutils';
 import {xdateToData} from '../../interface';

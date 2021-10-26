@@ -16,7 +16,6 @@ import {
   AccessibilityActionEvent,
   ColorValue
 } from 'react-native';
-// @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import {

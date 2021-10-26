@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 import {View, ViewStyle, TextStyle} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
-// @ts-expect-error
 import {shouldUpdate, extractComponentProps} from '../../../component-updater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
