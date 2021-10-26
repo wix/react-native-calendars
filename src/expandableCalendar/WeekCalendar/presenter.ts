@@ -91,7 +91,8 @@ class Presenter {
   getDatesArray = (args: WeekCalendarProps) => {
     const array = [];
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
-      const d = new Date(this.getDate(args, index));
+      const d = this.getDate(args, index);
+      // const d = new Date(this.getDate(args, index)); // creates a bug -> no selection of first day when scroll only
       array.push(d);
     }
     return array;
@@ -136,14 +137,14 @@ class Presenter {
     });
   };
 
-  _mergeArraysFromEnd = (items: Date[], newArray: Date[]) => {
+  _mergeArraysFromEnd = (items: any[], newArray: any[]) => {
     for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
       items[i] = newArray[i];
     }
     return items;
   };
 
-  _mergeArraysFromTop = (items: Date[], newArray: Date[]) => {
+  _mergeArraysFromTop = (items: any[], newArray: any[]) => {
     for (let i = 0; i < NUMBER_OF_PAGES; i++) {
       items[i] = newArray[i];
     }

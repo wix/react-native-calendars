@@ -32,7 +32,7 @@ interface Props extends CalendarListProps {
 export type WeekCalendarProps = Props;
 
 interface State {
-  items: Date[]
+  items: string[]
 }
 
 /**
@@ -121,7 +121,7 @@ class WeekCalendar extends Component<Props, State> {
     const {items} = this.state;
     const {containerWidth, page} = this;
 
-    const updateState = (newData: Date[], newPage: number) => {
+    const updateState = (newData: string[], newPage: number) => {
       this.page = newPage;
       this.setState({items: [...newData]});
     };
@@ -133,7 +133,7 @@ class WeekCalendar extends Component<Props, State> {
     const {items} = this.state;
     const {onMomentumScrollEnd} = this.presenter;
 
-    const updateItems = (items: Date[]) => {
+    const updateItems = (items: string[]) => {
       setTimeout(() => {
         this.setState({items: [...items]});
       }, 100);
