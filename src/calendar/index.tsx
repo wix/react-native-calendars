@@ -11,7 +11,6 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-// import shouldComponentUpdate from './updater';
 import {extractComponentProps} from '../componentUpdater';
 import {WEEK_NUMBER} from '../testIDs';
 import {Theme, DateData} from '../types';
@@ -20,6 +19,7 @@ import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
+
 
 type MarkedDatesType = {
   [key: string]: MarkingProps;
