@@ -16,7 +16,7 @@ import {
   AccessibilityActionEvent,
   ColorValue
 } from 'react-native';
-import {shouldUpdate} from '../../component-updater';
+import {shouldUpdate} from '../../componentUpdater';
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,

@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 
 import {Theme} from '../types';
-import {extractComponentProps} from '../component-updater';
+import {extractComponentProps} from '../componentUpdater';
 import {formatNumbers} from '../dateutils';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';

@@ -6,7 +6,7 @@ import {Map} from 'immutable';
 import React, {Component} from 'react';
 import {FlatList, View, Text, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
-import {extractComponentProps} from '../../component-updater';
+import {extractComponentProps} from '../../componentUpdater';
 import {weekDayNames} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';

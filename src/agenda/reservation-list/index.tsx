@@ -6,7 +6,7 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
-import {extractComponentProps} from '../../component-updater';
+import {extractComponentProps} from '../../componentUpdater';
 import {sameDate} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';

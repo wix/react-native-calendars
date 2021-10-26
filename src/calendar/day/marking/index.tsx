@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {View, ViewStyle, TextStyle} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
-import {shouldUpdate, extractComponentProps} from '../../../component-updater';
+import {shouldUpdate, extractComponentProps} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
 

@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import {getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-import {extractComponentProps} from '../component-updater';
+import {extractComponentProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
