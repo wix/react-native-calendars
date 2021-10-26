@@ -76,11 +76,11 @@ describe('WeekCalendar presenter tests', () => {
       expect(presenter.getDate(props, index)).toEqual('2021-01-01');
 
       expect(presenter.getDatesArray(props)).toEqual([
-        new Date('2020-12-13'),
-        new Date('2020-12-20'),
-        new Date('2021-01-01'),
-        new Date('2021-01-03'),
-        new Date('2021-01-10')
+        '2020-12-13',
+        '2020-12-20',
+        '2021-01-01',
+        '2021-01-03',
+        '2021-01-10'
       ]);
     });
 
@@ -95,11 +95,11 @@ describe('WeekCalendar presenter tests', () => {
       expect(presenter.getDate(props, index)).toEqual(contextDate);
 
       expect(presenter.getDatesArray(props)).toEqual([
-        new Date('2021-01-17'),
-        new Date('2021-01-24'),
-        new Date('2021-01-31'),
-        new Date('2021-02-07'),
-        new Date('2021-02-14')
+        '2021-01-17',
+        '2021-01-24',
+        '2021-01-31',
+        '2021-02-07',
+        '2021-02-14'
       ]);
     });
 
