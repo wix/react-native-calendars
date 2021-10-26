@@ -1,4 +1,4 @@
-let moment;
+let moment: any;
 
 // Moment is an optional dependency
 export const getMoment = () => {

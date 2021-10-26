@@ -22,7 +22,6 @@ import {
 } from 'react-native';
 
 import {isToday, isGTE, sameDate} from '../dateutils';
-// @ts-expect-error
 import {getMoment} from '../momentResolver';
 import {parseDate} from '../interface';
 import {Theme} from '../types';
