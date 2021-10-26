@@ -171,7 +171,7 @@ class WeekCalendar extends Component<Props, State> {
     };
   };
 
-  keyExtractor = (_: Date, index: number) => index.toString();
+  keyExtractor = (_: string, index: number) => index.toString();
 
   renderWeekDaysNames = memoize(weekDaysNames => {
     return weekDaysNames.map((day: Date, index: number) => (
