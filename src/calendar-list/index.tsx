@@ -5,8 +5,8 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
-import {extractComponentProps} from '../component-updater';
-import {xdateToData, parseDate} from ../componentUpdater
+import {extractComponentProps} from '../componentUpdater';
+import {xdateToData, parseDate} from '../interface';
 import {page, sameDate} from '../dateutils';
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
