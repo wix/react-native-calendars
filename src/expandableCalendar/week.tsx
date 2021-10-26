@@ -4,7 +4,6 @@ import {View} from 'react-native';
 
 import {getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
-// @ts-expect-error
 import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
