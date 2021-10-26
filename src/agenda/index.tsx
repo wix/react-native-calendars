@@ -19,7 +19,6 @@ import {
 import {extractComponentProps} from '../component-updater.js';
 import {parseDate, xdateToData, toMarkingFormat} from '../interface';
 import {weekDayNames, sameDate, sameMonth} from '../dateutils';
-// @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 // @ts-expect-error
 import {VelocityTracker} from '../input';

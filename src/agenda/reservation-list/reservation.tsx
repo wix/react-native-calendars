@@ -6,7 +6,6 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 import {isToday} from '../../dateutils';
-// @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
 import {Theme} from '../../types';

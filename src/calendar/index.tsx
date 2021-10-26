@@ -15,7 +15,6 @@ import {getState} from '../day-state-manager';
 // import shouldComponentUpdate from './updater';
 // @ts-expect-error
 import {extractComponentProps} from '../component-updater';
-// @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
 import {Theme, DateData} from '../types';
 import styleConstructor from './style';

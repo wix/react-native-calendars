@@ -10,7 +10,6 @@ import React, {Component} from 'react';
 import {shouldUpdate} from '../../component-updater';
 import {formatNumbers, isToday} from '../../dateutils';
 import {xdateToData} from '../../interface';
-// @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
