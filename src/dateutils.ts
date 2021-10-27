@@ -5,14 +5,12 @@ const latinNumbersPattern = /[0-9]/g;
 
 export function sameMonth(a: XDate, b: XDate) {
   return (
-    a instanceof XDate && b instanceof XDate && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
+    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
   );
 }
 
 export function sameDate(a: XDate, b: XDate) {
   return (
-    a instanceof XDate &&
-    b instanceof XDate &&
     a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
