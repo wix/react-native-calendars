@@ -92,7 +92,6 @@ class Presenter {
     const array = [];
     for (let index = -NUMBER_OF_PAGES; index <= NUMBER_OF_PAGES; index++) {
       const d = this.getDate(args, index);
-      // const d = new Date(this.getDate(args, index)); // creates a bug -> no selection of first day when scroll only
       array.push(d);
     }
     return array;
