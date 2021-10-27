@@ -4,17 +4,14 @@ const {parseDate} = require('./interface');
 const latinNumbersPattern = /[0-9]/g;
 
 export function sameMonth(a: XDate, b: XDate) {
-  return (
-    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()
-  );
+  return a.getFullYear() === b.getFullYear() && 
+    a.getMonth() === b.getMonth();
 }
 
 export function sameDate(a: XDate, b: XDate) {
-  return (
-    a.getFullYear() === b.getFullYear() &&
+  return a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  );
+    a.getDate() === b.getDate();
 }
 
 export function sameWeek(a: XDate, b: XDate, firstDayOfWeek: number) {
@@ -23,7 +20,7 @@ export function sameWeek(a: XDate, b: XDate, firstDayOfWeek: number) {
 }
 
 export function isToday(date: XDate) {
-  return sameDate(XDate(date), XDate.today());
+  return sameDate(date, XDate.today());
 }
 
 export function isGTE(a: XDate, b: XDate) {

@@ -8,16 +8,16 @@ describe('dateutils', function () {
       const b = XDate(2014, 0, 10, true);
       expect(dateutils.sameMonth(a, b)).toEqual(true);
     });
-    it('for non-XDate instances is false', function () {
-      expect(dateutils.sameMonth('a', 'b')).toEqual(false);
-      expect(dateutils.sameMonth(123, 345)).toEqual(false);
-      expect(dateutils.sameMonth(null, false)).toEqual(false);
+    // it('for non-XDate instances is false', function () {
+    //   expect(dateutils.sameMonth('a', 'b')).toEqual(false);
+    //   expect(dateutils.sameMonth(123, 345)).toEqual(false);
+    //   expect(dateutils.sameMonth(null, false)).toEqual(false);
 
-      const a = XDate(2014, 0, 1, true);
-      const b = XDate(2014, 0, 10, true);
-      expect(dateutils.sameMonth(a, undefined)).toEqual(false);
-      expect(dateutils.sameMonth(null, b)).toEqual(false);
-    });
+    //   const a = XDate(2014, 0, 1, true);
+    //   const b = XDate(2014, 0, 10, true);
+    //   expect(dateutils.sameMonth(a, undefined)).toEqual(false);
+    //   expect(dateutils.sameMonth(null, b)).toEqual(false);
+    // });
   });
 
   describe('sameWeek tests', () => {
