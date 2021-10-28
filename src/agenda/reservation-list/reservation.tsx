@@ -5,11 +5,7 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
-// @ts-expect-error
-import {xdateToData} from '../../interface';
-// @ts-expect-error
 import {isToday} from '../../dateutils';
-// @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
 import {Theme} from '../../types';
@@ -78,11 +74,11 @@ class Reservation extends Component<ReservationProps> {
   }
 
   renderDate(date?: XDate, item?: DayReservations) {
-    if (isFunction(this.props.renderDay)) {
-      return this.props.renderDay(date ? xdateToData(date) : undefined, item);
+    if (isFunction(this.props.renderDay) && date) {
+      return this.props.renderDay(date, item);
     }
 
-    const today = isToday(date) ? this.style.today : undefined;
+    const today = date && isToday(date) ? this.style.today : undefined;
     const dayNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
 
     if (date) {

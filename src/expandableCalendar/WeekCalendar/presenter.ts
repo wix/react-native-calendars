@@ -3,9 +3,7 @@ import XDate from 'xdate';
 
 import React from 'react';
 
-// @ts-expect-error
 import {sameWeek} from '../../dateutils';
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
@@ -27,7 +25,7 @@ class Presenter {
     this.list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
   };
 
-  isSameWeek = (date: Date, prevDate: Date, firstDay: number) => {
+  isSameWeek = (date: XDate, prevDate: XDate, firstDay: number) => {
     return sameWeek(date, prevDate, firstDay);
   };
 
@@ -138,14 +136,14 @@ class Presenter {
     });
   };
 
-  _mergeArraysFromEnd = (items: Date[], newArray: Date[]) => {
+  _mergeArraysFromEnd = (items: any[], newArray: any[]) => {
     for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
       items[i] = newArray[i];
     }
     return items;
   };
 
-  _mergeArraysFromTop = (items: Date[], newArray: Date[]) => {
+  _mergeArraysFromTop = (items: any[], newArray: any[]) => {
     for (let i = 0; i < NUMBER_OF_PAGES; i++) {
       items[i] = newArray[i];
     }

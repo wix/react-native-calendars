@@ -10,11 +10,8 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {AccessibilityInfo, PanResponder, Animated, View, ViewStyle, Text, Image, ImageSourcePropType, PanResponderInstance, GestureResponderEvent, PanResponderGestureState} from 'react-native';
 
-// @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
-// @ts-expect-error
 import {page, weekDayNames} from '../dateutils';
-// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
 import {Theme, DateData, Direction} from 'types';
 import styleConstructor, {HEADER_HEIGHT} from './style';

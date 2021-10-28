@@ -1,7 +1,8 @@
 const {isToday, isDateNotInTheRange, sameMonth} = require('./dateutils');
 const {parseDate, toMarkingFormat} = require('./interface');
 
-export function getState(day, current, props) {
+
+export function getState(day: XDate, current: XDate, props: any) {
   const {minDate, maxDate, disabledByDefault, context} = props;
   const _minDate = parseDate(minDate);
   const _maxDate = parseDate(maxDate);

@@ -15,15 +15,10 @@ import {
   NativeScrollEvent
 } from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater.js';
-// @ts-expect-error
+import {extractComponentProps} from '../componentUpdater';
 import {parseDate, xdateToData, toMarkingFormat} from '../interface';
-// @ts-expect-error
 import {weekDayNames, sameDate, sameMonth} from '../dateutils';
-// @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
-// @ts-expect-error
 import {VelocityTracker} from '../input';
 import {DateData} from '../types';
 import styleConstructor from './style';

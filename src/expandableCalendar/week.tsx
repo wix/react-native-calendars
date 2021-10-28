@@ -1,16 +1,11 @@
 import PropTypes from 'prop-types';
-
 import React, {PureComponent} from 'react';
 import {View} from 'react-native';
 
-// @ts-expect-error
 import {getWeekDates, sameMonth} from '../dateutils';
-// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
-// @ts-expect-error
 import {getState} from '../day-state-manager';
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater';
+import {extractComponentProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';

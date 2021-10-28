@@ -8,16 +8,10 @@ import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
-// @ts-expect-error
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
-// @ts-expect-error
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
-// @ts-expect-error
 import {getState} from '../day-state-manager';
-// import shouldComponentUpdate from './updater';
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater';
-// @ts-expect-error
+import {extractComponentProps} from '../componentUpdater';
 import {WEEK_NUMBER} from '../testIDs';
 import {Theme, DateData} from '../types';
 import styleConstructor from './style';
@@ -25,6 +19,7 @@ import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
+
 
 type MarkedDatesType = {
   [key: string]: MarkingProps;
@@ -232,7 +227,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     const {hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
-    if (!sameMonth(day, this.state.currentMonth) && hideExtraDays) {
+    if (!sameMonth(new XDate(day), this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
     }
 
@@ -241,8 +236,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         <Day
           {...dayProps}
           day={day}
-          state={getState(day, this.state.currentMonth, this.props)}
-          marking={markedDates?.[toMarkingFormat(day)]}
+          state={getState(new XDate(day), this.state.currentMonth, this.props)}
+          marking={markedDates?.[toMarkingFormat(new XDate(day))]}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
         />

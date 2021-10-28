@@ -5,13 +5,9 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater';
-// @ts-expect-error
+import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
-// @ts-expect-error
 import {page, sameDate} from '../dateutils';
-// @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
@@ -296,7 +292,8 @@ class CalendarList extends Component<Props, State> {
       }
       newrows.push(val);
       if (rowIsCloseToViewable(i, 0)) {
-        visibleMonths.push(xdateToData(val));
+        const v = (val instanceof XDate) ? val : new XDate(val);
+        visibleMonths.push(xdateToData(v));
       }
     }
 

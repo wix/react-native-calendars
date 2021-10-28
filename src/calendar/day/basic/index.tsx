@@ -6,8 +6,7 @@ import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 
 import {Theme, DateData, DayState, MarkingTypes} from '../../../types';
-// @ts-expect-error
-import {shouldUpdate} from '../../../component-updater';
+import {shouldUpdate} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
 

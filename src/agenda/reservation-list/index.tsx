@@ -6,11 +6,8 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../../component-updater';
-// @ts-expect-error
+import {extractComponentProps} from '../../componentUpdater';
 import {sameDate} from '../../dateutils';
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
