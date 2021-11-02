@@ -12,7 +12,7 @@ export default function styleConstructor(theme: Theme = {}) {
       flex: 1,
       overflow: 'hidden'
     },
-    animatedContiner: {
+    animatedContainer: {
       flex: 1
     },
     knob,
