@@ -16,7 +16,7 @@ function asCalendarConsumer(WrappedComponent: React.ComponentType<any>): React.C
     render() {
       return (
         <CalendarContext.Consumer>
-          {context => <WrappedComponent ref={this.contentRef} context={context} {...this.props} />}
+          {context => <WrappedComponent ref={this.saveRef} context={context} {...this.props} />}
         </CalendarContext.Consumer>
       );
     }
