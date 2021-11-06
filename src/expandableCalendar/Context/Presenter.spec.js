@@ -1,4 +1,4 @@
-const {default: Presenter} = require('./Presenter');
+import Presenter from './Presenter';
 import XDate from 'xdate';
 import {UpdateSources} from '../commons';
 import {toMarkingFormat} from '../../interface';

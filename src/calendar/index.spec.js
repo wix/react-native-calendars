@@ -19,7 +19,7 @@ describe('Calendar', () => {
 
   describe('Month days', () => {
     it('should render current month days including extra days from other months by default', () => {
-      let expectedDays = [];
+      const expectedDays = [];
       expectedDays.push(...getDaysArray(29, 31)); // March
       expectedDays.push(...getDaysArray(1, 30)); // April
       expectedDays.push(...getDaysArray(1, 2)); // May
@@ -213,7 +213,7 @@ describe('Calendar', () => {
     });
 
     it('should not have loading indicator with `displayLoadingIndicator` prop when `markedDates` collection has a value for every day of the month', () => {
-      let date = currentDate;
+      const date = currentDate;
       const markedDates = {};
       for (let i = 0; i < 30; i++) {
         const string = date.toISOString().split('T')[0];

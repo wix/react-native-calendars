@@ -1,4 +1,4 @@
-const {shouldUpdate} = require('./componentUpdater');
+import {shouldUpdate} from './componentUpdater';
 
 describe('component updater', () => {
   it('should return true if two different objects are provided with same path', async () => {
