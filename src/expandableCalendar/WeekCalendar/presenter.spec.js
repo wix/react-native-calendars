@@ -1,5 +1,5 @@
-const {UpdateSources} = require('../commons');
-const {default: Presenter} = require('./presenter');
+import {UpdateSources} from '../commons';
+import Presenter from './presenter';
 
 describe('WeekCalendar presenter tests', () => {
   const twoDaysSameWeek = {
