@@ -3,9 +3,9 @@ import React, {Component, useCallback} from 'react';
 import {Platform, StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 // @ts-expect-error
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
+import testIDs from '../testIDs';
 
 
-const testIDs = require('../testIDs');
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
@@ -71,7 +71,7 @@ const ITEMS = [
     title: dates[9],
     data: [
       {hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'},
-      {hour: '2pm', duration: '1h', title: 'Deep Streches'},
+      {hour: '2pm', duration: '1h', title: 'Deep Stretches'},
       {hour: '3pm', duration: '1h', title: 'Private Yoga'}
     ]
   },
@@ -131,7 +131,7 @@ const leftArrowIcon = require('../img/previous.png');
 const rightArrowIcon = require('../img/next.png');
 
 interface Props {
-  weekView?: boolean
+  weekView?: boolean;
 }
 
 export default class ExpandableCalendarScreen extends Component<Props> {
@@ -200,7 +200,7 @@ export default class ExpandableCalendarScreen extends Component<Props> {
 }
 
 interface ItemProps {
-  item: any
+  item: any;
 }
 
 const AgendaItem = React.memo(function AgendaItem(props: ItemProps) {

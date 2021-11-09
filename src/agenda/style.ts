@@ -51,7 +51,7 @@ export default function styleConstructor(theme: Theme = {}) {
       position: 'absolute',
       width: 80
     },
-    // @ts-ignore
+    // @ts-expect-error
     ...(theme['stylesheet.agenda.main'] || {})
   });
 }

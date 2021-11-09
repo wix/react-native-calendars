@@ -18,8 +18,8 @@ export enum Markings {
 }
 
 type CustomStyle = {
-  container?: ViewStyle,
-  text?: TextStyle
+  container?: ViewStyle;
+  text?: TextStyle;
 }
 
 type DOT = {
@@ -113,7 +113,7 @@ export default class Marking extends Component<MarkingProps> {
     }
   }
 
-  renderMultiMarkings(containerStyle: Object, items?: DOT[] | PERIOD[]) {
+  renderMultiMarkings(containerStyle: object, items?: DOT[] | PERIOD[]) {
     return <View style={containerStyle}>{this.getItems(items)}</View>;
   }
 

@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 // @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
+import testIDs from '../testIDs';
 
-
-const testIDs = require('../testIDs');
 const initialDate = '2020-05-16';
 
 const HorizontalCalendarList = () => {

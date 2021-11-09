@@ -185,10 +185,10 @@ class CalendarList extends Component<Props, State> {
 
     for (let i = 0; i < rowClone.length; i++) {
       let val: XDate | string = prevState.texts[i];
-      // @ts-ignore
+      // @ts-expect-error
       if (rowClone[i].getTime) {
         val = rowClone[i].clone();
-        // @ts-ignore
+        // @ts-expect-error
         val.propBump = rowClone[i].propBump ? rowClone[i].propBump + 1 : 1;
       }
       newRows.push(val);
@@ -221,7 +221,7 @@ class CalendarList extends Component<Props, State> {
     const {horizontal, calendarHeight = CALENDAR_HEIGHT, calendarWidth = CALENDAR_WIDTH, pastScrollRange = PAST_SCROLL_RANGE, animateScroll = false} = this.props;
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
-    let diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
+    const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
     const size = horizontal ? calendarWidth : calendarHeight;
     const scrollAmount = size * pastScrollRange + diffMonths * size;
 
@@ -241,7 +241,7 @@ class CalendarList extends Component<Props, State> {
 
   getMonthIndex(month: XDate) {
     const {pastScrollRange = PAST_SCROLL_RANGE} = this.props;
-    let diffMonths = this.state.openDate.diffMonths(month) + pastScrollRange;
+    const diffMonths = this.state.openDate.diffMonths(month) + pastScrollRange;
     return diffMonths;
   }
 
@@ -300,7 +300,7 @@ class CalendarList extends Component<Props, State> {
     invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
 
     this.setState({
-      // @ts-ignore
+      // @ts-expect-error
       rows: newrows,
       currentMonth: parseDate(visibleMonths[0])
     });
@@ -350,7 +350,7 @@ class CalendarList extends Component<Props, State> {
         <FlatList
           ref={this.list}
           style={[this.style.container, style]}
-          // @ts-ignore
+          // @ts-expect-error
           initialListSize={pastScrollRange + futureScrollRange + 1} // ListView deprecated
           data={this.state.rows}
           renderItem={this.renderItem}

@@ -2,8 +2,8 @@ import React, {useState, Fragment} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
 // @ts-expect-error
 import {Calendar} from 'react-native-calendars';
+import testIDs from '../testIDs';
 
-const testIDs = require('../testIDs');
 const INITIAL_DATE = '2020-02-02';
 
 const CalendarsScreen = () => {
@@ -24,6 +24,7 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
+          enableSwipeMonths
           current={INITIAL_DATE}
           style={styles.calendar}
           onDayPress={onDayPress}

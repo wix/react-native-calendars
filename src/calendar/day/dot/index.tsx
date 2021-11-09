@@ -6,12 +6,12 @@ import {Theme} from '../../../types';
 
 export interface DotProps {
   theme?: Theme;
-  color?: String;
-  marked?: Boolean;
-  selected?: Boolean;
-  disabled?: Boolean;
-  inactive?: Boolean;
-  today?: Boolean;
+  color?: string;
+  marked?: boolean;
+  selected?: boolean;
+  disabled?: boolean;
+  inactive?: boolean;
+  today?: boolean;
 }
 
 const Dot = ({theme, marked, disabled, inactive, color, today, selected}: DotProps) => {

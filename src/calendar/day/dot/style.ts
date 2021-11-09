@@ -30,7 +30,7 @@ export default function styleConstructor(theme: Theme = {}) {
     todayDot: {
       backgroundColor: appStyle.todayDotColor || appStyle.dotColor
     },
-    // @ts-ignore
+    // @ts-expect-error
     ...(theme['stylesheet.dot'] || {})
   });
 }

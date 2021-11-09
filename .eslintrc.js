@@ -22,7 +22,7 @@ module.exports = {
   rules: {
     'react-native/no-inline-styles': 1,
     'linebreak-style': ['error', 'unix'],
-    'no-unused-vars': 2,
+    'no-unused-vars': 1,
     'object-curly-spacing': ['error', 'never'],
     semi: ['error', 'always'],
     'react/jsx-uses-react': 2,

@@ -26,7 +26,7 @@ export default function getStyle(theme: Theme = {}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
-    // @ts-ignore
+    // @ts-expect-error
     ...(theme['stylesheet.calendar.main'] || {})
   });
 }

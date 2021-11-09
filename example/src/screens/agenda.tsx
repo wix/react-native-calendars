@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 // @ts-expect-error
 import {Agenda} from 'react-native-calendars';
-
-
-const testIDs = require('../testIDs');
+import testIDs from '../testIDs';
 
 export default class AgendaScreen extends Component {
   state = {

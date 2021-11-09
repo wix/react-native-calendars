@@ -55,11 +55,11 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** specify how agenda knob should look like */
   renderKnob?: () => JSX.Element;
   /** initially selected day */
-  selected: boolean, //TODO: Should be renamed 'selectedDay'
+  selected: boolean; //TODO: Should be renamed 'selectedDay'
   /** Hide knob button. Default = false */
-  hideKnob: boolean,
+  hideKnob: boolean;
   /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
-  showClosingKnob: boolean
+  showClosingKnob: boolean;
 }
 
 type AgendaState = {
@@ -359,7 +359,6 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange}
-        onScroll={() => {}}
       />
     );
   }

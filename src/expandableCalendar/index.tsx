@@ -182,7 +182,6 @@ class ExpandableCalendar extends Component<Props, State> {
 
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
-      onPanResponderGrant: this.handlePanResponderGrant,
       onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: this.handlePanResponderEnd,
       onPanResponderTerminate: this.handlePanResponderEnd
@@ -314,7 +313,6 @@ class ExpandableCalendar extends Component<Props, State> {
     }
     return gestureState.dy > 5 || gestureState.dy < -5;
   };
-  handlePanResponderGrant = () => {};
   handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
     // limit min height to closed height
     this._wrapperStyles.style.height = Math.max(this.closedHeight, this._height + gestureState.dy);

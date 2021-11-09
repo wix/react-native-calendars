@@ -1,4 +1,4 @@
-const testIDs = require('../example/src/testIDs');
+import testIDs from '../example/src/testIDs';
 
 describe('Calendars List', () => {
   const FIRST_CALENDAR = `${testIDs.calendarList.CONTAINER}_1528588800000`;
