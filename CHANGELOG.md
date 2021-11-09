@@ -752,7 +752,7 @@
 - Demo app load.
 - ExpandableCalendar - add throttle to onVisibleMonthsChange callback.
 
-## [1.1268.0] - 2021-11-x
+## [1.1269.0] - 2021-11-x
 
 ## Fixed
 - Fix eslint config and fix lint errors.
