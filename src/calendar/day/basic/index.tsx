@@ -1,14 +1,14 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
+import values from 'lodash/values';
 import PropTypes from 'prop-types';
 
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 
-import {Theme, DateData, DayState} from '../../../types';
-// @ts-expect-error
-import {shouldUpdate} from '../../../component-updater';
+import {Theme, DateData, DayState, MarkingTypes} from '../../../types';
+import {shouldUpdate} from '../../../componentUpdater';
 import styleConstructor from './style';
-import Marking, {MarkingTypes, MarkingProps} from '../marking';
+import Marking, {MarkingProps} from '../marking';
 
 export interface BasicDayProps {
   state?: DayState;
@@ -42,7 +42,7 @@ export default class BasicDay extends Component<BasicDayProps> {
     /** The marking object */
     marking: PropTypes.any,
     /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
-    markingType: PropTypes.oneOf(_.values(Marking.markingTypes)),
+    markingType: PropTypes.oneOf(values(Marking.markings)),
     /** Theme object */
     theme: PropTypes.object,
     /** onPress callback */
@@ -73,11 +73,11 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   onPress = () => {
-    _.invoke(this.props, 'onPress', this.props.date);
+    invoke(this.props, 'onPress', this.props.date);
   };
 
   onLongPress = () => {
-    _.invoke(this.props, 'onLongPress', this.props.date);
+    invoke(this.props, 'onLongPress', this.props.date);
   };
 
   get marking() {
@@ -116,15 +116,15 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   isMultiDot() {
-    return this.props.markingType === Marking.markingTypes.MULTI_DOT;
+    return this.props.markingType === Marking.markings.MULTI_DOT;
   }
 
   isMultiPeriod() {
-    return this.props.markingType === Marking.markingTypes.MULTI_PERIOD;
+    return this.props.markingType === Marking.markings.MULTI_PERIOD;
   }
 
   isCustom() {
-    return this.props.markingType === Marking.markingTypes.CUSTOM;
+    return this.props.markingType === Marking.markings.CUSTOM;
   }
 
   getContainerStyle() {

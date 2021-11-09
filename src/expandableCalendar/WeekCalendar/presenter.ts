@@ -1,11 +1,9 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
 import React from 'react';
 
-// @ts-expect-error
 import {sameWeek} from '../../dateutils';
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
@@ -27,13 +25,13 @@ class Presenter {
     this.list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
   };
 
-  isSameWeek = (date: Date, prevDate: Date, firstDay: number) => {
+  isSameWeek = (date: XDate, prevDate: XDate, firstDay: number) => {
     return sameWeek(date, prevDate, firstDay);
   };
 
   // Events
   onDayPress = (context: any, value: DateData) => {
-    _.invoke(context, 'setDate', value.dateString, updateSources.DAY_PRESS);
+    invoke(context, 'setDate', value.dateString, updateSources.DAY_PRESS);
   };
 
   onScroll = ({context, updateState, x, page, items, width}: any) => {
@@ -46,8 +44,8 @@ class Presenter {
     const newPage = this._getNewPage(x, width);
 
     if (this._shouldUpdateState(page, newPage)) {
-      _.invoke(context, 'setDate', items[newPage], updateSources.WEEK_SCROLL);
-      const data = this._getItemsForPage(page, items);
+      invoke(context, 'setDate', items[newPage], updateSources.WEEK_SCROLL);
+      const data = this._getItemsForPage(newPage, items);
       updateState(data, newPage);
     }
   };
@@ -124,7 +122,7 @@ class Presenter {
     return page === items.length - 1;
   };
 
-  _getNexPageItems = (items: Date[]) => {
+  _getNextPageItems = (items: Date[]) => {
     return items.map((_, i) => {
       const index = i <= NUMBER_OF_PAGES ? i + NUMBER_OF_PAGES : i;
       return items[index];
@@ -138,14 +136,14 @@ class Presenter {
     });
   };
 
-  _mergeArraysFromEnd = (items: Date[], newArray: Date[]) => {
+  _mergeArraysFromEnd = (items: any[], newArray: any[]) => {
     for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
       items[i] = newArray[i];
     }
     return items;
   };
 
-  _mergeArraysFromTop = (items: Date[], newArray: Date[]) => {
+  _mergeArraysFromTop = (items: any[], newArray: any[]) => {
     for (let i = 0; i < NUMBER_OF_PAGES; i++) {
       items[i] = newArray[i];
     }
@@ -154,7 +152,7 @@ class Presenter {
 
   _getItemsForPage = (page: number, items: Date[]) => {
     if (this._isLastPage(page, items)) {
-      return this._getNexPageItems(items);
+      return this._getNextPageItems(items);
     } else if (this._isFirstPage(page)) {
       return this._getFirstPageItems(items);
     }

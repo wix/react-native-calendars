@@ -1,12 +1,10 @@
-let moment;
+let moment: any;
 
 // Moment is an optional dependency
-const getMoment = () => {
+export const getMoment = () => {
   if (!moment) {
     moment = require('moment');
   }
 
   return moment;
 };
-
-export {getMoment};

@@ -1,13 +1,17 @@
 export class VelocityTracker {
+  history: number[];
+  lastPosition?: number;
+  lastTimestamp?: number;
+
   constructor() {
     this.history = [];
     this.lastPosition = undefined;
     this.lastTimestamp = undefined;
   }
 
-  add(position) {
+  add(position: number) {
     const timestamp = new Date().valueOf();
-    if (this.lastPosition && timestamp > this.lastTimestamp) {
+    if (this.lastPosition && this.lastTimestamp && timestamp > this.lastTimestamp) {
       const diff = position - this.lastPosition;
       if (diff > 0.001 || diff < -0.001) {
         this.history.push(diff / (timestamp - this.lastTimestamp));

@@ -1,14 +1,15 @@
 {
   "name": "react-native-calendars",
   "version": "1.22.0",
-  "main": "src/index.js",
+  "main": "src/index.ts",
+  "types": "src/index.d.ts",
   "description": "React Native Calendar Components",
   "scripts": {
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
     "build:ts": "tsc",
     "build:dev": "tsc --noEmit",
     "e2e": "node ./scripts/test-e2e.js --release",
-    "test": "npm run lint && npm run unit && npm run e2e",
+    "test": "npm run lint && npm run unit",
     "unit": "jest",
     "lint": "eslint src/ example/src --ext .tsx,.ts,.js",
     "release": "node ./scripts/release.js",
@@ -17,8 +18,7 @@
     "android": "react-native run-android",
     "xcode": "open ios/CalendarsExample.xcworkspace/",
     "clean": "rm package-lock.json && rm -rf ./node_modules && npm i",
-    "pod-install": "pod install --project-directory=ios",
-    "postinstall": "node ./scripts/postinstall.js"
+    "pod-install": "pod install --project-directory=ios"
   },
   "repository": {
     "type": "git",

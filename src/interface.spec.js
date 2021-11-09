@@ -1,5 +1,5 @@
-const iface = require('./interface');
-const XDate = require('xdate');
+import * as iface from './interface';
+import XDate from 'xdate';
 
 describe('calendar interface', () => {
   describe('input', () => {

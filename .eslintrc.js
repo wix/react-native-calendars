@@ -9,7 +9,7 @@ module.exports = {
     it: true,
     describe: true
   },
-  extends: ['eslint:recommended'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -26,6 +26,9 @@ module.exports = {
     'object-curly-spacing': ['error', 'never'],
     semi: ['error', 'always'],
     'react/jsx-uses-react': 2,
-    'react/jsx-uses-vars': 2
+    'react/jsx-uses-vars': 2,
+    '@typescript-eslint/no-use-before-define': 0,
+    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/explicit-function-return-type': 0
   }
 };

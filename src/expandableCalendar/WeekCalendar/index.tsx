@@ -6,11 +6,8 @@ import {Map} from 'immutable';
 import React, {Component} from 'react';
 import {FlatList, View, Text, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../../component-updater';
-// @ts-expect-error
+import {extractComponentProps} from '../../componentUpdater';
 import {weekDayNames} from '../../dateutils';
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
@@ -34,7 +31,7 @@ interface Props extends CalendarListProps {
 export type WeekCalendarProps = Props;
 
 interface State {
-  items: Date[]
+  items: string[]
 }
 
 /**
@@ -123,7 +120,7 @@ class WeekCalendar extends Component<Props, State> {
     const {items} = this.state;
     const {containerWidth, page} = this;
 
-    const updateState = (newData: Date[], newPage: number) => {
+    const updateState = (newData: string[], newPage: number) => {
       this.page = newPage;
       this.setState({items: [...newData]});
     };
@@ -135,7 +132,7 @@ class WeekCalendar extends Component<Props, State> {
     const {items} = this.state;
     const {onMomentumScrollEnd} = this.presenter;
 
-    const updateItems = (items: Date[]) => {
+    const updateItems = (items: string[]) => {
       setTimeout(() => {
         this.setState({items: [...items]});
       }, 100);
@@ -173,7 +170,7 @@ class WeekCalendar extends Component<Props, State> {
     };
   };
 
-  keyExtractor = (_: Date, index: number) => index.toString();
+  keyExtractor = (_: string, index: number) => index.toString();
 
   renderWeekDaysNames = memoize(weekDaysNames => {
     return weekDaysNames.map((day: Date, index: number) => (

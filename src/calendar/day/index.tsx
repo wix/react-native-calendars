@@ -1,24 +1,20 @@
-import _ from 'lodash';
+import get from 'lodash/get';
+import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
 
-// @ts-expect-error
-import {shouldUpdate} from '../../component-updater';
-// @ts-expect-error
-import {isToday as dateutils_isToday} from '../../dateutils';
-// @ts-expect-error
+import {shouldUpdate} from '../../componentUpdater';
+import {formatNumbers, isToday} from '../../dateutils';
 import {xdateToData} from '../../interface';
-// @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 import {MarkingProps} from './marking';
 
-
-const basicDayPropsTypes = _.omit(BasicDay.propTypes, 'date');
+const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
 
 export interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
@@ -81,8 +77,8 @@ export default class Day extends Component<DayProps> {
   }
 
   getAccessibilityLabel = memoize((day, marking, isToday) => {
-    const today = _.get(XDate, 'locales[XDate.defaultLocale].today');
-    const formatAccessibilityLabel = _.get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
+    const today = get(XDate, 'locales[XDate.defaultLocale].today');
+    const formatAccessibilityLabel = get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
     const markingLabel = this.getMarkingLabel(marking);
 
     if (formatAccessibilityLabel) {
@@ -103,20 +99,20 @@ export default class Day extends Component<DayProps> {
 
   render() {
     const {day, marking} = this.props;
-    const date = xdateToData(day);
-    const isToday = dateutils_isToday(day);
+    const date = day && xdateToData(new XDate(day));
+    const _isToday = day ? isToday(new XDate(day)) : undefined;
     const Component = this.getDayComponent();
-    const dayProps = _.omit(this.props, 'day');
-    const accessibilityLabel = this.getAccessibilityLabel(day, marking, isToday);
+    const dayProps = omit(this.props, 'day');
+    const accessibilityLabel = this.getAccessibilityLabel(day, marking, _isToday);
 
     return (
       <Component
         {...dayProps}
         date={date}
-        testID={`${SELECT_DATE_SLOT}-${date.dateString}`}
+        testID={`${SELECT_DATE_SLOT}-${date?.dateString}`}
         accessibilityLabel={accessibilityLabel}
       >
-        {date ? day?.getDate() : day}
+        {formatNumbers(date ? day?.getDate() : day)}
       </Component>
     );
   }

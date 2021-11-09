@@ -1,9 +1,7 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
-// @ts-expect-error
-import {sameMonth} from '../../dateutils';
-// @ts-expect-error
+import {sameMonth, isToday} from '../../dateutils';
 import {xdateToData, toMarkingFormat} from '../../interface';
 import {CalendarContextProviderProps} from './Provider';
 import {UpdateSource} from '../../types';
@@ -55,10 +53,10 @@ class Presenter {
 
     updateState(buttonIcon);
 
-    _.invoke(props, 'onDateChanged', date, updateSource);
+    invoke(props, 'onDateChanged', date, updateSource);
 
     if (!isSameMonth) {
-      _.invoke(props, 'onMonthChange', xdateToData(new XDate(date)), updateSource);
+      invoke(props, 'onMonthChange', xdateToData(new XDate(date)), updateSource);
     }
   };
 
@@ -73,17 +71,12 @@ class Presenter {
     return props.showTodayButton;
   };
 
-  _isToday = (date: Date) => {
-    const today = toMarkingFormat(new XDate());
-    return today === date;
-  };
-
   getTodayDate = () => {
     return toMarkingFormat(new XDate());
   };
 
   getPositionAnimation = (date: Date, todayBottomMargin = 0) => {
-    const toValue = this._isToday(date) ? TOP_POSITION : -todayBottomMargin || -TOP_POSITION;
+    const toValue = isToday(new XDate(date)) ? TOP_POSITION : -todayBottomMargin || -TOP_POSITION;
     return {
       toValue,
       tension: 30,

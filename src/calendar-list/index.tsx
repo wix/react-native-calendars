@@ -1,17 +1,13 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater';
-// @ts-expect-error
+import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
-// @ts-expect-error
 import {page, sameDate} from '../dateutils';
-// @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
@@ -25,7 +21,7 @@ const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
 
-interface Props extends CalendarProps, FlatListProps<any> {
+interface Props extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
   pastScrollRange?: number;
   /** Max amount of months allowed to scroll to the future. Default = 50 */
@@ -60,7 +56,7 @@ interface Props extends CalendarProps, FlatListProps<any> {
   onEndReached?: () => void;
   /** onLayout event */
   onLayout?: (event: LayoutChangeEvent) => void;
-  removeClippedSubviews: boolean;
+  removeClippedSubviews?: boolean;
 }
 export type CalendarListProps = Props;
 
@@ -264,8 +260,8 @@ class CalendarList extends Component<Props, State> {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
 
-        _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
-        _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
+        invoke(this.props, 'onMonthChange', xdateToData(currMont));
+        invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
     });
   }
@@ -296,11 +292,12 @@ class CalendarList extends Component<Props, State> {
       }
       newrows.push(val);
       if (rowIsCloseToViewable(i, 0)) {
-        visibleMonths.push(xdateToData(val));
+        const v = (val instanceof XDate) ? val : new XDate(val);
+        visibleMonths.push(xdateToData(v));
       }
     }
 
-    _.invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
+    invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
 
     this.setState({
       // @ts-ignore

@@ -1,15 +1,13 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
+import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
 import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../../component-updater';
-// @ts-expect-error
+import {extractComponentProps} from '../../componentUpdater';
 import {sameDate} from '../../dateutils';
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
@@ -230,7 +228,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
   onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const yOffset = event.nativeEvent.contentOffset.y;
-    _.invoke(this.props, 'onScroll', yOffset);
+    invoke(this.props, 'onScroll', yOffset);
 
     let topRowOffset = 0;
     let topRow;
@@ -248,7 +246,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     const dateIsSame = sameDate(day, this.selectedDay);
     if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
-      _.invoke(this.props, 'onDayChange', day.clone());
+      invoke(this.props, 'onDayChange', day.clone());
     }
   };
 
@@ -280,8 +278,8 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
   render() {
     const {reservations, selectedDay, theme, style} = this.props;
     if (!reservations || !reservations[toMarkingFormat(selectedDay)]) {
-      if (_.isFunction(this.props.renderEmptyData)) {
-        return _.invoke(this.props, 'renderEmptyData');
+      if (isFunction(this.props.renderEmptyData)) {
+        return invoke(this.props, 'renderEmptyData');
       }
 
       return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor} />;

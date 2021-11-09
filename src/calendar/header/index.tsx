@@ -1,21 +1,29 @@
-import _ from 'lodash';
+import includes from 'lodash/includes';
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {Component, Fragment, ReactNode} from 'react';
-import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, StyleProp, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
-// @ts-expect-error
-import {shouldUpdate} from '../../component-updater';
-// @ts-expect-error
-import {weekDayNames} from '../../dateutils';
+import {
+  ActivityIndicator,
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleProp,
+  ViewStyle,
+  AccessibilityActionEvent,
+  ColorValue
+} from 'react-native';
+import {shouldUpdate} from '../../componentUpdater';
+import {formatNumbers, weekDayNames} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
   HEADER_DAY_NAMES,
   HEADER_LOADING_INDICATOR,
   HEADER_MONTH_NAME
-  // @ts-expect-error
 } from '../../testIDs';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
@@ -114,7 +122,8 @@ class CalendarHeader extends Component<Props> {
       'monthFormat',
       'renderArrow',
       'disableArrowLeft',
-      'disableArrowRight'
+      'disableArrowRight',
+      'renderHeader'
     ]);
   }
 
@@ -154,7 +163,7 @@ class CalendarHeader extends Component<Props> {
     return weekDaysNames.map((day: string, idx: number) => {
       const dayStyle = [this.style.dayHeader];
 
-      if (_.includes(disabledDaysIndexes, idx)) {
+      if (includes(disabledDaysIndexes, idx)) {
         dayStyle.push(this.style.disabledDayHeader);
       }
 
@@ -186,7 +195,7 @@ class CalendarHeader extends Component<Props> {
           testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
           {...webProps}
         >
-          {month?.toString(monthFormat)}
+          {formatNumbers(month?.toString(monthFormat))}
         </Text>
       </Fragment>
     );

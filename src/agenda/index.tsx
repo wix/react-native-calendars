@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
@@ -15,15 +15,10 @@ import {
   NativeScrollEvent
 } from 'react-native';
 
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater.js';
-// @ts-expect-error
+import {extractComponentProps} from '../componentUpdater';
 import {parseDate, xdateToData, toMarkingFormat} from '../interface';
-// @ts-expect-error
 import {weekDayNames, sameDate, sameMonth} from '../dateutils';
-// @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
-// @ts-expect-error
 import {VelocityTracker} from '../input';
 import {DateData} from '../types';
 import styleConstructor from './style';
@@ -207,7 +202,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       calendarScrollable: enable
     });
 
-    _.invoke(this.props, 'onCalendarToggled', enable);
+    invoke(this.props, 'onCalendarToggled', enable);
 
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
     // Otherwise the month after current one or before current one remains invisible.
@@ -227,7 +222,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
           firstReservationLoad: true
         },
         () => {
-          _.invoke(this.props, 'loadItemsForMonth', xdateToData(this.state.selectedDay));
+          invoke(this.props, 'loadItemsForMonth', xdateToData(this.state.selectedDay));
         }
       );
     }
@@ -245,7 +240,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       selectedDay: day.clone()
     });
 
-    _.invoke(this.props, 'onCalendarToggled', false);
+    invoke(this.props, 'onCalendarToggled', false);
 
     if (!optimisticScroll) {
       this.setState({
@@ -256,8 +251,8 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
     this.calendar?.current?.scrollToDay(day, this.calendarOffset(), true);
 
-    _.invoke(this.props, 'loadItemsForMonth', xdateToData(day));
-    _.invoke(this.props, 'onDayPress', xdateToData(day));
+    invoke(this.props, 'loadItemsForMonth', xdateToData(day));
+    invoke(this.props, 'onDayPress', xdateToData(day));
   }
 
   generateMarkings = memoize((selectedDay, markedDates, items = {}) => {
@@ -328,14 +323,14 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
   };
 
   onVisibleMonthsChange = (months: DateData[]) => {
-    _.invoke(this.props, 'onVisibleMonthsChange', months);
+    invoke(this.props, 'onVisibleMonthsChange', months);
 
     if (this.props.items && !this.state.firstReservationLoad) {
       clearTimeout(this.scrollTimeout);
 
       this.scrollTimeout = setTimeout(() => {
         if (this._isMounted) {
-          _.invoke(this.props, 'loadItemsForMonth', months[0]);
+          invoke(this.props, 'loadItemsForMonth', months[0]);
         }
       }, 200);
     }
@@ -350,7 +345,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       selectedDay: newDate
     });
 
-    _.invoke(this.props, 'onDayChange', xdateToData(newDate));
+    invoke(this.props, 'onDayChange', xdateToData(newDate));
   };
 
   renderReservations() {

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import React, {Component, useCallback} from 'react';
 import {Platform, StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 // @ts-expect-error
@@ -82,7 +82,7 @@ function getMarkedDates(items) {
   const marked = {};
   items.forEach(item => {
     // NOTE: only mark dates with data
-    if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
+    if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
       marked[item.title] = {marked: true};
     } else {
       marked[item.title] = {disabled: true};
@@ -190,7 +190,9 @@ export default class ExpandableCalendarScreen extends Component<Props> {
         <AgendaList
           sections={ITEMS}
           renderItem={this.renderItem}
+          // scrollToNextEvent
           // sectionStyle={styles.section}
+          // dayFormat={'YYYY-MM-d'}
         />
       </CalendarProvider>
     );
@@ -213,7 +215,7 @@ const AgendaItem = React.memo(function AgendaItem(props: ItemProps) {
     Alert.alert(item.title);
   }, []);
 
-  if (_.isEmpty(item)) {
+  if (isEmpty(item)) {
     return(
       <View style={styles.emptyItem}>
         <Text style={styles.emptyItemText}>No Events Planned Today</Text>
