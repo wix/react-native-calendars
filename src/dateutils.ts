@@ -38,8 +38,9 @@ export function formatNumbers(date: any) {
 
 export function fromTo(a: XDate, b: XDate) {
   const days = [];
-  let from = +a,
-    to = +b;
+  let from = +a;
+  const to = +b;
+
   for (; from <= to; from = new XDate(from, true).addDays(1).getTime()) {
     days.push(new XDate(from, true));
   }

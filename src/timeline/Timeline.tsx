@@ -20,7 +20,7 @@ function range(from: number, to: number) {
   return Array.from(Array(to), (_, i) => from + i);
 }
 
-let {width: dimensionWidth} = Dimensions.get('window');
+const {width: dimensionWidth} = Dimensions.get('window');
 
 export type Event = {
   start: string;
@@ -87,7 +87,7 @@ export default class Timeline extends Component<TimelineProps, State> {
 
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
-    let initPosition = min(map(packedEvents, 'top')) - this.calendarHeight / (end - start);
+    const initPosition = min(map(packedEvents, 'top')) - this.calendarHeight / (end - start);
     const verifiedInitPosition = initPosition < 0 ? 0 : initPosition;
 
     this.state = {
@@ -169,7 +169,7 @@ export default class Timeline extends Component<TimelineProps, State> {
 
   _renderEvents() {
     const {packedEvents} = this.state;
-    let events = packedEvents.map((event: any, i: number) => {
+    const events = packedEvents.map((event: any, i: number) => {
       const style = {
         left: event.left,
         height: event.height,

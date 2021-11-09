@@ -7,11 +7,11 @@ export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 export type Direction = 'left' | 'right';
 export type UpdateSource = keyof typeof UpdateSources;
 export type DateData = {
-  year: number,
-  month: number,
-  day: number,
-  timestamp: number,
-  dateString: string
+  year: number;
+  month: number;
+  day: number;
+  timestamp: number;
+  dateString: string;
 }
 export interface Theme {
   container?: object;
@@ -30,13 +30,13 @@ export interface Theme {
   calendarBackground?: string;
   indicatorColor?: string;
   stylesheet?: {
-    calendar?: {main?: object, header?: object};
+    calendar?: {main?: object; header?: object};
     day?: {basic?: object; period?: object};
     dot?: object;
     marking?: object;
     'calendar-list'?: {main?: object};
-    agenda?: {main?: object, list?: object};
-    expandable?: {main?: object}
+    agenda?: {main?: object; list?: object};
+    expandable?: {main?: object};
   };
   textSectionTitleColor?: string;
   textSectionTitleDisabledColor?: string;

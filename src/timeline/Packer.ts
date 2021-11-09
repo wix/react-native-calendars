@@ -26,9 +26,9 @@ function expand(ev: Event, column: any, columns: any) {
   let colSpan = 1;
 
   for (let i = column + 1; i < columns.length; i++) {
-    let col = columns[i];
+    const col = columns[i];
     for (let j = 0; j < col.length; j++) {
-      let ev1 = col[j];
+      const ev1 = col[j];
       if (collision(ev, ev1)) {
         return colSpan;
       }
@@ -40,10 +40,10 @@ function expand(ev: Event, column: any, columns: any) {
 }
 
 function pack(columns: any, width: number, calculatedEvents: Event[], dayStart: number) {
-  let colLength = columns.length;
+  const colLength = columns.length;
 
   for (let i = 0; i < colLength; i++) {
-    let col = columns[i];
+    const col = columns[i];
     for (let j = 0; j < col.length; j++) {
       const colSpan = expand(col[j], i, columns);
       const L = (i / colLength) * width;
@@ -57,7 +57,7 @@ function pack(columns: any, width: number, calculatedEvents: Event[], dayStart: 
 function populateEvents(events: Event[], screenWidth: number, dayStart: number) {
   let lastEnd: any;
   let columns: any;
-  let calculatedEvents: Event[] = [];
+  const calculatedEvents: Event[] = [];
 
   events = events
     .map((ev: Event, index: number) => ({...ev, index: index}))
@@ -81,7 +81,7 @@ function populateEvents(events: Event[], screenWidth: number, dayStart: number) 
 
     let placed = false;
     for (let i = 0; i < columns.length; i++) {
-      let col = columns[i];
+      const col = columns[i];
       if (!collision(col[col.length - 1], ev)) {
         col.push(ev);
         placed = true;

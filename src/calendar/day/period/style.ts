@@ -77,7 +77,7 @@ export default function styleConstructor(theme: Theme = {}) {
     // naText: {
     //   color: '#b6c1cd'
     // },
-    // @ts-ignore
+    // @ts-expect-error
     ...(theme['stylesheet.day.period'] || {})
   });
 }

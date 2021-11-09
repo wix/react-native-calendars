@@ -34,7 +34,7 @@ export default function getStyle(theme: Theme = {}) {
       paddingLeft: 15,
       paddingRight: 15
     },
-    // @ts-ignore
+    // @ts-expect-error
     ...(theme['stylesheet.calendar-list.main'] || {})
   });
 }

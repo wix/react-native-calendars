@@ -13,7 +13,7 @@ import Day from '../calendar/day/index';
 
 
 interface Props extends CalendarProps {
-  current: XDate
+  current: XDate;
 }
 export type WeekProps = Props;
 

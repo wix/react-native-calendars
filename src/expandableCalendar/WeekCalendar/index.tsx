@@ -31,7 +31,7 @@ interface Props extends CalendarListProps {
 export type WeekCalendarProps = Props;
 
 interface State {
-  items: string[]
+  items: string[];
 }
 
 /**
