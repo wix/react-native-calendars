@@ -250,7 +250,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     }
 
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
-    this.calendar?.current?.scrollToDay(day, this.calendarOffset(), true);
+    this.calendar?.current?.scrollToDay(day, this.calendarOffset(), false);
 
     invoke(this.props, 'loadItemsForMonth', xdateToData(day));
     invoke(this.props, 'onDayPress', xdateToData(day));
