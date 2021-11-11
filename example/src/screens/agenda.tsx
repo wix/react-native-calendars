@@ -20,6 +20,14 @@ export default class AgendaScreen extends Component {
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         showClosingKnob={true}
+        // knobStyle={styles.wideKnobStyle}
+        // renderKnob={() => {
+        //   return (
+        //     <View>
+        //       <Text>This is a manual knob</Text>
+        //     </View>
+        //   );
+        // }}
         // markingType={'period'}
         // markedDates={{
         //    '2017-05-08': {textColor: '#43515c'},
@@ -107,5 +115,8 @@ const styles = StyleSheet.create({
     height: 15,
     flex: 1,
     paddingTop: 30
+  },
+  wideKnobStyle: {
+    width: '100%'
   }
 });
