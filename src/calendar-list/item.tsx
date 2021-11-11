@@ -127,7 +127,10 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
 
       return (
         <View style={[{height: calendarHeight, width: calendarWidth}, this.style.placeholder]}>
-          <Text allowFontScaling={false} style={this.style.placeholderText}>
+          <Text
+            allowFontScaling={false}
+            style={[this.style.placeholderText, {fontFamily: calendarProps.theme.textMonthFontFamily}]}
+          >
             {text}
           </Text>
         </View>
