@@ -12,7 +12,8 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
+  Platform
 } from 'react-native';
 
 import {extractComponentProps} from '../componentUpdater';
@@ -23,10 +24,9 @@ import {VelocityTracker} from '../input';
 import {DateData} from '../types';
 import styleConstructor from './style';
 import CalendarList, {CalendarListProps} from '../calendar-list';
-import ReservationList, {ReservationListProps}  from './reservation-list';
+import ReservationList, {ReservationListProps} from './reservation-list';
 
-
-const HEADER_HEIGHT = 104;
+const HEADER_HEIGHT = 106;
 const KNOB_HEIGHT = 24;
 
 export type ReservationItemType = {
@@ -39,28 +39,29 @@ export type ReservationsType = {
   [date: string]: ReservationItemType[];
 };
 
-export type AgendaProps = CalendarListProps & ReservationListProps & {
-  /** the list of items that have to be displayed in agenda. If you want to render item as empty date
+export type AgendaProps = CalendarListProps &
+  ReservationListProps & {
+    /** the list of items that have to be displayed in agenda. If you want to render item as empty date
    the value of date key has to be an empty array []. If there exists no value for date key it is
    considered that the date in question is not yet loaded */
-  items: ReservationsType;
-  /** callback that gets called when items for a certain month should be loaded (month became visible) */
-  loadItemsForMonth?: (data: any) => DateData;
-  /** callback that fires when the calendar is opened or closed */
-  onCalendarToggled?: (enabled: boolean) => void;
-  /** callback that gets called on day press */
-  onDayPress?: (data: DateData) => void;
-  /** callback that gets called when day changes while scrolling agenda list */
-  onDayChange?: (data: any) => void;
-  /** specify how agenda knob should look like */
-  renderKnob?: () => JSX.Element;
-  /** initially selected day */
-  selected: boolean, //TODO: Should be renamed 'selectedDay'
-  /** Hide knob button. Default = false */
-  hideKnob: boolean,
-  /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
-  showClosingKnob: boolean
-}
+    items: ReservationsType;
+    /** callback that gets called when items for a certain month should be loaded (month became visible) */
+    loadItemsForMonth?: (data: any) => DateData;
+    /** callback that fires when the calendar is opened or closed */
+    onCalendarToggled?: (enabled: boolean) => void;
+    /** callback that gets called on day press */
+    onDayPress?: (data: DateData) => void;
+    /** callback that gets called when day changes while scrolling agenda list */
+    onDayChange?: (data: any) => void;
+    /** specify how agenda knob should look like */
+    renderKnob?: () => JSX.Element;
+    /** initially selected day */
+    selected: boolean; //TODO: Should be renamed 'selectedDay'
+    /** Hide knob button. Default = false */
+    hideKnob: boolean;
+    /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
+    showClosingKnob: boolean;
+  };
 
 type AgendaState = {
   scrollY: Animated.Value;
@@ -184,7 +185,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
 
   setScrollPadPosition = (y: number, animated: boolean) => {
     if (this.scrollPad?.current?.scrollTo) {
-      this.scrollPad.current.scrollTo({x: 0, y, animated});
+      this.scrollPad.current.scrollTo({x: 0, y, animated: false});
     } else {
       // Support for RN O.61 (Expo 37)
       this.scrollPad?.current?.getNode().scrollTo({x: 0, y, animated});
@@ -390,12 +391,13 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     let knob: JSX.Element | null = <View style={this.style.knobContainer} />;
 
     if (!hideKnob) {
-      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
-      knob = !this.state.calendarScrollable || showClosingKnob ? (
-        <View style={this.style.knobContainer}>
-          <View ref={this.knob}>{knobView}</View>
-        </View>
-      ) : null;
+      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
+      knob =
+        !this.state.calendarScrollable || showClosingKnob ? (
+          <View style={this.style.knobContainer}>
+            <View ref={this.knob}>{knobView}</View>
+          </View>
+        ) : null;
     }
     return knob;
   }
@@ -474,12 +476,18 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
         <View style={this.style.reservations}>{this.renderReservations()}</View>
         <Animated.View style={headerStyle}>
-          <Animated.View style={[this.style.animatedContainer, {transform: [{translateY: contentTranslate}]}]}>
+          <Animated.View
+            style={[
+              {height: Platform.OS === 'web' ? '100%' : undefined},
+              this.style.animatedContainer,
+              {transform: [{translateY: contentTranslate}]}
+            ]}
+          >
             {this.renderCalendarList()}
           </Animated.View>
           {this.renderKnob()}
         </Animated.View>
-        <Animated.View style={weekdaysStyle}>
+        <Animated.View style={[weekdaysStyle, {justifyContent: 'space-around', marginHorizontal: -9}]}>
           {this.renderWeekNumbersSpace()}
           {this.renderWeekDaysNames(weekDaysNames)}
         </Animated.View>
