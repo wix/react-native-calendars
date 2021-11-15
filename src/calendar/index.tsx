@@ -309,7 +309,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
 
   render() {
     const {enableSwipeMonths, style} = this.props;
-    const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
+    const GestureComponent = enableSwipeMonths ? GestureRecognizer : React.Fragment;
     const gestureProps = enableSwipeMonths ? this.swipeProps : undefined;
 
     return (
