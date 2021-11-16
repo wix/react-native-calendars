@@ -87,4 +87,5 @@ export interface Theme {
   todayButtonPosition?: string;
   arrowHeight?: number;
   arrowWidth?: number;
+  weekVerticalMargin?: number;
 }
