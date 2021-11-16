@@ -35,15 +35,15 @@ export type ReservationItemType = {
   day: XDate;
 };
 
-export type ReservationsType = {
-  [date: string]: ReservationItemType[];
+export type ReservationsType<T> = {
+  [date: string]: T[];
 };
 
-export type AgendaProps = CalendarListProps & ReservationListProps & {
+export type AgendaProps<T> = CalendarListProps & ReservationListProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
    the value of date key has to be an empty array []. If there exists no value for date key it is
    considered that the date in question is not yet loaded */
-  items: ReservationsType;
+  items: ReservationsType<T>;
   /** callback that gets called when items for a certain month should be loaded (month became visible) */
   loadItemsForMonth?: (data: any) => DateData;
   /** callback that fires when the calendar is opened or closed */
@@ -78,7 +78,7 @@ type AgendaState = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/agenda.gif
  */
-export default class Agenda extends Component<AgendaProps, AgendaState> {
+export default class Agenda<T = ReservationItemType> extends Component<AgendaProps<T>, AgendaState> {
   static displayName = 'Agenda';
 
   static propTypes = {
@@ -121,7 +121,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
   private knob: React.RefObject<any> = React.createRef();
   public list: React.RefObject<ReservationList> = React.createRef();
 
-  constructor(props: AgendaProps) {
+  constructor(props: AgendaProps<T>) {
     super(props);
 
     this.style = styleConstructor(props.theme);
@@ -158,7 +158,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     this.state.scrollY.removeAllListeners();
   }
 
-  componentDidUpdate(prevProps: AgendaProps) {
+  componentDidUpdate(prevProps: AgendaProps<T>) {
     if (this.props.selected && !sameDate(parseDate(this.props.selected), parseDate(prevProps.selected))) {
       this.setState({selectedDay: parseDate(this.props.selected)});
     } else if (!prevProps.items) {
@@ -166,7 +166,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     }
   }
 
-  static getDerivedStateFromProps(nextProps: AgendaProps) {
+  static getDerivedStateFromProps(nextProps: AgendaProps<T>) {
     if (nextProps.items) {
       return {firstReservationLoad: false};
     }
@@ -215,7 +215,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
   }
 
-  loadReservations(props: AgendaProps) {
+  loadReservations(props: AgendaProps<T>) {
     if ((!props.items || !Object.keys(props.items).length) && !this.state.firstReservationLoad) {
       this.setState(
         {
