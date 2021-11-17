@@ -26,7 +26,7 @@ import styleConstructor from './style';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps} from './reservation-list';
 
-const HEADER_HEIGHT = 106;
+const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
 export type ReservationItemType = {
