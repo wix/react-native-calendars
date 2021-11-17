@@ -752,10 +752,13 @@
 - Demo app load.
 - ExpandableCalendar - add throttle to onVisibleMonthsChange callback.
 
-## [1.1269.0] - 2021-11-x
+## [1.1269.0] - 2021-11-17
 
 ## Fixed
 - Fix eslint config and fix lint errors.
+- CalendarConsumer - fix passed ref (PR #1674).
+- Agenda - fix style Typo (animatedContiner -> animatedContainer) (PR #1670).
+
 ## changed
 - Migrating internal tools to TS.
 - Migrating demo files to TS.
