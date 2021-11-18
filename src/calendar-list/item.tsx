@@ -110,17 +110,19 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
 
     if (item.getTime) {
       return (
-        <Calendar
-          {...calendarProps}
-          testID={testID}
-          current={item}
-          style={calStyle}
-          headerStyle={horizontal ? headerStyle : undefined}
-          disableMonthChange
-          onPressArrowLeft={horizontal ? this.onPressArrowLeft : onPressArrowLeft}
-          onPressArrowRight={horizontal ? this.onPressArrowRight : onPressArrowRight}
-          context={context}
-        />
+        <View style={this.style.calendarContainer}>
+          <Calendar
+            {...calendarProps}
+            testID={testID}
+            current={item}
+            style={calStyle}
+            headerStyle={horizontal ? headerStyle : undefined}
+            disableMonthChange
+            onPressArrowLeft={horizontal ? this.onPressArrowLeft : onPressArrowLeft}
+            onPressArrowRight={horizontal ? this.onPressArrowRight : onPressArrowRight}
+            context={context}
+          />
+        </View>
       );
     } else {
       const text = formatNumbers(item.toString());

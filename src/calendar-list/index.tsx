@@ -57,6 +57,8 @@ interface Props extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'render
   /** onLayout event */
   onLayout?: (event: LayoutChangeEvent) => void;
   removeClippedSubviews?: boolean;
+  /** Control number of columns */
+  numberOfColumn: number;
 }
 export type CalendarListProps = Props;
 
@@ -112,7 +114,9 @@ class CalendarList extends Component<Props, State> {
     /** How far from the end to trigger the onEndReached callback */
     onEndReachedThreshold: PropTypes.number,
     /** Called once when the scroll position gets within onEndReachedThreshold */
-    onEndReached: PropTypes.func
+    onEndReached: PropTypes.func,
+    /** Control number of columns */
+    numberOfColumn: PropTypes.number,
   };
 
   static defaultProps = {
@@ -125,7 +129,8 @@ class CalendarList extends Component<Props, State> {
     scrollsToTop: false,
     scrollEnabled: true,
     removeClippedSubviews: Platform.OS === 'android',
-    keyExtractor: (_: any, index: number) => String(index)
+    keyExtractor: (_: any, index: number) => String(index),
+    numberOfColumn: 1
   };
 
   style: any;
@@ -343,12 +348,14 @@ class CalendarList extends Component<Props, State> {
   }
 
   render() {
-    const {style, pastScrollRange, futureScrollRange, horizontal, showScrollIndicator} = this.props;
+    const {style, pastScrollRange, futureScrollRange, horizontal, showScrollIndicator, numberOfColumn} = this.props;
 
     return (
       <View style={this.style.flatListContainer}>
         <FlatList
+          key={numberOfColumn}
           ref={this.list}
+          numColumns={numberOfColumn}
           style={[this.style.container, style]}
           // @ts-expect-error
           initialListSize={pastScrollRange + futureScrollRange + 1} // ListView deprecated
@@ -357,7 +364,7 @@ class CalendarList extends Component<Props, State> {
           getItemLayout={this.getItemLayout}
           onViewableItemsChanged={this.onViewableItemsChanged}
           viewabilityConfig={this.viewabilityConfig}
-          initialScrollIndex={this.state.openDate ? this.getMonthIndex(this.state.openDate) : undefined}
+          initialScrollIndex={this.state.openDate ? (this.getMonthIndex(this.state.openDate) / numberOfColumn) : undefined}
           showsVerticalScrollIndicator={showScrollIndicator}
           showsHorizontalScrollIndicator={horizontal && showScrollIndicator}
           testID={this.props.testID}

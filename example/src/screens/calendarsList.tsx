@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {Fragment, useState} from 'react';
+import {StyleSheet, Text, View, Button} from 'react-native';
 // @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
@@ -9,6 +9,7 @@ const initialDate = '2020-06-10';
 
 const CalendarsList = () => {
   const [selected, setSelected] = useState(initialDate);
+  const [numberOfColumn, setNumberOfColumn] = useState(1);
   const markedDates = {
     [selected]: {
       selected: true,
@@ -17,22 +18,44 @@ const CalendarsList = () => {
       selectedTextColor: 'white'
     }
   };
-  
+
   const onDayPress = day => {
     setSelected(day.dateString);
   };
 
+  const addColumn = () => {
+    setNumberOfColumn(numberOfColumn + 1);
+  };
+
+  const subtractColumn = () => {
+    setNumberOfColumn(numberOfColumn - 1);
+  };
+
   return (
-    <CalendarList
-      testID={testIDs.calendarList.CONTAINER}
-      current={initialDate}
-      pastScrollRange={RANGE}
-      futureScrollRange={RANGE}
-      renderHeader={renderCustomHeader}
-      theme={theme}
-      onDayPress={onDayPress}
-      markedDates={markedDates}
-    />
+    <Fragment>
+      <ColumnController numberOfColumn={numberOfColumn} subtractColumn={subtractColumn} addColumn={addColumn} />
+      <CalendarList
+        testID={testIDs.calendarList.CONTAINER}
+        current={initialDate}
+        pastScrollRange={RANGE}
+        futureScrollRange={RANGE}
+        renderHeader={renderCustomHeader}
+        theme={theme}
+        onDayPress={onDayPress}
+        markedDates={markedDates}
+        numberOfColumn={numberOfColumn}
+      />
+    </Fragment>
+  );
+};
+
+const ColumnController = ({numberOfColumn, subtractColumn, addColumn}) => {
+  return (
+    <View style={styles.columnControllerContainer}>
+      <Button title="-" onPress={subtractColumn} disabled={numberOfColumn < 2} />
+      <Text style={styles.columnControllerText}>Number of columns: {numberOfColumn}</Text>
+      <Button title="+" onPress={addColumn} disabled={numberOfColumn > 3} />
+    </View>
   );
 };
 
@@ -90,5 +113,13 @@ const styles = StyleSheet.create({
   },
   year: {
     marginRight: 5
+  },
+  columnControllerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  columnControllerText: {
+    marginHorizontal: 12
   }
 });
