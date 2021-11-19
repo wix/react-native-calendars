@@ -570,6 +570,7 @@ class ExpandableCalendar extends Component<Props, State> {
             <CalendarList
               testID="calendar"
               horizontal={horizontal}
+              hideExtraDays={!horizontal}
               {...others}
               theme={themeObject}
               ref={this.calendar}
@@ -581,7 +582,6 @@ class ExpandableCalendar extends Component<Props, State> {
               hideArrows={this.shouldHideArrows()}
               onPressArrowLeft={this.onPressArrowLeft}
               onPressArrowRight={this.onPressArrowRight}
-              hideExtraDays={!horizontal}
               renderArrow={this.renderArrow}
               staticHeader
             />
