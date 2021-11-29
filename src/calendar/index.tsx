@@ -12,6 +12,7 @@ import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../componentUpdater';
+// @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
 import {Theme, DateData} from '../types';
 import styleConstructor from './style';
