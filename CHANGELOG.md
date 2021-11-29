@@ -762,3 +762,4 @@
 ## changed
 - Migrating internal tools to TS.
 - Migrating demo files to TS.
+- testID - reverting to js file with module.exports.
