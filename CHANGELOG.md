@@ -757,9 +757,11 @@
 ## Fixed
 - Fix eslint config and fix lint errors.
 - CalendarConsumer - fix passed ref (PR #1674).
-- Agenda - fix style Typo (animatedContiner -> animatedContainer) (PR #1670).
+- Agenda - fix style Typo (animatedContainer -> animatedContainer) (PR #1670).
 
 ## changed
 - Migrating internal tools to TS.
 - Migrating demo files to TS.
-- testID - reverting to js file with module.exports.
+
+## [1.1270.0] - 2021-11-29
+- testIDs - reverting to js file with module.exports.
