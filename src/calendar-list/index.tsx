@@ -8,6 +8,7 @@ import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, Flat
 import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
 import {page, sameDate} from '../dateutils';
+// @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';

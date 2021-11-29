@@ -24,6 +24,7 @@ import {
   HEADER_DAY_NAMES,
   HEADER_LOADING_INDICATOR,
   HEADER_MONTH_NAME
+  // @ts-expect-error
 } from '../../testIDs';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
