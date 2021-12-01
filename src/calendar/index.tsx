@@ -32,7 +32,9 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify style for calendar container element */
   style?: StyleProp<ViewStyle>;
   /** Initially visible month */
-  current?: XDate;
+  current?: XDate; // TODO: migrate to 'initialDate'
+  /** Initially visible month. If changed will initialize the calendar to this value */
+  initialDate?: XDate;
   /** Minimum date that can be selected, dates before minDate will be grayed out */
   minDate?: Date;
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
@@ -91,6 +93,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     /** Initially visible month. Default = Date() */
     current: PropTypes.any,
+    /** Initially visible month. If changed will initialize the calendar to this value */
+    initialDate: PropTypes.any,
     /** Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined */
     minDate: PropTypes.any,
     /** Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined */
@@ -132,11 +136,23 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     enableSwipeMonths: false
   };
 
+  currentDate = this.props.current || this.props.initialDate;
+
   state = {
-    currentMonth: this.props.current ? parseDate(this.props.current) : new XDate()
+    currentMonth: 
+      this.currentDate ? parseDate(this.currentDate) : new XDate()
   };
   style = styleConstructor(this.props.theme);
   header: React.RefObject<any> = React.createRef();
+
+  static getDerivedStateFromProps(nextProps: CalendarProps, prevState: CalendarState) {
+    if (nextProps?.initialDate && toMarkingFormat(nextProps?.initialDate) !== toMarkingFormat(prevState.currentMonth)) {
+      return {
+        currentMonth: parseDate(nextProps.initialDate)
+      };
+    }
+    return null;
+  }
 
   addMonth = (count: number) => {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
@@ -280,7 +296,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
 
   renderHeader() {
     const {customHeader, headerStyle, displayLoadingIndicator, markedDates, testID} = this.props;
-    const current = parseDate(this.props.current);
+    const current = parseDate(this.currentDate);
     let indicator;
 
     if (current) {
