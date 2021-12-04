@@ -138,11 +138,11 @@ export default class Marking extends Component {
       }
       color ="red";
     }
-    console.log(dotProps);
     return (
       
       <View style={{paddingTop:3}}>
         {dotProps.selected && <Image source={require('../../../../../../app/assets/icons/cuorered.png')} style={{width:17, height:17, alignSelf:"center"}} resizeMode="contain"/>}
+        {dotProps.marked && <Image source={require('../../../../../../app/assets/icons/cuorewhite.png')} style={{width:17, height:17, alignSelf:"center"}} resizeMode="contain"/>}
      
       </View>
      
