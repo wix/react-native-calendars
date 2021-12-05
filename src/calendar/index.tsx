@@ -74,6 +74,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
 }
 
 interface CalendarState {
+  prevInitialDate: any;
   currentMonth: any;
 }
 /**
@@ -136,18 +137,18 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     enableSwipeMonths: false
   };
 
-  currentDate = this.props.current || this.props.initialDate;
-
   state = {
-    currentMonth: 
-      this.currentDate ? parseDate(this.currentDate) : new XDate()
+    prevInitialDate: this.props.initialDate,
+    currentMonth: this.props.current || this.props.initialDate ? 
+      parseDate(this.props.current || this.props.initialDate) : new XDate()
   };
   style = styleConstructor(this.props.theme);
   header: React.RefObject<any> = React.createRef();
 
   static getDerivedStateFromProps(nextProps: CalendarProps, prevState: CalendarState) {
-    if (nextProps?.initialDate && toMarkingFormat(nextProps?.initialDate) !== toMarkingFormat(prevState.currentMonth)) {
+    if (nextProps?.initialDate && toMarkingFormat(nextProps?.initialDate) !== toMarkingFormat(prevState.prevInitialDate)) {
       return {
+        prevInitialDate: nextProps.initialDate,
         currentMonth: parseDate(nextProps.initialDate)
       };
     }
@@ -162,7 +163,6 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
-
     this.setState({currentMonth: day.clone()}, () => {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
@@ -296,11 +296,10 @@ class Calendar extends Component<CalendarProps, CalendarState> {
 
   renderHeader() {
     const {customHeader, headerStyle, displayLoadingIndicator, markedDates, testID} = this.props;
-    const current = parseDate(this.currentDate);
     let indicator;
 
-    if (current) {
-      const lastMonthOfDay = toMarkingFormat(current.clone().addMonths(1, true).setDate(1).addDays(-1));
+    if (this.state.currentMonth) {
+      const lastMonthOfDay = toMarkingFormat(this.state.currentMonth.clone().addMonths(1, true).setDate(1).addDays(-1));
       if (displayLoadingIndicator && !markedDates?.[lastMonthOfDay]) {
         indicator = true;
       }
