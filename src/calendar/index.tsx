@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
@@ -54,7 +53,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Handler which gets executed on day long press */
   onDayLongPress?: (date: DateData) => void;
   /** Handler which gets executed when month changes in calendar */
-  onMonthChange?: () => DateData;
+  onMonthChange?: (date: DateData) => void;
   /** Handler which gets executed when visible month changes in calendar */
   onVisibleMonthsChange?: (months: DateData[]) => void;
   /** Disables changing month when click on days of other months (when hideExtraDays is false) */
@@ -150,8 +149,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     this.setState({currentMonth: day.clone()}, () => {
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
-        invoke(this.props, 'onMonthChange', xdateToData(currMont));
-        invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
+        this.props.onMonthChange?.(xdateToData(currMont));
+        this.props.onVisibleMonthsChange?.([xdateToData(currMont)]);
       }
     });
   };

@@ -228,7 +228,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
   onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const yOffset = event.nativeEvent.contentOffset.y;
-    invoke(this.props, 'onScroll', yOffset);
+    this.props.onScroll?.(yOffset);
 
     let topRowOffset = 0;
     let topRow;
@@ -247,6 +247,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
       invoke(this.props, 'onDayChange', day.clone());
+      // this.props.onDayChange?.(day.clone());
     }
   };
 
@@ -279,7 +280,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     const {reservations, selectedDay, theme, style} = this.props;
     if (!reservations || !reservations[toMarkingFormat(selectedDay)]) {
       if (isFunction(this.props.renderEmptyData)) {
-        return invoke(this.props, 'renderEmptyData');
+        return this.props.renderEmptyData?.();
       }
 
       return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor} />;

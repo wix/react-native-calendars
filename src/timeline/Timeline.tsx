@@ -1,7 +1,6 @@
 // @flow
 import min from 'lodash/min';
 import map from 'lodash/map';
-import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -163,7 +162,7 @@ export default class Timeline extends Component<TimelineProps, State> {
     if (this.props.eventTapped) { //TODO: remove after deprecation
       this.props.eventTapped(event);
     } else {
-      invoke(this.props, 'onEventPress', event);
+      this.props.onEventPress?.(event);
     }
   }
 

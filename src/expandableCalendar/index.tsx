@@ -249,7 +249,7 @@ class ExpandableCalendar extends Component<Props, State> {
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
         d.addDays(firstDayOfWeek);
       }
-      invoke(this.props.context, 'setDate', toMarkingFormat(d), updateSources.PAGE_SCROLL);
+      this.props.context.setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
     }
   }
 
@@ -359,6 +359,7 @@ class ExpandableCalendar extends Component<Props, State> {
       }).start(this.onAnimatedFinished);
 
       invoke(this.props, 'onCalendarToggled', isOpen);
+      // this.props.onCalendarToggled?.(isOpen);
 
       this.setPosition();
       this.closeHeader(isOpen);
@@ -411,7 +412,7 @@ class ExpandableCalendar extends Component<Props, State> {
 
   onDayPress = (value: DateData) => {
     // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
-    invoke(this.props.context, 'setDate', value.dateString, updateSources.DAY_PRESS);
+    this.props.context.setDate?.(value.dateString, updateSources.DAY_PRESS);
 
     setTimeout(() => {
       // to allows setDate to be completed
