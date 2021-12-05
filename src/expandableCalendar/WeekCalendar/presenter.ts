@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
 import React from 'react';
@@ -31,7 +30,7 @@ class Presenter {
 
   // Events
   onDayPress = (context: any, value: DateData) => {
-    invoke(context, 'setDate', value.dateString, updateSources.DAY_PRESS);
+    context.setDate?.(value.dateString, updateSources.DAY_PRESS);
   };
 
   onScroll = ({context, updateState, x, page, items, width}: any) => {
@@ -44,7 +43,7 @@ class Presenter {
     const newPage = this._getNewPage(x, width);
 
     if (this._shouldUpdateState(page, newPage)) {
-      invoke(context, 'setDate', items[newPage], updateSources.WEEK_SCROLL);
+      context.setDate?.(items[newPage], updateSources.WEEK_SCROLL);
       const data = this._getItemsForPage(newPage, items);
       updateState(data, newPage);
     }

@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -246,8 +245,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     const dateIsSame = sameDate(day, this.selectedDay);
     if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
-      invoke(this.props, 'onDayChange', day.clone());
-      // this.props.onDayChange?.(day.clone());
+      this.props.onDayChange?.(new Date(day.getUTCMilliseconds()));
     }
   };
 

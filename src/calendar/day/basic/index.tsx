@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import values from 'lodash/values';
 import PropTypes from 'prop-types';
 
@@ -19,9 +18,9 @@ export interface BasicDayProps {
   /** Theme object */
   theme?: Theme;
   /** onPress callback */
-  onPress?: (date: DateData) => void;
+  onPress?: (date?: Date) => void;
   /** onLongPress callback */
-  onLongPress?: (date: Date) => void;
+  onLongPress?: (date?: Date) => void;
   /** The date to return from press callbacks */
   date?: Date;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
@@ -73,11 +72,11 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   onPress = () => {
-    invoke(this.props, 'onPress', this.props.date);
+    this.props.onPress?.(this.props.date);
   };
 
   onLongPress = () => {
-    invoke(this.props, 'onLongPress', this.props.date);
+    this.props.onLongPress?.(this.props.date);
   };
 
   get marking() {

@@ -173,11 +173,13 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     }
   }
 
-  pressDay = (date: Date) => {
+  pressDay = (date?: Date) => {
+    if (date)
     this.handleDayInteraction(date, this.props.onDayPress);
   };
 
-  longPressDay = (date: Date) => {
+  longPressDay = (date?: Date) => {
+    if (date)
     this.handleDayInteraction(date, this.props.onDayLongPress);
   };
 

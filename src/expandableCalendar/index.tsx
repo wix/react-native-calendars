@@ -1,5 +1,4 @@
 import first from 'lodash/first';
-import invoke from 'lodash/invoke';
 import values from 'lodash/values';
 import isFunction from 'lodash/isFunction';
 import throttle from 'lodash/throttle';
@@ -44,7 +43,7 @@ export interface Props extends CalendarListProps {
   /** the initial position of the calendar ('open' or 'closed') */
   initialPosition?: Positions;
   /** callback that fires when the calendar is opened or closed */
-  onCalendarToggled?: () => boolean;
+  onCalendarToggled?: (isOpen: boolean) => void;
   /** an option to disable the pan gesture and disable the opening and closing of the calendar (initialPosition will persist)*/
   disablePan?: boolean;
   /** whether to hide the knob  */
@@ -358,8 +357,7 @@ class ExpandableCalendar extends Component<Props, State> {
         useNativeDriver: false
       }).start(this.onAnimatedFinished);
 
-      invoke(this.props, 'onCalendarToggled', isOpen);
-      // this.props.onCalendarToggled?.(isOpen);
+      this.props.onCalendarToggled?.(isOpen);
 
       this.setPosition();
       this.closeHeader(isOpen);
@@ -400,13 +398,13 @@ class ExpandableCalendar extends Component<Props, State> {
 
   /** Events */
 
-  onPressArrowLeft = () => {
-    invoke(this.props, 'onPressArrowLeft');
+  onPressArrowLeft = (method: () => void, month?: XDate) => {
+    this.props.onPressArrowLeft?.(method, month);
     this.scrollPage(false);
   };
 
-  onPressArrowRight = () => {
-    invoke(this.props, 'onPressArrowRight');
+  onPressArrowRight = (method: () => void, month?: XDate) => {
+    this.props.onPressArrowRight?.(method, month);
     this.scrollPage(true);
   };
 

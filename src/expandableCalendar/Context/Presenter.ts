@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
 import {sameMonth, isToday} from '../../dateutils';
@@ -53,10 +52,10 @@ class Presenter {
 
     updateState(buttonIcon);
 
-    invoke(props, 'onDateChanged', date, updateSource);
+    props.onDateChanged?.(date, updateSource);
 
     if (!isSameMonth) {
-      invoke(props, 'onMonthChange', xdateToData(new XDate(date)), updateSource);
+      props.onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
   };
 
