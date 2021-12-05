@@ -69,6 +69,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
+  /** Max number of weeks to show on each month of month view */
+  numberOfWeeks?: number;
 }
 
 interface CalendarState {
@@ -126,7 +128,9 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     /** Allow rendering of a totally custom header */
     customHeader: PropTypes.any,
     /** Allow selection of dates before minDate or after maxDate */
-    allowSelectionOutOfRange: PropTypes.bool
+    allowSelectionOutOfRange: PropTypes.bool,
+    /** Allow selection of dates before minDate or after maxDate */
+    numberOfWeeks: PropTypes.number
   };
   static defaultProps = {
     enableSwipeMonths: false
@@ -264,6 +268,9 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     );
   }
 
+  belowMaxNumberOfWeeks(weekLength: number) {
+    return (this.props.numberOfWeeks ? weekLength <= (this.props.numberOfWeeks - 1): true) 
+  }
   renderMonth() {
     const {currentMonth} = this.state;
     const {firstDay, showSixWeeks, hideExtraDays} = this.props;
@@ -271,7 +278,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     const days = page(currentMonth, firstDay, shouldShowSixWeeks);
     const weeks = [];
 
-    while (days.length) {
+    while (days.length && this.belowMaxNumberOfWeeks(weeks.length)) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
 
