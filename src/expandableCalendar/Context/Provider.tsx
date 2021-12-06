@@ -88,17 +88,16 @@ class CalendarProvider extends Component<Props> {
     };
   };
 
-  setDate = (date: Date | string, updateSource: UpdateSource) => {
+  setDate = (date: string, updateSource: UpdateSource) => {
     const {setDate} = this.presenter;
-    const d = date instanceof Date ? date : new Date(date);
 
-    const updateState = (buttonIcon: any) => {
+    const updateState = (buttonIcon: number) => {
       this.setState({date, prevDate: this.state.date, updateSource, buttonIcon}, () => {
-        this.animateTodayButton(d);
+        this.animateTodayButton(new Date(date));
       });
     };
 
-    setDate(this.props, d, this.state.date, updateState, updateSource);
+    setDate(this.props, date, this.state.date, updateState, updateSource);
   };
 
   setDisabled = (disabled: boolean) => {

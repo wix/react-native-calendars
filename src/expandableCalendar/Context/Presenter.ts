@@ -47,9 +47,9 @@ class Presenter {
     return icon;
   };
 
-  setDate = (props: CalendarContextProviderProps, date: Date, newDate: Date, updateState: (buttonIcon: any) => void, updateSource: UpdateSource) => {
+  setDate = (props: CalendarContextProviderProps, date: string, newDate: Date, updateState: (buttonIcon: number) => void, updateSource: UpdateSource) => {
     const isSameMonth = sameMonth(new XDate(date), new XDate(newDate));
-    const buttonIcon = this.getButtonIcon(date, props.showTodayButton);
+    const buttonIcon = this.getButtonIcon(new Date(date), props.showTodayButton);
 
     updateState(buttonIcon);
 
