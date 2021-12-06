@@ -1,6 +1,6 @@
 import {ComponentDriver} from 'react-component-driver';
 import Day from '.';
-import {extractStyles} from '../../../../testUtils';
+import {extractStyles} from '../../../testUtils';
 
 export class BasicDayDriver extends ComponentDriver {
   constructor() {
