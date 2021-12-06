@@ -16,10 +16,10 @@ const updateSources = commons.UpdateSources;
 const TOP_POSITION = 65;
 
 interface Props {
-  /** Initial date in 'yyyy-MM-dd' format. Default = Date() */
-  date: Date;
+  /** Initial date in 'yyyy-MM-dd' format. Default = now */
+  date: XDate;
   /** Callback for date change event */
-  onDateChanged?: () => Date;
+  onDateChanged?: () => XDate;
   /** Callback for month change event */
   onMonthChange?: () => DateData;
   /** Whether to show the today button */
@@ -43,7 +43,7 @@ class CalendarProvider extends Component<Props> {
   static displayName = 'CalendarProvider';
 
   static propTypes = {
-    /** Initial date in 'yyyy-MM-dd' format. Default = Date() */
+    /** Initial date in 'yyyy-MM-dd' format. Default = now */
     date: PropTypes.any.isRequired,
     /** Callback for date change event */
     onDateChanged: PropTypes.func,
@@ -62,20 +62,25 @@ class CalendarProvider extends Component<Props> {
   style = styleConstructor(this.props.theme);
   presenter = new Presenter();
 
+  
   state = {
-    prevDate: this.props.date || toMarkingFormat(new XDate()),
-    date: this.props.date || toMarkingFormat(new XDate()),
+    prevDate: this.getDate(this.props.date),
+    date: this.getDate(this.props.date),
     updateSource: updateSources.CALENDAR_INIT,
     buttonY: new Animated.Value(this.props.todayBottomMargin ? -this.props.todayBottomMargin : -TOP_POSITION),
-    buttonIcon: this.presenter.getButtonIcon(this.props.date, this.props.showTodayButton),
+    buttonIcon: this.presenter.getButtonIcon(this.getDate(this.props.date), this.props.showTodayButton),
     disabled: false,
     opacity: new Animated.Value(1)
   };
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.date !== this.props.date) {
-      this.setDate(toMarkingFormat(new XDate(this.props.date)), updateSources.PROP_UPDATE);
+    if (this.props.date && prevProps.date !== this.props.date) {
+      this.setDate(toMarkingFormat(this.props.date), updateSources.PROP_UPDATE);
     }
+  }
+
+  getDate(date: XDate) {
+    return toMarkingFormat(date || new XDate());
   }
 
   getProviderContextValue = () => {

@@ -11,7 +11,7 @@ const commons = require('../commons');
 const TOP_POSITION = 65;
 
 class Presenter {
-  _isPastDate(date: Date) {
+  _isPastDate(date: string) {
     const today = new XDate();
     const d = new XDate(date);
 
@@ -39,7 +39,7 @@ class Presenter {
     return require('../../img/up.png');
   };
 
-  getButtonIcon = (date: Date, showTodayButton = true) => {
+  getButtonIcon = (date: string, showTodayButton = true) => {
     if (!showTodayButton) {
       return undefined;
     }
@@ -47,9 +47,9 @@ class Presenter {
     return icon;
   };
 
-  setDate = (props: CalendarContextProviderProps, date: string, newDate: Date, updateState: (buttonIcon: number) => void, updateSource: UpdateSource) => {
+  setDate = (props: CalendarContextProviderProps, date: string, newDate: string, updateState: (buttonIcon: number) => void, updateSource: UpdateSource) => {
     const isSameMonth = sameMonth(new XDate(date), new XDate(newDate));
-    const buttonIcon = this.getButtonIcon(new Date(date), props.showTodayButton);
+    const buttonIcon = this.getButtonIcon(date, props.showTodayButton);
 
     updateState(buttonIcon);
 
