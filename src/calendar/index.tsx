@@ -141,17 +141,15 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   };
 
-  updateMonth = (day: any, doNotTriggerListeners = false) => {
+  updateMonth = (day: any) => {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
 
     this.setState({currentMonth: day.clone()}, () => {
-      if (!doNotTriggerListeners) {
-        const currMont = this.state.currentMonth.clone();
-        this.props.onMonthChange?.(xdateToData(currMont));
-        this.props.onVisibleMonthsChange?.([xdateToData(currMont)]);
-      }
+      const currMont = this.state.currentMonth.clone();
+      this.props.onMonthChange?.(xdateToData(currMont));
+      this.props.onVisibleMonthsChange?.([xdateToData(currMont)]);
     });
   };
 
