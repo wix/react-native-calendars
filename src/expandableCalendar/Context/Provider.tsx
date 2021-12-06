@@ -74,7 +74,7 @@ class CalendarProvider extends Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.date !== this.props.date) {
-      this.setDate(this.props.date, updateSources.PROP_UPDATE);
+      this.setDate(toMarkingFormat(new XDate(this.props.date)), updateSources.PROP_UPDATE);
     }
   }
 
