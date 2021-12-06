@@ -58,6 +58,15 @@ export function month(date: XDate) {
   return fromTo(firstDay, lastDay);
 }
 
+export function weeks(firstDate: XDate, numberOfWeeks: number) {
+  const firstYear = firstDate.getFullYear(),
+    firstMonth = firstDate.getMonth(),
+    firstDateNumber = firstDate.getDate();
+  const lastDate = new XDate(firstYear, firstMonth, firstDateNumber + 7*numberOfWeeks);
+
+  return fromTo(firstDate, lastDate);
+}
+
 export function weekDayNames(firstDayOfWeek = 0) {
   let weekDaysNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
   const dayShift = firstDayOfWeek % 7;
@@ -67,8 +76,8 @@ export function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
-  const days = month(date);
+export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false, numberOfWeeks: number | undefined = undefined) {
+  const days =  numberOfWeeks ? weeks(date, numberOfWeeks): month(date);
   let before = [],
     after = [];
 

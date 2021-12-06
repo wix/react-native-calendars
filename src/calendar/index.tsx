@@ -268,17 +268,14 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     );
   }
 
-  belowMaxNumberOfWeeks(weekLength: number) {
-    return (this.props.numberOfWeeks ? weekLength <= (this.props.numberOfWeeks - 1): true) 
-  }
   renderMonth() {
     const {currentMonth} = this.state;
-    const {firstDay, showSixWeeks, hideExtraDays} = this.props;
+    const {firstDay, showSixWeeks, hideExtraDays, numberOfWeeks} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
-    const days = page(currentMonth, firstDay, shouldShowSixWeeks);
+    const days = page(currentMonth, firstDay, shouldShowSixWeeks, numberOfWeeks);
     const weeks = [];
 
-    while (days.length && this.belowMaxNumberOfWeeks(weeks.length)) {
+    while (days.length) {
       weeks.push(this.renderWeek(days.splice(0, 7), weeks.length));
     }
 
