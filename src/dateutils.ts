@@ -62,7 +62,7 @@ export function weeks(firstDate: XDate, numberOfWeeks: number) {
   const firstYear = firstDate.getFullYear(),
     firstMonth = firstDate.getMonth(),
     firstDateNumber = firstDate.getDate();
-  const lastDate = new XDate(firstYear, firstMonth, firstDateNumber + 7*numberOfWeeks);
+  const lastDate = new XDate(firstYear, firstMonth, firstDateNumber + 7*(numberOfWeeks-1));
 
   return fromTo(firstDate, lastDate);
 }
