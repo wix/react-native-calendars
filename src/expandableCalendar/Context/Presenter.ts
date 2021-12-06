@@ -2,8 +2,8 @@ import XDate from 'xdate';
 
 import {sameMonth, isToday} from '../../dateutils';
 import {xdateToData, toMarkingFormat} from '../../interface';
-import {CalendarContextProviderProps} from './Provider';
 import {UpdateSource} from '../../types';
+import {CalendarContextProviderProps} from './Provider';
 
 
 const commons = require('../commons');

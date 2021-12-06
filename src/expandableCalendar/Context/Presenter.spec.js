@@ -1,7 +1,7 @@
-import Presenter from './Presenter';
 import XDate from 'xdate';
 import {UpdateSources} from '../commons';
 import {toMarkingFormat} from '../../interface';
+import Presenter from './Presenter';
 
 describe('Context provider tests', () => {
   const makeUUT = () => {
