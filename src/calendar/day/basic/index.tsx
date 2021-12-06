@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 
-import {Theme, DateData, DayState, MarkingTypes} from '../../../types';
+import {Theme, DayState, MarkingTypes} from '../../../types';
 import {shouldUpdate} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
