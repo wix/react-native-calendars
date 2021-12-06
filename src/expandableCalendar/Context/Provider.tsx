@@ -98,7 +98,7 @@ class CalendarProvider extends Component<Props> {
 
     const updateState = (buttonIcon: number) => {
       this.setState({date, prevDate: this.state.date, updateSource, buttonIcon}, () => {
-        this.animateTodayButton(new XDate(date));
+        this.animateTodayButton(date);
       });
     };
 
@@ -117,7 +117,7 @@ class CalendarProvider extends Component<Props> {
     setDisabled(showTodayButton, disabled, this.state.disabled, updateState);
   };
 
-  animateTodayButton(date: XDate) {
+  animateTodayButton(date: string) {
     const {shouldAnimateTodayButton, getPositionAnimation} = this.presenter;
 
     if (shouldAnimateTodayButton(this.props)) {
