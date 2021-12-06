@@ -29,7 +29,7 @@ export type ReservationListProps = ReservationProps & {
   /** Show items only for the selected day. Default = false */
   showOnlySelectedDayItems: boolean;
   /** callback that gets called when day changes while scrolling agenda list */
-  onDayChange?: (day: Date) => void;
+  onDayChange?: (day: XDate) => void;
   /** specify what should be rendered instead of ActivityIndicator */
   renderEmptyData: () => JSX.Element;
   style?: StyleProp<ViewStyle>;
@@ -245,7 +245,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     const dateIsSame = sameDate(day, this.selectedDay);
     if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
-      this.props.onDayChange?.(new Date(day.getUTCMilliseconds()));
+      this.props.onDayChange?.(day.clone());
     }
   };
 
