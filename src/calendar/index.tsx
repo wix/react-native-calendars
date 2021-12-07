@@ -92,7 +92,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     theme: PropTypes.object,
     /** Specify style for calendar container element. Default = {} */
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
-    /** Initially visible month. Default = Date() */
+    /** Initially visible month in 'yyyy-MM-dd' format. Default = now */
     current: PropTypes.any,
     /** Initially visible month. If changed will initialize the calendar to this value */
     initialDate: PropTypes.any,
