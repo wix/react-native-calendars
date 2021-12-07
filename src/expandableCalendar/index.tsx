@@ -266,7 +266,6 @@ class ExpandableCalendar extends Component<Props, State> {
   }
 
   getMonth(date: XDate) {
-    console.warn('month: ', date);
     const d = new XDate(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
     return d.getMonth() + 1;
