@@ -5,7 +5,6 @@ import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 
 import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
-import {xdateToData} from '../../../interface';
 import {shouldUpdate} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
