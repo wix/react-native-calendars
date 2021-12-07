@@ -156,8 +156,10 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   handleDayInteraction(date: DateData, interaction?: (date: DateData) => void) {
     const {disableMonthChange, allowSelectionOutOfRange} = this.props;
     const day = parseDate(date);
+    const min = parseDate(this.props.minDate);
+    const max = parseDate(this.props.maxDate);
 
-    if (allowSelectionOutOfRange || !(this.props.minDate && !isGTE(day, this.props.minDate)) && !(this.props.maxDate && !isLTE(day, this.props.maxDate))) {
+    if (allowSelectionOutOfRange || !(min && !isGTE(day, min)) && !(max && !isLTE(day, max))) {
       const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
 
       if (shouldUpdateMonth) {
