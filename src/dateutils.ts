@@ -58,7 +58,7 @@ export function month(date: XDate) {
   return fromTo(firstDay, lastDay);
 }
 
-export function weeks(firstDate: XDate, numberOfWeeks: number) {
+function weeks(firstDate: XDate, numberOfWeeks: number) {
   const firstYear = firstDate.getFullYear(),
     firstMonth = firstDate.getMonth(),
     firstDateNumber = firstDate.getDate();
@@ -76,7 +76,7 @@ export function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false, numberOfWeeks: number | undefined = undefined) {
+export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false, numberOfWeeks?: number) {
   const days =  numberOfWeeks ? weeks(date, numberOfWeeks): month(date);
   let before = [],
     after = [];
