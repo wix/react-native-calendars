@@ -1,6 +1,7 @@
 import XDate from 'xdate';
 
 import React from 'react';
+import {FlatList} from 'react-native';
 
 import {sameWeek} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
@@ -18,7 +19,7 @@ class Presenter {
   private _applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
   // On Android+RTL there's an initial scroll that cause issues
   private _firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
-  public list: React.RefObject<any> = React.createRef();
+  public list: React.RefObject<FlatList> = React.createRef();
 
   scrollToIndex = (animated: boolean) => {
     this.list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
@@ -117,39 +118,39 @@ class Presenter {
     return page === 0;
   };
 
-  _isLastPage = (page: number, items: Date[]) => {
+  _isLastPage = (page: number, items: string[]) => {
     return page === items.length - 1;
   };
 
-  _getNextPageItems = (items: Date[]) => {
+  _getNextPageItems = (items: string[]) => {
     return items.map((_, i) => {
       const index = i <= NUMBER_OF_PAGES ? i + NUMBER_OF_PAGES : i;
       return items[index];
     });
   };
 
-  _getFirstPageItems = (items: Date[]) => {
+  _getFirstPageItems = (items: string[]) => {
     return items.map((_, i) => {
       const index = i >= NUMBER_OF_PAGES ? i - NUMBER_OF_PAGES : i;
       return items[index];
     });
   };
 
-  _mergeArraysFromEnd = (items: any[], newArray: any[]) => {
+  _mergeArraysFromEnd = (items: string[], newArray: string[]) => {
     for (let i = NUMBER_OF_PAGES + 1; i < items.length; i++) {
       items[i] = newArray[i];
     }
     return items;
   };
 
-  _mergeArraysFromTop = (items: any[], newArray: any[]) => {
+  _mergeArraysFromTop = (items: string[], newArray: string[]) => {
     for (let i = 0; i < NUMBER_OF_PAGES; i++) {
       items[i] = newArray[i];
     }
     return items;
   };
 
-  _getItemsForPage = (page: number, items: Date[]) => {
+  _getItemsForPage = (page: number, items: string[]) => {
     if (this._isLastPage(page, items)) {
       return this._getNextPageItems(items);
     } else if (this._isFirstPage(page)) {

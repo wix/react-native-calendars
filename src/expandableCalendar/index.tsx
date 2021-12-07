@@ -223,12 +223,12 @@ class ExpandableCalendar extends Component<Props, State> {
 
   /** Scroll */
 
-  scrollToDate(date: Date) {
+  scrollToDate(date: XDate) {
     if (!this.props.horizontal) {
-      this.calendar?.current?.scrollToDay(new XDate(date), 0, true);
+      this.calendar?.current?.scrollToDay(date, 0, true);
     } else if (this.getYear(date) !== this.visibleYear || this.getMonth(date) !== this.visibleMonth) {
       // don't scroll if the month is already visible
-      this.calendar?.current?.scrollToMonth(new XDate(date));
+      this.calendar?.current?.scrollToMonth(date);
     }
   }
 
@@ -260,12 +260,13 @@ class ExpandableCalendar extends Component<Props, State> {
     return CLOSED_HEIGHT + WEEK_HEIGHT * (this.numberOfWeeks - 1) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
   }
 
-  getYear(date: Date) {
+  getYear(date: XDate) {
     const d = new XDate(date);
     return d.getFullYear();
   }
 
-  getMonth(date: Date) {
+  getMonth(date: XDate) {
+    console.warn('month: ', date);
     const d = new XDate(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
     return d.getMonth() + 1;
@@ -283,7 +284,7 @@ class ExpandableCalendar extends Component<Props, State> {
     return this.props.hideArrows || false;
   }
 
-  isLaterDate(date1?: DateData, date2?: Date) {
+  isLaterDate(date1?: DateData, date2?: XDate) {
     if (date1 && date2) {
       if (date1.year > this.getYear(date2)) {
         return true;

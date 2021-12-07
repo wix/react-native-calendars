@@ -114,7 +114,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  getSectionIndex(date: Date) {
+  getSectionIndex(date: XDate) {
     let i;
     map(this.props.sections, (section, index) => {
       // NOTE: sections titles should match current date format!!!
@@ -126,7 +126,7 @@ class AgendaList extends Component<Props> {
     return i;
   }
 
-  getNextSectionIndex(date: Date) {
+  getNextSectionIndex(date: XDate) {
     let i = 0;
     const {sections} = this.props;
     for (let j = 1; j < sections.length; j++) {
