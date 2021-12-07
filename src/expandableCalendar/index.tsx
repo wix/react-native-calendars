@@ -60,6 +60,8 @@ export interface Props extends CalendarListProps {
   openThreshold?: number;
   /** a threshold for closing the calendar with the pan gesture */
   closeThreshold?: number;
+  /** Whether to close the calendar on day press. Default = true */
+  closeOnDayPress?: boolean;
   context?: any;
 }
 export type ExpandableCalendarProps = Props;
@@ -102,7 +104,9 @@ class ExpandableCalendar extends Component<Props, State> {
     /** a threshold for opening the calendar with the pan gesture */
     openThreshold: PropTypes.number,
     /** a threshold for closing the calendar with the pan gesture */
-    closeThreshold: PropTypes.number
+    closeThreshold: PropTypes.number,
+    /** Whether to close the calendar on day press. Default = true */
+    closeOnDayPress: PropTypes.bool
   };
 
   static defaultProps = {
@@ -113,7 +117,8 @@ class ExpandableCalendar extends Component<Props, State> {
     rightArrowImageSource: RIGHT_ARROW,
     allowShadow: true,
     openThreshold: PAN_GESTURE_THRESHOLD,
-    closeThreshold: PAN_GESTURE_THRESHOLD
+    closeThreshold: PAN_GESTURE_THRESHOLD,
+    closeOnDayPress: true
   };
 
   static positions = Positions;
@@ -412,12 +417,14 @@ class ExpandableCalendar extends Component<Props, State> {
     // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     this.props.context.setDate?.(value.dateString, updateSources.DAY_PRESS);
 
-    setTimeout(() => {
-      // to allows setDate to be completed
-      if (this.state.position === Positions.OPEN) {
-        this.bounceToPosition(this.closedHeight);
-      }
-    }, 0);
+    if (this.props.closeOnDayPress) {
+      setTimeout(() => {
+        // to allows setDate to be completed
+        if (this.state.position === Positions.OPEN) {
+          this.bounceToPosition(this.closedHeight);
+        }
+      }, 0);
+    }
 
     if (this.props.onDayPress) {
       this.props.onDayPress(value);

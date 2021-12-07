@@ -766,7 +766,7 @@
 ## [1.1270.0] - 2021-11-29
 - testIDs - reverting to js file with module.exports.
 
-## [1.1271.0] - 2021-xx-xx
+## [1.1271.0] - 2021-12-7
 
 ## Fixed
-- ContextProvider - 'onDateChanged' return type.
+- ContextProvider - 'onDateChanged' return type (should be string and not Date).
