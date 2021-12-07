@@ -19,7 +19,7 @@ const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
 
 export interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
-  day?: Date;
+  day?: XDate;
   /** Provide custom day rendering component */
   dayComponent?: any;
 }
@@ -100,8 +100,8 @@ export default class Day extends Component<DayProps> {
 
   render() {
     const {day, marking} = this.props;
-    const date = day && xdateToData(new XDate(day));
-    const _isToday = day ? isToday(new XDate(day)) : undefined;
+    const date = day && xdateToData(day);
+    const _isToday = day ? isToday(day) : undefined;
     const Component = this.getDayComponent();
     const dayProps = omit(this.props, 'day');
     const accessibilityLabel = this.getAccessibilityLabel(day, marking, _isToday);

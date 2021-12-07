@@ -23,7 +23,7 @@ export interface BasicDayProps {
   /** onLongPress callback */
   onLongPress?: (date?: DateData) => void;
   /** The date to return from press callbacks */
-  date?: XDate;
+  date?: DateData;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
@@ -73,11 +73,11 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   onPress = () => {
-    this.props.onPress?.(this.props.date ? xdateToData(this.props.date) : undefined);
+    this.props.onPress?.(this.props.date);
   };
 
   onLongPress = () => {
-    this.props.onLongPress?.(this.props.date ? xdateToData(this.props.date) : undefined);
+    this.props.onLongPress?.(this.props.date);
   };
 
   get marking() {
