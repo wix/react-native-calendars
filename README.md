@@ -73,7 +73,7 @@ LocaleConfig.defaultLocale = 'fr';
 
 ```javascript
 <Calendar
-  // Initially visible month. Default = Date()
+  // Initially visible month. Default = now
   current={'2012-03-01'}
   // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
   minDate={'2012-05-10'}
