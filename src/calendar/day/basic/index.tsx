@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 
-import {Theme, DayState, MarkingTypes} from '../../../types';
+import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
+import {xdateToData} from '../../../interface';
 import {shouldUpdate} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
@@ -18,11 +19,11 @@ export interface BasicDayProps {
   /** Theme object */
   theme?: Theme;
   /** onPress callback */
-  onPress?: (date?: Date) => void;
+  onPress?: (date?: DateData) => void;
   /** onLongPress callback */
-  onLongPress?: (date?: Date) => void;
+  onLongPress?: (date?: DateData) => void;
   /** The date to return from press callbacks */
-  date?: Date;
+  date?: XDate;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
@@ -72,11 +73,11 @@ export default class BasicDay extends Component<BasicDayProps> {
   }
 
   onPress = () => {
-    this.props.onPress?.(this.props.date);
+    this.props.onPress?.(this.props.date ? xdateToData(this.props.date) : undefined);
   };
 
   onLongPress = () => {
-    this.props.onLongPress?.(this.props.date);
+    this.props.onLongPress?.(this.props.date ? xdateToData(this.props.date) : undefined);
   };
 
   get marking() {
