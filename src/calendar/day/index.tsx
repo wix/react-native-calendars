@@ -1,4 +1,3 @@
-import get from 'lodash/get';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -78,15 +77,13 @@ export default class Day extends Component<DayProps> {
   }
 
   getAccessibilityLabel = memoize((day, marking, isToday) => {
-    const today = get(XDate, 'locales[XDate.defaultLocale].today');
-    const formatAccessibilityLabel = get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
+    // @ts-expect-error
+    const today = XDate.locales[XDate.defaultLocale].today || 'today';
+    // @ts-expect-error
+    const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel || 'dddd d MMMM yyyy';
     const markingLabel = this.getMarkingLabel(marking);
 
-    if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
-    }
-
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
+    return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
   });
 
   getDayComponent() {
