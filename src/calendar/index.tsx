@@ -69,8 +69,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
-  /** Max number of weeks to show on each month of month view */
-  numberOfWeeks?: number;
+  /** Max number of weeks to show from the current date */
+  numberOfWeeksFromCurrent?: number;
 }
 
 interface CalendarState {
@@ -130,7 +130,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     /** Allow selection of dates before minDate or after maxDate */
     allowSelectionOutOfRange: PropTypes.bool,
     /** Allow selection of dates before minDate or after maxDate */
-    numberOfWeeks: PropTypes.number
+    numberOfWeeksFromCurrent: PropTypes.number
   };
   static defaultProps = {
     enableSwipeMonths: false
