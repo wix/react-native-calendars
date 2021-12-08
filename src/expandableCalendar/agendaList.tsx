@@ -1,7 +1,6 @@
 import get from 'lodash/get';
 import map from 'lodash/map';
 import omit from 'lodash/omit';
-import invoke from 'lodash/invoke';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
 import PropTypes from 'prop-types';
@@ -115,7 +114,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  getSectionIndex(date: Date) {
+  getSectionIndex(date: XDate) {
     let i;
     map(this.props.sections, (section, index) => {
       // NOTE: sections titles should match current date format!!!
@@ -127,7 +126,7 @@ class AgendaList extends Component<Props> {
     return i;
   }
 
-  getNextSectionIndex(date: Date) {
+  getNextSectionIndex(date: XDate) {
     let i = 0;
     const {sections} = this.props;
     for (let j = 1; j < sections.length; j++) {
@@ -199,7 +198,7 @@ class AgendaList extends Component<Props> {
         this._topSection = topSection;
         if (this.didScroll && !this.props.avoidDateUpdates) {
           // to avoid setDate() on first load (while setting the initial context.date value)
-          invoke(this.props.context, 'setDate', this._topSection, updateSources.LIST_DRAG);
+          this.props.context.setDate?.(this._topSection, updateSources.LIST_DRAG);
         }
       }
     }
@@ -209,19 +208,19 @@ class AgendaList extends Component<Props> {
     if (!this.didScroll) {
       this.didScroll = true;
     }
-    invoke(this.props, 'onScroll', event);
+    this.props.onScroll?.(event);
   };
 
   onMomentumScrollBegin = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    invoke(this.props.context, 'setDisabled', true);
-    invoke(this.props, 'onMomentumScrollBegin', event);
+    this.props.context.setDisabled?.(true);
+    this.props.onMomentumScrollBegin?.(event);
   };
 
   onMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     // when list momentum ends AND when scrollToSection scroll ends
     this.sectionScroll = false;
-    invoke(this.props.context, 'setDisabled', false);
-    invoke(this.props, 'onMomentumScrollEnd', event);
+    this.props.context.setDisabled?.(false);
+    this.props.onMomentumScrollEnd?.(event);
   };
 
   onScrollToIndexFailed = (info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
