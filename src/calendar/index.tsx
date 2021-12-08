@@ -270,9 +270,9 @@ class Calendar extends Component<CalendarProps, CalendarState> {
 
   renderMonth() {
     const {currentMonth} = this.state;
-    const {firstDay, showSixWeeks, hideExtraDays, numberOfWeeks} = this.props;
+    const {firstDay, showSixWeeks, hideExtraDays, numberOfWeeksFromCurrent} = this.props;
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
-    const days = page(currentMonth, firstDay, shouldShowSixWeeks, numberOfWeeks);
+    const days = page(currentMonth, firstDay, shouldShowSixWeeks, numberOfWeeksFromCurrent);
     const weeks = [];
 
     while (days.length) {

@@ -83,8 +83,8 @@ export function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false, numberOfWeeks?: number) {
-  const days =  numberOfWeeks ? getDaysFromWeeksFromCurrent(date, numberOfWeeks): month(date);
+export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false, numberOfWeeksFromCurrent?: number) {
+  const days =  numberOfWeeksFromCurrent ? getDaysFromWeeksFromCurrent(date, numberOfWeeksFromCurrent): month(date);
   let before = [],
     after = [];
 
