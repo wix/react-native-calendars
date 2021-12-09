@@ -1,6 +1,6 @@
 const XDate = require('xdate');
 
-function padNumber(n: number) {
+export function padNumber(n: number) {
   if (n < 10) {
     return '0' + n;
   }
