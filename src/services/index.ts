@@ -12,6 +12,6 @@ export function getCalendarDateString(date?: Date | string | number) {
     } else if (isNumber(date)) {
       return toMarkingFormat(new XDate(date, true));
     }
-    return 'Invalid Date';
+    throw 'Invalid Date';
   }
 }

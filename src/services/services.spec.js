@@ -4,7 +4,7 @@ describe('services', function () {
   describe('getCalendarDateString()', function () {
     const timestamp = 1585561899000;
     const expectedFormattedDate = '2020-03-30';
-    const invalidString = 'Invalid Date';
+    const throwMessage = 'Invalid Date';
     const epochDate = '1970-01-01';
 
     it('should return undefined for undefined date', function () {
@@ -19,8 +19,8 @@ describe('services', function () {
       expect(getCalendarDateString(new Date('30 Mar 2020'))).toEqual(expectedFormattedDate);
     });
 
-    it('should return "Invalid Date" for invalid JS Date', function () {
-      expect(getCalendarDateString(new Date('30/03/2020'))).toEqual(invalidString);
+    it('should throw "Invalid Date" for invalid JS Date', function () {
+      expect(() => {getCalendarDateString(new Date('30/03/2020'));}).toThrow(throwMessage);
     });
 
     it('should return dashed date for timestamp number', function () {
@@ -40,7 +40,7 @@ describe('services', function () {
     });
 
     it('should return "Invalid Date" for invalid date string', function () {
-      expect(getCalendarDateString('30/3/2020')).toEqual(invalidString);
+      expect(getCalendarDateString('30/3/2020')).toEqual(throwMessage);
     });
   });
 });
