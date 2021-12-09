@@ -1,6 +1,5 @@
-import {ViewStyle, TextStyle} from 'react-native';
+import {ViewStyle, TextStyle, StyleProp} from 'react-native';
 import {UpdateSources} from './expandableCalendar/commons';
-
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
@@ -12,7 +11,7 @@ export type DateData = {
   day: number;
   timestamp: number;
   dateString: string;
-}
+};
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;
@@ -88,4 +87,7 @@ export interface Theme {
   arrowHeight?: number;
   arrowWidth?: number;
   weekVerticalMargin?: number;
+  'stylesheet.calendar.header'?: {
+    week: StyleProp<ViewStyle>;
+  };
 }

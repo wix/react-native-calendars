@@ -31,11 +31,11 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify style for calendar container element */
   style?: StyleProp<ViewStyle>;
   /** Initially visible month */
-  current?: XDate;
+  current?: string;
   /** Minimum date that can be selected, dates before minDate will be grayed out */
-  minDate?: XDate;
+  minDate?: string;
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
-  maxDate?: XDate;
+  maxDate?: string;
   /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday */
   firstDay?: number;
   /** Collection of dates that have to be marked */
