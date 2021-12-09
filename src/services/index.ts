@@ -1,16 +1,17 @@
-import {isString, isUndefined} from 'lodash';
+import {isUndefined, isDate, isString, isNumber} from 'lodash';
 import XDate from 'xdate';
-const {parseDate, toMarkingFormat} = require('../interface');
+const {padNumber, toMarkingFormat} = require('../interface');
 
-export function getCalendarDateString(date?: any) {
+export function getCalendarDateString(date?: Date | string | number) {
   if (!isUndefined(date)) {
-    let d = date;
-    if (isString(date)) {
-      // NOTE: dealing with strings here since parseDate() returns a date with 'utc-mode = true' for this case, which returns the day before
-      d = new XDate(date, false);
-    } else {
-      d = parseDate(date);
+    if (isDate(date) && !isNaN(date.getFullYear())) {
+      return date.getFullYear() + '-' + padNumber(date.getMonth() + 1) + '-' + padNumber(date.getDate());
+    } else if (isString(date)) {
+      // issue with strings and XDate's utc-mode - returns one day before
+      return toMarkingFormat(new XDate(date, false));
+    } else if (isNumber(date)) {
+      return toMarkingFormat(new XDate(date, true));
     }
-    return toMarkingFormat(d);
+    return 'Invalid Date';
   }
 }
