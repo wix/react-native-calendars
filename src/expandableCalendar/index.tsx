@@ -13,7 +13,7 @@ import {AccessibilityInfo, PanResponder, Animated, View, ViewStyle, Text, Image,
 import {CALENDAR_KNOB} from '../testIDs';
 import {page, weekDayNames} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
-import {Theme, DateData, Direction} from 'types';
+import {Theme, DateData, Direction} from '../types';
 import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import Calendar from '../calendar';
@@ -139,7 +139,7 @@ class ExpandableCalendar extends Component<Props, State> {
     style: ViewStyle;
   };
   visibleMonth: number;
-  visibleYear: number;
+  visibleYear: number | undefined;
   initialDate: XDate;
   headerStyleOverride: Theme;
   header: React.RefObject<any> = React.createRef();
@@ -436,7 +436,6 @@ class ExpandableCalendar extends Component<Props, State> {
     if (month && this.visibleMonth !== month) {
       this.visibleMonth = month; 
       if (first(value)?.year) {
-        // @ts-expect-error
         this.visibleYear = first(value)?.year;
       }
 
@@ -580,6 +579,7 @@ class ExpandableCalendar extends Component<Props, State> {
               {...others}
               theme={themeObject}
               ref={this.calendar}
+              // @ts-expect-error should be converted to string
               current={this.initialDate}
               onDayPress={this.onDayPress}
               onVisibleMonthsChange={this.onVisibleMonthsChange}
