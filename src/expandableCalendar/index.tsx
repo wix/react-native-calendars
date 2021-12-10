@@ -588,7 +588,7 @@ class ExpandableCalendar extends Component<Props, State> {
               hideArrows={this.shouldHideArrows()}
               onPressArrowLeft={this.onPressArrowLeft}
               onPressArrowRight={this.onPressArrowRight}
-              hideExtraDays={!horizontal}
+              hideExtraDays={!horizontal && isOpen}
               renderArrow={this.renderArrow}
               staticHeader
             />
