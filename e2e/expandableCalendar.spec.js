@@ -1,5 +1,6 @@
+import testIDs from '../example/src/testIDs';
+
 const {CHANGE_MONTH_RIGHT_ARROW, CHANGE_MONTH_LEFT_ARROW, STATIC_HEADER} = require('../src/testIDs');
-const testIDs = require('../example/src/testIDs');
 
 describe('Expandable Calendar', () => {
   beforeEach(async () => {

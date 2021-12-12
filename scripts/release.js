@@ -1,17 +1,19 @@
 /* eslint-disable no-console */
-const exec = require('shell-utils').exec;
-const semver = require('semver');
-const fs = require('fs');
 const _ = require('lodash');
+const fs = require('fs');
+const semver = require('semver');
+const exec = require('shell-utils').exec;
 
-const ONLY_ON_BRANCH = 'origin/master';
-const VERSION_TAG = 'latest';
+const ONLY_ON_BRANCH = 'origin/release';
+const isSnapshotBuild = process.env.RELEASE_SNAPSHOT_VERSION === 'true';
+const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
 const VERSION_INC = 'minor';
 
 function run() {
   if (!validateEnv()) {
     return;
   }
+
   setupGit();
   createNpmRc();
   versionTagAndPublish();
@@ -27,7 +29,7 @@ function validateEnv() {
     return false;
   }
 
-  if (process.env.GIT_BRANCH !== ONLY_ON_BRANCH) {
+  if (process.env.GIT_BRANCH !== ONLY_ON_BRANCH && !isSnapshotBuild) {
     console.log(`not publishing on branch ${process.env.GIT_BRANCH}`);
     return false;
   }
@@ -41,7 +43,7 @@ function setupGit() {
   exec.execSyncSilent(`git config --global user.name "${process.env.GIT_USER}"`);
   const remoteUrl = new RegExp('https?://(\\S+)').exec(exec.execSyncRead('git remote -v'))[1];
   exec.execSyncSilent(`git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`);
-  exec.execSync(`git checkout ${ONLY_ON_BRANCH}`);
+  exec.execSync(`git checkout ${process.env.GIT_BRANCH}`);
 }
 
 function createNpmRc() {
@@ -60,12 +62,18 @@ function versionTagAndPublish() {
   const currentPublished = findCurrentPublishedVersion();
   console.log(`current published version: ${currentPublished}`);
 
-  const version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  let version;
+  if (isSnapshotBuild) {
+    version = `${currentPublished}-snapshot.${process.env.BUILD_ID}`;
+  } else {
+    version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  }
+
   tryPublishAndTag(version);
 }
 
 function findCurrentPublishedVersion() {
-  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
+  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.latest`);
 }
 
 function tryPublishAndTag(version) {
