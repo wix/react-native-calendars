@@ -17,10 +17,12 @@
     // "emitDeclarationOnly": true,
     // "noImplicitAny": false
     "declaration": true,
-    "baseUrl": "src",
-    "paths": {}
+    "baseUrl": ".",
+    "paths": {
+      "react-native-calendars": ["src/index.ts"],
+    }
   },
   // "include": ["src/calendar/day/basic", "src/global.d.ts"],
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "example/src/screens/calendars.tsx"],
   "exclude": ["node_modules", "testUtils"]
 }

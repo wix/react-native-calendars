@@ -13,6 +13,7 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 import {MarkingProps} from './marking';
+import {DateData} from '../../types';
 
 const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
 
@@ -20,7 +21,7 @@ export interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
   day?: XDate;
   /** Provide custom day rendering component */
-  dayComponent?: any;
+  dayComponent?: React.ComponentType<DayProps & {date?: DateData}>;
 }
 
 export default class Day extends Component<DayProps> {

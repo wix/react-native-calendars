@@ -1,7 +1,7 @@
 import filter from 'lodash/filter';
 
 import React, {Component} from 'react';
-import {View, ViewStyle, TextStyle} from 'react-native';
+import {View, ViewStyle, TextStyle, StyleProp} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
 import {shouldUpdate, extractComponentProps} from '../../../componentUpdater';
@@ -44,8 +44,11 @@ export interface MarkingProps extends DotProps {
   inactive?: boolean;
   disableTouchEvent?: boolean;
   activeOpacity?: number;
+  textColor?: string;
   selectedColor?: string;
   selectedTextColor?: string;
+  customTextStyle?: StyleProp<TextStyle>;
+  customContainerStyle?: StyleProp<ViewStyle>;
   dotColor?: string;
   //multi-dot
   dots?: DOT[];

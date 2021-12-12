@@ -10,7 +10,7 @@ import {sameDate} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
-import {ReservationItemType, ReservationsType} from 'agenda';
+import {ReservationItemType, ReservationsType} from '../../agenda';
 
 
 export interface DayReservations {

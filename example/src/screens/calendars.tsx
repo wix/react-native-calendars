@@ -1,7 +1,6 @@
 import React, {useState, Fragment} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
-// @ts-expect-error
-import {Calendar} from 'react-native-calendars';
+import {Calendar, CalendarProps} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2020-02-02';
@@ -14,7 +13,7 @@ const CalendarsScreen = () => {
     setShowMarkedDatesExamples(!showMarkedDatesExamples);
   };
 
-  const onDayPress = day => {
+  const onDayPress: CalendarProps['onDayPress'] = day => {
     setSelected(day.dateString);
   };
 
@@ -349,7 +348,7 @@ const CalendarsScreen = () => {
             return (
               <View>
                 <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
-                  {date.day}
+                  {date?.day}
                 </Text>
               </View>
             );
@@ -362,6 +361,7 @@ const CalendarsScreen = () => {
   const renderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
       return (
+        // @ts-expect-error
         <View ref={ref} {...props} style={styles.customHeader}>
           <Text>This is a custom header!</Text>
           <TouchableOpacity onPress={() => console.warn('Tapped!')}>
