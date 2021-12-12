@@ -6,8 +6,7 @@ const exec = require('shell-utils').exec;
 const cp = require('child_process');
 
 let IS_SNAPSHOT;
-const isRelease = process.env.BUILDKITE_MESSAGE.match(/^release$/i);
-if (isRelease){
+if (process.env.BUILDKITE_MESSAGE.match(/^release$/i)){
   IS_SNAPSHOT = cp.execSync(`buildkite-agent meta-data get is-snapshot`).toString();
 }
 const ONLY_ON_BRANCH = 'origin/release';
@@ -31,7 +30,7 @@ function validateEnv() {
   }
 
   if (process.env.BUILDKITE_BRANCH !== ONLY_ON_BRANCH && !isSnapshotBuild) {
-    console.log(`not publishing on branch ${process.env.GIT_BRANCH}`);
+    console.log(`not publishing on branch ${process.env.BUILDKITE_BRANCH}`);
     return false;
   }
 
@@ -98,7 +97,7 @@ function tryPublishAndTag(version) {
 function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
   exec.execSync(`npm --no-git-tag-version --allow-same-version version ${newVersion}`);
-  // exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
+  exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
   exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
   exec.execSyncSilent(`git push deploy ${newVersion} || true`);
 }
