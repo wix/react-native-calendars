@@ -782,6 +782,8 @@
 - README - 'try it out' section missing steps (PR #1624).
 - Day - fix accessibility label localization (PR #1694).
 - Agenda - renders only for the first item of the day (PR #1699).
+- ExpandableCalendar - Only hide extra days when vertical and open (PR #1705).
+- ts configuration.
 
 ## Changed
 - Replacing lodash 'invoke' with optional chaining.
