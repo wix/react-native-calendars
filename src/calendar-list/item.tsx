@@ -113,7 +113,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
         <Calendar
           {...calendarProps}
           testID={testID}
-          current={item}
+          current={item.toString()}
           style={calStyle}
           headerStyle={horizontal ? headerStyle : undefined}
           disableMonthChange
