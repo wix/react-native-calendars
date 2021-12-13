@@ -372,7 +372,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       <CalendarList
         {...calendarListProps}
         ref={this.calendar}
-        current={this.currentMonth.toString('yyyy-MM-dd')}
+        current={this.currentMonth.toString()}
         markedDates={this.generateMarkings(this.state.selectedDay, markedDates, items)}
         calendarWidth={this.viewWidth}
         scrollEnabled={this.state.calendarScrollable}
