@@ -73,7 +73,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
 }
 
 interface CalendarState {
-  prevInitialDate: any;
+  prevInitialDate?: string;
   currentMonth: any;
 }
 /**
@@ -145,7 +145,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   header: React.RefObject<CalendarHeader> = React.createRef();
 
   static getDerivedStateFromProps(nextProps: CalendarProps, prevState: CalendarState) {
-    if (nextProps?.initialDate && toMarkingFormat(nextProps?.initialDate) !== toMarkingFormat(prevState.prevInitialDate)) {
+    if (nextProps?.initialDate && nextProps?.initialDate !== prevState.prevInitialDate) {
       return {
         prevInitialDate: nextProps.initialDate,
         currentMonth: parseDate(nextProps.initialDate)
