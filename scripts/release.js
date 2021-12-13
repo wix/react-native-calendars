@@ -9,7 +9,7 @@ let IS_SNAPSHOT;
 if (process.env.BUILDKITE_MESSAGE.match(/^release$/i)){
   IS_SNAPSHOT = cp.execSync(`buildkite-agent meta-data get is-snapshot`).toString();
 }
-const ONLY_ON_BRANCH = 'origin/release';
+const ONLY_ON_BRANCH = 'release';
 const isSnapshotBuild = IS_SNAPSHOT === 'true';
 const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
 const VERSION_INC = 'minor';
