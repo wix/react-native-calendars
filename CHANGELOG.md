@@ -772,11 +772,12 @@
 - ContextProvider - 'onDateChanged' return type (should be 'string' and not 'Date').
 
 
-## [1.1272.0] - xx-xx-xx
+## [1.1272.0] - 2021-12-13
 
 ## Added
 - ExpandableCalendar - Add 'closeOnDayPress' prop (PR #1673).
 - new theme prop - 'weekVerticalMargin' to control week row margin (PR #1682).
+- Calendar - add 'initialDate' prop to allow reset the calendar with new date.
 
 ## Fixed
 - README - 'try it out' section missing steps (PR #1624).
