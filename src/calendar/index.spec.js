@@ -39,6 +39,13 @@ describe('Calendar', () => {
       expect(drv.getDays()).toEqual(expectedDays);
     });
 
+    it('should render month from `initialDate` prop date', () => {
+      const expectedDays = getDaysArray(1, 31);
+      expectedDays.push(...getDaysArray(1, 4)); // April days
+      const drv = new CalendarDriver().withDefaultProps({initialDate: '2020-03-01'}).render();
+      expect(drv.getDays()).toEqual(expectedDays);
+    });
+
     it('should render calendar with week numbers with `showWeekNumbers={true}` prop', () => {
       const drv = new CalendarDriver().withDefaultProps({showWeekNumbers: true}).render();
       expect(drv.getWeekNumbers()).toEqual(['14', '15', '16', '17', '18']);
