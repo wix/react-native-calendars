@@ -31,10 +31,9 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify style for calendar container element */
   style?: StyleProp<ViewStyle>;
   /** Initially visible month */
-  current?: string;
-  current?: XDate; // TODO: migrate to 'initialDate'
+  current?: string; // TODO: migrate to 'initialDate'
   /** Initially visible month. If changed will initialize the calendar to this value */
-  initialDate?: XDate;
+  initialDate?: string;
   /** Minimum date that can be selected, dates before minDate will be grayed out */
   minDate?: string;
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
@@ -93,13 +92,13 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     /** Specify style for calendar container element. Default = {} */
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     /** Initially visible month in 'yyyy-MM-dd' format. Default = now */
-    current: PropTypes.any,
+    current: PropTypes.string,
     /** Initially visible month. If changed will initialize the calendar to this value */
-    initialDate: PropTypes.any,
+    initialDate: PropTypes.string,
     /** Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined */
-    minDate: PropTypes.any,
+    minDate: PropTypes.string,
     /** Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined */
-    maxDate: PropTypes.any,
+    maxDate: PropTypes.string,
     /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday. */
     firstDay: PropTypes.number,
     /** Collection of dates that have to be marked. Default = {} */
