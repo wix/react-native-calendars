@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View, ViewStyle} from 'react-native';
 
-import {Theme, DayState} from '../../../types';
+import {Theme, DayState, DateData} from '../../../types';
 import {shouldUpdate} from '../../../componentUpdater';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
@@ -16,9 +16,9 @@ interface PeriodDayProps {
   state?: DayState;
   marking?: MarkingProps;
   theme?: Theme;
-  onPress?: (date?: Date) => void;
-  onLongPress?: (date?: Date) => void;
-  date?: Date;
+  onPress?: (date?: DateData) => void;
+  onLongPress?: (date?: DateData) => void;
+  date?: DateData;
   accessibilityLabel?: string;
   testID?: string;
 }

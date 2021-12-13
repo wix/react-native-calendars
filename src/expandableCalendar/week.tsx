@@ -12,7 +12,8 @@ import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
 
-interface Props extends CalendarProps {
+// TODO: current type should be a string
+interface Props extends Omit<CalendarProps, 'current'> {
   current: XDate;
 }
 export type WeekProps = Props;

@@ -19,8 +19,8 @@ export interface ReservationProps {
   theme: Theme;
   /** specify your item comparison function for increased performance */
   rowHasChanged?: (a: any, b: any) => boolean;
-  /** specify how each date should be rendered. day can be undefined if the item is not first in that day */
-  renderDay?: (date: XDate, item?: DayReservations) => React.Component;
+  /** specify how each date should be rendered. date can be undefined if the item is not first in that day */
+  renderDay?: (date?: XDate, item?: DayReservations) => React.Component;
   /** specify how each item should be rendered in agenda */
   renderItem?: (reservation: any, isFirst: boolean) => React.Component;
   /** specify how empty date content with no items should be rendered */
@@ -75,7 +75,7 @@ class Reservation extends Component<ReservationProps> {
   }
 
   renderDate(date?: XDate, item?: DayReservations) {
-    if (isFunction(this.props.renderDay) && date) {
+    if (isFunction(this.props.renderDay)) {
       return this.props.renderDay(date, item);
     }
 

@@ -1,5 +1,4 @@
 import first from 'lodash/first';
-import invoke from 'lodash/invoke';
 import values from 'lodash/values';
 import isFunction from 'lodash/isFunction';
 import throttle from 'lodash/throttle';
@@ -14,7 +13,7 @@ import {AccessibilityInfo, PanResponder, Animated, View, ViewStyle, Text, Image,
 import {CALENDAR_KNOB} from '../testIDs';
 import {page, weekDayNames} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
-import {Theme, DateData, Direction} from 'types';
+import {Theme, DateData, Direction} from '../types';
 import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import Calendar from '../calendar';
@@ -44,7 +43,7 @@ export interface Props extends CalendarListProps {
   /** the initial position of the calendar ('open' or 'closed') */
   initialPosition?: Positions;
   /** callback that fires when the calendar is opened or closed */
-  onCalendarToggled?: () => boolean;
+  onCalendarToggled?: (isOpen: boolean) => void;
   /** an option to disable the pan gesture and disable the opening and closing of the calendar (initialPosition will persist)*/
   disablePan?: boolean;
   /** whether to hide the knob  */
@@ -61,6 +60,8 @@ export interface Props extends CalendarListProps {
   openThreshold?: number;
   /** a threshold for closing the calendar with the pan gesture */
   closeThreshold?: number;
+  /** Whether to close the calendar on day press. Default = true */
+  closeOnDayPress?: boolean;
   context?: any;
 }
 export type ExpandableCalendarProps = Props;
@@ -103,7 +104,9 @@ class ExpandableCalendar extends Component<Props, State> {
     /** a threshold for opening the calendar with the pan gesture */
     openThreshold: PropTypes.number,
     /** a threshold for closing the calendar with the pan gesture */
-    closeThreshold: PropTypes.number
+    closeThreshold: PropTypes.number,
+    /** Whether to close the calendar on day press. Default = true */
+    closeOnDayPress: PropTypes.bool
   };
 
   static defaultProps = {
@@ -114,7 +117,8 @@ class ExpandableCalendar extends Component<Props, State> {
     rightArrowImageSource: RIGHT_ARROW,
     allowShadow: true,
     openThreshold: PAN_GESTURE_THRESHOLD,
-    closeThreshold: PAN_GESTURE_THRESHOLD
+    closeThreshold: PAN_GESTURE_THRESHOLD,
+    closeOnDayPress: true
   };
 
   static positions = Positions;
@@ -135,7 +139,7 @@ class ExpandableCalendar extends Component<Props, State> {
     style: ViewStyle;
   };
   visibleMonth: number;
-  visibleYear: number;
+  visibleYear: number | undefined;
   initialDate: XDate;
   headerStyleOverride: Theme;
   header: React.RefObject<any> = React.createRef();
@@ -224,12 +228,12 @@ class ExpandableCalendar extends Component<Props, State> {
 
   /** Scroll */
 
-  scrollToDate(date: Date) {
+  scrollToDate(date: XDate) {
     if (!this.props.horizontal) {
-      this.calendar?.current?.scrollToDay(new XDate(date), 0, true);
+      this.calendar?.current?.scrollToDay(date, 0, true);
     } else if (this.getYear(date) !== this.visibleYear || this.getMonth(date) !== this.visibleMonth) {
       // don't scroll if the month is already visible
-      this.calendar?.current?.scrollToMonth(new XDate(date));
+      this.calendar?.current?.scrollToMonth(date);
     }
   }
 
@@ -249,7 +253,7 @@ class ExpandableCalendar extends Component<Props, State> {
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
         d.addDays(firstDayOfWeek);
       }
-      invoke(this.props.context, 'setDate', toMarkingFormat(d), updateSources.PAGE_SCROLL);
+      this.props.context.setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
     }
   }
 
@@ -261,12 +265,12 @@ class ExpandableCalendar extends Component<Props, State> {
     return CLOSED_HEIGHT + WEEK_HEIGHT * (this.numberOfWeeks - 1) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
   }
 
-  getYear(date: Date) {
+  getYear(date: XDate) {
     const d = new XDate(date);
     return d.getFullYear();
   }
 
-  getMonth(date: Date) {
+  getMonth(date: XDate) {
     const d = new XDate(date);
     // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
     return d.getMonth() + 1;
@@ -284,7 +288,7 @@ class ExpandableCalendar extends Component<Props, State> {
     return this.props.hideArrows || false;
   }
 
-  isLaterDate(date1?: DateData, date2?: Date) {
+  isLaterDate(date1?: DateData, date2?: XDate) {
     if (date1 && date2) {
       if (date1.year > this.getYear(date2)) {
         return true;
@@ -358,7 +362,7 @@ class ExpandableCalendar extends Component<Props, State> {
         useNativeDriver: false
       }).start(this.onAnimatedFinished);
 
-      invoke(this.props, 'onCalendarToggled', isOpen);
+      this.props.onCalendarToggled?.(isOpen);
 
       this.setPosition();
       this.closeHeader(isOpen);
@@ -399,26 +403,28 @@ class ExpandableCalendar extends Component<Props, State> {
 
   /** Events */
 
-  onPressArrowLeft = () => {
-    invoke(this.props, 'onPressArrowLeft');
+  onPressArrowLeft = (method: () => void, month?: XDate) => {
+    this.props.onPressArrowLeft?.(method, month);
     this.scrollPage(false);
   };
 
-  onPressArrowRight = () => {
-    invoke(this.props, 'onPressArrowRight');
+  onPressArrowRight = (method: () => void, month?: XDate) => {
+    this.props.onPressArrowRight?.(method, month);
     this.scrollPage(true);
   };
 
   onDayPress = (value: DateData) => {
     // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
-    invoke(this.props.context, 'setDate', value.dateString, updateSources.DAY_PRESS);
+    this.props.context.setDate?.(value.dateString, updateSources.DAY_PRESS);
 
-    setTimeout(() => {
-      // to allows setDate to be completed
-      if (this.state.position === Positions.OPEN) {
-        this.bounceToPosition(this.closedHeight);
-      }
-    }, 0);
+    if (this.props.closeOnDayPress) {
+      setTimeout(() => {
+        // to allows setDate to be completed
+        if (this.state.position === Positions.OPEN) {
+          this.bounceToPosition(this.closedHeight);
+        }
+      }, 0);
+    }
 
     if (this.props.onDayPress) {
       this.props.onDayPress(value);
@@ -430,7 +436,6 @@ class ExpandableCalendar extends Component<Props, State> {
     if (month && this.visibleMonth !== month) {
       this.visibleMonth = month; 
       if (first(value)?.year) {
-        // @ts-expect-error
         this.visibleYear = first(value)?.year;
       }
 
@@ -574,6 +579,7 @@ class ExpandableCalendar extends Component<Props, State> {
               {...others}
               theme={themeObject}
               ref={this.calendar}
+              // @ts-expect-error should be converted to string
               current={this.initialDate}
               onDayPress={this.onDayPress}
               onVisibleMonthsChange={this.onVisibleMonthsChange}
@@ -582,7 +588,7 @@ class ExpandableCalendar extends Component<Props, State> {
               hideArrows={this.shouldHideArrows()}
               onPressArrowLeft={this.onPressArrowLeft}
               onPressArrowRight={this.onPressArrowRight}
-              hideExtraDays={!horizontal}
+              hideExtraDays={!horizontal && isOpen}
               renderArrow={this.renderArrow}
               staticHeader
             />

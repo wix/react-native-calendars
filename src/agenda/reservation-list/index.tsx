@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -11,7 +10,7 @@ import {sameDate} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
-import {ReservationItemType, ReservationsType} from 'agenda';
+import {ReservationItemType, ReservationsType} from '../../agenda';
 
 
 export interface DayReservations {
@@ -30,7 +29,7 @@ export type ReservationListProps = ReservationProps & {
   /** Show items only for the selected day. Default = false */
   showOnlySelectedDayItems: boolean;
   /** callback that gets called when day changes while scrolling agenda list */
-  onDayChange?: (day: Date) => void;
+  onDayChange?: (day: XDate) => void;
   /** specify what should be rendered instead of ActivityIndicator */
   renderEmptyData: () => JSX.Element;
   style?: StyleProp<ViewStyle>;
@@ -228,7 +227,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
   onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const yOffset = event.nativeEvent.contentOffset.y;
-    invoke(this.props, 'onScroll', yOffset);
+    this.props.onScroll?.(yOffset);
 
     let topRowOffset = 0;
     let topRow;
@@ -246,7 +245,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     const dateIsSame = sameDate(day, this.selectedDay);
     if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
-      invoke(this.props, 'onDayChange', day.clone());
+      this.props.onDayChange?.(day.clone());
     }
   };
 
@@ -279,7 +278,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     const {reservations, selectedDay, theme, style} = this.props;
     if (!reservations || !reservations[toMarkingFormat(selectedDay)]) {
       if (isFunction(this.props.renderEmptyData)) {
-        return invoke(this.props, 'renderEmptyData');
+        return this.props.renderEmptyData?.();
       }
 
       return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor} />;

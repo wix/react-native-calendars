@@ -1,10 +1,9 @@
-import invoke from 'lodash/invoke';
 import XDate from 'xdate';
 
 import {sameMonth, isToday} from '../../dateutils';
 import {xdateToData, toMarkingFormat} from '../../interface';
-import {CalendarContextProviderProps} from './Provider';
 import {UpdateSource} from '../../types';
+import {CalendarContextProviderProps} from './Provider';
 
 
 const commons = require('../commons');
@@ -53,10 +52,10 @@ class Presenter {
 
     updateState(buttonIcon);
 
-    invoke(props, 'onDateChanged', date, updateSource);
+    props.onDateChanged?.(date, updateSource);
 
     if (!isSameMonth) {
-      invoke(props, 'onMonthChange', xdateToData(new XDate(date)), updateSource);
+      props.onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
   };
 

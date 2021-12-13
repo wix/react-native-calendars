@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
@@ -32,13 +31,14 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify style for calendar container element */
   style?: StyleProp<ViewStyle>;
   /** Initially visible month */
+  current?: string;
   current?: XDate; // TODO: migrate to 'initialDate'
   /** Initially visible month. If changed will initialize the calendar to this value */
   initialDate?: XDate;
   /** Minimum date that can be selected, dates before minDate will be grayed out */
-  minDate?: Date;
+  minDate?: string;
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
-  maxDate?: Date;
+  maxDate?: string;
   /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday */
   firstDay?: number;
   /** Collection of dates that have to be marked */
@@ -56,7 +56,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Handler which gets executed on day long press */
   onDayLongPress?: (date: DateData) => void;
   /** Handler which gets executed when month changes in calendar */
-  onMonthChange?: () => DateData;
+  onMonthChange?: (date: DateData) => void;
   /** Handler which gets executed when visible month changes in calendar */
   onVisibleMonthsChange?: (months: DateData[]) => void;
   /** Disables changing month when click on days of other months (when hideExtraDays is false) */
@@ -143,7 +143,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
       parseDate(this.props.current || this.props.initialDate) : new XDate()
   };
   style = styleConstructor(this.props.theme);
-  header: React.RefObject<any> = React.createRef();
+  header: React.RefObject<CalendarHeader> = React.createRef();
 
   static getDerivedStateFromProps(nextProps: CalendarProps, prevState: CalendarState) {
     if (nextProps?.initialDate && toMarkingFormat(nextProps?.initialDate) !== toMarkingFormat(prevState.prevInitialDate)) {
@@ -159,42 +159,42 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   };
 
-  updateMonth = (day: any, doNotTriggerListeners = false) => {
+  updateMonth = (day: any) => {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
     this.setState({currentMonth: day.clone()}, () => {
-      if (!doNotTriggerListeners) {
-        const currMont = this.state.currentMonth.clone();
-        invoke(this.props, 'onMonthChange', xdateToData(currMont));
-        invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
-      }
+      const currMont = this.state.currentMonth.clone();
+      this.props.onMonthChange?.(xdateToData(currMont));
+      this.props.onVisibleMonthsChange?.([xdateToData(currMont)]);
     });
   };
 
-  handleDayInteraction(date: Date, interaction?: (date: DateData) => void) {
+  handleDayInteraction(date: DateData, interaction?: (date: DateData) => void) {
     const {disableMonthChange, allowSelectionOutOfRange} = this.props;
     const day = parseDate(date);
-    const minDate = parseDate(this.props.minDate);
-    const maxDate = parseDate(this.props.maxDate);
+    const min = parseDate(this.props.minDate);
+    const max = parseDate(this.props.maxDate);
 
-    if (allowSelectionOutOfRange || !(minDate && !isGTE(day, minDate)) && !(maxDate && !isLTE(day, maxDate))) {
+    if (allowSelectionOutOfRange || !(min && !isGTE(day, min)) && !(max && !isLTE(day, max))) {
       const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
 
       if (shouldUpdateMonth) {
         this.updateMonth(day);
       }
       if (interaction) {
-        interaction(xdateToData(day));
+        interaction(date);
       }
     }
   }
 
-  pressDay = (date: Date) => {
+  pressDay = (date?: DateData) => {
+    if (date)
     this.handleDayInteraction(date, this.props.onDayPress);
   };
 
-  longPressDay = (date: Date) => {
+  longPressDay = (date?: DateData) => {
+    if (date)
     this.handleDayInteraction(date, this.props.onDayLongPress);
   };
 
@@ -240,11 +240,11 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     );
   });
 
-  renderDay(day: Date, id: number) {
+  renderDay(day: XDate, id: number) {
     const {hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
 
-    if (!sameMonth(new XDate(day), this.state.currentMonth) && hideExtraDays) {
+    if (!sameMonth(day, this.state.currentMonth) && hideExtraDays) {
       return <View key={id} style={this.style.emptyDayContainer} />;
     }
 
@@ -253,8 +253,8 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         <Day
           {...dayProps}
           day={day}
-          state={getState(new XDate(day), this.state.currentMonth, this.props)}
-          marking={markedDates?.[toMarkingFormat(new XDate(day))]}
+          state={getState(day, this.state.currentMonth, this.props)}
+          marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.pressDay}
           onLongPress={this.longPressDay}
         />
@@ -262,10 +262,10 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     );
   }
 
-  renderWeek(days: any, id: number) {
+  renderWeek(days: XDate[], id: number) {
     const week = [];
 
-    days.forEach((day: any, id2: number) => {
+    days.forEach((day: XDate, id2: number) => {
       week.push(this.renderDay(day, id2));
     }, this);
 

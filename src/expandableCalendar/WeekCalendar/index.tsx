@@ -173,7 +173,7 @@ class WeekCalendar extends Component<Props, State> {
   keyExtractor = (_: string, index: number) => index.toString();
 
   renderWeekDaysNames = memoize(weekDaysNames => {
-    return weekDaysNames.map((day: Date, index: number) => (
+    return weekDaysNames.map((day: string, index: number) => (
       <Text
         allowFontScaling={false}
         key={index}

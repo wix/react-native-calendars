@@ -1,4 +1,3 @@
-import invoke from 'lodash/invoke';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -250,7 +249,7 @@ class CalendarList extends Component<Props, State> {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   };
 
-  updateMonth(day: XDate, doNotTriggerListeners = false) {
+  updateMonth(day: XDate) {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
@@ -258,12 +257,9 @@ class CalendarList extends Component<Props, State> {
     this.setState({currentMonth: day.clone()}, () => {
       this.scrollToMonth(this.state.currentMonth);
 
-      if (!doNotTriggerListeners) {
-        const currMont = this.state.currentMonth.clone();
-
-        invoke(this.props, 'onMonthChange', xdateToData(currMont));
-        invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
-      }
+      const currMont = this.state.currentMonth.clone();
+      this.props.onMonthChange?.(xdateToData(currMont));
+      this.props.onVisibleMonthsChange?.([xdateToData(currMont)]);
     });
   }
 
@@ -298,7 +294,7 @@ class CalendarList extends Component<Props, State> {
       }
     }
 
-    invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
+    this.props.onVisibleMonthsChange?.(visibleMonths);
 
     this.setState({
       // @ts-expect-error

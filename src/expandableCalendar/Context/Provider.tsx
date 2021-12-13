@@ -19,9 +19,9 @@ interface Props {
   /** Initial date in 'yyyy-MM-dd' format. Default = now */
   date: XDate;
   /** Callback for date change event */
-  onDateChanged?: () => XDate;
+  onDateChanged?: (date: string, updateSource: UpdateSource) => void;
   /** Callback for month change event */
-  onMonthChange?: () => DateData;
+  onMonthChange?: (date: DateData, updateSource: UpdateSource) => void;
   /** Whether to show the today button */
   showTodayButton?: boolean;
   /** Today button's top position */
