@@ -101,8 +101,10 @@ function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
   exec.execSync(`npm --no-git-tag-version --allow-same-version version ${newVersion}`);
   exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
-  exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
-  exec.execSyncSilent(`git push deploy ${newVersion} || true`);
+  if (isReleaseBuild && !IS_SNAPSHOT) {
+    exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
+    exec.execSyncSilent(`git push deploy ${newVersion} || true`);
+  }
 }
 
 run();
