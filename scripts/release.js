@@ -13,7 +13,7 @@ if (isReleaseBuild) {
   IS_SNAPSHOT = cp.execSync(`buildkite-agent meta-data get is-snapshot`).toString();
 }
 const ONLY_ON_BRANCH = 'release';
-const isSnapshotBuild = !isPRBuild || IS_SNAPSHOT === 'true';
+const isSnapshotBuild = (!isPRBuild && !isReleaseBuild) || IS_SNAPSHOT === 'true';
 const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
 const VERSION_INC = 'minor';
 
