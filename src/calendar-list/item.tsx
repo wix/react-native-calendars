@@ -10,6 +10,7 @@ import {extractComponentProps} from '../componentUpdater';
 import {formatNumbers} from '../dateutils';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
+import {getCalendarDateString} from '../services';
 
 export type CalendarListItemProps = CalendarProps & {
   item: any;
@@ -26,7 +27,7 @@ type CalendarListItemState = {
 };
 
 class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
-  static displayName = 'IGNORE';
+  static displayName = 'CalendarListItem';
 
   static propTypes = {
     ...Calendar.propTypes,
@@ -113,7 +114,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
         <Calendar
           {...calendarProps}
           testID={testID}
-          current={item}
+          current={getCalendarDateString(item.toString())}
           style={calStyle}
           headerStyle={horizontal ? headerStyle : undefined}
           disableMonthChange

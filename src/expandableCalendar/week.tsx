@@ -20,7 +20,7 @@ export type WeekProps = Props;
 
 
 class Week extends PureComponent<Props> {
-  static displayName = 'IGNORE';
+  static displayName = 'Week';
 
   static propTypes = {
     ...Calendar.propTypes,

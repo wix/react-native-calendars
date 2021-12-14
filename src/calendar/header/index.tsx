@@ -66,7 +66,7 @@ interface Props {
 export type CalendarHeaderProps = Props;
 
 class CalendarHeader extends Component<Props> {
-  static displayName = 'IGNORE';
+  static displayName = 'CalendarHeader';
 
   static propTypes = {
     theme: PropTypes.object,

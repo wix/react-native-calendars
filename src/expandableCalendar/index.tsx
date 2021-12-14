@@ -7,7 +7,19 @@ import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {AccessibilityInfo, PanResponder, Animated, View, ViewStyle, Text, Image, ImageSourcePropType, PanResponderInstance, GestureResponderEvent, PanResponderGestureState} from 'react-native';
+import {
+  AccessibilityInfo,
+  PanResponder,
+  Animated,
+  View,
+  ViewStyle,
+  Text,
+  Image,
+  ImageSourcePropType,
+  PanResponderInstance,
+  GestureResponderEvent,
+  PanResponderGestureState
+} from 'react-native';
 
 // @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
@@ -20,7 +32,6 @@ import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
 import WeekCalendar from './WeekCalendar';
 import Week from './week';
-
 
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
@@ -37,7 +48,6 @@ const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
 const LEFT_ARROW = require('../calendar/img/previous.png');
 const RIGHT_ARROW = require('../calendar/img/next.png');
-
 
 export interface Props extends CalendarListProps {
   /** the initial position of the calendar ('open' or 'closed') */
@@ -131,7 +141,7 @@ class ExpandableCalendar extends Component<Props, State> {
   _height: number;
   _wrapperStyles: {
     style: ViewStyle;
-  }
+  };
   _headerStyles: {
     style: ViewStyle;
   };
@@ -140,7 +150,7 @@ class ExpandableCalendar extends Component<Props, State> {
   };
   visibleMonth: number;
   visibleYear: number | undefined;
-  initialDate: XDate;
+  initialDate: string;
   headerStyleOverride: Theme;
   header: React.RefObject<any> = React.createRef();
   wrapper: React.RefObject<any> = React.createRef();
@@ -149,7 +159,7 @@ class ExpandableCalendar extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    
+
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
     this.numberOfWeeks = this.getNumberOfWeeksInMonth(new XDate(this.props.context.date));
     this.openHeight = this.getOpenHeight();
@@ -162,7 +172,7 @@ class ExpandableCalendar extends Component<Props, State> {
 
     this.visibleMonth = this.getMonth(this.props.context.date);
     this.visibleYear = this.getYear(this.props.context.date);
-    this.initialDate = new XDate(props.context.date); // should be set only once!!!
+    this.initialDate = props.context.date;
     this.headerStyleOverride = {
       stylesheet: {
         calendar: {
@@ -218,7 +228,7 @@ class ExpandableCalendar extends Component<Props, State> {
 
   updateNativeStyles() {
     this.wrapper?.current?.setNativeProps(this._wrapperStyles);
-    
+
     if (!this.props.horizontal) {
       this.header?.current?.setNativeProps(this._headerStyles);
     } else {
@@ -508,7 +518,7 @@ class ExpandableCalendar extends Component<Props, State> {
     const {disableWeekScroll} = this.props;
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
     const weekCalendarProps = disableWeekScroll ? undefined : {allowShadow: false};
-    
+
     return (
       <Animated.View
         ref={this.weekCalendar}
@@ -579,7 +589,6 @@ class ExpandableCalendar extends Component<Props, State> {
               {...others}
               theme={themeObject}
               ref={this.calendar}
-              // @ts-expect-error should be converted to string
               current={this.initialDate}
               onDayPress={this.onDayPress}
               onVisibleMonthsChange={this.onVisibleMonthsChange}

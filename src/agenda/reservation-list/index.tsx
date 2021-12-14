@@ -57,7 +57,7 @@ interface ReservationsListState {
 }
 
 class ReservationList extends Component<ReservationListProps, ReservationsListState> {
-  static displayName = 'IGNORE';
+  static displayName = 'ReservationList';
 
   static propTypes = {
     ...Reservation.propTypes,

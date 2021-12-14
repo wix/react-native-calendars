@@ -61,7 +61,7 @@ export interface MarkingProps extends DotProps {
 }
 
 export default class Marking extends Component<MarkingProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'Marking';
 
   static markings = Markings;
   
