@@ -21,14 +21,13 @@ const commons = require('../commons');
 const NUMBER_OF_PAGES = 2; // must be a positive number
 const applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
 
-interface Props extends CalendarListProps {
+export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
   /** whether to hide the names of the week days */
   hideDayNames?: boolean;
   context?: any;
 }
-export type WeekCalendarProps = Props;
 
 interface State {
   items: string[];
@@ -39,7 +38,7 @@ interface State {
  * @note: Should be wrapped with 'CalendarProvider'
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-class WeekCalendar extends Component<Props, State> {
+class WeekCalendar extends Component<WeekCalendarProps, State> {
   static displayName = 'WeekCalendar';
 
   static propTypes = {
@@ -67,7 +66,7 @@ class WeekCalendar extends Component<Props, State> {
     items: this.presenter.getDatesArray(this.props)
   };
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: WeekCalendarProps) {
     const {context} = this.props;
     const {shouldComponentUpdate, getDatesArray, scrollToIndex} = this.presenter;
 
@@ -230,4 +229,4 @@ class WeekCalendar extends Component<Props, State> {
   }
 }
 
-export default asCalendarConsumer(WeekCalendar);
+export default asCalendarConsumer<WeekCalendarProps>(WeekCalendar);

@@ -23,6 +23,6 @@
     }
   },
   // "include": ["src/calendar/day/basic", "src/global.d.ts"],
-  "include": ["src/**/*", "example/src/screens/calendars.tsx"],
+  "include": ["src/**/*", "example/src/screens/calendars.tsx", "example/src/screens/expandableCalendar.tsx"],
   "exclude": ["node_modules", "testUtils"]
 }

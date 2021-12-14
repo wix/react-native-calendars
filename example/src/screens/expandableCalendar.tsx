@@ -1,11 +1,8 @@
 import isEmpty from 'lodash/isEmpty';
 import React, {Component, useCallback} from 'react';
 import {Platform, StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
-// @ts-expect-error
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from '../testIDs';
-
-
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
@@ -14,9 +11,9 @@ const dates = [fastDate, today].concat(futureDates);
 const themeColor = '#00AAAF';
 const lightThemeColor = '#EBF9F9';
 
-function getFutureDates(days) {
+function getFutureDates(numberOfDays: number) {
   const array = [];
-  for (let index = 1; index <= days; index++) {
+  for (let index = 1; index <= numberOfDays; index++) {
     const date = new Date(Date.now() + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
     const dateString = date.toISOString().split('T')[0];
     array.push(dateString);
@@ -24,12 +21,15 @@ function getFutureDates(days) {
   return array;
 }
 
-function getPastDate(days) {
-  return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
+function getPastDate(numberOfDays: number) {
+  return new Date(Date.now() - 864e5 * numberOfDays).toISOString().split('T')[0];
 }
 
-const ITEMS = [
-  {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'First Yoga'}]},
+const ITEMS: any[] = [
+  {
+    title: dates[0],
+    data: [{hour: '12am', duration: '1h', title: 'First Yoga'}]
+  },
   {
     title: dates[1],
     data: [
@@ -41,12 +41,18 @@ const ITEMS = [
     title: dates[2],
     data: [
       {hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'},
-      {hour: '2pm', duration: '1h', title: 'Deep Streches'},
+      {hour: '2pm', duration: '1h', title: 'Deep Stretches'},
       {hour: '3pm', duration: '1h', title: 'Private Yoga'}
     ]
   },
-  {title: dates[3], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {title: dates[4], data: [{}]},
+  {
+    title: dates[3],
+    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]
+  },
+  {
+    title: dates[4],
+    data: [{}]
+  },
   {
     title: dates[5],
     data: [
@@ -56,8 +62,16 @@ const ITEMS = [
       {hour: '12pm', duration: '1h', title: 'Running Group'}
     ]
   },
-  {title: dates[6], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {title: dates[7], data: [{}]},
+  {
+    title: dates[6], 
+    data: [
+      {hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}
+    ]
+  },
+  {
+    title: dates[7], 
+    data: [{}]
+  },
   {
     title: dates[8],
     data: [
@@ -75,11 +89,21 @@ const ITEMS = [
       {hour: '3pm', duration: '1h', title: 'Private Yoga'}
     ]
   },
-  {title: dates[10], data: [{hour: '12am', duration: '1h', title: 'Last Yoga'}]}
+  {
+    title: dates[10], 
+    data: [
+      {hour: '12am', duration: '1h', title: 'Last Yoga'}
+    ]
+  }
 ];
 
-function getMarkedDates(items) {
-  const marked = {};
+type MarkedDate = {
+  [key: string]: object;
+}
+
+function getMarkedDates(items: any[]) {
+  const marked: MarkedDate = {};
+
   items.forEach(item => {
     // NOTE: only mark dates with data
     if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
@@ -166,7 +190,7 @@ export default class ExpandableCalendarScreen extends Component<Props> {
         // todayBottomMargin={16}
       >
         {this.props.weekView ? (
-          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked} />
+          <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked}/>
         ) : (
           <ExpandableCalendar
             testID={testIDs.expandableCalendar.CONTAINER}
@@ -204,7 +228,6 @@ interface ItemProps {
 }
 
 const AgendaItem = React.memo(function AgendaItem(props: ItemProps) {
-  // console.warn('item rendered', Date.now());
   const {item} = props;
 
   const buttonPressed = useCallback(() => {
@@ -216,7 +239,7 @@ const AgendaItem = React.memo(function AgendaItem(props: ItemProps) {
   }, []);
 
   if (isEmpty(item)) {
-    return(
+    return (
       <View style={styles.emptyItem}>
         <Text style={styles.emptyItemText}>No Events Planned Today</Text>
       </View>
