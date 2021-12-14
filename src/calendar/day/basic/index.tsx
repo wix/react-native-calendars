@@ -34,7 +34,7 @@ export interface BasicDayProps {
 }
 
 export default class BasicDay extends Component<BasicDayProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'BasicDay';
 
   static propTypes = {
     state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),

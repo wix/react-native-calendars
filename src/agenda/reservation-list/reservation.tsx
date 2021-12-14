@@ -28,7 +28,7 @@ export interface ReservationProps {
 }
 
 class Reservation extends Component<ReservationProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'Reservation';
 
   static propTypes = {
     item: PropTypes.any,

@@ -150,7 +150,7 @@ class ExpandableCalendar extends Component<Props, State> {
   };
   visibleMonth: number;
   visibleYear: number | undefined;
-  initialDate: XDate;
+  initialDate: string;
   headerStyleOverride: Theme;
   header: React.RefObject<any> = React.createRef();
   wrapper: React.RefObject<any> = React.createRef();
@@ -172,7 +172,7 @@ class ExpandableCalendar extends Component<Props, State> {
 
     this.visibleMonth = this.getMonth(this.props.context.date);
     this.visibleYear = this.getYear(this.props.context.date);
-    this.initialDate = new XDate(props.context.date); // should be set only once!!!
+    this.initialDate = props.context.date;
     this.headerStyleOverride = {
       stylesheet: {
         calendar: {
@@ -593,7 +593,6 @@ class ExpandableCalendar extends Component<Props, State> {
               {...others}
               theme={themeObject}
               ref={this.calendar}
-              // @ts-expect-error should be converted to string
               current={this.initialDate}
               onDayPress={this.onDayPress}
               onVisibleMonthsChange={this.onVisibleMonthsChange}
