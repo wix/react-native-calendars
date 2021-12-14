@@ -21,6 +21,6 @@ steps:
       npm install
       npm run test
       npm run build:ts
-      if [[ $(echo $BUILDKITE_MESSAGE | tr '[:upper:]' '[:lower:]') =~ release ]];then
+      if [[ $BUILDKITE_PULL_REQUEST == 'false' ]];then
         npm run release
       fi

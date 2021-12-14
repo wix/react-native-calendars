@@ -24,7 +24,7 @@ interface PeriodDayProps {
 }
 
 export default class PeriodDay extends Component<PeriodDayProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'PeriodDay';
 
   static propTypes = {
     state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
