@@ -15,3 +15,7 @@ export function getCalendarDateString(date?: Date | string | number) {
     throw 'Invalid Date';
   }
 }
+
+export default {
+  getCalendarDateString
+};
