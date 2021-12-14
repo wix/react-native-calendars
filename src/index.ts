@@ -8,5 +8,5 @@ export {default as CalendarContext} from './expandableCalendar/Context';
 export {default as CalendarProvider, CalendarContextProviderProps} from './expandableCalendar/Context/Provider';
 export {default as asCalendarConsumer} from './expandableCalendar/asCalendarConsumer';
 export {default as Timeline, TimelineProps} from './timeline/Timeline';
-export * as CalendarUtils from './services';
+export {default as CalendarUtils} from './services';
 export {default as LocaleConfig} from 'xdate';
