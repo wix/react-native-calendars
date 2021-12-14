@@ -441,36 +441,40 @@ class ExpandableCalendar extends Component<Props, State> {
     }
   };
 
-  onVisibleMonthsChange = throttle((value: DateData[]) => {
-    const month = first(value)?.month; // equivalent to this.getMonth(value[0].dateString)
-    if (month && this.visibleMonth !== month) {
-      this.visibleMonth = month; 
-      if (first(value)?.year) {
-        this.visibleYear = first(value)?.year;
-      }
-
-      // for horizontal scroll
-      const {date, updateSource} = this.props.context;
-
-      if (this.visibleMonth !== this.getMonth(date) && updateSource !== updateSources.DAY_PRESS) {
-        const next = this.isLaterDate(first(value), date);
-        this.scrollPage(next);
-      }
-
-      // updating openHeight
-      setTimeout(() => {
-        // to wait for setDate() call in horizontal scroll (this.scrollPage())
-        const numberOfWeeks = this.getNumberOfWeeksInMonth(parseDate(this.props.context.date));
-        if (numberOfWeeks !== this.numberOfWeeks) {
-          this.numberOfWeeks = numberOfWeeks;
-          this.openHeight = this.getOpenHeight();
-          if (this.state.position === Positions.OPEN) {
-            this.bounceToPosition(this.openHeight);
-          }
+  onVisibleMonthsChange = throttle(
+    (value: DateData[]) => {
+      const month = first(value)?.month; // equivalent to this.getMonth(value[0].dateString)
+      if (month && this.visibleMonth !== month) {
+        this.visibleMonth = month;
+        if (first(value)?.year) {
+          this.visibleYear = first(value)?.year;
         }
-      }, 0);
-    }
-  }, 100, {trailing: true, leading: false});
+
+        // for horizontal scroll
+        const {date, updateSource} = this.props.context;
+
+        if (this.visibleMonth !== this.getMonth(date) && updateSource !== updateSources.DAY_PRESS) {
+          const next = this.isLaterDate(first(value), date);
+          this.scrollPage(next);
+        }
+
+        // updating openHeight
+        setTimeout(() => {
+          // to wait for setDate() call in horizontal scroll (this.scrollPage())
+          const numberOfWeeks = this.getNumberOfWeeksInMonth(parseDate(this.props.context.date));
+          if (numberOfWeeks !== this.numberOfWeeks) {
+            this.numberOfWeeks = numberOfWeeks;
+            this.openHeight = this.getOpenHeight();
+            if (this.state.position === Positions.OPEN) {
+              this.bounceToPosition(this.openHeight);
+            }
+          }
+        }, 0);
+      }
+    },
+    100,
+    {trailing: true, leading: false}
+  );
 
   /** Renders */
   getWeekDaysStyle = memoize(calendarStyle => {

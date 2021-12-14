@@ -6,11 +6,14 @@ const exec = require('shell-utils').exec;
 const cp = require('child_process');
 
 let IS_SNAPSHOT;
-if (process.env.BUILDKITE_MESSAGE.match(/^release$/i)){
+const isReleaseBuild = process.env.BUILDKITE_MESSAGE.match(/^release$/i);
+const isPRBuild = process.env.BUILDKITE_PULL_REQUEST === 'true';
+
+if (isReleaseBuild) {
   IS_SNAPSHOT = cp.execSync(`buildkite-agent meta-data get is-snapshot`).toString();
 }
 const ONLY_ON_BRANCH = 'release';
-const isSnapshotBuild = IS_SNAPSHOT === 'true';
+const isSnapshotBuild = (!isPRBuild && !isReleaseBuild) || IS_SNAPSHOT === 'true';
 const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
 const VERSION_INC = 'minor';
 
