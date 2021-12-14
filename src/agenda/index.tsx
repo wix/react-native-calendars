@@ -17,6 +17,7 @@ import {
 import {extractComponentProps} from '../componentUpdater';
 import {parseDate, xdateToData, toMarkingFormat} from '../interface';
 import {weekDayNames, sameDate, sameMonth} from '../dateutils';
+import {getCalendarDateString} from '../services';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import {VelocityTracker} from '../velocityTracker';
@@ -372,7 +373,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
       <CalendarList
         {...calendarListProps}
         ref={this.calendar}
-        current={this.currentMonth.toString()}
+        current={getCalendarDateString(this.currentMonth.toString())}
         markedDates={this.generateMarkings(this.state.selectedDay, markedDates, items)}
         calendarWidth={this.viewWidth}
         scrollEnabled={this.state.calendarScrollable}
