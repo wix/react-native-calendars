@@ -7,7 +7,7 @@ import React, {Component} from 'react';
 import {FlatList, View, Text, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
 import {extractComponentProps} from '../../componentUpdater';
-import {weekDayNames} from '../../dateutils';
+import {weekDayNames, sameWeek} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
@@ -145,7 +145,7 @@ class WeekCalendar extends Component<Props, State> {
     const {style, onDayPress, markedDates, firstDay, ...others} = extractComponentProps(Week, this.props);
     const {context} = this.props;
 
-    const isSameWeek = this.presenter.isSameWeek(item, context.date, firstDay);
+    const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
 
     return (
