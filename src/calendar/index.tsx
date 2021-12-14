@@ -72,7 +72,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   allowSelectionOutOfRange?: boolean;
 }
 
-interface CalendarState {
+interface State {
   prevInitialDate?: string;
   currentMonth: any;
 }
@@ -81,7 +81,7 @@ interface CalendarState {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar.gif
  */
-class Calendar extends Component<CalendarProps, CalendarState> {
+class Calendar extends Component<CalendarProps, State> {
   static displayName = 'Calendar';
 
   static propTypes = {
@@ -144,7 +144,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
   style = styleConstructor(this.props.theme);
   header: React.RefObject<CalendarHeader> = React.createRef();
 
-  static getDerivedStateFromProps(nextProps: CalendarProps, prevState: CalendarState) {
+  static getDerivedStateFromProps(nextProps: CalendarProps, prevState: State) {
     if (nextProps?.initialDate && nextProps?.initialDate !== prevState.prevInitialDate) {
       return {
         prevInitialDate: nextProps.initialDate,

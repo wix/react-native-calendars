@@ -21,7 +21,7 @@ const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
 
-interface Props extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
+export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
   pastScrollRange?: number;
   /** Max amount of months allowed to scroll to the future. Default = 50 */
@@ -57,8 +57,8 @@ interface Props extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'render
   /** onLayout event */
   onLayout?: (event: LayoutChangeEvent) => void;
   removeClippedSubviews?: boolean;
+  testID?: string;
 }
-export type CalendarListProps = Props;
 
 type XDateAndBump = XDate & {propBump?: number};
 
@@ -76,7 +76,7 @@ type State = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar-list.gif
  */
-class CalendarList extends Component<Props, State> {
+class CalendarList extends Component<CalendarListProps, State> {
   static displayName = 'CalendarList';
 
   static propTypes = {
@@ -134,7 +134,7 @@ class CalendarList extends Component<Props, State> {
     itemVisiblePercentThreshold: 20
   };
 
-  constructor(props: Props) {
+  constructor(props: CalendarListProps) {
     super(props);
 
     this.style = styleConstructor(props.theme);
@@ -170,7 +170,7 @@ class CalendarList extends Component<Props, State> {
     };
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: CalendarListProps) {
     const prevCurrent = parseDate(prevProps.current);
     const current = parseDate(this.props.current);
 
@@ -179,7 +179,7 @@ class CalendarList extends Component<Props, State> {
     }
   }
 
-  static getDerivedStateFromProps(_: Props, prevState: State) {
+  static getDerivedStateFromProps(_: CalendarListProps, prevState: State) {
     const rowClone = prevState.rows;
     const newRows = [];
 

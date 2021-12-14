@@ -30,7 +30,7 @@ import asCalendarConsumer from './asCalendarConsumer';
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 
-interface Props extends SectionListProps<any, DefaultSectionT> {
+export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
   /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
   dayFormat?: string;
   /** a function to custom format the section header's title */
@@ -51,7 +51,6 @@ interface Props extends SectionListProps<any, DefaultSectionT> {
   theme?: Theme;
   context?: any;
 }
-export type AgendaListProps = Props;
 
 /**
  * @description: AgendaList component
@@ -59,7 +58,7 @@ export type AgendaListProps = Props;
  * @extends: SectionList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-class AgendaList extends Component<Props> {
+class AgendaList extends Component<AgendaListProps> {
   static displayName = 'AgendaList';
 
   static propTypes = {
@@ -104,7 +103,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: AgendaListProps) {
     const {updateSource, date} = this.props.context;
     if (date !== prevProps.context.date) {
       // NOTE: on first init data should set first section to the current date!!!
@@ -114,7 +113,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  getSectionIndex(date: XDate) {
+  getSectionIndex(date: string) {
     let i;
     map(this.props.sections, (section, index) => {
       // NOTE: sections titles should match current date format!!!
@@ -126,7 +125,7 @@ class AgendaList extends Component<Props> {
     return i;
   }
 
-  getNextSectionIndex(date: XDate) {
+  getNextSectionIndex(date: string) {
     let i = 0;
     const {sections} = this.props;
     for (let j = 1; j < sections.length; j++) {
@@ -281,4 +280,4 @@ class AgendaList extends Component<Props> {
   // }
 }
 
-export default asCalendarConsumer(AgendaList);
+export default asCalendarConsumer<AgendaListProps>(AgendaList);

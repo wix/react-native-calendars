@@ -29,7 +29,7 @@ import {
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
 
-interface Props {
+export interface CalendarHeaderProps {
   theme?: Theme;
   firstDay?: number;
   displayLoadingIndicator?: boolean;
@@ -63,9 +63,8 @@ interface Props {
   accessibilityElementsHidden?: boolean;
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
 }
-export type CalendarHeaderProps = Props;
 
-class CalendarHeader extends Component<Props> {
+class CalendarHeader extends Component<CalendarHeaderProps> {
   static displayName = 'CalendarHeader';
 
   static propTypes = {
@@ -105,13 +104,13 @@ class CalendarHeader extends Component<Props> {
   };
   style: any;
 
-  constructor(props: Props) {
+  constructor(props: CalendarHeaderProps) {
     super(props);
 
     this.style = styleConstructor(props.theme);
   }
 
-  shouldComponentUpdate(nextProps: Props) {
+  shouldComponentUpdate(nextProps: CalendarHeaderProps) {
     if (nextProps.month?.toString('yyyy MM') !== this.props.month?.toString('yyyy MM')) {
       return true;
     }
