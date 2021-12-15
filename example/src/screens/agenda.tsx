@@ -19,7 +19,6 @@ export default class AgendaScreen extends Component<State> {
         items={this.state.items}
         loadItemsForMonth={this.loadItems}
         selected={'2017-05-16'}
-        //@ts-expect-error
         renderItem={this.renderItem}
         renderEmptyDate={this.renderEmptyDate}
         rowHasChanged={this.rowHasChanged}

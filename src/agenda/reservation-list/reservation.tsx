@@ -13,17 +13,17 @@ import {Theme, DayReservations, ReservationItemType} from '../../types';
 
 
 export interface ReservationProps {
-  item: DayReservations;
+  item?: DayReservations;
   /** Specify theme properties to override specific styles for reservation parts. Default = {} */
-  theme: Theme;
+  theme?: Theme;
   /** specify your item comparison function for increased performance */
   rowHasChanged?: (a: ReservationItemType, b: ReservationItemType) => boolean;
   /** specify how each date should be rendered. date can be undefined if the item is not first in that day */
-  renderDay?: (date?: XDate, item?: ReservationItemType) => JSX.Element;
+  renderDay?: (date?: XDate, item?: ReservationItemType) => React.Component | JSX.Element;
   /** specify how each item should be rendered in agenda */
-  renderItem?: (reservation: ReservationItemType, isFirst: boolean) => React.Component;
+  renderItem?: (reservation: ReservationItemType, isFirst: boolean) => React.Component | JSX.Element;
   /** specify how empty date content with no items should be rendered */
-  renderEmptyDate?: (date?: XDate) => JSX.Element;
+  renderEmptyDate?: (date?: XDate) => React.Component | JSX.Element;
 }
 
 class Reservation extends Component<ReservationProps> {
@@ -98,7 +98,9 @@ class Reservation extends Component<ReservationProps> {
   }
 
   render() {
-    const {reservation, date} = this.props.item;
+    const {item} = this.props;
+    const reservation = item?.reservation;
+    const date = item?.date;
     let content;
 
     if (reservation) {

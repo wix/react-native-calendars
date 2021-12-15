@@ -18,14 +18,14 @@ export type ReservationListProps = ReservationProps & {
   the value of date key kas to be an empty array []. If there exists no value for date key it is
   considered that the date in question is not yet loaded */
   items?: ReservationsType;
-  selectedDay: XDate;
-  topDay: XDate;
+  selectedDay?: XDate;
+  topDay?: XDate;
   /** Show items only for the selected day. Default = false */
-  showOnlySelectedDayItems: boolean;
+  showOnlySelectedDayItems?: boolean;
   /** callback that gets called when day changes while scrolling agenda list */
   onDayChange?: (day: XDate) => void;
   /** specify what should be rendered instead of ActivityIndicator */
-  renderEmptyData: () => JSX.Element;
+  renderEmptyData?: () => JSX.Element;
   style?: StyleProp<ViewStyle>;
 
   /** onScroll ListView event */
@@ -92,7 +92,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   };
   private style: {[key: string]: ViewStyle | TextStyle};
   private heights: number[];
-  private selectedDay: XDate;
+  private selectedDay?: XDate;
   private scrollOver: boolean;
   private list: React.RefObject<FlatList> = React.createRef();
 
@@ -116,7 +116,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   }
 
   componentDidUpdate(prevProps: ReservationListProps) {
-    if (prevProps !== this.props) {
+    if (this.props.topDay && prevProps.topDay && prevProps !== this.props) {
       if (!sameDate(prevProps.topDay, this.props.topDay)) {
         this.setState(
           {
@@ -139,6 +139,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   updateReservations(props: ReservationListProps) {
     const {selectedDay} = props;
     const reservations = this.getReservations(props);
+    if (selectedDay && this.selectedDay)
     if (this.list && !sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
@@ -235,7 +236,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     if (!row) return;
 
     const day = row.day;
-    const dateIsSame = sameDate(day, this.selectedDay);
+    const dateIsSame = this.selectedDay && sameDate(day, this.selectedDay);
     if (!dateIsSame && this.scrollOver) {
       this.selectedDay = day.clone();
       this.props.onDayChange?.(day.clone());
@@ -269,7 +270,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
   render() {
     const {items, selectedDay, theme, style} = this.props;
-    if (!items || !items[toMarkingFormat(selectedDay)]) {
+    if (!items || selectedDay && !items[toMarkingFormat(selectedDay)]) {
       if (isFunction(this.props.renderEmptyData)) {
         return this.props.renderEmptyData?.();
       }
