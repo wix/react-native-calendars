@@ -23,7 +23,7 @@ import {VelocityTracker} from '../velocityTracker';
 import {DateData} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
-import {ReservationsType} from '../types';
+import {AgendaSchedule} from '../types';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
@@ -35,7 +35,7 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
    the value of date key has to be an empty array []. If there exists no value for date key it is
    considered that the date in question is not yet loaded */
-  items?: ReservationsType;
+  items?: AgendaSchedule;
   /** callback that gets called when items for a certain month should be loaded (month became visible) */
   loadItemsForMonth?: (data: DateData) => void;
   /** callback that fires when the calendar is opened or closed */
@@ -344,7 +344,6 @@ export default class Agenda extends Component<AgendaProps, State> {
       <ReservationList
         {...reservationListProps}
         ref={this.list}
-        items={this.props.items}
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange}

@@ -92,18 +92,12 @@ export interface Theme {
   };
 }
 
-export type ReservationItemType = {
+export type AgendaEntry = {
   name: string;
   height: number;
   day: string;
 }
 
-export type ReservationsType = {
-  [date: string]: ReservationItemType[];
-}
-
-export interface DayReservations {
-  reservation?: ReservationItemType;
-  date?: XDate;
-  day: XDate;
+export type AgendaSchedule = {
+  [date: string]: AgendaEntry[];
 }

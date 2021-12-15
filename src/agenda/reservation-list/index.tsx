@@ -10,17 +10,17 @@ import {sameDate} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
-import {ReservationItemType, ReservationsType, DayReservations} from '../../types';
+import {AgendaEntry, AgendaSchedule} from '../../types';
 
 
 export type ReservationListProps = ReservationProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
   the value of date key kas to be an empty array []. If there exists no value for date key it is
   considered that the date in question is not yet loaded */
-  items?: ReservationsType;
+  items?: AgendaSchedule;
   selectedDay?: XDate;
   topDay?: XDate;
-  /** Show items only for the selected day. Default = false */
+  /** Show items only for the selected date. Default = false */
   showOnlySelectedDayItems?: boolean;
   /** callback that gets called when day changes while scrolling agenda list */
   onDayChange?: (day: XDate) => void;
@@ -46,8 +46,13 @@ export type ReservationListProps = ReservationProps & {
   onRefresh?: () => void;
 };
 
+interface DayAgenda {
+  reservation?: AgendaEntry;
+  date?: XDate;
+}
+
 interface State {
-  reservations: DayReservations[];
+  reservations: DayAgenda[];
 }
 
 class ReservationList extends Component<ReservationListProps, State> {
@@ -61,7 +66,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     items: PropTypes.object,
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
-    /** Show items only for the selected day. Default = false */
+    /** Show items only for the selected date. Default = false */
     showOnlySelectedDayItems: PropTypes.bool,
     /** callback that gets called when day changes while scrolling agenda list */
     onDayChange: PropTypes.func,
@@ -130,7 +135,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     }
   }
 
-  updateDataSource(reservations: DayReservations[]) {
+  updateDataSource(reservations: DayAgenda[]) {
     this.setState({
       reservations
     });
@@ -156,18 +161,16 @@ class ReservationList extends Component<ReservationListProps, State> {
     const day = iterator.clone();
     const res = props.items?.[toMarkingFormat(day)];
     if (res && res.length) {
-      return res.map((reservation: ReservationItemType, i: number) => {
+      return res.map((reservation: AgendaEntry, i: number) => {
         return {
           reservation,
-          date: i ? undefined : day,
-          day
+          date: i ? undefined : day
         };
       });
     } else if (res) {
       return [
         {
-          date: iterator.clone(),
-          day
+          date: iterator.clone()
         }
       ];
     } else {
@@ -181,9 +184,10 @@ class ReservationList extends Component<ReservationListProps, State> {
       return {reservations: [], scrollPosition: 0};
     }
 
-    let reservations: DayReservations[] = [];
+    let reservations: DayAgenda[] = [];
     if (this.state.reservations && this.state.reservations.length) {
-      const iterator = this.state.reservations[0].day.clone();
+      const iterator = this.state.reservations[0].date?.clone();
+      if (iterator)
       while (iterator.getTime() < selectedDay.getTime()) {
         const res = this.getReservationsForDay(iterator, props);
         if (!res) {
@@ -235,11 +239,13 @@ class ReservationList extends Component<ReservationListProps, State> {
     const row = this.state.reservations[topRow];
     if (!row) return;
 
-    const day = row.day;
-    const dateIsSame = this.selectedDay && sameDate(day, this.selectedDay);
-    if (!dateIsSame && this.scrollOver) {
-      this.selectedDay = day.clone();
-      this.props.onDayChange?.(day.clone());
+    const day = row.date;
+    if (day) {
+      const dateIsSame = this.selectedDay && sameDate(day, this.selectedDay);
+      if (!dateIsSame && this.scrollOver) {
+        this.selectedDay = day.clone();
+        this.props.onDayChange?.(day.clone());
+      }
     }
   };
 
@@ -256,17 +262,17 @@ class ReservationList extends Component<ReservationListProps, State> {
     return false;
   };
 
-  renderRow = ({item, index}: {item: DayReservations; index: number}) => {
+  renderRow = ({item, index}: {item: DayAgenda; index: number}) => {
     const reservationProps = extractComponentProps(Reservation, this.props);
 
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
-        <Reservation {...reservationProps} item={item} />
+        <Reservation {...reservationProps} item={item.reservation} date={item.date}/>
       </View>
     );
   };
 
-  keyExtractor = (_item: DayReservations, index: number) => String(index);
+  keyExtractor = (_item: DayAgenda, index: number) => String(index);
 
   render() {
     const {items, selectedDay, theme, style} = this.props;

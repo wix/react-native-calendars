@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {Agenda, DateData, ReservationItemType, ReservationsType} from 'react-native-calendars';
+import {Agenda, DateData, AgendaEntry, AgendaSchedule} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 interface State {
-  items?: ReservationsType;
+  items?: AgendaSchedule;
 }
 
 export default class AgendaScreen extends Component<State> {
@@ -63,7 +63,7 @@ export default class AgendaScreen extends Component<State> {
         }
       }
       
-      const newItems: ReservationsType = {};
+      const newItems: AgendaSchedule = {};
       Object.keys(items).forEach(key => {
         newItems[key] = items[key];
       });
@@ -73,7 +73,7 @@ export default class AgendaScreen extends Component<State> {
     }, 1000);
   }
 
-  renderItem = (reservation: ReservationItemType, isFirst: boolean) => {
+  renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
     const fontSize = isFirst ? 16 : 14;
     const color = isFirst ? 'black' : '#43515c';
 
@@ -96,7 +96,7 @@ export default class AgendaScreen extends Component<State> {
     );
   }
 
-  rowHasChanged = (r1: ReservationItemType, r2: ReservationItemType) => {
+  rowHasChanged = (r1: AgendaEntry, r2: AgendaEntry) => {
     return r1.name !== r2.name;
   }
 
