@@ -21,7 +21,9 @@ import {weekDayNames, sameDate, sameMonth} from '../dateutils';
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import {VelocityTracker} from '../velocityTracker';
 import {DateData} from '../types';
+import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
+import {ReservationsType} from '../types';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
@@ -29,37 +31,25 @@ import ReservationList, {ReservationListProps}  from './reservation-list';
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
-export type ReservationItemType = {
-  name: string;
-  height: number;
-  day: XDate;
-};
-
-export type ReservationsType = {
-  [date: string]: ReservationItemType[];
-};
-
 export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
    the value of date key has to be an empty array []. If there exists no value for date key it is
    considered that the date in question is not yet loaded */
-  items: ReservationsType;
+  items?: ReservationsType;
   /** callback that gets called when items for a certain month should be loaded (month became visible) */
-  loadItemsForMonth?: (data: any) => DateData;
+  loadItemsForMonth?: (data: DateData) => void;
   /** callback that fires when the calendar is opened or closed */
   onCalendarToggled?: (enabled: boolean) => void;
-  /** callback that gets called on day press */
-  onDayPress?: (data: DateData) => void;
   /** callback that gets called when day changes while scrolling agenda list */
-  onDayChange?: (data: any) => void;
+  onDayChange?: (data: DateData) => void;
   /** specify how agenda knob should look like */
   renderKnob?: () => JSX.Element;
   /** initially selected day */
-  selected: boolean; //TODO: Should be renamed 'selectedDay'
+  selected?: string; //TODO: Should be renamed 'selectedDay'
   /** Hide knob button. Default = false */
-  hideKnob: boolean;
+  hideKnob?: boolean;
   /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
-  showClosingKnob: boolean;
+  showClosingKnob?: boolean;
 }
 
 type State = {
@@ -94,8 +84,6 @@ export default class Agenda extends Component<AgendaProps, State> {
     loadItemsForMonth: PropTypes.func,
     /** callback that fires when the calendar is opened or closed */
     onCalendarToggled: PropTypes.func,
-    /** callback that gets called on day press */
-    onDayPress: PropTypes.func,
     /** callback that gets called when day changes while scrolling agenda list */
     onDayChange: PropTypes.func,
     /** specify how agenda knob should look like */
@@ -111,14 +99,14 @@ export default class Agenda extends Component<AgendaProps, State> {
   private style: {[key: string]: ViewStyle};
   private viewHeight: number;
   private viewWidth: number;
-  private scrollTimeout: any;
+  private scrollTimeout?: ReturnType<typeof setTimeout>;
   private headerState: string;
   private currentMonth: XDate;
-  private knobTracker: any;
+  private knobTracker: VelocityTracker;
   private _isMounted: boolean | undefined;
   private scrollPad: React.RefObject<any> = React.createRef();
   private calendar: React.RefObject<CalendarList> = React.createRef();
-  private knob: React.RefObject<any> = React.createRef();
+  private knob: React.RefObject<View> = React.createRef();
   public list: React.RefObject<ReservationList> = React.createRef();
 
   constructor(props: AgendaProps) {
@@ -228,11 +216,11 @@ export default class Agenda extends Component<AgendaProps, State> {
     }
   }
 
-  chooseDayFromCalendar = (d: any) => {
+  onDayPress = (d: DateData) => {
     this.chooseDay(d, !this.state.calendarScrollable);
   };
 
-  chooseDay(d: any, optimisticScroll: boolean) {
+  chooseDay(d: DateData, optimisticScroll: boolean) {
     const day = parseDate(d);
 
     this.setState({
@@ -255,14 +243,16 @@ export default class Agenda extends Component<AgendaProps, State> {
     this.props.onDayPress?.(xdateToData(day));
   }
 
-  generateMarkings = memoize((selectedDay, markedDates, items = {}) => {
+  generateMarkings = memoize((selectedDay, markedDates, items) => {
     if (!markedDates) {
       markedDates = {};
-      Object.keys(items).forEach(key => {
-        if (items[key] && items[key].length) {
-          markedDates[key] = {marked: true};
-        }
-      });
+      if (items) {
+        Object.keys(items).forEach(key => {
+          if (items[key] && items[key].length) {
+            markedDates[key] = {marked: true};
+          }
+        });
+      }
     }
 
     const key = toMarkingFormat(selectedDay);
@@ -326,7 +316,9 @@ export default class Agenda extends Component<AgendaProps, State> {
     this.props.onVisibleMonthsChange?.(months);
 
     if (this.props.items && !this.state.firstReservationLoad) {
-      clearTimeout(this.scrollTimeout);
+      if (this.scrollTimeout) {
+        clearTimeout(this.scrollTimeout);
+      }
 
       this.scrollTimeout = setTimeout(() => {
         if (this._isMounted) {
@@ -336,16 +328,13 @@ export default class Agenda extends Component<AgendaProps, State> {
     }
   };
 
-  onDayChange = (day: any) => {
-    const newDate = parseDate(day);
-    const withAnimation = sameMonth(newDate, this.state.selectedDay);
-
+  onDayChange = (day: XDate) => {
+    const withAnimation = sameMonth(day, this.state.selectedDay);
     this.calendar?.current?.scrollToDay(day, this.calendarOffset(), withAnimation);
-    this.setState({
-      selectedDay: newDate
-    });
+    
+    this.setState({selectedDay: day});
 
-    this.props.onDayChange?.(xdateToData(newDate));
+    this.props.onDayChange?.(xdateToData(day));
   };
 
   renderReservations() {
@@ -355,7 +344,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       <ReservationList
         {...reservationListProps}
         ref={this.list}
-        reservations={this.props.items}
+        items={this.props.items}
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
         onDayChange={this.onDayChange}
@@ -372,13 +361,13 @@ export default class Agenda extends Component<AgendaProps, State> {
       <CalendarList
         {...calendarListProps}
         ref={this.calendar}
-        current={this.currentMonth}
+        current={getCalendarDateString(this.currentMonth.toString())}
         markedDates={this.generateMarkings(this.state.selectedDay, markedDates, items)}
         calendarWidth={this.viewWidth}
         scrollEnabled={this.state.calendarScrollable}
         hideExtraDays={shouldHideExtraDays}
         onLayout={this.onCalendarListLayout}
-        onDayPress={this.chooseDayFromCalendar}
+        onDayPress={this.onDayPress}
         onVisibleMonthsChange={this.onVisibleMonthsChange}
       />
     );

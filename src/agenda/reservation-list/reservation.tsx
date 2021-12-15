@@ -9,8 +9,7 @@ import {isToday} from '../../dateutils';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
-import {Theme} from '../../types';
-import {DayReservations} from './index';
+import {Theme, DayReservations, ReservationItemType} from '../../types';
 
 
 export interface ReservationProps {
@@ -18,13 +17,13 @@ export interface ReservationProps {
   /** Specify theme properties to override specific styles for reservation parts. Default = {} */
   theme: Theme;
   /** specify your item comparison function for increased performance */
-  rowHasChanged?: (a: any, b: any) => boolean;
+  rowHasChanged?: (a: ReservationItemType, b: ReservationItemType) => boolean;
   /** specify how each date should be rendered. date can be undefined if the item is not first in that day */
-  renderDay?: (date?: XDate, item?: DayReservations) => React.Component;
+  renderDay?: (date?: XDate, item?: ReservationItemType) => JSX.Element;
   /** specify how each item should be rendered in agenda */
-  renderItem?: (reservation: any, isFirst: boolean) => React.Component;
+  renderItem?: (reservation: ReservationItemType, isFirst: boolean) => React.Component;
   /** specify how empty date content with no items should be rendered */
-  renderEmptyDate?: (date?: XDate) => React.Component;
+  renderEmptyDate?: (date?: XDate) => JSX.Element;
 }
 
 class Reservation extends Component<ReservationProps> {
@@ -74,7 +73,7 @@ class Reservation extends Component<ReservationProps> {
     return changed;
   }
 
-  renderDate(date?: XDate, item?: DayReservations) {
+  renderDate(date?: XDate, item?: ReservationItemType) {
     if (isFunction(this.props.renderDay)) {
       return this.props.renderDay(date, item);
     }

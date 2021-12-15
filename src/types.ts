@@ -91,3 +91,19 @@ export interface Theme {
     week: StyleProp<ViewStyle>;
   };
 }
+
+export type ReservationItemType = {
+  name: string;
+  height: number;
+  day: string;
+}
+
+export type ReservationsType = {
+  [date: string]: ReservationItemType[];
+}
+
+export interface DayReservations {
+  reservation?: ReservationItemType;
+  date?: XDate;
+  day: XDate;
+}

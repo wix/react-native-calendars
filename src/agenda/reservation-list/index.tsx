@@ -10,20 +10,14 @@ import {sameDate} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
-import {ReservationItemType, ReservationsType} from '../../agenda';
+import {ReservationItemType, ReservationsType, DayReservations} from '../../types';
 
-
-export interface DayReservations {
-  reservation?: ReservationItemType;
-  date?: XDate;
-  day: XDate;
-}
 
 export type ReservationListProps = ReservationProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
   the value of date key kas to be an empty array []. If there exists no value for date key it is
   considered that the date in question is not yet loaded */
-  reservations: ReservationsType;
+  items?: ReservationsType;
   selectedDay: XDate;
   topDay: XDate;
   /** Show items only for the selected day. Default = false */
@@ -52,11 +46,11 @@ export type ReservationListProps = ReservationProps & {
   onRefresh?: () => void;
 };
 
-interface ReservationsListState {
+interface State {
   reservations: DayReservations[];
 }
 
-class ReservationList extends Component<ReservationListProps, ReservationsListState> {
+class ReservationList extends Component<ReservationListProps, State> {
   static displayName = 'ReservationList';
 
   static propTypes = {
@@ -64,7 +58,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
     /** the list of items that have to be displayed in agenda. If you want to render item as empty date
     the value of date key kas to be an empty array []. If there exists no value for date key it is
     considered that the date in question is not yet loaded */
-    reservations: PropTypes.object,
+    items: PropTypes.object,
     selectedDay: PropTypes.instanceOf(XDate),
     topDay: PropTypes.instanceOf(XDate),
     /** Show items only for the selected day. Default = false */
@@ -159,7 +153,7 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
   getReservationsForDay(iterator: XDate, props: ReservationListProps) {
     const day = iterator.clone();
-    const res = props.reservations[toMarkingFormat(day)];
+    const res = props.items?.[toMarkingFormat(day)];
     if (res && res.length) {
       return res.map((reservation: ReservationItemType, i: number) => {
         return {
@@ -182,14 +176,13 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
 
   getReservations(props: ReservationListProps) {
     const {selectedDay, showOnlySelectedDayItems} = props;
-    if (!props.reservations || !selectedDay) {
+    if (!props.items || !selectedDay) {
       return {reservations: [], scrollPosition: 0};
     }
 
     let reservations: DayReservations[] = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].day.clone();
-
       while (iterator.getTime() < selectedDay.getTime()) {
         const res = this.getReservationsForDay(iterator, props);
         if (!res) {
@@ -275,8 +268,8 @@ class ReservationList extends Component<ReservationListProps, ReservationsListSt
   keyExtractor = (_item: DayReservations, index: number) => String(index);
 
   render() {
-    const {reservations, selectedDay, theme, style} = this.props;
-    if (!reservations || !reservations[toMarkingFormat(selectedDay)]) {
+    const {items, selectedDay, theme, style} = this.props;
+    if (!items || !items[toMarkingFormat(selectedDay)]) {
       if (isFunction(this.props.renderEmptyData)) {
         return this.props.renderEmptyData?.();
       }
