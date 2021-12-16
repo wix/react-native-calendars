@@ -17,7 +17,7 @@ const TOP_POSITION = 65;
 
 interface Props {
   /** Initial date in 'yyyy-MM-dd' format. Default = now */
-  date: XDate;
+  date: string;
   /** Callback for date change event */
   onDateChanged?: (date: string, updateSource: UpdateSource) => void;
   /** Callback for month change event */
@@ -75,12 +75,12 @@ class CalendarProvider extends Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.date && prevProps.date !== this.props.date) {
-      this.setDate(toMarkingFormat(this.props.date), updateSources.PROP_UPDATE);
+      this.setDate(this.props.date, updateSources.PROP_UPDATE);
     }
   }
 
-  getDate(date: XDate) {
-    return toMarkingFormat(date || new XDate());
+  getDate(date: string) {
+    return date || toMarkingFormat(new XDate());
   }
 
   getProviderContextValue = () => {

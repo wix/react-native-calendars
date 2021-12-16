@@ -792,3 +792,5 @@
 - Calendar and CalendarList - removing unused parameter 'doNotTriggerListeners' from updateMonth().
 - 'input.js' - renaming 'velocityTracker'.
 - 'test.js' - renaming 'testUtils' and removing from folder.
+
+*** End of changelog - please see release tags for notes ***

@@ -3,7 +3,6 @@ import XDate from 'xdate';
 import React from 'react';
 import {FlatList} from 'react-native';
 
-import {sameWeek} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
@@ -23,10 +22,6 @@ class Presenter {
 
   scrollToIndex = (animated: boolean) => {
     this.list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
-  };
-
-  isSameWeek = (date: XDate, prevDate: XDate, firstDay: number) => {
-    return sameWeek(date, prevDate, firstDay);
   };
 
   // Events

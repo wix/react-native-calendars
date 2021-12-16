@@ -63,7 +63,7 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   showClosingKnob: boolean;
 }
 
-type AgendaState = {
+type State = {
   scrollY: Animated.Value;
   calendarIsReady: boolean;
   calendarScrollable: boolean;
@@ -79,7 +79,7 @@ type AgendaState = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/agenda.gif
  */
-export default class Agenda extends Component<AgendaProps, AgendaState> {
+export default class Agenda extends Component<AgendaProps, State> {
   static displayName = 'Agenda';
 
   static propTypes = {

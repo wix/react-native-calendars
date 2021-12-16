@@ -49,7 +49,7 @@ const PAN_GESTURE_THRESHOLD = 30;
 const LEFT_ARROW = require('../calendar/img/previous.png');
 const RIGHT_ARROW = require('../calendar/img/next.png');
 
-export interface Props extends CalendarListProps {
+export interface ExpandableCalendarProps extends CalendarListProps {
   /** the initial position of the calendar ('open' or 'closed') */
   initialPosition?: Positions;
   /** callback that fires when the calendar is opened or closed */
@@ -74,7 +74,6 @@ export interface Props extends CalendarListProps {
   closeOnDayPress?: boolean;
   context?: any;
 }
-export type ExpandableCalendarProps = Props;
 
 interface State {
   deltaY: Animated.Value;
@@ -90,7 +89,7 @@ interface State {
  * @extendslink: docs/CalendarList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-class ExpandableCalendar extends Component<Props, State> {
+class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
   static displayName = 'ExpandableCalendar';
 
   static propTypes = {
@@ -157,7 +156,7 @@ class ExpandableCalendar extends Component<Props, State> {
   calendar: React.RefObject<CalendarList> = React.createRef();
   weekCalendar: React.RefObject<any> = React.createRef();
 
-  constructor(props: Props) {
+  constructor(props: ExpandableCalendarProps) {
     super(props);
 
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
@@ -214,7 +213,7 @@ class ExpandableCalendar extends Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: ExpandableCalendarProps) {
     const {date} = this.props.context;
     if (date !== prevProps.context.date) {
       // date was changed from AgendaList, arrows or scroll
@@ -615,4 +614,4 @@ class ExpandableCalendar extends Component<Props, State> {
   }
 }
 
-export default asCalendarConsumer(ExpandableCalendar);
+export default asCalendarConsumer<ExpandableCalendarProps>(ExpandableCalendar);
