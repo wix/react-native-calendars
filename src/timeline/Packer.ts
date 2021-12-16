@@ -1,9 +1,8 @@
 // @flow
 import XDate from 'xdate';
-import {Event} from './Timeline';
+import {Event, PackedEvent} from './EventBlock';
 
-
-const offset = 100;
+export const HALF_HOUR_BLOCK_HEIGHT = 100;
 
 function buildEvent(column: any, left: number, width: number, dayStart: number) {
   const startTime = new XDate(column.start);
@@ -11,8 +10,8 @@ function buildEvent(column: any, left: number, width: number, dayStart: number) 
 
   const dayStartTime = new XDate(startTime).clearTime();
 
-  column.top = (dayStartTime.diffHours(startTime) - dayStart) * offset;
-  column.height = startTime.diffHours(endTime) * offset;
+  column.top = (dayStartTime.diffHours(startTime) - dayStart) * HALF_HOUR_BLOCK_HEIGHT;
+  column.height = startTime.diffHours(endTime) * HALF_HOUR_BLOCK_HEIGHT;
   column.width = width;
   column.left = left;
   return column;
@@ -101,7 +100,7 @@ function populateEvents(events: Event[], screenWidth: number, dayStart: number) 
   if (columns.length > 0) {
     pack(columns, screenWidth, calculatedEvents, dayStart);
   }
-  return calculatedEvents;
+  return calculatedEvents as PackedEvent[];
 }
 
 export default populateEvents;
