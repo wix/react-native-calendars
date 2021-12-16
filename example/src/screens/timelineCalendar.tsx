@@ -81,7 +81,7 @@ const EVENTS = [
 
 export default class TimelineCalendarScreen extends Component {
   state = {
-    currentDate: '2017-09-07'
+    currentDate: '2017-09-10'
   };
 
   marked = {
@@ -120,7 +120,7 @@ export default class TimelineCalendarScreen extends Component {
           format24h={true}
           eventTapped={e => e}
           events={EVENTS.filter(event => sameDate(new XDate(event.start), new XDate(this.state.currentDate)))}
-          // scrollToFirst={true}
+          scrollToFirst
           // start={0}
           // end={24}
         />
