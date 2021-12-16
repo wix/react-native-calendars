@@ -158,7 +158,6 @@ export default class Agenda extends Component<AgendaProps, State> {
     if (nextProps.items) {
       return {firstReservationLoad: false};
     }
-
     return null;
   }
 
@@ -186,10 +185,8 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   enableCalendarScrolling(enable = true) {
-    this.setState({
-      calendarScrollable: enable
-    });
-
+    this.setState({calendarScrollable: enable});
+    
     this.props.onCalendarToggled?.(enable);
 
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
@@ -205,10 +202,7 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   loadReservations(props: AgendaProps) {
     if ((!props.items || !Object.keys(props.items).length) && !this.state.firstReservationLoad) {
-      this.setState(
-        {
-          firstReservationLoad: true
-        },
+      this.setState({firstReservationLoad: true},
         () => {
           this.props.loadItemsForMonth?.(xdateToData(this.state.selectedDay));
         }
@@ -231,9 +225,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     this.props.onCalendarToggled?.(false);
 
     if (!optimisticScroll) {
-      this.setState({
-        topDay: day.clone()
-      });
+      this.setState({topDay: day.clone()});
     }
 
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
@@ -389,7 +381,12 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   renderWeekDaysNames = memoize((weekDaysNames: string[]) => {
     return weekDaysNames.map((day, index) => (
-      <Text allowFontScaling={false} key={day + index} style={this.style.weekday} numberOfLines={1}>
+      <Text 
+        key={day + index} 
+        style={this.style.weekday} 
+        allowFontScaling={false} 
+        numberOfLines={1}
+      >
         {day}
       </Text>
     ));

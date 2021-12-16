@@ -15,7 +15,7 @@ import {Theme, AgendaEntry} from '../../types';
 export interface ReservationProps {
   date?: XDate;
   item?: AgendaEntry;
-  /** Specify theme properties to override specific styles for reservation parts. Default = {} */
+  /** Specify theme properties to override specific styles for item's parts. Default = {} */
   theme?: Theme;
   /** specify your item comparison function for increased performance */
   rowHasChanged?: (a: AgendaEntry, b: AgendaEntry) => boolean;
@@ -33,7 +33,7 @@ class Reservation extends Component<ReservationProps> {
   static propTypes = {
     date: PropTypes.any,
     item: PropTypes.any,
-    /** Specify theme properties to override specific styles for reservation parts. Default = {} */
+    /** Specify theme properties to override specific styles for item's parts. Default = {} */
     theme: PropTypes.object,
     /** specify your item comparison function for increased performance */
     rowHasChanged: PropTypes.func,
@@ -49,6 +49,7 @@ class Reservation extends Component<ReservationProps> {
 
   constructor(props: ReservationProps) {
     super(props);
+
     this.style = styleConstructor(props.theme);
   }
 
@@ -57,8 +58,8 @@ class Reservation extends Component<ReservationProps> {
     const d2 = nextProps.date;
     const r1 = this.props.item;
     const r2 = nextProps.item;
+    
     let changed = true;
-
     if (!d1 && !d2) {
       changed = false;
     } else if (d1 && d2) {
@@ -97,14 +98,14 @@ class Reservation extends Component<ReservationProps> {
         </View>
       );
     } else {
-      return <View style={this.style.day} />;
+      return <View style={this.style.day}/>;
     }
   }
 
   render() {
     const {item, date} = this.props;
+    
     let content;
-
     if (item) {
       const firstItem = date ? true : false;
       if (isFunction(this.props.renderItem)) {

@@ -90,11 +90,12 @@ class ReservationList extends Component<ReservationListProps, State> {
     /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
     onRefresh: PropTypes.func
   };
-
+  
   static defaultProps = {
     refreshing: false,
     selectedDay: new XDate(true)
   };
+
   private style: {[key: string]: ViewStyle | TextStyle};
   private heights: number[];
   private selectedDay?: XDate;
@@ -123,10 +124,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   componentDidUpdate(prevProps: ReservationListProps) {
     if (this.props.topDay && prevProps.topDay && prevProps !== this.props) {
       if (!sameDate(prevProps.topDay, this.props.topDay)) {
-        this.setState(
-          {
-            reservations: []
-          },
+        this.setState({reservations: []},
           () => this.updateReservations(this.props)
         );
       } else {
@@ -136,14 +134,13 @@ class ReservationList extends Component<ReservationListProps, State> {
   }
 
   updateDataSource(reservations: DayAgenda[]) {
-    this.setState({
-      reservations
-    });
+    this.setState({reservations});
   }
 
   updateReservations(props: ReservationListProps) {
     const {selectedDay} = props;
     const reservations = this.getReservations(props);
+    
     if (selectedDay && this.selectedDay)
     if (this.list && !sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
@@ -153,6 +150,7 @@ class ReservationList extends Component<ReservationListProps, State> {
       this.scrollOver = false;
       this.list?.current?.scrollToOffset({offset: scrollPosition, animated: true});
     }
+
     this.selectedDay = selectedDay;
     this.updateDataSource(reservations.reservations);
   }
@@ -160,6 +158,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   getReservationsForDay(iterator: XDate, props: ReservationListProps) {
     const day = iterator.clone();
     const res = props.items?.[toMarkingFormat(day)];
+    
     if (res && res.length) {
       return res.map((reservation: AgendaEntry, i: number) => {
         return {
@@ -180,6 +179,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
   getReservations(props: ReservationListProps) {
     const {selectedDay, showOnlySelectedDayItems} = props;
+    
     if (!props.items || !selectedDay) {
       return {reservations: [], scrollPosition: 0};
     }
@@ -276,12 +276,12 @@ class ReservationList extends Component<ReservationListProps, State> {
 
   render() {
     const {items, selectedDay, theme, style} = this.props;
+    
     if (!items || selectedDay && !items[toMarkingFormat(selectedDay)]) {
       if (isFunction(this.props.renderEmptyData)) {
         return this.props.renderEmptyData?.();
       }
-
-      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor} />;
+      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
     }
 
     return (
