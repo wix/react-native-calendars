@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {View, Text, ViewStyle, TextStyle, Dimensions} from 'react-native';
 import range from 'lodash/range';
-import {HALF_HOUR_BLOCK_HEIGHT} from './Packer';
+import {HOUR_BLOCK_HEIGHT} from './Packer';
 
 const {width: dimensionWidth} = Dimensions.get('window');
 
@@ -15,7 +15,7 @@ interface TimelineHoursProps {
 const TimelineHours = (props: TimelineHoursProps) => {
   const {format24h, start = 0, end = 24, styles} = props;
   // const offset = this.calendarHeight / (end - start);
-  const offset = HALF_HOUR_BLOCK_HEIGHT;
+  const offset = HOUR_BLOCK_HEIGHT;
   const EVENT_DIFF = 20;
 
   const hours = useMemo(() => {

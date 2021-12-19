@@ -2,7 +2,8 @@
 import XDate from 'xdate';
 import {Event, PackedEvent} from './EventBlock';
 
-export const HALF_HOUR_BLOCK_HEIGHT = 100;
+export const HOUR_BLOCK_HEIGHT = 100;
+const EVENT_BLOCK_RIGHT_MARGIN = 10;
 
 function buildEvent(column: any, left: number, width: number, dayStart: number) {
   const startTime = new XDate(column.start);
@@ -10,8 +11,8 @@ function buildEvent(column: any, left: number, width: number, dayStart: number) 
 
   const dayStartTime = new XDate(startTime).clearTime();
 
-  column.top = (dayStartTime.diffHours(startTime) - dayStart) * HALF_HOUR_BLOCK_HEIGHT;
-  column.height = startTime.diffHours(endTime) * HALF_HOUR_BLOCK_HEIGHT;
+  column.top = (dayStartTime.diffHours(startTime) - dayStart) * HOUR_BLOCK_HEIGHT;
+  column.height = startTime.diffHours(endTime) * HOUR_BLOCK_HEIGHT;
   column.width = width;
   column.left = left;
   return column;
@@ -46,7 +47,7 @@ function pack(columns: any, width: number, calculatedEvents: Event[], dayStart: 
     for (let j = 0; j < col.length; j++) {
       const colSpan = expand(col[j], i, columns);
       const L = (i / colLength) * width;
-      const W = (width * colSpan) / colLength - 10;
+      const W = (width * colSpan) / colLength - EVENT_BLOCK_RIGHT_MARGIN;
 
       calculatedEvents.push(buildEvent(col[j], L, W, dayStart));
     }

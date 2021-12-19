@@ -5,7 +5,7 @@ import map from 'lodash/map';
 
 import {Theme} from '../types';
 import styleConstructor from './style';
-import populateEvents, {HALF_HOUR_BLOCK_HEIGHT} from './Packer';
+import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
 import TimelineHours from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
 
@@ -39,7 +39,7 @@ const Timeline = (props: TimelineProps) => {
   } = props;
 
   const scrollView = useRef<ScrollView>();
-  const calendarHeight = useRef((end - start) * HALF_HOUR_BLOCK_HEIGHT);
+  const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
 
   const packedEvents = useMemo(() => {
