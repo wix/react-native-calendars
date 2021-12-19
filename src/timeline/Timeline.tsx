@@ -2,32 +2,19 @@
 import min from 'lodash/min';
 import map from 'lodash/map';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, ScrollView, TextStyle, ViewStyle} from 'react-native';
+import {View, Dimensions, ScrollView, TextStyle, ViewStyle} from 'react-native';
 
 import {Theme} from '../types';
 import styleConstructor from './style';
-import populateEvents from './Packer';
-
+import populateEvents, {HALF_HOUR_BLOCK_HEIGHT} from './Packer';
+import TimelineHours from './TimelineHours';
+import EventBlock, {Event, PackedEvent} from './EventBlock';
 
 const LEFT_MARGIN = 60 - 1;
-const TEXT_LINE_HEIGHT = 17;
-
-function range(from: number, to: number) {
-  return Array.from(Array(to), (_, i) => from + i);
-}
 
 const {width: dimensionWidth} = Dimensions.get('window');
-
-export type Event = {
-  start: string;
-  end: string;
-  title: string;
-  summary: string;
-  color?: string;
-};
 
 export interface TimelineProps {
   events: Event[];
@@ -39,12 +26,12 @@ export interface TimelineProps {
   theme?: Theme;
   scrollToFirst?: boolean;
   format24h?: boolean;
-  renderEvent?: (event: Event) => JSX.Element;
+  renderEvent?: (event: PackedEvent) => JSX.Element;
 }
 
 interface State {
   _scrollY: number;
-  packedEvents: Event[];
+  packedEvents: PackedEvent[];
 }
 
 export default class Timeline extends Component<TimelineProps, State> {
@@ -72,7 +59,7 @@ export default class Timeline extends Component<TimelineProps, State> {
     format24h: true
   };
 
-  private scrollView: React.RefObject<any> = React.createRef();
+  private scrollView = React.createRef<ScrollView>();
   style: {[key: string]: ViewStyle | TextStyle};
   calendarHeight: number;
 
@@ -80,13 +67,14 @@ export default class Timeline extends Component<TimelineProps, State> {
     super(props);
 
     const {start = 0, end = 0} = this.props;
-    this.calendarHeight = (end - start) * 100;
+    this.calendarHeight = (end - start) * HALF_HOUR_BLOCK_HEIGHT;
 
     this.style = styleConstructor(props.theme || props.styles, this.calendarHeight);
 
     const width = dimensionWidth - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, start);
-    const initPosition = min(map(packedEvents, 'top')) - this.calendarHeight / (end - start);
+    const firstTop = min(map(packedEvents, 'top')) ?? 0;
+    const initPosition = firstTop  - this.calendarHeight / (end - start);
     const verifiedInitPosition = initPosition < 0 ? 0 : initPosition;
 
     this.state = {
@@ -123,92 +111,31 @@ export default class Timeline extends Component<TimelineProps, State> {
     }, 1);
   }
 
-  _renderLines() {
-    const {format24h, start = 0, end = 24} = this.props;
-    const offset = this.calendarHeight / (end - start);
-    const EVENT_DIFF = 20;
-
-    return range(start, end + 1).map((i, index) => {
-      let timeText;
-
-      if (i === start) {
-        timeText = '';
-      } else if (i < 12) {
-        timeText = !format24h ? `${i} AM` : `${i}:00`;
-      } else if (i === 12) {
-        timeText = !format24h ? `${i} PM` : `${i}:00`;
-      } else if (i === 24) {
-        timeText = !format24h ? '12 AM' : '23:59';
-      } else {
-        timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
-      }
-
-      return [
-        <Text key={`timeLabel${i}`} style={[this.style.timeLabel, {top: offset * index - 6}]}>
-          {timeText}
-        </Text>,
-        i === start ? null : (
-          <View key={`line${i}`} style={[this.style.line, {top: offset * index, width: dimensionWidth - EVENT_DIFF}]} />
-        ),
-        <View
-          key={`lineHalf${i}`}
-          style={[this.style.line, {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF}]}
-        />
-      ];
-    });
-  }
-
-  _onEventPress(event: Event) {
-    if (this.props.eventTapped) { //TODO: remove after deprecation
+  onEventPress = (eventIndex: number) => {
+    const event = this.props.events[eventIndex];
+    if (this.props.eventTapped) {
+      //TODO: remove after deprecation
       this.props.eventTapped(event);
     } else {
       this.props.onEventPress?.(event);
     }
-  }
+  };
 
-  _renderEvents() {
+  renderEvents() {
     const {packedEvents} = this.state;
-    const events = packedEvents.map((event: any, i: number) => {
-      const style = {
-        left: event.left,
-        height: event.height,
-        width: event.width,
-        top: event.top,
-        backgroundColor: event.color ? event.color : '#add8e6'
-      };
+    const {format24h, renderEvent} = this.props;
 
-      // Fixing the number of lines for the event title makes this calculation easier.
-      // However it would make sense to overflow the title to a new line if needed
-      const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
-      const formatTime = this.props.format24h ? 'HH:mm' : 'hh:mm A';
-
+    const events = packedEvents.map((event: PackedEvent, i: number) => {
       return (
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={() => this._onEventPress(this.props.events[event.index])}
+        <EventBlock
           key={i}
-          style={[this.style.event, style]}
-        >
-          {this.props.renderEvent ? (
-            this.props.renderEvent(event)
-          ) : (
-            <View>
-              <Text numberOfLines={1} style={this.style.eventTitle}>
-                {event.title || 'Event'}
-              </Text>
-              {numberOfLines > 1 ? (
-                <Text numberOfLines={numberOfLines - 1} style={[this.style.eventSummary]}>
-                  {event.summary || ' '}
-                </Text>
-              ) : null}
-              {numberOfLines > 2 ? (
-                <Text style={this.style.eventTimes} numberOfLines={1}>
-                  {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
-                </Text>
-              ) : null}
-            </View>
-          )}
-        </TouchableOpacity>
+          index={i}
+          event={event}
+          styles={this.style}
+          format24h={format24h}
+          onPress={this.onEventPress}
+          renderEvent={renderEvent}
+        />
       );
     });
 
@@ -220,13 +147,11 @@ export default class Timeline extends Component<TimelineProps, State> {
   }
 
   render() {
+    const {format24h, start, end} = this.props;
     return (
-      <ScrollView
-        ref={this.scrollView}
-        contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}
-      >
-        {this._renderLines()}
-        {this._renderEvents()}
+      <ScrollView ref={this.scrollView} contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}>
+        <TimelineHours start={start} end={end} format24h={format24h} styles={this.style} />
+        {this.renderEvents()}
       </ScrollView>
     );
   }
