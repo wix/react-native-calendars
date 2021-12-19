@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useCallback} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
 import testIDs from '../testIDs';
@@ -358,6 +358,56 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithCustomHeaderTitle = () => {
+    const [selectedValue, setSelectedValue] = useState(new Date());
+
+    const getNewSelectedDate = useCallback(
+      (date, shouldAdd) => {
+        const newMonth = new Date(date).getMonth();
+        const month = shouldAdd ? newMonth + 1 : newMonth - 1;
+        const newDate = new Date(selectedValue.setMonth(month));
+        const newSelected = new Date(newDate.setDate(1));
+        return newSelected;
+      },
+      [selectedValue]
+    );
+    const onPressArrowLeft = useCallback(
+      (subtract, month) => {
+        const newDate = getNewSelectedDate(month, false);
+        setSelectedValue(newDate);
+        subtract();
+      },
+      [getNewSelectedDate]
+    );
+  
+    const onPressArrowRight = useCallback(
+      (add, month) => {
+        const newDate = getNewSelectedDate(month, true);
+        setSelectedValue(newDate);
+        add();
+      },
+      [getNewSelectedDate]
+    );
+
+    const CustomHeaderTitle = (
+      <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
+        <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
+      </TouchableOpacity>
+    );
+
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with custom header title</Text>
+        <Calendar
+          style={styles.calendar}
+          customHeaderTitle={CustomHeaderTitle}
+          onPressArrowLeft={onPressArrowLeft}
+          onPressArrowRight={onPressArrowRight}
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
       return (
@@ -424,8 +474,9 @@ const CalendarsScreen = () => {
         {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}
-        {renderCalendarWithCustomHeader()}
         {renderCalendarWithInactiveDays()}
+        {renderCalendarWithCustomHeaderTitle()}
+        {renderCalendarWithCustomHeader()}
       </Fragment>
     );
   };
@@ -494,5 +545,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: -4,
     padding: 8
+  },
+  customTitleContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    padding: 10
+  },
+  customTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#00BBF2'
   }
 });
