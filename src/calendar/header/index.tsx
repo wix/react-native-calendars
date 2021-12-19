@@ -54,8 +54,10 @@ export interface CalendarHeaderProps {
   disableArrowRight?: boolean;
   /** Apply custom disable color to selected day indexes */
   disabledDaysIndexes?: number[];
-  /** Replace default month and year title with custom one. the function receive a date as parameter */
+  /** Replace default title with custom one. the function receive a date as parameter */
   renderHeader?: (date?: XDate) => ReactNode;
+  /** Replace default title with custom element */
+  customHeaderTitle?: JSX.Element;
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
   testID?: string;
@@ -92,8 +94,10 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     disableArrowRight: PropTypes.bool,
     /** Apply custom disable color to selected day indexes */
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
-    /** Replace default month and year title with custom one. the function receive a date as parameter. */
+    /** Replace default title with custom one. the function receive a date as parameter */
     renderHeader: PropTypes.any,
+    /** Replace default title with custom element */
+    customHeaderTitle: PropTypes.any,
     /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
     webAriaLevel: PropTypes.number
   };
@@ -123,7 +127,8 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
       'renderArrow',
       'disableArrowLeft',
       'disableArrowRight',
-      'renderHeader'
+      'renderHeader',
+      'customHeaderTitle'
     ]);
   }
 
@@ -180,11 +185,15 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
   });
 
   renderHeader = () => {
-    const {renderHeader, month, monthFormat, testID, webAriaLevel} = this.props;
+    const {customHeaderTitle, renderHeader, month, monthFormat, testID, webAriaLevel} = this.props;
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
 
     if (renderHeader) {
       return renderHeader(month);
+    }
+
+    if (customHeaderTitle) {
+      return customHeaderTitle;
     }
 
     return (
