@@ -66,7 +66,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   disabledByDefault?: boolean;
   /** Style passed to the header */
   headerStyle?: ViewStyle;
-  /** Allow rendering of a totally custom header */
+  /** Allow rendering a totally custom header */
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
@@ -127,7 +127,7 @@ class Calendar extends Component<CalendarProps, State> {
     disabledByDefault: PropTypes.bool,
     /** Style passed to the header */
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** Allow rendering of a totally custom header */
+    /** Allow rendering a totally custom header */
     customHeader: PropTypes.any,
     /** Allow selection of dates before minDate or after maxDate */
     allowSelectionOutOfRange: PropTypes.bool
