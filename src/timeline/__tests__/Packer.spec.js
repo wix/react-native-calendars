@@ -66,7 +66,7 @@ describe('Timeline Packer utils', () => {
     it('should set left position base when the 3 events overlap', () => {
       const packedEvents = uut(events, 300, 0);
       expect(packedEvents[0].left).toBe(0); // event 1
-      expect(packedEvents[1].left).toBeCloseTo(100); // event 3
+      expect(packedEvents[1].left).toBe(100); // event 3
       expect(packedEvents[2].left).toBe(200); // event 2
     });
 
