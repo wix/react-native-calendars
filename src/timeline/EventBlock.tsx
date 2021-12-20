@@ -3,6 +3,7 @@ import {View, Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
 import XDate from 'xdate';
 
 export interface Event {
+  id?: string;
   start: string;
   end: string;
   title: string;
