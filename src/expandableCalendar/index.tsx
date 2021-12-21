@@ -73,6 +73,8 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
   context?: any;
+  // add footer content below knob
+  renderFooter?: Function
 }
 
 interface State {
@@ -115,7 +117,8 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     /** a threshold for closing the calendar with the pan gesture */
     closeThreshold: PropTypes.number,
     /** Whether to close the calendar on day press. Default = true */
-    closeOnDayPress: PropTypes.bool
+    closeOnDayPress: PropTypes.bool,
+    renderFooter: PropTypes.func,
   };
 
   static defaultProps = {
@@ -127,7 +130,8 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     allowShadow: true,
     openThreshold: PAN_GESTURE_THRESHOLD,
     closeThreshold: PAN_GESTURE_THRESHOLD,
-    closeOnDayPress: true
+    closeOnDayPress: true,
+    renderFooter: () => {}
   };
 
   static positions = Positions;
@@ -607,6 +611,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
             {horizontal && this.renderWeekCalendar()}
             {!hideKnob && this.renderKnob()}
             {!horizontal && this.renderHeader()}
+            {this.props.renderFooter && this.props.renderFooter()}
           </Animated.View>
         )}
       </View>
