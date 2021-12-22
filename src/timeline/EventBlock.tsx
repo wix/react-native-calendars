@@ -12,6 +12,7 @@ export interface Event {
 }
 
 export interface PackedEvent extends Event {
+  index: number;
   left: number;
   top: number;
   width: number;
