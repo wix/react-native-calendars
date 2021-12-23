@@ -7,7 +7,7 @@ export interface Event {
   start: string;
   end: string;
   title: string;
-  summary: string;
+  summary?: string;
   color?: string;
 }
 
