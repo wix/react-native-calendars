@@ -2,6 +2,7 @@ import React, {useCallback, useMemo} from 'react';
 import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, Dimensions, StyleSheet} from 'react-native';
 import range from 'lodash/range';
 import {HOUR_BLOCK_HEIGHT} from './Packer';
+import {buildTimeString, calcTimeByPosition} from './helpers/presenter';
 
 const {width: dimensionWidth} = Dimensions.get('window');
 
@@ -40,13 +41,9 @@ const TimelineHours = (props: TimelineHoursProps) => {
 
   const handleBackgroundPress = useCallback(event => {
     const yPosition = event.nativeEvent.locationY;
-    const halfHourBlockHeight = HOUR_BLOCK_HEIGHT / 2;
-    let time = yPosition / halfHourBlockHeight / 2;
-    time = Math.round(time * 2) / 2;
+    const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
 
-    const hour = Math.floor(time);
-    const minutes = (time - Math.floor(time)) * 60;
-    const timeString = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+    const timeString = buildTimeString(hour, minutes);
     onBackgroundLongPress?.(timeString, {hour, minutes});
   }, []);
 
