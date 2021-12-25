@@ -1,9 +1,7 @@
 import XDate from 'xdate';
 import React, {Component} from 'react';
-// @ts-expect-error
-import {ExpandableCalendar, Timeline, CalendarProvider} from 'react-native-calendars';
+import {ExpandableCalendar, Timeline, CalendarProvider,  TimelineProps} from 'react-native-calendars';
 import {sameDate} from '../../../src/dateutils';
-
 
 const EVENTS = [
   {
@@ -81,7 +79,8 @@ const EVENTS = [
 
 export default class TimelineCalendarScreen extends Component {
   state = {
-    currentDate: '2017-09-10'
+    currentDate: '2017-09-10',
+    newEvents: []
   };
 
   marked = {
@@ -91,7 +90,7 @@ export default class TimelineCalendarScreen extends Component {
     '2017-09-10': {marked: true}
   };
 
-  onDateChanged = date => {
+  onDateChanged = (date: string) => {
     // console.warn('TimelineCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
     this.setState({currentDate: date});
@@ -101,7 +100,24 @@ export default class TimelineCalendarScreen extends Component {
     // console.warn('TimelineCalendarScreen onMonthChange: ', month, updateSource);
   };
 
+  createNewEvent: TimelineProps['onEventCreate'] = (timeString, timeObject) => {
+    const {currentDate, newEvents} = this.state;
+
+    const newEvent = {
+      start: `${currentDate} ${timeString}`,
+      end: `${currentDate} ${(timeObject.hour + 1).toString().padStart(2, '0')}:${timeObject.minutes
+        .toString()
+        .padStart(2, '0')}:00`,
+      title: 'New Event',
+      color: '#ffffff'
+    };
+
+    this.setState({newEvents: [...newEvents, newEvent]});
+  };
+
   render() {
+    const {newEvents} = this.state;
+    const events = [...EVENTS, ...newEvents];
     return (
       <CalendarProvider
         date={this.state.currentDate}
@@ -119,8 +135,9 @@ export default class TimelineCalendarScreen extends Component {
         <Timeline
           format24h={true}
           eventTapped={e => e}
-          events={EVENTS.filter(event => sameDate(new XDate(event.start), new XDate(this.state.currentDate)))}
+          events={events.filter(event => sameDate(new XDate(event.start), new XDate(this.state.currentDate)))}
           scrollToFirst
+          onEventCreate={this.createNewEvent}
           // start={0}
           // end={24}
         />

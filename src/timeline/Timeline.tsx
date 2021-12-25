@@ -6,7 +6,7 @@ import map from 'lodash/map';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
-import TimelineHours from './TimelineHours';
+import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
 
 const LEFT_MARGIN = 60 - 1;
@@ -14,14 +14,37 @@ const {width: dimensionWidth} = Dimensions.get('window');
 
 export interface TimelineProps {
   events: Event[];
+  /**
+   * The timeline day start time
+   */
   start?: number;
+  /**
+   * The timeline day end time
+   */
   end?: number;
-  eventTapped?: (event: Event) => void; //TODO: deprecate (prop renamed 'onEventPress', as in the other components).
+  /**
+   * @deprecated
+   * Use onEventPress instead
+   */
+  eventTapped?: (event: Event) => void;
+  /**
+   * Handle event press
+   */
   onEventPress?: (event: Event) => void;
+  /**
+   * Pass to handle creation of a new event by long press on the timeline background
+   */
+  onEventCreate?: TimelineHoursProps['onBackgroundLongPress'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
   theme?: Theme;
   scrollToFirst?: boolean;
+  /**
+   * Whether to use 24 hours format for the timeline hours
+   */
   format24h?: boolean;
+  /**
+   * Render a custom event block
+   */
   renderEvent?: (event: PackedEvent) => JSX.Element;
 }
 
@@ -32,6 +55,7 @@ const Timeline = (props: TimelineProps) => {
     end = 24,
     events = [],
     onEventPress,
+    onEventCreate,
     renderEvent,
     theme,
     scrollToFirst,
@@ -102,7 +126,13 @@ const Timeline = (props: TimelineProps) => {
   return (
     // @ts-expect-error
     <ScrollView ref={scrollView} contentContainerStyle={[styles.current.contentStyle, {width: dimensionWidth}]}>
-      <TimelineHours start={start} end={end} format24h={format24h} styles={styles.current} />
+      <TimelineHours
+        start={start}
+        end={end}
+        format24h={format24h}
+        styles={styles.current}
+        onBackgroundLongPress={onEventCreate}
+      />
       {renderEvents()}
     </ScrollView>
   );

@@ -19,10 +19,15 @@
     "declaration": true,
     "baseUrl": ".",
     "paths": {
-      "react-native-calendars": ["src/index.ts"],
+      "react-native-calendars": ["src/index.ts"]
     }
   },
   // "include": ["src/calendar/day/basic", "src/global.d.ts"],
-  "include": ["src/**/*", "example/src/screens/calendars.tsx", "example/src/screens/expandableCalendar.tsx"],
+  "include": [
+    "src/**/*",
+    "example/src/screens/calendars.tsx",
+    "example/src/screens/expandableCalendar.tsx",
+    "example/src/screens/timelineCalendar.tsx"
+  ],
   "exclude": ["node_modules", "testUtils"]
 }
