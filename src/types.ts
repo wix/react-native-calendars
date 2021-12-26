@@ -91,3 +91,13 @@ export interface Theme {
     week: StyleProp<ViewStyle>;
   };
 }
+
+export type AgendaEntry = {
+  name: string;
+  height: number;
+  day: string;
+}
+
+export type AgendaSchedule = {
+  [date: string]: AgendaEntry[];
+}
