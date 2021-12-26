@@ -141,8 +141,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     const {selectedDay} = props;
     const reservations = this.getReservations(props);
     
-    if (selectedDay && this.selectedDay)
-    if (this.list && !sameDate(selectedDay, this.selectedDay)) {
+    if (this.list && selectedDay && this.selectedDay && !sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
@@ -187,16 +186,17 @@ class ReservationList extends Component<ReservationListProps, State> {
     let reservations: DayAgenda[] = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].date?.clone();
-      if (iterator)
-      while (iterator.getTime() < selectedDay.getTime()) {
-        const res = this.getReservationsForDay(iterator, props);
-        if (!res) {
-          reservations = [];
-          break;
-        } else {
-          reservations = reservations.concat(res);
+      if (iterator) {
+        while (iterator.getTime() < selectedDay.getTime()) {
+          const res = this.getReservationsForDay(iterator, props);
+          if (!res) {
+            reservations = [];
+            break;
+          } else {
+            reservations = reservations.concat(res);
+          }
+          iterator.addDays(1);
         }
-        iterator.addDays(1);
       }
     }
 
