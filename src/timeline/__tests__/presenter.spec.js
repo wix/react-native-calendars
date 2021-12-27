@@ -14,22 +14,22 @@ describe('timeline presenter', () => {
       expect(minutes).toBe(30);
     });
 
-    it('should round time to nearest 30 minutes block', () => {
+    it('should round down time to nearest 30 minutes block', () => {
       const time1 = uut.calcTimeByPosition(310, 100);
       expect(time1.hour).toBe(3);
       expect(time1.minutes).toBe(0);
 
       const time2 = uut.calcTimeByPosition(280, 100);
-      expect(time2.hour).toBe(3);
-      expect(time2.minutes).toBe(0);
+      expect(time2.hour).toBe(2);
+      expect(time2.minutes).toBe(30);
 
       const time3 = uut.calcTimeByPosition(440, 100);
       expect(time3.hour).toBe(4);
-      expect(time3.minutes).toBe(30);
+      expect(time3.minutes).toBe(0);
 
       const time4 = uut.calcTimeByPosition(1488, 100);
-      expect(time4.hour).toBe(15);
-      expect(time4.minutes).toBe(0);
+      expect(time4.hour).toBe(14);
+      expect(time4.minutes).toBe(30);
     });
 
     it('should handle different hour block heights', () => {
@@ -39,7 +39,11 @@ describe('timeline presenter', () => {
 
       const time2 = uut.calcTimeByPosition(350, 145);
       expect(time2.hour).toBe(2);
-      expect(time2.minutes).toBe(30);
+      expect(time2.minutes).toBe(0);
+
+      const time3 = uut.calcTimeByPosition(350, 135);
+      expect(time3.hour).toBe(2);
+      expect(time3.minutes).toBe(30);
     });
   });
 

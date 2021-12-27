@@ -1,7 +1,6 @@
 export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
-  const halfHourBlockHeight = hourBlockHeight / 2;
   let time = yPosition / hourBlockHeight;
-  time = Math.round(time * 2) / 2;
+  time = Math.floor(time * 2) / 2;
 
   const hour = Math.floor(time);
   const minutes = (time - Math.floor(time)) * 60;
