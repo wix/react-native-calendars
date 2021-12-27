@@ -27,6 +27,7 @@
     "src/**/*",
     "example/src/screens/calendars.tsx",
     "example/src/screens/expandableCalendar.tsx",
+    "example/src/screens/agenda.tsx",
     "example/src/screens/timelineCalendar.tsx"
   ],
   "exclude": ["node_modules", "testUtils"]
