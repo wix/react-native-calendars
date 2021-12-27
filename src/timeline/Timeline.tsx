@@ -34,7 +34,11 @@ export interface TimelineProps {
   /**
    * Pass to handle creation of a new event by long press on the timeline background
    */
-  onEventCreate?: TimelineHoursProps['onBackgroundLongPress'];
+  onBackgroundLongPress?: TimelineHoursProps['onBackgroundLongPress'];
+  /**
+   * Pass to handle creation of a new event by long press out on the timeline background
+   */
+   onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
   theme?: Theme;
   scrollToFirst?: boolean;
@@ -55,7 +59,8 @@ const Timeline = (props: TimelineProps) => {
     end = 24,
     events = [],
     onEventPress,
-    onEventCreate,
+    onBackgroundLongPress,
+    onBackgroundLongPressOut,
     renderEvent,
     theme,
     scrollToFirst,
@@ -131,7 +136,8 @@ const Timeline = (props: TimelineProps) => {
         end={end}
         format24h={format24h}
         styles={styles.current}
-        onBackgroundLongPress={onEventCreate}
+        onBackgroundLongPress={onBackgroundLongPress}
+        onBackgroundLongPressOut={onBackgroundLongPressOut}
       />
       {renderEvents()}
     </ScrollView>
