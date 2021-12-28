@@ -104,13 +104,12 @@ export default class TimelineCalendarScreen extends Component {
 
   createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
     const {currentDate} = this.state;
-    const endTimeString = `${currentDate} ${(timeObject.hour + 1).toString().padStart(2, '0')}:${timeObject.minutes
-      .toString()
-      .padStart(2, '0')}:00`;
+    const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
+    const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
 
     const newEvent = {
       start: `${currentDate} ${timeString}`,
-      end: endTimeString,
+      end: `${currentDate} ${hourString}:${minutesString}:00`,
       title: 'New Event',
       color: '#ffffff'
     };
