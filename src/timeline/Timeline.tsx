@@ -38,7 +38,7 @@ export interface TimelineProps {
   /**
    * Pass to handle creation of a new event by long press out on the timeline background
    */
-   onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
+  onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
   theme?: Theme;
   scrollToFirst?: boolean;
