@@ -1,9 +1,8 @@
 import XDate from 'xdate';
 import React, {Component} from 'react';
-// @ts-expect-error
-import {ExpandableCalendar, Timeline, CalendarProvider} from 'react-native-calendars';
+import {Alert} from 'react-native';
+import {ExpandableCalendar, Timeline, CalendarProvider, TimelineProps} from 'react-native-calendars';
 import {sameDate} from '../../../src/dateutils';
-
 
 const EVENTS = [
   {
@@ -81,7 +80,9 @@ const EVENTS = [
 
 export default class TimelineCalendarScreen extends Component {
   state = {
-    currentDate: '2017-09-10'
+    currentDate: '2017-09-10',
+    events: EVENTS,
+    newEvent: undefined
   };
 
   marked = {
@@ -91,7 +92,7 @@ export default class TimelineCalendarScreen extends Component {
     '2017-09-10': {marked: true}
   };
 
-  onDateChanged = date => {
+  onDateChanged = (date: string) => {
     // console.warn('TimelineCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
     this.setState({currentDate: date});
@@ -101,7 +102,47 @@ export default class TimelineCalendarScreen extends Component {
     // console.warn('TimelineCalendarScreen onMonthChange: ', month, updateSource);
   };
 
+  createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
+    const {currentDate} = this.state;
+    const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
+    const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
+
+    const newEvent = {
+      start: `${currentDate} ${timeString}`,
+      end: `${currentDate} ${hourString}:${minutesString}:00`,
+      title: 'New Event',
+      color: '#ffffff'
+    };
+
+    this.setState({newEvent});
+  };
+
+  approveNewEvent = () => {
+    Alert.prompt('New Event', 'Enter event title', [
+      {
+        text: 'Cancel',
+        onPress: () => {
+          this.setState({
+            newEvent: undefined
+          });
+        }
+      },
+      {
+        text: 'Create',
+        onPress: eventTitle => {
+          const {newEvent = {}, events} = this.state;
+          this.setState({
+            newEvent: undefined,
+            events: [...events, {...newEvent, title: eventTitle ?? 'New Event', color: '#d8ade6'}]
+          });
+        }
+      }
+    ]);
+  };
+
   render() {
+    const {events, newEvent} = this.state;
+    const timelineEvents = newEvent ? [...events, newEvent] : events;
     return (
       <CalendarProvider
         date={this.state.currentDate}
@@ -119,8 +160,10 @@ export default class TimelineCalendarScreen extends Component {
         <Timeline
           format24h={true}
           eventTapped={e => e}
-          events={EVENTS.filter(event => sameDate(new XDate(event.start), new XDate(this.state.currentDate)))}
+          events={timelineEvents.filter(event => sameDate(new XDate(event.start), new XDate(this.state.currentDate)))}
           scrollToFirst
+          onBackgroundLongPress={this.createNewEvent}
+          onBackgroundLongPressOut={this.approveNewEvent}
           // start={0}
           // end={24}
         />

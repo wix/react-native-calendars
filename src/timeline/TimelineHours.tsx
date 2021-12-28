@@ -1,19 +1,29 @@
-import React, {useMemo} from 'react';
-import {View, Text, ViewStyle, TextStyle, Dimensions} from 'react-native';
+import React, {useCallback, useMemo, useRef} from 'react';
+import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, Dimensions, StyleSheet} from 'react-native';
 import range from 'lodash/range';
 import {HOUR_BLOCK_HEIGHT} from './Packer';
+import {buildTimeString, calcTimeByPosition} from './helpers/presenter';
 
 const {width: dimensionWidth} = Dimensions.get('window');
 
-interface TimelineHoursProps {
+interface NewEventTime {
+  hour: number;
+  minutes: number;
+}
+
+export interface TimelineHoursProps {
   start?: number;
   end?: number;
   format24h?: boolean;
+  onBackgroundLongPress?: (timeString: string, time: {hour: number; minutes: number}) => void;
+  onBackgroundLongPressOut?: (timeString: string, time: {hour: number; minutes: number}) => void;
   styles: {[key: string]: ViewStyle | TextStyle};
 }
 
 const TimelineHours = (props: TimelineHoursProps) => {
-  const {format24h, start = 0, end = 24, styles} = props;
+  const {format24h, start = 0, end = 24, styles, onBackgroundLongPress, onBackgroundLongPressOut} = props;
+
+  const lastLongPressEventTime = useRef<NewEventTime>();
   // const offset = this.calendarHeight / (end - start);
   const offset = HOUR_BLOCK_HEIGHT;
   const EVENT_DIFF = 20;
@@ -37,8 +47,33 @@ const TimelineHours = (props: TimelineHoursProps) => {
     });
   }, [start, end, format24h]);
 
+  const handleBackgroundPress = useCallback(
+    event => {
+      const yPosition = event.nativeEvent.locationY;
+      const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
+
+      lastLongPressEventTime.current = {hour, minutes};
+
+      const timeString = buildTimeString(hour, minutes);
+      onBackgroundLongPress?.(timeString, lastLongPressEventTime.current);
+    },
+    [onBackgroundLongPress]
+  );
+
+  const handlePressOut = useCallback(() => {
+    if (lastLongPressEventTime.current) {
+      const {hour, minutes} = lastLongPressEventTime.current;
+      const timeString = buildTimeString(hour, minutes);
+      onBackgroundLongPressOut?.(timeString, lastLongPressEventTime.current);
+      lastLongPressEventTime.current = undefined;
+    }
+  }, [onBackgroundLongPressOut]);
+
   return (
     <>
+      <TouchableWithoutFeedback onLongPress={handleBackgroundPress} onPressOut={handlePressOut}>
+        <View style={StyleSheet.absoluteFillObject} />
+      </TouchableWithoutFeedback>
       {hours.map(({timeText, time}, index) => {
         return (
           <React.Fragment key={time}>
