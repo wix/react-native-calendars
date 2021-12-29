@@ -451,7 +451,6 @@ export default class Agenda extends Component<AgendaProps, State> {
     const scrollPadStyle = {
       height: KNOB_HEIGHT,
       top: scrollPadPosition,
-      left: (this.viewWidth - 80) / 2
     };
 
     return (
