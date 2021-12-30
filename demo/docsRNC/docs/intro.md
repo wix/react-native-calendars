@@ -2,34 +2,32 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# React Native Calendars
 
-Let's discover **Docusaurus in less than 5 minutes**.
+This module includes various customizable **React-Native** calendar components.
 
-## Getting Started
+The package is both **Android** and **iOS** compatible.
 
-Get started by **creating a new site**.
+## Try it out
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+You can run example module by performing these steps:
 
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**:
-
-```shell
-npm init docusaurus@latest my-website classic
+```
+$ git clone git@github.com:wix/react-native-calendars.git
+$ cd react-native-calendars
+$ npm install
+$ cd ios && pod install && cd ..
+$ react-native run-ios
 ```
 
-## Start your site
+You can check example screens source code in [example module screens](https://github.com/wix-private/wix-react-native-calendar/tree/master/example/src/screens)
 
-Run the development server:
+This project is compatible with Expo/CRNA (without ejecting), and the examples have been [published on Expo](https://expo.io/@community/react-native-calendars-example)
 
-```shell
-cd my-website
+## Installation
 
-npx docusaurus start
+```
+$ npm install --save react-native-calendars
 ```
 
-Your site starts at `http://localhost:3000`.
-
-Open `docs/intro.md` and edit some lines: the site **reloads automatically** and displays your changes.
+The solution is implemented in JavaScript so no native module linking is required.

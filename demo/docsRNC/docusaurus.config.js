@@ -12,7 +12,7 @@ const config = {
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/fav-icon.png',
   organizationName: 'wix', // Usually your GitHub org/user name.
   projectName: 'react-native-calendars', // Usually your repo name.
 

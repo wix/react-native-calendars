@@ -1,0 +1,23 @@
+{
+  "name": "Calendar",
+  "category": "components",
+  "description": "Calendar component",
+  "images": [
+    "../../demo/assets/calendar.gif"
+  ],
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.tsx",
+  "props": [
+    {
+      "name": "theme",
+      "type": "Theme",
+      "description": "Specify theme properties to override specific styles for calendar parts",
+      "default": "undefined"
+    },
+    {
+      "name": "style",
+      "type": "ViewStyle",
+      "description": "Specify style for calendar container element",
+      "default": "undefined"
+    }
+  ]
+}
