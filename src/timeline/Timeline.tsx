@@ -14,7 +14,7 @@ const {width: dimensionWidth} = Dimensions.get('window');
 
 export interface TimelineProps {
   /**
-   * The date of this timeline instance
+   * The date of this timeline instance in ISO format (e.g. 2011-10-25)
    */
   date?: string;
   /**
@@ -40,10 +40,12 @@ export interface TimelineProps {
   onEventPress?: (event: Event) => void;
   /**
    * Pass to handle creation of a new event by long press on the timeline background
+   * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
    */
   onBackgroundLongPress?: TimelineHoursProps['onBackgroundLongPress'];
   /**
    * Pass to handle creation of a new event by long press out on the timeline background
+   * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
    */
   onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
