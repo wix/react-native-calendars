@@ -22,7 +22,7 @@ const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
 
 export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
-  /** Max amount of months allowed to scroll to the past. Default = 50 */
+  /** Min amount of months allowed to scroll to the past. Default = 50 */
   pastScrollRange?: number;
   /** Max amount of months allowed to scroll to the future. Default = 50 */
   futureScrollRange?: number;
@@ -36,6 +36,7 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   staticHeader?: boolean;
   /** Enable or disable vertical / horizontal scroll indicator. Default = false */
   showScrollIndicator?: boolean;
+  
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
   /** Enable or disable scrolling of calendar list */
@@ -97,6 +98,7 @@ class CalendarList extends Component<CalendarListProps, State> {
     showScrollIndicator: PropTypes.bool,
     /** Whether to animate the auto month scroll */
     animateScroll: PropTypes.bool,
+    
     /** Enable or disable scrolling of calendar list */
     scrollEnabled: PropTypes.bool,
     /** When true, the calendar list scrolls to top when the status bar is tapped. Default = true */
