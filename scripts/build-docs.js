@@ -1,4 +1,4 @@
-import _ from 'lodash';
+const _ = require('lodash');
 const childProcess = require('child_process');
 const fs = require('fs');
 
