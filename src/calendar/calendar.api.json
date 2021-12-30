@@ -9,14 +9,105 @@
     {
       "name": "theme",
       "type": "Theme",
-      "description": "Specify theme properties to override specific styles for calendar parts",
-      "default": "undefined"
+      "description": "Specify theme properties to override specific styles for calendar parts"
     },
     {
       "name": "style",
       "type": "ViewStyle",
-      "description": "Specify style for calendar container element",
-      "default": "undefined"
+      "description": "Specify style for calendar container element"
+    },
+    {
+      "name": "headerStyle",
+      "type": "ViewStyle",
+      "description": "Specify style for calendar header"
+    },
+    {
+      "name": "customHeader",
+      "type": "any",
+      "description": "Allow rendering a totally custom header"
+    },
+    {
+      "name": "initialDate",
+      "type": "string",
+      "description": "Initially visible month"
+    },
+    {
+      "name": "minDate",
+      "type": "string",
+      "description": "Minimum date that can be selected, dates before minDate will be grayed out"
+    },
+    {
+      "name": "maxDate",
+      "type": "string",
+      "description": "Maximum date that can be selected, dates after maxDate will be grayed out"
+    },
+    {
+      "name": "firstDay",
+      "type": "number",
+      "description": "If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday"
+    },
+    {
+      "name": "markedDates",
+      "type": "MarkedDatesType",
+      "description": "Collection of dates that have to be marked"
+    },
+    {
+      "name": "displayLoadingIndicator",
+      "type": "boolean",
+      "description": "Whether to display loading indicator"
+    },
+    {
+      "name": "showWeekNumbers",
+      "type": "boolean",
+      "description": "Whether to show weeks numbers"
+    },
+    {
+      "name": "hideExtraDays",
+      "type": "boolean",
+      "description": "Whether to hide days of other months in the month page"
+    },
+    {
+      "name": "showSixWeeks",
+      "type": "boolean",
+      "description": "Whether to always show six weeks on each month (only when hideExtraDays = false)"
+    },
+    {
+      "name": "disableMonthChange",
+      "type": "boolean",
+      "description": "Whether to disable changing month when click on days of other months (when hideExtraDays is false)"
+    },
+    {
+      "name": "enableSwipeMonths",
+      "type": "boolean",
+      "description": "Whether to enable the option to swipe between months"
+    },
+    {
+      "name": "disabledByDefault",
+      "type": "boolean",
+      "description": "Whether to disable days by default"
+    },
+    {
+      "name": "allowSelectionOutOfRange",
+      "type": "boolean",
+      "description": "Whether to allow selection of dates before minDate or after maxDate"
+    },
+    {
+      "name": "onDayPress",
+      "type": "(date: DateData) => void",
+      "description": "Handler which gets executed on day press"
+    },
+    {
+      "name": "onDayLongPress",
+      "type": "(date: DateData) => void",
+      "description": "Handler which gets executed on day long press"
+    },{
+      "name": "onMonthChange",
+      "type": "(date: DateData) => void",
+      "description": "Handler which gets executed when month changes in calendar"
+    },{
+      "name": "onVisibleMonthsChange",
+      "type": "(months: DateData[]) => void",
+      "description": "Handler which gets executed when visible month changes in calendar"
     }
   ]
 }
