@@ -113,8 +113,6 @@ export default class TimelineCalendarScreen extends Component {
       color: '#ffffff'
     };
 
-    console.log('ethan - what', newEvent)
-
     this.setState({newEvent});
   };
 
