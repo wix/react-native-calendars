@@ -1,3 +1,4 @@
+import _ from 'lodash';
 const childProcess = require('child_process');
 const fs = require('fs');
 
@@ -21,6 +22,19 @@ if (components) {
     /* General */
     let content = `${component.description}  \n`;
     content += `[(code example)](${component.example})\n`;
+
+    if (component.extends) {
+      let extendsText = component.extends?.join(', ');
+      if (component.extendsLink) {
+        extendsText = `[${extendsText}](${component.extendsLink})`;
+      } else {
+        const extendedComponentName = _.last(_.split(extendsText, '/')); // Incubator/TextField -> TextField
+        extendsText = `[${extendedComponentName}](/docs/components/${extendsText})`;
+      }
+      content += `:::info\n`;
+      content += `This component extends **${extendsText}** props.\n`;
+      content += `:::\n`;
+    }
 
     /* Images */
     content += `<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}>`;
