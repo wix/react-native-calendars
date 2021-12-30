@@ -13,7 +13,7 @@
     {
       "name": "pastScrollRange",
       "type": "number",
-      "description": "Min amount of months allowed to scroll to the past",
+      "description": "Max amount of months allowed to scroll to the past",
       "default": "50"
     },
     {
