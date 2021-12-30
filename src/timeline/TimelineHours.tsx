@@ -9,19 +9,21 @@ const {width: dimensionWidth} = Dimensions.get('window');
 interface NewEventTime {
   hour: number;
   minutes: number;
+  date?: string;
 }
 
 export interface TimelineHoursProps {
   start?: number;
   end?: number;
+  date?: string;
   format24h?: boolean;
-  onBackgroundLongPress?: (timeString: string, time: {hour: number; minutes: number}) => void;
-  onBackgroundLongPressOut?: (timeString: string, time: {hour: number; minutes: number}) => void;
+  onBackgroundLongPress?: (timeString: string, time: NewEventTime) => void;
+  onBackgroundLongPressOut?: (timeString: string, time: NewEventTime) => void;
   styles: {[key: string]: ViewStyle | TextStyle};
 }
 
 const TimelineHours = (props: TimelineHoursProps) => {
-  const {format24h, start = 0, end = 24, styles, onBackgroundLongPress, onBackgroundLongPressOut} = props;
+  const {format24h, start = 0, end = 24, date, styles, onBackgroundLongPress, onBackgroundLongPressOut} = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();
   // const offset = this.calendarHeight / (end - start);
@@ -52,22 +54,22 @@ const TimelineHours = (props: TimelineHoursProps) => {
       const yPosition = event.nativeEvent.locationY;
       const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
 
-      lastLongPressEventTime.current = {hour, minutes};
+      lastLongPressEventTime.current = {hour, minutes, date};
 
-      const timeString = buildTimeString(hour, minutes);
+      const timeString = buildTimeString(hour, minutes, date);
       onBackgroundLongPress?.(timeString, lastLongPressEventTime.current);
     },
-    [onBackgroundLongPress]
+    [onBackgroundLongPress, date]
   );
 
   const handlePressOut = useCallback(() => {
     if (lastLongPressEventTime.current) {
-      const {hour, minutes} = lastLongPressEventTime.current;
-      const timeString = buildTimeString(hour, minutes);
+      const {hour, minutes, date} = lastLongPressEventTime.current;
+      const timeString = buildTimeString(hour, minutes, date);
       onBackgroundLongPressOut?.(timeString, lastLongPressEventTime.current);
       lastLongPressEventTime.current = undefined;
     }
-  }, [onBackgroundLongPressOut]);
+  }, [onBackgroundLongPressOut, date]);
 
   return (
     <>

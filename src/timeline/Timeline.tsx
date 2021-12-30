@@ -13,6 +13,13 @@ const LEFT_MARGIN = 60 - 1;
 const {width: dimensionWidth} = Dimensions.get('window');
 
 export interface TimelineProps {
+  /**
+   * The date of this timeline instance
+   */
+  date?: string;
+  /**
+   * List of events to display in this timeline
+   */
   events: Event[];
   /**
    * The timeline day start time
@@ -57,6 +64,7 @@ const Timeline = (props: TimelineProps) => {
     format24h = true,
     start = 0,
     end = 24,
+    date,
     events = [],
     onEventPress,
     onBackgroundLongPress,
@@ -134,6 +142,7 @@ const Timeline = (props: TimelineProps) => {
       <TimelineHours
         start={start}
         end={end}
+        date={date}
         format24h={format24h}
         styles={styles.current}
         onBackgroundLongPress={onBackgroundLongPress}
