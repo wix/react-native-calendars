@@ -1,6 +1,5 @@
 {
   "name": "Calendar",
-  "category": "components",
   "description": "Calendar component",
   "images": [
     "../../demo/assets/calendar.gif"
