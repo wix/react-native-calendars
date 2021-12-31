@@ -8,7 +8,7 @@ export interface NowIndicatorProps {
   styles: {[key: string]: ViewStyle | TextStyle};
 }
 
-const TodayIndicator = (props: NowIndicatorProps) => {
+const NowIndicator = (props: NowIndicatorProps) => {
   const {styles} = props;
   const now = new Date();
   const hour = now.getHours();
@@ -24,4 +24,4 @@ const TodayIndicator = (props: NowIndicatorProps) => {
   );
 };
 
-export default TodayIndicator;
+export default NowIndicator;
