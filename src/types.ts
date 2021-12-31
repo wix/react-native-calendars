@@ -23,7 +23,8 @@ export interface Theme {
   eventSummary?: object;
   eventTimes?: object;
   line?: object;
-  lineNow?: object;
+  nowIndicatorLine?: object;
+  nowIndicatorKnob?: object;
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;

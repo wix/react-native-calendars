@@ -164,6 +164,7 @@ export default class TimelineCalendarScreen extends Component {
           scrollToFirst
           onBackgroundLongPress={this.createNewEvent}
           onBackgroundLongPressOut={this.approveNewEvent}
+          showNowIndicator
           // start={0}
           // end={24}
         />
