@@ -12,7 +12,7 @@ This component extends **[Calendar, FlatList](https://github.com/wix/react-nativ
 
 ### pastScrollRange
 
-Min amount of months allowed to scroll to the past  
+Max amount of months allowed to scroll to the past  
 <span style={{color: 'grey'}}>number</span>
 
 ### futureScrollRange
