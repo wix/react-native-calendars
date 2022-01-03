@@ -105,14 +105,87 @@
       "name": "onDayLongPress",
       "type": "(date: DateData) => void",
       "description": "Handler which gets executed on day long press"
-    },{
+    },
+    {
       "name": "onMonthChange",
       "type": "(date: DateData) => void",
       "description": "Handler which gets executed when month changes in calendar"
-    },{
+    },
+    {
       "name": "onVisibleMonthsChange",
       "type": "(months: DateData[]) => void",
       "description": "Handler which gets executed when visible month changes in calendar"
+    },
+    {
+      "name": "monthFormat",
+      "type": "string",
+      "description": "Month format for the header's title. Formatting values: http://arshaw.com/xdate/#Formatting",
+      "default": "MMMM yyyy"
+    },
+    {
+      "name": "hideDayNames",
+      "type": "boolean",
+      "description": "Whether to hide the days names"
+    },
+    {
+      "name": "hideArrows",
+      "type": "boolean",
+      "description": "Whether to hide the arrows"
+    },
+    {
+      "name": "disableArrowLeft",
+      "type": "boolean",
+      "description": "Whether to disable the left arrow"
+    },
+    {
+      "name": "disableArrowRight",
+      "type": "boolean",
+      "description": "Whether to disable the right arrow"
+    },
+    {
+      "name": "renderArrow",
+      "type": "(direction: Direction) => ReactNode",
+      "description": "Replace default arrows with custom ones (direction: 'left' | 'right')"
+    },
+    {
+      "name": "onPressArrowLeft",
+      "type": "(method: () => void, month?: string) => void",
+      "description": "Handler which gets executed when press left arrow. It receive a callback to go to the previous month"
+    },
+    {
+      "name": "onPressArrowRight",
+      "type": "(method: () => void, month?: string) => void",
+      "description": "Handler which gets executed when press right arrow. It receive a callback to go to the next month"
+    },
+    {
+      "name": "disabledDaysIndexes",
+      "type": "number[]",
+      "description": "Whether to apply custom disable color to selected day indexes"
+    },
+    {
+      "name": "renderHeader",
+      "type": "(date?: string) => ReactNode",
+      "description": "Replace default title with custom one"
+    },
+    {
+      "name": "customHeaderTitle",
+      "type": "JSX.Element",
+      "description": "Replace default title with custom element"
+    },
+    {
+      "name": "dayComponent",
+      "type": "React.ComponentType<DayProps & {date?: DateData}>",
+      "description": "Replace default day with custom day rendering component"
+    },
+    {
+      "name": "disableAllTouchEventsForDisabledDays",
+      "type": "boolean",
+      "description": "Whether to disable all touch events for disabled days (can be override with 'disableTouchEvent' in 'markedDates')"
+    },
+    {
+      "name": "disableAllTouchEventsForInactiveDays",
+      "type": "boolean",
+      "description": "Whether to disable all touch events for inactive days (can be override with 'disableTouchEvent' in 'markedDates')"
     }
   ]
 }
