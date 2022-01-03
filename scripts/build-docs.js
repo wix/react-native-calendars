@@ -2,7 +2,7 @@ const _ = require('lodash');
 const childProcess = require('child_process');
 const fs = require('fs');
 
-const COMPONENTS_DOCS_DIR = './demo/docsRNC/docs/components';
+const COMPONENTS_DOCS_DIR = './demo/docsRNC/docs';
 
 const result = childProcess.execSync('find ./src -name "*api.json"');
 const apiFiles = result.toString().trim().split('\n');
@@ -29,7 +29,7 @@ if (components) {
         extendsText = `[${extendsText}](${component.extendsLink})`;
       } else {
         const extendedComponentName = _.last(_.split(extendsText, '/')); // Incubator/TextField -> TextField
-        extendsText = `[${extendedComponentName}](/docs/components/${extendsText})`;
+        extendsText = `[${extendedComponentName}](/docs/${extendsText})`;
       }
       content += `:::info\n`;
       content += `This component extends **${extendsText}** props.\n`;
