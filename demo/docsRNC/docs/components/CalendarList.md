@@ -4,7 +4,7 @@ Calendar list component
 This component extends **[Calendar, FlatList](https://github.com/wix/react-native-calendars/blob/master/src/calendar/index.tsx)** props.
 :::
 
-<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'../../demo/assets/calendar-list.gif'}/>
+<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif?raw=true'}/>
 
 </div>
 

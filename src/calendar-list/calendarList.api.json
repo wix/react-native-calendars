@@ -2,7 +2,7 @@
   "name": "CalendarList",
   "description": "Calendar list component",
   "images": [
-    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif"
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif?raw=true"
   ],
   "extends": ["Calendar", "FlatList"],
   "extendsLink": [

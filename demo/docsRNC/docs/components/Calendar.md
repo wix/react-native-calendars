@@ -4,7 +4,7 @@ Calendar component
 This component extends **[CalendarHeader, BasicDay](https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/index.tsx,https://github.com/wix/react-native-calendars/blob/master/src/calendar/day/basic/index.tsx)** props.
 :::
 
-<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif'}/>
+<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif?raw=true'}/>
 
 </div>
 

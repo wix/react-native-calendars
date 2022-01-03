@@ -2,7 +2,7 @@
   "name": "Calendar",
   "description": "Calendar component",
   "images": [
-    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif"
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif?raw=true"
   ],
   "extends": ["CalendarHeader", "BasicDay"],
   "extendsLink": [
