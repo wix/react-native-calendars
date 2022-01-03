@@ -62,5 +62,10 @@ describe('timeline presenter', () => {
       expect(uut.buildTimeString(undefined, 30)).toBe('00:30:00');
       expect(uut.buildTimeString(9, undefined)).toBe('09:00:00');
     });
+
+    it('should concatenate date when passed', () => {
+      expect(uut.buildTimeString(10, 30, '2022-12-23')).toBe('2022-12-23 10:30:00');
+      expect(uut.buildTimeString(15, 0, '2017-03-05')).toBe('2017-03-05 15:00:00');
+    });
   });
 });

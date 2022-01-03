@@ -103,13 +103,12 @@ export default class TimelineCalendarScreen extends Component {
   };
 
   createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
-    const {currentDate} = this.state;
     const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
     const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
 
     const newEvent = {
-      start: `${currentDate} ${timeString}`,
-      end: `${currentDate} ${hourString}:${minutesString}:00`,
+      start: `${timeString}`,
+      end: `${timeObject.date} ${hourString}:${minutesString}:00`,
       title: 'New Event',
       color: '#ffffff'
     };
@@ -141,11 +140,11 @@ export default class TimelineCalendarScreen extends Component {
   };
 
   render() {
-    const {events, newEvent} = this.state;
+    const {currentDate, events, newEvent} = this.state;
     const timelineEvents = newEvent ? [...events, newEvent] : events;
     return (
       <CalendarProvider
-        date={this.state.currentDate}
+        date={currentDate}
         onDateChanged={this.onDateChanged}
         onMonthChange={this.onMonthChange}
         showTodayButton
@@ -158,6 +157,7 @@ export default class TimelineCalendarScreen extends Component {
           markedDates={this.marked}
         />
         <Timeline
+          date={currentDate}
           format24h={true}
           eventTapped={e => e}
           events={timelineEvents.filter(event => sameDate(new XDate(event.start), new XDate(this.state.currentDate)))}

@@ -13,6 +13,13 @@ import NowIndicator from './NowIndicator';
 const {width: dimensionWidth} = Dimensions.get('window');
 
 export interface TimelineProps {
+  /**
+   * The date of this timeline instance in ISO format (e.g. 2011-10-25)
+   */
+  date?: string;
+  /**
+   * List of events to display in this timeline
+   */
   events: Event[];
   /**
    * The timeline day start time
@@ -33,10 +40,12 @@ export interface TimelineProps {
   onEventPress?: (event: Event) => void;
   /**
    * Pass to handle creation of a new event by long press on the timeline background
+   * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
    */
   onBackgroundLongPress?: TimelineHoursProps['onBackgroundLongPress'];
   /**
    * Pass to handle creation of a new event by long press out on the timeline background
+   * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
    */
   onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
@@ -61,6 +70,7 @@ const Timeline = (props: TimelineProps) => {
     format24h = true,
     start = 0,
     end = 24,
+    date,
     events = [],
     onEventPress,
     onBackgroundLongPress,
@@ -139,6 +149,7 @@ const Timeline = (props: TimelineProps) => {
       <TimelineHours
         start={start}
         end={end}
+        date={date}
         format24h={format24h}
         styles={styles.current}
         onBackgroundLongPress={onBackgroundLongPress}
