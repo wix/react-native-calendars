@@ -6,9 +6,10 @@
   ],
   "extends": ["CalendarList", "FlatList"],
   "extendsLink": [
-    "https://github.com/wix/react-native-calendars/blob/master/src/calendar/index.tsx"
+    "https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx",
+    "https://reactnative.dev/docs/flatlist"
   ],
-  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.tsx",
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.tsx",
   "props": [
     {
       "name": "items",
