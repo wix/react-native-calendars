@@ -25,7 +25,7 @@ const FeatureList = [
   },
   {
     title: 'Expandable Calendar',
-    img: require('../../static/img/expandable-calendar.png').default,
+    img: require('../../static/img/expandableCalendar.png').default,
     description: (
       <>
         Extend or customize your website layout by reusing React. Docusaurus can be extended while reusing the same
