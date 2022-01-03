@@ -114,3 +114,73 @@ Handler which gets executed when month changes in calendar
 
 Handler which gets executed when visible month changes in calendar  
 <span style={{color: 'grey'}}>(months: DateData[]) => void</span>
+
+### monthFormat
+
+Month format for the header's title. Formatting values: http://arshaw.com/xdate/#Formatting  
+<span style={{color: 'grey'}}>string</span>
+
+### hideDayNames
+
+Whether to hide the days names  
+<span style={{color: 'grey'}}>boolean</span>
+
+### hideArrows
+
+Whether to hide the arrows  
+<span style={{color: 'grey'}}>boolean</span>
+
+### disableArrowLeft
+
+Whether to disable the left arrow  
+<span style={{color: 'grey'}}>boolean</span>
+
+### disableArrowRight
+
+Whether to disable the right arrow  
+<span style={{color: 'grey'}}>boolean</span>
+
+### renderArrow
+
+Replace default arrows with custom ones (direction: 'left' | 'right')  
+<span style={{color: 'grey'}}>(direction: Direction) => ReactNode</span>
+
+### onPressArrowLeft
+
+Handler which gets executed when press left arrow. It receive a callback to go to the previous month  
+<span style={{color: 'grey'}}>(method: () => void, month?: string) => void</span>
+
+### onPressArrowRight
+
+Handler which gets executed when press right arrow. It receive a callback to go to the next month  
+<span style={{color: 'grey'}}>(method: () => void, month?: string) => void</span>
+
+### disabledDaysIndexes
+
+Whether to apply custom disable color to selected day indexes  
+<span style={{color: 'grey'}}>number[]</span>
+
+### renderHeader
+
+Replace default title with custom one  
+<span style={{color: 'grey'}}>(date?: string) => ReactNode</span>
+
+### customHeaderTitle
+
+Replace default title with custom element  
+<span style={{color: 'grey'}}>JSX.Element</span>
+
+### dayComponent
+
+Replace default day with custom day rendering component  
+<span style={{color: 'grey'}}>JSX.Element</span>
+
+### disableAllTouchEventsForDisabledDays
+
+Whether to disable all touch events for disabled days (can be override with 'disableTouchEvent' in 'markedDates')  
+<span style={{color: 'grey'}}>boolean</span>
+
+### disableAllTouchEventsForInactiveDays
+
+Whether to disable all touch events for inactive days (can be override with 'disableTouchEvent' in 'markedDates')  
+<span style={{color: 'grey'}}>boolean</span>

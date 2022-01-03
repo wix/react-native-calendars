@@ -174,7 +174,7 @@
     },
     {
       "name": "dayComponent",
-      "type": "React.ComponentType<DayProps & {date?: DateData}>",
+      "type": "JSX.Element",
       "description": "Replace default day with custom day rendering component"
     },
     {
