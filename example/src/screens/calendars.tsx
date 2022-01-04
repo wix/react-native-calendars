@@ -1,12 +1,17 @@
 import React, {useState, Fragment, useCallback} from 'react';
-import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
-const INITIAL_DATE = '2020-03-15';
+const INITIAL_DATE = '2020-02-02';
 
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
+  const [showMarkedDatesExamples, setShowMarkedDatesExamples] = useState(false);
+
+  const toggleSwitch = () => {
+    setShowMarkedDatesExamples(!showMarkedDatesExamples);
+  };
 
   const onDayPress: CalendarProps['onDayPress'] = day => {
     setSelected(day.dateString);
@@ -27,7 +32,7 @@ const CalendarsScreen = () => {
               selected: true,
               disableTouchEvent: true,
               selectedColor: 'orange',
-              selectedTextColor: 'white'
+              selectedTextColor: 'red'
             }
           }}
         />
@@ -207,23 +212,23 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with multi-period marking</Text>
         <Calendar
           style={styles.calendar}
-          current={'2019-06-21'}
+          current={'2012-05-16'}
           markingType={'multi-period'}
           markedDates={{
-            '2019-06-11': {
+            '2012-05-16': {
               periods: [
                 {startingDay: true, endingDay: false, color: 'green'},
                 {startingDay: true, endingDay: false, color: 'orange'}
               ]
             },
-            '2019-06-12': {
+            '2012-05-17': {
               periods: [
                 {startingDay: false, endingDay: true, color: 'green'},
                 {startingDay: false, endingDay: true, color: 'orange'},
                 {startingDay: true, endingDay: false, color: 'pink'}
               ]
             },
-            '2019-06-13': {
+            '2012-05-18': {
               periods: [
                 {startingDay: true, endingDay: true, color: 'orange'},
                 {color: 'transparent'},
@@ -449,16 +454,9 @@ const CalendarsScreen = () => {
     );
   };
 
-  const renderExamples = () => {
+  const renderMarkedDatesExamples = () => {
     return (
       <Fragment>
-        {renderCalendarWithSelectableDate()}
-        {renderCalendarWithWeekNumbers()}
-        {renderCalendarWithMinAndMaxDates()}
-        {renderCalendarWithCustomDay()}
-        {renderCalendarWithInactiveDays()}
-        {renderCalendarWithCustomHeaderTitle()}
-        {renderCalendarWithCustomHeader()}
         {renderCalendarWithMarkedDatesAndHiddenArrows()}
         {renderCalendarWithMultiDotMarking()}
         {renderCalendarWithPeriodMarkingAndSpinner()}
@@ -469,9 +467,39 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderExamples = () => {
+    return (
+      <Fragment>
+        {renderCalendarWithSelectableDate()}
+        {renderCalendarWithWeekNumbers()}
+        {renderCalendarWithMinAndMaxDates()}
+        {renderCalendarWithCustomDay()}
+        {renderCalendarWithInactiveDays()}
+        {renderCalendarWithCustomHeaderTitle()}
+        {renderCalendarWithCustomHeader()}
+      </Fragment>
+    );
+  };
+
+  const renderSwitch = () => {
+    // Workaround for Detox 18 migration bug
+    return (
+      <View style={styles.switchContainer}>
+        <Switch
+          trackColor={{false: '#d9e1e8', true: '#00BBF2'}}
+          onValueChange={toggleSwitch}
+          value={showMarkedDatesExamples}
+        />
+        <Text style={styles.switchText}>Show markings examples</Text>
+      </View>
+    );
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
-      {renderExamples()}
+      {renderSwitch()}
+      {showMarkedDatesExamples && renderMarkedDatesExamples()}
+      {!showMarkedDatesExamples && renderExamples()}
     </ScrollView>
   );
 };
