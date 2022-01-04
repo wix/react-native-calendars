@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import Context from '../expandableCalendar/Context';
 import {screenWidth, UpdateSources} from '../expandableCalendar/commons';
-import Timeline from '../timeline/Timeline';
+import Timeline, {TimelineProps} from '../timeline/Timeline';
 import useTimelinePages, {PAGES_COUNT} from './useTimelinePages';
 
 const VIEWABILITY_CONFIG = {
@@ -13,16 +13,19 @@ const VIEWABILITY_CONFIG = {
 
 const getItemLayout = (_data: any, index: number) => ({length: screenWidth, offset: screenWidth * index, index});
 
-const TimelineList = () => {
+export interface TimelineListProps {
+  events: {[date: string]: TimelineProps['events']};
+  timelineProps: Omit<TimelineProps, 'events'>;
+}
+
+const TimelineList = (props: TimelineListProps) => {
+  const {timelineProps, events} = props;
   const {date, updateSource, setDate} = useContext(Context);
   const prevDate = useRef(date);
   const listRef = useRef<FlatList>();
-  const scrollToPage = useCallback(
-    _.debounce((pageIndex: number) => {
-      listRef.current?.scrollToIndex({index: pageIndex, animated: false});
-    }),
-    []
-  );
+  const scrollToPage = useCallback((pageIndex: number) => {
+    listRef.current?.scrollToIndex({index: pageIndex, animated: false});
+  }, []);
 
   const {currPage, pages, pagesRef, ignoredInitialRender, loadPages, resetPages, resetPagesDebounced} =
     useTimelinePages({
@@ -68,14 +71,19 @@ const TimelineList = () => {
     }
   }, []);
 
-  const renderPage = useCallback(({item}) => {
-    return (
-      <>
-        <Timeline key={item} date={item} events={[]} />
-        <Text style={{position: 'absolute'}}>{item}</Text>
-      </>
-    );
-  }, []);
+  const renderPage = useCallback(
+    ({item}) => {
+      const timelineEvent = events[item];
+
+      return (
+        <>
+          <Timeline {...timelineProps} key={item} date={item} events={timelineEvent} />
+          <Text style={{position: 'absolute'}}>{item}</Text>
+        </>
+      );
+    },
+    [events]
+  );
 
   return (
     <FlatList
