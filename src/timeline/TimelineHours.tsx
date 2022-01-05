@@ -97,6 +97,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
           </React.Fragment>
         );
       })}
+      <View style={styles.verticalLine}/>
     </>
   );
 };

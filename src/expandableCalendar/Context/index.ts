@@ -1,9 +1,11 @@
 import React from 'react';
-
+import {UpdateSources} from '../commons';
 interface CalendarContextProps {
   date: string;
-  setDate: (date: string, source: string) => void;
-  updateSource: string;
+  prevDate: string;
+  setDate: (date: string, source: UpdateSources) => void;
+  updateSource: UpdateSources;
+  setDisabled: (disable: boolean) => void;
 }
 
 // @ts-expect-error

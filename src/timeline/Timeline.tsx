@@ -4,12 +4,12 @@ import min from 'lodash/min';
 import map from 'lodash/map';
 
 import {Theme} from '../types';
-import styleConstructor from './style';
+import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
 import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
+import NowIndicator from './NowIndicator';
 
-const LEFT_MARGIN = 60 - 1;
 const {width: dimensionWidth} = Dimensions.get('window');
 
 export interface TimelineProps {
@@ -59,6 +59,10 @@ export interface TimelineProps {
    * Render a custom event block
    */
   renderEvent?: (event: PackedEvent) => JSX.Element;
+  /**
+   * Whether to show now indicator
+   */
+  showNowIndicator?: boolean;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -74,6 +78,7 @@ const Timeline = (props: TimelineProps) => {
     renderEvent,
     theme,
     scrollToFirst,
+    showNowIndicator,
     eventTapped
   } = props;
 
@@ -82,7 +87,7 @@ const Timeline = (props: TimelineProps) => {
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
 
   const packedEvents = useMemo(() => {
-    const width = dimensionWidth - LEFT_MARGIN;
+    const width = dimensionWidth - HOURS_SIDEBAR_WIDTH;
     return populateEvents(events, width, start);
   }, [events, start]);
 
@@ -133,7 +138,7 @@ const Timeline = (props: TimelineProps) => {
 
     return (
       <View>
-        <View style={{marginLeft: LEFT_MARGIN}}>{events}</View>
+        <View style={{marginLeft: HOURS_SIDEBAR_WIDTH}}>{events}</View>
       </View>
     );
   };
@@ -151,6 +156,7 @@ const Timeline = (props: TimelineProps) => {
         onBackgroundLongPressOut={onBackgroundLongPressOut}
       />
       {renderEvents()}
+      {showNowIndicator && <NowIndicator styles={styles.current} />}
     </ScrollView>
   );
 };
