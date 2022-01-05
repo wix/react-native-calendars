@@ -156,6 +156,7 @@ export default class TimelineCalendarScreen extends Component {
           if (timeObject.date) {
             const draftEvent = _.find(eventsByDate[timeObject.date], {id: 'draft'});
             if (draftEvent) {
+              draftEvent.id = undefined;
               draftEvent.title = eventTitle ?? 'New Event';
               draftEvent.color = '#d8ade6';
               eventsByDate[timeObject.date] = [...eventsByDate[timeObject.date]];
