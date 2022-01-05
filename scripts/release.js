@@ -103,6 +103,7 @@ function tagAndPublish(newVersion) {
   exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
   if (isReleaseBuild && !IS_SNAPSHOT) {
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
+    console.log(`tagging git for version ${newVersion}...`);
     exec.execSyncSilent(`git push deploy ${newVersion} || true`);
   }
 }
