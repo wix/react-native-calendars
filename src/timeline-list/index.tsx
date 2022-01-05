@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Context from '../expandableCalendar/Context';
 import {screenWidth, UpdateSources} from '../expandableCalendar/commons';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
-import useTimelinePages, {PAGES_COUNT} from './useTimelinePages';
+import useTimelinePages, {PAGES_COUNT, INITIAL_PAGE} from './useTimelinePages';
 
 const VIEWABILITY_CONFIG = {
   itemVisiblePercentThreshold: 85
@@ -27,7 +27,7 @@ const TimelineList = (props: TimelineListProps) => {
     listRef.current?.scrollToIndex({index: pageIndex, animated: false});
   }, []);
 
-  const {currPage, pages, pagesRef, ignoredInitialRender, loadPages, resetPages, resetPagesDebounced} =
+  const {pages, pagesRef, ignoredInitialRender, loadPages, resetPages, resetPagesDebounced} =
     useTimelinePages({
       date,
       scrollToPage
@@ -53,6 +53,7 @@ const TimelineList = (props: TimelineListProps) => {
 
   const onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     const {viewableItems} = info;
+
     // NOTE: Because initialScrollIndex trigger a redundant scroll on start
     if (!ignoredInitialRender.current) {
       ignoredInitialRender.current = true;
@@ -62,13 +63,13 @@ const TimelineList = (props: TimelineListProps) => {
     const visibleItem = _.last(viewableItems);
 
     if (visibleItem?.index || visibleItem?.index === 0) {
-      const movedSingleDay = Math.abs(currPage.current - visibleItem.index) === 1;
+      const prevIndex = pagesRef.current.indexOf(prevDate.current);
+      const movedSingleDay = Math.abs(prevIndex - visibleItem.index) === 1;
       if (!movedSingleDay) {
         return;
       }
 
       setDate(visibleItem.item, UpdateSources.LIST_DRAG);
-      currPage.current = visibleItem.index;
     }
   }, []);
 
@@ -98,7 +99,7 @@ const TimelineList = (props: TimelineListProps) => {
       onViewableItemsChanged={onViewableItemsChanged}
       viewabilityConfig={VIEWABILITY_CONFIG}
       getItemLayout={getItemLayout}
-      initialScrollIndex={currPage.current}
+      initialScrollIndex={INITIAL_PAGE}
       removeClippedSubviews
       scrollEventThrottle={16}
     />
