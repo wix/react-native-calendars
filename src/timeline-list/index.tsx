@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useRef} from 'react';
-import {FlatList, Text} from 'react-native';
+import {FlatList, Text, ViewToken} from 'react-native';
 import _ from 'lodash';
 
 import Context from '../expandableCalendar/Context';
@@ -51,7 +51,8 @@ const TimelineList = (props: TimelineListProps) => {
     }
   }, [date, updateSource]);
 
-  const onViewableItemsChanged = useCallback(({viewableItems}: {viewableItems: {index: number; item: string}[]}) => {
+  const onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
+    const {viewableItems} = info;
     // NOTE: Because initialScrollIndex trigger a redundant scroll on start
     if (!ignoredInitialRender.current) {
       ignoredInitialRender.current = true;
@@ -60,7 +61,7 @@ const TimelineList = (props: TimelineListProps) => {
 
     const visibleItem = _.last(viewableItems);
 
-    if (visibleItem?.index !== undefined) {
+    if (visibleItem?.index || visibleItem?.index === 0) {
       const movedSingleDay = Math.abs(currPage.current - visibleItem.index) === 1;
       if (!movedSingleDay) {
         return;
@@ -87,6 +88,7 @@ const TimelineList = (props: TimelineListProps) => {
 
   return (
     <FlatList
+      // @ts-expect-error
       ref={listRef}
       keyExtractor={item => item}
       horizontal
