@@ -213,7 +213,7 @@ export default class Agenda extends Component<AgendaProps, AgendaState> {
     // in CalendarList listView, but that might impact performance when scrolling
     // month list in expanded CalendarList.
     // Further info https://github.com/facebook/react-native/issues/1831
-    this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
+    this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, false);
   }
 
   loadReservations(props: AgendaProps) {
