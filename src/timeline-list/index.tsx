@@ -1,17 +1,13 @@
 import React, {useCallback, useContext, useEffect, useRef} from 'react';
-import {FlatList, Text, ViewToken} from 'react-native';
-import _ from 'lodash';
+import {Text} from 'react-native';
+import identity from 'lodash/identity';
+import throttle from 'lodash/throttle';
 
 import Context from '../expandableCalendar/Context';
-import {screenWidth, UpdateSources} from '../expandableCalendar/commons';
+import {UpdateSources} from '../expandableCalendar/commons';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
-import useTimelinePages, {PAGES_COUNT, INITIAL_PAGE} from './useTimelinePages';
-
-const VIEWABILITY_CONFIG = {
-  itemVisiblePercentThreshold: 85
-};
-
-const getItemLayout = (_data: any, index: number) => ({length: screenWidth, offset: screenWidth * index, index});
+import HorizontalList from './HorizontalList';
+import useTimelinePages, {INITIAL_PAGE} from './useTimelinePages';
 
 export interface TimelineListProps {
   events: {[date: string]: TimelineProps['events']};
@@ -22,59 +18,63 @@ const TimelineList = (props: TimelineListProps) => {
   const {timelineProps, events} = props;
   const {date, updateSource, setDate} = useContext(Context);
   const prevDate = useRef(date);
-  const listRef = useRef<FlatList>();
-  const scrollToPage = useCallback((pageIndex: number) => {
-    listRef.current?.scrollToIndex({index: pageIndex, animated: false});
-  }, []);
+  const listRef = useRef<any>();
 
-  const {pages, pagesRef, ignoredInitialRender, loadPages, resetPages, resetPagesDebounced} =
-    useTimelinePages({
-      date,
-      scrollToPage
-    });
+  const {
+    pages,
+    pagesRef,
+    resetPages,
+    resetPagesDebounced,
+    scrollToPageDebounced,
+    shouldResetPages,
+    isOutOfRange,
+    isNearEdges
+  } = useTimelinePages({date, listRef});
 
   useEffect(() => {
     if (date !== prevDate.current) {
       const datePageIndex = pagesRef.current.indexOf(date);
+
       if (updateSource !== UpdateSources.LIST_DRAG) {
-        if (datePageIndex >= 0) {
-          scrollToPage(datePageIndex);
-        } else {
+        if (isOutOfRange(datePageIndex)) {
           updateSource === UpdateSources.DAY_PRESS ? resetPages(date) : resetPagesDebounced(date);
-        }
-      } else {
-        if (!_.inRange(datePageIndex, 2, PAGES_COUNT - 3)) {
-          loadPages(datePageIndex);
+        } else {
+          scrollToPageDebounced(datePageIndex);
         }
       }
+
       prevDate.current = date;
     }
   }, [date, updateSource]);
 
-  const onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
-    const {viewableItems} = info;
-
-    // NOTE: Because initialScrollIndex trigger a redundant scroll on start
-    if (!ignoredInitialRender.current) {
-      ignoredInitialRender.current = true;
-      return;
-    }
-
-    const visibleItem = _.last(viewableItems);
-
-    if (visibleItem?.index || visibleItem?.index === 0) {
-      const prevIndex = pagesRef.current.indexOf(prevDate.current);
-      const movedSingleDay = Math.abs(prevIndex - visibleItem.index) === 1;
-      if (!movedSingleDay) {
-        return;
-      }
-
-      setDate(visibleItem.item, UpdateSources.LIST_DRAG);
+  const onScroll = useCallback(() => {
+    if (shouldResetPages.current) {
+      resetPagesDebounced.cancel();
     }
   }, []);
 
+  const onMomentumScrollEnd = useCallback(() => {
+    if (shouldResetPages.current) {
+      resetPagesDebounced(prevDate.current);
+    }
+  }, []);
+
+  const onPageChange = useCallback(
+    throttle((pageIndex: number) => {
+      const newDate = pagesRef.current[pageIndex];
+      if (newDate !== prevDate.current) {
+        setDate(newDate, UpdateSources.LIST_DRAG);
+
+        if (isNearEdges(pageIndex)) {
+          shouldResetPages.current = isNearEdges(pageIndex);
+        }
+      }
+    }, 0),
+    []
+  );
+
   const renderPage = useCallback(
-    ({item}) => {
+    (_type, item) => {
       const timelineEvent = events[item];
 
       return (
@@ -88,22 +88,40 @@ const TimelineList = (props: TimelineListProps) => {
   );
 
   return (
-    <FlatList
-      // @ts-expect-error
+    <HorizontalList
       ref={listRef}
-      keyExtractor={item => item}
-      horizontal
       data={pages}
       renderItem={renderPage}
-      pagingEnabled
-      onViewableItemsChanged={onViewableItemsChanged}
-      viewabilityConfig={VIEWABILITY_CONFIG}
-      getItemLayout={getItemLayout}
-      initialScrollIndex={INITIAL_PAGE}
-      removeClippedSubviews
-      scrollEventThrottle={16}
+      onPageChange={onPageChange}
+      onScroll={onScroll}
+      extendedState={{todayEvents: events[date], pages}}
+      initialPageIndex={INITIAL_PAGE}
+      scrollViewProps={{
+        keyExtractor: identity,
+        onMomentumScrollEnd
+      }}
     />
   );
+
+  // return (
+  //   <HorizontalList
+  //     ref={listRef}
+  //     keyExtractor={identity}
+  //     horizontal
+  //     data={pages}
+  //     renderItem={renderPage}
+  //     pagingEnabled
+  //     onPageChange={onPageChange}
+  //     onScroll={loadPagesDebounced.cancel}
+  //     // onViewableItemsChanged={onViewableItemsChanged}
+  //     // viewabilityConfig={VIEWABILITY_CONFIG}
+  //     getItemLayout={getItemLayout}
+  //     initialScrollIndex={INITIAL_PAGE}
+  //     removeClippedSubviews
+  //     scrollEventThrottle={16}
+  //     bounces={false}
+  //   />
+  // );
 };
 
 export default TimelineList;
