@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {Text} from 'react-native';
 import identity from 'lodash/identity';
 import throttle from 'lodash/throttle';
@@ -17,8 +17,9 @@ export interface TimelineListProps {
 const TimelineList = (props: TimelineListProps) => {
   const {timelineProps, events} = props;
   const {date, updateSource, setDate} = useContext(Context);
-  const prevDate = useRef(date);
   const listRef = useRef<any>();
+  const prevDate = useRef(date);
+  const [timelineOffset, setTimelineOffset] = useState();
 
   const {
     pages,
@@ -73,18 +74,32 @@ const TimelineList = (props: TimelineListProps) => {
     []
   );
 
+  const onTimelineOffsetChange = useCallback(offset => {
+    setTimelineOffset(offset);
+  }, []);
+
   const renderPage = useCallback(
     (_type, item) => {
       const timelineEvent = events[item];
 
+      const isCurrent = prevDate.current === item;
+
       return (
         <>
-          <Timeline {...timelineProps} key={item} date={item} events={timelineEvent} />
+          <Timeline
+            {...timelineProps}
+            key={item}
+            date={item}
+            scrollToFirst={false}
+            events={timelineEvent}
+            scrollOffset={isCurrent ? undefined : timelineOffset}
+            onChangeOffset={onTimelineOffsetChange}
+          />
           <Text style={{position: 'absolute'}}>{item}</Text>
         </>
       );
     },
-    [events]
+    [events, timelineOffset]
   );
 
   return (
@@ -102,26 +117,6 @@ const TimelineList = (props: TimelineListProps) => {
       }}
     />
   );
-
-  // return (
-  //   <HorizontalList
-  //     ref={listRef}
-  //     keyExtractor={identity}
-  //     horizontal
-  //     data={pages}
-  //     renderItem={renderPage}
-  //     pagingEnabled
-  //     onPageChange={onPageChange}
-  //     onScroll={loadPagesDebounced.cancel}
-  //     // onViewableItemsChanged={onViewableItemsChanged}
-  //     // viewabilityConfig={VIEWABILITY_CONFIG}
-  //     getItemLayout={getItemLayout}
-  //     initialScrollIndex={INITIAL_PAGE}
-  //     removeClippedSubviews
-  //     scrollEventThrottle={16}
-  //     bounces={false}
-  //   />
-  // );
 };
 
 export default TimelineList;

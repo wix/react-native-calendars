@@ -9,6 +9,7 @@ import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
 import NowIndicator from './NowIndicator';
+import useTimelineOffset from './useTimelineOffset';
 
 const {width: dimensionWidth} = Dimensions.get('window');
 
@@ -63,6 +64,14 @@ export interface TimelineProps {
    * Whether to show now indicator
    */
   showNowIndicator?: boolean;
+  /**
+   * Scroll offset to sync to
+   */
+  scrollOffset?: number;
+  /**
+   * Listen to onScroll event of the timeline component
+   */
+  onChangeOffset?: (offset: number) => void;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -79,12 +88,16 @@ const Timeline = (props: TimelineProps) => {
     theme,
     scrollToFirst,
     showNowIndicator,
+    scrollOffset,
+    onChangeOffset,
     eventTapped
   } = props;
 
   const scrollView = useRef<ScrollView>();
   const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
+
+  const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
   const packedEvents = useMemo(() => {
     const width = dimensionWidth - HOURS_SIDEBAR_WIDTH;
@@ -144,8 +157,12 @@ const Timeline = (props: TimelineProps) => {
   };
 
   return (
-    // @ts-expect-error
-    <ScrollView ref={scrollView} contentContainerStyle={[styles.current.contentStyle, {width: dimensionWidth}]}>
+    <ScrollView
+      // @ts-expect-error
+      ref={scrollView}
+      contentContainerStyle={[styles.current.contentStyle, {width: dimensionWidth}]}
+      {...scrollEvents}
+    >
       <TimelineHours
         start={start}
         end={end}

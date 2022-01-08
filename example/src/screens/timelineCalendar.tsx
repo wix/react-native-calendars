@@ -173,9 +173,9 @@ export default class TimelineCalendarScreen extends Component {
 
   private timelineProps = {
     format24h: true,
-    scrollToFirst: true,
     onBackgroundLongPress: this.createNewEvent,
     onBackgroundLongPressOut: this.approveNewEvent
+    // scrollToFirst: true,
     // start: 0,
     // end: 24
   };
