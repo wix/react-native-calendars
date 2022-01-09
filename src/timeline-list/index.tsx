@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
-import {Text} from 'react-native';
+// import {Text} from 'react-native';
 import identity from 'lodash/identity';
 import throttle from 'lodash/throttle';
 
@@ -95,7 +95,8 @@ const TimelineList = (props: TimelineListProps) => {
             scrollOffset={isCurrent ? undefined : timelineOffset}
             onChangeOffset={onTimelineOffsetChange}
           />
-          <Text style={{position: 'absolute'}}>{item}</Text>
+          {/* NOTE: Keeping this for easy debugging */}
+          {/* <Text style={{position: 'absolute'}}>{item}</Text> */}
         </>
       );
     },
