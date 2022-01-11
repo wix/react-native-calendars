@@ -56,7 +56,7 @@ const UseTimelinePages = ({date, listRef}: UseTimelinePagesProps) => {
     resetPages: useCallback(resetPages, []),
     resetPagesDebounce: useCallback(debounce(resetPages, 500, {leading: false, trailing: true}), []),
     scrollToPage: useCallback(scrollToPage, []),
-    scrollToPageDebounced: useCallback(debounce(scrollToPage, 250, {leading: false, trailing: true}), []),
+    scrollToPageDebounce: useCallback(debounce(scrollToPage, 250, {leading: false, trailing: true}), []),
     pagesRef,
     pages,
     shouldResetPages,
