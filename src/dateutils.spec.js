@@ -1,5 +1,5 @@
 import XDate from 'xdate';
-import {sameMonth, sameWeek, isLTE, isGTE, month, page} from './dateutils';
+import {sameMonth, sameWeek, isLTE, isGTE, month, page, generateDay} from './dateutils';
 
 describe('dateutils', function () {
   describe('sameMonth()', function () {
@@ -160,6 +160,23 @@ describe('dateutils', function () {
       for (i = 0, len = days.length - 1; i < len; i++) {
         expect(days[i].diffDays(days[i + 1])).toBe(1);
       }
+    });
+  });
+
+  describe('generateDay', () => {
+    it('should generate a day in string format with an offset', () => {
+      expect(generateDay('2017-09-22', 2)).toBe('2017-09-24');
+      expect(generateDay('2017-09-22', -2)).toBe('2017-09-20');
+    });
+
+    it('should generate the same day when offset was not sent', () => {
+      expect(generateDay('2017-09-22')).toBe('2017-09-22');
+    });
+
+    it('should handle month and year changes', () => {
+      expect(generateDay('2017-10-22', 10)).toBe('2017-11-01');
+      expect(generateDay('2017-12-26', 10)).toBe('2018-01-05');
+      expect(generateDay('2018-01-01', -3)).toBe('2017-12-29');
     });
   });
 });

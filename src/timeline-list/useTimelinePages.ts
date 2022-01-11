@@ -1,20 +1,16 @@
 import {RefObject, useCallback, useRef, useState} from 'react';
-import XDate from 'xdate';
+
 import inRange from 'lodash/inRange';
 import times from 'lodash/times';
 import debounce from 'lodash/debounce';
 
 import constants from '../commons/constants';
-import {toMarkingFormat} from '../interface';
+import {generateDay} from '../dateutils';
 
 const PAGES_COUNT = 100;
 const NEAR_EDGE_THRESHOLD = 10;
 export const INITIAL_PAGE = Math.floor(PAGES_COUNT / 2);
 
-const generateDay = (originDate: string, daysOffset: number) => {
-  const baseDate = new XDate(originDate);
-  return toMarkingFormat(baseDate.clone().addDays(daysOffset));
-};
 
 interface UseTimelinePagesProps {
   date: string;
