@@ -13,6 +13,8 @@ export default (props: UseTimelineOffsetProps) => {
   const inMomentum = useRef(false);
 
   useEffect(() => {
+    // NOTE: The main reason for this feature is to sync the offset
+    // between all of the timelines in the TimelineList component
     if (scrollOffset !== undefined) {
       scrollViewRef?.current?.scrollTo({
         y: scrollOffset,
