@@ -25,8 +25,8 @@ const TimelineList = (props: TimelineListProps) => {
     pages,
     pagesRef,
     resetPages,
-    resetPagesDebounced,
-    scrollToPageDebounced,
+    resetPagesDebounce,
+    scrollToPageDebounce,
     shouldResetPages,
     isOutOfRange,
     isNearEdges
@@ -38,9 +38,9 @@ const TimelineList = (props: TimelineListProps) => {
 
       if (updateSource !== UpdateSources.LIST_DRAG) {
         if (isOutOfRange(datePageIndex)) {
-          updateSource === UpdateSources.DAY_PRESS ? resetPages(date) : resetPagesDebounced(date);
+          updateSource === UpdateSources.DAY_PRESS ? resetPages(date) : resetPagesDebounce(date);
         } else {
-          scrollToPageDebounced(datePageIndex);
+          scrollToPageDebounce(datePageIndex);
         }
       }
 
@@ -50,13 +50,13 @@ const TimelineList = (props: TimelineListProps) => {
 
   const onScroll = useCallback(() => {
     if (shouldResetPages.current) {
-      resetPagesDebounced.cancel();
+      resetPagesDebounce.cancel();
     }
   }, []);
 
   const onMomentumScrollEnd = useCallback(() => {
     if (shouldResetPages.current) {
-      resetPagesDebounced(prevDate.current);
+      resetPagesDebounce(prevDate.current);
     }
   }, []);
 
