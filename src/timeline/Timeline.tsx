@@ -65,7 +65,7 @@ export interface TimelineProps {
    */
   showNowIndicator?: boolean;
   /**
-   * Scroll offset to sync to
+   * A scroll offset value that the timeline will sync with
    */
   scrollOffset?: number;
   /**
