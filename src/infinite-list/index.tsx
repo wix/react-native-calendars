@@ -3,31 +3,24 @@ import React, {forwardRef, useCallback, useMemo, useRef} from 'react';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 import constants from '../commons/constants';
 
-const layoutProvider = new LayoutProvider(
-  () => 'page',
-  (_type, dim) => {
-    dim.width = constants.screenWidth;
-    dim.height = constants.screenHeight;
-  }
-);
+const dataProviderMaker = (items: string[]) => new DataProvider((item1, item2) => item1 !== item2).cloneWithRows(items);
 
-const dataProviderMaker = (items: string[]) =>
-  new DataProvider((item1, item2) => item1.value !== item2.value || item1.label !== item2.label).cloneWithRows(items);
-
-export interface HorizontalListProps
+export interface InfiniteListProps
   extends Omit<RecyclerListViewProps, 'dataProvider' | 'layoutProvider' | 'rowRenderer'> {
   data: any[];
   renderItem: RecyclerListViewProps['rowRenderer'];
   pageWidth?: number;
+  pageHeight?: number;
   onPageChange?: (pageIndex: number, prevPageIndex: number) => void;
   initialPageIndex?: number;
 }
 
-const HorizontalList = (props: HorizontalListProps, ref: any) => {
+const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const {
     renderItem,
     data,
     pageWidth = constants.screenWidth,
+    pageHeight = constants.screenHeight, 
     onPageChange,
     initialPageIndex = 0,
     extendedState,
@@ -36,6 +29,16 @@ const HorizontalList = (props: HorizontalListProps, ref: any) => {
   const dataProvider = useMemo(() => {
     return dataProviderMaker(data);
   }, [data]);
+
+  const layoutProvider = useRef(
+    new LayoutProvider(
+      () => 'page',
+      (_type, dim) => {
+        dim.width = pageWidth;
+        dim.height = pageHeight;
+      }
+    )
+  );
 
   const pageIndex = useRef<number>();
 
@@ -61,7 +64,7 @@ const HorizontalList = (props: HorizontalListProps, ref: any) => {
       isHorizontal
       rowRenderer={renderItem}
       dataProvider={dataProvider}
-      layoutProvider={layoutProvider}
+      layoutProvider={layoutProvider.current}
       extendedState={extendedState}
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
@@ -75,4 +78,4 @@ const HorizontalList = (props: HorizontalListProps, ref: any) => {
   );
 };
 
-export default forwardRef(HorizontalList);
+export default forwardRef(InfiniteList);

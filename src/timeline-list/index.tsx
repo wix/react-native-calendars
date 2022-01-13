@@ -6,7 +6,7 @@ import throttle from 'lodash/throttle';
 import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
-import HorizontalList from './HorizontalList';
+import InfiniteList from '../infinite-list';
 import useTimelinePages, {INITIAL_PAGE} from './useTimelinePages';
 
 export interface TimelineListProps {
@@ -104,7 +104,7 @@ const TimelineList = (props: TimelineListProps) => {
   );
 
   return (
-    <HorizontalList
+    <InfiniteList
       ref={listRef}
       data={pages}
       renderItem={renderPage}
