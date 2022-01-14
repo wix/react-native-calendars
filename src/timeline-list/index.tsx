@@ -7,7 +7,7 @@ import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
 import InfiniteList from '../infinite-list';
-import useTimelinePages, {INITIAL_PAGE} from './useTimelinePages';
+import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
 
 export interface TimelineListProps {
   events: {[date: string]: TimelineProps['events']};
@@ -65,14 +65,14 @@ const TimelineList = (props: TimelineListProps) => {
       const newDate = pagesRef.current[pageIndex];
       if (newDate !== prevDate.current) {
         setDate(newDate, UpdateSources.LIST_DRAG);
-
-        if (isNearEdges(pageIndex)) {
-          shouldResetPages.current = isNearEdges(pageIndex);
-        }
       }
     }, 0),
     []
   );
+
+  const onReachNearEdge = useCallback(() => {
+    shouldResetPages.current = true;
+  }, []);
 
   const onTimelineOffsetChange = useCallback(offset => {
     setTimelineOffset(offset);
@@ -109,6 +109,8 @@ const TimelineList = (props: TimelineListProps) => {
       data={pages}
       renderItem={renderPage}
       onPageChange={onPageChange}
+      onReachNearEdge={onReachNearEdge}
+      nearEdgeThreshold={NEAR_EDGE_THRESHOLD}
       onScroll={onScroll}
       extendedState={{todayEvents: events[date], pages}}
       initialPageIndex={INITIAL_PAGE}

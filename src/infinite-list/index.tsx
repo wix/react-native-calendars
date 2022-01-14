@@ -1,6 +1,8 @@
 // TODO: Make this a common component for all horizontal lists in this lib
 import React, {forwardRef, useCallback, useMemo, useRef} from 'react';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
+import inRange from 'lodash/inRange';
+
 import constants from '../commons/constants';
 
 const dataProviderMaker = (items: string[]) => new DataProvider((item1, item2) => item1 !== item2).cloneWithRows(items);
@@ -12,6 +14,9 @@ export interface InfiniteListProps
   pageWidth?: number;
   pageHeight?: number;
   onPageChange?: (pageIndex: number, prevPageIndex: number) => void;
+  onReachEdge?: (pageIndex: number) => void;
+  onReachNearEdge?: (pageIndex: number) => void;
+  nearEdgeThreshold?: number;
   initialPageIndex?: number;
 }
 
@@ -20,8 +25,11 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     renderItem,
     data,
     pageWidth = constants.screenWidth,
-    pageHeight = constants.screenHeight, 
+    pageHeight = constants.screenHeight,
     onPageChange,
+    onReachEdge,
+    onReachNearEdge,
+    nearEdgeThreshold,
     initialPageIndex = 0,
     extendedState,
     scrollViewProps
@@ -49,14 +57,24 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       if (pageIndex.current !== currPageIndex) {
         if (pageIndex.current !== undefined) {
           onPageChange?.(currPageIndex, pageIndex.current);
+
+          if (currPageIndex === 0 || currPageIndex === data.length - 1) {
+            onReachEdge?.(currPageIndex);
+          } else if (nearEdgeThreshold && !inRange(currPageIndex, nearEdgeThreshold, data.length - nearEdgeThreshold)) {
+            onReachNearEdge?.(currPageIndex);
+          }
         }
         pageIndex.current = currPageIndex;
       }
 
       props.onScroll?.(event, offsetX, offsetY);
     },
-    [props.onScroll]
+    [props.onScroll, data.length]
   );
+
+  const style = useMemo(() => {
+    return {height: pageHeight};
+  }, [pageHeight]);
 
   return (
     <RecyclerListView
@@ -69,6 +87,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
       onScroll={onScroll}
+      style={style}
       scrollViewProps={{
         pagingEnabled: true,
         bounces: false,
