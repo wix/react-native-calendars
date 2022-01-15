@@ -6,7 +6,7 @@ export {default as Agenda} from './agenda';
 export type {AgendaProps} from './agenda';
 export {default as ExpandableCalendar} from './expandableCalendar';
 export type {ExpandableCalendarProps} from './expandableCalendar';
-export {default as WeekCalendar} from './expandableCalendar/WeekCalendar';
+export {default as WeekCalendar} from './expandableCalendar/WeekCalendar/new';
 export type {WeekCalendarProps} from './expandableCalendar/WeekCalendar';
 export {default as AgendaList} from './expandableCalendar/agendaList';
 export type {AgendaListProps} from './expandableCalendar/agendaList';
