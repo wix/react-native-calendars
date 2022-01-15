@@ -1,6 +1,5 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 // import {Text} from 'react-native';
-import identity from 'lodash/identity';
 import throttle from 'lodash/throttle';
 
 import Context from '../expandableCalendar/Context';
@@ -29,7 +28,6 @@ const TimelineList = (props: TimelineListProps) => {
     scrollToPageDebounce,
     shouldResetPages,
     isOutOfRange,
-    isNearEdges
   } = useTimelinePages({date, listRef});
 
   useEffect(() => {
@@ -115,7 +113,6 @@ const TimelineList = (props: TimelineListProps) => {
       extendedState={{todayEvents: events[date], pages}}
       initialPageIndex={INITIAL_PAGE}
       scrollViewProps={{
-        keyExtractor: identity,
         onMomentumScrollEnd
       }}
     />
