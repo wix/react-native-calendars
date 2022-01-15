@@ -1,5 +1,6 @@
 // TODO: Make this a common component for all horizontal lists in this lib
 import React, {forwardRef, useCallback, useMemo, useRef} from 'react';
+import {ScrollViewProps} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 import inRange from 'lodash/inRange';
 
@@ -18,6 +19,7 @@ export interface InfiniteListProps
   onReachNearEdge?: (pageIndex: number) => void;
   nearEdgeThreshold?: number;
   initialPageIndex?: number;
+  scrollViewProps?: ScrollViewProps;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -49,27 +51,45 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   );
 
   const pageIndex = useRef<number>();
+  const isOnEdge = useRef(false);
+  const isNearEdge = useRef(false);
 
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {
-      const currPageIndex = Math.round(event.nativeEvent.contentOffset.x / pageWidth);
+      const newPageIndex = Math.round(event.nativeEvent.contentOffset.x / pageWidth);
 
-      if (pageIndex.current !== currPageIndex) {
+      if (pageIndex.current !== newPageIndex) {
         if (pageIndex.current !== undefined) {
-          onPageChange?.(currPageIndex, pageIndex.current);
+          onPageChange?.(newPageIndex, pageIndex.current);
 
-          if (currPageIndex === 0 || currPageIndex === data.length - 1) {
-            onReachEdge?.(currPageIndex);
-          } else if (nearEdgeThreshold && !inRange(currPageIndex, nearEdgeThreshold, data.length - nearEdgeThreshold)) {
-            onReachNearEdge?.(currPageIndex);
+          isOnEdge.current = false;
+          isNearEdge.current = false;
+
+          if (newPageIndex === 0 || newPageIndex === data.length - 1) {
+            isOnEdge.current = true;
+          } else if (nearEdgeThreshold && !inRange(newPageIndex, nearEdgeThreshold, data.length - nearEdgeThreshold)) {
+            isNearEdge.current = true;
           }
         }
-        pageIndex.current = currPageIndex;
+        pageIndex.current = newPageIndex;
       }
 
       props.onScroll?.(event, offsetX, offsetY);
     },
-    [props.onScroll, data.length]
+    [props.onScroll, onPageChange, data.length]
+  );
+
+  const onMomentumScrollEnd = useCallback(
+    event => {
+      if (isOnEdge.current) {
+        onReachEdge?.(pageIndex.current!);
+      } else if (isNearEdge.current) {
+        onReachNearEdge?.(pageIndex.current!);
+      }
+
+      scrollViewProps?.onMomentumScrollEnd?.(event);
+    },
+    [scrollViewProps?.onMomentumScrollEnd, onReachEdge, onReachNearEdge]
   );
 
   const style = useMemo(() => {
@@ -91,7 +111,8 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       scrollViewProps={{
         pagingEnabled: true,
         bounces: false,
-        ...scrollViewProps
+        ...scrollViewProps,
+        onMomentumScrollEnd
       }}
     />
   );
