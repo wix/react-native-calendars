@@ -17,7 +17,7 @@ export interface InfiniteListProps
   onPageChange?: (pageIndex: number, prevPageIndex: number) => void;
   onReachEdge?: (pageIndex: number) => void;
   onReachNearEdge?: (pageIndex: number) => void;
-  nearEdgeThreshold?: number;
+  onReachNearEdgeThreshold?: number;
   initialPageIndex?: number;
   scrollViewProps?: ScrollViewProps;
 }
@@ -31,7 +31,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     onPageChange,
     onReachEdge,
     onReachNearEdge,
-    nearEdgeThreshold,
+    onReachNearEdgeThreshold,
     initialPageIndex = 0,
     extendedState,
     scrollViewProps
@@ -67,7 +67,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
           if (newPageIndex === 0 || newPageIndex === data.length - 1) {
             isOnEdge.current = true;
-          } else if (nearEdgeThreshold && !inRange(newPageIndex, nearEdgeThreshold, data.length - nearEdgeThreshold)) {
+          } else if (onReachNearEdgeThreshold && !inRange(newPageIndex, onReachNearEdgeThreshold, data.length - onReachNearEdgeThreshold)) {
             isNearEdge.current = true;
           }
         }

@@ -108,7 +108,7 @@ const TimelineList = (props: TimelineListProps) => {
       renderItem={renderPage}
       onPageChange={onPageChange}
       onReachNearEdge={onReachNearEdge}
-      nearEdgeThreshold={NEAR_EDGE_THRESHOLD}
+      onReachNearEdgeThreshold={NEAR_EDGE_THRESHOLD}
       onScroll={onScroll}
       extendedState={{todayEvents: events[date], pages}}
       initialPageIndex={INITIAL_PAGE}
