@@ -8,7 +8,7 @@ import constants from '../commons/constants';
 import {generateDay} from '../dateutils';
 
 const PAGES_COUNT = 100;
-const NEAR_EDGE_THRESHOLD = 10;
+export const NEAR_EDGE_THRESHOLD = 10;
 export const INITIAL_PAGE = Math.floor(PAGES_COUNT / 2);
 
 
