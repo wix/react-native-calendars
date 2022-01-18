@@ -12,12 +12,13 @@ import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimeline
 
 export interface TimelineListProps {
   events: {[date: string]: TimelineProps['events']};
-  timelineProps?: Omit<TimelineProps, 'events' | 'showNowIndicator'>;
+  timelineProps?: Omit<TimelineProps, 'events' | 'showNowIndicator' | 'scrollToNow'>;
   showNowIndicator?: boolean;
+  scrollToNow?: boolean;
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events, showNowIndicator} = props;
+  const {timelineProps, events, showNowIndicator, scrollToNow} = props;
   const {date, updateSource, setDate} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
@@ -73,7 +74,7 @@ const TimelineList = (props: TimelineListProps) => {
   }, []);
 
   const renderPage = useCallback(
-    (_type, item) => {
+    (_type, item, index) => {
       const timelineEvent = events[item];
       const isCurrent = prevDate.current === item;
       return (
@@ -82,6 +83,7 @@ const TimelineList = (props: TimelineListProps) => {
             {...timelineProps}
             key={item}
             date={item}
+            scrollToNow={scrollToNow && index === INITIAL_PAGE}
             scrollToFirst={false}
             events={timelineEvent}
             scrollOffset={isCurrent ? undefined : timelineOffset}

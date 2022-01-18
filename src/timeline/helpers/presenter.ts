@@ -10,3 +10,10 @@ export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
 export function buildTimeString(hour = 0, minutes = 0, date = '') {
   return `${date} ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`.trimStart();
 }
+
+export function calcNowOffset(hourBlockHeight: number) {
+  const now = new Date();
+  const hour = now.getHours();
+  const minutes = now.getMinutes();
+  return (hour + minutes / 60) * hourBlockHeight;
+}
