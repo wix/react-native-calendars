@@ -7,11 +7,6 @@ const INITIAL_DATE = '2020-02-02';
 
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
-  const [showMarkedDatesExamples, setShowMarkedDatesExamples] = useState(false);
-
-  const toggleSwitch = () => {
-    setShowMarkedDatesExamples(!showMarkedDatesExamples);
-  };
 
   const onDayPress: CalendarProps['onDayPress'] = day => {
     setSelected(day.dateString);
@@ -259,7 +254,8 @@ const CalendarsScreen = () => {
                   elevation: 2
                 },
                 text: {
-                  color: 'red'
+                  color: 'red',
+                  marginTop: 0
                 }
               }
             },
@@ -454,19 +450,6 @@ const CalendarsScreen = () => {
     );
   };
 
-  const renderMarkedDatesExamples = () => {
-    return (
-      <Fragment>
-        {renderCalendarWithMarkedDatesAndHiddenArrows()}
-        {renderCalendarWithMultiDotMarking()}
-        {renderCalendarWithPeriodMarkingAndSpinner()}
-        {renderCalendarWithPeriodMarkingAndDotMarking()}
-        {renderCalendarWithMultiPeriodMarking()}
-        {renderCalendarWithCustomMarkingType()}
-      </Fragment>
-    );
-  };
-
   const renderExamples = () => {
     return (
       <Fragment>
@@ -477,29 +460,19 @@ const CalendarsScreen = () => {
         {renderCalendarWithInactiveDays()}
         {renderCalendarWithCustomHeaderTitle()}
         {renderCalendarWithCustomHeader()}
+        {renderCalendarWithMarkedDatesAndHiddenArrows()}
+        {renderCalendarWithMultiDotMarking()}
+        {renderCalendarWithPeriodMarkingAndSpinner()}
+        {renderCalendarWithPeriodMarkingAndDotMarking()}
+        {renderCalendarWithMultiPeriodMarking()}
+        {renderCalendarWithCustomMarkingType()}
       </Fragment>
-    );
-  };
-
-  const renderSwitch = () => {
-    // Workaround for Detox 18 migration bug
-    return (
-      <View style={styles.switchContainer}>
-        <Switch
-          trackColor={{false: '#d9e1e8', true: '#00BBF2'}}
-          onValueChange={toggleSwitch}
-          value={showMarkedDatesExamples}
-        />
-        <Text style={styles.switchText}>Show markings examples</Text>
-      </View>
     );
   };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
-      {renderSwitch()}
-      {showMarkedDatesExamples && renderMarkedDatesExamples()}
-      {!showMarkedDatesExamples && renderExamples()}
+      {renderExamples()}
     </ScrollView>
   );
 };
