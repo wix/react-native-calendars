@@ -26,7 +26,7 @@ import {CALENDAR_KNOB} from '../testIDs';
 import {page, weekDayNames} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {Theme, DateData, Direction} from '../types';
-import styleConstructor, {HEADER_HEIGHT} from './style';
+import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -43,7 +43,6 @@ const SPEED = 20;
 const BOUNCINESS = 6;
 const CLOSED_HEIGHT = 120; // header + 1 week
 const WEEK_HEIGHT = 46;
-const KNOB_CONTAINER_HEIGHT = 20;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
 const LEFT_ARROW = require('../calendar/img/previous.png');
@@ -271,7 +270,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     if (!this.props.horizontal) {
       return Math.max(commons.screenHeight, commons.screenWidth);
     }
-    return CLOSED_HEIGHT + WEEK_HEIGHT * (this.numberOfWeeks - 1) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
+    return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (commons.isAndroid ? 3 : 0);
   }
 
   getYear(date: XDate) {
