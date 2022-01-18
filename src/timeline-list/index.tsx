@@ -1,34 +1,30 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 // import {Text} from 'react-native';
 import throttle from 'lodash/throttle';
+import XDate from 'xdate';
 
 import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';
+import {isToday} from '../dateutils';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
 import InfiniteList from '../infinite-list';
 import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
 
 export interface TimelineListProps {
   events: {[date: string]: TimelineProps['events']};
-  timelineProps: Omit<TimelineProps, 'events'>;
+  timelineProps?: Omit<TimelineProps, 'events' | 'showNowIndicator'>;
+  showNowIndicator?: boolean;
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events} = props;
+  const {timelineProps, events, showNowIndicator} = props;
   const {date, updateSource, setDate} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
   const [timelineOffset, setTimelineOffset] = useState();
 
-  const {
-    pages,
-    pagesRef,
-    resetPages,
-    resetPagesDebounce,
-    scrollToPageDebounce,
-    shouldResetPages,
-    isOutOfRange,
-  } = useTimelinePages({date, listRef});
+  const {pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange} =
+    useTimelinePages({date, listRef});
 
   useEffect(() => {
     if (date !== prevDate.current) {
@@ -79,9 +75,7 @@ const TimelineList = (props: TimelineListProps) => {
   const renderPage = useCallback(
     (_type, item) => {
       const timelineEvent = events[item];
-
       const isCurrent = prevDate.current === item;
-
       return (
         <>
           <Timeline
@@ -92,13 +86,14 @@ const TimelineList = (props: TimelineListProps) => {
             events={timelineEvent}
             scrollOffset={isCurrent ? undefined : timelineOffset}
             onChangeOffset={onTimelineOffsetChange}
+            showNowIndicator={showNowIndicator && isToday(new XDate(item))}
           />
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text> */}
         </>
       );
     },
-    [events, timelineOffset]
+    [events, timelineOffset, showNowIndicator]
   );
 
   return (

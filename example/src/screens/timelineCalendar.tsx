@@ -197,7 +197,7 @@ export default class TimelineCalendarScreen extends Component {
           rightArrowImageSource={require('../img/next.png')}
           markedDates={this.marked}
         />
-        <TimelineList events={eventsByDate} timelineProps={this.timelineProps} />
+        <TimelineList events={eventsByDate} timelineProps={this.timelineProps} showNowIndicator />
       </CalendarProvider>
     );
   }
