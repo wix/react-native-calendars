@@ -1,5 +1,5 @@
 import React, {useState, Fragment, useCallback} from 'react';
-import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
