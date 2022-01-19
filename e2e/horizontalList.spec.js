@@ -1,9 +1,10 @@
+import testIDs from '../example/src/testIDs';
+
 const {HEADER_MONTH_NAME} = require('../src/testIDs');
-const testIDs = require('../example/src/testIDs');
 
 describe('Horizontal Calendar List', () => {
-  const FIRST_CALENDAR = `${testIDs.horizontalList.CONTAINER}_1273968000000`;
-  const LAST_CALENDAR = `${testIDs.horizontalList.CONTAINER}_1400198400000`;
+  const FIRST_CALENDAR = `${testIDs.horizontalList.CONTAINER}_1526428800000`;
+  const LAST_CALENDAR = `${testIDs.horizontalList.CONTAINER}_1652659200000`;
 
   beforeEach(async () => {
     await device.reloadReactNative();
@@ -13,12 +14,12 @@ describe('Horizontal Calendar List', () => {
   it('should scroll calendars to the top', async () => {
     await element(by.id(testIDs.horizontalList.CONTAINER)).scrollTo('left');
     await expect(element(by.id(`${HEADER_MONTH_NAME}-${FIRST_CALENDAR}`))).toBeVisible();
-    await expect(element(by.id(`${HEADER_MONTH_NAME}-${FIRST_CALENDAR}`))).toHaveText('May 2010');
+    await expect(element(by.id(`${HEADER_MONTH_NAME}-${FIRST_CALENDAR}`))).toHaveText('May 2018');
   });
 
   it('should scroll calendars to the bottom', async () => {
     await element(by.id(testIDs.horizontalList.CONTAINER)).scrollTo('right');
     await expect(element(by.id(`${HEADER_MONTH_NAME}-${LAST_CALENDAR}`))).toBeVisible();
-    await expect(element(by.id(`${HEADER_MONTH_NAME}-${LAST_CALENDAR}`))).toHaveText('May 2014');
+    await expect(element(by.id(`${HEADER_MONTH_NAME}-${LAST_CALENDAR}`))).toHaveText('May 2022');
   });
 });

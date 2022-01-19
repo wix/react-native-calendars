@@ -1,0 +1,26 @@
+env:
+  LC_ALL: 'en_US'
+steps:
+  - block: ":rocket: Release!"
+    prompt: "Fill out the details for release"
+    if: 'build.message =~ /^release\$/i'
+    fields:
+      - select: "IS_SNAPSHOT_BUILD"
+        key: "is-snapshot"
+        hint: "Publish snapshot version"
+        default: 'false'
+        options:
+          - label: "True"
+            value: true
+          - label: "False"
+            value: false
+
+  - label: "Build"
+    command: |
+      nvm install
+      npm install
+      npm run test
+      npm run build:ts
+      if [[ $BUILDKITE_PULL_REQUEST == 'false' ]];then
+        npm run release
+      fi

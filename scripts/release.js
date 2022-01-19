@@ -1,34 +1,39 @@
 /* eslint-disable no-console */
-const exec = require('shell-utils').exec;
-const semver = require('semver');
-const fs = require('fs');
 const _ = require('lodash');
+const fs = require('fs');
+const semver = require('semver');
+const exec = require('shell-utils').exec;
+const cp = require('child_process');
 
-const ONLY_ON_BRANCH = 'origin/master';
-const VERSION_TAG = 'latest';
+let IS_SNAPSHOT;
+const isReleaseBuild = process.env.BUILDKITE_MESSAGE.match(/^release$/i);
+const isPRBuild = process.env.BUILDKITE_PULL_REQUEST === 'true';
+
+if (isReleaseBuild) {
+  IS_SNAPSHOT = cp.execSync(`buildkite-agent meta-data get is-snapshot`).toString();
+}
+const ONLY_ON_BRANCH = 'release';
+const isSnapshotBuild = (!isPRBuild && !isReleaseBuild) || IS_SNAPSHOT === 'true';
+const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
 const VERSION_INC = 'minor';
 
 function run() {
   if (!validateEnv()) {
     return;
   }
+
   setupGit();
   createNpmRc();
   versionTagAndPublish();
 }
 
 function validateEnv() {
-  if (!process.env.JENKINS_CI) {
+  if (!process.env.CI) {
     throw new Error('releasing is only available from CI');
   }
 
-  if (!process.env.JENKINS_MASTER) {
-    console.log('not publishing on a different build');
-    return false;
-  }
-
-  if (process.env.GIT_BRANCH !== ONLY_ON_BRANCH) {
-    console.log(`not publishing on branch ${process.env.GIT_BRANCH}`);
+  if (process.env.BUILDKITE_BRANCH !== ONLY_ON_BRANCH && !isSnapshotBuild) {
+    console.log(`not publishing on branch ${process.env.BUILDKITE_BRANCH}`);
     return false;
   }
 
@@ -41,7 +46,7 @@ function setupGit() {
   exec.execSyncSilent(`git config --global user.name "${process.env.GIT_USER}"`);
   const remoteUrl = new RegExp('https?://(\\S+)').exec(exec.execSyncRead('git remote -v'))[1];
   exec.execSyncSilent(`git remote add deploy "https://${process.env.GIT_USER}:${process.env.GIT_TOKEN}@${remoteUrl}"`);
-  exec.execSync(`git checkout ${ONLY_ON_BRANCH}`);
+  exec.execSync(`git checkout ${process.env.BUILDKITE_BRANCH}`);
 }
 
 function createNpmRc() {
@@ -60,12 +65,18 @@ function versionTagAndPublish() {
   const currentPublished = findCurrentPublishedVersion();
   console.log(`current published version: ${currentPublished}`);
 
-  const version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  let version;
+  if (isSnapshotBuild) {
+    version = `${currentPublished}-snapshot.${process.env.BUILDKITE_BUILD_NUMBER}`;
+  } else {
+    version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
+  }
+
   tryPublishAndTag(version);
 }
 
 function findCurrentPublishedVersion() {
-  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.${VERSION_TAG}`);
+  return exec.execSyncRead(`npm view ${process.env.npm_package_name} dist-tags.latest`);
 }
 
 function tryPublishAndTag(version) {
@@ -90,8 +101,11 @@ function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
   exec.execSync(`npm --no-git-tag-version --allow-same-version version ${newVersion}`);
   exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
-  exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
-  exec.execSyncSilent(`git push deploy ${newVersion} || true`);
+  if (isReleaseBuild && !IS_SNAPSHOT) {
+    exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
+    console.log(`tagging git for version ${newVersion}...`);
+    exec.execSyncSilent(`git push origin ${newVersion}`);
+  }
 }
 
 run();
