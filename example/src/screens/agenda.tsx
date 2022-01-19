@@ -18,7 +18,8 @@ export default class AgendaScreen extends Component<State> {
         testID={testIDs.agenda.CONTAINER}
         items={this.state.items}
         loadItemsForMonth={this.loadItems}
-        selected={'2017-05-16'}
+        // make sure you pass ISOString - new Date().toISOString()
+        selected={'2022-01-19T22:02:59.246Z'}
         renderItem={this.renderItem}
         renderEmptyDate={this.renderEmptyDate}
         rowHasChanged={this.rowHasChanged}
