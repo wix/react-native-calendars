@@ -35,6 +35,44 @@ const CalendarsScreen = () => {
     );
   };
 
+  const CheckBox = ({onPress, checked}: {onPress: () => void; checked: boolean}) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          onPress();
+        }}
+      >
+        <View style={{width: 30, aspectRatio: 1, borderWidth: 1, backgroundColor: checked ? 'black' : 'white'}}></View>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderCalendarWithSelectableWeeks = (customComponent?: (w: number) => JSX.Element) => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with selectable date {!customComponent ? '' : 'with custom Component'}</Text>
+        <Calendar
+          testID={testIDs.calendars.FIRST}
+          enableSwipeMonths
+          current={INITIAL_DATE}
+          style={styles.calendar}
+          onDayPress={onDayPress}
+          headerStyle={{paddingLeft: 30}}
+          onWeekSelected={(_, sW) => console.log(sW)}
+          customWeekSelectionComponent={customComponent}
+          markedDates={{
+            [selected]: {
+              selected: true,
+              disableTouchEvent: true,
+              selectedColor: 'orange',
+              selectedTextColor: 'red'
+            }
+          }}
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithWeekNumbers = () => {
     return (
       <Fragment>
@@ -375,7 +413,7 @@ const CalendarsScreen = () => {
       },
       [getNewSelectedDate]
     );
-  
+
     const onPressArrowRight = useCallback(
       (add, month) => {
         const newDate = getNewSelectedDate(month, true);
@@ -387,7 +425,9 @@ const CalendarsScreen = () => {
 
     const CustomHeaderTitle = (
       <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
-        <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
+        <Text style={styles.customTitle}>
+          {selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}
+        </Text>
       </TouchableOpacity>
     );
 
@@ -451,9 +491,25 @@ const CalendarsScreen = () => {
   };
 
   const renderExamples = () => {
+    const [selectedWeeks, setSelectedWeeks] = React.useState<Array<number>>([]);
+    const onWeekSelected = React.useCallback(
+      (weekNumber: number) => {
+        if (selectedWeeks.includes(weekNumber)) {
+          setSelectedWeeks(selectedWeeks.filter(w => w !== weekNumber));
+        } else {
+          setSelectedWeeks([...selectedWeeks, weekNumber]);
+        }
+      },
+      [selectedWeeks]
+    );
+
     return (
       <Fragment>
         {renderCalendarWithSelectableDate()}
+        {renderCalendarWithSelectableWeeks()}
+        {renderCalendarWithSelectableWeeks((weekNumber: number) => (
+          <CheckBox onPress={() => onWeekSelected(weekNumber)} checked={selectedWeeks.includes(weekNumber)} />
+        ))}
         {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}
@@ -520,8 +576,8 @@ const styles = StyleSheet.create({
     padding: 8
   },
   customTitleContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10
   },
   customTitle: {

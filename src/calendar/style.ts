@@ -25,6 +25,17 @@ export default function getStyle(theme: Theme = {}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+    weekSelectionComponent: {
+      borderRadius: 3,
+      borderWidth: 1,
+      borderColor: appStyle.arrowColor,
+      width: 30,
+      aspectRatio: 1
+    },
+    weekSelectionComponentChecked: {
+      borderWidth: 11,
+      borderRadius: 5
+    },
     // @ts-expect-error
     ...(theme['stylesheet.calendar.main'] || {})
   });

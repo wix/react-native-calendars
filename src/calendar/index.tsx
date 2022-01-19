@@ -3,7 +3,7 @@ import XDate from 'xdate';
 import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
-import {View, ViewStyle, StyleProp} from 'react-native';
+import {View, ViewStyle, StyleProp, TouchableOpacity} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
@@ -19,7 +19,6 @@ import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
-
 
 type MarkedDatesType = {
   [key: string]: MarkingProps;
@@ -70,11 +69,16 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
+  /** Handler that allows the user to check a week or not, and then apply an action when selected  */
+  onWeekSelected?: (weekNumber: number, selectedWeeks: Array<number>) => void;
+  /** Custom component for week selection */
+  customWeekSelectionComponent?: (weekNumber: number) => JSX.Element;
 }
 
 interface State {
   prevInitialDate?: string;
   currentMonth: any;
+  selectedWeeks: Array<number>;
 }
 /**
  * @description: Calendar component
@@ -138,8 +142,11 @@ class Calendar extends Component<CalendarProps, State> {
 
   state = {
     prevInitialDate: this.props.initialDate,
-    currentMonth: this.props.current || this.props.initialDate ? 
-      parseDate(this.props.current || this.props.initialDate) : new XDate()
+    currentMonth:
+      this.props.current || this.props.initialDate
+        ? parseDate(this.props.current || this.props.initialDate)
+        : new XDate(),
+    selectedWeeks: new Array<number>()
   };
   style = styleConstructor(this.props.theme);
   header: React.RefObject<CalendarHeader> = React.createRef();
@@ -175,7 +182,7 @@ class Calendar extends Component<CalendarProps, State> {
     const min = parseDate(this.props.minDate);
     const max = parseDate(this.props.maxDate);
 
-    if (allowSelectionOutOfRange || !(min && !isGTE(day, min)) && !(max && !isLTE(day, max))) {
+    if (allowSelectionOutOfRange || (!(min && !isGTE(day, min)) && !(max && !isLTE(day, max)))) {
       const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
 
       if (shouldUpdateMonth) {
@@ -188,13 +195,11 @@ class Calendar extends Component<CalendarProps, State> {
   }
 
   pressDay = (date?: DateData) => {
-    if (date)
-    this.handleDayInteraction(date, this.props.onDayPress);
+    if (date) this.handleDayInteraction(date, this.props.onDayPress);
   };
 
   longPressDay = (date?: DateData) => {
-    if (date)
-    this.handleDayInteraction(date, this.props.onDayLongPress);
+    if (date) this.handleDayInteraction(date, this.props.onDayLongPress);
   };
 
   swipeProps = {onSwipe: (direction: string) => this.onSwipe(direction)};
@@ -261,19 +266,44 @@ class Calendar extends Component<CalendarProps, State> {
     );
   }
 
+  WeekSelectionComponent = ({weekNumber, checked}: {weekNumber: number; checked: boolean}) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          if (this.state.selectedWeeks.includes(weekNumber)) {
+            this.setState({selectedWeeks: this.state.selectedWeeks.filter(w => w !== weekNumber)});
+          } else {
+            this.setState({selectedWeeks: [...this.state.selectedWeeks, weekNumber]});
+          }
+          this.props.onWeekSelected?.(weekNumber, this.state.selectedWeeks);
+        }}
+      >
+        <View style={[this.style.weekSelectionComponent, checked && this.style.weekSelectionComponentChecked]}></View>
+      </TouchableOpacity>
+    );
+  };
+
   renderWeek(days: XDate[], id: number) {
     const week = [];
+    const weekNumber: number = days[days.length - 1].getWeek();
 
     days.forEach((day: XDate, id2: number) => {
       week.push(this.renderDay(day, id2));
     }, this);
 
     if (this.props.showWeekNumbers) {
-      week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
+      week.unshift(this.renderWeekNumber(weekNumber));
     }
 
     return (
       <View style={this.style.week} key={id}>
+        {this.props.customWeekSelectionComponent?.(weekNumber) ||
+          (!!this.props.onWeekSelected && (
+            <this.WeekSelectionComponent
+              weekNumber={weekNumber}
+              checked={this.state.selectedWeeks.includes(weekNumber)}
+            />
+          ))}
         {week}
       </View>
     );
@@ -307,8 +337,8 @@ class Calendar extends Component<CalendarProps, State> {
     const headerProps = extractComponentProps(CalendarHeader, this.props);
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-    const ref = customHeader ?  undefined : this.header;
-    
+    const ref = customHeader ? undefined : this.header;
+
     return (
       <HeaderComponent
         {...headerProps}

@@ -18,7 +18,8 @@ import {
   ImageSourcePropType,
   PanResponderInstance,
   GestureResponderEvent,
-  PanResponderGestureState
+  PanResponderGestureState,
+  TouchableOpacity
 } from 'react-native';
 
 // @ts-expect-error
@@ -72,6 +73,9 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
   context?: any;
+  canScrollBackWeek?: boolean;
+  /** Callback when clicking on Knob */
+  onExpand?: () => void;
 }
 
 interface State {
@@ -114,7 +118,11 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     /** a threshold for closing the calendar with the pan gesture */
     closeThreshold: PropTypes.number,
     /** Whether to close the calendar on day press. Default = true */
-    closeOnDayPress: PropTypes.bool
+    closeOnDayPress: PropTypes.bool,
+    /** whether to scroll back to week displaying on clicking a date */
+    canScrollBackWeek: PropTypes.bool,
+    /** Callback when clicking on Knob */
+    onExpand: PropTypes.func
   };
 
   static defaultProps = {
@@ -126,7 +134,8 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     allowShadow: true,
     openThreshold: PAN_GESTURE_THRESHOLD,
     closeThreshold: PAN_GESTURE_THRESHOLD,
-    closeOnDayPress: true
+    closeOnDayPress: true,
+    canScrollBackWeek: true
   };
 
   static positions = Positions;
@@ -270,7 +279,12 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     if (!this.props.horizontal) {
       return Math.max(commons.screenHeight, commons.screenWidth);
     }
-    return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (commons.isAndroid ? 3 : 0);
+    return (
+      CLOSED_HEIGHT +
+      WEEK_HEIGHT * (this.numberOfWeeks - 1) +
+      (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) +
+      (commons.isAndroid ? 3 : 0)
+    );
   }
 
   getYear(date: XDate) {
@@ -375,6 +389,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
       this.setPosition();
       this.closeHeader(isOpen);
       this.resetWeekCalendarOpacity(isOpen);
+      if (this.props.onExpand) this.props.onExpand();
     }
   }
 
@@ -428,7 +443,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     if (this.props.closeOnDayPress) {
       setTimeout(() => {
         // to allows setDate to be completed
-        if (this.state.position === Positions.OPEN) {
+        if (this.props.canScrollBackWeek && this.state.position === Positions.OPEN) {
           this.bounceToPosition(this.closedHeight);
         }
       }, 0);
@@ -542,11 +557,20 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
   }
 
   renderKnob() {
-    // TODO: turn to TouchableOpacity with onPress that closes it
     return (
-      <View style={this.style.knobContainer} pointerEvents={'none'} testID={`${this.props.testID}-knob`}>
+      <TouchableOpacity
+        testID={`${this.props.testID}-knob`}
+        style={this.style.knobContainer}
+        // pointerEvents={'none'}
+        onPress={() => {
+          setTimeout(() => {
+            // to allows setDate to be completed
+            this.bounceToPosition(this.state.position === Positions.OPEN ? this.closedHeight : this.openHeight);
+          }, 0);
+        }}
+      >
         <View style={this.style.knob} testID={CALENDAR_KNOB} />
-      </View>
+      </TouchableOpacity>
     );
   }
 
