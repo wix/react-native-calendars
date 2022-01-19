@@ -119,10 +119,10 @@ const Timeline = (props: TimelineProps) => {
 
   useEffect(() => {
     let initialPosition = 0;
-    if (scrollToFirst) {
-      initialPosition = min(map(packedEvents, 'top')) ?? 0;
-    } else if (scrollToNow) {
+    if (scrollToNow) {
       initialPosition = calcNowOffset(HOUR_BLOCK_HEIGHT);
+    } else if (scrollToFirst && packedEvents.length > 0) {
+      initialPosition = min(map(packedEvents, 'top')) ?? 0;
     } else if (initialTime) {
       initialPosition = calcNowOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }

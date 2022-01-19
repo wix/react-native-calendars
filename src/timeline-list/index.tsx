@@ -18,7 +18,11 @@ export interface TimelineListProps {
   /**
    * General timeline props to pass to each timeline item
    */
-  timelineProps?: Omit<TimelineProps, 'events' | 'showNowIndicator' | 'scrollToNow' | 'initialTime'>;
+  timelineProps?: Omit<TimelineProps, 'events' | 'scrollToFirst' | 'showNowIndicator' | 'scrollToNow' | 'initialTime'>;
+  /**
+   * Should scroll to first event of the day
+   */
+  scrollToFirst?: boolean;
   /**
    * Should show now indicator (shown only on "today" timeline)
    */
@@ -34,7 +38,7 @@ export interface TimelineListProps {
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events, showNowIndicator, scrollToNow, initialTime} = props;
+  const {timelineProps, events, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
   const {date, updateSource, setDate} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
@@ -103,9 +107,9 @@ const TimelineList = (props: TimelineListProps) => {
             key={item}
             date={item}
             events={timelineEvent}
-            scrollToFirst={false}
             scrollToNow={_isToday && isInitialPage && scrollToNow}
             initialTime={!_isToday && isInitialPage ? initialTime : undefined}
+            scrollToFirst={!_isToday && isInitialPage && scrollToFirst}
             scrollOffset={isCurrent ? undefined : timelineOffset}
             onChangeOffset={onTimelineOffsetChange}
             showNowIndicator={_isToday && showNowIndicator}

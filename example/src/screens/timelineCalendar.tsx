@@ -213,6 +213,7 @@ export default class TimelineCalendarScreen extends Component {
           timelineProps={this.timelineProps}
           showNowIndicator
           scrollToNow
+          scrollToFirst
           initialTime={INITIAL_TIME}
         />
       </CalendarProvider>
