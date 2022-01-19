@@ -60,6 +60,10 @@ export interface TimelineProps {
    */
   scrollToNow?: boolean;
   /**
+   * Initial time to scroll to
+   */
+  initialTime?: {hour: number; minutes: number};
+  /**
    * Whether to use 24 hours format for the timeline hours
    */
   format24h?: boolean;
@@ -95,6 +99,7 @@ const Timeline = (props: TimelineProps) => {
     theme,
     scrollToFirst,
     scrollToNow,
+    initialTime,
     showNowIndicator,
     scrollOffset,
     onChangeOffset,
@@ -118,6 +123,8 @@ const Timeline = (props: TimelineProps) => {
       initialPosition = min(map(packedEvents, 'top')) ?? 0;
     } else if (scrollToNow) {
       initialPosition = calcNowOffset(HOUR_BLOCK_HEIGHT);
+    } else if (initialTime) {
+      initialPosition = calcNowOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }
 
     if (initialPosition) {

@@ -10,6 +10,7 @@ import {
 } from 'react-native-calendars';
 import _ from 'lodash';
 
+const INITIAL_TIME = {hour: 9, minutes: 0};
 const today = new Date();
 const getDate = (offset = 0) => CalendarUtils.getCalendarDateString(new Date().setDate(today.getDate() + offset));
 
@@ -207,7 +208,13 @@ export default class TimelineCalendarScreen extends Component {
           rightArrowImageSource={require('../img/next.png')}
           markedDates={this.marked}
         />
-        <TimelineList events={eventsByDate} timelineProps={this.timelineProps} showNowIndicator scrollToNow />
+        <TimelineList
+          events={eventsByDate}
+          timelineProps={this.timelineProps}
+          showNowIndicator
+          scrollToNow
+          initialTime={INITIAL_TIME}
+        />
       </CalendarProvider>
     );
   }
