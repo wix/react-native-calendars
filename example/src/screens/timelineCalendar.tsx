@@ -9,11 +9,17 @@ import {
   CalendarUtils
 } from 'react-native-calendars';
 import _ from 'lodash';
-import XDate from 'xdate';
 
-const getDate = (offset = 0) => CalendarUtils.getCalendarDateString(new XDate().addDays(offset).toDate());
+const today = new Date();
+const getDate = (offset = 0) => CalendarUtils.getCalendarDateString(new Date().setDate(today.getDate() + offset));
 
 const EVENTS: TimelineEventProps[] = [
+  {
+    start: `${getDate(-1)} 09:20:00`,
+    end: `${getDate(-1)} 12:00:00`,
+    title: 'Merge Request to React Native Calendars',
+    summary: 'Merge Timeline Calendar to React Native Calendars'
+  },
   {
     start: `${getDate()} 01:30:00`,
     end: `${getDate()} 02:30:00`,
@@ -97,6 +103,7 @@ export default class TimelineCalendarScreen extends Component {
   };
 
   marked = {
+    [`${getDate(-1)}`]: {marked: true},
     [`${getDate()}`]: {marked: true},
     [`${getDate(1)}`]: {marked: true},
     [`${getDate(2)}`]: {marked: true},
