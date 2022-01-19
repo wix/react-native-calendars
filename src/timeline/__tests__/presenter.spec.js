@@ -68,4 +68,19 @@ describe('timeline presenter', () => {
       expect(uut.buildTimeString(15, 0, '2017-03-05')).toBe('2017-03-05 15:00:00');
     });
   });
+
+  describe('calcNowOffset', () => {
+    it('should give offset based on current time', () => {
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01 15:30').getTime());
+      expect(uut.calcNowOffset(100)).toBe(1550);
+
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01 12:10').getTime());
+      expect(uut.calcNowOffset(100)).toBeCloseTo(1216.66, 1);
+    });
+
+    it('should give offset based on given time', () => {
+      expect(uut.calcNowOffset(100, 15, 30)).toBe(1550);
+      expect(uut.calcNowOffset(100, 12, 10)).toBeCloseTo(1216.66, 1);
+    });
+  });
 });

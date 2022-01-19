@@ -11,9 +11,9 @@ export function buildTimeString(hour = 0, minutes = 0, date = '') {
   return `${date} ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`.trimStart();
 }
 
-export function calcNowOffset(hourBlockHeight: number) {
+export function calcNowOffset(hourBlockHeight: number, hour?: number, minutes?: number) {
   const now = new Date();
-  const hour = now.getHours();
-  const minutes = now.getMinutes();
-  return (hour + minutes / 60) * hourBlockHeight;
+  const h = hour ?? now.getHours();
+  const m = minutes ?? now.getMinutes();
+  return (h + m / 60) * hourBlockHeight;
 }
