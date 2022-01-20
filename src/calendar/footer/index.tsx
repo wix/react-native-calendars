@@ -4,7 +4,7 @@ import {View} from 'react-native';
 
 export interface CalendarFooterProps {
   /** Replace default title with custom one. the function receive a date as parameter */
-  renderFooter?: (props: object) => ReactNode | null;
+  renderFooter?: (props: any) => ReactNode;
   testID?: string;
 }
 
@@ -12,8 +12,7 @@ class CalendarFooter extends React.Component<CalendarFooterProps> {
   static displayName = 'CalendarFooter';
 
   static propTypes = {
-    renderFooter: null,
-    testId: PropTypes.string,
+    renderFooter: PropTypes.any,
   };
 
   renderFooter() {
