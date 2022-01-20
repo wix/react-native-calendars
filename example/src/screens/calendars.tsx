@@ -1,6 +1,7 @@
 import React, {useState, Fragment, useCallback} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
+import {SelectedWeek} from 'src/types';
 import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2020-02-02';
@@ -47,7 +48,9 @@ const CalendarsScreen = () => {
     );
   };
 
-  const renderCalendarWithSelectableWeeks = (customComponent?: (w: number) => JSX.Element) => {
+  const renderCalendarWithSelectableWeeks = (
+    customComponent?: ({weekNumber, firstDate}: SelectedWeek) => JSX.Element
+  ) => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with selectable date {!customComponent ? '' : 'with custom Component'}</Text>
@@ -58,7 +61,7 @@ const CalendarsScreen = () => {
           style={styles.calendar}
           onDayPress={onDayPress}
           headerStyle={{paddingLeft: 30}}
-          onWeekSelected={(_, sW) => console.log(sW)}
+          onWeekSelected={(infos, weekSelected) => console.log('ON SELECT WEEK', {infos, weekSelected})}
           customWeekSelectionComponent={customComponent}
           markedDates={{
             [selected]: {
@@ -493,11 +496,12 @@ const CalendarsScreen = () => {
   const renderExamples = () => {
     const [selectedWeeks, setSelectedWeeks] = React.useState<Array<number>>([]);
     const onWeekSelected = React.useCallback(
-      (weekNumber: number) => {
-        if (selectedWeeks.includes(weekNumber)) {
-          setSelectedWeeks(selectedWeeks.filter(w => w !== weekNumber));
+      (infos: SelectedWeek) => {
+        console.log('ON SELECT WEEK CUSTOM', {infos});
+        if (selectedWeeks.includes(infos.weekNumber)) {
+          setSelectedWeeks(selectedWeeks.filter(w => w !== infos.weekNumber));
         } else {
-          setSelectedWeeks([...selectedWeeks, weekNumber]);
+          setSelectedWeeks([...selectedWeeks, infos.weekNumber]);
         }
       },
       [selectedWeeks]
@@ -507,8 +511,8 @@ const CalendarsScreen = () => {
       <Fragment>
         {renderCalendarWithSelectableDate()}
         {renderCalendarWithSelectableWeeks()}
-        {renderCalendarWithSelectableWeeks((weekNumber: number) => (
-          <CheckBox onPress={() => onWeekSelected(weekNumber)} checked={selectedWeeks.includes(weekNumber)} />
+        {renderCalendarWithSelectableWeeks(infos => (
+          <CheckBox onPress={() => onWeekSelected(infos)} checked={selectedWeeks.includes(infos.weekNumber)} />
         ))}
         {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}

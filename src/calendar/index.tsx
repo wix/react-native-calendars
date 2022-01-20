@@ -13,7 +13,7 @@ import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../componentUpdater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
-import {Theme, DateData} from '../types';
+import {Theme, DateData, SelectedWeek} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
@@ -70,9 +70,9 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
   /** Handler that allows the user to check a week or not, and then apply an action when selected  */
-  onWeekSelected?: (weekNumber: number, selectedWeeks: Array<number>) => void;
+  onWeekSelected?: (infos: SelectedWeek, selectedWeeks: Array<number>) => void;
   /** Custom component for week selection */
-  customWeekSelectionComponent?: (weekNumber: number) => JSX.Element;
+  customWeekSelectionComponent?: (infos: SelectedWeek) => JSX.Element;
 }
 
 interface State {
@@ -266,16 +266,16 @@ class Calendar extends Component<CalendarProps, State> {
     );
   }
 
-  WeekSelectionComponent = ({weekNumber, checked}: {weekNumber: number; checked: boolean}) => {
+  WeekSelectionComponent = ({infos, checked}: {infos: SelectedWeek; checked: boolean}) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          if (this.state.selectedWeeks.includes(weekNumber)) {
-            this.setState({selectedWeeks: this.state.selectedWeeks.filter(w => w !== weekNumber)});
+          if (this.state.selectedWeeks.includes(infos.weekNumber)) {
+            this.setState({selectedWeeks: this.state.selectedWeeks.filter(w => w !== infos.weekNumber)});
           } else {
-            this.setState({selectedWeeks: [...this.state.selectedWeeks, weekNumber]});
+            this.setState({selectedWeeks: [...this.state.selectedWeeks, infos.weekNumber]});
           }
-          this.props.onWeekSelected?.(weekNumber, this.state.selectedWeeks);
+          this.props.onWeekSelected?.(infos, this.state.selectedWeeks);
         }}
       >
         <View style={[this.style.weekSelectionComponent, checked && this.style.weekSelectionComponentChecked]}></View>
@@ -297,10 +297,13 @@ class Calendar extends Component<CalendarProps, State> {
 
     return (
       <View style={this.style.week} key={id}>
-        {this.props.customWeekSelectionComponent?.(weekNumber) ||
+        {this.props.customWeekSelectionComponent?.({weekNumber, firstDate: days[0]}) ||
           (!!this.props.onWeekSelected && (
             <this.WeekSelectionComponent
-              weekNumber={weekNumber}
+              infos={{
+                weekNumber,
+                firstDate: days[0]
+              }}
               checked={this.state.selectedWeeks.includes(weekNumber)}
             />
           ))}

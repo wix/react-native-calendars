@@ -1,4 +1,5 @@
 import {ViewStyle, TextStyle, StyleProp} from 'react-native';
+import XDate from 'xdate';
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
@@ -10,6 +11,10 @@ export type DateData = {
   timestamp: number;
   dateString: string;
 };
+export interface SelectedWeek {
+  weekNumber: number;
+  firstDate: XDate;
+}
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;
@@ -95,8 +100,8 @@ export type AgendaEntry = {
   name: string;
   height: number;
   day: string;
-}
+};
 
 export type AgendaSchedule = {
   [date: string]: AgendaEntry[];
-}
+};
