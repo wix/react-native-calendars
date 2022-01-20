@@ -7,7 +7,7 @@ import constants from '../commons/constants';
 import {Theme} from '../types';
 import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
 import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
-import {calcNowOffset} from './helpers/presenter';
+import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
 import NowIndicator from './NowIndicator';
@@ -120,11 +120,11 @@ const Timeline = (props: TimelineProps) => {
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
-      initialPosition = calcNowOffset(HOUR_BLOCK_HEIGHT);
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
     } else if (scrollToFirst && packedEvents.length > 0) {
       initialPosition = min(map(packedEvents, 'top')) ?? 0;
     } else if (initialTime) {
-      initialPosition = calcNowOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }
 
     if (initialPosition) {
