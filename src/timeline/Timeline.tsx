@@ -1,17 +1,17 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, Dimensions, ScrollView} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import min from 'lodash/min';
 import map from 'lodash/map';
 
+import constants from '../commons/constants';
 import {Theme} from '../types';
 import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
 import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
+import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
 import NowIndicator from './NowIndicator';
 import useTimelineOffset from './useTimelineOffset';
-
-const {width: dimensionWidth} = Dimensions.get('window');
 
 export interface TimelineProps {
   /**
@@ -51,7 +51,18 @@ export interface TimelineProps {
   onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
   theme?: Theme;
+  /**
+   * Should scroll to first event when loaded
+   */
   scrollToFirst?: boolean;
+  /**
+   * Should scroll to current time when loaded
+   */
+  scrollToNow?: boolean;
+  /**
+   * Initial time to scroll to
+   */
+  initialTime?: {hour: number; minutes: number};
   /**
    * Whether to use 24 hours format for the timeline hours
    */
@@ -87,6 +98,8 @@ const Timeline = (props: TimelineProps) => {
     renderEvent,
     theme,
     scrollToFirst,
+    scrollToNow,
+    initialTime,
     showNowIndicator,
     scrollOffset,
     onChangeOffset,
@@ -100,24 +113,27 @@ const Timeline = (props: TimelineProps) => {
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
   const packedEvents = useMemo(() => {
-    const width = dimensionWidth - HOURS_SIDEBAR_WIDTH;
+    const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
     return populateEvents(events, width, start);
   }, [events, start]);
 
   useEffect(() => {
-    if (scrollToFirst) {
-      const firstTop = min(map(packedEvents, 'top')) ?? 0;
-      const initPosition = firstTop - calendarHeight.current / (end - start);
-      const verifiedInitPosition = initPosition < 0 ? 0 : initPosition;
+    let initialPosition = 0;
+    if (scrollToNow) {
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+    } else if (scrollToFirst && packedEvents.length > 0) {
+      initialPosition = min(map(packedEvents, 'top')) ?? 0;
+    } else if (initialTime) {
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+    }
 
-      if (verifiedInitPosition) {
-        setTimeout(() => {
-          scrollView?.current?.scrollTo({
-            y: verifiedInitPosition,
-            animated: true
-          });
-        }, 0);
-      }
+    if (initialPosition) {
+      setTimeout(() => {
+        scrollView?.current?.scrollTo({
+          y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
+          animated: true
+        });
+      }, 0);
     }
   }, []);
 
@@ -160,7 +176,7 @@ const Timeline = (props: TimelineProps) => {
     <ScrollView
       // @ts-expect-error
       ref={scrollView}
-      contentContainerStyle={[styles.current.contentStyle, {width: dimensionWidth}]}
+      contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
       {...scrollEvents}
     >
       <TimelineHours
