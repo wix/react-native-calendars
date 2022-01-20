@@ -1,5 +1,5 @@
 import React, {useState, Fragment, useCallback} from 'react';
-import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Button} from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
@@ -450,6 +450,43 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithCustomFooter = () => {
+    const customFooter = React.forwardRef((props, ref) => {
+      const handleTapButtonOnCustomFooter = () => {
+        console.warn('You Tapped Button on Custom Footer!');
+      };
+      return (
+        <View
+          {...props}
+        >
+          <Button
+            title="Please Tap Me!"
+            onPress={handleTapButtonOnCustomFooter}
+          />
+        </View>
+      );
+    });
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calender with Custom footer</Text>
+        <Calendar
+          style={styles.calendar}
+          disableAllTouchEventsForInactiveDays
+          current={INITIAL_DATE}
+          markedDates={{
+            '2020-02-10': {
+              inactive: true
+            },
+            '2020-02-11': {
+              inactive: true
+            }
+          }}
+          customFooter={customFooter}
+        />
+      </Fragment>
+    );
+  };
+
   const renderExamples = () => {
     return (
       <Fragment>
@@ -466,6 +503,7 @@ const CalendarsScreen = () => {
         {renderCalendarWithPeriodMarkingAndDotMarking()}
         {renderCalendarWithMultiPeriodMarking()}
         {renderCalendarWithCustomMarkingType()}
+        {renderCalendarWithCustomFooter()}
       </Fragment>
     );
   };

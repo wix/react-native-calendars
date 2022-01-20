@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 // @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
@@ -22,6 +22,20 @@ const CalendarsList = () => {
     setSelected(day.dateString);
   };
 
+  const renderCustomFooter = (props) => {
+    const year = new Date(props.month).getFullYear();
+    const month = new Date(props.month).getMonth() + 1;
+    const buttonText = `Please Tap ${year}-${month}`;
+    return (
+      <View>
+        <Button
+          title={buttonText}
+          onPress={() => console.warn(buttonText)}
+        />
+      </View>
+    );
+  };
+
   return (
     <CalendarList
       testID={testIDs.calendarList.CONTAINER}
@@ -29,6 +43,7 @@ const CalendarsList = () => {
       pastScrollRange={RANGE}
       futureScrollRange={RANGE}
       renderHeader={renderCustomHeader}
+      renderFooter={renderCustomFooter}
       theme={theme}
       onDayPress={onDayPress}
       markedDates={markedDates}
@@ -69,7 +84,7 @@ function renderCustomHeader(date) {
 
   return (
     <View style={styles.header}>
-      <Text style={[styles.month, textStyle]}>{`${month}`}</Text>
+      <Text style={[styles.month, textStyle]}>{`${month} Good!`}</Text>
       <Text style={[styles.year, textStyle]}>{year}</Text>
     </View>
   );

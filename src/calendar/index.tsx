@@ -16,6 +16,7 @@ import {WEEK_NUMBER} from '../testIDs';
 import {Theme, DateData} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
+import CalendarFooter, {CalendarFooterProps} from './footer';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
@@ -25,7 +26,7 @@ type MarkedDatesType = {
   [key: string]: MarkingProps;
 };
 
-export interface CalendarProps extends CalendarHeaderProps, DayProps {
+export interface CalendarProps extends CalendarHeaderProps, CalendarFooterProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
   /** Specify style for calendar container element */
@@ -68,6 +69,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   headerStyle?: ViewStyle;
   /** Allow rendering a totally custom header */
   customHeader?: any;
+  /** Allow rendering a totally custom footer */
+  customFooter?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
 }
@@ -85,6 +88,7 @@ class Calendar extends Component<CalendarProps, State> {
   static displayName = 'Calendar';
 
   static propTypes = {
+    ...CalendarFooter.propTypes,
     ...CalendarHeader.propTypes,
     ...Day.propTypes,
     /** Specify theme properties to override specific styles for calendar parts. Default = {} */
@@ -129,8 +133,10 @@ class Calendar extends Component<CalendarProps, State> {
     headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     /** Allow rendering a totally custom header */
     customHeader: PropTypes.any,
+    /** Allow rendering a totally custom footer */
+    customFooter: PropTypes.any,
     /** Allow selection of dates before minDate or after maxDate */
-    allowSelectionOutOfRange: PropTypes.bool
+    allowSelectionOutOfRange: PropTypes.bool,
   };
   static defaultProps = {
     enableSwipeMonths: false
@@ -143,6 +149,7 @@ class Calendar extends Component<CalendarProps, State> {
   };
   style = styleConstructor(this.props.theme);
   header: React.RefObject<CalendarHeader> = React.createRef();
+  footer: React.RefObject<CalendarFooter> = React.createRef();
 
   static getDerivedStateFromProps(nextProps: CalendarProps, prevState: State) {
     if (nextProps?.initialDate && nextProps?.initialDate !== prevState.prevInitialDate) {
@@ -336,8 +343,22 @@ class Calendar extends Component<CalendarProps, State> {
         >
           {this.renderHeader()}
           {this.renderMonth()}
+          {this.renderFooter()}
         </View>
       </GestureComponent>
+    );
+  }
+  renderFooter() {
+    const {customFooter, testID, renderFooter} = this.props;
+    const Footer = customFooter ? customFooter : CalendarFooter;
+    const ref = customFooter ? undefined : this.footer;
+    return (
+      <Footer
+        ref={ref}
+        testID={testID}
+        month={this.state.currentMonth}
+        renderFooter={renderFooter}
+      />
     );
   }
 }
