@@ -355,7 +355,6 @@ class Calendar extends Component<CalendarProps, State> {
     return (
       <Footer
         ref={ref}
-        testID={testID}
         month={this.state.currentMonth}
         renderFooter={renderFooter}
       />
