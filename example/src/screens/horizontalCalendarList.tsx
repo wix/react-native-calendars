@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Button, View} from 'react-native';
 // @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
@@ -18,6 +19,20 @@ const HorizontalCalendarList = () => {
     setSelected(day.dateString);
   };
 
+  const renderFooter = (props) => {
+    const year = new Date(props.month).getFullYear();
+    const month = new Date(props.month).getMonth() + 1;
+    const buttonText = `Please Tap ${year}-${month}`;
+    return (
+      <View>
+        <Button
+          title={buttonText}
+          onPress={() => console.warn(`You Tapped: ${year}-${month}}`)}
+        />
+      </View>
+    );
+  };
+
   return (
     <CalendarList
       testID={testIDs.horizontalList.CONTAINER}
@@ -28,6 +43,7 @@ const HorizontalCalendarList = () => {
       horizontal
       pagingEnabled
       onDayPress={onDayPress}
+      renderFooter={renderFooter}
     />
   );
 };
