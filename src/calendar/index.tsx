@@ -349,7 +349,7 @@ class Calendar extends Component<CalendarProps, State> {
     );
   }
   renderFooter() {
-    const {customFooter, testID, renderFooter} = this.props;
+    const {customFooter, renderFooter} = this.props;
     const Footer = customFooter ? customFooter : CalendarFooter;
     const ref = customFooter ? undefined : this.footer;
     return (

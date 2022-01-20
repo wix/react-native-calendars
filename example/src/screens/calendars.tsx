@@ -451,7 +451,7 @@ const CalendarsScreen = () => {
   };
 
   const renderCalendarWithCustomFooter = () => {
-    const customFooter = React.forwardRef((props, ref) => {
+    const customFooter = React.forwardRef((props) => {
       const handleTapButtonOnCustomFooter = () => {
         console.warn('You Tapped Button on Custom Footer!');
       };
