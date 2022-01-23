@@ -2,7 +2,7 @@ const _ = require('lodash');
 const childProcess = require('child_process');
 const fs = require('fs');
 
-const COMPONENTS_DOCS_DIR = './demo/docsRNC/docs';
+const COMPONENTS_DOCS_DIR = './docsRNC/docs';
 
 const result = childProcess.execSync('find ./src -name "*api.json"');
 const apiFiles = result.toString().trim().split('\n');

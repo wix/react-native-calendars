@@ -66,7 +66,7 @@ type State = {
  * @extends: CalendarList
  * @extendslink: docs/CalendarList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
- * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/agenda.gif
+ * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/agenda.gif
  */
 export default class Agenda extends Component<AgendaProps, State> {
   static displayName = 'Agenda';
