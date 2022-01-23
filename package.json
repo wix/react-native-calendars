@@ -44,6 +44,7 @@
     "@babel/core": "^7.12.9",
     "@babel/eslint-parser": "^7.13.4",
     "@babel/runtime": "^7.12.5",
+    "@tsconfig/docusaurus": "^1.0.4",
     "@types/lodash": "^4.14.170",
     "@types/react-native": "^0.64.19",
     "@types/xdate": "^0.8.32",
