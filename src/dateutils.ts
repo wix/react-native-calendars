@@ -1,17 +1,14 @@
 const XDate = require('xdate');
-const {parseDate} = require('./interface');
+const {parseDate, toMarkingFormat} = require('./interface');
 
 const latinNumbersPattern = /[0-9]/g;
 
 export function sameMonth(a: XDate, b: XDate) {
-  return a.getFullYear() === b.getFullYear() && 
-    a.getMonth() === b.getMonth();
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
 }
 
 export function sameDate(a: XDate, b: XDate) {
-  return a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
 export function sameWeek(a: XDate, b: XDate, firstDayOfWeek: number) {
@@ -143,4 +140,9 @@ export function getWeekDates(date: XDate, firstDay = 0, format?: string) {
 
     return daysArray;
   }
+}
+
+export function generateDay(originDate: string, daysOffset = 0) {
+  const baseDate = new XDate(originDate);
+  return toMarkingFormat(baseDate.clone().addDays(daysOffset));
 }

@@ -62,5 +62,26 @@ describe('timeline presenter', () => {
       expect(uut.buildTimeString(undefined, 30)).toBe('00:30:00');
       expect(uut.buildTimeString(9, undefined)).toBe('09:00:00');
     });
+
+    it('should concatenate date when passed', () => {
+      expect(uut.buildTimeString(10, 30, '2022-12-23')).toBe('2022-12-23 10:30:00');
+      expect(uut.buildTimeString(15, 0, '2017-03-05')).toBe('2017-03-05 15:00:00');
+    });
+  });
+
+  describe('calcTimeOffset', () => {
+    // NOTE: useFakeTimers API works only in jest 27, unfortunately, other tests fail in jest 27
+    it.skip('should give offset based on current time', () => {
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01 15:30').getTime());
+      expect(uut.calcTimeOffset(100)).toBe(1550);
+
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01 12:10').getTime());
+      expect(uut.calcTimeOffset(100)).toBeCloseTo(1216.66, 1);
+    });
+
+    it('should give offset based on given time', () => {
+      expect(uut.calcTimeOffset(100, 15, 30)).toBe(1550);
+      expect(uut.calcTimeOffset(100, 12, 10)).toBeCloseTo(1216.66, 1);
+    });
   });
 });

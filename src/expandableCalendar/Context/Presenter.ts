@@ -2,9 +2,8 @@ import XDate from 'xdate';
 
 import {sameMonth, isToday} from '../../dateutils';
 import {xdateToData, toMarkingFormat} from '../../interface';
-import {UpdateSource} from '../../types';
+import {UpdateSources} from '../commons';
 import {CalendarContextProviderProps} from './Provider';
-
 
 const commons = require('../commons');
 const TOP_POSITION = 65;
@@ -46,7 +45,13 @@ class Presenter {
     return icon;
   };
 
-  setDate = (props: CalendarContextProviderProps, date: string, newDate: string, updateState: (buttonIcon: number) => void, updateSource: UpdateSource) => {
+  setDate = (
+    props: CalendarContextProviderProps,
+    date: string,
+    newDate: string,
+    updateState: (buttonIcon: number) => void,
+    updateSource: UpdateSources
+  ) => {
     const isSameMonth = sameMonth(new XDate(date), new XDate(newDate));
     const buttonIcon = this.getButtonIcon(date, props.showTodayButton);
 
@@ -59,7 +64,12 @@ class Presenter {
     }
   };
 
-  setDisabled = (showTodayButton: boolean, newDisabledValue: boolean, oldDisabledValue: boolean, updateState: (disabled: boolean) => void) => {
+  setDisabled = (
+    showTodayButton: boolean,
+    newDisabledValue: boolean,
+    oldDisabledValue: boolean,
+    updateState: (disabled: boolean) => void
+  ) => {
     if (!showTodayButton || newDisabledValue === oldDisabledValue) {
       return;
     }

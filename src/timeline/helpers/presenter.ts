@@ -7,6 +7,13 @@ export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
   return {hour, minutes};
 }
 
-export function buildTimeString(hour = 0, minutes = 0) {
-  return `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+export function buildTimeString(hour = 0, minutes = 0, date = '') {
+  return `${date} ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`.trimStart();
+}
+
+export function calcTimeOffset(hourBlockHeight: number, hour?: number, minutes?: number) {
+  const now = new Date();
+  const h = hour ?? now.getHours();
+  const m = minutes ?? now.getMinutes();
+  return (h + m / 60) * hourBlockHeight;
 }

@@ -1,10 +1,8 @@
 import {ViewStyle, TextStyle, StyleProp} from 'react-native';
-import {UpdateSources} from './expandableCalendar/commons';
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 export type Direction = 'left' | 'right';
-export type UpdateSource = keyof typeof UpdateSources;
 export type DateData = {
   year: number;
   month: number;
@@ -23,7 +21,8 @@ export interface Theme {
   eventSummary?: object;
   eventTimes?: object;
   line?: object;
-  lineNow?: object;
+  nowIndicatorLine?: object;
+  nowIndicatorKnob?: object;
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
