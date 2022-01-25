@@ -74,7 +74,7 @@ type State = {
  * @extends: Calendar
  * @extendslink: docs/Calendar
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.js
- * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar-list.gif
+ * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif
  */
 class CalendarList extends Component<CalendarListProps, State> {
   static displayName = 'CalendarList';

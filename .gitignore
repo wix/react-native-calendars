@@ -5,7 +5,6 @@ yarn.lock
 .vscode
 package-lock.json
 
-
 # OSX
 #
 .DS_Store

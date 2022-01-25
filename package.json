@@ -8,6 +8,7 @@
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
     "build:ts": "tsc",
     "build:dev": "tsc --noEmit",
+    "build:docs": "node ./scripts/build-docs.js",
     "e2e": "node ./scripts/test-e2e.js --release",
     "test": "npm run lint && npm run unit",
     "unit": "jest",
@@ -30,6 +31,7 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
+    "fs": "^0.0.1-security",
     "hoist-non-react-statics": "^3.3.1",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
@@ -43,6 +45,7 @@
     "@babel/core": "^7.12.9",
     "@babel/eslint-parser": "^7.13.4",
     "@babel/runtime": "^7.12.5",
+    "@tsconfig/docusaurus": "^1.0.4",
     "@types/lodash": "^4.14.170",
     "@types/react-native": "^0.64.19",
     "@types/xdate": "^0.8.32",
