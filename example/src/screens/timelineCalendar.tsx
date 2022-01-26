@@ -29,6 +29,20 @@ const EVENTS: TimelineEventProps[] = [
     color: '#e6add8'
   },
   {
+    start: `${getDate()} 01:45:00`,
+    end: `${getDate()} 02:45:00`,
+    title: 'Dr. Mariana Joseph',
+    summary: '3412 Piedmont Rd NE, GA 3032',
+    color: '#e6add8'
+  },
+  {
+    start: `${getDate()} 02:40:00`,
+    end: `${getDate()} 03:10:00`,
+    title: 'Dr. Mariana Joseph',
+    summary: '3412 Piedmont Rd NE, GA 3032',
+    color: '#e6add8'
+  },
+  {
     start: `${getDate(1)} 00:30:00`,
     end: `${getDate(1)} 01:30:00`,
     title: 'Visit Grand Mother',
@@ -185,10 +199,11 @@ export default class TimelineCalendarScreen extends Component {
   private timelineProps = {
     format24h: true,
     onBackgroundLongPress: this.createNewEvent,
-    onBackgroundLongPressOut: this.approveNewEvent
+    onBackgroundLongPressOut: this.approveNewEvent,
     // scrollToFirst: true,
     // start: 0,
-    // end: 24
+    // end: 24,
+    // eventRightSpacing: 4
   };
 
   render() {
@@ -212,7 +227,7 @@ export default class TimelineCalendarScreen extends Component {
           events={eventsByDate}
           timelineProps={this.timelineProps}
           showNowIndicator
-          scrollToNow
+          // scrollToNow
           scrollToFirst
           initialTime={INITIAL_TIME}
         />
