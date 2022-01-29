@@ -24,8 +24,8 @@ function buildEvent(event: Event & {index: number}, left: number, width: number,
     ...event,
     top: (dayStartTime.diffHours(startTime) - dayStart) * hourBlockHeight,
     height: startTime.diffHours(endTime) * hourBlockHeight,
-    width: width,
-    left: left
+    width,
+    left
   };
 }
 
