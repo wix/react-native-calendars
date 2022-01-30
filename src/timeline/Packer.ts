@@ -60,7 +60,11 @@ function packOverlappingEventGroup(
     column.forEach(event => {
       const columnSpan = calcColumnSpan(event, columnIndex, columns);
       const eventLeft = (columnIndex / columns.length) * screenWidth;
-      const eventWidth = screenWidth * (columnSpan / columns.length) - eventBlockRightMargin;
+      let eventWidth = screenWidth * (columnSpan / columns.length);
+
+      if (columnIndex + columnSpan <= columns.length -1) {
+        eventWidth -= eventBlockRightMargin;
+      }
 
       calculatedEvents.push(buildEvent(event, eventLeft, eventWidth, populateOptions));
     });
