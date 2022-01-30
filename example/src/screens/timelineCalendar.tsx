@@ -224,7 +224,7 @@ export default class TimelineCalendarScreen extends Component {
     // scrollToFirst: true,
     // start: 0,
     // end: 24,
-    eventRightSpacing: 4
+    overlapEventsSpacing: 8
   };
 
   render() {

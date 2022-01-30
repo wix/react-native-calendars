@@ -8,11 +8,11 @@ interface PopulateOptions {
   screenWidth?: number;
   dayStart?: number;
   hourBlockHeight?: number;
-  eventBlockRightMargin?: number;
+  overlapEventsSpacing?: number;
 }
 
 export const HOUR_BLOCK_HEIGHT = 100;
-const EVENT_BLOCK_RIGHT_MARGIN = 10;
+const OVERLAP_EVENTS_SPACINGS = 10;
 
 function buildEvent(event: Event & {index: number}, left: number, width: number, {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions): PackedEvent {
   const startTime = new XDate(event.start);
@@ -55,7 +55,7 @@ function packOverlappingEventGroup(
   calculatedEvents: PackedEvent[],
   populateOptions: PopulateOptions
 ) {
-  const {screenWidth = constants.screenWidth, eventBlockRightMargin = EVENT_BLOCK_RIGHT_MARGIN} = populateOptions;
+  const {screenWidth = constants.screenWidth, overlapEventsSpacing = OVERLAP_EVENTS_SPACINGS} = populateOptions;
   columns.forEach((column, columnIndex) => {
     column.forEach(event => {
       const columnSpan = calcColumnSpan(event, columnIndex, columns);
@@ -63,7 +63,7 @@ function packOverlappingEventGroup(
       let eventWidth = screenWidth * (columnSpan / columns.length);
 
       if (columnIndex + columnSpan <= columns.length -1) {
-        eventWidth -= eventBlockRightMargin;
+        eventWidth -= overlapEventsSpacing;
       }
 
       calculatedEvents.push(buildEvent(event, eventLeft, eventWidth, populateOptions));

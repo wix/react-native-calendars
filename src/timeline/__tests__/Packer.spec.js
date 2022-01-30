@@ -82,12 +82,12 @@ describe('Timeline Packer utils', () => {
           end: `2017-09-06 05:30:00`
         }
       ];
-      let packedEvents = uut(overlappingEvents, {screenWidth: 300, dayStart: 0, eventRightSpacing: 10});
+      let packedEvents = uut(overlappingEvents, {screenWidth: 300, dayStart: 0, overlapEventsSpacing: 4});
       packedEvents = _.sortBy(packedEvents, 'index');
-      expect(packedEvents[0].width).toBe(90);
-      expect(packedEvents[1].width).toBe(90);
+      expect(packedEvents[0].width).toBe(96);
+      expect(packedEvents[1].width).toBe(96);
       expect(packedEvents[2].width).toBe(100);
-      expect(packedEvents[3].width).toBe(90);
+      expect(packedEvents[3].width).toBe(96);
       expect(packedEvents[4].width).toBe(200);
       expect(packedEvents[5].width).toBe(300);
     });
