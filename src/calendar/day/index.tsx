@@ -29,9 +29,7 @@ export default class Day extends Component<DayProps> {
 
   static propTypes = {
     ...basicDayPropsTypes,
-    /** The day to render */
     day: PropTypes.object,
-    /** Provide custom day rendering component */
     dayComponent: PropTypes.any
   };
 
