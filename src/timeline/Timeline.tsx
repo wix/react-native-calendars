@@ -83,6 +83,10 @@ export interface TimelineProps {
    * Listen to onScroll event of the timeline component
    */
   onChangeOffset?: (offset: number) => void;
+  /**
+   * Spacing between overlapping events
+   */
+  overlapEventsSpacing?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -103,6 +107,7 @@ const Timeline = (props: TimelineProps) => {
     showNowIndicator,
     scrollOffset,
     onChangeOffset,
+    overlapEventsSpacing,
     eventTapped
   } = props;
 
@@ -114,7 +119,7 @@ const Timeline = (props: TimelineProps) => {
 
   const packedEvents = useMemo(() => {
     const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
-    return populateEvents(events, width, start);
+    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing});
   }, [events, start]);
 
   useEffect(() => {

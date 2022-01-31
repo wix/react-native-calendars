@@ -22,10 +22,45 @@ const EVENTS: TimelineEventProps[] = [
     summary: 'Merge Timeline Calendar to React Native Calendars'
   },
   {
+    start: `${getDate()} 01:15:00`,
+    end: `${getDate()} 02:30:00`,
+    title: 'Meeting A',
+    summary: 'Summary for meeting A',
+    color: '#e6add8'
+  },
+  {
     start: `${getDate()} 01:30:00`,
     end: `${getDate()} 02:30:00`,
-    title: 'Dr. Mariana Joseph',
-    summary: '3412 Piedmont Rd NE, GA 3032',
+    title: 'Meeting B',
+    summary: 'Summary for meeting B',
+    color: '#e6add8'
+  },
+  {
+    start: `${getDate()} 01:45:00`,
+    end: `${getDate()} 02:45:00`,
+    title: 'Meeting C',
+    summary: 'Summary for meeting C',
+    color: '#e6add8'
+  },
+  {
+    start: `${getDate()} 02:40:00`,
+    end: `${getDate()} 03:10:00`,
+    title: 'Meeting D',
+    summary: 'Summary for meeting D',
+    color: '#e6add8'
+  },
+  {
+    start: `${getDate()} 02:50:00`,
+    end: `${getDate()} 03:20:00`,
+    title: 'Meeting E',
+    summary: 'Summary for meeting E',
+    color: '#e6add8'
+  },
+  {
+    start: `${getDate()} 04:30:00`,
+    end: `${getDate()} 05:30:00`,
+    title: 'Meeting F',
+    summary: 'Summary for meeting F',
     color: '#e6add8'
   },
   {
@@ -185,10 +220,11 @@ export default class TimelineCalendarScreen extends Component {
   private timelineProps = {
     format24h: true,
     onBackgroundLongPress: this.createNewEvent,
-    onBackgroundLongPressOut: this.approveNewEvent
+    onBackgroundLongPressOut: this.approveNewEvent,
     // scrollToFirst: true,
     // start: 0,
-    // end: 24
+    // end: 24,
+    overlapEventsSpacing: 8
   };
 
   render() {
@@ -212,7 +248,7 @@ export default class TimelineCalendarScreen extends Component {
           events={eventsByDate}
           timelineProps={this.timelineProps}
           showNowIndicator
-          scrollToNow
+          // scrollToNow
           scrollToFirst
           initialTime={INITIAL_TIME}
         />
