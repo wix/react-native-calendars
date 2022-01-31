@@ -23,7 +23,6 @@ import {VelocityTracker} from '../velocityTracker';
 import {DateData} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
-import {AgendaSchedule} from '../types';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 

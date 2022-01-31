@@ -13,7 +13,7 @@ import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../componentUpdater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
-import {Theme, DateData} from '../types';
+import {DateData} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
