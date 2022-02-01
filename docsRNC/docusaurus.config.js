@@ -8,13 +8,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'RNC',
   tagline: 'React Native Calendars docs',
-  url: 'https://github.com/wix/react-native-calendars',
-  baseUrl: '/',
+  url: 'https://wix.github.io',
+  baseUrl: '/react-native-calendars/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/fav-icon.png',
   organizationName: 'wix', // Usually your GitHub org/user name.
   projectName: 'react-native-calendars', // Usually your repo name.
+  trailingSlash: false,
 
   presets: [
     [
