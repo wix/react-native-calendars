@@ -128,7 +128,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     const {selectedDay} = props;
     const reservations = this.getReservations(props);
     
-    if (this.list && selectedDay && this.selectedDay && !sameDate(selectedDay, this.selectedDay)) {
+    if (this.list && !sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
@@ -228,8 +228,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
     const day = row.date;
     if (day) {
-      const dateIsSame = this.selectedDay && sameDate(day, this.selectedDay);
-      if (!dateIsSame && this.scrollOver) {
+      if (!sameDate(day, this.selectedDay) && this.scrollOver) {
         this.selectedDay = day.clone();
         this.props.onDayChange?.(day.clone());
       }

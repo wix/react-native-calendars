@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 import {isToday} from '../../dateutils';
+import {getDefaultLocale} from '../../services';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
@@ -79,7 +80,7 @@ class Reservation extends Component<ReservationProps> {
     }
 
     const today = date && isToday(date) ? this.style.today : undefined;
-    const dayNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+    const dayNames = getDefaultLocale().dayNamesShort;
 
     if (date) {
       return (

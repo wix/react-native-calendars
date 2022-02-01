@@ -17,7 +17,7 @@ import {
   ColorValue
 } from 'react-native';
 import {shouldUpdate} from '../../componentUpdater';
-import {formatNumbers, weekDayNames} from '../../dateutils';
+import {formatNumbers, weekDayNames, sameMonth} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
@@ -111,7 +111,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
   }
 
   shouldComponentUpdate(nextProps: CalendarHeaderProps) {
-    if (nextProps.month?.toString('yyyy MM') !== this.props.month?.toString('yyyy MM')) {
+    if (!sameMonth(nextProps.month, this.props.month)) {
       return true;
     }
     return shouldUpdate(this.props, nextProps, [

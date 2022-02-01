@@ -125,7 +125,7 @@ class Calendar extends Component<CalendarProps, State> {
   };
 
   updateMonth = (day: any) => {
-    if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+    if (sameMonth(day, this.state.currentMonth)) {
       return;
     }
     this.setState({currentMonth: day.clone()}, () => {

@@ -149,7 +149,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     super(props);
 
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.numberOfWeeks = this.getNumberOfWeeksInMonth(new XDate(this.props.context.date));
+    this.numberOfWeeks = this.getNumberOfWeeksInMonth(this.props.context.date);
     this.openHeight = this.getOpenHeight();
 
     const startHeight = props.initialPosition === Positions.CLOSED ? this.closedHeight : this.openHeight;
@@ -274,8 +274,8 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     return d.getMonth() + 1;
   }
 
-  getNumberOfWeeksInMonth(month: XDate) {
-    const days = page(month, this.props.firstDay);
+  getNumberOfWeeksInMonth(month: string) {
+    const days = page(parseDate(month), this.props.firstDay);
     return days.length / 7;
   }
 
@@ -449,7 +449,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
         // updating openHeight
         setTimeout(() => {
           // to wait for setDate() call in horizontal scroll (this.scrollPage())
-          const numberOfWeeks = this.getNumberOfWeeksInMonth(parseDate(this.props.context.date));
+          const numberOfWeeks = this.getNumberOfWeeksInMonth(this.props.context.date);
           if (numberOfWeeks !== this.numberOfWeeks) {
             this.numberOfWeeks = numberOfWeeks;
             this.openHeight = this.getOpenHeight();

@@ -6,7 +6,7 @@ import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, Flat
 
 import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
-import {page, sameDate} from '../dateutils';
+import {page, sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
@@ -234,7 +234,7 @@ class CalendarList extends Component<CalendarListProps, State> {
   };
 
   updateMonth(day: XDate) {
-    if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+    if (sameMonth(day, this.state.currentMonth)) {
       return;
     }
 

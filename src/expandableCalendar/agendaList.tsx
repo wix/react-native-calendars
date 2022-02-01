@@ -23,6 +23,7 @@ import {
 import {isToday, isGTE, sameDate} from '../dateutils';
 import {getMoment} from '../momentResolver';
 import {parseDate} from '../interface';
+import {getDefaultLocale} from '../services';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -155,8 +156,7 @@ class AgendaList extends Component<AgendaListProps> {
     }
 
     if (markToday) {
-      // @ts-expect-error
-      const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+      const todayString = getDefaultLocale().today || commons.todayString;
       const today = isToday(new XDate(title));
       sectionTitle = today ? `${todayString}, ${sectionTitle}` : sectionTitle;
     }
