@@ -79,7 +79,7 @@ interface State {
 /**
  * @description: Calendar component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
- * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar.gif
+ * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
 class Calendar extends Component<CalendarProps, State> {
   static displayName = 'Calendar';
