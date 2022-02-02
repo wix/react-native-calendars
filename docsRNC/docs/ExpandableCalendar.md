@@ -5,7 +5,9 @@ This component extends **[CalendarList](https://github.com/wix/react-native-cale
 :::
 **NOTE: This component should be wrapped with `CalendarProvider` component.**
 
-<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}></div>
+<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/expandable-calendar.gif?raw=true'}/>
+
+</div>
 
 ## API
 

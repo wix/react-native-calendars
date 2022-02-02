@@ -2,6 +2,7 @@
   "name": "WeekCalendar",
   "description": "Week calendar component",
   "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/week-calendar.gif?raw=true"
   ],
   "extends": ["CalendarList"],
   "extendsLink": [
