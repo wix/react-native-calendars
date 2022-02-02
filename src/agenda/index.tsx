@@ -20,7 +20,7 @@ import {weekDayNames, sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import {VelocityTracker} from '../velocityTracker';
-import {DateData} from '../types';
+import {DateData, AgendaSchedule} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
 import CalendarList, {CalendarListProps} from '../calendar-list';
@@ -31,6 +31,10 @@ const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
 export type AgendaProps = CalendarListProps & ReservationListProps & {
+  /** the list of items that have to be displayed in agenda. If you want to render item as empty date
+  the value of date key kas to be an empty array []. If there exists no value for date key it is
+  considered that the date in question is not yet loaded */
+  items?: AgendaSchedule;
   /** callback that gets called when items for a certain month should be loaded (month became visible) */
   loadItemsForMonth?: (data: DateData) => void;
   /** callback that fires when the calendar is opened or closed */
@@ -69,8 +73,8 @@ export default class Agenda extends Component<AgendaProps, State> {
   static propTypes = {
     ...CalendarList.propTypes,
     ...ReservationList.propTypes,
-    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     items: PropTypes.object,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     loadItemsForMonth: PropTypes.func,
     onCalendarToggled: PropTypes.func,
     onDayChange: PropTypes.func,

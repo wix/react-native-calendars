@@ -13,7 +13,7 @@ import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../componentUpdater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
-import {DateData} from '../types';
+import {DateData, Theme} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
@@ -26,6 +26,14 @@ type MarkedDatesType = {
 };
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
+  /** Specify theme properties to override specific styles for calendar parts */
+  theme?: Theme;
+  /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday */
+  firstDay?: number;
+  /** Display loading indicator */
+  displayLoadingIndicator?: boolean;
+  /** Show week numbers */
+  showWeekNumbers?: boolean;
   /** Specify style for calendar container element */
   style?: StyleProp<ViewStyle>;
   /** Initially visible month */
@@ -79,6 +87,10 @@ class Calendar extends Component<CalendarProps, State> {
   static propTypes = {
     ...CalendarHeader.propTypes,
     ...Day.propTypes,
+    theme: PropTypes.object,
+    firstDay: PropTypes.number,
+    displayLoadingIndicator: PropTypes.bool,
+    showWeekNumbers: PropTypes.bool,
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     current: PropTypes.string,
     initialDate: PropTypes.string,
