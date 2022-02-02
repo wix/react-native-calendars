@@ -1,6 +1,7 @@
 {
   "name": "ExpandableCalendar",
   "description": "Expandable calendar component",
+  "note": "This component should be wrapped with `CalendarProvider` component.",
   "images": [
   ],
   "extends": ["CalendarList"],
