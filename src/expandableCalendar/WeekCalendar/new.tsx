@@ -12,6 +12,7 @@ import {toMarkingFormat} from '../../interface';
 import {extractComponentProps} from '../../componentUpdater';
 import constants from '../../commons/constants';
 import {UpdateSources} from '../commons';
+import {sameWeek} from '../../dateutils';
 import {DateData} from '../../types';
 
 export interface WeekCalendarProps extends CalendarListProps {
@@ -26,7 +27,7 @@ const NUMBER_OF_PAGES = 50;
 const WeekCalendar = (props: WeekCalendarProps) => {
   const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, testID} = props;
   const context = useContext(CalendarContext);
-  const {date} = context;
+  const {date, updateSource} = context;
   const style = useRef(styleConstructor(theme));
   const list = useRef();
   const [items, setItems] = useState(getDatesArray(current || date, firstDay, NUMBER_OF_PAGES));
@@ -50,6 +51,14 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     }, 0);
   }, [items]);
 
+  useEffect(() => {
+    if (updateSource !== UpdateSources.WEEK_SCROLL) {
+      const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
+      // @ts-expect-error
+      list.current?.scrollToOffset?.(pageIndex * containerWidth, 0, false);
+    }
+  }, [date]);
+
   const onDayPress = useCallback(
     (dateData: DateData) => {
       context.setDate?.(dateData.dateString, UpdateSources.DAY_PRESS);
@@ -59,8 +68,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   );
 
   const onPageChange = useCallback(
-    (pageIndex: number) => {
-      context?.setDate(items[pageIndex], UpdateSources.WEEK_SCROLL);
+    (pageIndex: number, _prevPage, {scrolledByUser}) => {
+      if (scrolledByUser) {
+        context?.setDate(items[pageIndex], UpdateSources.WEEK_SCROLL);
+      }
     },
     [items]
   );
@@ -77,11 +88,13 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     (_type: any, item: string) => {
       const {/* style,  */ ...others} = extractComponentProps(Week, props);
 
+      const isSameWeek = sameWeek(item, date, firstDay);
+
       return (
         <Week
           {...others}
           key={item}
-          current={item}
+          current={isSameWeek ? date : item}
           firstDay={firstDay}
           style={weekStyle}
           markedDates={markedDates}

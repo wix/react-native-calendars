@@ -14,7 +14,7 @@ export interface InfiniteListProps
   renderItem: RecyclerListViewProps['rowRenderer'];
   pageWidth?: number;
   pageHeight?: number;
-  onPageChange?: (pageIndex: number, prevPageIndex: number) => void;
+  onPageChange?: (pageIndex: number, prevPageIndex: number, info: {scrolledByUser: boolean}) => void;
   onReachEdge?: (pageIndex: number) => void;
   onReachNearEdge?: (pageIndex: number) => void;
   onReachNearEdgeThreshold?: number;
@@ -53,6 +53,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const pageIndex = useRef<number>();
   const isOnEdge = useRef(false);
   const isNearEdge = useRef(false);
+  const scrolledByUser = useRef(false);
 
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {
@@ -60,14 +61,18 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
       if (pageIndex.current !== newPageIndex) {
         if (pageIndex.current !== undefined) {
-          onPageChange?.(newPageIndex, pageIndex.current);
+          onPageChange?.(newPageIndex, pageIndex.current, {scrolledByUser: scrolledByUser.current});
+          scrolledByUser.current = false;
 
           isOnEdge.current = false;
           isNearEdge.current = false;
 
           if (newPageIndex === 0 || newPageIndex === data.length - 1) {
             isOnEdge.current = true;
-          } else if (onReachNearEdgeThreshold && !inRange(newPageIndex, onReachNearEdgeThreshold, data.length - onReachNearEdgeThreshold)) {
+          } else if (
+            onReachNearEdgeThreshold &&
+            !inRange(newPageIndex, onReachNearEdgeThreshold, data.length - onReachNearEdgeThreshold)
+          ) {
             isNearEdge.current = true;
           }
         }
@@ -92,6 +97,10 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     [scrollViewProps?.onMomentumScrollEnd, onReachEdge, onReachNearEdge]
   );
 
+  const onScrollBeginDrag = useCallback(() => {
+    scrolledByUser.current = true;
+  }, []);
+
   const style = useMemo(() => {
     return {height: pageHeight};
   }, [pageHeight]);
@@ -112,6 +121,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
         pagingEnabled: true,
         bounces: false,
         ...scrollViewProps,
+        onScrollBeginDrag,
         onMomentumScrollEnd
       }}
     />
