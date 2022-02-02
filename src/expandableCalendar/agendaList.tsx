@@ -23,6 +23,7 @@ import {
 import {isToday, isGTE, sameDate} from '../dateutils';
 import {getMoment} from '../momentResolver';
 import {parseDate} from '../interface';
+import {getDefaultLocale} from '../services';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -31,6 +32,8 @@ const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 
 export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
+  /** Specify theme properties to override specific styles for calendar parts */
+  theme?: Theme;
   /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
   dayFormat?: string;
   /** a function to custom format the section header's title */
@@ -48,7 +51,7 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   viewOffset?: number;
   /** enable scrolling the agenda list to the next date with content when pressing a day without content */
   scrollToNextEvent?: boolean;
-  theme?: Theme;
+  
   context?: any;
 }
 
@@ -63,18 +66,11 @@ class AgendaList extends Component<AgendaListProps> {
 
   static propTypes = {
     // ...SectionList.propTypes,
-    /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
     dayFormat: PropTypes.string,
-    /** a function to custom format the section header's title */
     dayFormatter: PropTypes.func,
-    /** whether to use moment.js for date string formatting
-     * (remember to pass 'dayFormat' with appropriate format, like 'dddd, MMM D') */
     useMoment: PropTypes.bool,
-    /** whether to mark today's title with the "Today, ..." string. Default = true */
     markToday: PropTypes.bool,
-    /** style passed to the section view */
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** whether to block the date change in calendar (and calendar context provider) when agenda scrolls */
     avoidDateUpdates: PropTypes.bool
   };
 
@@ -160,8 +156,7 @@ class AgendaList extends Component<AgendaListProps> {
     }
 
     if (markToday) {
-      // @ts-expect-error
-      const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+      const todayString = getDefaultLocale().today || commons.todayString;
       const today = isToday(new XDate(title));
       sectionTitle = today ? `${todayString}, ${sectionTitle}` : sectionTitle;
     }

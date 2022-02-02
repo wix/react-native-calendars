@@ -7,7 +7,7 @@ import {Text, View} from 'react-native';
 
 import {Theme} from '../types';
 import {extractComponentProps} from '../componentUpdater';
-import {formatNumbers} from '../dateutils';
+import {formatNumbers, sameMonth} from '../dateutils';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
 import {getCalendarDateString} from '../services';
@@ -54,7 +54,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
     const r1 = this.props.item;
     const r2 = nextProps.item;
 
-    return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propBump && r2.propBump !== r1.propBump);
+    return !sameMonth(r1, r2) || !!(r2.propBump && r2.propBump !== r1.propBump);
   }
 
   onPressArrowLeft = (_: any, month: any) => {

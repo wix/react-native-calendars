@@ -26,6 +26,7 @@ export interface WeekCalendarProps extends CalendarListProps {
   allowShadow?: boolean;
   /** whether to hide the names of the week days */
   hideDayNames?: boolean;
+
   context?: any;
 }
 
@@ -43,11 +44,8 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
   static propTypes = {
     ...CalendarList.propTypes,
-    /** the current date */
     current: PropTypes.any,
-    /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
-    /** whether to hide the names of the week days */
     hideDayNames: PropTypes.bool
   };
 

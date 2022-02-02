@@ -23,10 +23,12 @@ export interface BasicDayProps {
   onLongPress?: (date?: DateData) => void;
   /** The date to return from press callbacks */
   date?: DateData;
+
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForInactiveDays?: boolean;
+  
   /** Test ID*/
   testID?: string;
   /** Accessibility label */
@@ -38,21 +40,13 @@ export default class BasicDay extends Component<BasicDayProps> {
 
   static propTypes = {
     state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
-    /** The marking object */
     marking: PropTypes.any,
-    /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
     markingType: PropTypes.oneOf(values(Marking.markings)),
-    /** Theme object */
     theme: PropTypes.object,
-    /** onPress callback */
     onPress: PropTypes.func,
-    /** onLongPress callback */
     onLongPress: PropTypes.func,
-    /** The date to return from press callbacks */
     date: PropTypes.object,
-    /** Disable all touch events for disabled days. Can be override with disableTouchEvent in markedDates*/
     disableAllTouchEventsForDisabledDays: PropTypes.bool,
-    /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
     disableAllTouchEventsForInactiveDays: PropTypes.bool
 
   };

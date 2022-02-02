@@ -71,6 +71,7 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeThreshold?: number;
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
+  
   context?: any;
 }
 
@@ -93,27 +94,16 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
 
   static propTypes = {
     ...CalendarList.propTypes,
-    /** the initial position of the calendar ('open' or 'closed') */
     initialPosition: PropTypes.oneOf(values(Positions)),
-    /** callback that fires when the calendar is opened or closed */
     onCalendarToggled: PropTypes.func,
-    /** an option to disable the pan gesture and disable the opening and closing of the calendar (initialPosition will persist)*/
     disablePan: PropTypes.bool,
-    /** whether to hide the knob  */
     hideKnob: PropTypes.bool,
-    /** source for the left arrow image */
     leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    /** source for the right arrow image */
     rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
-    /** whether to disable the week scroll in closed position */
     disableWeekScroll: PropTypes.bool,
-    /** a threshold for opening the calendar with the pan gesture */
     openThreshold: PropTypes.number,
-    /** a threshold for closing the calendar with the pan gesture */
     closeThreshold: PropTypes.number,
-    /** Whether to close the calendar on day press. Default = true */
     closeOnDayPress: PropTypes.bool
   };
 
@@ -159,7 +149,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     super(props);
 
     this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.numberOfWeeks = this.getNumberOfWeeksInMonth(new XDate(this.props.context.date));
+    this.numberOfWeeks = this.getNumberOfWeeksInMonth(this.props.context.date);
     this.openHeight = this.getOpenHeight();
 
     const startHeight = props.initialPosition === Positions.CLOSED ? this.closedHeight : this.openHeight;
@@ -284,8 +274,8 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     return d.getMonth() + 1;
   }
 
-  getNumberOfWeeksInMonth(month: XDate) {
-    const days = page(month, this.props.firstDay);
+  getNumberOfWeeksInMonth(month: string) {
+    const days = page(parseDate(month), this.props.firstDay);
     return days.length / 7;
   }
 
@@ -459,7 +449,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
         // updating openHeight
         setTimeout(() => {
           // to wait for setDate() call in horizontal scroll (this.scrollPage())
-          const numberOfWeeks = this.getNumberOfWeeksInMonth(parseDate(this.props.context.date));
+          const numberOfWeeks = this.getNumberOfWeeksInMonth(this.props.context.date);
           if (numberOfWeeks !== this.numberOfWeeks) {
             this.numberOfWeeks = numberOfWeeks;
             this.openHeight = this.getOpenHeight();
