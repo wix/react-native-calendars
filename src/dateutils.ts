@@ -24,7 +24,7 @@ export function sameDate(a?: XDate, b?: XDate) {
   } 
 }
 
-export function sameWeek(a: XDate, b: XDate, firstDayOfWeek: number) {
+export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
   const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
   return weekDates?.includes(b);
 }
@@ -141,7 +141,7 @@ export function isDateNotInTheRange(minDate: XDate, maxDate: XDate, date: XDate)
   return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
 }
 
-export function getWeekDates(date: XDate, firstDay = 0, format?: string) {
+export function getWeekDates(date: string, firstDay = 0, format?: string) {
   if (date && parseDate(date).valid()) {
     const current = parseDate(date);
     const daysArray = [current];
