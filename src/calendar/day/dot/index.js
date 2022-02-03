@@ -38,5 +38,6 @@ Dot.propTypes = {
   marked: PropTypes.bool,
   selected: PropTypes.bool,
   disabled: PropTypes.bool,
-  today: PropTypes.bool
+  today: PropTypes.bool,
+  heartColor: PropTypes.string,
 };

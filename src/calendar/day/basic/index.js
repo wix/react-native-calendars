@@ -10,7 +10,7 @@ import Marking from '../marking';
 export default class BasicDay extends Component {
     static displayName = 'IGNORE';
     static propTypes = {
-        state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
+        state: PropTypes.oneOf(['selected', 'disabled', 'today', '', "heartColor"]),
         /** The marking object */
         marking: PropTypes.any,
         /** Date marking style [simple/period/multi-dot/multi-period]. Default = 'simple' */
@@ -26,6 +26,7 @@ export default class BasicDay extends Component {
         /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
         disableAllTouchEventsForDisabledDays: PropTypes.bool
     };
+   
     style = styleConstructor(this.props.theme);
     shouldComponentUpdate(nextProps) {
         return shouldUpdate(this.props, nextProps, [
@@ -84,6 +85,7 @@ export default class BasicDay extends Component {
         return this.props.markingType === Marking.markingTypes.custom;
     }
     getContainerStyle() {
+      
         const { customStyles, selectedColor } = this.marking;
         const style = [this.style.base];
         if (this.isSelected()) {
@@ -105,6 +107,7 @@ export default class BasicDay extends Component {
         return style;
     }
     getTextStyle() {
+
         const { customStyles, selectedTextColor } = this.marking;
         const style = [this.style.text];
         if (this.isSelected()) {
@@ -127,8 +130,8 @@ export default class BasicDay extends Component {
     }
     renderMarking() {
         const { theme, markingType } = this.props;
-        const { marked, dotColor, dots, periods } = this.marking;
-        return (<Marking type={markingType} theme={theme} marked={this.isMultiDot() ? true : marked} selected={this.isSelected()} disabled={this.isDisabled()} today={this.isToday()} dotColor={dotColor} dots={dots} periods={periods}/>);
+        const { marked, dotColor, dots, periods, heartColor } = this.marking;
+        return (<Marking heartColor={heartColor} type={markingType} theme={theme} marked={this.isMultiDot() ? true : marked} selected={this.isSelected()} disabled={this.isDisabled()} today={this.isToday()} dotColor={dotColor} dots={dots} periods={periods}/>);
     }
     renderText() {
         return (<Text allowFontScaling={false} style={this.getTextStyle()}>

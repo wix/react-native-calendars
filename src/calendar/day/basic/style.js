@@ -27,7 +27,7 @@ export default function styleConstructor(theme = {}) {
             marginTop: Platform.OS === 'android' ? 4 : 6
         },
         selected: {
-            backgroundColor: "white",
+           
             borderRadius: 16
         },
         today: {
@@ -38,7 +38,7 @@ export default function styleConstructor(theme = {}) {
             color: appStyle.todayTextColor
         },
         selectedText: {
-            color: "black",
+           
             fontWeight:"bold",
 
         },

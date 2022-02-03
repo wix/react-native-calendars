@@ -35,6 +35,7 @@ export default class Marking extends Component {
     type: PropTypes.oneOf(Object.values(MARKING_TYPES)),
     theme: PropTypes.object,
     selected: PropTypes.bool,
+    heartColor: PropTypes.string,
     marked: PropTypes.bool,
     today: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -54,6 +55,7 @@ export default class Marking extends Component {
   constructor(props) {
     super(props);
     
+    
     this.style = styleConstructor(props.theme);
   }
 
@@ -68,6 +70,7 @@ export default class Marking extends Component {
       'activeOpacity', 
       'selectedColor', 
       'selectedTextColor', 
+      'heartColor',
       'dotColor',
       'dots',
       'periods'
@@ -76,7 +79,7 @@ export default class Marking extends Component {
 
   getItems(items) {
     const {type} = this.props;
-    
+   
     if (items && Array.isArray(items) && items.length > 0) {
       // Filter out items so that we process only those which have color property
       const validItems = items.filter(d => d && d.color);
@@ -128,21 +131,23 @@ export default class Marking extends Component {
   renderDot(index, item) {
     const {selected, dotColor} = this.props;
     const dotProps = extractComponentProps(Dot, this.props);
-    const {marked } = dotProps;
     let key = index;
     let color = "red";
-    
+   //console.log("proips: "+JSON.stringify(this.props.heartColor));
     if (item) {
       if (item.key) {
         key = item.key;
       }
       color ="red";
     }
+
     return (
       
       <View style={{paddingTop:3}}>
-        {dotProps.selected && <Image source={require('../../../../../../app/assets/icons/cuorered.png')} style={{width:17, height:17, alignSelf:"center"}} resizeMode="contain"/>}
-        {dotProps.marked && <Image source={require('../../../../../../app/assets/icons/cuorewhite.png')} style={{width:17, height:17, alignSelf:"center"}} resizeMode="contain"/>}
+        {dotProps.selected && !this.props.heartColor && <Image source={require('../../../../../../app/assets/icons/cuorered.png')} style={{width:17, height:20, alignSelf:"center"}} resizeMode="contain"/>}
+        {dotProps.marked && <Image source={require('../../../../../../app/assets/icons/cuorewhite.png')} style={{width:17, height:20, alignSelf:"center"}} resizeMode="contain"/>}
+        {this.props.heartColor === "assenza" && <Image source={require('../../../../../../app/assets/icons/cuoreassenza.png')} style={{width:17, height:20, alignSelf:"center"}} resizeMode="contain"/>}
+        {this.props.heartColor === "recupero" && <Image source={require('../../../../../../app/assets/icons/cuoregreen.png')} style={{width:17, height:20, alignSelf:"center"}} resizeMode="contain"/>}
      
       </View>
      
