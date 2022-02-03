@@ -40,6 +40,7 @@ export default function (theme = {}) {
     disabledArrowImage: {
       tintColor: appStyle.disabledArrowColor
     },
+    // @ts-expect-error
     week: {
       marginTop: 7,
       flexDirection: 'row',
@@ -58,6 +59,10 @@ export default function (theme = {}) {
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
     },
+<<<<<<< HEAD:src/calendar/header/style.js
     ...(theme[STYLESHEET_ID] || {})
+=======
+    ...(theme['stylesheet.calendar.header'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar/header/style.ts
   });
 }

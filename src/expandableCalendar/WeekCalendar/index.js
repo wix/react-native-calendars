@@ -6,8 +6,13 @@ import React, {Component} from 'react';
 import {FlatList, View, Text} from 'react-native';
 import {Map} from 'immutable';
 
+<<<<<<< HEAD:src/expandableCalendar/WeekCalendar/index.js
 import {extractComponentProps} from '../../component-updater';
 import {weekDayNames} from '../../dateutils';
+=======
+import {extractComponentProps} from '../../componentUpdater';
+import {weekDayNames, sameWeek} from '../../dateutils';
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/expandableCalendar/WeekCalendar/index.tsx
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from '../style';
 import asCalendarConsumer from '../asCalendarConsumer';
@@ -19,21 +24,38 @@ const commons = require('../commons');
 const NUMBER_OF_PAGES = 2; // must be a positive number
 const applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
 
+<<<<<<< HEAD:src/expandableCalendar/WeekCalendar/index.js
+=======
+export interface WeekCalendarProps extends CalendarListProps {
+  /** whether to have shadow/elevation for the calendar */
+  allowShadow?: boolean;
+  /** whether to hide the names of the week days */
+  hideDayNames?: boolean;
+
+  context?: any;
+}
+
+interface State {
+  items: string[];
+}
+
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/expandableCalendar/WeekCalendar/index.tsx
 /**
  * @description: Week calendar component
  * @note: Should be wrapped with 'CalendarProvider'
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
+<<<<<<< HEAD:src/expandableCalendar/WeekCalendar/index.js
 class WeekCalendar extends Component {
+=======
+class WeekCalendar extends Component<WeekCalendarProps, State> {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/expandableCalendar/WeekCalendar/index.tsx
   static displayName = 'WeekCalendar';
 
   static propTypes = {
     ...CalendarList.propTypes,
-    /** the current date */
     current: PropTypes.any,
-    /** whether to have shadow/elevation for the calendar */
     allowShadow: PropTypes.bool,
-    /** whether to hide the names of the week days */
     hideDayNames: PropTypes.bool
   };
 
@@ -58,7 +80,11 @@ class WeekCalendar extends Component {
     };
   }
 
+<<<<<<< HEAD:src/expandableCalendar/WeekCalendar/index.js
   componentDidUpdate(prevProps) {
+=======
+  componentDidUpdate(prevProps: WeekCalendarProps) {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/expandableCalendar/WeekCalendar/index.tsx
     const {context} = this.props;
     const {shouldComponentUpdate, getDatesArray, scrollToIndex} = this.presenter;
 
@@ -114,7 +140,11 @@ class WeekCalendar extends Component {
     const {items} = this.state;
     const {containerWidth, page} = this;
 
+<<<<<<< HEAD:src/expandableCalendar/WeekCalendar/index.js
     const updateState = (newData, newPage) => {
+=======
+    const updateState = (newData: string[], newPage: number) => {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/expandableCalendar/WeekCalendar/index.tsx
       this.page = newPage;
       this.setState({items: [...newData]});
     };
@@ -126,7 +156,11 @@ class WeekCalendar extends Component {
     const {items} = this.state;
     const {onMomentumScrollEnd} = this.presenter;
 
+<<<<<<< HEAD:src/expandableCalendar/WeekCalendar/index.js
     const updateItems = items => {
+=======
+    const updateItems = (items: string[]) => {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/expandableCalendar/WeekCalendar/index.tsx
       setTimeout(() => {
         this.setState({items: [...items]});
       }, 100);
@@ -139,7 +173,7 @@ class WeekCalendar extends Component {
     const {style, onDayPress, markedDates, firstDay, ...others} = extractComponentProps(Week, this.props);
     const {context} = this.props;
 
-    const isSameWeek = this.presenter.isSameWeek(item, context.date, firstDay);
+    const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
 
     return (
@@ -164,10 +198,17 @@ class WeekCalendar extends Component {
     };
   };
 
+<<<<<<< HEAD:src/expandableCalendar/WeekCalendar/index.js
   keyExtractor = (item, index) => index.toString();
 
   renderWeekDaysNames = memoize(weekDaysNames => {
     return weekDaysNames.map((day, idx) => (
+=======
+  keyExtractor = (_: string, index: number) => index.toString();
+
+  renderWeekDaysNames = memoize(weekDaysNames => {
+    return weekDaysNames.map((day: string, index: number) => (
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/expandableCalendar/WeekCalendar/index.tsx
       <Text
         allowFontScaling={false}
         key={idx}
@@ -224,4 +265,4 @@ class WeekCalendar extends Component {
   }
 }
 
-export default asCalendarConsumer(WeekCalendar);
+export default asCalendarConsumer<WeekCalendarProps>(WeekCalendar);

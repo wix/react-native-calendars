@@ -1,15 +1,43 @@
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
+import XDate from 'xdate';
 
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 
+<<<<<<< HEAD:src/calendar-list/item.js
 import {extractComponentProps} from '../component-updater';
 import Calendar from '../calendar';
+=======
+import {Theme} from '../types';
+import {extractComponentProps} from '../componentUpdater';
+import {formatNumbers, sameMonth} from '../dateutils';
+import Calendar, {CalendarProps} from '../calendar';
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/item.tsx
 import styleConstructor from './style';
+import {getCalendarDateString} from '../services';
 
+<<<<<<< HEAD:src/calendar-list/item.js
 class CalendarListItem extends Component {
   static displayName = 'IGNORE';
+=======
+export type CalendarListItemProps = CalendarProps & {
+  item: any;
+  calendarWidth?: number;
+  calendarHeight?: number;
+  horizontal?: boolean;
+  theme?: Theme;
+  scrollToMonth?: (date: XDate) => void;
+};
+
+type CalendarListItemState = {
+  hideArrows: boolean;
+  hideExtraDays: boolean;
+};
+
+class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
+  static displayName = 'CalendarListItem';
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/item.tsx
 
   static propTypes = {
     ...Calendar.propTypes,
@@ -34,7 +62,11 @@ class CalendarListItem extends Component {
     const r1 = this.props.item;
     const r2 = nextProps.item;
 
+<<<<<<< HEAD:src/calendar-list/item.js
     return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propbump && r2.propbump !== r1.propbump);
+=======
+    return !sameMonth(r1, r2) || !!(r2.propBump && r2.propBump !== r1.propBump);
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/item.tsx
   }
 
   onPressArrowLeft = (_, month) => {
@@ -93,7 +125,7 @@ class CalendarListItem extends Component {
         <Calendar
           {...calendarProps}
           testID={testID}
-          current={item}
+          current={getCalendarDateString(item.toString())}
           style={calStyle}
           headerStyle={horizontal ? headerStyle : undefined}
           disableMonthChange
@@ -103,7 +135,7 @@ class CalendarListItem extends Component {
         />
       );
     } else {
-      const text = item.toString();
+      const text = formatNumbers(item.toString());
 
       return (
         <View style={[{height: calendarHeight, width: calendarWidth}, this.style.placeholder]}>

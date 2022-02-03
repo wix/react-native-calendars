@@ -27,6 +27,11 @@ export default function styleConstructor(theme = {}) {
       borderBottomRightRadius: 2,
       marginRight: 4
     },
+<<<<<<< HEAD:src/calendar/day/marking/style.js
     ...(theme[STYLESHEET_ID] || {})
+=======
+    // @ts-expect-error
+    ...(theme['stylesheet.marking'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar/day/marking/style.ts
   });
 }

@@ -1,20 +1,14 @@
-import React, {useState, Fragment} from 'react';
-import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
-// @ts-expect-error
-import {Calendar} from 'react-native-calendars';
+import React, {useState, Fragment, useCallback} from 'react';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {Calendar, CalendarProps} from 'react-native-calendars';
+import testIDs from '../testIDs';
 
-const testIDs = require('../testIDs');
 const INITIAL_DATE = '2020-02-02';
 
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
-  const [showMarkedDatesExamples, setShowMarkedDatesExamples] = useState(false);
 
-  const toggleSwitch = () => {
-    setShowMarkedDatesExamples(!showMarkedDatesExamples);
-  };
-
-  const onDayPress = day => {
+  const onDayPress: CalendarProps['onDayPress'] = day => {
     setSelected(day.dateString);
   };
 
@@ -24,6 +18,7 @@ const CalendarsScreen = () => {
         <Text style={styles.text}>Calendar with selectable date</Text>
         <Calendar
           testID={testIDs.calendars.FIRST}
+          enableSwipeMonths
           current={INITIAL_DATE}
           style={styles.calendar}
           onDayPress={onDayPress}
@@ -259,7 +254,8 @@ const CalendarsScreen = () => {
                   elevation: 2
                 },
                 text: {
-                  color: 'red'
+                  color: 'red',
+                  marginTop: 0
                 }
               }
             },
@@ -348,7 +344,7 @@ const CalendarsScreen = () => {
             return (
               <View>
                 <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
-                  {date.day}
+                  {date?.day}
                 </Text>
               </View>
             );
@@ -358,9 +354,60 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCalendarWithCustomHeaderTitle = () => {
+    const [selectedValue, setSelectedValue] = useState(new Date());
+
+    const getNewSelectedDate = useCallback(
+      (date, shouldAdd) => {
+        const newMonth = new Date(date).getMonth();
+        const month = shouldAdd ? newMonth + 1 : newMonth - 1;
+        const newDate = new Date(selectedValue.setMonth(month));
+        const newSelected = new Date(newDate.setDate(1));
+        return newSelected;
+      },
+      [selectedValue]
+    );
+    const onPressArrowLeft = useCallback(
+      (subtract, month) => {
+        const newDate = getNewSelectedDate(month, false);
+        setSelectedValue(newDate);
+        subtract();
+      },
+      [getNewSelectedDate]
+    );
+  
+    const onPressArrowRight = useCallback(
+      (add, month) => {
+        const newDate = getNewSelectedDate(month, true);
+        setSelectedValue(newDate);
+        add();
+      },
+      [getNewSelectedDate]
+    );
+
+    const CustomHeaderTitle = (
+      <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
+        <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
+      </TouchableOpacity>
+    );
+
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with custom header title</Text>
+        <Calendar
+          style={styles.calendar}
+          customHeaderTitle={CustomHeaderTitle}
+          onPressArrowLeft={onPressArrowLeft}
+          onPressArrowRight={onPressArrowRight}
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
       return (
+        // @ts-expect-error
         <View ref={ref} {...props} style={styles.customHeader}>
           <Text>This is a custom header!</Text>
           <TouchableOpacity onPress={() => console.warn('Tapped!')}>
@@ -403,9 +450,16 @@ const CalendarsScreen = () => {
     );
   };
 
-  const renderMarkedDatesExamples = () => {
+  const renderExamples = () => {
     return (
       <Fragment>
+        {renderCalendarWithSelectableDate()}
+        {renderCalendarWithWeekNumbers()}
+        {renderCalendarWithMinAndMaxDates()}
+        {renderCalendarWithCustomDay()}
+        {renderCalendarWithInactiveDays()}
+        {renderCalendarWithCustomHeaderTitle()}
+        {renderCalendarWithCustomHeader()}
         {renderCalendarWithMarkedDatesAndHiddenArrows()}
         {renderCalendarWithMultiDotMarking()}
         {renderCalendarWithPeriodMarkingAndSpinner()}
@@ -416,38 +470,9 @@ const CalendarsScreen = () => {
     );
   };
 
-  const renderExamples = () => {
-    return (
-      <Fragment>
-        {renderCalendarWithSelectableDate()}
-        {renderCalendarWithWeekNumbers()}
-        {renderCalendarWithMinAndMaxDates()}
-        {renderCalendarWithCustomDay()}
-        {renderCalendarWithCustomHeader()}
-        {renderCalendarWithInactiveDays()}
-      </Fragment>
-    );
-  };
-
-  const renderSwitch = () => {
-    // Workaround for Detox 18 migration bug
-    return (
-      <View style={styles.switchContainer}>
-        <Switch
-          trackColor={{false: '#d9e1e8', true: '#00BBF2'}}
-          onValueChange={toggleSwitch}
-          value={showMarkedDatesExamples}
-        />
-        <Text style={styles.switchText}>Show markings examples</Text>
-      </View>
-    );
-  };
-
   return (
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
-      {renderSwitch()}
-      {showMarkedDatesExamples && renderMarkedDatesExamples()}
-      {!showMarkedDatesExamples && renderExamples()}
+      {renderExamples()}
     </ScrollView>
   );
 };
@@ -493,5 +518,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: -4,
     padding: 8
+  },
+  customTitleContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    padding: 10
+  },
+  customTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#00BBF2'
   }
 });

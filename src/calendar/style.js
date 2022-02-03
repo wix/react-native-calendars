@@ -22,11 +22,15 @@ export default function getStyle(theme = {}) {
       backgroundColor: appStyle.calendarBackground
     },
     week: {
-      marginTop: 7,
-      marginBottom: 7,
+      marginVertical: appStyle.weekVerticalMargin,
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+<<<<<<< HEAD:src/calendar/style.js
     ...(theme[STYLESHEET_ID] || {})
+=======
+    // @ts-expect-error
+    ...(theme['stylesheet.calendar.main'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar/style.ts
   });
 }

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View} from 'react-native';
 
+<<<<<<< HEAD:src/calendar/day/period/index.js
 import {shouldUpdate} from '../../../component-updater';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
@@ -11,6 +12,29 @@ import Dot from '../dot';
 
 export default class PeriodDay extends Component {
   static displayName = 'IGNORE';
+=======
+import {Theme, DayState, DateData} from '../../../types';
+import {shouldUpdate} from '../../../componentUpdater';
+import * as defaultStyle from '../../../style';
+import styleConstructor from './style';
+import Dot from '../dot';
+import {MarkingProps} from '../marking';
+
+
+interface PeriodDayProps {
+  state?: DayState;
+  marking?: MarkingProps;
+  theme?: Theme;
+  onPress?: (date?: DateData) => void;
+  onLongPress?: (date?: DateData) => void;
+  date?: DateData;
+  accessibilityLabel?: string;
+  testID?: string;
+}
+
+export default class PeriodDay extends Component<PeriodDayProps> {
+  static displayName = 'PeriodDay';
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar/day/period/index.tsx
 
   static propTypes = {
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),

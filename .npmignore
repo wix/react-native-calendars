@@ -252,6 +252,7 @@ test/
 ios/
 android/
 demo/
+docsRNC/
 .babelrc
 # eslint-rules/
 scripts/

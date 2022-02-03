@@ -1,13 +1,23 @@
+<<<<<<< HEAD:src/calendar-list/index.js
 import _ from 'lodash';
+=======
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
 import {FlatList, Platform, Dimensions, View} from 'react-native';
 
+<<<<<<< HEAD:src/calendar-list/index.js
 import {extractComponentProps} from '../component-updater';
 import {xdateToData, parseDate} from '../interface';
 import dateutils from '../dateutils';
+=======
+import {extractComponentProps} from '../componentUpdater';
+import {xdateToData, parseDate} from '../interface';
+import {page, sameDate, sameMonth} from '../dateutils';
+// @ts-expect-error
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar from '../calendar';
@@ -15,50 +25,93 @@ import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
 
 const {width} = Dimensions.get('window');
+<<<<<<< HEAD:src/calendar-list/index.js
+=======
+const CALENDAR_WIDTH = width;
+const CALENDAR_HEIGHT = 360;
+const PAST_SCROLL_RANGE = 50;
+const FUTURE_SCROLL_RANGE = 50;
+
+export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
+  /** Max amount of months allowed to scroll to the past. Default = 50 */
+  pastScrollRange?: number;
+  /** Max amount of months allowed to scroll to the future. Default = 50 */
+  futureScrollRange?: number;
+  /** Used when calendar scroll is horizontal, default is device width, pagination should be disabled */
+  calendarWidth?: number;
+  /** Dynamic calendar height */
+  calendarHeight?: number;
+  /** Style for the List item (the calendar) */
+  calendarStyle?: ViewStyle;
+  /** Whether to use static header that will not scroll with the list (horizontal only) */
+  staticHeader?: boolean;
+  /** Enable or disable vertical / horizontal scroll indicator. Default = false */
+  showScrollIndicator?: boolean;
+  /** Whether to animate the auto month scroll */
+  animateScroll?: boolean;
+  /** Enable or disable scrolling of calendar list */
+  scrollEnabled?: boolean;
+  /** When true, the calendar list scrolls to top when the status bar is tapped. Default = true */
+  scrollsToTop?: boolean;
+  /** Enable or disable paging on scroll */
+  pagingEnabled?: boolean;
+  /** Whether the scroll is horizontal */
+  horizontal?: boolean;
+  /** Should Keyboard persist taps */
+  keyboardShouldPersistTaps?: 'never' | 'always' | 'handled';
+  /** A custom key extractor for the generated calendar months */
+  keyExtractor?: (item: any, index: number) => string;
+  /** How far from the end to trigger the onEndReached callback */
+  onEndReachedThreshold?: number;
+  /** Called once when the scroll position gets within onEndReachedThreshold */
+  onEndReached?: () => void;
+  /** onLayout event */
+  onLayout?: (event: LayoutChangeEvent) => void;
+  removeClippedSubviews?: boolean;
+  testID?: string;
+}
+
+type XDateAndBump = XDate & {propBump?: number};
+
+type State = {
+  rows: Array<XDateAndBump>;
+  texts: Array<string>;
+  openDate: XDate;
+  currentMonth: XDate;
+};
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
 
 /**
  * @description: Calendar List component for both vertical and horizontal calendars
  * @extends: Calendar
  * @extendslink: docs/Calendar
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.js
- * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar-list.gif
+ * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif
  */
+<<<<<<< HEAD:src/calendar-list/index.js
 class CalendarList extends Component {
+=======
+class CalendarList extends Component<CalendarListProps, State> {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
   static displayName = 'CalendarList';
 
   static propTypes = {
     ...Calendar.propTypes,
-    /** Max amount of months allowed to scroll to the past. Default = 50 */
     pastScrollRange: PropTypes.number,
-    /** Max amount of months allowed to scroll to the future. Default = 50 */
     futureScrollRange: PropTypes.number,
-    /** Used when calendar scroll is horizontal, default is device width, pagination should be disabled */
     calendarWidth: PropTypes.number,
-    /** Dynamic calendar height */
     calendarHeight: PropTypes.number,
-    /** Style for the List item (the calendar) */
     calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** Whether to use static header that will not scroll with the list (horizontal only) */
     staticHeader: PropTypes.bool,
-    /** Enable or disable vertical / horizontal scroll indicator. Default = false */
     showScrollIndicator: PropTypes.bool,
-    /** Whether to animate the auto month scroll */
     animateScroll: PropTypes.bool,
-    /** Enable or disable scrolling of calendar list */
     scrollEnabled: PropTypes.bool,
-    /** When true, the calendar list scrolls to top when the status bar is tapped. Default = true */
     scrollsToTop: PropTypes.bool,
-    /** Enable or disable paging on scroll */
     pagingEnabled: PropTypes.bool,
-    /** Whether the scroll is horizontal */
     horizontal: PropTypes.bool,
-    /** Should Keyboard persist taps */
     keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
-    /** A custom key extractor for the generated calendar months */
     keyExtractor: PropTypes.func,
-    /** How far from the end to trigger the onEndReached callback */
     onEndReachedThreshold: PropTypes.number,
-    /** Called once when the scroll position gets within onEndReachedThreshold */
     onEndReached: PropTypes.func
   };
 
@@ -75,7 +128,17 @@ class CalendarList extends Component {
     keyExtractor: (item, index) => String(index)
   };
 
+<<<<<<< HEAD:src/calendar-list/index.js
   constructor(props) {
+=======
+  style: any;
+  list: React.RefObject<FlatList> = React.createRef();
+  viewabilityConfig = {
+    itemVisiblePercentThreshold: 20
+  };
+
+  constructor(props: CalendarListProps) {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
     super(props);
 
     this.style = styleConstructor(props.theme);
@@ -114,7 +177,11 @@ class CalendarList extends Component {
     };
   }
 
+<<<<<<< HEAD:src/calendar-list/index.js
   componentDidUpdate(prevProps) {
+=======
+  componentDidUpdate(prevProps: CalendarListProps) {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
     const prevCurrent = parseDate(prevProps.current);
     const current = parseDate(this.props.current);
 
@@ -123,6 +190,7 @@ class CalendarList extends Component {
     }
   }
 
+<<<<<<< HEAD:src/calendar-list/index.js
   static getDerivedStateFromProps(nextProps, prevState) {
     const rowclone = prevState.rows;
     const newrows = [];
@@ -132,6 +200,19 @@ class CalendarList extends Component {
       if (rowclone[i].getTime) {
         val = rowclone[i].clone();
         val.propbump = rowclone[i].propbump ? rowclone[i].propbump + 1 : 1;
+=======
+  static getDerivedStateFromProps(_: CalendarListProps, prevState: State) {
+    const rowClone = prevState.rows;
+    const newRows = [];
+
+    for (let i = 0; i < rowClone.length; i++) {
+      let val: XDate | string = prevState.texts[i];
+      // @ts-expect-error
+      if (rowClone[i].getTime) {
+        val = rowClone[i].clone();
+        // @ts-expect-error
+        val.propBump = rowClone[i].propBump ? rowClone[i].propBump + 1 : 1;
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
       }
       newrows.push(val);
     }
@@ -163,7 +244,7 @@ class CalendarList extends Component {
     const {horizontal, calendarHeight, calendarWidth, pastScrollRange, animateScroll = false} = this.props;
     const month = parseDate(m);
     const scrollTo = month || this.state.openDate;
-    let diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
+    const diffMonths = Math.round(this.state.openDate.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
     const size = horizontal ? calendarWidth : calendarHeight;
     const scrollAmount = size * pastScrollRange + diffMonths * size;
 
@@ -180,8 +261,14 @@ class CalendarList extends Component {
     };
   };
 
+<<<<<<< HEAD:src/calendar-list/index.js
   getMonthIndex(month) {
     let diffMonths = this.state.openDate.diffMonths(month) + this.props.pastScrollRange;
+=======
+  getMonthIndex(month: XDate) {
+    const {pastScrollRange = PAST_SCROLL_RANGE} = this.props;
+    const diffMonths = this.state.openDate.diffMonths(month) + pastScrollRange;
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
     return diffMonths;
   }
 
@@ -189,20 +276,31 @@ class CalendarList extends Component {
     this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
   };
 
+<<<<<<< HEAD:src/calendar-list/index.js
   updateMonth(day, doNotTriggerListeners) {
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+=======
+  updateMonth(day: XDate) {
+    if (sameMonth(day, this.state.currentMonth)) {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
       return;
     }
 
     this.setState({currentMonth: day.clone()}, () => {
       this.scrollToMonth(this.state.currentMonth);
 
+<<<<<<< HEAD:src/calendar-list/index.js
       if (!doNotTriggerListeners) {
         const currMont = this.state.currentMonth.clone();
 
         _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
         _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
+=======
+      const currMont = this.state.currentMonth.clone();
+      this.props.onMonthChange?.(xdateToData(currMont));
+      this.props.onVisibleMonthsChange?.([xdateToData(currMont)]);
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
     });
   }
 
@@ -231,13 +329,21 @@ class CalendarList extends Component {
       }
       newrows.push(val);
       if (rowIsCloseToViewable(i, 0)) {
-        visibleMonths.push(xdateToData(val));
+        const v = (val instanceof XDate) ? val : new XDate(val);
+        visibleMonths.push(xdateToData(v));
       }
     }
 
+<<<<<<< HEAD:src/calendar-list/index.js
     _.invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
 
     this.setState({
+=======
+    this.props.onVisibleMonthsChange?.(visibleMonths);
+
+    this.setState({
+      // @ts-expect-error
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
       rows: newrows,
       currentMonth: parseDate(visibleMonths[0])
     });
@@ -287,6 +393,10 @@ class CalendarList extends Component {
         <FlatList
           ref={c => (this.listView = c)}
           style={[this.style.container, style]}
+<<<<<<< HEAD:src/calendar-list/index.js
+=======
+          // @ts-expect-error
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/index.tsx
           initialListSize={pastScrollRange + futureScrollRange + 1} // ListView deprecated
           data={this.state.rows}
           renderItem={this.renderItem}

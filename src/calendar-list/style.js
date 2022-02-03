@@ -35,6 +35,11 @@ export default function getStyle(theme = {}) {
       paddingLeft: 15,
       paddingRight: 15
     },
+<<<<<<< HEAD:src/calendar-list/style.js
     ...(theme[STYLESHEET_ID] || {})
+=======
+    // @ts-expect-error
+    ...(theme['stylesheet.calendar-list.main'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar-list/style.ts
   });
 }

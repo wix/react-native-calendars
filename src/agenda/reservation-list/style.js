@@ -1,9 +1,13 @@
 import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../style';
 
+<<<<<<< HEAD:src/agenda/reservation-list/style.js
 const STYLESHEET_ID = 'stylesheet.agenda.list';
 
 export default function styleConstructor(theme = {}) {
+=======
+export default function styleConstructor(theme: Theme = {}) {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/agenda/reservation-list/style.ts
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     container: {
@@ -38,6 +42,11 @@ export default function styleConstructor(theme = {}) {
     indicator: {
       marginTop: 80
     },
+<<<<<<< HEAD:src/agenda/reservation-list/style.js
     ...(theme[STYLESHEET_ID] || {})
+=======
+    // @ts-expect-error
+    ...(theme['stylesheet.agenda.list'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/agenda/reservation-list/style.ts
   });
 }

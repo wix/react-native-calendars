@@ -4,6 +4,8 @@ import * as defaultStyle from '../style';
 const commons = require('./commons');
 const STYLESHEET_ID = 'stylesheet.expandable.main';
 export const HEADER_HEIGHT = 68;
+export const KNOB_CONTAINER_HEIGHT = 24;
+
 
 export default function styleConstructor(theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -34,7 +36,7 @@ export default function styleConstructor(theme = {}) {
       position: 'absolute',
       left: 0,
       right: 0,
-      height: 24,
+      height: KNOB_CONTAINER_HEIGHT,
       bottom: 0,
       alignItems: 'center',
       justifyContent: 'center',
