@@ -62,6 +62,7 @@ export default function styleConstructor(theme={}) {
       borderWidth: 1,
       borderColor: '#c1e4fe'
     },
+<<<<<<< HEAD:src/calendar/day/period/style.js
     quickActionText: {
       marginTop: 6,
       color: appStyle.textColor
@@ -76,5 +77,28 @@ export default function styleConstructor(theme={}) {
       color: '#b6c1cd'
     },
     ...(theme[STYLESHEET_ID] || {})
+=======
+
+    // quickAction: {
+    //   backgroundColor: 'white',
+    //   borderWidth: 1,
+    //   borderColor: '#c1e4fe'
+    // },
+    // quickActionText: {
+    //   marginTop: 6,
+    //   color: appStyle.textColor
+    // },
+    // firstQuickAction: {
+    //   backgroundColor: appStyle.textLinkColor
+    // },
+    // firstQuickActionText: {
+    //   color: 'white'
+    // },
+    // naText: {
+    //   color: '#b6c1cd'
+    // },
+    // @ts-expect-error
+    ...(theme['stylesheet.day.period'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar/day/period/style.ts
   });
 }

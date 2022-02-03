@@ -29,6 +29,11 @@ export default function styleConstructor(theme = {}) {
     todayDot: {
       backgroundColor: appStyle.todayDotColor || appStyle.dotColor
     },
+<<<<<<< HEAD:src/calendar/day/dot/style.js
     ...(theme[STYLESHEET_ID] || {})
+=======
+    // @ts-expect-error
+    ...(theme['stylesheet.dot'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/calendar/day/dot/style.ts
   });
 }

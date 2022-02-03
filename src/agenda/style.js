@@ -2,9 +2,13 @@ import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../style';
 import platformStyles from './platform-style';
 
+<<<<<<< HEAD:src/agenda/style.js
 const STYLESHEET_ID = 'stylesheet.agenda.main';
 
 export default function styleConstructor(theme = {}) {
+=======
+export default function styleConstructor(theme: Theme = {}) {
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/agenda/style.ts
   const appStyle = {...defaultStyle, ...theme};
   const {knob, weekdays} = platformStyles(appStyle);
 
@@ -13,7 +17,7 @@ export default function styleConstructor(theme = {}) {
       flex: 1, 
       overflow: 'hidden'
     },
-    animatedContiner: {
+    animatedContainer: {
       flex: 1
     },
     knob,
@@ -48,6 +52,16 @@ export default function styleConstructor(theme = {}) {
       marginTop: 104,
       backgroundColor: appStyle.backgroundColor
     },
+<<<<<<< HEAD:src/agenda/style.js
     ...(theme[STYLESHEET_ID] || {})
+=======
+    scrollPadStyle: {
+      position: 'absolute',
+      width: '100%',
+      alignSelf: 'center'
+    },
+    // @ts-expect-error
+    ...(theme['stylesheet.agenda.main'] || {})
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/agenda/style.ts
   });
 }

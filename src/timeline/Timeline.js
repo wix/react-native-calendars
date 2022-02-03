@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/timeline/Timeline.js
 // @flow
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -68,9 +69,143 @@ export default class Timeline extends React.PureComponent {
       this.setState({
         packedEvents: populateEvents(events, width, start)
       });
-    }
-  }
+=======
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {View, ScrollView} from 'react-native';
+import min from 'lodash/min';
+import map from 'lodash/map';
 
+import constants from '../commons/constants';
+import {Theme} from '../types';
+import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
+import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
+import {calcTimeOffset} from './helpers/presenter';
+import TimelineHours, {TimelineHoursProps} from './TimelineHours';
+import EventBlock, {Event, PackedEvent} from './EventBlock';
+import NowIndicator from './NowIndicator';
+import useTimelineOffset from './useTimelineOffset';
+
+export interface TimelineProps {
+  /**
+   * The date of this timeline instance in ISO format (e.g. 2011-10-25)
+   */
+  date?: string;
+  /**
+   * List of events to display in this timeline
+   */
+  events: Event[];
+  /**
+   * The timeline day start time
+   */
+  start?: number;
+  /**
+   * The timeline day end time
+   */
+  end?: number;
+  /**
+   * @deprecated
+   * Use onEventPress instead
+   */
+  eventTapped?: (event: Event) => void;
+  /**
+   * Handle event press
+   */
+  onEventPress?: (event: Event) => void;
+  /**
+   * Pass to handle creation of a new event by long press on the timeline background
+   * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
+   */
+  onBackgroundLongPress?: TimelineHoursProps['onBackgroundLongPress'];
+  /**
+   * Pass to handle creation of a new event by long press out on the timeline background
+   * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
+   */
+  onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
+  styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
+  theme?: Theme;
+  /**
+   * Should scroll to first event when loaded
+   */
+  scrollToFirst?: boolean;
+  /**
+   * Should scroll to current time when loaded
+   */
+  scrollToNow?: boolean;
+  /**
+   * Initial time to scroll to
+   */
+  initialTime?: {hour: number; minutes: number};
+  /**
+   * Whether to use 24 hours format for the timeline hours
+   */
+  format24h?: boolean;
+  /**
+   * Render a custom event block
+   */
+  renderEvent?: (event: PackedEvent) => JSX.Element;
+  /**
+   * Whether to show now indicator
+   */
+  showNowIndicator?: boolean;
+  /**
+   * A scroll offset value that the timeline will sync with
+   */
+  scrollOffset?: number;
+  /**
+   * Listen to onScroll event of the timeline component
+   */
+  onChangeOffset?: (offset: number) => void;
+  /**
+   * Spacing between overlapping events
+   */
+  overlapEventsSpacing?: number;
+}
+
+const Timeline = (props: TimelineProps) => {
+  const {
+    format24h = true,
+    start = 0,
+    end = 24,
+    date,
+    events = [],
+    onEventPress,
+    onBackgroundLongPress,
+    onBackgroundLongPressOut,
+    renderEvent,
+    theme,
+    scrollToFirst,
+    scrollToNow,
+    initialTime,
+    showNowIndicator,
+    scrollOffset,
+    onChangeOffset,
+    overlapEventsSpacing,
+    eventTapped
+  } = props;
+
+  const scrollView = useRef<ScrollView>();
+  const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
+  const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
+
+  const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
+
+  const packedEvents = useMemo(() => {
+    const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
+    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing});
+  }, [events, start]);
+
+  useEffect(() => {
+    let initialPosition = 0;
+    if (scrollToNow) {
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+    } else if (scrollToFirst && packedEvents.length > 0) {
+      initialPosition = min(map(packedEvents, 'top')) ?? 0;
+    } else if (initialTime) {
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/timeline/Timeline.tsx
+    }
+
+<<<<<<< HEAD:src/timeline/Timeline.js
   componentDidMount() {
     this.props.scrollToFirst && this.scrollToFirst();
   }
@@ -81,32 +216,32 @@ export default class Timeline extends React.PureComponent {
         this._scrollView.scrollTo({
           x: 0,
           y: this.state._scrollY,
+=======
+    if (initialPosition) {
+      setTimeout(() => {
+        scrollView?.current?.scrollTo({
+          y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/timeline/Timeline.tsx
           animated: true
         });
-      }
-    }, 1);
-  }
+      }, 0);
+    }
+  }, []);
 
-  _renderLines() {
-    const {format24h, start = 0, end = 24} = this.props;
-    const offset = this.calendarHeight / (end - start);
-    const EVENT_DIFF = 20;
-
-    return range(start, end + 1).map((i, index) => {
-      let timeText;
-
-      if (i === start) {
-        timeText = '';
-      } else if (i < 12) {
-        timeText = !format24h ? `${i} AM` : `${i}:00`;
-      } else if (i === 12) {
-        timeText = !format24h ? `${i} PM` : `${i}:00`;
-      } else if (i === 24) {
-        timeText = !format24h ? '12 AM' : '23:59';
+  const _onEventPress = useCallback(
+    (eventIndex: number) => {
+      const event = events[eventIndex];
+      if (eventTapped) {
+        //TODO: remove after deprecation
+        eventTapped(event);
       } else {
-        timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
+        onEventPress?.(event);
       }
+    },
+    [events, onEventPress, eventTapped]
+  );
 
+<<<<<<< HEAD:src/timeline/Timeline.js
       return [
         <Text key={`timeLabel${i}`} style={[this.style.timeLabel, {top: offset * index - 6}]}>
           {timeText}
@@ -171,16 +306,31 @@ export default class Timeline extends React.PureComponent {
             </View>
           )}
         </TouchableOpacity>
+=======
+  const renderEvents = () => {
+    const events = packedEvents.map((event: PackedEvent, i: number) => {
+      return (
+        <EventBlock
+          key={i}
+          index={i}
+          event={event}
+          styles={styles.current}
+          format24h={format24h}
+          onPress={_onEventPress}
+          renderEvent={renderEvent}
+        />
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/timeline/Timeline.tsx
       );
     });
 
     return (
       <View>
-        <View style={{marginLeft: LEFT_MARGIN}}>{events}</View>
+        <View style={{marginLeft: HOURS_SIDEBAR_WIDTH}}>{events}</View>
       </View>
     );
-  }
+  };
 
+<<<<<<< HEAD:src/timeline/Timeline.js
   render() {
     return (
       <ScrollView
@@ -193,3 +343,29 @@ export default class Timeline extends React.PureComponent {
     );
   }
 }
+=======
+  return (
+    <ScrollView
+      // @ts-expect-error
+      ref={scrollView}
+      contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      {...scrollEvents}
+    >
+      <TimelineHours
+        start={start}
+        end={end}
+        date={date}
+        format24h={format24h}
+        styles={styles.current}
+        onBackgroundLongPress={onBackgroundLongPress}
+        onBackgroundLongPressOut={onBackgroundLongPressOut}
+      />
+      {renderEvents()}
+      {showNowIndicator && <NowIndicator styles={styles.current} />}
+    </ScrollView>
+  );
+};
+
+export {Event as TimelineEventProps, PackedEvent as TimelinePackedEventProps};
+export default React.memo(Timeline);
+>>>>>>> 115f18741ed6f1e9a22d7ebe2115e091b3d204ca:src/timeline/Timeline.tsx
