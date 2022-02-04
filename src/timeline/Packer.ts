@@ -1,65 +1,82 @@
 // @flow
 import XDate from 'xdate';
+import constants from '../commons/constants';
 import {Event, PackedEvent} from './EventBlock';
 
-export const HOUR_BLOCK_HEIGHT = 100;
-const EVENT_BLOCK_RIGHT_MARGIN = 10;
+type PartialPackedEvent = Event & {index: number};
+interface PopulateOptions {
+  screenWidth?: number;
+  dayStart?: number;
+  hourBlockHeight?: number;
+  overlapEventsSpacing?: number;
+}
 
-function buildEvent(column: any, left: number, width: number, dayStart: number) {
-  const startTime = new XDate(column.start);
-  const endTime = column.end ? new XDate(column.end) : new XDate(startTime).addHours(1);
+export const HOUR_BLOCK_HEIGHT = 100;
+const OVERLAP_EVENTS_SPACINGS = 10;
+
+function buildEvent(event: Event & {index: number}, left: number, width: number, {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions): PackedEvent {
+  const startTime = new XDate(event.start);
+  const endTime = event.end ? new XDate(event.end) : new XDate(startTime).addHours(1);
 
   const dayStartTime = new XDate(startTime).clearTime();
 
-  column.top = (dayStartTime.diffHours(startTime) - dayStart) * HOUR_BLOCK_HEIGHT;
-  column.height = startTime.diffHours(endTime) * HOUR_BLOCK_HEIGHT;
-  column.width = width;
-  column.left = left;
-  return column;
+  return {
+    ...event,
+    top: (dayStartTime.diffHours(startTime) - dayStart) * hourBlockHeight,
+    height: startTime.diffHours(endTime) * hourBlockHeight,
+    width,
+    left
+  };
 }
 
-function collision(a: Event, b: Event) {
+function hasCollision(a: Event, b: Event) {
   return a.end > b.start && a.start < b.end;
 }
 
-function expand(ev: Event, column: any, columns: any) {
+function calcColumnSpan(event: Event, columnIndex: number, columns: Event[][]) {
   let colSpan = 1;
 
-  for (let i = column + 1; i < columns.length; i++) {
-    const col = columns[i];
-    for (let j = 0; j < col.length; j++) {
-      const ev1 = col[j];
-      if (collision(ev, ev1)) {
-        return colSpan;
-      }
+  for (let i = columnIndex + 1; i < columns.length; i++) {
+    const column = columns[i];
+
+    const foundCollision = column.find(ev => hasCollision(event, ev));
+    if (foundCollision) {
+      return colSpan;
     }
+
     colSpan++;
   }
 
   return colSpan;
 }
 
-function pack(columns: any, width: number, calculatedEvents: Event[], dayStart: number) {
-  const colLength = columns.length;
+function packOverlappingEventGroup(
+  columns: PartialPackedEvent[][],
+  calculatedEvents: PackedEvent[],
+  populateOptions: PopulateOptions
+) {
+  const {screenWidth = constants.screenWidth, overlapEventsSpacing = OVERLAP_EVENTS_SPACINGS} = populateOptions;
+  columns.forEach((column, columnIndex) => {
+    column.forEach(event => {
+      const columnSpan = calcColumnSpan(event, columnIndex, columns);
+      const eventLeft = (columnIndex / columns.length) * screenWidth;
+      let eventWidth = screenWidth * (columnSpan / columns.length);
 
-  for (let i = 0; i < colLength; i++) {
-    const col = columns[i];
-    for (let j = 0; j < col.length; j++) {
-      const colSpan = expand(col[j], i, columns);
-      const L = (i / colLength) * width;
-      const W = (width * colSpan) / colLength - EVENT_BLOCK_RIGHT_MARGIN;
+      if (columnIndex + columnSpan <= columns.length -1) {
+        eventWidth -= overlapEventsSpacing;
+      }
 
-      calculatedEvents.push(buildEvent(col[j], L, W, dayStart));
-    }
-  }
+      calculatedEvents.push(buildEvent(event, eventLeft, eventWidth, populateOptions));
+    });
+  });
 }
 
-function populateEvents(events: Event[], screenWidth: number, dayStart: number) {
-  let lastEnd: any;
-  let columns: any;
-  const calculatedEvents: Event[] = [];
+function populateEvents(_events: Event[], populateOptions: PopulateOptions) {
+  let lastEnd: string | null = null;
+  let columns: PartialPackedEvent[][] = [];
+  const calculatedEvents: PackedEvent[] = [];
 
-  events = events
+  const events: PartialPackedEvent[] = _events
     .map((ev: Event, index: number) => ({...ev, index: index}))
     .sort(function (a: Event, b: Event) {
       if (a.start < b.start) return -1;
@@ -69,26 +86,26 @@ function populateEvents(events: Event[], screenWidth: number, dayStart: number) 
       return 0;
     });
 
-  columns = [];
-  lastEnd = null;
-
-  events.forEach(function (ev: Event) {
+  events.forEach(function (ev) {
+    // Reset recent overlapping event group and start a new one
     if (lastEnd !== null && ev.start >= lastEnd) {
-      pack(columns, screenWidth, calculatedEvents, dayStart);
+      packOverlappingEventGroup(columns, calculatedEvents, populateOptions);
       columns = [];
       lastEnd = null;
     }
 
+    // Place current event in the right column where it doesn't overlap
     let placed = false;
     for (let i = 0; i < columns.length; i++) {
       const col = columns[i];
-      if (!collision(col[col.length - 1], ev)) {
+      if (!hasCollision(col[col.length - 1], ev)) {
         col.push(ev);
         placed = true;
         break;
       }
     }
 
+    // If curr event wasn't placed in any of the columns, create a new column for it
     if (!placed) {
       columns.push([ev]);
     }
@@ -99,9 +116,10 @@ function populateEvents(events: Event[], screenWidth: number, dayStart: number) 
   });
 
   if (columns.length > 0) {
-    pack(columns, screenWidth, calculatedEvents, dayStart);
+    packOverlappingEventGroup(columns, calculatedEvents, populateOptions);
   }
-  return calculatedEvents as PackedEvent[];
+
+  return calculatedEvents;
 }
 
 export default populateEvents;

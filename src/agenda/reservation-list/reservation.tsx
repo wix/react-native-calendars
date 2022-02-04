@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 import {isToday} from '../../dateutils';
+import {getDefaultLocale} from '../../services';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
@@ -33,15 +34,10 @@ class Reservation extends Component<ReservationProps> {
   static propTypes = {
     date: PropTypes.any,
     item: PropTypes.any,
-    /** Specify theme properties to override specific styles for item's parts. Default = {} */
     theme: PropTypes.object,
-    /** specify your item comparison function for increased performance */
     rowHasChanged: PropTypes.func,
-    /** specify how each date should be rendered. day can be undefined if the item is not first in that day */
     renderDay: PropTypes.func,
-    /** specify how each item should be rendered in agenda */
     renderItem: PropTypes.func,
-    /** specify how empty date content with no items should be rendered */
     renderEmptyDate: PropTypes.func
   };
 
@@ -84,7 +80,7 @@ class Reservation extends Component<ReservationProps> {
     }
 
     const today = date && isToday(date) ? this.style.today : undefined;
-    const dayNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+    const dayNames = getDefaultLocale().dayNamesShort;
 
     if (date) {
       return (
