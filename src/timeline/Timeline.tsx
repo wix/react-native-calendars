@@ -144,7 +144,7 @@ const Timeline = (props: TimelineProps) => {
 
   const _onEventPress = useCallback(
     (eventIndex: number) => {
-      const event = events[eventIndex];
+      const event = packedEvents[eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
         eventTapped(event);
@@ -152,7 +152,7 @@ const Timeline = (props: TimelineProps) => {
         onEventPress?.(event);
       }
     },
-    [events, onEventPress, eventTapped]
+    [packedEvents, onEventPress, eventTapped]
   );
 
   const renderEvents = () => {
