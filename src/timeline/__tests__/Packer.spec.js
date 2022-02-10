@@ -38,21 +38,26 @@ describe('Timeline Packer utils', () => {
     });
 
     it('should set event block width based on overlaps of 3 events', () => {
-      const packedEvents = uut(events, {screenWidth: 300, dayStart: 0});
+      const packedEvents = uut(events, {screenWidth: 310, dayStart: 0, rightEdgeSpacing: 10, overlapEventsSpacing: 10});
       expect(packedEvents[0].width).toBe(90); // event 1
       expect(packedEvents[1].width).toBe(90); // event 3
       expect(packedEvents[2].width).toBe(100); // event 2
     });
 
     it('should set event block width based on overlaps of 2 events', () => {
-      const packedEvents = uut([events[0], events[1]], {screenWidth: 300, dayStart: 0});
-      expect(packedEvents[0].width).toBe(140); // event 1
-      expect(packedEvents[1].width).toBe(150); // event 2
+      const packedEvents = uut([events[0], events[1]], {
+        screenWidth: 300,
+        dayStart: 0,
+        overlapEventsSpacing: 10,
+        rightEdgeSpacing: 10
+      });
+      expect(packedEvents[0].width).toBe(135); // event 1
+      expect(packedEvents[1].width).toBe(145); // event 2
     });
 
     it('should set event block width when there is not overlaps', () => {
       const packedEvents = uut([events[0]], {screenWidth: 300, dayStart: 0});
-      expect(packedEvents[0].width).toBe(300); // event 1
+      expect(packedEvents[0].width).toBe(290); // event 1
     });
 
     it('should handle a complex case of overlapping events', () => {
@@ -82,7 +87,7 @@ describe('Timeline Packer utils', () => {
           end: `2017-09-06 05:30:00`
         }
       ];
-      let packedEvents = uut(overlappingEvents, {screenWidth: 300, dayStart: 0, overlapEventsSpacing: 4});
+      let packedEvents = uut(overlappingEvents, {screenWidth: 310, dayStart: 0, overlapEventsSpacing: 4});
       packedEvents = _.sortBy(packedEvents, 'index');
       expect(packedEvents[0].width).toBe(96);
       expect(packedEvents[1].width).toBe(96);
@@ -102,16 +107,21 @@ describe('Timeline Packer utils', () => {
     });
 
     it('should set left position base when the 3 events overlap', () => {
-      const packedEvents = uut(events, {screenWidth: 300, dayStart: 0});
+      const packedEvents = uut(events, {screenWidth: 300, dayStart: 0, overlapEventsSpacing: 10, rightEdgeSpacing: 10});
       expect(packedEvents[0].left).toBe(0); // event 1
-      expect(packedEvents[1].left).toBe(100); // event 3
-      expect(packedEvents[2].left).toBe(200); // event 2
+      expect(packedEvents[1].left).toBeCloseTo(96.666); // event 3
+      expect(packedEvents[2].left).toBeCloseTo(193.333); // event 2
     });
 
     it('should set left position base when the 2 events overlap', () => {
-      const packedEvents = uut([events[0], events[1]], {screenWidth: 300, dayStart: 0});
+      const packedEvents = uut([events[0], events[1]], {
+        screenWidth: 300,
+        dayStart: 0,
+        overlapEventsSpacing: 10,
+        rightEdgeSpacing: 10
+      });
       expect(packedEvents[0].left).toBe(0); // event 1
-      expect(packedEvents[1].left).toBe(150); // event 3
+      expect(packedEvents[1].left).toBe(145); // event 3
     });
   });
 });
