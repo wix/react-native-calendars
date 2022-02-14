@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {FlatList, TouchableOpacity, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
+import { TouchableOpacity, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
