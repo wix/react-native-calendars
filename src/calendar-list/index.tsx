@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
+import {FlatList, TouchableOpacity, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
 import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
@@ -291,15 +291,17 @@ class CalendarList extends Component<CalendarListProps, State> {
     const {calendarStyle, horizontal, calendarWidth, testID, ...others} = this.props;
 
     return (
-      <CalendarListItem
-        {...others}
-        item={item}
-        testID={`${testID}_${item}`}
-        style={calendarStyle}
-        horizontal={horizontal}
-        calendarWidth={horizontal ? calendarWidth : undefined}
-        scrollToMonth={this.scrollToMonth}
-      />
+      <TouchableOpacity activeOpacity={1}>
+        <CalendarListItem
+          {...others}
+          item={item}
+          testID={`${testID}_${item}`}
+          style={calendarStyle}
+          horizontal={horizontal}
+          calendarWidth={horizontal ? calendarWidth : undefined}
+          scrollToMonth={this.scrollToMonth}
+        />
+      </TouchableOpacity>
     );
   };
 
