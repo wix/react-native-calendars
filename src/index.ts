@@ -19,5 +19,5 @@ export type {TimelineProps, TimelineEventProps, TimelinePackedEventProps} from '
 export {default as TimelineList} from './timeline-list';
 export {TimelineListProps, TimelineListRenderItemInfo} from './timeline-list';
 export {default as CalendarUtils} from './services';
-export type {DateData, AgendaEntry, AgendaSchedule} from './types';
+export type {DateData, AgendaSchedule} from './types';
 export {default as LocaleConfig} from 'xdate';
