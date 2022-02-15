@@ -1,7 +1,9 @@
 {
   "name": "Timeline",
   "description": "Timeline component",
-  "images": [],
+  "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/timeline-calendar.gif?raw=true"
+  ],
   "extends": ["ScrollView"],
   "extendsLink": ["https://reactnative.dev/docs/scrollview"],
   "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/timelineCalendar.tsx",

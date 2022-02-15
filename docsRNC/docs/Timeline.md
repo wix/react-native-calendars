@@ -4,7 +4,9 @@ Timeline component
 This component extends **[ScrollView](https://reactnative.dev/docs/scrollview)** props.
 :::
 
-<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}></div>
+<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/timeline-calendar.gif?raw=true'}/>
+
+</div>
 
 ## API
 

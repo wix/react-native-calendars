@@ -4,10 +4,11 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 6rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  height: 180px;
 }
 
 @media screen and (max-width: 966px) {

@@ -1,7 +1,9 @@
 {
   "name": "ExpandableCalendar",
   "description": "Expandable calendar component",
+  "note": "This component should be wrapped with `CalendarProvider` component.",
   "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/expandable-calendar.gif?raw=true"
   ],
   "extends": ["CalendarList"],
   "extendsLink": [

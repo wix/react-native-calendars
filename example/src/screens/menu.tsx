@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import testIDs from '../testIDs';
-import appIcon from '../img/app-icon-120x120.png';
+
+const appIcon = require('../img/logo.png');
 
 interface Props {
   componentId?: string;

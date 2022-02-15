@@ -28,12 +28,17 @@ if (components) {
       if (component.extendsLink) {
         extendsText = `[${extendsText}](${component.extendsLink})`;
       } else {
-        const extendedComponentName = _.last(_.split(extendsText, '/')); // Incubator/TextField -> TextField
+        const extendedComponentName = _.last(_.split(extendsText, '/'));
         extendsText = `[${extendedComponentName}](/docs/${extendsText})`;
       }
       content += `:::info\n`;
       content += `This component extends **${extendsText}** props.\n`;
       content += `:::\n`;
+    }
+
+    if (component.note) {
+      const noteText = component.note;
+      content += `**NOTE: ${noteText}**\n`;
     }
 
     /* Images */
