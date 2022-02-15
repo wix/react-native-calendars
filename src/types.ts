@@ -91,12 +91,6 @@ export interface Theme {
   };
 }
 
-export type AgendaEntry = {
-  name: string;
-  height: number;
-  day: string;
-}
-
-export type AgendaSchedule = {
-  [date: string]: AgendaEntry[];
-}
+export type AgendaSchedule<T> = {
+  [date: string]: T[];
+};
