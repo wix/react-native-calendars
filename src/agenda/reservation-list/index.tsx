@@ -44,6 +44,8 @@ export type ReservationListProps = ReservationProps & {
   refreshing?: boolean;
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
+
+  reservationKeyExtractor: PropTypes.Requireable<(...args: any[]) => any>,
 };
 
 interface DayAgenda {
@@ -258,7 +260,9 @@ class ReservationList extends Component<ReservationListProps, State> {
     );
   };
 
-  keyExtractor = (_item: DayAgenda, index: number) => String(index);
+  keyExtractor = (_item: DayAgenda, index: number) => {
+      return this.props.reservationKeyExtractor && this.props.reservationKeyExtractor(_item, index) || String(index);
+  }
 
   render() {
     const {items, selectedDay, theme, style} = this.props;
