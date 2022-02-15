@@ -20,10 +20,9 @@ import {weekDayNames, sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import {VelocityTracker} from '../velocityTracker';
-import {DateData} from '../types';
+import {DateData, AgendaSchedule} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
-import {AgendaSchedule} from '../types';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
@@ -33,8 +32,8 @@ const KNOB_HEIGHT = 24;
 
 export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
-   the value of date key has to be an empty array []. If there exists no value for date key it is
-   considered that the date in question is not yet loaded */
+  the value of date key kas to be an empty array []. If there exists no value for date key it is
+  considered that the date in question is not yet loaded */
   items?: AgendaSchedule;
   /** callback that gets called when items for a certain month should be loaded (month became visible) */
   loadItemsForMonth?: (data: DateData) => void;
@@ -45,10 +44,10 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   /** specify how agenda knob should look like */
   renderKnob?: () => JSX.Element;
   /** initially selected day */
-  selected?: string; //TODO: Should be renamed 'selectedDay'
+  selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
   /** Hide knob button. Default = false */
   hideKnob?: boolean;
-  /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
+  /** Whether the knob should always be visible (when hideKnob = false) */
   showClosingKnob?: boolean;
 }
 
@@ -74,25 +73,14 @@ export default class Agenda extends Component<AgendaProps, State> {
   static propTypes = {
     ...CalendarList.propTypes,
     ...ReservationList.propTypes,
-    /** agenda container style */
-    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
-    /** the list of items that have to be displayed in agenda. If you want to render item as empty date
-     the value of date key has to be an empty array []. If there exists no value for date key it is
-     considered that the date in question is not yet loaded */
     items: PropTypes.object,
-    /** callback that gets called when items for a certain month should be loaded (month became visible) */
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     loadItemsForMonth: PropTypes.func,
-    /** callback that fires when the calendar is opened or closed */
     onCalendarToggled: PropTypes.func,
-    /** callback that gets called when day changes while scrolling agenda list */
     onDayChange: PropTypes.func,
-    /** specify how agenda knob should look like */
     renderKnob: PropTypes.func,
-    /** initially selected day */
-    selected: PropTypes.any, //TODO: Should be renamed 'selectedDay'
-    /** Hide knob button. Default = false */
+    selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
-    /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
     showClosingKnob: PropTypes.bool
   };
 
@@ -147,7 +135,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   }
 
   componentDidUpdate(prevProps: AgendaProps) {
-    if (this.props.selected && !sameDate(parseDate(this.props.selected), parseDate(prevProps.selected))) {
+    if (!sameDate(parseDate(this.props.selected), parseDate(prevProps.selected))) {
       this.setState({selectedDay: parseDate(this.props.selected)});
     } else if (!prevProps.items) {
       this.loadReservations(this.props);

@@ -87,6 +87,10 @@ export interface TimelineProps {
    * Spacing between overlapping events
    */
   overlapEventsSpacing?: number;
+  /**
+   * Spacing to keep at the right edge (for background press)
+   */
+  rightEdgeSpacing?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -108,6 +112,7 @@ const Timeline = (props: TimelineProps) => {
     scrollOffset,
     onChangeOffset,
     overlapEventsSpacing,
+    rightEdgeSpacing,
     eventTapped
   } = props;
 
@@ -119,7 +124,7 @@ const Timeline = (props: TimelineProps) => {
 
   const packedEvents = useMemo(() => {
     const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
-    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing});
+    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing, rightEdgeSpacing});
   }, [events, start]);
 
   useEffect(() => {
@@ -144,7 +149,7 @@ const Timeline = (props: TimelineProps) => {
 
   const _onEventPress = useCallback(
     (eventIndex: number) => {
-      const event = events[eventIndex];
+      const event = packedEvents[eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
         eventTapped(event);
@@ -152,7 +157,7 @@ const Timeline = (props: TimelineProps) => {
         onEventPress?.(event);
       }
     },
-    [events, onEventPress, eventTapped]
+    [packedEvents, onEventPress, eventTapped]
   );
 
   const renderEvents = () => {

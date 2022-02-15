@@ -14,6 +14,10 @@ import {UpdateSources} from '../commons';
 const TOP_POSITION = 65;
 
 interface Props {
+  /** Specify theme properties to override specific styles for calendar parts */
+  theme?: Theme;
+  /** Specify style for calendar container element */
+  style?: StyleProp<ViewStyle>;
   /** Initial date in 'yyyy-MM-dd' format. Default = now */
   date: string;
   /** Callback for date change event */
@@ -28,8 +32,6 @@ interface Props {
   todayButtonStyle?: ViewStyle;
   /** The opacity for the disabled today button (0-1) */
   disabledOpacity?: number;
-  style?: StyleProp<ViewStyle>;
-  theme?: Theme;
 }
 export type CalendarContextProviderProps = Props;
 
@@ -41,19 +43,12 @@ class CalendarProvider extends Component<Props> {
   static displayName = 'CalendarProvider';
 
   static propTypes = {
-    /** Initial date in 'yyyy-MM-dd' format. Default = now */
     date: PropTypes.any.isRequired,
-    /** Callback for date change event */
     onDateChanged: PropTypes.func,
-    /** Callback for month change event */
     onMonthChange: PropTypes.func,
-    /** Whether to show the today button */
     showTodayButton: PropTypes.bool,
-    /** Today button's top position */
     todayBottomMargin: PropTypes.number,
-    /** Today button's style */
     todayButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** The opacity for the disabled today button (0-1) */
     disabledOpacity: PropTypes.number
   };
 

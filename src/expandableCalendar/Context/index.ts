@@ -1,6 +1,6 @@
 import React from 'react';
 import {UpdateSources} from '../commons';
-interface CalendarContextProps {
+export interface CalendarContextProps {
   date: string;
   prevDate: string;
   setDate: (date: string, source: UpdateSources) => void;
