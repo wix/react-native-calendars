@@ -10,25 +10,24 @@ import {getDefaultLocale} from '../../services';
 // @ts-expect-error
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
-import {Theme, AgendaEntry} from '../../types';
+import {Theme} from '../../types';
 
-
-export interface ReservationProps {
+export interface ReservationProps<T> {
   date?: XDate;
-  item?: AgendaEntry;
+  item?: T;
   /** Specify theme properties to override specific styles for item's parts. Default = {} */
   theme?: Theme;
   /** specify your item comparison function for increased performance */
-  rowHasChanged?: (a: AgendaEntry, b: AgendaEntry) => boolean;
+  rowHasChanged?: (a: T, b: T) => boolean;
   /** specify how each date should be rendered. date can be undefined if the item is not first in that day */
-  renderDay?: (date?: XDate, item?: AgendaEntry) => React.Component | JSX.Element;
+  renderDay?: (date?: XDate, item?: T) => React.Component | JSX.Element;
   /** specify how each item should be rendered in agenda */
-  renderItem?: (reservation: AgendaEntry, isFirst: boolean) => React.Component | JSX.Element;
+  renderItem?: (reservation: T, isFirst: boolean) => React.Component | JSX.Element;
   /** specify how empty date content with no items should be rendered */
   renderEmptyDate?: (date?: XDate) => React.Component | JSX.Element;
 }
 
-class Reservation extends Component<ReservationProps> {
+class Reservation<T = any> extends Component<ReservationProps<T>> {
   static displayName = 'Reservation';
 
   static propTypes = {
@@ -43,18 +42,18 @@ class Reservation extends Component<ReservationProps> {
 
   style;
 
-  constructor(props: ReservationProps) {
+  constructor(props: ReservationProps<T>) {
     super(props);
 
     this.style = styleConstructor(props.theme);
   }
 
-  shouldComponentUpdate(nextProps: ReservationProps) {
+  shouldComponentUpdate(nextProps: ReservationProps<T>) {
     const d1 = this.props.date;
     const d2 = nextProps.date;
     const r1 = this.props.item;
     const r2 = nextProps.item;
-    
+
     let changed = true;
     if (!d1 && !d2) {
       changed = false;
@@ -74,7 +73,7 @@ class Reservation extends Component<ReservationProps> {
     return changed;
   }
 
-  renderDate(date?: XDate, item?: AgendaEntry) {
+  renderDate(date?: XDate, item?: T) {
     if (isFunction(this.props.renderDay)) {
       return this.props.renderDay(date, item);
     }
@@ -94,13 +93,13 @@ class Reservation extends Component<ReservationProps> {
         </View>
       );
     } else {
-      return <View style={this.style.day}/>;
+      return <View style={this.style.day} />;
     }
   }
 
   render() {
     const {item, date} = this.props;
-    
+
     let content;
     if (item) {
       const firstItem = date ? true : false;
