@@ -92,10 +92,10 @@ export default class Agenda<T = any> extends Component<AgendaProps<T>, State> {
   private currentMonth: XDate;
   private knobTracker: VelocityTracker;
   private _isMounted: boolean | undefined;
-  private scrollPad: React.RefObject<any> = React.createRef();
-  private calendar: React.RefObject<CalendarList> = React.createRef();
-  private knob: React.RefObject<View> = React.createRef();
-  public list: React.RefObject<ReservationList> = React.createRef();
+  private scrollPad = React.createRef<any>();
+  private calendar = React.createRef<CalendarList>();
+  private knob = React.createRef<View>();
+  public list = React.createRef<ReservationList<T>>();
 
   constructor(props: AgendaProps<T>) {
     super(props);

@@ -88,7 +88,7 @@ class ReservationList<T = any> extends Component<ReservationListProps<T>, State<
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
     reservationsKeyExtractor: PropTypes.func
-  };
+  } as {}; // PropTypes are just for JS. TypeScript needs this cast so that it uses the provided generic prop types.
 
   static defaultProps = {
     refreshing: false,
@@ -100,7 +100,7 @@ class ReservationList<T = any> extends Component<ReservationListProps<T>, State<
   private heights: number[];
   private selectedDay?: XDate;
   private scrollOver: boolean;
-  private list: React.RefObject<FlatList> = React.createRef();
+  private list = React.createRef<FlatList<DayAgenda<T>>>();
 
   constructor(props: ReservationListProps<T>) {
     super(props);
