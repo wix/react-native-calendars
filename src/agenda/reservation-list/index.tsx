@@ -45,7 +45,7 @@ export type ReservationListProps = ReservationProps & {
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
   /** Extractor for underlying FlatList. Ensure that this is unique per item, or else scrolling may have duplicated and / or missing items.  */
-  keyExtractor?: (item: DayAgenda, index: number) => string;
+  reservationsKeyExtractor?: (item: DayAgenda, index: number) => string;
 };
 
 interface DayAgenda {
@@ -262,7 +262,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   };
 
   keyExtractor = (item: DayAgenda, index: number) => {
-    return this.props.keyExtractor?.(item, index) || `${item?.reservation?.day}${index}`;
+    return this.props.reservationsKeyExtractor?.(item, index) || `${item?.reservation?.day}${index}`;
   }
 
   render() {
