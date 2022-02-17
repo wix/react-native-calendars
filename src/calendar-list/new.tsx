@@ -43,7 +43,9 @@ const CalendarList = (props: CalendarListProps) => {
   const list = useRef<ScrollView>();
   const [items, setItems] = useState(getDatesArray(initialDate, scrollRange));
   const [currentMonth, setCurrentMonth] = useState(initialDate || items[scrollRange]);
-
+  const monthFromArrowPress = useRef<XDate>();
+  const useStaticHeader = staticHeader && horizontal;
+  const headerProps = extractComponentProps(CalendarHeader, props);
 
   // NOTE: Responsible for sync scroll position after reloading new items
   useEffect(() => {
@@ -53,6 +55,23 @@ const CalendarList = (props: CalendarListProps) => {
       list.current?.scrollToOffset?.(scrollRange * constants.screenWidth, 0, false);
     }, 0);
   }, [items]);
+
+  useEffect(() => {
+    scrollToMonth(monthFromArrowPress.current);
+  }, [monthFromArrowPress.current]);
+
+  const getMonthIndex = (month: XDate) => {
+    const string = month.toString('yyyy-MM');
+    return items.findIndex(item => item.includes(string));
+  };
+
+  const scrollToMonth = (month?: XDate) => {
+    if (month) {
+      const index = getMonthIndex(month);
+      // @ts-expect-error
+      list.current?.scrollToOffset?.(index * constants.screenWidth, 0, true);
+    }
+  };
 
   const updateMonth = (count: number, month?: XDate) => {
     if (month) {
@@ -70,33 +89,17 @@ const CalendarList = (props: CalendarListProps) => {
     return updateMonth(-1, month);
   };
 
-  const getMonthIndex = (month: XDate) => {
-    const string = month.toString('yyyy-MM');
-    return items.findIndex(item => item.includes(string));
-  };
-
-  const scrollToMonth = (month?: XDate) => {
-    if (month) {
-      const index = getMonthIndex(month);
-      console.warn('toMonth: ', month, index);
-      // @ts-expect-error
-      list.current?.scrollToOffset?.(index * constants.screenWidth, 0, true);
-    }
-  };
-
   const scrollToNextMonth = useCallback((method: () => void, month?: XDate) => {
-    console.warn('toNext: ', month);
-    scrollToMonth(addMonth(month));
+    monthFromArrowPress.current = addMonth(month);
     calendarProps?.onPressArrowLeft?.(method, month);
   }, []);
 
   const scrollToPreviousMonth = useCallback((method: () => void, month?: XDate) => {
-    scrollToMonth(subtractMonth(month));
+    monthFromArrowPress.current = subtractMonth(month);
     calendarProps?.onPressArrowRight?.(method, month);
   }, []);
 
   const onReachEdge = useCallback(pageIndex => {
-      console.warn('end');
       const newItems = getDatesArray(items[pageIndex], scrollRange);
       setItems(newItems);
     },
@@ -104,13 +107,12 @@ const CalendarList = (props: CalendarListProps) => {
   );
 
   const onPageChange = useCallback((pageIndex: number, prevPageIndex: number, info: {scrolledByUser: boolean}) => {
-    setCurrentMonth(items[pageIndex]);
-  }, []);
+    if (useStaticHeader && info.scrolledByUser) {
+      setCurrentMonth(items[pageIndex]);
+    }
+  }, [items]);
 
   const renderStaticHeader = () => {
-    const useStaticHeader = staticHeader && horizontal;
-    const headerProps = extractComponentProps(CalendarHeader, props);
-
     if (useStaticHeader) {
       return (
         <CalendarHeader
@@ -128,8 +130,6 @@ const CalendarList = (props: CalendarListProps) => {
   };
 
   const renderItem = useCallback((_type: any, item: string) => {
-    const headerProps = extractComponentProps(CalendarHeader, props);
-
     return (
       <Calendar
         {...calendarProps}
