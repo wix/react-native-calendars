@@ -57,7 +57,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
     return !sameMonth(r1, r2) || !!(r2.propBump && r2.propBump !== r1.propBump);
   }
 
-  onPressArrowLeft = (_: any, month: any) => {
+  onPressArrowLeft = (_: () => void, month: XDate) => {
     const {onPressArrowLeft, scrollToMonth} = this.props;
     const monthClone = month.clone();
 
@@ -76,7 +76,7 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
     }
   };
 
-  onPressArrowRight = (_: any, month: any) => {
+  onPressArrowRight = (_: () => void, month: XDate) => {
     const {onPressArrowRight, scrollToMonth} = this.props;
     const monthClone = month.clone();
 

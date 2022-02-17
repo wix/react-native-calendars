@@ -1,0 +1,196 @@
+import XDate from 'xdate';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {View, ScrollViewProps, ScrollView} from 'react-native';
+import constants from '../commons/constants';
+import {toMarkingFormat} from '../interface';
+import {extractComponentProps} from '../componentUpdater';
+import Calendar, {CalendarProps} from '../calendar';
+import CalendarHeader from '../calendar/header';
+import InfiniteList from '../infinite-list';
+import styleConstructor from './style';
+
+export interface CalendarListProps {
+  /** Initially visible month */
+  initialDate?: string;
+  /** Whether the scroll is horizontal */
+  horizontal?: boolean;
+  /** The amount of months allowed to scroll to the past and future. Default = 50 */
+  scrollRange?: number;
+  /** Whether to use static header that will not scroll with the list (horizontal only) */
+  staticHeader?: boolean;
+  /** Props to pass the list */
+  scrollViewProps?: ScrollViewProps;
+  /** Props to pass the list items */
+  calendarProps?: CalendarProps;
+  /** Identifier for testing */
+  testID?: string;
+}
+
+const NUMBER_OF_PAGES = 5;
+const CALENDAR_HEIGHT = 360;
+
+const CalendarList = (props: CalendarListProps) => {
+  const {
+    initialDate,
+    horizontal = true, 
+    scrollRange = NUMBER_OF_PAGES,
+    staticHeader, 
+    scrollViewProps,
+    calendarProps,
+    testID
+  } = props;
+  const style = useRef(styleConstructor(calendarProps?.theme));
+  const list = useRef<ScrollView>();
+  const [items, setItems] = useState(getDatesArray(initialDate, scrollRange));
+  const [currentMonth, setCurrentMonth] = useState(initialDate || items[scrollRange]);
+
+
+  // NOTE: Responsible for sync scroll position after reloading new items
+  useEffect(() => {
+    console.warn('items update: ', items[scrollRange], items);
+    setTimeout(() => {
+      // @ts-expect-error
+      list.current?.scrollToOffset?.(scrollRange * constants.screenWidth, 0, false);
+    }, 0);
+  }, [items]);
+
+  const updateMonth = (count: number, month?: XDate) => {
+    if (month) {
+      const updated = new XDate(month).addMonths(count, true);
+      setCurrentMonth(toMarkingFormat(updated));
+      return updated;
+    }
+  };
+
+  const addMonth = (month?: XDate) => {
+    return updateMonth(1, month);
+  };
+
+  const subtractMonth = (month?: XDate) => {
+    return updateMonth(-1, month);
+  };
+
+  const getMonthIndex = (month: XDate) => {
+    const string = month.toString('yyyy-MM');
+    return items.findIndex(item => item.includes(string));
+  };
+
+  const scrollToMonth = (month?: XDate) => {
+    if (month) {
+      const index = getMonthIndex(month);
+      console.warn('toMonth: ', month, index);
+      // @ts-expect-error
+      list.current?.scrollToOffset?.(index * constants.screenWidth, 0, true);
+    }
+  };
+
+  const scrollToNextMonth = useCallback((method: () => void, month?: XDate) => {
+    console.warn('toNext: ', month);
+    scrollToMonth(addMonth(month));
+    calendarProps?.onPressArrowLeft?.(method, month);
+  }, []);
+
+  const scrollToPreviousMonth = useCallback((method: () => void, month?: XDate) => {
+    scrollToMonth(subtractMonth(month));
+    calendarProps?.onPressArrowRight?.(method, month);
+  }, []);
+
+  const onReachEdge = useCallback(pageIndex => {
+      console.warn('end');
+      const newItems = getDatesArray(items[pageIndex], scrollRange);
+      setItems(newItems);
+    },
+    [items]
+  );
+
+  const onPageChange = useCallback((pageIndex: number, prevPageIndex: number, info: {scrolledByUser: boolean}) => {
+    setCurrentMonth(items[pageIndex]);
+  }, []);
+
+  const renderStaticHeader = () => {
+    const useStaticHeader = staticHeader && horizontal;
+    const headerProps = extractComponentProps(CalendarHeader, props);
+
+    if (useStaticHeader) {
+      return (
+        <CalendarHeader
+          {...headerProps}
+          month={new XDate(currentMonth)}
+          onPressArrowRight={scrollToNextMonth}
+          onPressArrowLeft={scrollToPreviousMonth}
+          style={[style.current.staticHeader, calendarProps?.headerStyle]}
+          accessibilityElementsHidden={true} // iOS
+          importantForAccessibility={'no-hide-descendants'} // Android
+          testID={'static-header'}
+        />
+      );
+    }
+  };
+
+  const renderItem = useCallback((_type: any, item: string) => {
+    const headerProps = extractComponentProps(CalendarHeader, props);
+
+    return (
+      <Calendar
+        {...calendarProps}
+        {...headerProps}
+        initialDate={item}
+        disableMonthChange
+        onPressArrowRight={scrollToNextMonth}
+        onPressArrowLeft={scrollToPreviousMonth} 
+        hideExtraDays={calendarProps?.hideExtraDays || true}
+        style={[style.current.calendar, calendarProps?.style]}
+        headerStyle={horizontal ? calendarProps?.headerStyle : undefined}
+        testID={`${testID}_${item}`}
+        // context={context}
+      />
+    );
+  }, [calendarProps]);
+
+  return (
+    <View style={style.current.flatListContainer}>
+      <InfiniteList
+        key="calendar-list"
+        ref={list}
+        data={items}
+        renderItem={renderItem}
+        extendedState={calendarProps?.markedDates}
+        // horizontal={horizontal}
+        style={style.current.container}
+        initialPageIndex={scrollRange}
+        pageHeight={CALENDAR_HEIGHT}
+        pageWidth={constants.screenWidth}
+        onPageChange={onPageChange}
+        onReachEdge={onReachEdge}
+        scrollViewProps={{
+          ...scrollViewProps,
+          showsHorizontalScrollIndicator: false,
+          showsVerticalScrollIndicator: false
+        }}
+      />
+      {renderStaticHeader()}
+    </View>
+  );
+};
+export default CalendarList;
+
+
+function getDate(date: string, index: number) {
+  const d = new XDate(date);
+  d.addMonths(index);
+  
+  // if (index !== 0) {
+    d.setDate(1);
+  // }
+  return toMarkingFormat(d);
+}
+
+function getDatesArray(date?: string, numberOfPages = NUMBER_OF_PAGES) {
+  const d = date || new XDate().toString();
+  const array = [];
+  for (let index = -numberOfPages; index <= numberOfPages; index++) {
+    const newDate = getDate(d, index);
+    array.push(newDate);
+  }
+  return array;
+}
