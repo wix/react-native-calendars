@@ -60,7 +60,7 @@ export interface MarkingProps extends DotProps {
 }
 
 const Marking = (props: MarkingProps) => {
-  const {theme, type, dots, periods, color, startingDay, endingDay, selected, dotColor} = props;
+  const {theme, type, dots, periods, selected, dotColor} = props;
   const style = styleConstructor(theme);
 
   const getItems = (items?: DOT[] | PERIOD[]) => {
@@ -90,6 +90,7 @@ const Marking = (props: MarkingProps) => {
   };
 
   const renderPeriod = (index: number, item: any) => {
+    const {color, startingDay, endingDay} = item;
     const styles = [
       style.period,
       {
@@ -97,10 +98,10 @@ const Marking = (props: MarkingProps) => {
       }
     ];
     if (startingDay) {
-      style.push(style.startingDay);
+      styles.push(style.startingDay);
     }
     if (endingDay) {
-      style.push(style.endingDay);
+      styles.push(style.endingDay);
     }
     return <View key={index} style={styles}/>;
   };
