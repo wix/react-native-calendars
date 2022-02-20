@@ -100,6 +100,7 @@ const CalendarList = (props: CalendarListProps) => {
   }, []);
 
   const onReachEdge = useCallback(pageIndex => {
+    console.warn('end ', pageIndex);
       const newItems = getDatesArray(items[pageIndex], scrollRange);
       setItems(newItems);
     },
