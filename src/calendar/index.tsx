@@ -120,7 +120,7 @@ class Calendar extends Component<CalendarProps, State> {
       parseDate(this.props.current || this.props.initialDate) : new XDate()
   };
   style = styleConstructor(this.props.theme);
-  header: React.RefObject<CalendarHeader> = React.createRef();
+  header: React.RefObject<any> = React.createRef();
 
   static getDerivedStateFromProps(nextProps: CalendarProps, prevState: State) {
     if (nextProps?.initialDate && nextProps?.initialDate !== prevState.prevInitialDate) {
