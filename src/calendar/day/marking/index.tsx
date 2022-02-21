@@ -7,7 +7,6 @@ import {extractComponentProps} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
 
-
 export enum Markings {
   DOT = 'dot',
   MULTI_DOT = 'multi-dot',
@@ -19,7 +18,7 @@ export enum Markings {
 type CustomStyle = {
   container?: ViewStyle;
   text?: TextStyle;
-}
+};
 
 type DOT = {
   key?: string;
@@ -66,7 +65,9 @@ const Marking = (props: MarkingProps) => {
   const getItems = (items?: DOT[] | PERIOD[]) => {
     if (items && Array.isArray(items) && items.length > 0) {
       // Filter out items so that we process only those which have color property
-      const validItems = filter(items, function(o: DOT | PERIOD) { return o.color; });
+      const validItems = filter(items, function (o: DOT | PERIOD) {
+        return o.color;
+      });
 
       return validItems.map((item, index) => {
         return type === Markings.MULTI_DOT ? renderDot(index, item) : renderPeriod(index, item);

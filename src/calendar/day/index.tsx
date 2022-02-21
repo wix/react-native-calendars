@@ -12,7 +12,6 @@ import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 
-
 const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
 
 export interface DayProps extends Omit<BasicDayProps, 'date'> {

@@ -26,25 +26,38 @@ export interface BasicDayProps extends ViewProps {
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForInactiveDays?: boolean;
-  
-  /** Test ID*/
+
+  /** Test ID */
   testID?: string;
   /** Accessibility label */
   accessibilityLabel?: string;
 }
 
 const BasicDay = (props: BasicDayProps) => {
-  const {theme, date, onPress, onLongPress, markingType, marking, state, disableAllTouchEventsForDisabledDays, disableAllTouchEventsForInactiveDays, accessibilityLabel, children, testID} = props;
+  const {
+    theme,
+    date,
+    onPress,
+    onLongPress,
+    markingType,
+    marking,
+    state,
+    disableAllTouchEventsForDisabledDays,
+    disableAllTouchEventsForInactiveDays,
+    accessibilityLabel,
+    children,
+    testID
+  } = props;
   const style = styleConstructor(theme);
   const _marking = marking || {};
 
-  const _onPress = useCallback(() => {
-    onPress?.(date);
-  }, [onPress]);
-  
-  const _onLongPress = useCallback(() => {
-    onLongPress?.(date);
-  }, [onLongPress]);
+  const isSelected = _marking.selected || state === 'selected';
+  const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
+  const isInactive = _marking?.inactive;
+  const isToday = state === 'today';
+  const isMultiDot = markingType === Marking.markings.MULTI_DOT;
+  const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
+  const isCustom = markingType === Marking.markings.CUSTOM;
 
   const shouldDisableTouchEvent = () => {
     const {disableTouchEvent} = _marking;
@@ -59,14 +72,6 @@ const BasicDay = (props: BasicDayProps) => {
     }
     return disableTouch;
   };
-
-  const isSelected = _marking.selected || state === 'selected';
-  const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
-  const isInactive = _marking?.inactive;
-  const isToday = state === 'today';
-  const isMultiDot = markingType === Marking.markings.MULTI_DOT;
-  const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
-  const isCustom = markingType === Marking.markings.CUSTOM;
 
   const getContainerStyle = () => {
     const {customStyles, selectedColor} = _marking;
@@ -116,6 +121,14 @@ const BasicDay = (props: BasicDayProps) => {
 
     return styles;
   };
+
+  const _onPress = useCallback(() => {
+    onPress?.(date);
+  }, [onPress]);
+
+  const _onLongPress = useCallback(() => {
+    onLongPress?.(date);
+  }, [onLongPress]);
 
   const renderMarking = () => {
     const {marked, dotColor, dots, periods} = _marking;
@@ -197,5 +210,4 @@ BasicDay.propTypes = {
   date: PropTypes.object,
   disableAllTouchEventsForDisabledDays: PropTypes.bool,
   disableAllTouchEventsForInactiveDays: PropTypes.bool
-
 };
