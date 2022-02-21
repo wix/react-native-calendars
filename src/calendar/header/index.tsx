@@ -53,6 +53,8 @@ export interface CalendarHeaderProps {
   onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
+  /** Handler which gets executed when press on Year / Month in header */
+  onPressHeader?: () => void;
   /** Disable left arrow */
   disableArrowLeft?: boolean;
   /** Disable right arrow */
@@ -63,7 +65,7 @@ export interface CalendarHeaderProps {
   renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
-  
+
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
   testID?: string;
@@ -89,12 +91,13 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     renderArrow: PropTypes.func,
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func,
+    onPressHeader: PropTypes.func,
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
     renderHeader: PropTypes.any,
     customHeaderTitle: PropTypes.any,
-    
+
     webAriaLevel: PropTypes.number
   };
 
@@ -181,7 +184,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
   });
 
   renderHeader = () => {
-    const {customHeaderTitle, renderHeader, month, monthFormat, testID, webAriaLevel} = this.props;
+    const {customHeaderTitle, renderHeader, month, monthFormat, testID, webAriaLevel, onPressHeader} = this.props;
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
 
     if (renderHeader) {
@@ -192,7 +195,18 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
       return customHeaderTitle;
     }
 
-    return (
+    return onPressHeader ? (
+      <TouchableOpacity onPress={onPressHeader}>
+        <Text
+          allowFontScaling={false}
+          style={this.style.monthText}
+          testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
+          {...webProps}
+        >
+          {formatNumbers(month?.toString(monthFormat))}
+        </Text>
+      </TouchableOpacity>
+    ) : (
       <Fragment>
         <Text
           allowFontScaling={false}
