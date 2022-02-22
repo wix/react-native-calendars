@@ -275,13 +275,13 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
-  - ReactNativeNavigation (7.25.1):
+  - ReactNativeNavigation (7.25.4):
     - HMSegmentedControl
     - React-Core
     - React-RCTImage
     - React-RCTText
-    - ReactNativeNavigation/Core (= 7.25.1)
-  - ReactNativeNavigation/Core (7.25.1):
+    - ReactNativeNavigation/Core (= 7.25.4)
+  - ReactNativeNavigation/Core (7.25.4):
     - HMSegmentedControl
     - React-Core
     - React-RCTImage
@@ -424,9 +424,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
-  ReactNativeNavigation: 6e747bdf88f138088a105285274170b3fc0404ed
+  ReactNativeNavigation: 146bec8f834564f05637b43f469b9ca6e1cbe94f
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
 
 PODFILE CHECKSUM: ffb49f0b7d9752430ecff5493154eaa340c2e819
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.10.1
