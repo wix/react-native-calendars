@@ -54,7 +54,7 @@ export interface CalendarHeaderProps {
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Handler which gets executed when press on Year / Month in header */
-  onPressHeader?: () => void;
+  onPressHeader?: (month?: XDate) => void;
   /** Disable left arrow */
   disableArrowLeft?: boolean;
   /** Disable right arrow */
@@ -196,7 +196,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     }
 
     return onPressHeader ? (
-      <TouchableOpacity onPress={onPressHeader}>
+      <TouchableOpacity onPress={() => onPressHeader(month)}>
         <Text
           allowFontScaling={false}
           style={this.style.monthText}
