@@ -8,6 +8,7 @@ import React, {Component} from 'react';
 import {shouldUpdate} from '../../componentUpdater';
 import {formatNumbers, isToday} from '../../dateutils';
 import {xdateToData} from '../../interface';
+import {getDefaultLocale} from '../../services';
 // @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay, {BasicDayProps} from './basic';
@@ -29,9 +30,7 @@ export default class Day extends Component<DayProps> {
 
   static propTypes = {
     ...basicDayPropsTypes,
-    /** The day to render */
     day: PropTypes.object,
-    /** Provide custom day rendering component */
     dayComponent: PropTypes.any
   };
 
@@ -78,10 +77,8 @@ export default class Day extends Component<DayProps> {
   }
 
   getAccessibilityLabel = memoize((day, marking, isToday) => {
-    // @ts-expect-error
-    const today = XDate.locales[XDate.defaultLocale].today || 'today';
-    // @ts-expect-error
-    const formatAccessibilityLabel = XDate.locales[XDate.defaultLocale].formatAccessibilityLabel || 'dddd d MMMM yyyy';
+    const today = getDefaultLocale().today || 'today';
+    const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
     const markingLabel = this.getMarkingLabel(marking);
 
     return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
@@ -111,7 +108,7 @@ export default class Day extends Component<DayProps> {
         testID={`${SELECT_DATE_SLOT}-${date?.dateString}`}
         accessibilityLabel={accessibilityLabel}
       >
-        {formatNumbers(date ? day?.getDate() : day)}
+        {formatNumbers(day?.getDate())}
       </Component>
     );
   }

@@ -1,5 +1,5 @@
 import XDate from 'xdate';
-import {sameMonth, sameWeek, isLTE, isGTE, month, page, generateDay} from './dateutils';
+import {sameMonth, sameWeek, isLTE, isGTE, month, page, generateDay, isPastDate} from './dateutils';
 
 describe('dateutils', function () {
   describe('sameMonth()', function () {
@@ -52,6 +52,21 @@ describe('dateutils', function () {
       expect(sameWeek(a, b, 1)).toBe(true);
 
       expect(sameWeek(a, b, 2)).toBe(false);
+    });
+  });
+
+  describe('isPastDate', () => {
+    it('Expect to get true while passing a past date', () => {
+      const pastDate = '2021-04-04';
+      const futureDate = '2050-04-04';
+      const today1 = XDate();
+      const today2 = new Date();
+
+      expect(isPastDate(futureDate)).toBe(false);
+      expect(isPastDate(pastDate)).toBe(true);
+
+      expect(isPastDate(today1)).toBe(false);
+      expect(isPastDate(today2)).toBe(false);
     });
   });
 

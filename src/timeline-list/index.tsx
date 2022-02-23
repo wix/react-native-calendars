@@ -10,14 +10,47 @@ import Timeline, {TimelineProps} from '../timeline/Timeline';
 import InfiniteList from '../infinite-list';
 import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
 
+export interface TimelineListRenderItemInfo {
+  item: string;
+  index: number;
+  isCurrent: boolean;
+  isInitialPage: boolean;
+  isToday: boolean;
+}
+
 export interface TimelineListProps {
+  /**
+   * Map of all timeline events ({[date]: events})
+   */
   events: {[date: string]: TimelineProps['events']};
-  timelineProps?: Omit<TimelineProps, 'events' | 'showNowIndicator'>;
+  /**
+   * General timeline props to pass to each timeline item
+   */
+  timelineProps?: Omit<TimelineProps, 'events' | 'scrollToFirst' | 'showNowIndicator' | 'scrollToNow' | 'initialTime'>;
+  /**
+   * Pass to render a custom Timeline item
+   */
+  renderItem?: (timelineProps: TimelineProps, info: TimelineListRenderItemInfo) => JSX.Element;
+  /**
+   * Should scroll to first event of the day
+   */
+  scrollToFirst?: boolean;
+  /**
+   * Should show now indicator (shown only on "today" timeline)
+   */
   showNowIndicator?: boolean;
+  /**
+   * Should initially scroll to current time (relevant only for "today" timeline)
+   */
+  scrollToNow?: boolean;
+  /**
+   * Should initially scroll to a specific time (relevant only for NOT "today" timelines)
+   */
+  initialTime?: TimelineProps['initialTime'];
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events, showNowIndicator} = props;
+  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
   const {date, updateSource, setDate} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
@@ -73,21 +106,32 @@ const TimelineList = (props: TimelineListProps) => {
   }, []);
 
   const renderPage = useCallback(
-    (_type, item) => {
+    (_type, item, index) => {
       const timelineEvent = events[item];
       const isCurrent = prevDate.current === item;
+      const isInitialPage = index === INITIAL_PAGE;
+      const _isToday = isToday(new XDate(item));
+
+      const _timelineProps = {
+        ...timelineProps,
+        key: item,
+        date: item,
+        events: timelineEvent,
+        scrollToNow: _isToday && isInitialPage && scrollToNow,
+        initialTime: !_isToday && isInitialPage ? initialTime : undefined,
+        scrollToFirst: !_isToday && isInitialPage && scrollToFirst,
+        scrollOffset: isCurrent ? undefined : timelineOffset,
+        onChangeOffset: onTimelineOffsetChange,
+        showNowIndicator: _isToday && showNowIndicator
+      };
+
+      if (renderItem) {
+        return renderItem(_timelineProps, {item, index, isCurrent, isInitialPage, isToday: _isToday});
+      }
+
       return (
         <>
-          <Timeline
-            {...timelineProps}
-            key={item}
-            date={item}
-            scrollToFirst={false}
-            events={timelineEvent}
-            scrollOffset={isCurrent ? undefined : timelineOffset}
-            onChangeOffset={onTimelineOffsetChange}
-            showNowIndicator={showNowIndicator && isToday(new XDate(item))}
-          />
+          <Timeline {..._timelineProps} />
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text> */}
         </>

@@ -16,6 +16,11 @@ export function getCalendarDateString(date?: Date | string | number) {
   }
 }
 
+export function getDefaultLocale(): any {
+  return XDate.locales[XDate.defaultLocale];
+}
+
 export default {
-  getCalendarDateString
+  getCalendarDateString,
+  getDefaultLocale
 };

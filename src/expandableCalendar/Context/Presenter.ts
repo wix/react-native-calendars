@@ -1,7 +1,8 @@
 import XDate from 'xdate';
 
-import {sameMonth, isToday} from '../../dateutils';
+import {sameMonth, isToday, isPastDate} from '../../dateutils';
 import {xdateToData, toMarkingFormat} from '../../interface';
+import {getDefaultLocale} from '../../services';
 import {UpdateSources} from '../commons';
 import {CalendarContextProviderProps} from './Provider';
 
@@ -9,26 +10,6 @@ const commons = require('../commons');
 const TOP_POSITION = 65;
 
 class Presenter {
-  _isPastDate(date: string) {
-    const today = new XDate();
-    const d = new XDate(date);
-
-    if (today.getFullYear() > d.getFullYear()) {
-      return true;
-    }
-    if (today.getFullYear() === d.getFullYear()) {
-      if (today.getMonth() > d.getMonth()) {
-        return true;
-      }
-      if (today.getMonth() === d.getMonth()) {
-        if (today.getDate() > d.getDate()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   _getIconDown = () => {
     return require('../../img/down.png');
   };
@@ -41,7 +22,7 @@ class Presenter {
     if (!showTodayButton) {
       return undefined;
     }
-    const icon = this._isPastDate(date) ? this._getIconDown() : this._getIconUp();
+    const icon = isPastDate(date) ? this._getIconDown() : this._getIconUp();
     return icon;
   };
 
@@ -52,14 +33,13 @@ class Presenter {
     updateState: (buttonIcon: number) => void,
     updateSource: UpdateSources
   ) => {
-    const isSameMonth = sameMonth(new XDate(date), new XDate(newDate));
     const buttonIcon = this.getButtonIcon(date, props.showTodayButton);
 
     updateState(buttonIcon);
 
     props.onDateChanged?.(date, updateSource);
 
-    if (!isSameMonth) {
+    if (!sameMonth(new XDate(date), new XDate(newDate))) {
       props.onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
   };
@@ -107,8 +87,7 @@ class Presenter {
   };
 
   getTodayFormatted = () => {
-    // @ts-expect-error
-    const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+    const todayString = getDefaultLocale().today || commons.todayString;
     const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
     return today;
   };

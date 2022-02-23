@@ -25,7 +25,7 @@ class Week extends PureComponent<WeekProps> {
 
   getWeek(date?: string) {
     if (date) {
-      return getWeekDates(new XDate(date), this.props.firstDay);
+      return getWeekDates(date, this.props.firstDay);
     }
   }
 
