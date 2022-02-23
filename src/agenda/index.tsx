@@ -448,7 +448,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
         {calendarListComponent?.()}
-        <View style={{...this.style.reservations, marginTop: calendarListComponent ? 0 : this.style.reservations.marginTop }}>{this.renderReservations()}</View>
+        <View style={{...this.style.reservations, marginTop: calendarListComponent ? 0 : this.style.reservations.marginTop}}>{this.renderReservations()}</View>
         {!calendarListComponent && (
           <>
             <Animated.View style={headerStyle}>
