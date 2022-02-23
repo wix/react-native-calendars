@@ -83,7 +83,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     renderKnob: PropTypes.func,
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
-    showClosingKnob: PropTypes.bool
+    showClosingKnob: PropTypes.bool,
     /** specify how calendar list should look like */
     calendarListComponent: PropTypes.func
   };
