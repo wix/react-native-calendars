@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, MutableRefObject} from 'react';
+import {useCallback, useEffect, MutableRefObject} from 'react';
 import {NativeScrollEvent, NativeSyntheticEvent, ScrollView} from 'react-native';
 
 interface UseTimelineOffsetProps {
@@ -9,8 +9,6 @@ interface UseTimelineOffsetProps {
 
 export default (props: UseTimelineOffsetProps) => {
   const {onChangeOffset, scrollOffset, scrollViewRef} = props;
-
-  const inMomentum = useRef(false);
 
   useEffect(() => {
     // NOTE: The main reason for this feature is to sync the offset
@@ -25,29 +23,20 @@ export default (props: UseTimelineOffsetProps) => {
 
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offset = event.nativeEvent.contentOffset.y;
-    setTimeout(() => {
-      if (!inMomentum.current) {
-        onChangeOffset?.(offset);
-      }
-    }, 0);
+    const velocity = event.nativeEvent.velocity?.y;
+
+    if (velocity === 0) {
+      onChangeOffset?.(offset);
+    }
   }, []);
 
-  const onMomentumScrollBegin = useCallback(() => {
-    inMomentum.current = true;
+  const onMomentumScrollEnd = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    onChangeOffset?.(event.nativeEvent.contentOffset.y);
   }, []);
-
-  const onMomentumScrollEnd = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      inMomentum.current = false;
-      onChangeOffset?.(event.nativeEvent.contentOffset.y);
-    },
-    [onChangeOffset]
-  );
 
   return {
     scrollEvents: {
       onScrollEndDrag,
-      onMomentumScrollBegin,
       onMomentumScrollEnd
     }
   };

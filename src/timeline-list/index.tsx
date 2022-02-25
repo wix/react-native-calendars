@@ -120,7 +120,7 @@ const TimelineList = (props: TimelineListProps) => {
         scrollToNow: _isToday && isInitialPage && scrollToNow,
         initialTime: !_isToday && isInitialPage ? initialTime : undefined,
         scrollToFirst: !_isToday && isInitialPage && scrollToFirst,
-        scrollOffset: isCurrent ? undefined : timelineOffset,
+        scrollOffset: timelineOffset,
         onChangeOffset: onTimelineOffsetChange,
         showNowIndicator: _isToday && showNowIndicator
       };
