@@ -33,6 +33,7 @@ import asCalendarConsumer from './asCalendarConsumer';
 import WeekCalendar from './WeekCalendar';
 import Week from './week';
 
+import constants from '../commons/constants';
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 enum Positions {
@@ -258,9 +259,9 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
   /** Utils */
   getOpenHeight() {
     if (!this.props.horizontal) {
-      return Math.max(commons.screenHeight, commons.screenWidth);
+      return Math.max(constants.screenHeight, constants.screenWidth);
     }
-    return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (commons.isAndroid ? 3 : 0);
+    return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
   }
 
   getYear(date: XDate) {

@@ -1,6 +1,7 @@
 // @flow
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Theme} from '../types';
+import constants from '../commons/constants';
 
 // const eventPaddingLeft = 4
 export const HOURS_SIDEBAR_WIDTH = 72;
@@ -124,7 +125,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       position: 'absolute',
       color: 'rgb(170,170,170)',
       fontSize: 10,
-      fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',
+      fontFamily: constants.isIOS ? 'Helvetica Neue' : 'Roboto',
       fontWeight: '500',
       paddingLeft: 12,
       textAlign: 'center',
