@@ -4,7 +4,6 @@ import XDate from 'xdate';
 import React, {useMemo} from 'react';
 
 import {formatNumbers, isToday} from '../../dateutils';
-import {xdateToData} from '../../interface';
 import {getDefaultLocale} from '../../services';
 // @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';
@@ -12,18 +11,20 @@ import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 
+
 const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
 
 export interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
-  day?: XDate;
+  day?: string;
   /** Provide custom day rendering component */
   dayComponent?: React.ComponentType<DayProps & {date?: DateData}>;
 }
 
 const Day = (props: DayProps) => {
   const {day, marking, dayComponent, markingType} = props;
-  const _isToday = day ? isToday(day) : undefined;
+  const _day = day ? new XDate(day) : undefined;
+  const _isToday = _day ? isToday(_day) : undefined;
 
   const markingLabel = useMemo(() => {
     let label = '';
@@ -58,27 +59,23 @@ const Day = (props: DayProps) => {
     const today = getDefaultLocale().today || 'today';
     const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
 
-    return `${_isToday ? today : ''} ${day?.toString(formatAccessibilityLabel)} ${markingLabel}`;
-  }, [day, marking, _isToday]);
+    return `${_isToday ? today : ''} ${_day?.toString(formatAccessibilityLabel)} ${markingLabel}`;
+  }, [_day, marking, _isToday]);
   
   const dayProps = useMemo(() => {
     return omit(props, 'day');
-  }, [day]);
-  
-  const date = useMemo(() => {
-    return day && xdateToData(day);
-  }, [day]);
+  }, [_day]);
   
   const Component = dayComponent || markingType === 'period' ? PeriodDay : BasicDay;
 
   return (
     <Component
       {...dayProps}
-      date={date}
+      date={day}
       accessibilityLabel={getAccessibilityLabel}
-      testID={`${SELECT_DATE_SLOT}-${date?.dateString}`}
+      testID={`${SELECT_DATE_SLOT}-${day}`}
     >
-      {formatNumbers(day?.getDate())}
+      {formatNumbers(_day?.getDate())}
     </Component>
   );
 };
@@ -87,6 +84,6 @@ export default Day;
 Day.displayName = 'Day';
 Day.propTypes = {
   ...basicDayPropsTypes,
-  day: PropTypes.object,
+  day: PropTypes.string,
   dayComponent: PropTypes.any
 };

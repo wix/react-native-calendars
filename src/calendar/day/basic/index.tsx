@@ -1,11 +1,14 @@
+import XDate from 'xdate';
 import values from 'lodash/values';
 import PropTypes from 'prop-types';
 import React, {Fragment, useCallback, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
+import {xdateToData} from '../../../interface';
 import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
+
 
 export interface BasicDayProps extends ViewProps {
   state?: DayState;
@@ -20,7 +23,7 @@ export interface BasicDayProps extends ViewProps {
   /** onLongPress callback */
   onLongPress?: (date?: DateData) => void;
   /** The date to return from press callbacks */
-  date?: DateData;
+  date?: string;
 
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
@@ -49,8 +52,8 @@ const BasicDay = (props: BasicDayProps) => {
     testID
   } = props;
   const style = useRef(styleConstructor(theme));
+  const dateData = useRef(date ? xdateToData(new XDate(date)) : undefined);
   const _marking = marking || {};
-
   const isSelected = _marking.selected || state === 'selected';
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
   const isInactive = _marking?.inactive;
@@ -123,11 +126,11 @@ const BasicDay = (props: BasicDayProps) => {
   };
 
   const _onPress = useCallback(() => {
-    onPress?.(date);
+    onPress?.(dateData.current);
   }, [onPress]);
 
   const _onLongPress = useCallback(() => {
-    onLongPress?.(date);
+    onLongPress?.(dateData.current);
   }, [onLongPress]);
 
   const renderMarking = () => {
@@ -207,7 +210,7 @@ BasicDay.propTypes = {
   theme: PropTypes.object,
   onPress: PropTypes.func,
   onLongPress: PropTypes.func,
-  date: PropTypes.object,
+  date: PropTypes.string,
   disableAllTouchEventsForDisabledDays: PropTypes.bool,
   disableAllTouchEventsForInactiveDays: PropTypes.bool
 };
