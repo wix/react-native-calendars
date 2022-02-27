@@ -122,8 +122,6 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   }, [onPressArrowLeft]);
 
   const onPressRight = () => {
-    console.warn('swipe left');
-
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(addMonth, month);
     }
