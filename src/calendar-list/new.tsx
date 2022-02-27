@@ -1,5 +1,5 @@
 import XDate from 'xdate';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState, useMemo} from 'react';
 import {View, ScrollViewProps, ScrollView} from 'react-native';
 import constants from '../commons/constants';
 import {toMarkingFormat} from '../interface';
@@ -46,6 +46,9 @@ const CalendarList = (props: CalendarListProps) => {
   const monthFromArrowPress = useRef<XDate>();
   const useStaticHeader = staticHeader && horizontal;
   const headerProps = extractComponentProps(CalendarHeader, props);
+  const staticHeaderStyle = useMemo(() => {
+    return [style.current.staticHeader, calendarProps?.headerStyle];
+  }, [calendarProps?.headerStyle]);
 
   // NOTE: Responsible for sync scroll position after reloading new items
   useEffect(() => {
@@ -121,8 +124,8 @@ const CalendarList = (props: CalendarListProps) => {
           month={new XDate(currentMonth)}
           onPressArrowRight={scrollToNextMonth}
           onPressArrowLeft={scrollToPreviousMonth}
-          style={[style.current.staticHeader, calendarProps?.headerStyle]}
-          accessibilityElementsHidden={true} // iOS
+          style={staticHeaderStyle}
+          accessibilityElementsHidden // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
           testID={'static-header'}
         />
