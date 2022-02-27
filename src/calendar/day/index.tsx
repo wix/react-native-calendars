@@ -60,21 +60,16 @@ const Day = (props: DayProps) => {
 
     return `${_isToday ? today : ''} ${day?.toString(formatAccessibilityLabel)} ${markingLabel}`;
   }, [day, marking, _isToday]);
-
-  const Component = useMemo(() => {
-    if (dayComponent) {
-      return dayComponent;
-    }
-    return markingType === 'period' ? PeriodDay : BasicDay;
-  }, [dayComponent, markingType]);
-
+  
   const dayProps = useMemo(() => {
     return omit(props, 'day');
   }, [day]);
-
+  
   const date = useMemo(() => {
     return day && xdateToData(day);
   }, [day]);
+  
+  const Component = dayComponent || markingType === 'period' ? PeriodDay : BasicDay;
 
   return (
     <Component
