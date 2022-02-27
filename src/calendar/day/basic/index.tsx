@@ -1,6 +1,6 @@
 import values from 'lodash/values';
 import PropTypes from 'prop-types';
-import React, {Fragment, useCallback} from 'react';
+import React, {Fragment, useCallback, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
 import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
@@ -48,7 +48,7 @@ const BasicDay = (props: BasicDayProps) => {
     children,
     testID
   } = props;
-  const style = styleConstructor(theme);
+  const style = useRef(styleConstructor(theme));
   const _marking = marking || {};
 
   const isSelected = _marking.selected || state === 'selected';
@@ -75,15 +75,15 @@ const BasicDay = (props: BasicDayProps) => {
 
   const getContainerStyle = () => {
     const {customStyles, selectedColor} = _marking;
-    const styles = [style.base];
+    const styles = [style.current.base];
 
     if (isSelected) {
-      styles.push(style.selected);
+      styles.push(style.current.selected);
       if (selectedColor) {
         styles.push({backgroundColor: selectedColor});
       }
     } else if (isToday) {
-      styles.push(style.today);
+      styles.push(style.current.today);
     }
 
     //Custom marking type
@@ -99,19 +99,19 @@ const BasicDay = (props: BasicDayProps) => {
 
   const getTextStyle = () => {
     const {customStyles, selectedTextColor} = _marking;
-    const styles = [style.text];
+    const styles = [style.current.text];
 
     if (isSelected) {
-      styles.push(style.selectedText);
+      styles.push(style.current.selectedText);
       if (selectedTextColor) {
         styles.push({color: selectedTextColor});
       }
     } else if (isDisabled) {
-      styles.push(style.disabledText);
+      styles.push(style.current.disabledText);
     } else if (isToday) {
-      styles.push(style.todayText);
+      styles.push(style.current.todayText);
     } else if (isInactive) {
-      styles.push(style.inactiveText);
+      styles.push(style.current.inactiveText);
     }
 
     //Custom marking type
@@ -188,7 +188,7 @@ const BasicDay = (props: BasicDayProps) => {
 
   const renderPeriodsContainer = () => {
     return (
-      <View style={style.container}>
+      <View style={style.current.container}>
         {renderContainer()}
         {renderMarking()}
       </View>

@@ -2,7 +2,7 @@ import includes from 'lodash/includes';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle} from 'react';
+import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle, useRef} from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -95,7 +95,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     accessibilityElementsHidden,
     importantForAccessibility
   } = props;
-  const style = styleConstructor(theme);
+  const style = useRef(styleConstructor(theme));
 
   useImperativeHandle(ref, () => ({
     onPressLeft,
@@ -143,10 +143,10 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const weekDaysNames = weekDayNames(firstDay);
 
     return weekDaysNames.map((day: string, index: number) => {
-      const dayStyle = [style.dayHeader];
+      const dayStyle = [style.current.dayHeader];
 
       if (includes(disabledDaysIndexes, index)) {
-        dayStyle.push(style.disabledDayHeader);
+        dayStyle.push(style.current.disabledDayHeader);
       }
 
       const dayTextAtIndex = `dayTextAtIndex${index}`;
@@ -179,7 +179,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       <Fragment>
         <Text
           allowFontScaling={false}
-          style={style.monthText}
+          style={style.current.monthText}
           testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
           {...webProps}
         >
@@ -206,7 +206,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       <TouchableOpacity
         onPress={!shouldDisable ? onPress : undefined}
         disabled={shouldDisable}
-        style={style.arrow}
+        style={style.current.arrow}
         hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
         testID={testId}
       >
@@ -214,7 +214,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
           renderArrow(renderArrowDirection)
         ) : (
           // @ts-expect-error style?: StyleProp<ImageStyle>
-          <Image source={imageSource} style={shouldDisable ? style.disabledArrowImage : style.arrowImage}/>
+          <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>
         )}
       </TouchableOpacity>
     );
@@ -234,8 +234,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
-        <View style={style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
-          {showWeekNumbers && <Text allowFontScaling={false} style={style.dayHeader}></Text>}
+        <View style={style.current.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
+          {showWeekNumbers && <Text allowFontScaling={false} style={style.current.dayHeader}></Text>}
           {renderWeekDays}
         </View>
       );
@@ -256,9 +256,9 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
       importantForAccessibility={importantForAccessibility} // Android
     >
-      <View style={style.header}>
+      <View style={style.current.header}>
         {_renderArrow('left')}
-        <View style={style.headerContainer}>
+        <View style={style.current.headerContainer}>
           {_renderHeader()}
           {renderIndicator()}
         </View>
