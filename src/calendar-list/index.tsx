@@ -113,6 +113,7 @@ class CalendarList extends Component<CalendarListProps, State> {
   };
 
   style: any;
+  staticHeaderStyle: any;
   list: React.RefObject<FlatList> = React.createRef();
   viewabilityConfig = {
     itemVisiblePercentThreshold: 20
@@ -122,6 +123,7 @@ class CalendarList extends Component<CalendarListProps, State> {
     super(props);
 
     this.style = styleConstructor(props.theme);
+    this.staticHeaderStyle = [this.style.staticHeader, props.headerStyle];
 
     const rows = [];
     const texts = [];
@@ -313,7 +315,7 @@ class CalendarList extends Component<CalendarListProps, State> {
         <CalendarHeader
           {...headerProps}
           testID={STATIC_HEADER}
-          style={[this.style.staticHeader, headerStyle]}
+          style={this.staticHeaderStyle}
           month={this.state.currentMonth}
           addMonth={this.addMonth}
           accessibilityElementsHidden={true} // iOS
