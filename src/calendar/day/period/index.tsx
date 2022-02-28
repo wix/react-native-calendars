@@ -8,7 +8,6 @@ import {Theme, DayState, DateData} from '../../../types';
 import styleConstructor from './style';
 import Dot from '../dot';
 import {MarkingProps} from '../marking';
-import {useWhyDidYouUpdate} from 'react-recipes';
 
 
 export interface PeriodDayProps extends ViewProps {
@@ -31,7 +30,6 @@ type MarkingStyle = {
 }
 
 const PeriodDay = (props: PeriodDayProps) => {
-  useWhyDidYouUpdate('PeriodDay', props);
   const {theme, marking, date, onPress, onLongPress, state, accessibilityLabel, testID, children} = props;
   const dateData = date ? xdateToData(new XDate(date)) : undefined;
   const style = useRef(styleConstructor(theme));
