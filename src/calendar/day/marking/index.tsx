@@ -1,11 +1,10 @@
 import filter from 'lodash/filter';
 
 import React, {Component} from 'react';
-import {View, ViewStyle, TextStyle} from 'react-native';
+import {View, ViewStyle, TextStyle, StyleProp} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
-// @ts-expect-error
-import {shouldUpdate, extractComponentProps} from '../../../component-updater';
+import {shouldUpdate, extractComponentProps} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
 
@@ -19,8 +18,8 @@ export enum Markings {
 }
 
 type CustomStyle = {
-  container?: ViewStyle,
-  text?: TextStyle
+  container?: ViewStyle;
+  text?: TextStyle;
 }
 
 type DOT = {
@@ -45,8 +44,11 @@ export interface MarkingProps extends DotProps {
   inactive?: boolean;
   disableTouchEvent?: boolean;
   activeOpacity?: number;
+  textColor?: string;
   selectedColor?: string;
   selectedTextColor?: string;
+  customTextStyle?: StyleProp<TextStyle>;
+  customContainerStyle?: StyleProp<ViewStyle>;
   dotColor?: string;
   //multi-dot
   dots?: DOT[];
@@ -59,7 +61,7 @@ export interface MarkingProps extends DotProps {
 }
 
 export default class Marking extends Component<MarkingProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'Marking';
 
   static markings = Markings;
   
@@ -114,7 +116,7 @@ export default class Marking extends Component<MarkingProps> {
     }
   }
 
-  renderMultiMarkings(containerStyle: Object, items?: DOT[] | PERIOD[]) {
+  renderMultiMarkings(containerStyle: object, items?: DOT[] | PERIOD[]) {
     return <View style={containerStyle}>{this.getItems(items)}</View>;
   }
 

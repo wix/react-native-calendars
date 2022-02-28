@@ -1,9 +1,10 @@
 // @flow
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Theme} from '../types';
+import constants from '../commons/constants';
 
 // const eventPaddingLeft = 4
-const leftMargin = 50 - 1;
+export const HOURS_SIDEBAR_WIDTH = 72;
 
 export default function styleConstructor(theme: Theme = {}, calendarHeight: number) {
   return StyleSheet.create({
@@ -86,24 +87,49 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     line: {
       height: 1,
       position: 'absolute',
-      left: leftMargin,
+      left: HOURS_SIDEBAR_WIDTH - 16,
       backgroundColor: 'rgb(216,216,216)',
       ...theme.line
     },
-    lineNow: {
+    verticalLine: {
+      position: 'absolute',
+      width: 1,
+      height: '105%',
+      backgroundColor: 'rgb(216,216,216)',
+      left: HOURS_SIDEBAR_WIDTH
+    },
+    nowIndicator: {
+      position: 'absolute',
+      left: HOURS_SIDEBAR_WIDTH,
+      right: 0,
+    },
+    nowIndicatorLine: {
       height: 1,
       position: 'absolute',
-      left: leftMargin,
+      left: 0,
+      right: 0,
       backgroundColor: 'red',
-      ...theme.lineNow
+      ...theme.nowIndicatorLine
+    },
+    nowIndicatorKnob: {
+      position: 'absolute',
+      left: -3,
+      top: -3,
+      width: 7,
+      height: 7,
+      borderRadius: 4,
+      backgroundColor: 'red',
+      ...theme.nowIndicatorKnob
     },
     timeLabel: {
       position: 'absolute',
-      left: 15,
       color: 'rgb(170,170,170)',
       fontSize: 10,
-      fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',
+      fontFamily: constants.isIOS ? 'Helvetica Neue' : 'Roboto',
       fontWeight: '500',
+      paddingLeft: 12,
+      textAlign: 'center',
+      width: HOURS_SIDEBAR_WIDTH - 16,
       ...theme.timeLabel
     }
   });

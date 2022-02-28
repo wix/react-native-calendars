@@ -1,18 +1,15 @@
-import {ViewStyle, TextStyle} from 'react-native';
-import {UpdateSources} from './expandableCalendar/commons';
-
+import {ViewStyle, TextStyle, StyleProp} from 'react-native';
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 export type Direction = 'left' | 'right';
-export type UpdateSource = keyof typeof UpdateSources;
 export type DateData = {
-  year: number,
-  month: number,
-  day: number,
-  timestamp: number,
-  dateString: string
-}
+  year: number;
+  month: number;
+  day: number;
+  timestamp: number;
+  dateString: string;
+};
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;
@@ -24,19 +21,20 @@ export interface Theme {
   eventSummary?: object;
   eventTimes?: object;
   line?: object;
-  lineNow?: object;
+  nowIndicatorLine?: object;
+  nowIndicatorKnob?: object;
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
   indicatorColor?: string;
   stylesheet?: {
-    calendar?: {main?: object, header?: object};
+    calendar?: {main?: object; header?: object};
     day?: {basic?: object; period?: object};
     dot?: object;
     marking?: object;
     'calendar-list'?: {main?: object};
-    agenda?: {main?: object, list?: object};
-    expandable?: {main?: object}
+    agenda?: {main?: object; list?: object};
+    expandable?: {main?: object};
   };
   textSectionTitleColor?: string;
   textSectionTitleDisabledColor?: string;
@@ -87,4 +85,18 @@ export interface Theme {
   todayButtonPosition?: string;
   arrowHeight?: number;
   arrowWidth?: number;
+  weekVerticalMargin?: number;
+  'stylesheet.calendar.header'?: {
+    week: StyleProp<ViewStyle>;
+  };
+}
+
+export type AgendaEntry = {
+  name: string;
+  height: number;
+  day: string;
+}
+
+export type AgendaSchedule = {
+  [date: string]: AgendaEntry[];
 }

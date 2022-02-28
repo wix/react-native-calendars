@@ -1,7 +1,7 @@
-const {default: Presenter} = require('./Presenter');
 import XDate from 'xdate';
 import {UpdateSources} from '../commons';
 import {toMarkingFormat} from '../../interface';
+import Presenter from './Presenter';
 
 describe('Context provider tests', () => {
   const makeUUT = () => {
@@ -10,22 +10,8 @@ describe('Context provider tests', () => {
 
   const pastDate = '2021-04-04';
   const futureDate = '2050-04-04';
-  const today1 = XDate();
-  const today2 = new Date();
   const todayDate = toMarkingFormat(XDate());
   const updateSources = UpdateSources.CALENDAR_INIT;
-
-  describe('isPastDate function tests', () => {
-    it('Expect to get true while passing a past date', () => {
-      const {_isPastDate} = makeUUT();
-
-      expect(_isPastDate(futureDate)).toBe(false);
-      expect(_isPastDate(pastDate)).toBe(true);
-
-      expect(_isPastDate(today1)).toBe(false);
-      expect(_isPastDate(today2)).toBe(false);
-    });
-  });
 
   describe('Button Icon test', () => {
     it('Expect to get down button on past date', () => {
@@ -120,13 +106,6 @@ describe('Context provider tests', () => {
 
       expect(shouldAnimateTodayButton({showTodayButton: false})).toBe(false);
       expect(shouldAnimateTodayButton({showTodayButton: true})).toBe(true);
-    });
-
-    it("Expect isToday to return true when passing XDate formatted today's date", () => {
-      const {_isToday} = makeUUT();
-
-      expect(_isToday(pastDate)).toBe(false);
-      expect(_isToday(todayDate)).toBe(true);
     });
 
     it("Expect animation value to be top position when today's date passed", () => {

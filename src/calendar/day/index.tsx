@@ -1,4 +1,3 @@
-import get from 'lodash/get';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
@@ -6,35 +5,32 @@ import memoize from 'memoize-one';
 
 import React, {Component} from 'react';
 
-// @ts-expect-error
-import {shouldUpdate} from '../../component-updater';
-// @ts-expect-error
-import {formatNumbers, isToday as dateutils_isToday} from '../../dateutils';
-// @ts-expect-error
+import {shouldUpdate} from '../../componentUpdater';
+import {formatNumbers, isToday} from '../../dateutils';
 import {xdateToData} from '../../interface';
+import {getDefaultLocale} from '../../services';
 // @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 import {MarkingProps} from './marking';
+import {DateData} from '../../types';
 
 const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
 
 export interface DayProps extends Omit<BasicDayProps, 'date'> {
   /** The day to render */
-  day?: Date;
+  day?: XDate;
   /** Provide custom day rendering component */
-  dayComponent?: any;
+  dayComponent?: React.ComponentType<DayProps & {date?: DateData}>;
 }
 
 export default class Day extends Component<DayProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'Day';
 
   static propTypes = {
     ...basicDayPropsTypes,
-    /** The day to render */
     day: PropTypes.object,
-    /** Provide custom day rendering component */
     dayComponent: PropTypes.any
   };
 
@@ -81,15 +77,11 @@ export default class Day extends Component<DayProps> {
   }
 
   getAccessibilityLabel = memoize((day, marking, isToday) => {
-    const today = get(XDate, 'locales[XDate.defaultLocale].today');
-    const formatAccessibilityLabel = get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
+    const today = getDefaultLocale().today || 'today';
+    const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
     const markingLabel = this.getMarkingLabel(marking);
 
-    if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
-    }
-
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
+    return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
   });
 
   getDayComponent() {
@@ -103,20 +95,20 @@ export default class Day extends Component<DayProps> {
 
   render() {
     const {day, marking} = this.props;
-    const date = xdateToData(day);
-    const isToday = dateutils_isToday(day);
+    const date = day && xdateToData(day);
+    const _isToday = day ? isToday(day) : undefined;
     const Component = this.getDayComponent();
     const dayProps = omit(this.props, 'day');
-    const accessibilityLabel = this.getAccessibilityLabel(day, marking, isToday);
+    const accessibilityLabel = this.getAccessibilityLabel(day, marking, _isToday);
 
     return (
       <Component
         {...dayProps}
         date={date}
-        testID={`${SELECT_DATE_SLOT}-${date.dateString}`}
+        testID={`${SELECT_DATE_SLOT}-${date?.dateString}`}
         accessibilityLabel={accessibilityLabel}
       >
-        {formatNumbers(date ? day?.getDate() : day)}
+        {formatNumbers(day?.getDate())}
       </Component>
     );
   }

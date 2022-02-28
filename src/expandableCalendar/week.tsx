@@ -1,40 +1,32 @@
-import PropTypes from 'prop-types';
-
+import XDate from 'xdate';
 import React, {PureComponent} from 'react';
 import {View} from 'react-native';
 
-// @ts-expect-error
 import {getWeekDates, sameMonth} from '../dateutils';
-// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
-// @ts-expect-error
 import {getState} from '../day-state-manager';
-// @ts-expect-error
-import {extractComponentProps} from '../component-updater';
+import {extractComponentProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
 
-interface Props extends CalendarProps {
-  current: XDate
-}
-export type WeekProps = Props;
+export type WeekProps = CalendarProps;
 
-
-class Week extends PureComponent<Props> {
-  static displayName = 'IGNORE';
+class Week extends PureComponent<WeekProps> {
+  static displayName = 'Week';
 
   static propTypes = {
-    ...Calendar.propTypes,
-    current: PropTypes.any
+    ...Calendar.propTypes
   };
 
   style = styleConstructor(this.props.theme);
 
-  getWeek(date: XDate) {
-    return getWeekDates(date, this.props.firstDay);
+  getWeek(date?: string) {
+    if (date) {
+      return getWeekDates(date, this.props.firstDay);
+    }
   }
 
   // renderWeekNumber (weekNumber) {
@@ -44,11 +36,12 @@ class Week extends PureComponent<Props> {
   renderDay(day: XDate, id: number) {
     const {current, hideExtraDays, markedDates} = this.props;
     const dayProps = extractComponentProps(Day, this.props);
-
+    const currXdate = parseDate(current);
+    
     // hide extra days
     if (current && hideExtraDays) {
-      if (!sameMonth(day, parseDate(current))) {
-        return <View key={id} style={this.style.emptyDayContainer} />;
+      if (!sameMonth(day, currXdate)) {
+        return <View key={id} style={this.style.emptyDayContainer}/>;
       }
     }
 
@@ -57,7 +50,7 @@ class Week extends PureComponent<Props> {
         <Day
           {...dayProps}
           day={day}
-          state={getState(day, parseDate(current), this.props)}
+          state={getState(day, currXdate, this.props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.props.onDayPress}
           onLongPress={this.props.onDayPress}

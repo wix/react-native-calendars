@@ -21,12 +21,11 @@ export default function getStyle(theme: Theme = {}) {
       backgroundColor: appStyle.calendarBackground
     },
     week: {
-      marginTop: 7,
-      marginBottom: 7,
+      marginVertical: appStyle.weekVerticalMargin,
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
-    // @ts-ignore
+    // @ts-expect-error
     ...(theme['stylesheet.calendar.main'] || {})
   });
 }

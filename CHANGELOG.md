@@ -745,3 +745,52 @@
 ## Changed
 - Use modern export keyword (PR #1615).
 - Remove global and move types to types.ts.
+
+## [1.1268.0] - 2021-10-11
+
+## Fixed
+- Demo app load.
+- ExpandableCalendar - add throttle to onVisibleMonthsChange callback.
+
+## [1.1269.0] - 2021-11-17
+
+## Fixed
+- Fix eslint config and fix lint errors.
+- CalendarConsumer - fix passed ref (PR #1674).
+- Agenda - fix style Typo (animatedContainer -> animatedContainer) (PR #1670).
+
+## Changed
+- Migrating internal tools to TS.
+- Migrating demo files to TS.
+
+## [1.1270.0] - 2021-11-29
+- testIDs - reverting to js file with module.exports.
+
+## [1.1271.0] - 2021-12-7
+
+## Fixed
+- ContextProvider - 'onDateChanged' return type (should be 'string' and not 'Date').
+
+
+## [1.1272.0] - 2021-12-13
+
+## Added
+- ExpandableCalendar - Add 'closeOnDayPress' prop (PR #1673).
+- new theme prop - 'weekVerticalMargin' to control week row margin (PR #1682).
+- Calendar - add 'initialDate' prop to allow reset the calendar with new date.
+
+## Fixed
+- README - 'try it out' section missing steps (PR #1624).
+- Day - fix accessibility label localization (PR #1694).
+- Agenda - renders only for the first item of the day (PR #1699).
+- ExpandableCalendar - Only hide extra days when vertical and open (PR #1705).
+- ts configuration.
+
+## Changed
+- Replacing lodash 'invoke' with optional chaining.
+- Removing JS 'Date' as a type.
+- Calendar and CalendarList - removing unused parameter 'doNotTriggerListeners' from updateMonth().
+- 'input.js' - renaming 'velocityTracker'.
+- 'test.js' - renaming 'testUtils' and removing from folder.
+
+*** End of changelog - please see release tags for notes ***

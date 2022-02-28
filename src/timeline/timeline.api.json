@@ -1,0 +1,82 @@
+{
+  "name": "Timeline",
+  "description": "Timeline component",
+  "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/timeline-calendar.gif?raw=true"
+  ],
+  "extends": ["ScrollView"],
+  "extendsLink": ["https://reactnative.dev/docs/scrollview"],
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/timelineCalendar.tsx",
+  "props": [
+    {
+      "name": "theme",
+      "type": "Theme",
+      "description": "Specify theme properties to override specific styles for calendar parts"
+    },
+    {
+      "name": "style",
+      "type": "ViewStyle",
+      "description": "Specify style for calendar container element"
+    },
+    {
+      "name": "events",
+      "type": "Event[]",
+      "description": "List of events to render on the timeline"
+    },
+    {
+      "name": "start",
+      "type": "number",
+      "description": "The timeline day start time",
+      "default": "0"
+    },
+    {
+      "name": "end",
+      "type": "number",
+      "description": "The timeline day end time",
+      "default": "24"
+    },
+    {
+      "name": "onEventPress",
+      "type": "(event: Event) => void",
+      "description": "Handler which gets executed when event is pressed"
+    },
+    {
+      "name": "onBackgroundLongPress",
+      "type": "(timeString: string, time: NewEventTime) => void",
+      "description": "Handler which gets executed when background is long pressed. Pass to handle creation of a new event"
+    },
+    {
+      "name": "onBackgroundLongPressOut",
+      "type": "(timeString: string, time: NewEventTime) => void",
+      "description": "Handler which gets executed when background's long pressed released. Pass to handle creation of a new event"
+    },
+    {
+      "name": "renderEvent",
+      "type": "(event: PackedEvent) => JSX.Element",
+      "description": "Specify a custom event block"
+    },
+    {
+      "name": "scrollToFirst",
+      "type": "boolean",
+      "description": "Whether to scroll to the first event"
+    },
+    {
+      "name": "format24h",
+      "type": "boolean",
+      "description": "Whether to use 24 hours format for the timeline hours",
+      "default": "true"
+    },
+    {
+      "name": "overlapEventsSpacing",
+      "type": "number",
+      "description": "Spacing between overlapping events",
+      "default": "10"
+    },
+    {
+      "name": "rightEdgeSpacing",
+      "type": "number",
+      "description": "Spacing to keep at the right edge (for background press)",
+      "default": "10"
+    }
+  ]
+}

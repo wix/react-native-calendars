@@ -12,7 +12,7 @@ export default function styleConstructor(theme: Theme = {}) {
       flex: 1,
       overflow: 'hidden'
     },
-    animatedContiner: {
+    animatedContainer: {
       flex: 1
     },
     knob,
@@ -49,9 +49,10 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     scrollPadStyle: {
       position: 'absolute',
-      width: 80
+      width: '100%',
+      alignSelf: 'center'
     },
-    // @ts-ignore
+    // @ts-expect-error
     ...(theme['stylesheet.agenda.main'] || {})
   });
 }

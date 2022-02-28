@@ -1,7 +1,6 @@
 import get from 'lodash/get';
 import map from 'lodash/map';
 import omit from 'lodash/omit';
-import invoke from 'lodash/invoke';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
 import PropTypes from 'prop-types';
@@ -21,20 +20,20 @@ import {
   ViewToken
 } from 'react-native';
 
-// @ts-expect-error
 import {isToday, isGTE, sameDate} from '../dateutils';
-// @ts-expect-error
 import {getMoment} from '../momentResolver';
-// @ts-expect-error
 import {parseDate} from '../interface';
+import {getDefaultLocale} from '../services';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
-
+import constants from '../commons/constants';
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 
-interface Props extends SectionListProps<any, DefaultSectionT> {
+export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
+  /** Specify theme properties to override specific styles for calendar parts */
+  theme?: Theme;
   /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
   dayFormat?: string;
   /** a function to custom format the section header's title */
@@ -52,10 +51,9 @@ interface Props extends SectionListProps<any, DefaultSectionT> {
   viewOffset?: number;
   /** enable scrolling the agenda list to the next date with content when pressing a day without content */
   scrollToNextEvent?: boolean;
-  theme?: Theme;
+  
   context?: any;
 }
-export type AgendaListProps = Props;
 
 /**
  * @description: AgendaList component
@@ -63,23 +61,16 @@ export type AgendaListProps = Props;
  * @extends: SectionList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-class AgendaList extends Component<Props> {
+class AgendaList extends Component<AgendaListProps> {
   static displayName = 'AgendaList';
 
   static propTypes = {
     // ...SectionList.propTypes,
-    /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
     dayFormat: PropTypes.string,
-    /** a function to custom format the section header's title */
     dayFormatter: PropTypes.func,
-    /** whether to use moment.js for date string formatting
-     * (remember to pass 'dayFormat' with appropriate format, like 'dddd, MMM D') */
     useMoment: PropTypes.bool,
-    /** whether to mark today's title with the "Today, ..." string. Default = true */
     markToday: PropTypes.bool,
-    /** style passed to the section view */
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** whether to block the date change in calendar (and calendar context provider) when agenda scrolls */
     avoidDateUpdates: PropTypes.bool
   };
 
@@ -108,7 +99,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: AgendaListProps) {
     const {updateSource, date} = this.props.context;
     if (date !== prevProps.context.date) {
       // NOTE: on first init data should set first section to the current date!!!
@@ -118,7 +109,7 @@ class AgendaList extends Component<Props> {
     }
   }
 
-  getSectionIndex(date: Date) {
+  getSectionIndex(date: string) {
     let i;
     map(this.props.sections, (section, index) => {
       // NOTE: sections titles should match current date format!!!
@@ -130,7 +121,7 @@ class AgendaList extends Component<Props> {
     return i;
   }
 
-  getNextSectionIndex(date: Date) {
+  getNextSectionIndex(date: string) {
     let i = 0;
     const {sections} = this.props;
     for (let j = 1; j < sections.length; j++) {
@@ -165,8 +156,7 @@ class AgendaList extends Component<Props> {
     }
 
     if (markToday) {
-      // @ts-expect-error
-      const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
+      const todayString = getDefaultLocale().today || commons.todayString;
       const today = isToday(new XDate(title));
       sectionTitle = today ? `${todayString}, ${sectionTitle}` : sectionTitle;
     }
@@ -190,7 +180,7 @@ class AgendaList extends Component<Props> {
         sectionIndex: sectionIndex,
         itemIndex: 0,
         viewPosition: 0, // position at the top
-        viewOffset: (commons.isAndroid ? this.sectionHeight : 0) + viewOffset
+        viewOffset: (constants.isAndroid ? this.sectionHeight : 0) + viewOffset
       });
     }
   }
@@ -202,7 +192,7 @@ class AgendaList extends Component<Props> {
         this._topSection = topSection;
         if (this.didScroll && !this.props.avoidDateUpdates) {
           // to avoid setDate() on first load (while setting the initial context.date value)
-          invoke(this.props.context, 'setDate', this._topSection, updateSources.LIST_DRAG);
+          this.props.context.setDate?.(this._topSection, updateSources.LIST_DRAG);
         }
       }
     }
@@ -212,19 +202,19 @@ class AgendaList extends Component<Props> {
     if (!this.didScroll) {
       this.didScroll = true;
     }
-    invoke(this.props, 'onScroll', event);
+    this.props.onScroll?.(event);
   };
 
   onMomentumScrollBegin = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    invoke(this.props.context, 'setDisabled', true);
-    invoke(this.props, 'onMomentumScrollBegin', event);
+    this.props.context.setDisabled?.(true);
+    this.props.onMomentumScrollBegin?.(event);
   };
 
   onMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     // when list momentum ends AND when scrollToSection scroll ends
     this.sectionScroll = false;
-    invoke(this.props.context, 'setDisabled', false);
-    invoke(this.props, 'onMomentumScrollEnd', event);
+    this.props.context.setDisabled?.(false);
+    this.props.onMomentumScrollEnd?.(event);
   };
 
   onScrollToIndexFailed = (info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
@@ -281,8 +271,8 @@ class AgendaList extends Component<Props> {
   }
 
   // getItemLayout = (data, index) => {
-  //   return {length: commons.screenWidth, offset: commons.screenWidth  * index, index};
+  //   return {length: constants.screenWidth, offset: constants.screenWidth  * index, index};
   // }
 }
 
-export default asCalendarConsumer(AgendaList);
+export default asCalendarConsumer<AgendaListProps>(AgendaList);

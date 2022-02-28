@@ -4,25 +4,26 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, View, StyleProp, ViewStyle} from 'react-native';
 
-// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
-import {Theme, UpdateSource, DateData} from '../../types';
+import {Theme, DateData} from '../../types';
 import styleConstructor from '../style';
-import CalendarContext from '.';
+import CalendarContext from './index';
 import Presenter from './Presenter';
+import {UpdateSources} from '../commons';
 
-
-const commons = require('../commons');
-const updateSources = commons.UpdateSources;
 const TOP_POSITION = 65;
 
 interface Props {
-  /** Initial date in 'yyyy-MM-dd' format. Default = Date() */
-  date: Date;
+  /** Specify theme properties to override specific styles for calendar parts */
+  theme?: Theme;
+  /** Specify style for calendar container element */
+  style?: StyleProp<ViewStyle>;
+  /** Initial date in 'yyyy-MM-dd' format. Default = now */
+  date: string;
   /** Callback for date change event */
-  onDateChanged?: () => Date,
+  onDateChanged?: (date: string, updateSource: UpdateSources) => void;
   /** Callback for month change event */
-  onMonthChange?: () => DateData,
+  onMonthChange?: (date: DateData, updateSource: UpdateSources) => void;
   /** Whether to show the today button */
   showTodayButton?: boolean;
   /** Today button's top position */
@@ -31,8 +32,6 @@ interface Props {
   todayButtonStyle?: ViewStyle;
   /** The opacity for the disabled today button (0-1) */
   disabledOpacity?: number;
-  style?: StyleProp<ViewStyle>;
-  theme?: Theme;
 }
 export type CalendarContextProviderProps = Props;
 
@@ -44,19 +43,12 @@ class CalendarProvider extends Component<Props> {
   static displayName = 'CalendarProvider';
 
   static propTypes = {
-    /** Initial date in 'yyyy-MM-dd' format. Default = Date() */
     date: PropTypes.any.isRequired,
-    /** Callback for date change event */
     onDateChanged: PropTypes.func,
-    /** Callback for month change event */
     onMonthChange: PropTypes.func,
-    /** Whether to show the today button */
     showTodayButton: PropTypes.bool,
-    /** Today button's top position */
     todayBottomMargin: PropTypes.number,
-    /** Today button's style */
     todayButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** The opacity for the disabled today button (0-1) */
     disabledOpacity: PropTypes.number
   };
 
@@ -64,19 +56,23 @@ class CalendarProvider extends Component<Props> {
   presenter = new Presenter();
 
   state = {
-    prevDate: this.props.date || toMarkingFormat(new XDate()),
-    date: this.props.date || toMarkingFormat(new XDate()),
-    updateSource: updateSources.CALENDAR_INIT,
+    prevDate: this.getDate(this.props.date),
+    date: this.getDate(this.props.date),
+    updateSource: UpdateSources.CALENDAR_INIT,
     buttonY: new Animated.Value(this.props.todayBottomMargin ? -this.props.todayBottomMargin : -TOP_POSITION),
-    buttonIcon: this.presenter.getButtonIcon(this.props.date, this.props.showTodayButton),
+    buttonIcon: this.presenter.getButtonIcon(this.getDate(this.props.date), this.props.showTodayButton),
     disabled: false,
     opacity: new Animated.Value(1)
   };
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.date !== this.props.date) {
-      this.setDate(this.props.date, updateSources.PROP_UPDATE);
+    if (this.props.date && prevProps.date !== this.props.date) {
+      this.setDate(this.props.date, UpdateSources.PROP_UPDATE);
     }
+  }
+
+  getDate(date: string) {
+    return date || toMarkingFormat(new XDate());
   }
 
   getProviderContextValue = () => {
@@ -89,10 +85,10 @@ class CalendarProvider extends Component<Props> {
     };
   };
 
-  setDate = (date: Date, updateSource: UpdateSource) => {
+  setDate = (date: string, updateSource: UpdateSources) => {
     const {setDate} = this.presenter;
 
-    const updateState = (buttonIcon: any) => {
+    const updateState = (buttonIcon: number) => {
       this.setState({date, prevDate: this.state.date, updateSource, buttonIcon}, () => {
         this.animateTodayButton(date);
       });
@@ -113,7 +109,7 @@ class CalendarProvider extends Component<Props> {
     setDisabled(showTodayButton, disabled, this.state.disabled, updateState);
   };
 
-  animateTodayButton(date: Date) {
+  animateTodayButton(date: string) {
     const {shouldAnimateTodayButton, getPositionAnimation} = this.presenter;
 
     if (shouldAnimateTodayButton(this.props)) {
@@ -139,7 +135,7 @@ class CalendarProvider extends Component<Props> {
 
   onTodayPress = () => {
     const today = this.presenter.getTodayDate();
-    this.setDate(today, updateSources.TODAY_PRESS);
+    this.setDate(today, UpdateSources.TODAY_PRESS);
   };
 
   renderTodayButton() {

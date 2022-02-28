@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View, ViewStyle} from 'react-native';
 
-import {Theme, DayState} from '../../../types';
-// @ts-expect-error
-import {shouldUpdate} from '../../../component-updater';
+import {Theme, DayState, DateData} from '../../../types';
+import {shouldUpdate} from '../../../componentUpdater';
 import * as defaultStyle from '../../../style';
 import styleConstructor from './style';
 import Dot from '../dot';
@@ -17,15 +16,15 @@ interface PeriodDayProps {
   state?: DayState;
   marking?: MarkingProps;
   theme?: Theme;
-  onPress?: (date?: Date) => void;
-  onLongPress?: (date?: Date) => void;
-  date?: Date;
+  onPress?: (date?: DateData) => void;
+  onLongPress?: (date?: DateData) => void;
+  date?: DateData;
   accessibilityLabel?: string;
   testID?: string;
 }
 
 export default class PeriodDay extends Component<PeriodDayProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'PeriodDay';
 
   static propTypes = {
     state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
