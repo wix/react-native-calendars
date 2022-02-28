@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, I18nManager} from 'react-native';
+import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, I18nManager, Switch} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import testIDs from '../testIDs';
 
@@ -11,6 +11,15 @@ interface Props {
 }
 
 export default class MenuScreen extends Component<Props> {
+  state = {
+    forceRTL: false
+  }
+
+  toggleRTL = (value) => {
+    I18nManager.forceRTL(value);
+    this.setState({forceRTL: value});
+  }
+
   renderEntry(testID: string, title: string, screen: string, options?: any) {
     return (
       <TouchableOpacity
@@ -35,6 +44,10 @@ export default class MenuScreen extends Component<Props> {
           {this.renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendar')}
           {this.renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendar')}
           {this.renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendar', {weekView: true})}
+          <View style={styles.switchContainer}>
+            <Text>Force RTL</Text>
+            <Switch value={this.state.forceRTL} onValueChange={this.toggleRTL}/>
+          </View>
         </View>
       </ScrollView>
     );
@@ -89,5 +102,8 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 18,
     color: '#2d4150'
+  },
+  switchContainer: {
+    margin: 20
   }
 });

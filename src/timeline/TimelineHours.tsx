@@ -1,10 +1,11 @@
 import React, {useCallback, useMemo, useRef} from 'react';
-import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet} from 'react-native';
 import range from 'lodash/range';
 import {HOUR_BLOCK_HEIGHT} from './Packer';
 import {buildTimeString, calcTimeByPosition} from './helpers/presenter';
+import constants from '../commons/constants';
 
-const {width: dimensionWidth} = Dimensions.get('window');
+const dimensionWidth = constants.screenWidth;
 
 interface NewEventTime {
   hour: number;
