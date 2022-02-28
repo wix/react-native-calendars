@@ -113,7 +113,7 @@ class CalendarList extends Component<CalendarListProps, State> {
     scrollEnabled: true,
     removeClippedSubviews: Platform.OS === 'android',
     keyExtractor: (_: any, index: number) => String(index),
-    nestedScrollEnabled: false
+    nestedScrollEnabled: true
   };
 
   style: any;
