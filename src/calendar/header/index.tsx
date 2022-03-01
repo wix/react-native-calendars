@@ -55,7 +55,7 @@ export interface CalendarHeaderProps {
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20 */
-  arrowsHitSlop?: null | Insets | number;
+  arrowsHitSlop?: Insets | number;
   /** Disable left arrow */
   disableArrowLeft?: boolean;
   /** Disable right arrow */
@@ -66,14 +66,13 @@ export interface CalendarHeaderProps {
   renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
-  
+
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
   testID?: string;
   style?: StyleProp<ViewStyle>;
   accessibilityElementsHidden?: boolean;
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
-  
 }
 
 class CalendarHeader extends Component<CalendarHeaderProps> {
@@ -93,16 +92,13 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     renderArrow: PropTypes.func,
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func,
-    arrowsHitSlop: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.object
-    ]),
+    arrowsHitSlop: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
     renderHeader: PropTypes.any,
     customHeaderTitle: PropTypes.any,
-    
+
     webAriaLevel: PropTypes.number
   };
 
@@ -229,12 +225,17 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     const renderArrowDirection = isLeft ? 'left' : 'right';
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
 
+    const hitSlop: Insets | undefined =
+      typeof arrowsHitSlop === 'number'
+        ? {top: arrowsHitSlop, left: arrowsHitSlop, bottom: arrowsHitSlop, right: arrowsHitSlop}
+        : arrowsHitSlop;
+
     return (
       <TouchableOpacity
         onPress={!shouldDisable ? onPress : undefined}
         disabled={shouldDisable}
         style={this.style.arrow}
-        hitSlop={arrowsHitSlop}
+        hitSlop={hitSlop}
         testID={testId}
       >
         {renderArrow ? (
