@@ -1,4 +1,3 @@
-import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
@@ -12,21 +11,17 @@ import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 
 
-const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
-
-export interface DayProps extends Omit<BasicDayProps, 'date'> {
-  /** The day to render */
-  day?: string;
+export interface DayProps extends BasicDayProps {
   /** Provide custom day rendering component */
   dayComponent?: React.ComponentType<DayProps & {date?: DateData}>;
 }
 
 const Day = (props: DayProps) => {
-  const {day, marking, dayComponent, markingType} = props;
-  const _day = day ? new XDate(day) : undefined;
-  const _isToday = _day ? isToday(_day) : undefined;
+  const {date, marking, dayComponent, markingType} = props;
+  const _date = date ? new XDate(date) : undefined;
+  const _isToday = _date ? isToday(_date) : undefined;
 
-  const markingLabel = useMemo(() => {
+  const markingAccessibilityLabel = useMemo(() => {
     let label = '';
 
     if (marking) {
@@ -59,23 +54,18 @@ const Day = (props: DayProps) => {
     const today = getDefaultLocale().today || 'today';
     const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
 
-    return `${_isToday ? today : ''} ${_day?.toString(formatAccessibilityLabel)} ${markingLabel}`;
-  }, [_day, marking, _isToday]);
-  
-  const dayProps = useMemo(() => {
-    return omit(props, 'day');
-  }, [_day]);
+    return `${_isToday ? today : ''} ${_date?.toString(formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
+  }, [_date, marking, _isToday]);
   
   const Component = dayComponent || markingType === 'period' ? PeriodDay : BasicDay;
 
   return (
     <Component
-      {...dayProps}
-      date={day}
+      {...props}
       accessibilityLabel={getAccessibilityLabel}
-      testID={`${SELECT_DATE_SLOT}-${day}`}
+      testID={`${SELECT_DATE_SLOT}-${date}`}
     >
-      {formatNumbers(_day?.getDate())}
+      {formatNumbers(_date?.getDate())}
     </Component>
   );
 };
@@ -83,7 +73,6 @@ const Day = (props: DayProps) => {
 export default Day;
 Day.displayName = 'Day';
 Day.propTypes = {
-  ...basicDayPropsTypes,
-  day: PropTypes.string,
+  ...BasicDay.propTypes,
   dayComponent: PropTypes.any
 };
