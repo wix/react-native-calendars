@@ -27,7 +27,7 @@ import {getDefaultLocale} from '../services';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
-
+import constants from '../commons/constants';
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 
@@ -180,7 +180,7 @@ class AgendaList extends Component<AgendaListProps> {
         sectionIndex: sectionIndex,
         itemIndex: 0,
         viewPosition: 0, // position at the top
-        viewOffset: (commons.isAndroid ? this.sectionHeight : 0) + viewOffset
+        viewOffset: (constants.isAndroid ? this.sectionHeight : 0) + viewOffset
       });
     }
   }
@@ -271,7 +271,7 @@ class AgendaList extends Component<AgendaListProps> {
   }
 
   // getItemLayout = (data, index) => {
-  //   return {length: commons.screenWidth, offset: commons.screenWidth  * index, index};
+  //   return {length: constants.screenWidth, offset: constants.screenWidth  * index, index};
   // }
 }
 

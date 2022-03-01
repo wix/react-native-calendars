@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
+import {FlatList, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
 import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
@@ -13,10 +13,10 @@ import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import constants from '../commons/constants';
 
 
-const {width} = Dimensions.get('window');
-const CALENDAR_WIDTH = width;
+const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
@@ -108,7 +108,7 @@ class CalendarList extends Component<CalendarListProps, State> {
     horizontal: false,
     scrollsToTop: false,
     scrollEnabled: true,
-    removeClippedSubviews: Platform.OS === 'android',
+    removeClippedSubviews: constants.isAndroid,
     keyExtractor: (_: any, index: number) => String(index)
   };
 

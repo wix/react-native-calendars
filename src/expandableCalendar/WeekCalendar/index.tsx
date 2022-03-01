@@ -15,11 +15,10 @@ import asCalendarConsumer from '../asCalendarConsumer';
 import CalendarList, {CalendarListProps} from '../../calendar-list';
 import Week from '../week';
 import Presenter from './presenter';
+import constants from '../../commons/constants';
 
-
-const commons = require('../commons');
 const NUMBER_OF_PAGES = 2; // must be a positive number
-const applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
+const applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -75,7 +74,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
   }
 
   get containerWidth() {
-    return this.props.calendarWidth || commons.screenWidth;
+    return this.props.calendarWidth || constants.screenWidth;
   }
 
   getDatesArray() {
