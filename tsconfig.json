@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    // "outDir": "dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "jsx": "react-native",
+    "skipLibCheck": true,
+    // "resolveJsonModule": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": false,
+    "checkJs": false,
+    "allowJs": false,
+    // "emitDeclarationOnly": true,
+    // "noImplicitAny": false
+    "declaration": true,
+    "baseUrl": ".",
+    "paths": {
+      "react-native-calendars": ["src/index.ts"]
+    }
+  },
+  // "include": ["src/calendar/day/basic", "src/global.d.ts"],
+  "include": [
+    "src/**/*",
+    "example/src/screens/calendars.tsx",
+    "example/src/screens/expandableCalendar.tsx",
+    "example/src/screens/agenda.tsx",
+    "example/src/screens/timelineCalendar.tsx"
+  ],
+  "exclude": ["node_modules", "testUtils"]
+}

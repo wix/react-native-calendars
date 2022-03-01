@@ -5,7 +5,6 @@ yarn.lock
 .vscode
 package-lock.json
 
-
 # OSX
 #
 .DS_Store
@@ -37,6 +36,7 @@ build/
 .gradle
 local.properties
 *.iml
+*.hprof
 
 # node.js
 #
@@ -63,3 +63,5 @@ fastlane/screenshots
 
 # CocoaPods
 ios/Pods
+
+.eslintcache

@@ -1,0 +1,191 @@
+{
+  "name": "Calendar",
+  "description": "Calendar component",
+  "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif?raw=true"
+  ],
+  "extends": ["CalendarHeader", "BasicDay"],
+  "extendsLink": [
+    "https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/index.tsx",
+    "https://github.com/wix/react-native-calendars/blob/master/src/calendar/day/basic/index.tsx"
+  ],
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.tsx",
+  "props": [
+    {
+      "name": "theme",
+      "type": "Theme",
+      "description": "Specify theme properties to override specific styles for calendar parts"
+    },
+    {
+      "name": "style",
+      "type": "ViewStyle",
+      "description": "Specify style for calendar container element"
+    },
+    {
+      "name": "headerStyle",
+      "type": "ViewStyle",
+      "description": "Specify style for calendar header"
+    },
+    {
+      "name": "customHeader",
+      "type": "any",
+      "description": "Allow rendering a totally custom header"
+    },
+    {
+      "name": "initialDate",
+      "type": "string",
+      "description": "Initially visible month"
+    },
+    {
+      "name": "minDate",
+      "type": "string",
+      "description": "Minimum date that can be selected, dates before minDate will be grayed out"
+    },
+    {
+      "name": "maxDate",
+      "type": "string",
+      "description": "Maximum date that can be selected, dates after maxDate will be grayed out"
+    },
+    {
+      "name": "firstDay",
+      "type": "number",
+      "description": "If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday"
+    },
+    {
+      "name": "markedDates",
+      "type": "MarkedDatesType",
+      "description": "Collection of dates that have to be marked"
+    },
+    {
+      "name": "displayLoadingIndicator",
+      "type": "boolean",
+      "description": "Whether to display loading indicator"
+    },
+    {
+      "name": "showWeekNumbers",
+      "type": "boolean",
+      "description": "Whether to show weeks numbers"
+    },
+    {
+      "name": "hideExtraDays",
+      "type": "boolean",
+      "description": "Whether to hide days of other months in the month page"
+    },
+    {
+      "name": "showSixWeeks",
+      "type": "boolean",
+      "description": "Whether to always show six weeks on each month (when hideExtraDays = false)"
+    },
+    {
+      "name": "disableMonthChange",
+      "type": "boolean",
+      "description": "Whether to disable changing month when click on days of other months (when hideExtraDays is false)"
+    },
+    {
+      "name": "enableSwipeMonths",
+      "type": "boolean",
+      "description": "Whether to enable the option to swipe between months"
+    },
+    {
+      "name": "disabledByDefault",
+      "type": "boolean",
+      "description": "Whether to disable days by default"
+    },
+    {
+      "name": "allowSelectionOutOfRange",
+      "type": "boolean",
+      "description": "Whether to allow selection of dates before minDate or after maxDate"
+    },
+    {
+      "name": "onDayPress",
+      "type": "(date: DateData) => void",
+      "description": "Handler which gets executed on day press"
+    },
+    {
+      "name": "onDayLongPress",
+      "type": "(date: DateData) => void",
+      "description": "Handler which gets executed on day long press"
+    },
+    {
+      "name": "onMonthChange",
+      "type": "(date: DateData) => void",
+      "description": "Handler which gets executed when month changes in calendar"
+    },
+    {
+      "name": "onVisibleMonthsChange",
+      "type": "(months: DateData[]) => void",
+      "description": "Handler which gets executed when visible month changes in calendar"
+    },
+    {
+      "name": "monthFormat",
+      "type": "string",
+      "description": "Month format for the header's title. Formatting values: http://arshaw.com/xdate/#Formatting",
+      "default": "MMMM yyyy"
+    },
+    {
+      "name": "hideDayNames",
+      "type": "boolean",
+      "description": "Whether to hide the days names"
+    },
+    {
+      "name": "hideArrows",
+      "type": "boolean",
+      "description": "Whether to hide the arrows"
+    },
+    {
+      "name": "disableArrowLeft",
+      "type": "boolean",
+      "description": "Whether to disable the left arrow"
+    },
+    {
+      "name": "disableArrowRight",
+      "type": "boolean",
+      "description": "Whether to disable the right arrow"
+    },
+    {
+      "name": "renderArrow",
+      "type": "(direction: Direction) => ReactNode",
+      "description": "Replace default arrows with custom ones (direction: 'left' | 'right')"
+    },
+    {
+      "name": "onPressArrowLeft",
+      "type": "(method: () => void, month?: string) => void",
+      "description": "Handler which gets executed when press left arrow. It receive a callback to go to the previous month"
+    },
+    {
+      "name": "onPressArrowRight",
+      "type": "(method: () => void, month?: string) => void",
+      "description": "Handler which gets executed when press right arrow. It receive a callback to go to the next month"
+    },
+    {
+      "name": "disabledDaysIndexes",
+      "type": "number[]",
+      "description": "Whether to apply custom disable color to selected day indexes"
+    },
+    {
+      "name": "renderHeader",
+      "type": "(date?: string) => ReactNode",
+      "description": "Replace default title with custom one"
+    },
+    {
+      "name": "customHeaderTitle",
+      "type": "JSX.Element",
+      "description": "Replace default title with custom element"
+    },
+    {
+      "name": "dayComponent",
+      "type": "JSX.Element",
+      "description": "Replace default day with custom day rendering component"
+    },
+    {
+      "name": "disableAllTouchEventsForDisabledDays",
+      "type": "boolean",
+      "description": "Whether to disable all touch events for disabled days (can be override with 'disableTouchEvent' in 'markedDates')"
+    },
+    {
+      "name": "disableAllTouchEventsForInactiveDays",
+      "type": "boolean",
+      "description": "Whether to disable all touch events for inactive days (can be override with 'disableTouchEvent' in 'markedDates')"
+    }
+  ]
+}
