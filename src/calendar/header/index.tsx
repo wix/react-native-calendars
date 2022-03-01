@@ -70,6 +70,12 @@ export interface CalendarHeaderProps {
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
 }
 
+const accessibilityActions = [
+  {name: 'increment', label: 'increment'},
+  {name: 'decrement', label: 'decrement'}
+];
+
+
 const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const {
     theme,
@@ -96,11 +102,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     importantForAccessibility
   } = props;
   const style = useRef(styleConstructor(theme));
-  const accessibilityActions = useRef([
-    {name: 'increment', label: 'increment'},
-    {name: 'decrement', label: 'decrement'}
-  ]);
-
+  
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -121,12 +123,12 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     return subtractMonth();
   }, [onPressArrowLeft]);
 
-  const onPressRight = () => {
+  const onPressRight = useCallback(() => {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(addMonth, month);
     }
     return addMonth();
-  };
+  }, [onPressArrowRight]);
 
   const onAccessibilityAction = (event: AccessibilityActionEvent) => {
     switch (event.nativeEvent.actionName) {
@@ -250,7 +252,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       style={propsStyle}
       accessible
       accessibilityRole={'adjustable'}
-      accessibilityActions={accessibilityActions.current}
+      accessibilityActions={accessibilityActions}
       onAccessibilityAction={onAccessibilityAction}
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
       importantForAccessibility={importantForAccessibility} // Android

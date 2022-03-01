@@ -49,7 +49,7 @@ class Week extends PureComponent<WeekProps> {
       <View style={this.style.dayContainer} key={id}>
         <Day
           {...dayProps}
-          day={toMarkingFormat(day)}
+          date={toMarkingFormat(day)}
           state={getState(day, currXdate, this.props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.props.onDayPress}

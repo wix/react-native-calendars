@@ -229,7 +229,7 @@ class Calendar extends Component<CalendarProps, State> {
       <View style={this.style.dayContainer} key={id}>
         <Day
           {...dayProps}
-          day={toMarkingFormat(day)}
+          date={toMarkingFormat(day)}
           state={getState(day, this.state.currentMonth, this.props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.pressDay}
