@@ -4,6 +4,7 @@ import {ScrollViewProps} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 import inRange from 'lodash/inRange';
 import debounce from 'lodash/debounce';
+import noop from 'lodash/noop';
 
 import constants from '../commons/constants';
 import useCombinedRefs from '../commons/useCombinedRefs';
@@ -29,7 +30,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const {
     renderItem,
     data,
-    reloadPages,
+    reloadPages = noop,
     pageWidth = constants.screenWidth,
     pageHeight = constants.screenHeight,
     onPageChange,
@@ -59,8 +60,6 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const isOnEdge = useRef(false);
   const isNearEdge = useRef(false);
   const scrolledByUser = useRef(false);
-
-  // @ts-expect-error lodash can't handle reloadPages signature
   const reloadPagesDebounce = useCallback(debounce(reloadPages, 500, {leading: false, trailing: true}), [reloadPages]);
 
   useEffect(() => {
