@@ -793,4 +793,7 @@
 - 'input.js' - renaming 'velocityTracker'.
 - 'test.js' - renaming 'testUtils' and removing from folder.
 
+## Added
+- Header - add property *arrowsHitSlop* so that it can be set to 0 (or any other custom value). Context: The hitSlop was fixed to 20, this was too rigid. I faced issues where arrow buttons were overlaying any other button above the calendar header.
+
 *** End of changelog - please see release tags for notes ***

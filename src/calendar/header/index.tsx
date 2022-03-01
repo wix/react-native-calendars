@@ -14,7 +14,8 @@ import {
   StyleProp,
   ViewStyle,
   AccessibilityActionEvent,
-  ColorValue
+  ColorValue,
+  Insets
 } from 'react-native';
 import {shouldUpdate} from '../../componentUpdater';
 import {formatNumbers, weekDayNames, sameMonth} from '../../dateutils';
@@ -53,6 +54,8 @@ export interface CalendarHeaderProps {
   onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
+  /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20 */
+  arrowsHitSlop?: null | Insets | number;
   /** Disable left arrow */
   disableArrowLeft?: boolean;
   /** Disable right arrow */
@@ -70,6 +73,7 @@ export interface CalendarHeaderProps {
   style?: StyleProp<ViewStyle>;
   accessibilityElementsHidden?: boolean;
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
+  
 }
 
 class CalendarHeader extends Component<CalendarHeaderProps> {
@@ -89,6 +93,10 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     renderArrow: PropTypes.func,
     onPressArrowLeft: PropTypes.func,
     onPressArrowRight: PropTypes.func,
+    arrowsHitSlop: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.object
+    ]),
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
@@ -100,7 +108,8 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
 
   static defaultProps = {
     monthFormat: 'MMMM yyyy',
-    webAriaLevel: 1
+    webAriaLevel: 1,
+    arrowsHitSlop: 20
   };
   style: any;
 
@@ -121,6 +130,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
       'showWeekNumbers',
       'monthFormat',
       'renderArrow',
+      'arrowsHitSlop',
       'disableArrowLeft',
       'disableArrowRight',
       'renderHeader',
@@ -207,7 +217,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
   };
 
   renderArrow(direction: Direction) {
-    const {hideArrows, disableArrowLeft, disableArrowRight, renderArrow, testID} = this.props;
+    const {hideArrows, arrowsHitSlop, disableArrowLeft, disableArrowRight, renderArrow, testID} = this.props;
     if (hideArrows) {
       return <View />;
     }
@@ -224,7 +234,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
         onPress={!shouldDisable ? onPress : undefined}
         disabled={shouldDisable}
         style={this.style.arrow}
-        hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+        hitSlop={arrowsHitSlop}
         testID={testId}
       >
         {renderArrow ? (
