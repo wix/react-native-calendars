@@ -108,27 +108,27 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     onPressRight
   }));
 
-  const addMonth = () => {
+  const addMonth = useCallback(() => {
     propsAddMonth?.(1);
-  };
+  }, [propsAddMonth]);
 
-  const subtractMonth = () => {
+  const subtractMonth = useCallback(() => {
     propsAddMonth?.(-1);
-  };
+  }, [propsAddMonth]);
 
   const onPressLeft = useCallback(() => {
     if (typeof onPressArrowLeft === 'function') {
       return onPressArrowLeft(subtractMonth, month);
     }
     return subtractMonth();
-  }, [onPressArrowLeft]);
+  }, [onPressArrowLeft, subtractMonth]);
 
   const onPressRight = useCallback(() => {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(addMonth, month);
     }
     return addMonth();
-  }, [onPressArrowRight]);
+  }, [onPressArrowRight, addMonth]);
 
   const onAccessibilityAction = (event: AccessibilityActionEvent) => {
     switch (event.nativeEvent.actionName) {
