@@ -1,4 +1,4 @@
-import React, {useState, Fragment, useCallback} from 'react';
+import React, {useState, Fragment, useCallback, useMemo} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
 import testIDs from '../testIDs';
@@ -8,9 +8,20 @@ const INITIAL_DATE = '2020-02-02';
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
 
-  const onDayPress: CalendarProps['onDayPress'] = day => {
+  const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
     setSelected(day.dateString);
-  };
+  }, []);
+
+  const marked = useMemo(() => {
+    return {
+      [selected]: {
+        selected: true,
+        disableTouchEvent: true,
+        selectedColor: 'orange',
+        selectedTextColor: 'red'
+      }
+    };
+  }, [selected]);
 
   const renderCalendarWithSelectableDate = () => {
     return (
@@ -22,14 +33,7 @@ const CalendarsScreen = () => {
           current={INITIAL_DATE}
           style={styles.calendar}
           onDayPress={onDayPress}
-          markedDates={{
-            [selected]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: 'orange',
-              selectedTextColor: 'red'
-            }
-          }}
+          markedDates={marked}
         />
       </Fragment>
     );
