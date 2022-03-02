@@ -120,7 +120,7 @@ class Calendar extends Component<CalendarProps, State> {
       parseDate(this.props.current || this.props.initialDate) : new XDate()
   };
   style = styleConstructor(this.props.theme);
-  header: React.RefObject<CalendarHeader> = React.createRef();
+  header: React.RefObject<any> = React.createRef();
 
   static getDerivedStateFromProps(nextProps: CalendarProps, prevState: State) {
     if (nextProps?.initialDate && nextProps?.initialDate !== prevState.prevInitialDate) {
@@ -229,7 +229,7 @@ class Calendar extends Component<CalendarProps, State> {
       <View style={this.style.dayContainer} key={id}>
         <Day
           {...dayProps}
-          day={day}
+          date={toMarkingFormat(day)}
           state={getState(day, this.state.currentMonth, this.props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.pressDay}
