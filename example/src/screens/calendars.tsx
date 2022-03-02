@@ -458,7 +458,7 @@ const CalendarsScreen = () => {
     return (
       <Fragment>
         {renderCalendarWithSelectableDate()}
-        {/* {renderCalendarWithWeekNumbers()}
+        {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}
         {renderCalendarWithInactiveDays()}
@@ -469,7 +469,7 @@ const CalendarsScreen = () => {
         {renderCalendarWithPeriodMarkingAndSpinner()}
         {renderCalendarWithPeriodMarkingAndDotMarking()}
         {renderCalendarWithMultiPeriodMarking()}
-        {renderCalendarWithCustomMarkingType()} */}
+        {renderCalendarWithCustomMarkingType()}
       </Fragment>
     );
   };

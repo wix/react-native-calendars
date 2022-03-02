@@ -59,7 +59,6 @@ const Day = React.memo((props: DayProps) => {
   
   const Component = dayComponent || markingType === 'period' ? PeriodDay : BasicDay;
 
-  console.warn(date);
   return (
     <Component
       {...props}
