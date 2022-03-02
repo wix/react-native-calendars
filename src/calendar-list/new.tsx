@@ -50,15 +50,6 @@ const CalendarList = (props: CalendarListProps) => {
     return [style.current.staticHeader, calendarProps?.headerStyle];
   }, [calendarProps?.headerStyle]);
 
-  // NOTE: Responsible for sync scroll position after reloading new items
-  useEffect(() => {
-    console.warn('items update: ', items[scrollRange], items);
-    setTimeout(() => {
-      // @ts-expect-error
-      list.current?.scrollToOffset?.(scrollRange * constants.screenWidth, 0, false);
-    }, 0);
-  }, [items]);
-
   useEffect(() => {
     scrollToMonth(monthFromArrowPress.current);
   }, [monthFromArrowPress.current]);
@@ -102,8 +93,8 @@ const CalendarList = (props: CalendarListProps) => {
     calendarProps?.onPressArrowRight?.(method, month);
   }, []);
 
-  const onReachEdge = useCallback(pageIndex => {
-    console.warn('end ', pageIndex);
+  const reloadPages = useCallback(
+    pageIndex => {
       const newItems = getDatesArray(items[pageIndex], scrollRange);
       setItems(newItems);
     },
@@ -158,6 +149,7 @@ const CalendarList = (props: CalendarListProps) => {
         ref={list}
         data={items}
         renderItem={renderItem}
+        reloadPages={reloadPages}
         extendedState={calendarProps?.markedDates}
         // horizontal={horizontal}
         style={style.current.container}
@@ -165,7 +157,6 @@ const CalendarList = (props: CalendarListProps) => {
         pageHeight={CALENDAR_HEIGHT}
         pageWidth={constants.screenWidth}
         onPageChange={onPageChange}
-        onReachEdge={onReachEdge}
         scrollViewProps={{
           ...scrollViewProps,
           showsHorizontalScrollIndicator: false,
