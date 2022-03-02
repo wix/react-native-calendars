@@ -6,7 +6,7 @@ import {FlatList} from 'react-native';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
-
+import constants from '../../commons/constants';
 
 const commons = require('../commons');
 const updateSources = commons.UpdateSources;
@@ -15,7 +15,7 @@ const NUMBER_OF_PAGES = 2;
 
 class Presenter {
 
-  private _applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
+  private _applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
   // On Android+RTL there's an initial scroll that cause issues
   private _firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
   public list: React.RefObject<FlatList> = React.createRef();

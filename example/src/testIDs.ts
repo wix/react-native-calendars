@@ -6,7 +6,8 @@ export default {
     HORIZONTAL_LIST: 'horizontal_list_btn',
     AGENDA: 'agenda_btn',
     EXPANDABLE_CALENDAR: 'expandable_calendar_btn',
-    WEEK_CALENDAR: 'week_calendar_btn'
+    WEEK_CALENDAR: 'week_calendar_btn',
+    TIMELINE_CALENDAR: 'timeline_calendar_btn'
   },
   calendars: {
     CONTAINER: 'calendars',
