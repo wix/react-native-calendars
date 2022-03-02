@@ -16,10 +16,10 @@ export interface DayProps extends BasicDayProps {
   dayComponent?: React.ComponentType<DayProps & {date?: DateData}>;
 }
 
-const Day = (props: DayProps) => {
+const Day = React.memo((props: DayProps) => {
   const {date, marking, dayComponent, markingType} = props;
   const _date = date ? new XDate(date) : undefined;
-  const _isToday = _date ? isToday(_date) : undefined;
+  const _isToday = isToday(_date);
 
   const markingAccessibilityLabel = useMemo(() => {
     let label = '';
@@ -68,9 +68,10 @@ const Day = (props: DayProps) => {
       {formatNumbers(_date?.getDate())}
     </Component>
   );
-};
+}) as any;
 
 export default Day;
+
 Day.displayName = 'Day';
 Day.propTypes = {
   ...BasicDay.propTypes,
