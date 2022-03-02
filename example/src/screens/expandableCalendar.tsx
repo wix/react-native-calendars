@@ -181,7 +181,7 @@ export default class ExpandableCalendarScreen extends Component<Props> {
   render() {
     return (
       <CalendarProvider
-        date={ITEMS[0].title}
+        date={ITEMS[1].title}
         onDateChanged={this.onDateChanged}
         onMonthChange={this.onMonthChange}
         showTodayButton

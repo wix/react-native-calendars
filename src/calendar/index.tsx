@@ -81,6 +81,8 @@ const Calendar = (props: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
+  const isMounted = useRef(false);
+ 
 
   useEffect(() => {
     if (initialDate) {
@@ -89,9 +91,14 @@ const Calendar = (props: CalendarProps) => {
   }, [initialDate]);
 
   useEffect(() => {
-    const _currentMonth = currentMonth.clone();
-    onMonthChange?.(xdateToData(_currentMonth));
-    onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
+    if (isMounted.current) {
+      // Avoid callbacks call on mount
+      const _currentMonth = currentMonth.clone();
+      onMonthChange?.(xdateToData(_currentMonth));
+      onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
+    } else {
+      isMounted.current = true;
+    }
   }, [currentMonth]);
 
   const updateMonth = (newMonth: XDate) => {
