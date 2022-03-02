@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-import memoize from 'memoize-one';
 
 import React, {useRef, useState, useEffect, useCallback} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
@@ -113,9 +112,7 @@ const Calendar = (props: CalendarProps) => {
     const max = parseDate(maxDate);
 
     if (allowSelectionOutOfRange || !(min && !isGTE(day, min)) && !(max && !isLTE(day, max))) {
-      const shouldUpdateMonth = disableMonthChange === undefined || !disableMonthChange;
-
-      if (shouldUpdateMonth) {
+      if (!disableMonthChange) {
         updateMonth(day);
       }
       if (interaction) {
@@ -124,17 +121,27 @@ const Calendar = (props: CalendarProps) => {
     }
   };
 
-  const pressDay = useCallback((date?: DateData) => {
+  const onPressDay = useCallback((date?: DateData) => {
     if (date)
     handleDayInteraction(date, onDayPress);
-  }, [onDayPress]);
+  }, []);
 
-  const longPressDay = useCallback((date?: DateData) => {
+  const onLongPressDay = useCallback((date?: DateData) => {
     if (date)
     handleDayInteraction(date, onDayLongPress);
-  }, [onDayLongPress]);
+  }, []);
 
-  const onSwipe = (gestureName: string) => {
+  const onSwipeLeft = useCallback(() => {
+    // @ts-expect-error
+    header.current?.onPressRight();
+  }, [header]);
+
+  const onSwipeRight = useCallback(() => {
+    // @ts-expect-error
+    header.current?.onPressLeft();
+  }, [header]);
+
+  const onSwipe = useCallback((gestureName: string) => {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
 
     switch (gestureName) {
@@ -148,19 +155,9 @@ const Calendar = (props: CalendarProps) => {
         onSwipeRight();
         break;
     }
-  };
+  }, [onSwipeLeft, onSwipeRight]);
 
-  const onSwipeLeft = () => {
-    // @ts-expect-error
-    header.current?.onPressRight();
-  };
-
-  const onSwipeRight = () => {
-    // @ts-expect-error
-    header.current?.onPressLeft();
-  };
-
-  const renderWeekNumber = memoize(weekNumber => {
+  const renderWeekNumber = (weekNumber: number) => {
     return (
       <View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
@@ -174,7 +171,7 @@ const Calendar = (props: CalendarProps) => {
         </BasicDay>
       </View>
     );
-  });
+  };
 
   const renderDay = (day: XDate, id: number) => {
     const dayProps = extractComponentProps(Day, props);
@@ -190,8 +187,8 @@ const Calendar = (props: CalendarProps) => {
           date={toMarkingFormat(day)}
           state={getState(day, currentMonth, props)}
           marking={markedDates?.[toMarkingFormat(day)]}
-          onPress={pressDay}
-          onLongPress={longPressDay}
+          onPress={onPressDay}
+          onLongPress={onLongPressDay}
         />
       </View>
     );
@@ -256,7 +253,9 @@ const Calendar = (props: CalendarProps) => {
   };
 
   const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
-  const swipeProps = {onSwipe: (direction: string) => onSwipe(direction)};
+  const swipeProps = {
+    onSwipe: (direction: string) => onSwipe(direction)
+  };
   const gestureProps = enableSwipeMonths ? swipeProps : undefined;
 
   return (
