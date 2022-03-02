@@ -70,7 +70,7 @@ const Day = (props: DayProps) => {
   );
 };
 
-export default Day;
+export default React.memo<DayProps>(props => <Day {...props}/>);
 Day.displayName = 'Day';
 Day.propTypes = {
   ...BasicDay.propTypes,
