@@ -121,14 +121,14 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       return onPressArrowLeft(subtractMonth, month);
     }
     return subtractMonth();
-  }, [onPressArrowLeft, subtractMonth]);
+  }, [onPressArrowLeft, subtractMonth, month]);
 
   const onPressRight = useCallback(() => {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(addMonth, month);
     }
     return addMonth();
-  }, [onPressArrowRight, addMonth]);
+  }, [onPressArrowRight, addMonth, month]);
 
   const onAccessibilityAction = (event: AccessibilityActionEvent) => {
     switch (event.nativeEvent.actionName) {
