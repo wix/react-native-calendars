@@ -1,10 +1,22 @@
-import {StyleSheet, Platform} from 'react-native';
+import {StyleSheet, Platform, TextStyle, ViewStyle, ImageStyle} from 'react-native';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
 
+type Styles = {
+  header: ViewStyle;
+  headerContainer: ViewStyle;
+  monthText: TextStyle;
+  arrow: ViewStyle;
+  arrowImage: ImageStyle;
+  disabledArrowImage: ImageStyle;
+  week: ViewStyle;
+  dayHeader: ViewStyle;
+  disabledDayHeader: ViewStyle;
+};
+
 export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
-  return StyleSheet.create({
+  return StyleSheet.create<Styles>({
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
