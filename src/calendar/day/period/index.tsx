@@ -1,9 +1,11 @@
+import XDate from 'xdate';
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
 import {TouchableWithoutFeedback, Text, View, ViewStyle} from 'react-native';
 
+import {xdateToData} from '../../../interface';
 import {Theme, DayState, DateData} from '../../../types';
 import {shouldUpdate} from '../../../componentUpdater';
 import * as defaultStyle from '../../../style';
@@ -18,7 +20,7 @@ interface PeriodDayProps {
   theme?: Theme;
   onPress?: (date?: DateData) => void;
   onLongPress?: (date?: DateData) => void;
-  date?: DateData;
+  date?: string;
   accessibilityLabel?: string;
   testID?: string;
 }
@@ -32,12 +34,13 @@ export default class PeriodDay extends Component<PeriodDayProps> {
     theme: PropTypes.object,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    date: PropTypes.object
+    date: PropTypes.string
   };
 
   theme: Theme;
   style: any;
   markingStyle: any;
+  dateData: any;
 
   constructor(props: PeriodDayProps) {
     super(props);
@@ -45,14 +48,15 @@ export default class PeriodDay extends Component<PeriodDayProps> {
     this.theme = {...defaultStyle, ...(props.theme || {})};
     this.style = styleConstructor(props.theme);
     this.markingStyle = this.getDrawingStyle(props.marking);
+    this.dateData = props.date ? xdateToData(new XDate(props.date)) : undefined;
   }
 
   onPress = () => {
-    this.props.onPress?.(this.props.date);
+    this.props.onPress?.(this.dateData);
   };
 
   onLongPress = () => {
-    this.props.onLongPress?.(this.props.date);
+    this.props.onLongPress?.(this.dateData);
   };
 
   shouldComponentUpdate(nextProps: PeriodDayProps) {
