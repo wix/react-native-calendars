@@ -1,7 +1,7 @@
 import XDate from 'xdate';
 import values from 'lodash/values';
 import PropTypes from 'prop-types';
-import React, {Fragment, useCallback, useRef} from 'react';
+import React, {Fragment, useCallback, useRef, useMemo} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
 import {xdateToData} from '../../../interface';
@@ -52,7 +52,6 @@ const BasicDay = (props: BasicDayProps) => {
     testID
   } = props;
   const style = useRef(styleConstructor(theme));
-  const dateData = useRef(date ? xdateToData(new XDate(date)) : undefined);
   const _marking = marking || {};
   const isSelected = _marking.selected || state === 'selected';
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
@@ -61,6 +60,9 @@ const BasicDay = (props: BasicDayProps) => {
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
+  const dateData = useMemo(() => {
+    return date ? xdateToData(new XDate(date)) : undefined;
+  }, [date]);
 
   const shouldDisableTouchEvent = () => {
     const {disableTouchEvent} = _marking;
@@ -126,12 +128,12 @@ const BasicDay = (props: BasicDayProps) => {
   };
 
   const _onPress = useCallback(() => {
-    onPress?.(dateData.current);
-  }, [onPress]);
+    onPress?.(dateData);
+  }, [onPress, date]);
 
   const _onLongPress = useCallback(() => {
-    onLongPress?.(dateData.current);
-  }, [onLongPress]);
+    onLongPress?.(dateData);
+  }, [onLongPress, date]);
 
   const renderMarking = () => {
     const {marked, dotColor, dots, periods} = _marking;
