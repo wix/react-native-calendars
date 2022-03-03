@@ -78,10 +78,9 @@ const CalendarList = (props: CalendarListProps) => {
       const next = new XDate(month).addMonths(count, true);
       const nextNext = new XDate(month).addMonths(count * 2, true);
       const nextNextIndex = getMonthIndex(nextNext);
-      console.log('next: ', nextNextIndex, next);
+      console.log('next: ', nextNextIndex, nextNext);
       if (nextNextIndex !== -1) {
         setCurrentMonth(toMarkingFormat(next));
-        // return updated;
       }
     }
   }, [getMonthIndex]);
