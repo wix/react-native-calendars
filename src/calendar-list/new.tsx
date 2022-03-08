@@ -26,7 +26,7 @@ export interface CalendarListProps {
   testID?: string;
 }
 
-const NUMBER_OF_PAGES = 5;
+const NUMBER_OF_PAGES = 50;
 const CALENDAR_HEIGHT = 360;
 
 const CalendarList = (props: CalendarListProps) => {
