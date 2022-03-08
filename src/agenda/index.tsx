@@ -135,8 +135,9 @@ export default class Agenda extends Component<AgendaProps, State> {
   }
 
   componentDidUpdate(prevProps: AgendaProps, prevState: State) {
-    if (this.props.selected && !sameDate(new XDate(this.props.selected), prevState.selectedDay)) {
-      this.setState({selectedDay: this.getSelectedDate()});
+    const newSelectedDate = this.getSelectedDate();
+    if (!sameDate(newSelectedDate, prevState.selectedDay)) {
+      this.setState({selectedDay: newSelectedDate});
     } else if (!prevProps.items) {
       this.loadReservations(this.props);
     }
