@@ -50,12 +50,10 @@ const CalendarList = (props: CalendarListProps) => {
   }, [calendarProps?.headerStyle]);
 
   useEffect(() => {
-    console.log('effect: ', currentMonth);
     scrollToMonth(currentMonth);
   }, [currentMonth]);
 
   const getMonthIndex = useCallback((month?: XDate) => {
-    console.log('getMonthIndex: ', month, items); // items no updated
     if (!month) {
       return -1;
     }
@@ -65,7 +63,6 @@ const CalendarList = (props: CalendarListProps) => {
   const scrollToMonth = useCallback((month?: string) => {
     if (month) {
       const index = getMonthIndex(new XDate(month));
-      console.log('scrollToMonth: ', index, month);
       if (index !== -1) {
         // @ts-expect-error
         list.current?.scrollToOffset?.(index * constants.screenWidth, 0, true);
@@ -78,7 +75,6 @@ const CalendarList = (props: CalendarListProps) => {
       const next = new XDate(month).addMonths(count, true);
       const nextNext = new XDate(month).addMonths(count * 2, true);
       const nextNextIndex = getMonthIndex(nextNext);
-      console.log('next: ', nextNextIndex, nextNext);
       if (nextNextIndex !== -1) {
         setCurrentMonth(toMarkingFormat(next));
       }
@@ -86,7 +82,6 @@ const CalendarList = (props: CalendarListProps) => {
   }, [getMonthIndex]);
 
   const scrollToNextMonth = useCallback((method: () => void, month?: XDate) => {
-    console.log('monthForScroll: ', month);
     if (calendarProps?.onPressArrowLeft) {
       calendarProps?.onPressArrowLeft?.(method, month);
     } else {
@@ -104,7 +99,6 @@ const CalendarList = (props: CalendarListProps) => {
 
   const reloadPages = useCallback(
     pageIndex => {
-      console.log('reloading: ', pageIndex, items[pageIndex]);
       const newItems = getDatesArray(items[pageIndex], scrollRange);
       setItems(newItems);
     },
@@ -150,7 +144,7 @@ const CalendarList = (props: CalendarListProps) => {
         // context={context}
       />
     );
-  }, [calendarProps]);
+  }, [calendarProps, items]);
 
   return (
     <View style={style.current.flatListContainer}>
