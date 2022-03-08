@@ -105,7 +105,7 @@ const CalendarList = (props: CalendarListProps) => {
     [items]
   );
 
-  const onPageChange = useCallback((pageIndex: number, prevPageIndex: number, info: {scrolledByUser: boolean}) => {
+  const onPageChange = useCallback((pageIndex: number, _: number, info: {scrolledByUser: boolean}) => {
     if (useStaticHeader && info.scrolledByUser) {
       setCurrentMonth(items[pageIndex]);
     }
