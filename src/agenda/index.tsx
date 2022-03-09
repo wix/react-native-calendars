@@ -377,8 +377,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     return (
       <WeekDaysNames 
         firstDay={this.props.firstDay} 
-        style={this.style.dayHeader}
-        disabledDaysIndexes={this.props.disabledDaysIndexes}
+        style={this.style.dayHeader} 
       />
     );
   };

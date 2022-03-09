@@ -482,7 +482,6 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
         <WeekDaysNames
           firstDay={this.props.firstDay}
           style={this.style.dayHeader}
-          disabledDaysIndexes={this.props.disabledDaysIndexes}
         />
       </View>
     );

@@ -25,7 +25,7 @@ export interface WeekCalendarProps extends CalendarListProps {
 const NUMBER_OF_PAGES = 50;
 
 const WeekCalendar = (props: WeekCalendarProps) => {
-  const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, disabledDaysIndexes, testID} = props;
+  const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, testID} = props;
   const context = useContext(CalendarContext);
   const {date, updateSource} = context;
   const style = useRef(styleConstructor(theme));
@@ -106,11 +106,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     >
       {!hideDayNames && (
         <View style={[style.current.week, style.current.weekCalendar]}>
-          <WeekDaysNames 
-            firstDay={firstDay} 
-            style={style.current.dayHeader}
-            disabledDaysIndexes={disabledDaysIndexes}
-          />
+          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader}/>
         </View>
       )}
       <View>
