@@ -81,7 +81,7 @@ export default function styleConstructor(theme: Theme = {}) {
       flexDirection: 'row', 
       justifyContent: 'space-between' 
     },
-    weekday: {
+    dayHeader: {
       width: 32,
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,

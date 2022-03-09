@@ -23,15 +23,16 @@ import {
 
 // @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
-import {page, weekDayNames} from '../dateutils';
+import {page} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {Theme, DateData, Direction} from '../types';
 import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
-import CalendarList, {CalendarListProps} from '../calendar-list';
+import WeekDaysNames from '../calendar/header/WeekDaysNames';
 import Calendar from '../calendar';
-import asCalendarConsumer from './asCalendarConsumer';
-import WeekCalendar from './WeekCalendar';
+import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
+import WeekCalendar from './WeekCalendar';
+import asCalendarConsumer from './asCalendarConsumer';
 
 import constants from '../commons/constants';
 const commons = require('./commons');
@@ -475,21 +476,19 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     ];
   });
 
-  renderWeekDaysNames = memoize((weekDaysNames, calendarStyle) => {
+  renderWeekDaysNames = () => {
     return (
-      <View style={this.getWeekDaysStyle(calendarStyle)}>
-        {weekDaysNames.map((day: string, index: number) => (
-          <Text allowFontScaling={false} key={day + index} style={this.style.weekday} numberOfLines={1}>
-            {day}
-          </Text>
-        ))}
+      <View style={this.getWeekDaysStyle(this.props.calendarStyle)}>
+        <WeekDaysNames
+          firstDay={this.props.firstDay}
+          style={this.style.dayHeader}
+        />
       </View>
     );
-  });
+  };
 
   renderHeader() {
     const monthYear = new XDate(this.props.context.date).toString('MMMM yyyy');
-    const weekDaysNames = weekDayNames(this.props.firstDay);
 
     return (
       <Animated.View
@@ -500,7 +499,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
         <Text allowFontScaling={false} style={this.style.headerTitle}>
           {monthYear}
         </Text>
-        {this.renderWeekDaysNames(weekDaysNames, this.props.calendarStyle)}
+        {this.renderWeekDaysNames()}
       </Animated.View>
     );
   }
