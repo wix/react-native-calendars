@@ -123,14 +123,6 @@ export default function styleConstructor(theme: Theme = {}) {
     emptyDayContainer: {
       flex: 1
     },
-    dayHeader: {
-      width: 32,
-      textAlign: 'center',
-      fontSize: appStyle.textDayHeaderFontSize,
-      fontFamily: appStyle.textDayHeaderFontFamily,
-      fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
-    },
     arrowImage: {
       tintColor: appStyle.arrowColor,
       transform: constants.isRTL ? [{scaleX: -1}] : undefined
