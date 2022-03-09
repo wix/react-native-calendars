@@ -194,6 +194,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
       >
         {!hideDayNames && (
           <View style={[this.style.week, this.style.weekCalendar]}>
+            {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
             {this.renderWeekDaysNames()}
           </View>
         )}
