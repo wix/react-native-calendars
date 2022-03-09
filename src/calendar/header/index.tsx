@@ -1,3 +1,4 @@
+import includes from 'lodash/includes';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -14,7 +15,7 @@ import {
   AccessibilityActionEvent,
   ColorValue
 } from 'react-native';
-import {formatNumbers} from '../../dateutils';
+import {formatNumbers, weekDayNames} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
@@ -145,15 +146,29 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   };
 
   const renderWeekDays = useMemo(() => {
-    return (
-      <WeekDaysNames 
-        firstDay={firstDay} 
-        style={style.current.dayHeader} 
-        disabledStyle={style.current.disabledDayHeader} 
-        disabledDaysIndexes={disabledDaysIndexes}
-      />
-    );
-  }, [firstDay, disabledDaysIndexes, style]);
+    const weekDaysNames = weekDayNames(firstDay);
+
+    return weekDaysNames.map((day: string, index: number) => {
+      const dayStyle = [style.current.dayHeader];
+
+      if (includes(disabledDaysIndexes, index)) {
+        dayStyle.push(style.current.disabledDayHeader);
+      }
+
+      const dayTextAtIndex = `dayTextAtIndex${index}`;
+      // @ts-expect-error
+      if (style[dayTextAtIndex]) {
+        // @ts-expect-error
+        dayStyle.push(style[dayTextAtIndex]);
+      }
+
+      return (
+        <Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
+          {day}
+        </Text>
+      );
+    });
+  }, [firstDay]);
 
   const _renderHeader = () => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
