@@ -174,6 +174,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
       <WeekDaysNames 
         firstDay={this.props.firstDay} 
         style={this.style.dayHeader} 
+        disabledDaysIndexes={this.props.disabledDaysIndexes}
       />
     );
   };
