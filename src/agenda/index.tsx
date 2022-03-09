@@ -22,7 +22,7 @@ import {VelocityTracker} from '../velocityTracker';
 import {DateData, AgendaSchedule} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
-import WeekDaysNames from '../calendar/header/WeekDaysNames';
+import WeekDaysNames from '../commons/WeekDaysNames';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
