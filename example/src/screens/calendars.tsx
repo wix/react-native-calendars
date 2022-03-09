@@ -348,7 +348,7 @@ const CalendarsScreen = () => {
             return (
               <View>
                 <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
-                  {date?.day}
+                  {date}
                 </Text>
               </View>
             );
