@@ -27,7 +27,7 @@ import {page} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {Theme, DateData, Direction} from '../types';
 import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
-import WeekDaysNames from '../calendar/header/WeekDaysNames';
+import WeekDaysNames from '../commons/WeekDaysNames';
 import Calendar from '../calendar';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';

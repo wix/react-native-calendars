@@ -13,7 +13,7 @@ import {DateData} from '../../types';
 import styleConstructor from '../style';
 import asCalendarConsumer from '../asCalendarConsumer';
 import CalendarList, {CalendarListProps} from '../../calendar-list';
-import WeekDaysNames from '../../calendar/header/WeekDaysNames';
+import WeekDaysNames from '../../commons/WeekDaysNames';
 import Week from '../week';
 import Presenter from './presenter';
 import constants from '../../commons/constants';
