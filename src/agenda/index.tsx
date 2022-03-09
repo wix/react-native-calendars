@@ -114,8 +114,8 @@ export default class Agenda extends Component<AgendaProps, State> {
       calendarIsReady: false,
       calendarScrollable: false,
       firstReservationLoad: false,
-      selectedDay: parseDate(props.selected) || new XDate(true),
-      topDay: parseDate(props.selected) || new XDate(true)
+      selectedDay: this.getSelectedDate(),
+      topDay: this.getSelectedDate()
     };
 
     this.currentMonth = this.state.selectedDay.clone();
@@ -134,9 +134,10 @@ export default class Agenda extends Component<AgendaProps, State> {
     this.state.scrollY.removeAllListeners();
   }
 
-  componentDidUpdate(prevProps: AgendaProps) {
-    if (!sameDate(parseDate(this.props.selected), parseDate(prevProps.selected))) {
-      this.setState({selectedDay: parseDate(this.props.selected)});
+  componentDidUpdate(prevProps: AgendaProps, prevState: State) {
+    const newSelectedDate = this.getSelectedDate();
+    if (!sameDate(newSelectedDate, prevState.selectedDay)) {
+      this.setState({selectedDay: newSelectedDate});
     } else if (!prevProps.items) {
       this.loadReservations(this.props);
     }
@@ -147,6 +148,11 @@ export default class Agenda extends Component<AgendaProps, State> {
       return {firstReservationLoad: false};
     }
     return null;
+  }
+
+  getSelectedDate() {
+    const {selected} = this.props;
+    return selected ? parseDate(selected) : new XDate(true);
   }
 
   calendarOffset() {
