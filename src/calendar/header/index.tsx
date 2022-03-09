@@ -222,11 +222,15 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     }
   };
 
+  const renderWeekNumbersSpace = () => {
+    return showWeekNumbers && <View style={style.current.dayHeader}/>;
+  };
+
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
         <View style={style.current.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
-          {showWeekNumbers && <Text allowFontScaling={false} style={style.current.dayHeader}></Text>}
+          {renderWeekNumbersSpace()}
           {renderWeekDays}
         </View>
       );

@@ -70,10 +70,6 @@ class Week extends PureComponent<WeekProps> {
       }, this);
     }
 
-    // if (this.props.showWeekNumbers) {
-    //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
-    // }
-
     return (
       <View style={this.style.container}>
         <View style={[this.style.week, this.props.style]}>{week}</View>
