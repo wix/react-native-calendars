@@ -6,14 +6,13 @@ import {formatNumbers, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 // @ts-expect-error
 import {SELECT_DATE_SLOT} from '../../testIDs';
-import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 
 
 export interface DayProps extends BasicDayProps {
   /** Provide custom day rendering component */
-  dayComponent?: React.ComponentType<DayProps & {date?: DateData}>;
+  dayComponent?: React.ComponentType<DayProps & {date?: string}>;
 }
 
 const Day = React.memo((props: DayProps) => {
