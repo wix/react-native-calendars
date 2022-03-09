@@ -26,8 +26,6 @@ import {
 } from '../../testIDs';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
-import WeekDaysNames from './WeekDaysNames';
-
 
 export interface CalendarHeaderProps {
   month?: XDate;
