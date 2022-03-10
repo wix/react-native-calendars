@@ -82,7 +82,7 @@ export default class Agenda<T = any> extends Component<AgendaProps<T>, State> {
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
     showClosingKnob: PropTypes.bool
-  };
+  } as {}; // PropTypes are just for JS. TypeScript needs this cast so that it uses the provided generic prop types.
 
   private style: {[key: string]: ViewStyle};
   private viewHeight: number;
