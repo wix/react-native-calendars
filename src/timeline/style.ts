@@ -101,7 +101,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     nowIndicator: {
       position: 'absolute',
       left: HOURS_SIDEBAR_WIDTH,
-      right: 0,
+      right: 0
     },
     nowIndicatorLine: {
       height: 1,
@@ -131,6 +131,12 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       textAlign: 'center',
       width: HOURS_SIDEBAR_WIDTH - 16,
       ...theme.timeLabel
+    },
+    unavailableHoursBlock: {
+      position: 'absolute',
+      left: HOURS_SIDEBAR_WIDTH,
+      right: 0,
+      backgroundColor: '#F8F9FA'
     }
   });
 }

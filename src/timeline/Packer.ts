@@ -2,6 +2,7 @@
 import XDate from 'xdate';
 import constants from '../commons/constants';
 import {Event, PackedEvent} from './EventBlock';
+import inRange from 'lodash/inRange';
 
 type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {
@@ -12,11 +13,27 @@ interface PopulateOptions {
   rightEdgeSpacing?: number;
 }
 
+export interface UnavailableHours {
+  start: number;
+  end: number;
+}
+
+interface UnavailableHoursOptions {
+  hourBlockHeight?: number;
+  dayStart: number;
+  dayEnd: number;
+}
+
 export const HOUR_BLOCK_HEIGHT = 100;
 const OVERLAP_EVENTS_SPACINGS = 10;
 const RIGHT_EDGE_SPACING = 10;
 
-function buildEvent(event: Event & {index: number}, left: number, width: number, {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions): PackedEvent {
+function buildEvent(
+  event: Event & {index: number},
+  left: number,
+  width: number,
+  {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions
+): PackedEvent {
   const startTime = new XDate(event.start);
   const endTime = event.end ? new XDate(event.end) : new XDate(startTime).addHours(1);
 
@@ -57,7 +74,11 @@ function packOverlappingEventGroup(
   calculatedEvents: PackedEvent[],
   populateOptions: PopulateOptions
 ) {
-  const {screenWidth = constants.screenWidth, rightEdgeSpacing = RIGHT_EDGE_SPACING, overlapEventsSpacing = OVERLAP_EVENTS_SPACINGS} = populateOptions;
+  const {
+    screenWidth = constants.screenWidth,
+    rightEdgeSpacing = RIGHT_EDGE_SPACING,
+    overlapEventsSpacing = OVERLAP_EVENTS_SPACINGS
+  } = populateOptions;
   columns.forEach((column, columnIndex) => {
     column.forEach(event => {
       const totalWidth = screenWidth - rightEdgeSpacing;
@@ -65,7 +86,7 @@ function packOverlappingEventGroup(
       const eventLeft = (columnIndex / columns.length) * totalWidth;
       let eventWidth = totalWidth * (columnSpan / columns.length);
 
-      if (columnIndex + columnSpan <= columns.length -1) {
+      if (columnIndex + columnSpan <= columns.length - 1) {
         eventWidth -= overlapEventsSpacing;
       }
 
@@ -74,7 +95,7 @@ function packOverlappingEventGroup(
   });
 }
 
-function populateEvents(_events: Event[], populateOptions: PopulateOptions) {
+export function populateEvents(_events: Event[], populateOptions: PopulateOptions) {
   let lastEnd: string | null = null;
   let columns: PartialPackedEvent[][] = [];
   const calculatedEvents: PackedEvent[] = [];
@@ -125,4 +146,35 @@ function populateEvents(_events: Event[], populateOptions: PopulateOptions) {
   return calculatedEvents;
 }
 
-export default populateEvents;
+export function buildUnavailableHoursBlocks(
+  unavailableHours: UnavailableHours[] = [],
+  options: UnavailableHoursOptions
+) {
+  const {hourBlockHeight = HOUR_BLOCK_HEIGHT, dayStart = 0, dayEnd = 24} = options || {};
+  const totalDayHours = dayEnd - dayStart;
+  const totalDayHeight = (dayEnd - dayStart) * hourBlockHeight;
+  return (
+    unavailableHours
+      .map(hours => {
+        if (!inRange(hours.start, 0, 25) || !inRange(hours.end, 0, 25)) {
+          console.error('Calendar Timeline unavailableHours is invalid. Hours should be between 0 and 24');
+          return undefined;
+        }
+
+        if (hours.start >= hours.end) {
+          console.error('Calendar Timeline availableHours is invalid. start hour should be earlier than end hour');
+          return undefined;
+        }
+
+        const startFixed = Math.max(hours.start, dayStart);
+        const endFixed = Math.min(hours.end, dayEnd);
+
+        return {
+          top: ((startFixed - dayStart) / totalDayHours) * totalDayHeight,
+          height: (endFixed - startFixed) * hourBlockHeight
+        };
+      })
+      // Note: this filter falsy values (undefined blocks)
+      .filter(Boolean)
+  );
+}
