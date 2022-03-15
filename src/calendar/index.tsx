@@ -113,7 +113,7 @@ const Calendar = (props: CalendarProps) => {
     updateMonth(newMonth);
   }, [currentMonth, updateMonth]);
 
-  const handleDayInteraction = (date: DateData, interaction?: (date: DateData) => void) => {
+  const handleDayInteraction = useCallback((date: DateData, interaction?: (date: DateData) => void) => {
     const day = parseDate(date);
     const min = parseDate(minDate);
     const max = parseDate(maxDate);
@@ -126,17 +126,17 @@ const Calendar = (props: CalendarProps) => {
         interaction(date);
       }
     }
-  };
+  }, [minDate, maxDate, allowSelectionOutOfRange, disableMonthChange, updateMonth]);
 
   const onPressDay = useCallback((date?: DateData) => {
     if (date)
     handleDayInteraction(date, onDayPress);
-  }, []);
+  }, [handleDayInteraction, onDayPress]);
 
   const onLongPressDay = useCallback((date?: DateData) => {
     if (date)
     handleDayInteraction(date, onDayLongPress);
-  }, []);
+  }, [handleDayInteraction, onDayLongPress]);
 
   const onSwipeLeft = useCallback(() => {
     // @ts-expect-error
