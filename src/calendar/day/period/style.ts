@@ -26,10 +26,12 @@ export default function styleConstructor(theme: Theme = {}) {
       right: 0
     },
     leftFiller: {
+      backgroundColor: appStyle.calendarBackground,
       height: FILLER_HEIGHT,
       flex: 1
     },
     rightFiller: {
+      backgroundColor: appStyle.calendarBackground,
       height: FILLER_HEIGHT,
       flex: 1
     },
@@ -58,25 +60,6 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
-
-    // quickAction: {
-    //   backgroundColor: 'white',
-    //   borderWidth: 1,
-    //   borderColor: '#c1e4fe'
-    // },
-    // quickActionText: {
-    //   marginTop: 6,
-    //   color: appStyle.textColor
-    // },
-    // firstQuickAction: {
-    //   backgroundColor: appStyle.textLinkColor
-    // },
-    // firstQuickActionText: {
-    //   color: 'white'
-    // },
-    // naText: {
-    //   color: '#b6c1cd'
-    // },
     // @ts-expect-error
     ...(theme['stylesheet.day.period'] || {})
   });
