@@ -1,5 +1,4 @@
 import React, {useMemo, useState, useCallback} from 'react';
-// @ts-expect-error
 import {HorizontalCalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
