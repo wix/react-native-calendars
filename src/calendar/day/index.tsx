@@ -57,7 +57,7 @@ const Day = React.memo((props: DayProps) => {
     return `${_isToday ? today : ''} ${_date?.toString(formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
   }, [_date, marking, _isToday]);
   
-  const Component = dayComponent || markingType === 'period' ? PeriodDay : BasicDay;
+  const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
 
   return (
     <Component
