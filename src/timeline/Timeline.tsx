@@ -6,7 +6,7 @@ import map from 'lodash/map';
 import constants from '../commons/constants';
 import {Theme} from '../types';
 import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
-import populateEvents, {HOUR_BLOCK_HEIGHT} from './Packer';
+import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
@@ -91,6 +91,14 @@ export interface TimelineProps {
    * Spacing to keep at the right edge (for background press)
    */
   rightEdgeSpacing?: number;
+  /**
+   * Range of available hours
+   */
+  unavailableHours?: UnavailableHours[];
+  /**
+   * Background color for unavailable hours
+   */
+  unavailableHoursColor?: string;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -113,6 +121,8 @@ const Timeline = (props: TimelineProps) => {
     onChangeOffset,
     overlapEventsSpacing,
     rightEdgeSpacing,
+    unavailableHours,
+    unavailableHoursColor,
     eventTapped
   } = props;
 
@@ -195,6 +205,8 @@ const Timeline = (props: TimelineProps) => {
         date={date}
         format24h={format24h}
         styles={styles.current}
+        unavailableHours={unavailableHours}
+        unavailableHoursColor={unavailableHoursColor}
         onBackgroundLongPress={onBackgroundLongPress}
         onBackgroundLongPressOut={onBackgroundLongPressOut}
       />

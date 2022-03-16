@@ -81,7 +81,7 @@ export default function styleConstructor(theme: Theme = {}) {
       flexDirection: 'row', 
       justifyContent: 'space-between' 
     },
-    weekday: {
+    dayHeader: {
       width: 32,
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,
@@ -96,7 +96,7 @@ export default function styleConstructor(theme: Theme = {}) {
       position: 'absolute',
       left: 0,
       right: 0,
-      top: HEADER_HEIGHT + (constants.isAndroid ? 8 : 4), // align row on top of calendar's first row
+      top: HEADER_HEIGHT + (constants.isAndroid ? 8 : 9), // align row on top of calendar's first row
     },
     hidden: {
       opacity: 0
@@ -122,14 +122,6 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     emptyDayContainer: {
       flex: 1
-    },
-    dayHeader: {
-      width: 32,
-      textAlign: 'center',
-      fontSize: appStyle.textDayHeaderFontSize,
-      fontFamily: appStyle.textDayHeaderFontFamily,
-      fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
     },
     arrowImage: {
       tintColor: appStyle.arrowColor,

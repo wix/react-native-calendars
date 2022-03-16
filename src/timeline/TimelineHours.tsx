@@ -1,11 +1,9 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet} from 'react-native';
 import range from 'lodash/range';
-import {HOUR_BLOCK_HEIGHT} from './Packer';
+import {buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 import {buildTimeString, calcTimeByPosition} from './helpers/presenter';
 import constants from '../commons/constants';
-
-const dimensionWidth = constants.screenWidth;
 
 interface NewEventTime {
   hour: number;
@@ -20,16 +18,31 @@ export interface TimelineHoursProps {
   format24h?: boolean;
   onBackgroundLongPress?: (timeString: string, time: NewEventTime) => void;
   onBackgroundLongPressOut?: (timeString: string, time: NewEventTime) => void;
+  unavailableHours?: UnavailableHours[];
+  unavailableHoursColor?: string;
   styles: {[key: string]: ViewStyle | TextStyle};
 }
 
+const dimensionWidth = constants.screenWidth;
+const EVENT_DIFF = 20;
+
 const TimelineHours = (props: TimelineHoursProps) => {
-  const {format24h, start = 0, end = 24, date, styles, onBackgroundLongPress, onBackgroundLongPressOut} = props;
+  const {
+    format24h,
+    start = 0,
+    end = 24,
+    date,
+    unavailableHours,
+    unavailableHoursColor,
+    styles,
+    onBackgroundLongPress,
+    onBackgroundLongPressOut
+  } = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();
   // const offset = this.calendarHeight / (end - start);
   const offset = HOUR_BLOCK_HEIGHT;
-  const EVENT_DIFF = 20;
+  const unavailableHoursBlocks = buildUnavailableHoursBlocks(unavailableHours, {dayStart: start, dayEnd: end});
 
   const hours = useMemo(() => {
     return range(start, end + 1).map(i => {
@@ -77,6 +90,16 @@ const TimelineHours = (props: TimelineHoursProps) => {
       <TouchableWithoutFeedback onLongPress={handleBackgroundPress} onPressOut={handlePressOut}>
         <View style={StyleSheet.absoluteFillObject} />
       </TouchableWithoutFeedback>
+      {unavailableHoursBlocks.map(block => (
+        <View
+          style={[
+            styles.unavailableHoursBlock,
+            block,
+            unavailableHoursColor ? {backgroundColor: unavailableHoursColor} : undefined
+          ]}
+        ></View>
+      ))}
+
       {hours.map(({timeText, time}, index) => {
         return (
           <React.Fragment key={time}>
@@ -98,7 +121,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
           </React.Fragment>
         );
       })}
-      <View style={styles.verticalLine}/>
+      <View style={styles.verticalLine} />
     </>
   );
 };

@@ -217,13 +217,14 @@ export default class TimelineCalendarScreen extends Component {
     ]);
   };
 
-  private timelineProps = {
+  private timelineProps: Partial<TimelineProps> = {
     format24h: true,
     onBackgroundLongPress: this.createNewEvent,
     onBackgroundLongPressOut: this.approveNewEvent,
     // scrollToFirst: true,
     // start: 0,
     // end: 24,
+    unavailableHours: [{start: 0, end: 6}, {start: 22, end: 24}],
     overlapEventsSpacing: 8,
     rightEdgeSpacing: 24,
   };
