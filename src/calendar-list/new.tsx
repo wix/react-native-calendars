@@ -144,7 +144,7 @@ const CalendarList = (props: CalendarListProps) => {
         // context={context}
       />
     );
-  }, [calendarProps, items]);
+  }, [calendarProps, scrollToNextMonth, scrollToPreviousMonth]);
 
   return (
     <View style={style.current.flatListContainer}>
