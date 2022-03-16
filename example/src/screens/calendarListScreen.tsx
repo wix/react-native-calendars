@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-// @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const RANGE = 24;
 const initialDate = '2020-06-10';
 
-const CalendarsList = () => {
+const CalendarListScreen = () => {
   const [selected, setSelected] = useState(initialDate);
   const markedDates = {
     [selected]: {
@@ -75,7 +74,7 @@ function renderCustomHeader(date) {
   );
 }
 
-export default CalendarsList;
+export default CalendarListScreen;
 
 const styles = StyleSheet.create({
   header: {
