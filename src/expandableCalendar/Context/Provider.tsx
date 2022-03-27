@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, View, StyleProp, ViewStyle} from 'react-native';
 
 import {toMarkingFormat} from '../../interface';
+import {isToday} from '../../dateutils';
 import {Theme, DateData} from '../../types';
 import styleConstructor from '../style';
 import CalendarContext from './index';
@@ -65,9 +66,21 @@ class CalendarProvider extends Component<Props> {
     opacity: new Animated.Value(1)
   };
 
+  componentDidMount() {
+    const {date} = this.state;
+    if (isToday(new XDate(date))) {
+      this.animateTodayButton(date);
+    }
+  }
+
   componentDidUpdate(prevProps: Props) {
-    if (this.props.date && prevProps.date !== this.props.date) {
-      this.setDate(this.props.date, UpdateSources.PROP_UPDATE);
+    const {date} = this.props;
+    if (date && prevProps.date !== date) {
+      this.setDate(date, UpdateSources.PROP_UPDATE);
+    }
+
+    if (prevProps.todayBottomMargin !== this.props.todayBottomMargin) {
+      this.animateTodayButton(this.state.date);
     }
   }
 
