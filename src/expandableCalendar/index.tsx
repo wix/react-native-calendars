@@ -95,22 +95,23 @@ const headerStyleOverride = {
  * @extendslink: docs/CalendarList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
+
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const {
     theme, 
-    horizontal, 
-    initialPosition, 
+    horizontal = true, 
+    initialPosition = Positions.CLOSED, 
     firstDay = 0, 
     disablePan, 
     disableWeekScroll,
     openThreshold = PAN_GESTURE_THRESHOLD, 
     closeThreshold = PAN_GESTURE_THRESHOLD,
     onCalendarToggled,
-    closeOnDayPress,
+    closeOnDayPress = true,
     onDayPress,
     style: propsStyle, 
     calendarStyle,
-    allowShadow, 
+    allowShadow = true, 
     hideKnob, 
     hideArrows, 
     onPressArrowLeft,
@@ -510,6 +511,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
+  console.log('INBAL: render expandable');
   return (
     <View testID={testID} style={[allowShadow && style.current.containerShadow, propsStyle]}>
       {screenReaderEnabled ? (

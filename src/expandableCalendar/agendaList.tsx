@@ -76,7 +76,10 @@ const AgendaList = (props: AgendaListProps) => {
     renderSectionHeader,
     sectionStyle,
     keyExtractor,
-    dayFormatter, dayFormat, useMoment, markToday
+    dayFormatter, 
+    dayFormat = 'dddd, MMM d', 
+    useMoment, 
+    markToday = true
   } = props;
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
   const style = useRef(styleConstructor(theme));
@@ -97,7 +100,6 @@ const AgendaList = (props: AgendaListProps) => {
   useEffect(() => {
     // NOTE: on first init data should set first section to the current date!!!
     if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
-      console.log('effect: ', date);
       scrollToSection();
     }
   }, [date]);
