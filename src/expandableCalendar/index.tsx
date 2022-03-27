@@ -119,6 +119,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     renderArrow, 
     rightArrowImageSource = RIGHT_ARROW, 
     leftArrowImageSource = LEFT_ARROW,
+    markedDates,
     testID,
     ...others
   } = props;
@@ -383,7 +384,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       setTimeout(() => {
         // to allows setDate to be completed
         if (isOpen) {
-          bounceToPosition(closedHeight);
+          // bounceToPosition(closedHeight);
         }
       }, 0);
     }
@@ -505,6 +506,13 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
+  const _markedDates = useMemo(() => {
+    return {
+      ...markedDates,
+      [date]: {selected: true}
+    };
+  }, [markedDates, date]);
+
   return (
     <View testID={testID} style={[allowShadow && style.current.containerShadow, propsStyle]}>
       {screenReaderEnabled ? (
@@ -524,6 +532,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
             firstDay={firstDay}
             calendarStyle={calendarStyle}
             {...others}
+            markedDates={_markedDates}
             theme={themeObject}
             ref={calendar}
             current={initialDate}
