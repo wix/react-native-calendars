@@ -205,18 +205,16 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
 
   const getWeekDaysStyle = useMemo(() => {
-    if (calendarStyle) {
-      const leftPaddings = calendarStyle.paddingLeft;
-      const rightPaddings = calendarStyle.paddingRight;
+    const leftPaddings = calendarStyle?.paddingLeft;
+    const rightPaddings = calendarStyle?.paddingRight;
 
-      return [
-        style.current.weekDayNames,
-        {
-          paddingLeft: isNumber(leftPaddings) ? leftPaddings + 6 : DAY_NAMES_PADDING,
-          paddingRight: isNumber(rightPaddings) ? rightPaddings + 6 : DAY_NAMES_PADDING
-        }
-      ];
-    }
+    return [
+      style.current.weekDayNames,
+      {
+        paddingLeft: isNumber(leftPaddings) ? leftPaddings + 6 : DAY_NAMES_PADDING,
+        paddingRight: isNumber(rightPaddings) ? rightPaddings + 6 : DAY_NAMES_PADDING
+      }
+    ];
   }, [calendarStyle]);
 
   /** Effects */
@@ -384,7 +382,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       setTimeout(() => {
         // to allows setDate to be completed
         if (isOpen) {
-          // bounceToPosition(closedHeight);
+          bounceToPosition(closedHeight);
         }
       }, 0);
     }
@@ -448,7 +446,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={header}
-        style={[style.current.header, {height: HEADER_HEIGHT, top: headerDeltaY.current}]}
+        style={[style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}]}
         pointerEvents={'none'}
       >
         <Text allowFontScaling={false} style={style.current.headerTitle}>
@@ -547,7 +545,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
             renderArrow={_renderArrow}
             staticHeader
           />
-          {horizontal && renderWeekCalendar()}
+          {renderWeekCalendar()}
           {!hideKnob && renderKnob()}
           {!horizontal && renderHeader()}
         </Animated.View>
