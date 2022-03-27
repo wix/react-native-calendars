@@ -176,7 +176,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const _wrapperStyles = useRef({style: {height: startHeight}});
   const _headerStyles = {style: {top: initialPosition === Positions.CLOSED ? 0 : -HEADER_HEIGHT}};
-  const _weekCalendarStyles = {style: {}}; // add opacity??
+  const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
   
 
   /** Effects */
