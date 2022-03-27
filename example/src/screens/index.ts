@@ -14,6 +14,6 @@ export function registerScreens() {
   Navigation.registerComponent('Agenda', () => AgendaScreen);
   Navigation.registerComponent('CalendarsList', () => CalendarsList);
   Navigation.registerComponent('HorizontalCalendarList', () => HorizontalCalendarList);
-  Navigation.registerComponent('ExpandableCalendarScreen', () => ExpandableCalendarScreen);
+  Navigation.registerComponent('ExpandableCalendar', () => ExpandableCalendarScreen);
   Navigation.registerComponent('TimelineCalendar', () => TimelineCalendar);
 }
