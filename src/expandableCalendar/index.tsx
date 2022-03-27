@@ -1,9 +1,9 @@
 import first from 'lodash/first';
 import values from 'lodash/values';
 import isFunction from 'lodash/isFunction';
+import isNumber from 'lodash/isNumber';
 import throttle from 'lodash/throttle';
 import PropTypes from 'prop-types';
-import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
@@ -126,18 +126,30 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   /** Date */
   const {date, setDate} = useContext(Context);  
   const initialDate = date;
-  const getYear = (date: XDate) => {
+  const getYear = (date: string) => {
     const d = new XDate(date);
     return d.getFullYear();
   };
-  const getMonth = (date: XDate) => {
+  const getMonth = (date: string) => {
     const d = new XDate(date);
-    // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
-    return d.getMonth() + 1;
+    return d.getMonth() + 1; // getMonth() returns month's index' (0-11)
   };
-  const xdate = new XDate(date);
-  const visibleMonth = useRef(getMonth(xdate));
-  const visibleYear = useRef(getYear(xdate));
+  const visibleMonth = useRef(getMonth(date));
+  const visibleYear = useRef(getYear(date));
+
+  const isLaterDate = (date1?: DateData, date2?: string) => {
+    if (date1 && date2) {
+      if (date1.year > getYear(date2)) {
+        return true;
+      }
+      if (date1.year === getYear(date2)) {
+        if (date1.month > getMonth(date2)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
 
   /** Number of weeks */
   const getNumberOfWeeksInMonth = (month: string) => {
@@ -164,11 +176,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
   const isOpen = position === Positions.OPEN;
 
-  /** refs */
-  const wrapper = useRef();
+  /** Components' refs */
+  const wrapper = useRef<any>();
   const calendar = useRef<any>();
-  const header = useRef();
-  const weekCalendar = useRef();
+  const header = useRef<any>();
+  const weekCalendar = useRef<any>();
 
 
   /** Styles */
@@ -179,6 +191,32 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const _headerStyles = {style: {top: initialPosition === Positions.CLOSED ? 0 : -HEADER_HEIGHT}};
   const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
   
+  const shouldHideArrows = !horizontal ? true : hideArrows || false;
+
+  const updateNativeStyles = () => {
+    wrapper?.current?.setNativeProps(_wrapperStyles.current);
+
+    if (!horizontal) {
+      header?.current?.setNativeProps(_headerStyles);
+    } else {
+      weekCalendar?.current?.setNativeProps(_weekCalendarStyles);
+    }
+  };
+
+  const getWeekDaysStyle = useMemo(() => {
+    if (calendarStyle) {
+      const leftPaddings = calendarStyle.paddingLeft;
+      const rightPaddings = calendarStyle.paddingRight;
+
+      return [
+        style.current.weekDayNames,
+        {
+          paddingLeft: isNumber(leftPaddings) ? leftPaddings + 6 : DAY_NAMES_PADDING,
+          paddingRight: isNumber(rightPaddings) ? rightPaddings + 6 : DAY_NAMES_PADDING
+        }
+      ];
+    }
+  }, [calendarStyle]);
 
   /** Effects */
   useEffect(() => {
@@ -194,44 +232,18 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   useEffect(() => {
     // date was changed from AgendaList, arrows or scroll
-    scrollToDate(new XDate(date));
+    scrollToDate(date);
   }, [date]);
 
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
   };
 
-  const updateNativeStyles = () => {
-    wrapper?.current?.setNativeProps(_wrapperStyles.current);
-
-    if (!horizontal) {
-      header?.current?.setNativeProps(_headerStyles);
-    } else {
-      weekCalendar?.current?.setNativeProps(_weekCalendarStyles);
-    }
-  };
-
-  const shouldHideArrows = !horizontal ? true : hideArrows || false;
-
-  const isLaterDate = (date1?: DateData, date2?: XDate) => {
-    if (date1 && date2) {
-      if (date1.year > getYear(date2)) {
-        return true;
-      }
-      if (date1.year === getYear(date2)) {
-        if (date1.month > getMonth(date2)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
   /** Scroll */
 
-  const scrollToDate = (date: XDate) => {
+  const scrollToDate = (date: string) => {
     if (!horizontal) {
-      calendar?.current?.scrollToDay(date, 0, true);
+      calendar?.current?.scrollToDay(new XDate(date), 0, true);
     } else if (getYear(date) !== visibleYear.current || getMonth(date) !== visibleMonth.current) {
       // don't scroll if the month is already visible
       calendar?.current?.scrollToMonth(date);
@@ -320,19 +332,13 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         speed: SPEED,
         bounciness: BOUNCINESS,
         useNativeDriver: false
-      }).start(onAnimatedFinished);
+      }).start();
 
       onCalendarToggled?.(_isOpen);
 
       _setPosition(_height.current === closedHeight);
       closeHeader(_isOpen);
       resetWeekCalendarOpacity(_isOpen);
-    }
-  };
-
-  const onAnimatedFinished = (result: {finished: boolean}) => {
-    if (result?.finished) {
-      // setPosition();
     }
   };
 
@@ -363,15 +369,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
     onPressArrowLeft?.(method, month);
     scrollPage(false);
-  }, []);
+  }, [onPressArrowLeft, scrollPage]);
 
-  const _onPressArrowRight = (method: () => void, month?: XDate) => {
+  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
     onPressArrowRight?.(method, month);
     scrollPage(true);
-  };
+  }, [onPressArrowRight, scrollPage]);
 
-  const _onDayPress = (value: DateData) => {
-    // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
+  const _onDayPress = useCallback((value: DateData) => {
     setDate?.(value.dateString, updateSources.DAY_PRESS);
 
     if (closeOnDayPress) {
@@ -384,12 +389,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
 
     onDayPress?.(value);
-  };
+  }, [setDate, onDayPress, closeOnDayPress, isOpen]);
 
-  const onVisibleMonthsChange = throttle(
+  const onVisibleMonthsChange = useCallback(throttle(
     (value: DateData[]) => {
       if (first(value)) {
-        const month = first(value)?.month; // equivalent to getMonth(value[0].dateString)
+        const month = first(value)?.month;
         if (month && visibleMonth.current !== month) {
           visibleMonth.current = month;
           
@@ -399,9 +404,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           }
   
           // for horizontal scroll
-          const xdate = new XDate(date);
-          if (visibleMonth.current !== getMonth(xdate)) {
-            const next = isLaterDate(first(value), xdate);
+          if (visibleMonth.current !== getMonth(date)) {
+            const next = isLaterDate(first(value), date);
             scrollPage(next);
           }
   
@@ -422,23 +426,13 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     },
     100,
     {trailing: true, leading: false}
-  );
+  ), [date]);
 
   /** Renders */
 
-  const getWeekDaysStyle = memoize(calendarStyle => {
-    return [
-      style.current.weekDayNames,
-      {
-        paddingLeft: calendarStyle?.paddingLeft + 6 || DAY_NAMES_PADDING,
-        paddingRight: calendarStyle?.paddingRight + 6 || DAY_NAMES_PADDING
-      }
-    ];
-  });
-
   const renderWeekDaysNames = () => {
     return (
-      <View style={getWeekDaysStyle(calendarStyle)}>
+      <View style={getWeekDaysStyle}>
         <WeekDaysNames
           firstDay={firstDay}
           style={style.current.dayHeader}
@@ -511,7 +505,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  console.log('INBAL: render expandable');
   return (
     <View testID={testID} style={[allowShadow && style.current.containerShadow, propsStyle]}>
       {screenReaderEnabled ? (

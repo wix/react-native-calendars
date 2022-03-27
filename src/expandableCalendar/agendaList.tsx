@@ -95,7 +95,7 @@ const AgendaList = (props: AgendaListProps) => {
         scrollToSection();
       }, 500);
     }
-  }, []); // onMount
+  }, []);
 
   useEffect(() => {
     // NOTE: on first init data should set first section to the current date!!!
