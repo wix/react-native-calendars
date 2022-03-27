@@ -98,25 +98,27 @@ const headerStyleOverride = {
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const {
     theme, 
-    hideKnob, 
     horizontal, 
     initialPosition, 
-    firstDay = 0, hideArrows, 
-    disablePan, openThreshold = PAN_GESTURE_THRESHOLD, 
+    firstDay = 0, 
+    disablePan, 
+    disableWeekScroll,
+    openThreshold = PAN_GESTURE_THRESHOLD, 
     closeThreshold = PAN_GESTURE_THRESHOLD,
     onCalendarToggled,
-    onPressArrowLeft,
-    onPressArrowRight,
     closeOnDayPress,
     onDayPress,
-    calendarStyle,
-    disableWeekScroll,
-    testID,
     style: propsStyle, 
+    calendarStyle,
     allowShadow, 
+    hideKnob, 
+    hideArrows, 
+    onPressArrowLeft,
+    onPressArrowRight,
     renderArrow, 
     rightArrowImageSource = RIGHT_ARROW, 
     leftArrowImageSource = LEFT_ARROW,
+    testID,
     ...others
   } = props;
 
@@ -508,8 +510,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  // const {style, hideKnob, horizontal, allowShadow, theme, ...others} = this.props;
-
   return (
     <View testID={testID} style={[allowShadow && style.current.containerShadow, propsStyle]}>
       {screenReaderEnabled ? (
@@ -526,6 +526,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           <CalendarList
             testID="calendar"
             horizontal={horizontal}
+            firstDay={firstDay}
+            calendarStyle={calendarStyle}
             {...others}
             theme={themeObject}
             ref={calendar}
