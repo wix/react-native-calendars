@@ -2,6 +2,7 @@ import get from 'lodash/get';
 import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
+
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 

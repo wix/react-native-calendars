@@ -3,6 +3,7 @@ import values from 'lodash/values';
 import isFunction from 'lodash/isFunction';
 import isNumber from 'lodash/isNumber';
 import throttle from 'lodash/throttle';
+
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -151,6 +152,13 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
     return false;
   };
+
+  const _markedDates = useMemo(() => {
+    return {
+      ...markedDates,
+      [date]: {selected: true}
+    };
+  }, [markedDates, date]);
 
   /** Number of weeks */
   const getNumberOfWeeksInMonth = (month: string) => {
@@ -503,13 +511,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       />
     );
   };
-
-  const _markedDates = useMemo(() => {
-    return {
-      ...markedDates,
-      [date]: {selected: true}
-    };
-  }, [markedDates, date]);
 
   return (
     <View testID={testID} style={[allowShadow && style.current.containerShadow, propsStyle]}>
