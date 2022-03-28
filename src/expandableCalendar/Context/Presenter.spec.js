@@ -10,7 +10,7 @@ import {
   getOpacityAnimation,
   getTodayDate,
   getTodayFormatted
-} from './Presenter';
+} from './presenter';
 
 describe('Context provider tests', () => {
   const pastDate = '2021-04-04';

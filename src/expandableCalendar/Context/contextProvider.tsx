@@ -19,7 +19,7 @@ import {
   getOpacityAnimation,
   getTodayDate,
   getTodayFormatted
-} from './Presenter';
+} from './presenter';
 
 const TOP_POSITION = 65;
 

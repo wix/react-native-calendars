@@ -4,7 +4,7 @@ import {sameMonth, isToday, isPastDate} from '../../dateutils';
 import {xdateToData, toMarkingFormat} from '../../interface';
 import {getDefaultLocale} from '../../services';
 import {UpdateSources} from '../commons';
-import {CalendarContextProviderProps} from './Provider';
+import {CalendarContextProviderProps} from './contextProvider';
 
 const commons = require('../commons');
 const TOP_POSITION = 65;
