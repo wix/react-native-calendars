@@ -32,7 +32,7 @@ const CALENDAR_HEIGHT = 360;
 const CalendarList = (props: CalendarListProps) => {
   const {
     initialDate,
-    horizontal = true, 
+    horizontal, 
     scrollRange = NUMBER_OF_PAGES,
     staticHeader, 
     scrollViewProps,
@@ -135,6 +135,7 @@ const CalendarList = (props: CalendarListProps) => {
         {...headerProps}
         initialDate={item}
         disableMonthChange
+        hideArrows={!horizontal}
         onPressArrowRight={scrollToNextMonth}
         onPressArrowLeft={scrollToPreviousMonth} 
         hideExtraDays={calendarProps?.hideExtraDays || true}
@@ -156,7 +157,7 @@ const CalendarList = (props: CalendarListProps) => {
         reloadPages={reloadPages}
         onReachNearEdgeThreshold={Math.round(NUMBER_OF_PAGES * 0.4)}
         extendedState={calendarProps?.markedDates}
-        // horizontal={horizontal}
+        isHorizontal={horizontal}
         style={style.current.container}
         initialPageIndex={scrollRange}
         pageHeight={CALENDAR_HEIGHT}

@@ -1,10 +1,10 @@
-// TODO: Make this a common component for all horizontal lists in this lib
-import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
-import {ScrollViewProps} from 'react-native';
-import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 import inRange from 'lodash/inRange';
 import debounce from 'lodash/debounce';
 import noop from 'lodash/noop';
+
+import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
+import {ScrollViewProps} from 'react-native';
+import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 
 import constants from '../commons/constants';
 import useCombinedRefs from '../commons/useCombinedRefs';
@@ -28,6 +28,7 @@ export interface InfiniteListProps
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const {
+    isHorizontal,
     renderItem,
     data,
     reloadPages = noop,
@@ -41,6 +42,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     extendedState,
     scrollViewProps
   } = props;
+  
   const dataProvider = useMemo(() => {
     return dataProviderMaker(data);
   }, [data]);
@@ -119,14 +121,14 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   }, []);
 
   const style = useMemo(() => {
-    return {height: pageHeight};
+    return {height: isHorizontal ? pageHeight : constants.screenHeight};
   }, [pageHeight]);
 
   return (
     <RecyclerListView
       // @ts-expect-error
       ref={listRef}
-      isHorizontal
+      isHorizontal={isHorizontal}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
       layoutProvider={layoutProvider.current}
@@ -136,7 +138,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       onScroll={onScroll}
       style={style}
       scrollViewProps={{
-        pagingEnabled: true,
+        pagingEnabled: isHorizontal,
         bounces: false,
         ...scrollViewProps,
         onScrollBeginDrag,
