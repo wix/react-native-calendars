@@ -112,6 +112,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       <View>
         <InfiniteList
           key="week-list"
+          isHorizontal
           ref={list}
           data={items}
           renderItem={renderItem}
