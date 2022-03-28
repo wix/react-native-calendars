@@ -127,6 +127,9 @@ export default function styleConstructor(theme: Theme = {}) {
       tintColor: appStyle.arrowColor,
       transform: constants.isRTL ? [{scaleX: -1}] : undefined
     },
+    contextWrapper: {
+      flex: 1
+    },
     todayButtonContainer: {
       alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',
       position: 'absolute', 
