@@ -1,10 +1,10 @@
 import React, {useMemo, useState, useCallback} from 'react';
-import {HorizontalCalendarList} from 'react-native-calendars';
+import {NewCalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const initialDate = '2020-05-16';
 
-const HorizontalCalendarListScreen = () => {
+const NewCalendarListScreen = () => {
   const [selected, setSelected] = useState(initialDate);
   
   const markedDates = useMemo(() => {
@@ -17,6 +17,7 @@ const HorizontalCalendarListScreen = () => {
   }, [selected]);
 
   const onDayPress = useCallback(day => {
+    console.warn('dayPress: ', day);
     setSelected(day.dateString);
   }, [setSelected]);
 
@@ -28,9 +29,9 @@ const HorizontalCalendarListScreen = () => {
   }, [selected, markedDates, onDayPress]);
 
   return (
-    <HorizontalCalendarList
+    <NewCalendarList
       // initialDate={initialDate}
-      // staticHeader  
+      staticHeader  
       // scrollRange={10}
       calendarProps={calendarProps}
       testID={testIDs.horizontalList.CONTAINER}
@@ -38,4 +39,4 @@ const HorizontalCalendarListScreen = () => {
   );
 };
 
-export default HorizontalCalendarListScreen;
+export default NewCalendarListScreen;
