@@ -25,7 +25,7 @@ class Week extends PureComponent<WeekProps> {
 
   getWeek(date?: string) {
     if (date) {
-      return getWeekDates(new XDate(date), this.props.firstDay);
+      return getWeekDates(date, this.props.firstDay);
     }
   }
 
@@ -49,7 +49,7 @@ class Week extends PureComponent<WeekProps> {
       <View style={this.style.dayContainer} key={id}>
         <Day
           {...dayProps}
-          day={day}
+          date={toMarkingFormat(day)}
           state={getState(day, currXdate, this.props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={this.props.onDayPress}

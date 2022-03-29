@@ -5,15 +5,20 @@ import React, {Component} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, View, StyleProp, ViewStyle} from 'react-native';
 
 import {toMarkingFormat} from '../../interface';
+import {isToday} from '../../dateutils';
 import {Theme, DateData} from '../../types';
 import styleConstructor from '../style';
-import CalendarContext from '.';
+import CalendarContext from './index';
 import Presenter from './Presenter';
 import {UpdateSources} from '../commons';
 
 const TOP_POSITION = 65;
 
 interface Props {
+  /** Specify theme properties to override specific styles for calendar parts */
+  theme?: Theme;
+  /** Specify style for calendar container element */
+  style?: StyleProp<ViewStyle>;
   /** Initial date in 'yyyy-MM-dd' format. Default = now */
   date: string;
   /** Callback for date change event */
@@ -28,8 +33,6 @@ interface Props {
   todayButtonStyle?: ViewStyle;
   /** The opacity for the disabled today button (0-1) */
   disabledOpacity?: number;
-  style?: StyleProp<ViewStyle>;
-  theme?: Theme;
 }
 export type CalendarContextProviderProps = Props;
 
@@ -41,19 +44,12 @@ class CalendarProvider extends Component<Props> {
   static displayName = 'CalendarProvider';
 
   static propTypes = {
-    /** Initial date in 'yyyy-MM-dd' format. Default = now */
     date: PropTypes.any.isRequired,
-    /** Callback for date change event */
     onDateChanged: PropTypes.func,
-    /** Callback for month change event */
     onMonthChange: PropTypes.func,
-    /** Whether to show the today button */
     showTodayButton: PropTypes.bool,
-    /** Today button's top position */
     todayBottomMargin: PropTypes.number,
-    /** Today button's style */
     todayButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** The opacity for the disabled today button (0-1) */
     disabledOpacity: PropTypes.number
   };
 
@@ -70,9 +66,21 @@ class CalendarProvider extends Component<Props> {
     opacity: new Animated.Value(1)
   };
 
+  componentDidMount() {
+    const {date} = this.state;
+    if (isToday(new XDate(date))) {
+      this.animateTodayButton(date);
+    }
+  }
+
   componentDidUpdate(prevProps: Props) {
-    if (this.props.date && prevProps.date !== this.props.date) {
-      this.setDate(this.props.date, UpdateSources.PROP_UPDATE);
+    const {date} = this.props;
+    if (date && prevProps.date !== date) {
+      this.setDate(date, UpdateSources.PROP_UPDATE);
+    }
+
+    if (prevProps.todayBottomMargin !== this.props.todayBottomMargin) {
+      this.animateTodayButton(this.state.date);
     }
   }
 

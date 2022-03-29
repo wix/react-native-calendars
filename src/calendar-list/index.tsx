@@ -2,21 +2,21 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
+import {FlatList, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
 import {extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
-import {page, sameDate} from '../dateutils';
+import {page, sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import constants from '../commons/constants';
 
 
-const {width} = Dimensions.get('window');
-const CALENDAR_WIDTH = width;
+const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
@@ -74,44 +74,28 @@ type State = {
  * @extends: Calendar
  * @extendslink: docs/Calendar
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.js
- * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/calendar-list.gif
+ * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif
  */
 class CalendarList extends Component<CalendarListProps, State> {
   static displayName = 'CalendarList';
 
   static propTypes = {
     ...Calendar.propTypes,
-    /** Max amount of months allowed to scroll to the past. Default = 50 */
     pastScrollRange: PropTypes.number,
-    /** Max amount of months allowed to scroll to the future. Default = 50 */
     futureScrollRange: PropTypes.number,
-    /** Used when calendar scroll is horizontal, default is device width, pagination should be disabled */
     calendarWidth: PropTypes.number,
-    /** Dynamic calendar height */
     calendarHeight: PropTypes.number,
-    /** Style for the List item (the calendar) */
     calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    /** Whether to use static header that will not scroll with the list (horizontal only) */
     staticHeader: PropTypes.bool,
-    /** Enable or disable vertical / horizontal scroll indicator. Default = false */
     showScrollIndicator: PropTypes.bool,
-    /** Whether to animate the auto month scroll */
     animateScroll: PropTypes.bool,
-    /** Enable or disable scrolling of calendar list */
     scrollEnabled: PropTypes.bool,
-    /** When true, the calendar list scrolls to top when the status bar is tapped. Default = true */
     scrollsToTop: PropTypes.bool,
-    /** Enable or disable paging on scroll */
     pagingEnabled: PropTypes.bool,
-    /** Whether the scroll is horizontal */
     horizontal: PropTypes.bool,
-    /** Should Keyboard persist taps */
     keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
-    /** A custom key extractor for the generated calendar months */
     keyExtractor: PropTypes.func,
-    /** How far from the end to trigger the onEndReached callback */
     onEndReachedThreshold: PropTypes.number,
-    /** Called once when the scroll position gets within onEndReachedThreshold */
     onEndReached: PropTypes.func
   };
 
@@ -124,7 +108,7 @@ class CalendarList extends Component<CalendarListProps, State> {
     horizontal: false,
     scrollsToTop: false,
     scrollEnabled: true,
-    removeClippedSubviews: Platform.OS === 'android',
+    removeClippedSubviews: constants.isAndroid,
     keyExtractor: (_: any, index: number) => String(index)
   };
 
@@ -250,7 +234,7 @@ class CalendarList extends Component<CalendarListProps, State> {
   };
 
   updateMonth(day: XDate) {
-    if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
+    if (sameMonth(day, this.state.currentMonth)) {
       return;
     }
 

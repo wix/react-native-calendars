@@ -1,0 +1,60 @@
+{
+  "name": "CalendarProvider",
+  "description": "Calendar context provider component",
+  "images": [
+  ],
+  "extends": ["Context"],
+  "extendsLink": [
+    "https://reactjs.org/docs/context.html"
+  ],
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.tsx",
+  "props": [
+    {
+      "name": "theme",
+      "type": "Theme",
+      "description": "Specify theme properties to override specific styles for calendar parts"
+    },
+    {
+      "name": "style",
+      "type": "ViewStyle",
+      "description": "Specify style for calendar container element"
+    },
+    {
+      "name": "date",
+      "type": "string",
+      "description": "Initial date in 'yyyy-MM-dd' format",
+      "default": "now"
+    },
+    {
+      "name": "onDateChanged",
+      "type": "(date: string, updateSource: UpdateSource) => void",
+      "description": "Handler which gets executed when the date changes"
+    },
+    {
+      "name": "onMonthChange",
+      "type": "(date: DateData, updateSource: UpdateSource) => void",
+      "description": "Handler which gets executed when the month changes"
+    },
+    {
+      "name": "showTodayButton",
+      "type": "boolean",
+      "description": "Whether to show the today button",
+      "default": "true"
+    },
+    {
+      "name": "todayButtonStyle",
+      "type": "ViewStyle",
+      "description": "Today button's style"
+    },
+    {
+      "name": "todayBottomMargin",
+      "type": "number",
+      "description": "Today button's top position"
+    },
+    {
+      "name": "disabledOpacity",
+      "type": "number",
+      "description": "The opacity for the disabled today button (0-1)"
+    }
+  ]
+}
