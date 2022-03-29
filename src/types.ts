@@ -1,4 +1,4 @@
-import {ViewStyle, TextStyle, StyleProp} from 'react-native';
+import {ViewStyle, TextStyle} from 'react-native';
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
@@ -27,15 +27,6 @@ export interface Theme {
   todayTextColor?: string;
   calendarBackground?: string;
   indicatorColor?: string;
-  stylesheet?: {
-    calendar?: {main?: object; header?: object};
-    day?: {basic?: object; period?: object};
-    dot?: object;
-    marking?: object;
-    'calendar-list'?: {main?: object};
-    agenda?: {main?: object; list?: object};
-    expandable?: {main?: object};
-  };
   textSectionTitleColor?: string;
   textSectionTitleDisabledColor?: string;
   dayTextColor?: string;
@@ -86,8 +77,27 @@ export interface Theme {
   arrowHeight?: number;
   arrowWidth?: number;
   weekVerticalMargin?: number;
-  'stylesheet.calendar.header'?: {
-    week?: StyleProp<ViewStyle>;
+  stylesheet?: {
+    calendar?: {
+      main?: object; 
+      header?: object;
+    };
+    day?: {
+      basic?: object; 
+      period?: object;
+    };
+    dot?: object;
+    marking?: object;
+    'calendar-list'?: {
+      main?: object;
+    };
+    agenda?: {
+      main?: object; 
+      list?: object;
+    };
+    expandable?: {
+      main?: object;
+    };
   };
 }
 

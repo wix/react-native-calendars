@@ -36,10 +36,14 @@ const CalendarListScreen = () => {
 };
 
 const theme = {
-  'stylesheet.calendar.header': {
-    dayHeader: {
-      fontWeight: '600',
-      color: '#48BFE3'
+  stylesheet: {
+    calendar: {
+      header: {
+        dayHeader: {
+          fontWeight: '600',
+          color: '#48BFE3'
+        }
+      }
     }
   },
   'stylesheet.day.basic': {
