@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {CalendarList} from 'react-native-calendars';
+import {StyleSheet, Text, View, TextStyle} from 'react-native';
+import {CalendarList, DateData} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const RANGE = 24;
@@ -17,7 +17,7 @@ const CalendarListScreen = () => {
     }
   };
   
-  const onDayPress = day => {
+  const onDayPress = (day: DateData) => {
     setSelected(day.dateString);
   };
 
@@ -54,10 +54,10 @@ const theme = {
   }
 };
 
-function renderCustomHeader(date) {
+function renderCustomHeader(date: any) {
   const header = date.toString('MMMM yyyy');
   const [month, year] = header.split(' ');
-  const textStyle = {
+  const textStyle: TextStyle = {
     fontSize: 18,
     fontWeight: 'bold',
     paddingTop: 10,
