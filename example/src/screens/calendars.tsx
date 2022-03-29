@@ -1,4 +1,4 @@
-import React, {useState, Fragment, useCallback} from 'react';
+import React, {useState, Fragment, useCallback, useMemo} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Calendar, CalendarProps} from 'react-native-calendars';
 import {SelectedWeek} from 'src/types';
@@ -9,9 +9,20 @@ const INITIAL_DATE = '2020-02-02';
 const CalendarsScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
 
-  const onDayPress: CalendarProps['onDayPress'] = day => {
+  const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
     setSelected(day.dateString);
-  };
+  }, []);
+
+  const marked = useMemo(() => {
+    return {
+      [selected]: {
+        selected: true,
+        disableTouchEvent: true,
+        selectedColor: 'orange',
+        selectedTextColor: 'red'
+      }
+    };
+  }, [selected]);
 
   const renderCalendarWithSelectableDate = () => {
     return (
@@ -23,14 +34,7 @@ const CalendarsScreen = () => {
           current={INITIAL_DATE}
           style={styles.calendar}
           onDayPress={onDayPress}
-          markedDates={{
-            [selected]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: 'orange',
-              selectedTextColor: 'red'
-            }
-          }}
+          markedDates={marked}
         />
       </Fragment>
     );
@@ -80,7 +84,7 @@ const CalendarsScreen = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with week numbers</Text>
-        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers />
+        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers/>
       </Fragment>
     );
   };
@@ -220,7 +224,7 @@ const CalendarsScreen = () => {
               }
             },
             '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
-            '2012-05-24': {color: '#70d7c7', textColor: 'white'},
+            '2012-05-24': {color: '#70d7c7', inactive: true},
             '2012-05-25': {
               endingDay: true,
               color: '#50cebb',
@@ -230,13 +234,16 @@ const CalendarsScreen = () => {
                 borderBottomRightRadius: 5
               }
             },
-            '2012-05-30': {disabled: true, disableTouchEvent: true}
+            '2012-05-30': {inactive: true, disableTouchEvent: true}
           }}
           disabledDaysIndexes={[0, 6]}
           theme={{
+            textInactiveColor: '#a68a9f',
             textSectionTitleDisabledColor: 'grey',
-            textSectionTitleColor: '#00BBF2'
+            textSectionTitleColor: '#319e8e',
+            arrowColor: '#319e8e'
           }}
+          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
         />
       </Fragment>
     );

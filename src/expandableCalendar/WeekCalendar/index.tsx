@@ -4,22 +4,22 @@ import XDate from 'xdate';
 import {Map} from 'immutable';
 
 import React, {Component} from 'react';
-import {FlatList, View, Text, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
+import {FlatList, View, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
 import {extractComponentProps} from '../../componentUpdater';
-import {weekDayNames, sameWeek} from '../../dateutils';
+import {sameWeek} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
 import asCalendarConsumer from '../asCalendarConsumer';
 import CalendarList, {CalendarListProps} from '../../calendar-list';
+import WeekDaysNames from '../../commons/WeekDaysNames';
 import Week from '../week';
 import Presenter from './presenter';
+import constants from '../../commons/constants';
 
-
-const commons = require('../commons');
 const NUMBER_OF_PAGES = 2; // must be a positive number
-const applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
+const applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -75,7 +75,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
   }
 
   get containerWidth() {
-    return this.props.calendarWidth || commons.screenWidth;
+    return this.props.calendarWidth || constants.screenWidth;
   }
 
   getDatesArray() {
@@ -169,26 +169,18 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
   keyExtractor = (_: string, index: number) => index.toString();
 
-  renderWeekDaysNames = memoize(weekDaysNames => {
-    return weekDaysNames.map((day: string, index: number) => (
-      <Text
-        allowFontScaling={false}
-        key={index}
-        style={this.style.dayHeader}
-        numberOfLines={1}
-        accessibilityLabel={''}
-        // accessible={false} // not working
-        // importantForAccessibility='no'
-      >
-        {day}
-      </Text>
-    ));
-  });
+  renderWeekDaysNames = () => {
+    return (
+      <WeekDaysNames 
+        firstDay={this.props.firstDay} 
+        style={this.style.dayHeader} 
+      />
+    );
+  };
 
   render() {
     const {allowShadow, firstDay, hideDayNames, current, context} = this.props;
     const {items} = this.state;
-    const weekDaysNames = weekDayNames(firstDay);
     const extraData = Map({
       current,
       date: context.date,
@@ -203,7 +195,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
         {!hideDayNames && (
           <View style={[this.style.week, this.style.weekCalendar]}>
             {/* {this.props.weekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>} */}
-            {this.renderWeekDaysNames(weekDaysNames)}
+            {this.renderWeekDaysNames()}
           </View>
         )}
         <FlatList

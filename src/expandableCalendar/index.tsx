@@ -24,16 +24,18 @@ import {
 
 // @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
-import {page, weekDayNames} from '../dateutils';
+import {page} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {Theme, DateData, Direction} from '../types';
 import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
-import CalendarList, {CalendarListProps} from '../calendar-list';
+import WeekDaysNames from '../commons/WeekDaysNames';
 import Calendar from '../calendar';
-import asCalendarConsumer from './asCalendarConsumer';
-import WeekCalendar from './WeekCalendar';
+import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
+import WeekCalendar from './WeekCalendar';
+import asCalendarConsumer from './asCalendarConsumer';
 
+import constants from '../commons/constants';
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 enum Positions {
@@ -72,7 +74,7 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeThreshold?: number;
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
-  
+
   context?: any;
   canScrollBackWeek?: boolean;
   /** Callback when clicking on Knob */
@@ -268,7 +270,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
   /** Utils */
   getOpenHeight() {
     if (!this.props.horizontal) {
-      return Math.max(commons.screenHeight, commons.screenWidth);
+      return Math.max(constants.screenHeight, constants.screenWidth);
     }
     return (
       CLOSED_HEIGHT +
@@ -455,9 +457,8 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
         }
 
         // for horizontal scroll
-        const {date, updateSource} = this.props.context;
-
-        if (this.visibleMonth !== this.getMonth(date) && updateSource !== updateSources.DAY_PRESS) {
+        const {date} = this.props.context;
+        if (this.visibleMonth !== this.getMonth(date)) {
           const next = this.isLaterDate(first(value), date);
           this.scrollPage(next);
         }
@@ -491,21 +492,16 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     ];
   });
 
-  renderWeekDaysNames = memoize((weekDaysNames, calendarStyle) => {
+  renderWeekDaysNames = () => {
     return (
-      <View style={this.getWeekDaysStyle(calendarStyle)}>
-        {weekDaysNames.map((day: string, index: number) => (
-          <Text allowFontScaling={false} key={day + index} style={this.style.weekday} numberOfLines={1}>
-            {day}
-          </Text>
-        ))}
+      <View style={this.getWeekDaysStyle(this.props.calendarStyle)}>
+        <WeekDaysNames firstDay={this.props.firstDay} style={this.style.dayHeader} />
       </View>
     );
-  });
+  };
 
   renderHeader() {
     const monthYear = new XDate(this.props.context.date).toString('MMMM yyyy');
-    const weekDaysNames = weekDayNames(this.props.firstDay);
 
     return (
       <Animated.View
@@ -516,7 +512,7 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
         <Text allowFontScaling={false} style={this.style.headerTitle}>
           {monthYear}
         </Text>
-        {this.renderWeekDaysNames(weekDaysNames, this.props.calendarStyle)}
+        {this.renderWeekDaysNames()}
       </Animated.View>
     );
   }

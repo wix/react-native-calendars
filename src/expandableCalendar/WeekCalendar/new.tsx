@@ -4,7 +4,7 @@ import XDate from 'xdate';
 
 import InfiniteList from '../../infinite-list';
 import Week from '../week';
-import WeekDaysNames from './WeekDaysNames';
+import WeekDaysNames from '../../commons/WeekDaysNames';
 import {CalendarListProps} from '../../calendar-list';
 import CalendarContext from '../../expandableCalendar/Context';
 import styleConstructor from '../style';
@@ -43,14 +43,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return [{width: containerWidth}, props.style];
   }, [containerWidth, props.style]);
 
-  // NOTE: Responsible for sync scroll position after reloading new items
-  useEffect(() => {
-    setTimeout(() => {
-      // @ts-expect-error
-      list.current?.scrollToOffset?.(NUMBER_OF_PAGES * containerWidth, 0, false);
-    }, 0);
-  }, [items]);
-
   useEffect(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
@@ -76,12 +68,12 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     [items]
   );
 
-  const onReachEdge = useCallback(
+  const reloadPages = useCallback(
     pageIndex => {
       const date = items[pageIndex];
       setItems(getDatesArray(date, firstDay, NUMBER_OF_PAGES));
     },
-    [items, containerWidth]
+    [items]
   );
 
   const renderItem = useCallback(
@@ -114,7 +106,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     >
       {!hideDayNames && (
         <View style={[style.current.week, style.current.weekCalendar]}>
-          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader} />
+          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader}/>
         </View>
       )}
       <View>
@@ -123,13 +115,14 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           ref={list}
           data={items}
           renderItem={renderItem}
+          reloadPages={reloadPages}
+          onReachNearEdgeThreshold={Math.round(NUMBER_OF_PAGES * 0.4)}
           extendedState={extraData}
           style={style.current.container}
           initialPageIndex={NUMBER_OF_PAGES}
           pageHeight={48}
           pageWidth={containerWidth}
           onPageChange={onPageChange}
-          onReachEdge={onReachEdge}
           scrollViewProps={{
             showsHorizontalScrollIndicator: false
           }}

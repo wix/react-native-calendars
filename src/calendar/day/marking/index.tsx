@@ -1,13 +1,11 @@
 import filter from 'lodash/filter';
-
-import React, {Component} from 'react';
+import React, {useRef} from 'react';
 import {View, ViewStyle, TextStyle, StyleProp} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
-import {shouldUpdate, extractComponentProps} from '../../../componentUpdater';
+import {extractComponentProps} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
-
 
 export enum Markings {
   DOT = 'dot',
@@ -20,7 +18,7 @@ export enum Markings {
 type CustomStyle = {
   container?: ViewStyle;
   text?: TextStyle;
-}
+};
 
 type DOT = {
   key?: string;
@@ -60,86 +58,57 @@ export interface MarkingProps extends DotProps {
   customStyles?: CustomStyle;
 }
 
-export default class Marking extends Component<MarkingProps> {
-  static displayName = 'Marking';
+const Marking = (props: MarkingProps) => {
+  const {theme, type, dots, periods, selected, dotColor} = props;
+  const style = useRef(styleConstructor(theme));
 
-  static markings = Markings;
-  
-  style: any;
-  
-  constructor(props: MarkingProps) {
-    super(props);
-
-    this.style = styleConstructor(props.theme);
-  }
-
-  shouldComponentUpdate(nextProps: MarkingProps) {
-    return shouldUpdate(this.props, nextProps, [
-      'type',
-      'selected',
-      'marked',
-      'today',
-      'disabled',
-      'inactive',
-      'disableTouchEvent',
-      'activeOpacity',
-      'selectedColor',
-      'selectedTextColor',
-      'dotColor',
-      'dots',
-      'periods'
-    ]);
-  }
-
-  getItems(items?: DOT[] | PERIOD[]) {
-    const {type} = this.props;
-
+  const getItems = (items?: DOT[] | PERIOD[]) => {
     if (items && Array.isArray(items) && items.length > 0) {
       // Filter out items so that we process only those which have color property
-      const validItems = filter(items, function(o: DOT | PERIOD) { return o.color; });
+      const validItems = filter(items, function (o: DOT | PERIOD) {
+        return o.color;
+      });
 
       return validItems.map((item, index) => {
-        return type === Markings.MULTI_DOT ? this.renderDot(index, item) : this.renderPeriod(index, item);
+        return type === Markings.MULTI_DOT ? renderDot(index, item) : renderPeriod(index, item);
       });
     }
-  }
+  };
 
-  renderMarkingByType() {
-    const {type, dots, periods} = this.props;
+  const renderMarkingByType = () => {
     switch (type) {
       case Markings.MULTI_DOT:
-        return this.renderMultiMarkings(this.style.dots, dots);
+        return renderMultiMarkings(style.current.dots, dots);
       case Markings.MULTI_PERIOD:
-        return this.renderMultiMarkings(this.style.periods, periods);
+        return renderMultiMarkings(style.current.periods, periods);
       default:
-        return this.renderDot();
+        return renderDot();
     }
-  }
+  };
 
-  renderMultiMarkings(containerStyle: object, items?: DOT[] | PERIOD[]) {
-    return <View style={containerStyle}>{this.getItems(items)}</View>;
-  }
+  const renderMultiMarkings = (containerStyle: object, items?: DOT[] | PERIOD[]) => {
+    return <View style={containerStyle}>{getItems(items)}</View>;
+  };
 
-  renderPeriod(index: number, item: any) {
+  const renderPeriod = (index: number, item: any) => {
     const {color, startingDay, endingDay} = item;
-    const style = [
-      this.style.period,
+    const styles = [
+      style.current.period,
       {
         backgroundColor: color
       }
     ];
     if (startingDay) {
-      style.push(this.style.startingDay);
+      styles.push(style.current.startingDay);
     }
     if (endingDay) {
-      style.push(this.style.endingDay);
+      styles.push(style.current.endingDay);
     }
-    return <View key={index} style={style}/>;
-  }
+    return <View key={index} style={styles}/>;
+  };
 
-  renderDot(index?: number, item?: any) {
-    const {selected, dotColor} = this.props;
-    const dotProps = extractComponentProps(Dot, this.props);
+  const renderDot = (index?: number, item?: any) => {
+    const dotProps = extractComponentProps(Dot, props);
     let key = index;
     let color = dotColor;
 
@@ -151,9 +120,11 @@ export default class Marking extends Component<MarkingProps> {
     }
 
     return <Dot {...dotProps} key={key} color={color} />;
-  }
+  };
 
-  render() {
-    return this.renderMarkingByType();
-  }
-}
+  return renderMarkingByType();
+};
+
+export default Marking;
+Marking.displayName = 'Marking';
+Marking.markings = Markings;

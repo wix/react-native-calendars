@@ -1,6 +1,7 @@
-import {StyleSheet, Platform} from 'react-native';
+import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
 import {Theme} from '../../../types';
+import constants from '../../../commons/constants';
 
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -15,7 +16,7 @@ export default function styleConstructor(theme: Theme = {}) {
       alignItems: 'center'
     },
     text: {
-      marginTop: Platform.OS === 'android' ? 4 : 6,
+      marginTop: constants.isAndroid ? 4 : 6,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
@@ -24,7 +25,7 @@ export default function styleConstructor(theme: Theme = {}) {
       ...appStyle.textDayStyle
     },
     alignedText: {
-      marginTop: Platform.OS === 'android' ? 4 : 6
+      marginTop: constants.isAndroid ? 4 : 6
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,

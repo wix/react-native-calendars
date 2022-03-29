@@ -1,7 +1,9 @@
 {
   "name": "AgendaList",
-  "description": "Agenda list component",
+  "description": "Agenda list component for the `ExpandableCalendar` component.",
+  "note": "This component should be wrapped with `CalendarProvider` component.",
   "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/expandable-calendar.gif?raw=true"
   ],
   "extends": ["FlatList"],
   "extendsLink": [

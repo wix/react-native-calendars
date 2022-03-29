@@ -1,33 +1,36 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo, useCallback} from 'react';
 // @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
-const initialDate = '2020-05-16';
+const INITIAL_DATE = '2020-05-16';
 
 const HorizontalCalendarList = () => {
-  const [selected, setSelected] = useState(initialDate);
-  const markedDates = {
-    [selected]: {
-      selected: true,
-      selectedColor: '#DFA460'
-    }
-  };
+  const [selected, setSelected] = useState(INITIAL_DATE);
+  const markedDates = useMemo(() => {
+    return {
+      [selected]: {
+        selected: true,
+        selectedColor: '#DFA460'
+      }
+    };
+  }, [selected]);
 
-  const onDayPress = day => {
+  const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
-  };
+  }, []);
 
   return (
     <CalendarList
-      testID={testIDs.horizontalList.CONTAINER}
+      current={INITIAL_DATE}
       markedDates={markedDates}
-      current={initialDate}
       pastScrollRange={24}
       futureScrollRange={24}
       horizontal
       pagingEnabled
       onDayPress={onDayPress}
+      testID={testIDs.horizontalList.CONTAINER}
+      staticHeader
     />
   );
 };

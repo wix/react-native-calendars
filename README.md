@@ -1,3 +1,5 @@
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
+
 # React Native Calendars 🗓️ 📆
 
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
@@ -8,7 +10,6 @@ This module includes various customizable **React-Native** calendar components.
 The package is both **Android** and **iOS** compatible.
 
 See our new [Docs site](https://wix.github.io/react-native-calendars/)
-
 
 ## Try it out
 

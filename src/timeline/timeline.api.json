@@ -2,11 +2,10 @@
   "name": "Timeline",
   "description": "Timeline component",
   "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/timeline-calendar.gif?raw=true"
   ],
   "extends": ["ScrollView"],
-  "extendsLink": [
-    "https://reactnative.dev/docs/scrollview"
-  ],
+  "extendsLink": ["https://reactnative.dev/docs/scrollview"],
   "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/timelineCalendar.tsx",
   "props": [
     {
@@ -66,6 +65,18 @@
       "type": "boolean",
       "description": "Whether to use 24 hours format for the timeline hours",
       "default": "true"
+    },
+    {
+      "name": "overlapEventsSpacing",
+      "type": "number",
+      "description": "Spacing between overlapping events",
+      "default": "10"
+    },
+    {
+      "name": "rightEdgeSpacing",
+      "type": "number",
+      "description": "Spacing to keep at the right edge (for background press)",
+      "default": "10"
     }
   ]
 }

@@ -1,9 +1,8 @@
 import includes from 'lodash/includes';
 import PropTypes from 'prop-types';
-import memoize from 'memoize-one';
 import XDate from 'xdate';
 
-import React, {Component, Fragment, ReactNode} from 'react';
+import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle, useRef} from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -16,8 +15,7 @@ import {
   AccessibilityActionEvent,
   ColorValue
 } from 'react-native';
-import {shouldUpdate} from '../../componentUpdater';
-import {formatNumbers, weekDayNames, sameMonth} from '../../dateutils';
+import {formatNumbers, weekDayNames} from '../../dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
@@ -63,7 +61,7 @@ export interface CalendarHeaderProps {
   renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
-  
+
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
   testID?: string;
@@ -72,116 +70,105 @@ export interface CalendarHeaderProps {
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
 }
 
-class CalendarHeader extends Component<CalendarHeaderProps> {
-  static displayName = 'CalendarHeader';
+const accessibilityActions = [
+  {name: 'increment', label: 'increment'},
+  {name: 'decrement', label: 'decrement'}
+];
 
-  static propTypes = {
-    month: PropTypes.instanceOf(XDate),
-    addMonth: PropTypes.func,
 
-    theme: PropTypes.object,
-    firstDay: PropTypes.number,
-    displayLoadingIndicator: PropTypes.bool,
-    showWeekNumbers: PropTypes.bool,
-    monthFormat: PropTypes.string,
-    hideDayNames: PropTypes.bool,
-    hideArrows: PropTypes.bool,
-    renderArrow: PropTypes.func,
-    onPressArrowLeft: PropTypes.func,
-    onPressArrowRight: PropTypes.func,
-    disableArrowLeft: PropTypes.bool,
-    disableArrowRight: PropTypes.bool,
-    disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
-    renderHeader: PropTypes.any,
-    customHeaderTitle: PropTypes.any,
-    
-    webAriaLevel: PropTypes.number
-  };
+const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
+  const {
+    theme,
+    style: propsStyle,
+    addMonth: propsAddMonth,
+    month,
+    monthFormat,
+    firstDay,
+    hideDayNames,
+    showWeekNumbers,
+    hideArrows,
+    renderArrow,
+    onPressArrowLeft,
+    onPressArrowRight,
+    disableArrowLeft,
+    disableArrowRight,
+    disabledDaysIndexes,
+    displayLoadingIndicator,
+    customHeaderTitle,
+    renderHeader,
+    webAriaLevel,
+    testID,
+    accessibilityElementsHidden,
+    importantForAccessibility
+  } = props;
+  const style = useRef(styleConstructor(theme));
+  
+  useImperativeHandle(ref, () => ({
+    onPressLeft,
+    onPressRight
+  }));
 
-  static defaultProps = {
-    monthFormat: 'MMMM yyyy',
-    webAriaLevel: 1
-  };
-  style: any;
+  const addMonth = useCallback(() => {
+    propsAddMonth?.(1);
+  }, [propsAddMonth]);
 
-  constructor(props: CalendarHeaderProps) {
-    super(props);
+  const subtractMonth = useCallback(() => {
+    propsAddMonth?.(-1);
+  }, [propsAddMonth]);
 
-    this.style = styleConstructor(props.theme);
-  }
-
-  shouldComponentUpdate(nextProps: CalendarHeaderProps) {
-    if (!sameMonth(nextProps.month, this.props.month)) {
-      return true;
-    }
-    return shouldUpdate(this.props, nextProps, [
-      'displayLoadingIndicator',
-      'hideDayNames',
-      'firstDay',
-      'showWeekNumbers',
-      'monthFormat',
-      'renderArrow',
-      'disableArrowLeft',
-      'disableArrowRight',
-      'renderHeader',
-      'customHeaderTitle'
-    ]);
-  }
-
-  addMonth = () => {
-    const {addMonth} = this.props;
-    addMonth?.(1);
-  };
-
-  subtractMonth = () => {
-    const {addMonth} = this.props;
-    addMonth?.(-1);
-  };
-
-  onPressLeft = () => {
-    const {onPressArrowLeft, month} = this.props;
-
+  const onPressLeft = useCallback(() => {
     if (typeof onPressArrowLeft === 'function') {
-      return onPressArrowLeft(this.subtractMonth, month);
+      return onPressArrowLeft(subtractMonth, month);
     }
+    return subtractMonth();
+  }, [onPressArrowLeft, subtractMonth, month]);
 
-    return this.subtractMonth();
-  };
-
-  onPressRight = () => {
-    const {onPressArrowRight, month} = this.props;
-
+  const onPressRight = useCallback(() => {
     if (typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.addMonth, month);
+      return onPressArrowRight(addMonth, month);
     }
+    return addMonth();
+  }, [onPressArrowRight, addMonth, month]);
 
-    return this.addMonth();
+  const onAccessibilityAction = (event: AccessibilityActionEvent) => {
+    switch (event.nativeEvent.actionName) {
+      case 'decrement':
+        onPressLeft();
+        break;
+      case 'increment':
+        onPressRight();
+        break;
+      default:
+        break;
+    }
   };
 
-  renderWeekDays = memoize(weekDaysNames => {
-    const {disabledDaysIndexes} = this.props;
+  const renderWeekDays = useMemo(() => {
+    const weekDaysNames = weekDayNames(firstDay);
 
-    return weekDaysNames.map((day: string, idx: number) => {
-      const dayStyle = [this.style.dayHeader];
+    return weekDaysNames.map((day: string, index: number) => {
+      const dayStyle = [style.current.dayHeader];
 
-      if (includes(disabledDaysIndexes, idx)) {
-        dayStyle.push(this.style.disabledDayHeader);
+      if (includes(disabledDaysIndexes, index)) {
+        dayStyle.push(style.current.disabledDayHeader);
       }
 
-      if (this.style[`dayTextAtIndex${idx}`]) {
-        dayStyle.push(this.style[`dayTextAtIndex${idx}`]);
+      const dayTextAtIndex = `dayTextAtIndex${index}`;
+      // @ts-expect-error
+      if (style[dayTextAtIndex]) {
+        // @ts-expect-error
+        dayStyle.push(style[dayTextAtIndex]);
       }
 
       return (
-        <Text allowFontScaling={false} key={idx} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
+        <Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
           {day}
         </Text>
       );
     });
-  });
+  }, [firstDay]);
 
-  renderHeader = () => {
-    const {customHeaderTitle, renderHeader, month, monthFormat, testID, webAriaLevel} = this.props;
+  const _renderHeader = () => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
 
     if (renderHeader) {
@@ -196,7 +183,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
       <Fragment>
         <Text
           allowFontScaling={false}
-          style={this.style.monthText}
+          style={style.current.monthText}
           testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
           {...webProps}
         >
@@ -206,15 +193,15 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     );
   };
 
-  renderArrow(direction: Direction) {
-    const {hideArrows, disableArrowLeft, disableArrowRight, renderArrow, testID} = this.props;
+  const _renderArrow = (direction: Direction) => {
     if (hideArrows) {
-      return <View />;
+      return <View/>;
     }
+
     const isLeft = direction === 'left';
     const id = isLeft ? CHANGE_MONTH_LEFT_ARROW : CHANGE_MONTH_RIGHT_ARROW;
     const testId = testID ? `${id}-${testID}` : id;
-    const onPress = isLeft ? this.onPressLeft : this.onPressRight;
+    const onPress = isLeft ? onPressLeft : onPressRight;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
     const renderArrowDirection = isLeft ? 'left' : 'right';
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
@@ -223,22 +210,21 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
       <TouchableOpacity
         onPress={!shouldDisable ? onPress : undefined}
         disabled={shouldDisable}
-        style={this.style.arrow}
+        style={style.current.arrow}
         hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
         testID={testId}
       >
         {renderArrow ? (
           renderArrow(renderArrowDirection)
         ) : (
-          <Image source={imageSource} style={shouldDisable ? this.style.disabledArrowImage : this.style.arrowImage} />
+          // @ts-expect-error style?: StyleProp<ImageStyle>
+          <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>
         )}
       </TouchableOpacity>
     );
-  }
+  };
 
-  renderIndicator() {
-    const {displayLoadingIndicator, theme, testID} = this.props;
-
+  const renderIndicator = () => {
     if (displayLoadingIndicator) {
       return (
         <ActivityIndicator
@@ -247,64 +233,70 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
         />
       );
     }
-  }
+  };
 
-  renderDayNames() {
-    const {firstDay, hideDayNames, showWeekNumbers, testID} = this.props;
-    const weekDaysNames = weekDayNames(firstDay);
+  const renderWeekNumbersSpace = () => {
+    return showWeekNumbers && <View style={style.current.dayHeader}/>;
+  };
 
+  const renderDayNames = () => {
     if (!hideDayNames) {
       return (
-        <View style={this.style.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
-          {showWeekNumbers && <Text allowFontScaling={false} style={this.style.dayHeader}></Text>}
-          {this.renderWeekDays(weekDaysNames)}
+        <View style={style.current.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
+          {renderWeekNumbersSpace()}
+          {renderWeekDays}
         </View>
       );
     }
-  }
-
-  render() {
-    const {style, testID} = this.props;
-
-    return (
-      <View
-        testID={testID}
-        style={style}
-        accessible
-        accessibilityRole={'adjustable'}
-        accessibilityActions={[
-          {name: 'increment', label: 'increment'},
-          {name: 'decrement', label: 'decrement'}
-        ]}
-        onAccessibilityAction={this.onAccessibilityAction}
-        accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
-        importantForAccessibility={this.props.importantForAccessibility} // Android
-      >
-        <View style={this.style.header}>
-          {this.renderArrow('left')}
-          <View style={this.style.headerContainer}>
-            {this.renderHeader()}
-            {this.renderIndicator()}
-          </View>
-          {this.renderArrow('right')}
-        </View>
-        {this.renderDayNames()}
-      </View>
-    );
-  }
-
-  onAccessibilityAction = (event: AccessibilityActionEvent) => {
-    switch (event.nativeEvent.actionName) {
-      case 'decrement':
-        this.onPressLeft();
-        break;
-      case 'increment':
-        this.onPressRight();
-        break;
-      default:
-        break;
-    }
   };
-}
+
+  return (
+    <View
+      testID={testID}
+      style={propsStyle}
+      accessible
+      accessibilityRole={'adjustable'}
+      accessibilityActions={accessibilityActions}
+      onAccessibilityAction={onAccessibilityAction}
+      accessibilityElementsHidden={accessibilityElementsHidden} // iOS
+      importantForAccessibility={importantForAccessibility} // Android
+    >
+      <View style={style.current.header}>
+        {_renderArrow('left')}
+        <View style={style.current.headerContainer}>
+          {_renderHeader()}
+          {renderIndicator()}
+        </View>
+        {_renderArrow('right')}
+      </View>
+      {renderDayNames()}
+    </View>
+  );
+});
 
 export default CalendarHeader;
+CalendarHeader.displayName = 'CalendarHeader';
+CalendarHeader.propTypes = {
+  month: PropTypes.instanceOf(XDate),
+  addMonth: PropTypes.func,
+  theme: PropTypes.object,
+  firstDay: PropTypes.number,
+  displayLoadingIndicator: PropTypes.bool,
+  showWeekNumbers: PropTypes.bool,
+  monthFormat: PropTypes.string,
+  hideDayNames: PropTypes.bool,
+  hideArrows: PropTypes.bool,
+  renderArrow: PropTypes.func,
+  onPressArrowLeft: PropTypes.func,
+  onPressArrowRight: PropTypes.func,
+  disableArrowLeft: PropTypes.bool,
+  disableArrowRight: PropTypes.bool,
+  disabledDaysIndexes: PropTypes.any,
+  renderHeader: PropTypes.any,
+  customHeaderTitle: PropTypes.any,
+  webAriaLevel: PropTypes.number
+};
+CalendarHeader.defaultProps = {
+  monthFormat: 'MMMM yyyy',
+  webAriaLevel: 1
+};

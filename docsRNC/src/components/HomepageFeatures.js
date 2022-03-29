@@ -6,36 +6,26 @@ const FeatureList = [
   {
     title: 'Calendar',
     img: require('../../static/img/calendar.png').default,
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and used to get your website up and running
-        quickly.
-      </>
-    )
+    description: <>Calendar component</>
   },
   {
     title: 'Calendar Markings',
     img: require('../../static/img/calendar-markings.png').default,
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your docs into the{' '}
-        <code>docs</code> directory.
-      </>
-    )
+    description: <>Marked dates on Calendar's components</>
   },
   {
     title: 'Expandable Calendar',
     img: require('../../static/img/expandableCalendar.png').default,
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended while reusing the same
-        header and footer.
-      </>
-    )
+    description: <>Expandable calendar component</>
   }
+  // {
+  //   title: 'Timeline Calendar',
+  //   img: require('../../static/img/timeline-calendar.png').default,
+  //   description: (<>Timeline calendar component</>)
+  // }
 ];
 
-function Feature({img, title, description}) {
+function Feature({img, title /* , description */}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center padding-horiz--md">

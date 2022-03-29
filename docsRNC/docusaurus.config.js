@@ -12,7 +12,7 @@ const config = {
   baseUrl: '/react-native-calendars/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/fav-icon.png',
+  favicon: 'img/logo.png',
   organizationName: 'wix', // Usually your GitHub org/user name.
   projectName: 'react-native-calendars', // Usually your repo name.
   trailingSlash: false,
@@ -46,7 +46,7 @@ const config = {
         title: 'RNC',
         logo: {
           alt: 'RNC Logo',
-          src: 'img/RNC.png'
+          src: 'img/logo.png'
         },
         items: [
           {

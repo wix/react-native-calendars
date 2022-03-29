@@ -37,6 +37,7 @@ export default class AgendaScreen extends Component<State> {
         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
         // hideExtraDays={false}
+        // showOnlySelectedDayItems
       />
     );
   }
