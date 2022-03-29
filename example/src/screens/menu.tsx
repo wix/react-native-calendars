@@ -39,6 +39,7 @@ export default class MenuScreen extends Component<Props> {
           <Image source={appIcon} style={styles.image}/>
           {this.renderEntry(testIDs.menu.CALENDARS, 'Calendars', 'Calendars')}
           {this.renderEntry(testIDs.menu.CALENDAR_LIST, 'Calendar List', 'CalendarListScreen')}
+          {this.renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'HorizontalCalendarListScreen')}
           {this.renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarList')}
           {this.renderEntry(testIDs.menu.AGENDA, 'Agenda', 'Agenda')}
           {this.renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendar')}
