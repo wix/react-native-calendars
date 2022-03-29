@@ -41,7 +41,7 @@ const NewCalendarListScreen = () => {
         <Switch value={isHorizontal} onValueChange={onValueChange}/>
       </View>
       <NewCalendarList
-        key={String(isHorizontal)} // only for this example - to force rerender
+        key={Number(isHorizontal)} // only for this example - to force rerender
         horizontal={isHorizontal}
         staticHeader  
         // initialDate={initialDate}
