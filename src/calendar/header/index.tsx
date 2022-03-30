@@ -27,22 +27,24 @@ import {
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
 
-export interface CalendarHeaderProps {
+type InternalHeaderProps = {
   month?: XDate;
   addMonth?: (num: number) => void;
-
-  /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
-  /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday */
   firstDay?: number;
-  /** Display loading indicator. Default = false */
   displayLoadingIndicator?: boolean;
-  /** Show week numbers. Default = false */
   showWeekNumbers?: boolean;
+  style?: StyleProp<ViewStyle>;
+  accessibilityElementsHidden?: boolean;
+  importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
+}
+export interface CalendarHeaderProps {
   /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
   monthFormat?: string;
   /**  Hide day names */
   hideDayNames?: boolean;
+  /** Apply custom disable color to selected day indexes */
+  disabledDaysIndexes?: number[];
   /** Hide month navigation arrows */
   hideArrows?: boolean;
   /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
@@ -55,19 +57,14 @@ export interface CalendarHeaderProps {
   disableArrowLeft?: boolean;
   /** Disable right arrow */
   disableArrowRight?: boolean;
-  /** Apply custom disable color to selected day indexes */
-  disabledDaysIndexes?: number[];
   /** Replace default title with custom one. the function receive a date as parameter */
   renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
-
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
+  /** Identifier for testing */
   testID?: string;
-  style?: StyleProp<ViewStyle>;
-  accessibilityElementsHidden?: boolean;
-  importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
 }
 
 const accessibilityActions = [
@@ -75,8 +72,7 @@ const accessibilityActions = [
   {name: 'decrement', label: 'decrement'}
 ];
 
-
-const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
+const CalendarHeader = forwardRef((props: CalendarHeaderProps & InternalHeaderProps, ref) => {
   const {
     theme,
     style: propsStyle,
