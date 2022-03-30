@@ -126,6 +126,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   } = props;
 
   /** Date */
+
   const {date, setDate} = useContext(Context);  
   const initialDate = date;
   const getYear = (date: string) => {
@@ -161,6 +162,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [markedDates, date]);
 
   /** Number of weeks */
+
   const getNumberOfWeeksInMonth = (month: string) => {
     const days = page(parseDate(month), firstDay);
     return days.length / 7;
@@ -168,6 +170,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const numberOfWeeks = useRef(getNumberOfWeeksInMonth(date));
 
   /** Position */
+
   const closedHeight = CLOSED_HEIGHT + (hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
   const getOpenHeight = () => {
     if (!horizontal) {
@@ -186,6 +189,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const isOpen = position === Positions.OPEN;
 
   /** Components' refs */
+
   const wrapper = useRef<any>();
   const calendar = useRef<any>();
   const header = useRef<any>();
@@ -193,6 +197,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
 
   /** Styles */
+
   const style = useRef(styleConstructor(theme));
   const themeObject = Object.assign(headerStyleOverride, theme);
 
@@ -212,7 +217,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
   };
 
-  const getWeekDaysStyle = useMemo(() => {
+  const weekDaysStyle = useMemo(() => {
     const leftPaddings = calendarStyle?.paddingLeft;
     const rightPaddings = calendarStyle?.paddingRight;
 
@@ -225,7 +230,24 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     ];
   }, [calendarStyle]);
 
+  const headerStyle = useMemo(() => {
+    return [style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}];
+  }, [headerDeltaY.current]);
+
+  const weekCalendarStyle = useMemo(() => {
+    return [style.current.weekContainer, isOpen ? style.current.hidden : style.current.visible];
+  }, [isOpen]);
+
+  const containerStyle = useMemo(() => {
+    return [allowShadow && style.current.containerShadow, propsStyle];
+  }, [allowShadow, propsStyle]);
+
+  const wrapperStyle = useMemo(() => {
+    return {height: deltaY.current};
+  }, [deltaY.current]);
+
   /** Effects */
+
   useEffect(() => {
     if (AccessibilityInfo) {
       if (AccessibilityInfo.isScreenReaderEnabled) {
@@ -436,10 +458,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   ), [date]);
 
   /** Renders */
-
+  
   const renderWeekDaysNames = () => {
     return (
-      <View style={getWeekDaysStyle}>
+      <View style={weekDaysStyle}>
         <WeekDaysNames
           firstDay={firstDay}
           style={style.current.dayHeader}
@@ -454,7 +476,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={header}
-        style={[style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}]}
+        style={headerStyle}
         pointerEvents={'none'}
       >
         <Text allowFontScaling={false} style={style.current.headerTitle}>
@@ -472,7 +494,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={weekCalendar}
-        style={[style.current.weekContainer, isOpen ? style.current.hidden : style.current.visible]}
+        style={weekCalendarStyle}
         pointerEvents={position === Positions.CLOSED ? 'auto' : 'none'}
       >
         <WeekComponent
@@ -513,7 +535,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
 
   return (
-    <View testID={testID} style={[allowShadow && style.current.containerShadow, propsStyle]}>
+    <View testID={testID} style={containerStyle}>
       {screenReaderEnabled ? (
         <Calendar
           testID="calendar"
@@ -524,7 +546,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           renderArrow={_renderArrow}
         />
       ) : (
-        <Animated.View ref={wrapper} style={{height: deltaY.current}} {...panResponder.panHandlers}>
+        <Animated.View ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
           <CalendarList
             testID="calendar"
             horizontal={horizontal}
