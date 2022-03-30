@@ -76,7 +76,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps & InternalHeaderPr
   const {
     theme,
     style: propsStyle,
-    addMonth: propsAddMonth,
+    addMonth,
     month,
     monthFormat,
     firstDay,
@@ -104,13 +104,13 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps & InternalHeaderPr
     onPressRight
   }));
 
-  const addMonth = useCallback(() => {
-    propsAddMonth?.(1);
-  }, [propsAddMonth]);
+  const _addMonth = useCallback(() => {
+    addMonth?.(1);
+  }, [addMonth]);
 
   const subtractMonth = useCallback(() => {
-    propsAddMonth?.(-1);
-  }, [propsAddMonth]);
+    addMonth?.(-1);
+  }, [addMonth]);
 
   const onPressLeft = useCallback(() => {
     if (typeof onPressArrowLeft === 'function') {
@@ -121,10 +121,10 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps & InternalHeaderPr
 
   const onPressRight = useCallback(() => {
     if (typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(addMonth, month);
+      return onPressArrowRight(_addMonth, month);
     }
-    return addMonth();
-  }, [onPressArrowRight, addMonth, month]);
+    return _addMonth();
+  }, [onPressArrowRight, _addMonth, month]);
 
   const onAccessibilityAction = (event: AccessibilityActionEvent) => {
     switch (event.nativeEvent.actionName) {
