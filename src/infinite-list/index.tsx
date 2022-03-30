@@ -24,6 +24,7 @@ export interface InfiniteListProps
   initialPageIndex?: number;
   scrollViewProps?: ScrollViewProps;
   reloadPages?: (pageIndex: number) => void;
+  positionIndex?: number;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -40,7 +41,8 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     onReachNearEdgeThreshold,
     initialPageIndex = 0,
     extendedState,
-    scrollViewProps
+    scrollViewProps,
+    positionIndex = 0
   } = props;
   
   const dataProvider = useMemo(() => {
@@ -66,16 +68,19 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
   useEffect(() => {
     setTimeout(() => {
+      const x = isHorizontal ? Math.floor(data.length / 2) * pageWidth : 0;
+      const y = isHorizontal ? 0 : positionIndex * pageHeight;
       // @ts-expect-error
-      listRef.current?.scrollToOffset?.(Math.floor(data.length / 2) * pageWidth, 0, false);
+      listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
   }, [data]);
 
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {
       reloadPagesDebounce?.cancel();
-      const newPageIndex = Math.round(event.nativeEvent.contentOffset.x / pageWidth);
-
+      
+      const {x, y} = event.nativeEvent.contentOffset;
+      const newPageIndex = Math.round(isHorizontal ? x / pageWidth : y / pageHeight);
       if (pageIndex.current !== newPageIndex) {
         if (pageIndex.current !== undefined) {
           onPageChange?.(newPageIndex, pageIndex.current, {scrolledByUser: scrolledByUser.current});
