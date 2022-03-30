@@ -121,7 +121,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   }, []);
 
   const style = useMemo(() => {
-    return {height: isHorizontal ? pageHeight : constants.screenHeight};
+    return {height: pageHeight};
   }, [pageHeight]);
 
   return (

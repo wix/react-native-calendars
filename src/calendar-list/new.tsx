@@ -148,7 +148,7 @@ const CalendarList = (props: CalendarListProps) => {
   }, [calendarProps, scrollToNextMonth, scrollToPreviousMonth]);
 
   return (
-    <View style={style.current.flatListContainer}>
+    <View style={[style.current.flatListContainer, {flex: horizontal ? undefined : 1}]}>
       <InfiniteList
         key="calendar-list"
         ref={list}
