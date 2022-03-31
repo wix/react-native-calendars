@@ -5,7 +5,7 @@ import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2020-02-02';
 
-const CalendarsScreen = () => {
+const CalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
 
   const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
@@ -488,7 +488,7 @@ const CalendarsScreen = () => {
   );
 };
 
-export default CalendarsScreen;
+export default CalendarScreen;
 
 const styles = StyleSheet.create({
   calendar: {
