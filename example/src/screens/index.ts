@@ -1,8 +1,8 @@
 import {Navigation} from 'react-native-navigation';
 
-import MenuScreen from './menu';
-import CalendarsScreen from './calendars';
-import AgendaScreen from './agenda';
+import MenuScreen from './menuScreen';
+import CalendarsScreen from './calendarScreen';
+import AgendaScreen from './agendaScreen';
 import CalendarsList from './calendarsList';
 import HorizontalCalendarList from './horizontalCalendarList';
 import ExpandableCalendar from './expandableCalendar';

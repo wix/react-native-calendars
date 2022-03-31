@@ -5,7 +5,7 @@ import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2020-02-02';
 
-const CalendarsScreen = () => {
+const CalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
 
   const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
@@ -457,10 +457,54 @@ const CalendarsScreen = () => {
     );
   };
 
+  const renderCodeSnippet = () => {
+    return (
+      <Calendar
+          monthFormat={"MMMM yyyy"}
+          hideExtraDays={true}
+          firstDay={1}
+          disableAllTouchEventsForDisabledDays={true}
+          enableSwipeMonths={true}
+          markingType={"period"}
+          markedDates={{
+            "2022-03-09": {color: "#F5823C", startingDay: true},
+            "2022-03-10": {color: "#F5823C", endingDay: true},
+          }}
+          theme={{
+            backgroundColor: "#0C0C0D",
+            calendarBackground: "#0C0C0D",
+            textSectionTitleColor: "#EEECF1",
+            textSectionTitleDisabledColor: "#d9e1e8",
+            selectedDayBackgroundColor: "#00adf5",
+            selectedDayTextColor: "#ffffff",
+            todayTextColor: 'pink',
+            dayTextColor: "#7A7585",
+            textDisabledColor: "#d9e1e8",
+            // dotColor: "#00adf5",
+            selectedDotColor: "#ffffff",
+            arrowColor: 'pink',
+            disabledArrowColor: "#d9e1e8",
+            monthTextColor: "#ffffff",
+            indicatorColor: "blue",
+            // textDayFontFamily: "monospace",
+            // textMonthFontFamily: "monospace",
+            // textDayHeaderFontFamily: "monospace",
+            textDayFontWeight: "300",
+            textMonthFontWeight: "bold",
+            textDayHeaderFontWeight: "300",
+            textDayFontSize: 15,
+            textMonthFontSize: 15,
+            textDayHeaderFontSize: 15,
+          }}
+        />
+    );
+  };
+
   const renderExamples = () => {
     return (
       <Fragment>
-        {renderCalendarWithSelectableDate()}
+        {renderCodeSnippet()}
+        {/* {renderCalendarWithSelectableDate()}
         {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}
@@ -472,7 +516,7 @@ const CalendarsScreen = () => {
         {renderCalendarWithPeriodMarkingAndSpinner()}
         {renderCalendarWithPeriodMarkingAndDotMarking()}
         {renderCalendarWithMultiPeriodMarking()}
-        {renderCalendarWithCustomMarkingType()}
+        {renderCalendarWithCustomMarkingType()} */}
       </Fragment>
     );
   };
@@ -484,7 +528,7 @@ const CalendarsScreen = () => {
   );
 };
 
-export default CalendarsScreen;
+export default CalendarScreen;
 
 const styles = StyleSheet.create({
   calendar: {
