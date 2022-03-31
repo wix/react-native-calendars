@@ -3,7 +3,8 @@ import React, {useCallback, useEffect, useRef, useState, useMemo} from 'react';
 import {View, ScrollViewProps, ScrollView} from 'react-native';
 import constants from '../commons/constants';
 import {toMarkingFormat} from '../interface';
-// import {extractComponentProps} from '../componentUpdater';
+//@ts-expect-error
+import {STATIC_HEADER} from '../testIDs';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarHeader, {CalendarHeaderProps} from '../calendar/header';
 import InfiniteList from '../infinite-list';
@@ -51,7 +52,6 @@ const CalendarList = (props: CalendarListProps) => {
 
   const [currentMonth, setCurrentMonth] = useState(initialDate || items[scrollRange]);
   const shouldRenderStaticHeader = staticHeader && horizontal;
-  // const headerProps = extractComponentProps(CalendarHeader, props);
   const staticHeaderStyle = useMemo(() => {
     return [style.current.staticHeader, calendarProps?.headerStyle];
   }, [calendarProps?.headerStyle]);
@@ -118,14 +118,14 @@ const CalendarList = (props: CalendarListProps) => {
           month={new XDate(currentMonth)}
           onPressArrowRight={scrollToNextMonth}
           onPressArrowLeft={scrollToPreviousMonth}
-          displayLoadingIndicator={calendarProps?.displayLoadingIndicator}
           style={staticHeaderStyle}
           theme={calendarProps?.theme}
           firstDay={calendarProps?.firstDay}
           showWeekNumbers={calendarProps?.showWeekNumbers}
+          displayLoadingIndicator={calendarProps?.displayLoadingIndicator}
           accessibilityElementsHidden // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
-          testID={'static-header'}
+          testID={STATIC_HEADER}
         />
       );
     }

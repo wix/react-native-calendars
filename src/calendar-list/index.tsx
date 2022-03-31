@@ -302,7 +302,7 @@ class CalendarList extends Component<CalendarListProps, State> {
   };
 
   renderStaticHeader() {
-    const {staticHeader, horizontal, headerStyle, displayLoadingIndicator, theme, firstDay, showWeekNumbers} = this.props;
+    const {staticHeader, horizontal, headerStyle, theme, firstDay, showWeekNumbers, displayLoadingIndicator} = this.props;
     const useStaticHeader = staticHeader && horizontal;
     const headerProps = extractComponentProps(CalendarHeader, this.props);
 
@@ -312,11 +312,11 @@ class CalendarList extends Component<CalendarListProps, State> {
           {...headerProps}
           month={this.state.currentMonth}
           addMonth={this.addMonth}
-          displayLoadingIndicator={displayLoadingIndicator}
           style={[this.style.staticHeader, headerStyle]}
           theme={theme}
           firstDay={firstDay}
           showWeekNumbers={showWeekNumbers}
+          displayLoadingIndicator={displayLoadingIndicator}
           accessibilityElementsHidden={true} // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
           testID={STATIC_HEADER}

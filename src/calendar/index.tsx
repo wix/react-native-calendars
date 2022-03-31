@@ -280,17 +280,17 @@ const Calendar = (props: CalendarProps) => {
     return (
       <HeaderComponent
         {...headerProps}
-        testID={testID}
-        style={headerStyle}
         ref={ref}
         month={currentMonth}
         addMonth={addMonth}
-        displayLoadingIndicator={indicator}
+        style={headerStyle}
         theme={theme}
         firstDay={firstDay}
         showWeekNumbers={showWeekNumbers}
+        displayLoadingIndicator={indicator}
         accessibilityElementsHidden={accessibilityElementsHidden} // iOS
         importantForAccessibility={importantForAccessibility} // Android
+        testID={testID}
       />
     );
   };
