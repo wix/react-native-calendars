@@ -26,6 +26,7 @@ import {
 } from '../../testIDs';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
+import propTypesMap from '../../propTypesMap';
 
 export interface CalendarHeaderProps {
   month?: XDate;
@@ -276,8 +277,9 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
 export default CalendarHeader;
 CalendarHeader.displayName = 'CalendarHeader';
-CalendarHeader.propTypes = {
-  month: PropTypes.instanceOf(XDate),
+
+export const propTypes = {
+	month: PropTypes.instanceOf(XDate),
   addMonth: PropTypes.func,
   theme: PropTypes.object,
   firstDay: PropTypes.number,
@@ -296,7 +298,11 @@ CalendarHeader.propTypes = {
   customHeaderTitle: PropTypes.any,
   webAriaLevel: PropTypes.number
 };
+
+propTypesMap.set(CalendarHeader, propTypes);
+CalendarHeader.propTypes = propTypes;
+
 CalendarHeader.defaultProps = {
-  monthFormat: 'MMMM yyyy',
+	monthFormat: 'MMMM yyyy',
   webAriaLevel: 1
 };

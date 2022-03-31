@@ -10,6 +10,7 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
+import propTypesMap from '../../propTypesMap';
 
 
 export interface DayProps extends BasicDayProps {
@@ -77,7 +78,11 @@ const Day = React.memo((props: DayProps) => {
 export default Day;
 
 Day.displayName = 'Day';
-Day.propTypes = {
+
+export const propTypes = {
   ...BasicDay.propTypes,
   dayComponent: PropTypes.any
 };
+
+propTypesMap.set(Day, propTypes);
+Day.propTypes = propTypes;

@@ -1,3 +1,5 @@
+import propTypesMap from "./propTypesMap";
+
 const get = require('lodash/get');
 const omit = require('lodash/omit');
 const pickBy = require('lodash/pickBy');
@@ -16,7 +18,7 @@ export function shouldUpdate(props: any, newProps: any, paths: string[]) {
 }
 
 export function extractComponentProps(component: any, props: any, ignoreProps?: string[]) {
-  const componentPropTypes = component.propTypes;
+  const componentPropTypes = propTypesMap.get(component);
   if (componentPropTypes) {
     const keys = Object.keys(componentPropTypes);
     const componentProps = omit(

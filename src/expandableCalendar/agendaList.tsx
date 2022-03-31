@@ -28,6 +28,7 @@ import {Theme} from '../types';
 import styleConstructor from './style';
 import asCalendarConsumer from './asCalendarConsumer';
 import constants from '../commons/constants';
+import propTypesMap from '../propTypesMap';
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 
@@ -55,6 +56,16 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   context?: any;
 }
 
+export const propTypes = {
+	// ...SectionList.propTypes,
+	dayFormat: PropTypes.string,
+	dayFormatter: PropTypes.func,
+	useMoment: PropTypes.bool,
+	markToday: PropTypes.bool,
+	sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+	avoidDateUpdates: PropTypes.bool
+};
+
 /**
  * @description: AgendaList component
  * @note: Should be wrapped with 'CalendarProvider'
@@ -64,15 +75,7 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
 class AgendaList extends Component<AgendaListProps> {
   static displayName = 'AgendaList';
 
-  static propTypes = {
-    // ...SectionList.propTypes,
-    dayFormat: PropTypes.string,
-    dayFormatter: PropTypes.func,
-    useMoment: PropTypes.bool,
-    markToday: PropTypes.bool,
-    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    avoidDateUpdates: PropTypes.bool
-  };
+  static propTypes = propTypes;
 
   static defaultProps = {
     dayFormat: 'dddd, MMM d',
@@ -276,3 +279,5 @@ class AgendaList extends Component<AgendaListProps> {
 }
 
 export default asCalendarConsumer<AgendaListProps>(AgendaList);
+
+propTypesMap.set(AgendaList, propTypes);

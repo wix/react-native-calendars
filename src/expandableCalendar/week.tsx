@@ -9,17 +9,20 @@ import {extractComponentProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
+import propTypesMap from '../propTypesMap';
 // import BasicDay from '../calendar/day/basic';
 
 
 export type WeekProps = CalendarProps;
 
+export const propTypes = {
+	...Calendar.propTypes
+};
+
 class Week extends PureComponent<WeekProps> {
   static displayName = 'Week';
 
-  static propTypes = {
-    ...Calendar.propTypes
-  };
+  static propTypes = propTypes;
 
   style = styleConstructor(this.props.theme);
 
@@ -83,3 +86,5 @@ class Week extends PureComponent<WeekProps> {
 }
 
 export default Week;
+
+propTypesMap.set(Week, propTypes);

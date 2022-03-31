@@ -11,6 +11,7 @@ import {formatNumbers, sameMonth} from '../dateutils';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
 import {getCalendarDateString} from '../services';
+import propTypesMap from '../propTypesMap';
 
 export type CalendarListItemProps = CalendarProps & {
   item: any;
@@ -26,16 +27,18 @@ type CalendarListItemState = {
   hideExtraDays: boolean;
 };
 
+export const propTypes = {
+	...Calendar.propTypes,
+	item: PropTypes.any,
+	calendarWidth: PropTypes.number,
+	calendarHeight: PropTypes.number,
+	horizontal: PropTypes.bool
+};
+
 class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
   static displayName = 'CalendarListItem';
 
-  static propTypes = {
-    ...Calendar.propTypes,
-    item: PropTypes.any,
-    calendarWidth: PropTypes.number,
-    calendarHeight: PropTypes.number,
-    horizontal: PropTypes.bool
-  };
+  static propTypes = propTypes;
 
   static defaultProps = {
     hideArrows: true,
@@ -138,3 +141,5 @@ class CalendarListItem extends Component<CalendarListItemProps, CalendarListItem
 }
 
 export default CalendarListItem;
+
+propTypesMap.set(CalendarListItem, propTypes);

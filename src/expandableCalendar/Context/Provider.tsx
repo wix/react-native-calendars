@@ -10,6 +10,7 @@ import styleConstructor from '../style';
 import CalendarContext from './index';
 import Presenter from './Presenter';
 import {UpdateSources} from '../commons';
+import propTypesMap from '../../propTypesMap';
 
 const TOP_POSITION = 65;
 
@@ -35,6 +36,16 @@ interface Props {
 }
 export type CalendarContextProviderProps = Props;
 
+export const propTypes = {
+	date: PropTypes.any.isRequired,
+	onDateChanged: PropTypes.func,
+	onMonthChange: PropTypes.func,
+	showTodayButton: PropTypes.bool,
+	todayBottomMargin: PropTypes.number,
+	todayButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+	disabledOpacity: PropTypes.number
+};
+
 /**
  * @description: Calendar context provider component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
@@ -42,15 +53,7 @@ export type CalendarContextProviderProps = Props;
 class CalendarProvider extends Component<Props> {
   static displayName = 'CalendarProvider';
 
-  static propTypes = {
-    date: PropTypes.any.isRequired,
-    onDateChanged: PropTypes.func,
-    onMonthChange: PropTypes.func,
-    showTodayButton: PropTypes.bool,
-    todayBottomMargin: PropTypes.number,
-    todayButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    disabledOpacity: PropTypes.number
-  };
+  static propTypes = propTypes;
 
   style = styleConstructor(this.props.theme);
   presenter = new Presenter();
@@ -170,6 +173,8 @@ class CalendarProvider extends Component<Props> {
 }
 
 export default CalendarProvider;
+
+propTypesMap.set(CalendarProvider, propTypes);
 
 const styles = StyleSheet.create({
   container: {

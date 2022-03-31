@@ -14,6 +14,7 @@ import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
 import constants from '../commons/constants';
+import propTypesMap from '../propTypesMap';
 
 
 const CALENDAR_WIDTH = constants.screenWidth;
@@ -69,6 +70,26 @@ type State = {
   currentMonth: XDate;
 };
 
+export const propTypes = {
+	...Calendar.propTypes,
+	pastScrollRange: PropTypes.number,
+	futureScrollRange: PropTypes.number,
+	calendarWidth: PropTypes.number,
+	calendarHeight: PropTypes.number,
+	calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+	staticHeader: PropTypes.bool,
+	showScrollIndicator: PropTypes.bool,
+	animateScroll: PropTypes.bool,
+	scrollEnabled: PropTypes.bool,
+	scrollsToTop: PropTypes.bool,
+	pagingEnabled: PropTypes.bool,
+	horizontal: PropTypes.bool,
+	keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
+	keyExtractor: PropTypes.func,
+	onEndReachedThreshold: PropTypes.number,
+	onEndReached: PropTypes.func
+};
+
 /**
  * @description: Calendar List component for both vertical and horizontal calendars
  * @extends: Calendar
@@ -79,25 +100,7 @@ type State = {
 class CalendarList extends Component<CalendarListProps, State> {
   static displayName = 'CalendarList';
 
-  static propTypes = {
-    ...Calendar.propTypes,
-    pastScrollRange: PropTypes.number,
-    futureScrollRange: PropTypes.number,
-    calendarWidth: PropTypes.number,
-    calendarHeight: PropTypes.number,
-    calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-    staticHeader: PropTypes.bool,
-    showScrollIndicator: PropTypes.bool,
-    animateScroll: PropTypes.bool,
-    scrollEnabled: PropTypes.bool,
-    scrollsToTop: PropTypes.bool,
-    pagingEnabled: PropTypes.bool,
-    horizontal: PropTypes.bool,
-    keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
-    keyExtractor: PropTypes.func,
-    onEndReachedThreshold: PropTypes.number,
-    onEndReached: PropTypes.func
-  };
+  static propTypes = propTypes;
 
   static defaultProps = {
     calendarWidth: CALENDAR_WIDTH,
@@ -360,3 +363,5 @@ class CalendarList extends Component<CalendarListProps, State> {
 }
 
 export default CalendarList;
+
+propTypesMap.set(CalendarList, propTypes);

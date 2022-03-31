@@ -3,6 +3,7 @@ import React, {useRef} from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
 import {Theme} from '../../../types';
+import propTypesMap from '../../../propTypesMap';
 
 export interface DotProps {
   theme?: Theme;
@@ -47,7 +48,7 @@ const Dot = ({theme, marked, disabled, inactive, color, today, selected}: DotPro
 
 export default Dot;
 
-Dot.propTypes = {
+export const propTypes = {
   theme: PropTypes.object,
   color: PropTypes.string,
   marked: PropTypes.bool,
@@ -56,3 +57,6 @@ Dot.propTypes = {
   inactive: PropTypes.bool,
   today: PropTypes.bool
 };
+
+propTypesMap.set(Dot, propTypes);
+Dot.propTypes = propTypes;

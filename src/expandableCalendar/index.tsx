@@ -35,6 +35,7 @@ import WeekCalendar from './WeekCalendar';
 import asCalendarConsumer from './asCalendarConsumer';
 
 import constants from '../commons/constants';
+import propTypesMap from '../propTypesMap';
 const commons = require('./commons');
 const updateSources = commons.UpdateSources;
 enum Positions {
@@ -84,6 +85,21 @@ interface State {
   screenReaderEnabled: boolean;
 }
 
+export const propTypes = {
+	...CalendarList.propTypes,
+	initialPosition: PropTypes.oneOf(values(Positions)),
+	onCalendarToggled: PropTypes.func,
+	disablePan: PropTypes.bool,
+	hideKnob: PropTypes.bool,
+	leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
+	rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
+	allowShadow: PropTypes.bool,
+	disableWeekScroll: PropTypes.bool,
+	openThreshold: PropTypes.number,
+	closeThreshold: PropTypes.number,
+	closeOnDayPress: PropTypes.bool
+};
+
 /**
  * @description: Expandable calendar component
  * @note: Should be wrapped with 'CalendarProvider'
@@ -94,20 +110,7 @@ interface State {
 class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
   static displayName = 'ExpandableCalendar';
 
-  static propTypes = {
-    ...CalendarList.propTypes,
-    initialPosition: PropTypes.oneOf(values(Positions)),
-    onCalendarToggled: PropTypes.func,
-    disablePan: PropTypes.bool,
-    hideKnob: PropTypes.bool,
-    leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    allowShadow: PropTypes.bool,
-    disableWeekScroll: PropTypes.bool,
-    openThreshold: PropTypes.number,
-    closeThreshold: PropTypes.number,
-    closeOnDayPress: PropTypes.bool
-  };
+  static propTypes = propTypes;
 
   static defaultProps = {
     horizontal: true,
@@ -603,3 +606,5 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
 }
 
 export default asCalendarConsumer<ExpandableCalendarProps>(ExpandableCalendar);
+
+propTypesMap.set(ExpandableCalendar, propTypes);

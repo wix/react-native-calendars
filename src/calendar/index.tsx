@@ -18,6 +18,7 @@ import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
+import propTypesMap from '../propTypesMap';
 
 
 type MarkedDatesType = {
@@ -281,7 +282,8 @@ const Calendar = (props: CalendarProps) => {
 
 export default Calendar;
 Calendar.displayName = 'Calendar';
-Calendar.propTypes = {
+
+export const propTypes = {
   ...CalendarHeader.propTypes,
   ...Day.propTypes,
   theme: PropTypes.object,
@@ -307,6 +309,9 @@ Calendar.propTypes = {
   customHeader: PropTypes.any,
   allowSelectionOutOfRange: PropTypes.bool
 };
+
+propTypesMap.set(Calendar, propTypes);
+Calendar.propTypes = propTypes;
 Calendar.defaultProps = {
   enableSwipeMonths: false
 };

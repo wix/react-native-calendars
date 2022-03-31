@@ -8,6 +8,7 @@ import {xdateToData} from '../../../interface';
 import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
+import propTypesMap from '../../../propTypesMap';
 
 
 export interface BasicDayProps extends ViewProps {
@@ -203,7 +204,8 @@ const BasicDay = (props: BasicDayProps) => {
 
 export default BasicDay;
 BasicDay.displayName = 'BasicDay';
-BasicDay.propTypes = {
+
+export const propTypes = {
   state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
   marking: PropTypes.any,
   markingType: PropTypes.oneOf(values(Marking.markings)),
@@ -214,3 +216,6 @@ BasicDay.propTypes = {
   disableAllTouchEventsForDisabledDays: PropTypes.bool,
   disableAllTouchEventsForInactiveDays: PropTypes.bool
 };
+
+propTypesMap.set(BasicDay, propTypes);
+BasicDay.propTypes = propTypes;

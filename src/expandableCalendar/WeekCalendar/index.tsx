@@ -17,6 +17,7 @@ import WeekDaysNames from '../../commons/WeekDaysNames';
 import Week from '../week';
 import Presenter from './presenter';
 import constants from '../../commons/constants';
+import propTypesMap from '../../propTypesMap';
 
 const NUMBER_OF_PAGES = 2; // must be a positive number
 const applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
@@ -34,6 +35,13 @@ interface State {
   items: string[];
 }
 
+export const propTypes = {
+	...CalendarList.propTypes,
+	current: PropTypes.any,
+	allowShadow: PropTypes.bool,
+	hideDayNames: PropTypes.bool
+};
+
 /**
  * @description: Week calendar component
  * @note: Should be wrapped with 'CalendarProvider'
@@ -42,12 +50,7 @@ interface State {
 class WeekCalendar extends Component<WeekCalendarProps, State> {
   static displayName = 'WeekCalendar';
 
-  static propTypes = {
-    ...CalendarList.propTypes,
-    current: PropTypes.any,
-    allowShadow: PropTypes.bool,
-    hideDayNames: PropTypes.bool
-  };
+  static propTypes = propTypes;
 
   static defaultProps = {
     firstDay: 0,
@@ -220,3 +223,5 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 }
 
 export default asCalendarConsumer<WeekCalendarProps>(WeekCalendar);
+
+propTypesMap.set(WeekCalendar, propTypes);

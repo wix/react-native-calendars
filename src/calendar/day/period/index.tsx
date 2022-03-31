@@ -8,6 +8,7 @@ import {Theme, DayState, DateData} from '../../../types';
 import styleConstructor from './style';
 import Dot from '../dot';
 import {MarkingProps} from '../marking';
+import propTypesMap from '../../../propTypesMap';
 
 
 export interface PeriodDayProps extends ViewProps {
@@ -187,7 +188,8 @@ const PeriodDay = (props: PeriodDayProps) => {
 
 export default PeriodDay;
 PeriodDay.displayName = 'PeriodDay';
-PeriodDay.propTypes = {
+
+export const propTypes = {
   state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
   marking: PropTypes.any,
   theme: PropTypes.object,
@@ -195,3 +197,6 @@ PeriodDay.propTypes = {
   onLongPress: PropTypes.func,
   date: PropTypes.string
 };
+
+propTypesMap.set(PeriodDay, propTypes);
+PeriodDay.propTypes = propTypes;
