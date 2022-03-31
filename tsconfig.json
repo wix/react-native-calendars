@@ -25,10 +25,10 @@
   // "include": ["src/calendar/day/basic", "src/global.d.ts"],
   "include": [
     "src/**/*",
-    "example/src/screens/calendars.tsx",
-    "example/src/screens/ExpandableCalendarScreen.tsx",
-    "example/src/screens/agenda.tsx",
-    "example/src/screens/timelineCalendar.tsx"
+    "example/src/screens/calendarScreen.tsx",
+    "example/src/screens/expandableCalendarScreen.tsx",
+    "example/src/screens/agendaScreen.tsx",
+    "example/src/screens/timelineCalendarScreen.tsx"
   ],
   "exclude": ["node_modules", "testUtils"]
 }
