@@ -5,7 +5,7 @@ import CalendarsScreen from './calendarScreen';
 import AgendaScreen from './agendaScreen';
 import CalendarsList from './calendarsList';
 import HorizontalCalendarList from './horizontalCalendarList';
-import ExpandableCalendar from './expandableCalendar';
+import ExpandableCalendarScreen from './expandableCalendarScreen';
 import TimelineCalendar from './timelineCalendarScreen';
 
 export function registerScreens() {
