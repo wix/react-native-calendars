@@ -78,7 +78,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
-    keyExtractor: PropTypes.func
+    reservationsKeyExtractor: PropTypes.func
   };
   
   static defaultProps = {

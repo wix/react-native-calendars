@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleProp, Text, TextStyle} from 'react-native';
-
-import {weekDayNames} from '../../dateutils';
+import {weekDayNames} from '../dateutils';
 
 interface WeekDaysNamesProps {
   firstDay?: number;
@@ -10,6 +9,7 @@ interface WeekDaysNamesProps {
 
 const WeekDaysNames = React.memo(({firstDay, style}: WeekDaysNamesProps) => {
   const dayNames = weekDayNames(firstDay);
+  
   return dayNames.map((day: string, index: number) => (
     <Text
       allowFontScaling={false}

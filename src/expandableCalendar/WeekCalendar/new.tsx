@@ -4,7 +4,7 @@ import XDate from 'xdate';
 
 import InfiniteList from '../../infinite-list';
 import Week from '../week';
-import WeekDaysNames from './WeekDaysNames';
+import WeekDaysNames from '../../commons/WeekDaysNames';
 import {CalendarListProps} from '../../calendar-list';
 import CalendarContext from '../../expandableCalendar/Context';
 import styleConstructor from '../style';
@@ -106,7 +106,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     >
       {!hideDayNames && (
         <View style={[style.current.week, style.current.weekCalendar]}>
-          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader} />
+          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader}/>
         </View>
       )}
       <View>

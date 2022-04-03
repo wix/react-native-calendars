@@ -52,7 +52,6 @@ const BasicDay = (props: BasicDayProps) => {
     testID
   } = props;
   const style = useRef(styleConstructor(theme));
-  const dateData = useRef(date ? xdateToData(new XDate(date)) : undefined);
   const _marking = marking || {};
   const isSelected = _marking.selected || state === 'selected';
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
@@ -61,6 +60,7 @@ const BasicDay = (props: BasicDayProps) => {
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
+  const dateData = date ? xdateToData(new XDate(date)) : undefined;
 
   const shouldDisableTouchEvent = () => {
     const {disableTouchEvent} = _marking;
@@ -126,12 +126,12 @@ const BasicDay = (props: BasicDayProps) => {
   };
 
   const _onPress = useCallback(() => {
-    onPress?.(dateData.current);
-  }, [onPress]);
+    onPress?.(dateData);
+  }, [onPress, date]);
 
   const _onLongPress = useCallback(() => {
-    onLongPress?.(dateData.current);
-  }, [onLongPress]);
+    onLongPress?.(dateData);
+  }, [onLongPress, date]);
 
   const renderMarking = () => {
     const {marked, dotColor, dots, periods} = _marking;

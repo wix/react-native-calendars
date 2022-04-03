@@ -124,14 +124,14 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       return onPressArrowLeft(subtractMonth, month);
     }
     return subtractMonth();
-  }, [onPressArrowLeft, subtractMonth]);
+  }, [onPressArrowLeft, subtractMonth, month]);
 
   const onPressRight = useCallback(() => {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(addMonth, month);
     }
     return addMonth();
-  }, [onPressArrowRight, addMonth]);
+  }, [onPressArrowRight, addMonth, month]);
 
   const onAccessibilityAction = (event: AccessibilityActionEvent) => {
     switch (event.nativeEvent.actionName) {
@@ -245,11 +245,15 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     }
   };
 
+  const renderWeekNumbersSpace = () => {
+    return showWeekNumbers && <View style={style.current.dayHeader}/>;
+  };
+
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
         <View style={style.current.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
-          {showWeekNumbers && <Text allowFontScaling={false} style={style.current.dayHeader}></Text>}
+          {renderWeekNumbersSpace()}
           {renderWeekDays}
         </View>
       );
