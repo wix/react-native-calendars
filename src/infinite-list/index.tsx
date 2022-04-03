@@ -81,6 +81,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       
       const {x, y} = event.nativeEvent.contentOffset;
       const newPageIndex = Math.round(isHorizontal ? x / pageWidth : y / pageHeight);
+
       if (pageIndex.current !== newPageIndex) {
         if (pageIndex.current !== undefined) {
           onPageChange?.(newPageIndex, pageIndex.current, {scrolledByUser: scrolledByUser.current});
@@ -98,6 +99,14 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
             isNearEdge.current = true;
           }
         }
+
+        if (constants.isAndroid) {
+          // NOTE: this is done only to handle 'onMomentumScrollEnd' not being called on Android
+          setTimeout(() => {
+            onMomentumScrollEnd(event);
+          }, 100);
+        }
+        
         pageIndex.current = newPageIndex;
       }
 
@@ -108,15 +117,17 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
   const onMomentumScrollEnd = useCallback(
     event => {
-      if (isOnEdge.current) {
-        onReachEdge?.(pageIndex.current!);
-        reloadPagesDebounce?.(pageIndex.current);
-      } else if (isNearEdge.current) {
-        reloadPagesDebounce?.(pageIndex.current);
-        onReachNearEdge?.(pageIndex.current!);
+      if (pageIndex.current) {
+        if (isOnEdge.current) {
+          onReachEdge?.(pageIndex.current!);
+          reloadPagesDebounce?.(pageIndex.current);
+        } else if (isNearEdge.current) {
+          reloadPagesDebounce?.(pageIndex.current);
+          onReachNearEdge?.(pageIndex.current!);
+        }
+  
+        scrollViewProps?.onMomentumScrollEnd?.(event);
       }
-
-      scrollViewProps?.onMomentumScrollEnd?.(event);
     },
     [scrollViewProps?.onMomentumScrollEnd, onReachEdge, onReachNearEdge, reloadPagesDebounce]
   );
