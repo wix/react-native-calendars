@@ -100,7 +100,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
           }
         }
 
-        if (constants.isAndroid) {
+        if (isHorizontal && constants.isAndroid) {
           // NOTE: this is done only to handle 'onMomentumScrollEnd' not being called on Android
           setTimeout(() => {
             onMomentumScrollEnd(event);
@@ -117,6 +117,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
   const onMomentumScrollEnd = useCallback(
     event => {
+      console.warn('onMomentumScrollEnd: ', pageIndex.current);
       if (pageIndex.current) {
         if (isOnEdge.current) {
           onReachEdge?.(pageIndex.current!);
