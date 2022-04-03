@@ -5,7 +5,8 @@ import constants from '../../commons/constants';
 
 export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
-  const flipStyle = constants.isRTL ? {transform: [{scaleX: -1}]} : undefined;
+  const rtlStyle = constants.isRTL ? {transform: [{scaleX: -1}]} : undefined;
+
   return StyleSheet.create({
     header: {
       flexDirection: 'row',
@@ -30,7 +31,7 @@ export default function (theme: Theme = {}) {
       ...appStyle.arrowStyle
     },
     arrowImage: {
-      ...flipStyle,
+      ...rtlStyle,
       tintColor: appStyle.arrowColor,
       ...Platform.select({
         web: {
@@ -40,7 +41,7 @@ export default function (theme: Theme = {}) {
       })
     },
     disabledArrowImage: {
-      ...flipStyle,
+      ...rtlStyle,
       tintColor: appStyle.disabledArrowColor
     },
     week: {
