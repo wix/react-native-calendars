@@ -26,7 +26,7 @@
   "include": [
     "src/**/*",
     "example/src/screens/calendarScreen.tsx",
-    "example/src/screens/expandableCalendar.tsx",
+    "example/src/screens/expandableCalendarScreen.tsx",
     "example/src/screens/agendaScreen.tsx",
     "example/src/screens/timelineCalendarScreen.tsx"
   ],
