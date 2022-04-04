@@ -103,7 +103,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     setDisabled(showTodayButton, disabled, isDisabled, updateState);
   };
 
-  const getProviderContextValue = useMemo(() => {
+  const contextValue = useMemo(() => {
     return {
       date: currentDate,
       prevDate: prevDate,
@@ -157,7 +157,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   };
 
   return (
-    <CalendarContext.Provider value={getProviderContextValue}>
+    <CalendarContext.Provider value={contextValue}>
       <View style={wrapperStyle}>{children}</View>
       {showTodayButton && renderTodayButton()}
     </CalendarContext.Provider>
