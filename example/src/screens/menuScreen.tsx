@@ -37,14 +37,14 @@ export default class MenuScreen extends Component<Props> {
       <ScrollView>
         <View style={styles.container} testID={testIDs.menu.CONTAINER}>
           <Image source={appIcon} style={styles.image}/>
-          {this.renderEntry(testIDs.menu.CALENDARS, 'Calendars', 'Calendars')}
+          {this.renderEntry(testIDs.menu.CALENDARS, 'Calendar', 'CalendarScreen')}
           {this.renderEntry(testIDs.menu.CALENDAR_LIST, 'Calendar List', 'CalendarListScreen')}
           {this.renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'HorizontalCalendarListScreen')}
-          {this.renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarList')}
-          {this.renderEntry(testIDs.menu.AGENDA, 'Agenda', 'Agenda')}
-          {this.renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendar')}
-          {this.renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendar')}
-          {this.renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendar', {weekView: true})}
+          {this.renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarListScreen')}
+          {this.renderEntry(testIDs.menu.AGENDA, 'Agenda', 'AgendaScreen')}
+          {this.renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
+          {this.renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
+          {this.renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
           <View style={styles.switchContainer}>
             <Text>Force RTL</Text>
             <Switch value={this.state.forceRTL} onValueChange={this.toggleRTL}/>
