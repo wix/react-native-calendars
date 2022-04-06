@@ -6,6 +6,7 @@ import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
+import constants from '../commons/constants';
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
@@ -156,10 +157,10 @@ const Calendar = (props: CalendarProps) => {
       case SWIPE_DOWN:
         break;
       case SWIPE_LEFT:
-        onSwipeLeft();
+        constants.isRTL ? onSwipeRight() : onSwipeLeft();
         break;
       case SWIPE_RIGHT:
-        onSwipeRight();
+        constants.isRTL ? onSwipeLeft() : onSwipeRight();
         break;
     }
   }, [onSwipeLeft, onSwipeRight]);
