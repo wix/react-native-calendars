@@ -7,6 +7,8 @@ import CalendarsList from './calendarsList';
 import HorizontalCalendarList from './horizontalCalendarList';
 import ExpandableCalendarScreen from './expandableCalendarScreen';
 import TimelineCalendarScreen from './timelineCalendarScreen';
+import PlaygroundScreen from './playgroundScreen';
+
 
 export function registerScreens() {
   Navigation.registerComponent('Menu', () => MenuScreen);
@@ -16,4 +18,5 @@ export function registerScreens() {
   Navigation.registerComponent('HorizontalCalendarList', () => HorizontalCalendarList);
   Navigation.registerComponent('ExpandableCalendarScreen', () => ExpandableCalendarScreen);
   Navigation.registerComponent('TimelineCalendar', () => TimelineCalendarScreen);
+  Navigation.registerComponent('Playground', () => PlaygroundScreen);
 }
