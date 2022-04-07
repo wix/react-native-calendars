@@ -4,7 +4,7 @@ import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2020-05-16';
 
-const horizontalCalendarListScreen = () => {
+const HorizontalCalendarListScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const markedDates = useMemo(() => {
     return {
@@ -34,4 +34,4 @@ const horizontalCalendarListScreen = () => {
   );
 };
 
-export default horizontalCalendarListScreen;
+export default HorizontalCalendarListScreen;
