@@ -186,7 +186,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const [position, setPosition] = useState(initialPosition || Positions.CLOSED);
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-  const isOpen = position === Positions.OPEN;
+  const isOpen = useMemo(() => {
+    return position === Positions.OPEN;
+  }, [position]);
 
   /** Components' refs */
 
@@ -294,6 +296,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
         d.addDays(firstDayOfWeek);
       }
+
       setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
     }
   };
@@ -365,14 +368,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       onCalendarToggled?.(_isOpen);
 
-      _setPosition(_height.current === closedHeight);
+      setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
       closeHeader(_isOpen);
       resetWeekCalendarOpacity(_isOpen);
     }
-  };
-
-  const _setPosition = (isClosed: boolean) => {
-    setPosition(isClosed ? Positions.CLOSED : Positions.OPEN);
   };
 
   const resetWeekCalendarOpacity = (isOpen: boolean) => {
@@ -455,7 +454,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     },
     100,
     {trailing: true, leading: false}
-  ), [date]);
+  ), [date, scrollPage]);
 
   /** Renders */
   
