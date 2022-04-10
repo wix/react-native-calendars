@@ -85,7 +85,7 @@ const AgendaList = (props: AgendaListProps) => {
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
   const style = useRef(styleConstructor(theme));
   const list = useRef<any>();
-  const _topSection = useRef(sections[0].title);
+  const _topSection = useRef(sections[0]?.title);
   const didScroll = useRef(false);
   const sectionScroll = useRef(false);
   const sectionHeight = useRef(0);
