@@ -119,8 +119,8 @@ const AgendaList = (props: AgendaListProps) => {
   const getNextSectionIndex = (date: string) => {
     let i = 0;
     for (let j = 1; j < sections.length; j++) {
-      const prev = parseDate(sections[j - 1].title);
-      const next = parseDate(sections[j].title);
+      const prev = parseDate(sections[j - 1]?.title);
+      const next = parseDate(sections[j]?.title);
       const cur = parseDate(date);
       if (isGTE(cur, prev) && isGTE(next, cur)) {
         i = sameDate(prev, cur) ? j - 1 : j;
@@ -164,7 +164,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
     if (list?.current && sectionIndex !== undefined) {
       sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
-      _topSection.current = sections[sectionIndex].title;
+      _topSection.current = sections[sectionIndex]?.title;
 
       list?.current.scrollToLocation({
         animated: true,
