@@ -199,14 +199,14 @@ const AgendaList = (props: AgendaListProps) => {
   const _onMomentumScrollBegin = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setDisabled?.(true);
     onMomentumScrollBegin?.(event);
-  }, [onMomentumScrollBegin]);
+  }, [onMomentumScrollBegin, setDisabled]);
 
   const _onMomentumScrollEnd = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     // when list momentum ends AND when scrollToSection scroll ends
     sectionScroll.current = false;
     setDisabled?.(false);
     onMomentumScrollEnd?.(event);
-  }, [onMomentumScrollEnd]);
+  }, [onMomentumScrollEnd, setDisabled]);
 
   const _onScrollToIndexFailed = useCallback((info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
     if (onScrollToIndexFailed) {
