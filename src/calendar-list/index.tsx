@@ -96,7 +96,10 @@ class CalendarList extends Component<CalendarListProps, State> {
     keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
     keyExtractor: PropTypes.func,
     onEndReachedThreshold: PropTypes.number,
-    onEndReached: PropTypes.func
+    /** Called once when the scroll position gets within onEndReachedThreshold */
+    onEndReached: PropTypes.func,
+    /** Enables nested scrolling for Android API level 21+ */
+    nestedScrollEnabled: PropTypes.bool
   };
 
   static defaultProps = {
@@ -109,7 +112,8 @@ class CalendarList extends Component<CalendarListProps, State> {
     scrollsToTop: false,
     scrollEnabled: true,
     removeClippedSubviews: constants.isAndroid,
-    keyExtractor: (_: any, index: number) => String(index)
+    keyExtractor: (_: any, index: number) => String(index),
+    nestedScrollEnabled: true
   };
 
   style: any;
@@ -352,6 +356,7 @@ class CalendarList extends Component<CalendarListProps, State> {
           keyExtractor={this.props.keyExtractor}
           onEndReachedThreshold={this.props.onEndReachedThreshold}
           onEndReached={this.props.onEndReached}
+          nestedScrollEnabled={this.props.nestedScrollEnabled}
         />
         {this.renderStaticHeader()}
       </View>
