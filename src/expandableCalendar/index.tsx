@@ -346,12 +346,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
-  const panResponder = Number(numberOfDays) <= 1 && PanResponder.create({
+  const panResponder = Number(numberOfDays) <= 1 ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
     onPanResponderTerminate: handlePanResponderEnd
-  });
+  }) : PanResponder.create({});
 
   /** Animated */
 

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {View, ScrollView} from 'react-native';
 import min from 'lodash/min';
 import map from 'lodash/map';
@@ -20,6 +20,10 @@ export interface TimelineProps {
    * The date of this timeline instance in ISO format (e.g. 2011-10-25)
    */
   date?: string;
+  /**
+   * List of events to display in this timeline
+   */
+  events: Event[];
   /**
    * The timeline day start time
    */
