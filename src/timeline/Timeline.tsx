@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {View, ScrollView} from 'react-native';
 import min from 'lodash/min';
 import map from 'lodash/map';
+import times from 'lodash/times';
 
 import constants from '../commons/constants';
 import {Theme} from '../types';
@@ -12,16 +13,13 @@ import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
 import NowIndicator from './NowIndicator';
 import useTimelineOffset from './useTimelineOffset';
+import {generateDay} from '../dateutils';
 
 export interface TimelineProps {
   /**
    * The date of this timeline instance in ISO format (e.g. 2011-10-25)
    */
   date?: string;
-  /**
-   * List of events to display in this timeline
-   */
-  events: Event[];
   /**
    * The timeline day start time
    */
@@ -99,6 +97,18 @@ export interface TimelineProps {
    * Background color for unavailable hours
    */
   unavailableHoursColor?: string;
+  /**
+   * The number of days to present in the timeline calendar
+   */
+  numberOfDays?: number;
+  /**
+   * The array of dates to present in the current list page
+   */
+  pageDates?: string[];
+  /**
+   * The array of events to present in the current list page
+   */
+  pageEvents?: Event[][];
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -107,7 +117,8 @@ const Timeline = (props: TimelineProps) => {
     start = 0,
     end = 24,
     date,
-    events = [],
+    pageEvents = [[], [], [], [], [], [], []],
+    pageDates = [],
     onEventPress,
     onBackgroundLongPress,
     onBackgroundLongPressOut,
@@ -119,11 +130,12 @@ const Timeline = (props: TimelineProps) => {
     showNowIndicator,
     scrollOffset,
     onChangeOffset,
-    overlapEventsSpacing,
-    rightEdgeSpacing,
+    overlapEventsSpacing = 0,
+    rightEdgeSpacing = 0,
     unavailableHours,
     unavailableHoursColor,
-    eventTapped
+    eventTapped,
+    numberOfDays = 1
   } = props;
 
   const scrollView = useRef<ScrollView>();
@@ -132,24 +144,30 @@ const Timeline = (props: TimelineProps) => {
 
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
-  const packedEvents = useMemo(() => {
-    const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
-    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing, rightEdgeSpacing});
-  }, [events, start]);
+  const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
+
+  const getEvents = (i = 1) => {
+    return populateEvents(pageEvents[i], {
+      screenWidth: width / numberOfDays,
+      dayStart: start,
+      overlapEventsSpacing: overlapEventsSpacing / numberOfDays,
+      rightEdgeSpacing: rightEdgeSpacing / numberOfDays
+    });
+  };
 
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
       initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
-    } else if (scrollToFirst && packedEvents.length > 0) {
-      initialPosition = min(map(packedEvents, 'top')) ?? 0;
+    } else if (scrollToFirst && getEvents().length > 0) {
+      initialPosition = min(map(getEvents(), 'top')) ?? 0;
     } else if (initialTime) {
       initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }
 
     if (initialPosition) {
       setTimeout(() => {
-        scrollView?.current?.scrollTo({
+        (Number(numberOfDays) <= 1) && scrollView?.current?.scrollTo({
           y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
           animated: true
         });
@@ -159,7 +177,7 @@ const Timeline = (props: TimelineProps) => {
 
   const _onEventPress = useCallback(
     (eventIndex: number) => {
-      const event = packedEvents[eventIndex];
+      const event = getEvents()[eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
         eventTapped(event);
@@ -167,11 +185,11 @@ const Timeline = (props: TimelineProps) => {
         onEventPress?.(event);
       }
     },
-    [packedEvents, onEventPress, eventTapped]
+    [pageEvents, onEventPress, eventTapped]
   );
 
-  const renderEvents = () => {
-    const events = packedEvents.map((event: PackedEvent, i: number) => {
+  const renderEvents = (index: number) => {
+    const events = getEvents(index).map((event: PackedEvent, i: number) => {
       return (
         <EventBlock
           key={i}
@@ -186,9 +204,19 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View>
-        <View style={{marginLeft: HOURS_SIDEBAR_WIDTH}}>{events}</View>
+      <View style={{marginLeft: index === 0 ? HOURS_SIDEBAR_WIDTH : undefined, width: width / numberOfDays}}>
+        {events}
       </View>
+    );
+  };
+
+  const renderItem = (index: number) => {
+    const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
+    return (
+      <>
+        {renderEvents(index)}
+        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={indexOfToday * width / numberOfDays} styles={styles.current} />}
+      </>
     );
   };
 
@@ -209,9 +237,10 @@ const Timeline = (props: TimelineProps) => {
         unavailableHoursColor={unavailableHoursColor}
         onBackgroundLongPress={onBackgroundLongPress}
         onBackgroundLongPressOut={onBackgroundLongPressOut}
+        width={width}
+        numberOfDays={numberOfDays}
       />
-      {renderEvents()}
-      {showNowIndicator && <NowIndicator styles={styles.current} />}
+      {times(numberOfDays, renderItem)}
     </ScrollView>
   );
 };

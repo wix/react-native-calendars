@@ -98,6 +98,7 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
+  const {date, setDate, numberOfDays = 1} = useContext(Context);  
   const {
     theme, 
     horizontal = true, 
@@ -113,7 +114,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     style: propsStyle, 
     calendarStyle,
     allowShadow = true, 
-    hideKnob, 
+    hideKnob = Number(numberOfDays) > 1, 
     hideArrows, 
     onPressArrowLeft,
     onPressArrowRight,
@@ -127,7 +128,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Date */
 
-  const {date, setDate} = useContext(Context);  
   const initialDate = date;
   const getYear = (date: string) => {
     const d = new XDate(date);
@@ -171,7 +171,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Position */
 
-  const closedHeight = CLOSED_HEIGHT + (hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
+  const closedHeight = CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT);
   const getOpenHeight = () => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
@@ -293,8 +293,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         if (dayOfTheWeek < firstDay && firstDay > 0) {
           dayOfTheWeek = 7 + dayOfTheWeek;
         }
+
+      if (numberOfDays) {
+        const daysToAdd = Number(numberOfDays) <= 1 ? 7 : numberOfDays;
+        d.addDays(next ? daysToAdd : -daysToAdd);
+      } else {
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
         d.addDays(firstDayOfWeek);
+        }
       }
 
       setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
@@ -340,7 +346,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
-  const panResponder = PanResponder.create({
+  const panResponder = Number(numberOfDays) <= 1 && PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
@@ -566,6 +572,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
             hideExtraDays={!horizontal && isOpen}
             renderArrow={_renderArrow}
             staticHeader
+            numberOfDays={numberOfDays}
           />
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}

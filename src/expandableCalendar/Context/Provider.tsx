@@ -42,6 +42,8 @@ export interface CalendarContextProviderProps extends ViewProps {
   todayButtonStyle?: ViewStyle;
   /** The opacity for the disabled today button (0-1) */
   disabledOpacity?: number;
+  /** The number of days to present in the timeline calendar */
+  numberOfDays?: number;
 }
 
 /**
@@ -56,6 +58,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     todayBottomMargin,
     todayButtonStyle,
     style: propsStyle,
+    numberOfDays,
     children
   } = props;
   const style = useRef(styleConstructor(theme));
@@ -109,7 +112,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       prevDate: prevDate,
       updateSource: updateSource,
       setDate: _setDate,
-      setDisabled: _setDisabled
+      setDisabled: _setDisabled,
+      numberOfDays
     };
   }, [currentDate, prevDate, updateSource]);
 
@@ -174,5 +178,6 @@ CalendarProvider.propTypes = {
   showTodayButton: PropTypes.bool,
   todayBottomMargin: PropTypes.number,
   todayButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  disabledOpacity: PropTypes.number
+  disabledOpacity: PropTypes.number,
+  numberOfDays: PropTypes.number
 };

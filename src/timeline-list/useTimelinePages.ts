@@ -7,18 +7,22 @@ import debounce from 'lodash/debounce';
 import constants from '../commons/constants';
 import {generateDay} from '../dateutils';
 
-const PAGES_COUNT = 100;
+export const PAGES_COUNT = 100;
 export const NEAR_EDGE_THRESHOLD = 10;
-export const INITIAL_PAGE = Math.floor(PAGES_COUNT / 2);
-
 
 interface UseTimelinePagesProps {
   date: string;
   listRef: RefObject<any>;
+  numberOfDays: number;
 }
 
-const UseTimelinePages = ({date, listRef}: UseTimelinePagesProps) => {
-  const pagesRef = useRef(times(PAGES_COUNT, i => generateDay(date, i - Math.floor(PAGES_COUNT / 2))));
+const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) => {
+  const initialPage = Math.ceil(PAGES_COUNT / 2);
+  const pagesRef = useRef(
+    times(PAGES_COUNT, i => {
+      return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
+    })
+  );
   const [pages, setPages] = useState<string[]>(pagesRef.current);
   const shouldResetPages = useRef(false);
 
@@ -39,11 +43,13 @@ const UseTimelinePages = ({date, listRef}: UseTimelinePagesProps) => {
   };
 
   const resetPages = (date: string) => {
-    pagesRef.current = times(PAGES_COUNT, i => generateDay(date, i - Math.floor(PAGES_COUNT / 2)));
+    pagesRef.current = times(PAGES_COUNT, i => {
+      return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
+    });
     setPages(pagesRef.current);
 
     setTimeout(() => {
-      scrollToPage(INITIAL_PAGE);
+      scrollToPage(initialPage);
       shouldResetPages.current = false;
     }, 0);
   };

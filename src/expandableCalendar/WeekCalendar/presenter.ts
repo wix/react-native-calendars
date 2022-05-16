@@ -7,6 +7,7 @@ import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
 import constants from '../../commons/constants';
+import {generateDay} from '../../dateutils';
 
 const commons = require('../commons');
 const updateSources = commons.UpdateSources;
@@ -71,15 +72,21 @@ class Presenter {
 
   getDate({current, context, firstDay = 0}: WeekCalendarProps, weekIndex: number) {
     const d = new XDate(current || context.date);
+    const numberOfDays = context.numberOfDays;
     // get the first day of the week as date (for the on scroll mark)
     let dayOfTheWeek = d.getDay();
     if (dayOfTheWeek < firstDay && firstDay > 0) {
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
 
-    // leave the current date in the visible week as is
-    const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
-    const newDate = dd.addWeeks(weekIndex);
+    let newDate;
+    if (numberOfDays) {
+      newDate = generateDay(toMarkingFormat(d), weekIndex * numberOfDays);
+    } else {
+      // leave the current date in the visible week as is
+      const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+      newDate = dd.addWeeks(weekIndex);
+    }
     return toMarkingFormat(newDate);
   }
 

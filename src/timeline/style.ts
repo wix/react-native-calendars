@@ -16,7 +16,8 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     contentStyle: {
       backgroundColor: '#ffff',
       height: calendarHeight + 10,
-      ...theme.contentStyle
+      ...theme.contentStyle,
+      flexDirection: 'row',
     },
     header: {
       paddingHorizontal: 30,
@@ -95,8 +96,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       position: 'absolute',
       width: 1,
       height: '105%',
-      backgroundColor: 'rgb(216,216,216)',
-      left: HOURS_SIDEBAR_WIDTH
+      backgroundColor: 'rgb(216,216,216)'
     },
     nowIndicator: {
       position: 'absolute',

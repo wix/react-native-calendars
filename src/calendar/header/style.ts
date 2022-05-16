@@ -2,6 +2,7 @@ import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
 import constants from '../../commons/constants';
+import {HOURS_SIDEBAR_WIDTH} from '../../timeline/style';
 
 export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -13,7 +14,10 @@ export default function (theme: Theme = {}) {
       paddingLeft: 10,
       paddingRight: 10,
       marginTop: 6,
-      alignItems: 'center'
+      alignItems: 'center',
+    },
+    partialHeader: {
+      paddingHorizontal: 15
     },
     headerContainer: {
       flexDirection: 'row'
@@ -47,7 +51,12 @@ export default function (theme: Theme = {}) {
     week: {
       marginTop: 7,
       flexDirection: 'row',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
+      paddingHorizontal: 15
+    },
+    partialWeek: {
+      paddingRight: 0,
+      paddingLeft: HOURS_SIDEBAR_WIDTH
     },
     dayHeader: {
       marginTop: 2,

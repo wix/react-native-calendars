@@ -1,6 +1,7 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet} from 'react-native';
 import range from 'lodash/range';
+import times from 'lodash/times';
 import {buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 import {buildTimeString, calcTimeByPosition} from './helpers/presenter';
 import constants from '../commons/constants';
@@ -21,6 +22,8 @@ export interface TimelineHoursProps {
   unavailableHours?: UnavailableHours[];
   unavailableHoursColor?: string;
   styles: {[key: string]: ViewStyle | TextStyle};
+  width: number;
+  numberOfDays: number;
 }
 
 const dimensionWidth = constants.screenWidth;
@@ -36,7 +39,9 @@ const TimelineHours = (props: TimelineHoursProps) => {
     unavailableHoursColor,
     styles,
     onBackgroundLongPress,
-    onBackgroundLongPressOut
+    onBackgroundLongPressOut,
+    width,
+    numberOfDays = 1
   } = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();
@@ -121,7 +126,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
           </React.Fragment>
         );
       })}
-      <View style={styles.verticalLine} />
+      {times(numberOfDays, (index) => <View style={[styles.verticalLine, {right: (index + 1) * width / numberOfDays}]} />)}
     </>
   );
 };

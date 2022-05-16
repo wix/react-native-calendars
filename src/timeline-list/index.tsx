@@ -1,14 +1,15 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 // import {Text} from 'react-native';
 import throttle from 'lodash/throttle';
+import dropRight from 'lodash/dropRight';
 import XDate from 'xdate';
 
 import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';
-import {isToday} from '../dateutils';
+import {isToday, generateDay} from '../dateutils';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
 import InfiniteList from '../infinite-list';
-import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
+import useTimelinePages, {PAGES_COUNT, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
 
 export interface TimelineListRenderItemInfo {
   item: string;
@@ -51,13 +52,14 @@ export interface TimelineListProps {
 
 const TimelineList = (props: TimelineListProps) => {
   const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
-  const {date, updateSource, setDate} = useContext(Context);
+  const {date, updateSource, setDate, numberOfDays = 1} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
   const [timelineOffset, setTimelineOffset] = useState();
+  const initialPage = Math.ceil(PAGES_COUNT / 2);
 
   const {pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange} =
-    useTimelinePages({date, listRef});
+    useTimelinePages({date, listRef, numberOfDays});
 
   useEffect(() => {
     if (date !== prevDate.current) {
@@ -109,20 +111,25 @@ const TimelineList = (props: TimelineListProps) => {
     (_type, item, index) => {
       const timelineEvent = events[item];
       const isCurrent = prevDate.current === item;
-      const isInitialPage = index === INITIAL_PAGE;
+      const isInitialPage = index === initialPage;
       const _isToday = isToday(new XDate(item));
-
+      const weekEvents = [ timelineEvent || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
+      const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
+      const numberOfDaysToDrop = (7 - numberOfDays);
       const _timelineProps = {
         ...timelineProps,
         key: item,
         date: item,
         events: timelineEvent,
+        pageEvents: dropRight(weekEvents, numberOfDaysToDrop),
+        pageDates: dropRight(weekDates, numberOfDaysToDrop),
         scrollToNow: _isToday && isInitialPage && scrollToNow,
         initialTime: !_isToday && isInitialPage ? initialTime : undefined,
         scrollToFirst: !_isToday && isInitialPage && scrollToFirst,
         scrollOffset: timelineOffset,
         onChangeOffset: onTimelineOffsetChange,
-        showNowIndicator: _isToday && showNowIndicator
+        showNowIndicator: _isToday && showNowIndicator,
+        numberOfDays
       };
 
       if (renderItem) {
@@ -150,7 +157,7 @@ const TimelineList = (props: TimelineListProps) => {
       onReachNearEdgeThreshold={NEAR_EDGE_THRESHOLD}
       onScroll={onScroll}
       extendedState={{todayEvents: events[date], pages}}
-      initialPageIndex={INITIAL_PAGE}
+      initialPageIndex={initialPage}
       scrollViewProps={{
         onMomentumScrollEnd
       }}
