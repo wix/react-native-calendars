@@ -1,8 +1,9 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {View, ScrollView} from 'react-native';
 import min from 'lodash/min';
 import map from 'lodash/map';
 import times from 'lodash/times';
+import groupBy from 'lodash/groupBy';
 
 import constants from '../commons/constants';
 import {Theme} from '../types';
@@ -14,6 +15,7 @@ import EventBlock, {Event, PackedEvent} from './EventBlock';
 import NowIndicator from './NowIndicator';
 import useTimelineOffset from './useTimelineOffset';
 import {generateDay} from '../dateutils';
+import {getCalendarDateString} from '../services';
 
 export interface TimelineProps {
   /**
@@ -109,10 +111,6 @@ export interface TimelineProps {
    * The array of dates to present in the current list page
    */
   pageDates?: string[];
-  /**
-   * The array of events to present in the current list page
-   */
-  pageEvents?: Event[][];
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -121,7 +119,7 @@ const Timeline = (props: TimelineProps) => {
     start = 0,
     end = 24,
     date,
-    pageEvents = [[], [], [], [], [], [], []],
+    events,
     pageDates = [],
     onEventPress,
     onBackgroundLongPress,
@@ -142,6 +140,8 @@ const Timeline = (props: TimelineProps) => {
     numberOfDays = 1
   } = props;
 
+  const groupedEvents = groupBy(events, e => getCalendarDateString(e.start));
+  const pageEvents = map(pageDates, d => groupedEvents[d] || []);
   const scrollView = useRef<ScrollView>();
   const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
@@ -150,21 +150,23 @@ const Timeline = (props: TimelineProps) => {
 
   const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
 
-  const getEvents = (i = 1) => {
-    return populateEvents(pageEvents[i], {
-      screenWidth: width / numberOfDays,
-      dayStart: start,
-      overlapEventsSpacing: overlapEventsSpacing / numberOfDays,
-      rightEdgeSpacing: rightEdgeSpacing / numberOfDays
+  const packedEvents = useMemo(() => {
+    return map(pageEvents, (_e, i) => {
+      return populateEvents(pageEvents[i], {
+        screenWidth: width / numberOfDays,
+        dayStart: start,
+        overlapEventsSpacing: overlapEventsSpacing / numberOfDays,
+        rightEdgeSpacing: rightEdgeSpacing / numberOfDays
+      });
     });
-  };
+  }, [pageEvents, start, numberOfDays]);
 
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
       initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
-    } else if (scrollToFirst && getEvents().length > 0) {
-      initialPosition = min(map(getEvents(), 'top')) ?? 0;
+    } else if (scrollToFirst && packedEvents[0].length > 0) {
+      initialPosition = min(map(packedEvents[0], 'top')) ?? 0;
     } else if (initialTime) {
       initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }
@@ -180,8 +182,8 @@ const Timeline = (props: TimelineProps) => {
   }, []);
 
   const _onEventPress = useCallback(
-    (eventIndex: number) => {
-      const event = getEvents()[eventIndex];
+    (dateIndex: number, eventIndex: number) => {
+      const event = packedEvents[dateIndex][eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
         eventTapped(event);
@@ -193,7 +195,8 @@ const Timeline = (props: TimelineProps) => {
   );
 
   const renderEvents = (index: number) => {
-    const events = getEvents(index).map((event: PackedEvent, i: number) => {
+    const events = packedEvents[index].map((event: PackedEvent, i: number) => {
+      const onEventPress = () => _onEventPress(index, i);
       return (
         <EventBlock
           key={i}
@@ -201,7 +204,7 @@ const Timeline = (props: TimelineProps) => {
           event={event}
           styles={styles.current}
           format24h={format24h}
-          onPress={_onEventPress}
+          onPress={onEventPress}
           renderEvent={renderEvent}
         />
       );

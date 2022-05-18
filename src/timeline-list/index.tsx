@@ -1,6 +1,7 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 // import {Text} from 'react-native';
 import throttle from 'lodash/throttle';
+import flatten from 'lodash/flatten';
 import dropRight from 'lodash/dropRight';
 import XDate from 'xdate';
 
@@ -109,19 +110,17 @@ const TimelineList = (props: TimelineListProps) => {
 
   const renderPage = useCallback(
     (_type, item, index) => {
-      const timelineEvent = events[item];
       const isCurrent = prevDate.current === item;
       const isInitialPage = index === initialPage;
       const _isToday = isToday(new XDate(item));
-      const weekEvents = [ timelineEvent || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
+      const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
       const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
       const numberOfDaysToDrop = (7 - numberOfDays);
       const _timelineProps = {
         ...timelineProps,
         key: item,
         date: item,
-        events: timelineEvent,
-        pageEvents: dropRight(weekEvents, numberOfDaysToDrop),
+        events: flatten(dropRight(weekEvents, numberOfDaysToDrop)),
         pageDates: dropRight(weekDates, numberOfDaysToDrop),
         scrollToNow: _isToday && isInitialPage && scrollToNow,
         initialTime: !_isToday && isInitialPage ? initialTime : undefined,
