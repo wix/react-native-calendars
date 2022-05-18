@@ -104,7 +104,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     testID,
     accessibilityElementsHidden,
     importantForAccessibility,
-    numberOfDays,
+    numberOfDays = 1,
     current = ''
   } = props;
   const style = useRef(styleConstructor(theme));
@@ -151,8 +151,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
   const renderWeekDays = useMemo(() => {
     const dayOfTheWeek = new XDate(current).getDay();
-    const weekDaysNames = Number(numberOfDays) > 1 ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
-    const dayNames = Number(numberOfDays) > 1 ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
+    const weekDaysNames = numberOfDays > 1 ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
+    const dayNames = numberOfDays > 1 ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
 
     return dayNames.map((day: string, index: number) => {
       const dayStyle = [style.current.dayHeader];
@@ -250,7 +250,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
-        <View style={[style.current.week, Number(numberOfDays) > 1 ? style.current.partialWeek : undefined]} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
+        <View style={[style.current.week, numberOfDays > 1 ? style.current.partialWeek : undefined]} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
           {renderWeekNumbersSpace()}
           {renderWeekDays}
         </View>
@@ -269,7 +269,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
       importantForAccessibility={importantForAccessibility} // Android
     >
-      <View style={[style.current.header, Number(numberOfDays) > 1 ? style.current.partialHeader : undefined]}>
+      <View style={[style.current.header, numberOfDays > 1 ? style.current.partialHeader : undefined]}>
         {_renderArrow('left')}
         <View style={style.current.headerContainer}>
           {_renderHeader()}

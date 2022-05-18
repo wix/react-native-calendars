@@ -114,7 +114,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     style: propsStyle, 
     calendarStyle,
     allowShadow = true, 
-    hideKnob = Number(numberOfDays) > 1, 
+    hideKnob = numberOfDays > 1, 
     hideArrows, 
     onPressArrowLeft,
     onPressArrowRight,
@@ -295,7 +295,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         }
 
       if (numberOfDays) {
-        const daysToAdd = Number(numberOfDays) <= 1 ? 7 : numberOfDays;
+        const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
         d.addDays(next ? daysToAdd : -daysToAdd);
       } else {
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
@@ -346,7 +346,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
-  const panResponder = Number(numberOfDays) <= 1 ? PanResponder.create({
+  const panResponder = numberOfDays <= 1 ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,

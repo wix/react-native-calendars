@@ -15,7 +15,7 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1} = props;
   const style = useRef(styleConstructor(theme));
 
   const getWeek = (date?: string) => {
@@ -54,7 +54,7 @@ const Week = (props: WeekProps) => {
   };
 
   const renderWeek = () => {
-    const dates = Number(numberOfDays) > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
+    const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
     let week: any[] = [];
   
     if (dates) {
@@ -69,7 +69,7 @@ const Week = (props: WeekProps) => {
     
     const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
 
-    if (Number(numberOfDays) > 1 && todayIndex > -1) {
+    if (numberOfDays > 1 && todayIndex > -1) {
       week = week.slice(todayIndex, numberOfDays);
     }
     return week;
@@ -77,7 +77,7 @@ const Week = (props: WeekProps) => {
 
   return (
     <View style={style.current.container}>
-      <View style={[style.current.week, Number(numberOfDays) > 1 ? style.current.partialWeek : undefined, propsStyle]}>{renderWeek()}</View>
+      <View style={[style.current.week, numberOfDays > 1 ? style.current.partialWeek : undefined, propsStyle]}>{renderWeek()}</View>
     </View>
   );
 };

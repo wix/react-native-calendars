@@ -171,9 +171,9 @@ const Timeline = (props: TimelineProps) => {
       initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }
 
-    if (initialPosition) {
+    if (initialPosition && numberOfDays <= 1) {
       setTimeout(() => {
-        (Number(numberOfDays) <= 1) && scrollView?.current?.scrollTo({
+        scrollView?.current?.scrollTo({
           y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
           animated: true
         });
