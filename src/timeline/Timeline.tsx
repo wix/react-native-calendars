@@ -211,7 +211,7 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View style={{marginLeft: dayIndex === 0 ? HOURS_SIDEBAR_WIDTH : undefined, width: width / numberOfDays}}>
+      <View style={{marginLeft: dayIndex === 0 ? HOURS_SIDEBAR_WIDTH : undefined, flex: 1}}>
         {events}
       </View>
     );
