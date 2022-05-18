@@ -119,9 +119,8 @@ const TimelineList = (props: TimelineListProps) => {
       const _timelineProps = {
         ...timelineProps,
         key: item,
-        date: item,
+        date: dropRight(weekDates, numberOfDaysToDrop),
         events: flatten(dropRight(weekEvents, numberOfDaysToDrop)),
-        pageDates: dropRight(weekDates, numberOfDaysToDrop),
         scrollToNow: _isToday && isInitialPage && scrollToNow,
         initialTime: !_isToday && isInitialPage ? initialTime : undefined,
         scrollToFirst: !_isToday && isInitialPage && scrollToFirst,

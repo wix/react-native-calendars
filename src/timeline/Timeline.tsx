@@ -19,9 +19,9 @@ import {getCalendarDateString} from '../services';
 
 export interface TimelineProps {
   /**
-   * The date of this timeline instance in ISO format (e.g. 2011-10-25)
+   * The date / dates of this timeline instance in ISO format (e.g. 2011-10-25)
    */
-  date?: string;
+  date?: string | string[];
   /**
    * List of events to display in this timeline
    */
@@ -107,10 +107,6 @@ export interface TimelineProps {
    * The number of days to present in the timeline calendar
    */
   numberOfDays?: number;
-  /**
-   * The array of dates to present in the current list page
-   */
-  pageDates?: string[];
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -118,9 +114,8 @@ const Timeline = (props: TimelineProps) => {
     format24h = true,
     start = 0,
     end = 24,
-    date,
+    date = '',
     events,
-    pageDates = [],
     onEventPress,
     onBackgroundLongPress,
     onBackgroundLongPressOut,
@@ -140,6 +135,7 @@ const Timeline = (props: TimelineProps) => {
     numberOfDays = 1
   } = props;
 
+  const pageDates = typeof date === 'string' ? [date] : date;
   const groupedEvents = groupBy(events, e => getCalendarDateString(e.start));
   const pageEvents = map(pageDates, d => groupedEvents[d] || []);
   const scrollView = useRef<ScrollView>();
@@ -237,7 +233,7 @@ const Timeline = (props: TimelineProps) => {
       <TimelineHours
         start={start}
         end={end}
-        date={date}
+        date={pageDates[0]}
         format24h={format24h}
         styles={styles.current}
         unavailableHours={unavailableHours}

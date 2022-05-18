@@ -3,7 +3,7 @@ import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet} 
 import range from 'lodash/range';
 import times from 'lodash/times';
 import {buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
-import {buildTimeString, calcTimeByPosition} from './helpers/presenter';
+import {buildTimeString, calcTimeByPosition, calcDateByPosition} from './helpers/presenter';
 import constants from '../commons/constants';
 
 interface NewEventTime {
@@ -71,11 +71,12 @@ const TimelineHours = (props: TimelineHoursProps) => {
   const handleBackgroundPress = useCallback(
     event => {
       const yPosition = event.nativeEvent.locationY;
+      const xPosition = event.nativeEvent.locationX;
       const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
+      const dateByPosition = calcDateByPosition(xPosition, numberOfDays, date);
+      lastLongPressEventTime.current = {hour, minutes, date: dateByPosition};
 
-      lastLongPressEventTime.current = {hour, minutes, date};
-
-      const timeString = buildTimeString(hour, minutes, date);
+      const timeString = buildTimeString(hour, minutes, dateByPosition);
       onBackgroundLongPress?.(timeString, lastLongPressEventTime.current);
     },
     [onBackgroundLongPress, date]
