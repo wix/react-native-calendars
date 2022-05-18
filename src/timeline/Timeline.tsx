@@ -194,13 +194,13 @@ const Timeline = (props: TimelineProps) => {
     [pageEvents, onEventPress, eventTapped]
   );
 
-  const renderEvents = (index: number) => {
-    const events = packedEvents[index].map((event: PackedEvent, i: number) => {
-      const onEventPress = () => _onEventPress(index, i);
+  const renderEvents = (dayIndex: number) => {
+    const events = packedEvents[dayIndex].map((event: PackedEvent, eventIndex: number) => {
+      const onEventPress = () => _onEventPress(dayIndex, eventIndex);
       return (
         <EventBlock
-          key={i}
-          index={i}
+          key={eventIndex}
+          index={eventIndex}
           event={event}
           styles={styles.current}
           format24h={format24h}
@@ -211,17 +211,17 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View style={{marginLeft: index === 0 ? HOURS_SIDEBAR_WIDTH : undefined, width: width / numberOfDays}}>
+      <View style={{marginLeft: dayIndex === 0 ? HOURS_SIDEBAR_WIDTH : undefined, width: width / numberOfDays}}>
         {events}
       </View>
     );
   };
 
-  const renderItem = (index: number) => {
+  const renderTimelineDay = (dayIndex: number) => {
     const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
     return (
       <>
-        {renderEvents(index)}
+        {renderEvents(dayIndex)}
         {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={indexOfToday * width / numberOfDays} styles={styles.current} />}
       </>
     );
@@ -247,7 +247,7 @@ const Timeline = (props: TimelineProps) => {
         width={width}
         numberOfDays={numberOfDays}
       />
-      {times(numberOfDays, renderItem)}
+      {times(numberOfDays, renderTimelineDay)}
     </ScrollView>
   );
 };
