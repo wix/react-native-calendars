@@ -10,7 +10,7 @@ import {UpdateSources} from '../expandableCalendar/commons';
 import {isToday, generateDay} from '../dateutils';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
 import InfiniteList from '../infinite-list';
-import useTimelinePages, {PAGES_COUNT, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
+import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
 
 export interface TimelineListRenderItemInfo {
   item: string;
@@ -57,7 +57,6 @@ const TimelineList = (props: TimelineListProps) => {
   const listRef = useRef<any>();
   const prevDate = useRef(date);
   const [timelineOffset, setTimelineOffset] = useState();
-  const initialPage = Math.ceil(PAGES_COUNT / 2);
 
   const {pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange} =
     useTimelinePages({date, listRef, numberOfDays});
@@ -111,7 +110,7 @@ const TimelineList = (props: TimelineListProps) => {
   const renderPage = useCallback(
     (_type, item, index) => {
       const isCurrent = prevDate.current === item;
-      const isInitialPage = index === initialPage;
+      const isInitialPage = index === INITIAL_PAGE;
       const _isToday = isToday(new XDate(item));
       const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
       const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
@@ -155,7 +154,7 @@ const TimelineList = (props: TimelineListProps) => {
       onReachNearEdgeThreshold={NEAR_EDGE_THRESHOLD}
       onScroll={onScroll}
       extendedState={{todayEvents: events[date], pages}}
-      initialPageIndex={initialPage}
+      initialPageIndex={INITIAL_PAGE}
       scrollViewProps={{
         onMomentumScrollEnd
       }}

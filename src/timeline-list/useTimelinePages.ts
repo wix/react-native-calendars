@@ -9,6 +9,7 @@ import {generateDay} from '../dateutils';
 
 export const PAGES_COUNT = 100;
 export const NEAR_EDGE_THRESHOLD = 10;
+export const INITIAL_PAGE = Math.floor(PAGES_COUNT / 2);
 
 interface UseTimelinePagesProps {
   date: string;
@@ -17,7 +18,6 @@ interface UseTimelinePagesProps {
 }
 
 const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) => {
-  const initialPage = Math.ceil(PAGES_COUNT / 2);
   const pagesRef = useRef(
     times(PAGES_COUNT, i => {
       return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
@@ -49,7 +49,7 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
     setPages(pagesRef.current);
 
     setTimeout(() => {
-      scrollToPage(initialPage);
+      scrollToPage(INITIAL_PAGE);
       shouldResetPages.current = false;
     }, 0);
   };
