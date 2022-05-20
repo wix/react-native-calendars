@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import React, {useRef, useState, useEffect, useCallback} from 'react';
+import React, {useRef, useState, useEffect, useCallback, useImperativeHandle, forwardRef} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -19,7 +19,6 @@ import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
-
 
 type MarkedDatesType = {
   [key: string]: MarkingProps;
@@ -72,18 +71,21 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   allowSelectionOutOfRange?: boolean;
 }
 
+export type CalendarRef = {
+  addMonth: (count: number) => void;
+};
+
 /**
  * @description: Calendar component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
-const Calendar = (props: CalendarProps) => {
+const Calendar = forwardRef((props: CalendarProps, ref: React.Ref<CalendarRef>) => {
   const {initialDate, current, theme, disableMonthChange, allowSelectionOutOfRange, minDate, maxDate, onDayPress, onDayLongPress, hideExtraDays, markedDates, firstDay, showSixWeeks, customHeader, headerStyle, displayLoadingIndicator, testID, enableSwipeMonths, accessibilityElementsHidden, importantForAccessibility, onMonthChange, onVisibleMonthsChange, style: propsStyle} = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
   const isMounted = useRef(false);
- 
 
   useEffect(() => {
     if (initialDate) {
@@ -246,7 +248,6 @@ const Calendar = (props: CalendarProps) => {
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-    
     return (
       <HeaderComponent
         {...headerProps}
@@ -266,6 +267,10 @@ const Calendar = (props: CalendarProps) => {
   };
   const gestureProps = enableSwipeMonths ? swipeProps : undefined;
 
+  useImperativeHandle(ref, () => ({
+    addMonth,
+  }));
+
   return (
     <GestureComponent {...gestureProps}>
       <View
@@ -278,7 +283,7 @@ const Calendar = (props: CalendarProps) => {
       </View>
     </GestureComponent>
   );
-};
+});
 
 export default Calendar;
 Calendar.displayName = 'Calendar';
