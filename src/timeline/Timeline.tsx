@@ -140,16 +140,24 @@ const Timeline = (props: TimelineProps) => {
     leftInset = 72
   } = props;
 
-  const pageDates = typeof date === 'string' ? [date] : date;
-  const groupedEvents = groupBy(events, e => getCalendarDateString(e.start));
-  const pageEvents = map(pageDates, d => groupedEvents[d] || []);
+  const pageDates = useMemo(() => {
+    return typeof date === 'string' ? [date] : date;
+  }, [date]);
+  const groupedEvents = useMemo(() => {
+    return groupBy(events, e => getCalendarDateString(e.start));
+  }, [events]);
+  const pageEvents = useMemo(() => {
+    return map(pageDates, d => groupedEvents[d] || []);
+  }, [pageDates, groupedEvents]);
   const scrollView = useRef<ScrollView>();
   const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
 
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
-  const width = constants.screenWidth - leftInset;
+  const width = useMemo(() => {
+    return constants.screenWidth - leftInset;
+  }, [leftInset]);
 
   const packedEvents = useMemo(() => {
     return map(pageEvents, (_e, i) => {
