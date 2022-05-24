@@ -84,6 +84,9 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       flexWrap: 'wrap',
       ...theme.eventTimes
     },
+    eventsContainer: {
+      flex: 1
+    },
     line: {
       height: 1,
       position: 'absolute',

@@ -212,7 +212,7 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View pointerEvents={'none'} style={{marginLeft: dayIndex === 0 ? leftInset : undefined, flex: 1}}>
+      <View pointerEvents={'none'} style={[{marginLeft: dayIndex === 0 ? leftInset : undefined}, styles.current.eventsContainer]}>
         {events}
       </View>
     );
