@@ -411,7 +411,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [onPressArrowRight, scrollPage]);
 
   const _onDayPress = useCallback((value: DateData) => {
-    setDate?.(value.dateString, updateSources.DAY_PRESS);
+    numberOfDays <= 1 && setDate?.(value.dateString, updateSources.DAY_PRESS);
 
     if (closeOnDayPress) {
       setTimeout(() => {
