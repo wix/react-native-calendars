@@ -200,7 +200,7 @@ const Timeline = (props: TimelineProps) => {
         onEventPress?.(event);
       }
     },
-    [pageEvents, onEventPress, eventTapped]
+    [onEventPress, eventTapped]
   );
 
   const renderEvents = (dayIndex: number) => {
@@ -220,7 +220,7 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View pointerEvents={'none'} style={[{marginLeft: dayIndex === 0 ? leftInset : undefined}, styles.current.eventsContainer]}>
+      <View pointerEvents={'box-none'}  style={[{marginLeft: dayIndex === 0 ? leftInset : undefined}, styles.current.eventsContainer]}>
         {events}
       </View>
     );
