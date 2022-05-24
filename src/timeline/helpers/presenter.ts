@@ -1,6 +1,5 @@
 import XDate from 'xdate';
 import constants from '../../commons/constants';
-import {HOURS_SIDEBAR_WIDTH} from '../style';
 import {generateDay} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 
@@ -13,10 +12,10 @@ export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
   return {hour, minutes};
 }
 
-export function calcDateByPosition(xPosition: number, numberOfDays = 1, firstDate = toMarkingFormat(new XDate())) {
-  const timelineWidth = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
+export function calcDateByPosition(xPosition: number, leftInset = 72, numberOfDays = 1, firstDate = toMarkingFormat(new XDate())) {
+  const timelineWidth = constants.screenWidth - leftInset;
   const dayWidth = timelineWidth / numberOfDays;
-  const positionIndex = Math.floor((xPosition - HOURS_SIDEBAR_WIDTH) / dayWidth);
+  const positionIndex = Math.floor((xPosition - leftInset) / dayWidth);
   return generateDay(firstDate, positionIndex);
 }
 

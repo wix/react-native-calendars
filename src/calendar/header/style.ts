@@ -2,7 +2,6 @@ import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
 import constants from '../../commons/constants';
-import {HOURS_SIDEBAR_WIDTH} from '../../timeline/style';
 
 export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -55,8 +54,7 @@ export default function (theme: Theme = {}) {
       paddingHorizontal: 15
     },
     partialWeek: {
-      paddingRight: 0,
-      paddingLeft: HOURS_SIDEBAR_WIDTH
+      paddingRight: 0
     },
     dayHeader: {
       marginTop: 2,

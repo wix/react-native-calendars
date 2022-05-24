@@ -4,7 +4,6 @@ import {Theme} from '../types';
 import constants from '../commons/constants';
 
 // const eventPaddingLeft = 4
-export const HOURS_SIDEBAR_WIDTH = 72;
 
 export default function styleConstructor(theme: Theme = {}, calendarHeight: number) {
   return StyleSheet.create({
@@ -88,7 +87,6 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     line: {
       height: 1,
       position: 'absolute',
-      left: HOURS_SIDEBAR_WIDTH - 16,
       backgroundColor: 'rgb(216,216,216)',
       ...theme.line
     },
@@ -100,7 +98,6 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     },
     nowIndicator: {
       position: 'absolute',
-      left: HOURS_SIDEBAR_WIDTH,
       right: 0
     },
     nowIndicatorLine: {
@@ -129,12 +126,10 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       fontWeight: '500',
       paddingLeft: 12,
       textAlign: 'center',
-      width: HOURS_SIDEBAR_WIDTH - 16,
       ...theme.timeLabel
     },
     unavailableHoursBlock: {
       position: 'absolute',
-      left: HOURS_SIDEBAR_WIDTH,
       right: 0,
       backgroundColor: '#F8F9FA'
     }

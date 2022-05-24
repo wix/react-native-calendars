@@ -2,7 +2,6 @@ import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../style';
 import {Theme} from '../types';
 import constants from '../commons/constants';
-import {HOURS_SIDEBAR_WIDTH} from '../timeline/style';
 
 
 export const HEADER_HEIGHT = 68;
@@ -118,8 +117,7 @@ export default function styleConstructor(theme: Theme = {}) {
       justifyContent: 'space-around'
     },
     partialWeek: {
-      paddingRight: 0,
-      paddingLeft: HOURS_SIDEBAR_WIDTH
+      paddingRight: 0
     },
     dayContainer: {
       flex: 1, 

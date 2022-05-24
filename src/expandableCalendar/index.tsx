@@ -98,7 +98,7 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays = 1} = useContext(Context);  
+  const {date, setDate, numberOfDays = 1, leftInset = 72} = useContext(Context);  
   const {
     theme, 
     horizontal = true, 
@@ -573,6 +573,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
             renderArrow={_renderArrow}
             staticHeader
             numberOfDays={numberOfDays}
+            leftInset={leftInset}
           />
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}

@@ -1,5 +1,5 @@
 import XDate from 'xdate';
-import React, {useRef} from 'react';
+import React, {useRef, useMemo} from 'react';
 import {View} from 'react-native';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
@@ -15,7 +15,7 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, leftInset = 72} = props;
   const style = useRef(styleConstructor(theme));
 
   const getWeek = (date?: string) => {
@@ -75,9 +75,13 @@ const Week = (props: WeekProps) => {
     return week;
   };
 
+  const partialWeekStyle = useMemo(() => {
+    return [style.current.partialWeek, {paddingLeft: leftInset}];
+  }, [leftInset]);
+
   return (
     <View style={style.current.container}>
-      <View style={[style.current.week, numberOfDays > 1 ? style.current.partialWeek : undefined, propsStyle]}>{renderWeek()}</View>
+      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
     </View>
   );
 };

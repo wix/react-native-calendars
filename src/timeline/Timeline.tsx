@@ -7,7 +7,7 @@ import groupBy from 'lodash/groupBy';
 
 import constants from '../commons/constants';
 import {Theme} from '../types';
-import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
+import styleConstructor from './style';
 import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
@@ -107,6 +107,10 @@ export interface TimelineProps {
    * The number of days to present in the timeline calendar
    */
   numberOfDays?: number;
+  /**
+   * The hours sidebar width, default is 72
+   */
+  leftInset?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -132,7 +136,8 @@ const Timeline = (props: TimelineProps) => {
     unavailableHours,
     unavailableHoursColor,
     eventTapped,
-    numberOfDays = 1
+    numberOfDays = 1,
+    leftInset = 72
   } = props;
 
   const pageDates = typeof date === 'string' ? [date] : date;
@@ -144,7 +149,7 @@ const Timeline = (props: TimelineProps) => {
 
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
-  const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
+  const width = constants.screenWidth - leftInset;
 
   const packedEvents = useMemo(() => {
     return map(pageEvents, (_e, i) => {
@@ -207,7 +212,7 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View pointerEvents={'none'} style={{marginLeft: dayIndex === 0 ? HOURS_SIDEBAR_WIDTH : undefined, flex: 1}}>
+      <View pointerEvents={'none'} style={{marginLeft: dayIndex === 0 ? leftInset : undefined, flex: 1}}>
         {events}
       </View>
     );
@@ -215,10 +220,11 @@ const Timeline = (props: TimelineProps) => {
 
   const renderTimelineDay = (dayIndex: number) => {
     const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
+    const left = leftInset + indexOfToday * width / numberOfDays;
     return (
       <>
         {renderEvents(dayIndex)}
-        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={indexOfToday * width / numberOfDays} styles={styles.current} />}
+        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
       </>
     );
   };
@@ -242,6 +248,7 @@ const Timeline = (props: TimelineProps) => {
         onBackgroundLongPressOut={onBackgroundLongPressOut}
         width={width}
         numberOfDays={numberOfDays}
+        leftInset={leftInset}
       />
       {times(numberOfDays, renderTimelineDay)}
     </ScrollView>

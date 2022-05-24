@@ -72,13 +72,14 @@ export interface CalendarHeaderProps {
   numberOfDays?: number;
   /** The current date presented */
   current?: string;
+  /** Left inset for the timeline calendar header, default is 72 */
+  leftInset?: number;
 }
 
 const accessibilityActions = [
   {name: 'increment', label: 'increment'},
   {name: 'decrement', label: 'decrement'}
 ];
-
 
 const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const {
@@ -105,10 +106,11 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     accessibilityElementsHidden,
     importantForAccessibility,
     numberOfDays = 1,
-    current = ''
+    current = '',
+    leftInset = 72
   } = props;
   const style = useRef(styleConstructor(theme));
-  
+
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -244,13 +246,20 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   };
 
   const renderWeekNumbersSpace = () => {
-    return showWeekNumbers && <View style={style.current.dayHeader}/>;
+    return showWeekNumbers && <View style={style.current.dayHeader} />;
   };
+
+  const partialWeekStyle = useMemo(() => {
+    return [style.current.partialWeek, {paddingLeft: leftInset}];
+  }, [leftInset]);
 
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
-        <View style={[style.current.week, numberOfDays > 1 ? style.current.partialWeek : undefined]} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
+        <View
+          style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined]}
+          testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}
+        >
           {renderWeekNumbersSpace()}
           {renderWeekDays}
         </View>
@@ -304,7 +313,8 @@ CalendarHeader.propTypes = {
   customHeaderTitle: PropTypes.any,
   webAriaLevel: PropTypes.number,
   numberOfDays: PropTypes.number,
-  current: PropTypes.string
+  current: PropTypes.string,
+  leftInset: PropTypes.number
 };
 CalendarHeader.defaultProps = {
   monthFormat: 'MMMM yyyy',

@@ -24,6 +24,7 @@ export interface TimelineHoursProps {
   styles: {[key: string]: ViewStyle | TextStyle};
   width: number;
   numberOfDays: number;
+  leftInset: number;
 }
 
 const dimensionWidth = constants.screenWidth;
@@ -41,7 +42,8 @@ const TimelineHours = (props: TimelineHoursProps) => {
     onBackgroundLongPress,
     onBackgroundLongPressOut,
     width,
-    numberOfDays = 1
+    numberOfDays = 1,
+    leftInset = 72
   } = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();
@@ -73,7 +75,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
       const yPosition = event.nativeEvent.locationY;
       const xPosition = event.nativeEvent.locationX;
       const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
-      const dateByPosition = calcDateByPosition(xPosition, numberOfDays, date);
+      const dateByPosition = calcDateByPosition(xPosition, leftInset, numberOfDays, date);
       lastLongPressEventTime.current = {hour, minutes, date: dateByPosition};
 
       const timeString = buildTimeString(hour, minutes, dateByPosition);
@@ -101,7 +103,8 @@ const TimelineHours = (props: TimelineHoursProps) => {
           style={[
             styles.unavailableHoursBlock,
             block,
-            unavailableHoursColor ? {backgroundColor: unavailableHoursColor} : undefined
+            unavailableHoursColor ? {backgroundColor: unavailableHoursColor} : undefined,
+            {left: leftInset}
           ]}
         ></View>
       ))}
@@ -109,19 +112,19 @@ const TimelineHours = (props: TimelineHoursProps) => {
       {hours.map(({timeText, time}, index) => {
         return (
           <React.Fragment key={time}>
-            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6}]}>
+            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: leftInset - 16}]}>
               {timeText}
             </Text>
             {time === start ? null : (
               <View
                 key={`line${time}`}
-                style={[styles.line, {top: offset * index, width: dimensionWidth - EVENT_DIFF}]}
+                style={[styles.line, {top: offset * index, width: dimensionWidth - EVENT_DIFF, left: leftInset - 16}]}
               />
             )}
             {
               <View
                 key={`lineHalf${time}`}
-                style={[styles.line, {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF}]}
+                style={[styles.line, {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF, left: leftInset - 16}]}
               />
             }
           </React.Fragment>

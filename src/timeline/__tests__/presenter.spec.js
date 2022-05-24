@@ -49,25 +49,24 @@ describe('timeline presenter', () => {
 
   describe('calcDateByPosition', () => {
     it('should return date by position - basic case 1', () => {
-      const date = uut.calcDateByPosition(100, 1, '2022-10-10');
+      const date = uut.calcDateByPosition(100, 72, 1, '2022-10-10');
       expect(date).toBe('2022-10-10');
     });
 
     it('should return date by position - basic case 2', () => {
-      const date = uut.calcDateByPosition(100, 3, '2022-10-10');
+      const date = uut.calcDateByPosition(100, 72, 3, '2022-10-10');
       expect(date).toBe('2022-10-10');
     });
 
     it('should return date by position - basic case 3', () => {
-      const date = uut.calcDateByPosition(500, 3, '2022-10-10');
+      const date = uut.calcDateByPosition(500, 72, 3, '2022-10-10');
       expect(date).toBe('2022-10-11');
     });
 
     it('should return date by position - basic case 3', () => {
-      const date = uut.calcDateByPosition(500, 7, '2022-10-10');
+      const date = uut.calcDateByPosition(500, 72, 7, '2022-10-10');
       expect(date).toBe('2022-10-14');
     });
-
   });
 
   describe('buildTimeString', () => {

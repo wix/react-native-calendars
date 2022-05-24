@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View, TextStyle, ViewStyle} from 'react-native';
 import {HOUR_BLOCK_HEIGHT} from './Packer';
-import {HOURS_SIDEBAR_WIDTH} from './style';
 import {calcTimeOffset} from './helpers/presenter';
 
 export interface NowIndicatorProps {
@@ -15,8 +14,12 @@ const NowIndicator = (props: NowIndicatorProps) => {
 
   const indicatorPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
 
+  const nowIndicatorStyle = useMemo(() => {
+    return [styles.nowIndicator, {top: indicatorPosition, left}];
+  }, [indicatorPosition, left]);
+
   return (
-    <View style={[styles.nowIndicator, {top: indicatorPosition, left: HOURS_SIDEBAR_WIDTH + left}]}>
+    <View style={nowIndicatorStyle}>
       <View style={[styles.nowIndicatorLine, {width}]} />
       <View style={styles.nowIndicatorKnob} />
     </View>

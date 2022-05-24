@@ -156,6 +156,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
         onDayPress={onDayPress || this.onDayPress}
         context={currentContext}
         numberOfDays={context.numberOfDays}
+        leftInset={context.leftInset}
       />
     );
   };
