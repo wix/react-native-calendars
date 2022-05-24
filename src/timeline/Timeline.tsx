@@ -108,7 +108,7 @@ export interface TimelineProps {
    */
   numberOfDays?: number;
   /**
-   * The hours sidebar width, default is 72
+   * The left inset of the timeline calendar (sidebar width), default is 72
    */
   leftInset?: number;
 }

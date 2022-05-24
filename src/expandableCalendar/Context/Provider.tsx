@@ -44,7 +44,7 @@ export interface CalendarContextProviderProps extends ViewProps {
   disabledOpacity?: number;
   /** The number of days to present in the timeline calendar */
   numberOfDays?: number;
-  /** Left inset for the timeline calendar, default is 72 */
+  /** The left inset of the timeline calendar (sidebar width), default is 72 */
   leftInset?: number;
 }
 
