@@ -47,6 +47,7 @@
     "@babel/runtime": "^7.12.5",
     "@tsconfig/docusaurus": "^1.0.4",
     "@types/lodash": "^4.14.170",
+    "@types/react": "^17.0.44",
     "@types/react-native": "^0.64.19",
     "@types/xdate": "^0.8.32",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
