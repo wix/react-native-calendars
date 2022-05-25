@@ -80,7 +80,8 @@ const AgendaList = (props: AgendaListProps) => {
     dayFormatter, 
     dayFormat = 'dddd, MMM d', 
     useMoment, 
-    markToday = true
+    markToday = true,
+    onViewableItemsChanged
   } = props;
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
   const style = useRef(styleConstructor(theme));
@@ -176,7 +177,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
   };
 
-  const onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
+  const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
       const topSection = get(info?.viewableItems[0], 'section.title');
       if (topSection && topSection !== _topSection.current) {
@@ -187,6 +188,7 @@ const AgendaList = (props: AgendaListProps) => {
         }
       }
     }
+    onViewableItemsChanged?.(info);
   }, [_topSection.current, didScroll.current, avoidDateUpdates, setDate]);
 
   const _onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -244,7 +246,7 @@ const AgendaList = (props: AgendaListProps) => {
       ref={list}
       keyExtractor={_keyExtractor}
       showsVerticalScrollIndicator={false}
-      onViewableItemsChanged={onViewableItemsChanged}
+      onViewableItemsChanged={_onViewableItemsChanged}
       viewabilityConfig={viewabilityConfig}
       renderSectionHeader={_renderSectionHeader}
       onScroll={_onScroll}
