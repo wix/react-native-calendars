@@ -107,7 +107,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     importantForAccessibility,
     numberOfDays = 1,
     current = '',
-    timelineLeftInset = 72
+    timelineLeftInset
   } = props;
   const style = useRef(styleConstructor(theme));
 

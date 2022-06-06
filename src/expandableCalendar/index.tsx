@@ -98,7 +98,7 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays = 1, timelineLeftInset = 72} = useContext(Context);  
+  const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);  
   const {
     theme, 
     horizontal = true, 

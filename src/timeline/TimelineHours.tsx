@@ -24,7 +24,7 @@ export interface TimelineHoursProps {
   styles: {[key: string]: ViewStyle | TextStyle};
   width: number;
   numberOfDays: number;
-  timelineLeftInset: number;
+  timelineLeftInset?: number;
 }
 
 const dimensionWidth = constants.screenWidth;
@@ -43,7 +43,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
     onBackgroundLongPressOut,
     width,
     numberOfDays = 1,
-    timelineLeftInset = 72
+    timelineLeftInset = 0
   } = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();

@@ -137,7 +137,7 @@ const Timeline = (props: TimelineProps) => {
     unavailableHoursColor,
     eventTapped,
     numberOfDays = 1,
-    timelineLeftInset = 72
+    timelineLeftInset = 0
   } = props;
 
   const pageDates = useMemo(() => {

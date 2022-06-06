@@ -15,7 +15,7 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, timelineLeftInset = 72} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
   const style = useRef(styleConstructor(theme));
 
   const getWeek = (date?: string) => {

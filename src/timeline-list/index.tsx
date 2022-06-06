@@ -53,7 +53,7 @@ export interface TimelineListProps {
 
 const TimelineList = (props: TimelineListProps) => {
   const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
-  const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset = 72} = useContext(Context);
+  const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
   const [timelineOffset, setTimelineOffset] = useState();
