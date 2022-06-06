@@ -110,7 +110,7 @@ export interface TimelineProps {
   /**
    * The left inset of the timeline calendar (sidebar width), default is 72
    */
-  leftInset?: number;
+   timelineLeftInset?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -137,7 +137,7 @@ const Timeline = (props: TimelineProps) => {
     unavailableHoursColor,
     eventTapped,
     numberOfDays = 1,
-    leftInset = 72
+    timelineLeftInset = 72
   } = props;
 
   const pageDates = useMemo(() => {
@@ -156,8 +156,8 @@ const Timeline = (props: TimelineProps) => {
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
   const width = useMemo(() => {
-    return constants.screenWidth - leftInset;
-  }, [leftInset]);
+    return constants.screenWidth - timelineLeftInset;
+  }, [timelineLeftInset]);
 
   const packedEvents = useMemo(() => {
     return map(pageEvents, (_e, i) => {
@@ -220,7 +220,7 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View pointerEvents={'box-none'}  style={[{marginLeft: dayIndex === 0 ? leftInset : undefined}, styles.current.eventsContainer]}>
+      <View pointerEvents={'box-none'}  style={[{marginLeft: dayIndex === 0 ? timelineLeftInset : undefined}, styles.current.eventsContainer]}>
         {events}
       </View>
     );
@@ -228,7 +228,7 @@ const Timeline = (props: TimelineProps) => {
 
   const renderTimelineDay = (dayIndex: number) => {
     const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
-    const left = leftInset + indexOfToday * width / numberOfDays;
+    const left = timelineLeftInset + indexOfToday * width / numberOfDays;
     return (
       <>
         {renderEvents(dayIndex)}
@@ -256,7 +256,7 @@ const Timeline = (props: TimelineProps) => {
         onBackgroundLongPressOut={onBackgroundLongPressOut}
         width={width}
         numberOfDays={numberOfDays}
-        leftInset={leftInset}
+        timelineLeftInset={timelineLeftInset}
       />
       {times(numberOfDays, renderTimelineDay)}
     </ScrollView>

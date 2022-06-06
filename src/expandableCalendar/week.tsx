@@ -15,7 +15,7 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, leftInset = 72} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, timelineLeftInset = 72} = props;
   const style = useRef(styleConstructor(theme));
 
   const getWeek = (date?: string) => {
@@ -76,8 +76,8 @@ const Week = (props: WeekProps) => {
   };
 
   const partialWeekStyle = useMemo(() => {
-    return [style.current.partialWeek, {paddingLeft: leftInset}];
-  }, [leftInset]);
+    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
+  }, [timelineLeftInset]);
 
   return (
     <View style={style.current.container}>

@@ -73,7 +73,7 @@ export interface CalendarHeaderProps {
   /** The current date presented */
   current?: string;
   /** Left inset for the timeline calendar header, default is 72 */
-  leftInset?: number;
+  timelineLeftInset?: number;
 }
 
 const accessibilityActions = [
@@ -107,7 +107,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     importantForAccessibility,
     numberOfDays = 1,
     current = '',
-    leftInset = 72
+    timelineLeftInset = 72
   } = props;
   const style = useRef(styleConstructor(theme));
 
@@ -250,8 +250,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   };
 
   const partialWeekStyle = useMemo(() => {
-    return [style.current.partialWeek, {paddingLeft: leftInset}];
-  }, [leftInset]);
+    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
+  }, [timelineLeftInset]);
 
   const renderDayNames = () => {
     if (!hideDayNames) {
@@ -314,7 +314,7 @@ CalendarHeader.propTypes = {
   webAriaLevel: PropTypes.number,
   numberOfDays: PropTypes.number,
   current: PropTypes.string,
-  leftInset: PropTypes.number
+  timelineLeftInset: PropTypes.number
 };
 CalendarHeader.defaultProps = {
   monthFormat: 'MMMM yyyy',

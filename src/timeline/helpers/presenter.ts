@@ -12,10 +12,10 @@ export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
   return {hour, minutes};
 }
 
-export function calcDateByPosition(xPosition: number, leftInset = 72, numberOfDays = 1, firstDate = toMarkingFormat(new XDate())) {
-  const timelineWidth = constants.screenWidth - leftInset;
+export function calcDateByPosition(xPosition: number, timelineLeftInset = 72, numberOfDays = 1, firstDate = toMarkingFormat(new XDate())) {
+  const timelineWidth = constants.screenWidth - timelineLeftInset;
   const dayWidth = timelineWidth / numberOfDays;
-  const positionIndex = Math.floor((xPosition - leftInset) / dayWidth);
+  const positionIndex = Math.floor((xPosition - timelineLeftInset) / dayWidth);
   return generateDay(firstDate, positionIndex);
 }
 

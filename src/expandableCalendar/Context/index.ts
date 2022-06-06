@@ -7,7 +7,7 @@ export interface CalendarContextProps {
   updateSource: UpdateSources;
   setDisabled: (disable: boolean) => void;
   numberOfDays?: number;
-  leftInset?: number;
+  timelineLeftInset?: number;
 }
 
 // @ts-expect-error
