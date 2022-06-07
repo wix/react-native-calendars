@@ -176,7 +176,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         </Text>
       );
     });
-  }, [firstDay, current]);
+  }, [firstDay, current, numberOfDays]);
 
   const _renderHeader = () => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};

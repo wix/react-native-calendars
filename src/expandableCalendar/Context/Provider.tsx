@@ -119,7 +119,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       numberOfDays,
       timelineLeftInset
     };
-  }, [currentDate, prevDate, updateSource]);
+  }, [currentDate, prevDate, updateSource, numberOfDays]);
 
   const animateTodayButton = (date: string) => {
     if (shouldAnimateTodayButton(props)) {

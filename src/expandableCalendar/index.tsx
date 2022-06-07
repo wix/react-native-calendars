@@ -266,6 +266,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     scrollToDate(date);
   }, [date]);
 
+  useEffect(() => {
+    _wrapperStyles.current.style.height = closedHeight;
+    updateNativeStyles();
+  }, [closedHeight]);
+
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
   };
@@ -423,7 +428,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
 
     onDayPress?.(value);
-  }, [setDate, onDayPress, closeOnDayPress, isOpen]);
+  }, [setDate, onDayPress, closeOnDayPress, isOpen, numberOfDays]);
 
   const onVisibleMonthsChange = useCallback(throttle(
     (value: DateData[]) => {

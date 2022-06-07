@@ -142,7 +142,7 @@ const TimelineList = (props: TimelineListProps) => {
         </>
       );
     },
-    [events, timelineOffset, showNowIndicator]
+    [events, timelineOffset, showNowIndicator, numberOfDays]
   );
 
   return (
