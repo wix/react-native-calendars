@@ -79,7 +79,7 @@ class Presenter {
     }
 
     let newDate;
-    if (numberOfDays) {
+    if (numberOfDays > 1) {
       newDate = generateDay(toMarkingFormat(d), weekIndex * numberOfDays);
     } else {
       // leave the current date in the visible week as is
