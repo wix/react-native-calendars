@@ -1,16 +1,16 @@
 import React from 'react';
 import {View, TextStyle, ViewStyle} from 'react-native';
-import {HOUR_BLOCK_HEIGHT} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 
 export interface NowIndicatorProps {
   styles: {[key: string]: ViewStyle | TextStyle};
+  hourBlockHeight: number;
 }
 
 const NowIndicator = (props: NowIndicatorProps) => {
-  const {styles} = props;
+  const {styles, hourBlockHeight} = props;
 
-  const indicatorPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+  const indicatorPosition = calcTimeOffset(hourBlockHeight);
 
   return (
     <View style={[styles.nowIndicator, {top: indicatorPosition}]}>

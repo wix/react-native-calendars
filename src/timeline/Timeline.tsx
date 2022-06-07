@@ -6,7 +6,7 @@ import map from 'lodash/map';
 import constants from '../commons/constants';
 import {Theme} from '../types';
 import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
-import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
+import {populateEvents, UnavailableHours} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
@@ -99,6 +99,11 @@ export interface TimelineProps {
    * Background color for unavailable hours
    */
   unavailableHoursColor?: string;
+  /**
+   * Hour row height
+   * @default 100
+   */
+  hourBlockHeight?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -108,6 +113,7 @@ const Timeline = (props: TimelineProps) => {
     end = 24,
     date,
     events = [],
+    hourBlockHeight = 100,
     onEventPress,
     onBackgroundLongPress,
     onBackgroundLongPressOut,
@@ -127,30 +133,30 @@ const Timeline = (props: TimelineProps) => {
   } = props;
 
   const scrollView = useRef<ScrollView>();
-  const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
-  const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
+  const calendarHeight = useMemo(() => (end - start) * hourBlockHeight, [hourBlockHeight]);
+  const styles = useMemo(() => styleConstructor(theme || props.styles, calendarHeight), [calendarHeight]);
 
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
   const packedEvents = useMemo(() => {
     const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
-    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing, rightEdgeSpacing});
+    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing, rightEdgeSpacing, hourBlockHeight});
   }, [events, start]);
 
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+      initialPosition = calcTimeOffset(hourBlockHeight);
     } else if (scrollToFirst && packedEvents.length > 0) {
       initialPosition = min(map(packedEvents, 'top')) ?? 0;
     } else if (initialTime) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+      initialPosition = calcTimeOffset(hourBlockHeight, initialTime.hour, initialTime.minutes);
     }
 
     if (initialPosition) {
       setTimeout(() => {
         scrollView?.current?.scrollTo({
-          y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
+          y: Math.max(0, initialPosition - hourBlockHeight),
           animated: true
         });
       }, 0);
@@ -177,7 +183,7 @@ const Timeline = (props: TimelineProps) => {
           key={i}
           index={i}
           event={event}
-          styles={styles.current}
+          styles={styles}
           format24h={format24h}
           onPress={_onEventPress}
           renderEvent={renderEvent}
@@ -196,7 +202,7 @@ const Timeline = (props: TimelineProps) => {
     <ScrollView
       // @ts-expect-error
       ref={scrollView}
-      contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      contentContainerStyle={[styles.contentStyle, {width: constants.screenWidth}]}
       {...scrollEvents}
     >
       <TimelineHours
@@ -204,14 +210,15 @@ const Timeline = (props: TimelineProps) => {
         end={end}
         date={date}
         format24h={format24h}
-        styles={styles.current}
+        hourBlockHeight={hourBlockHeight}
+        styles={styles}
         unavailableHours={unavailableHours}
         unavailableHoursColor={unavailableHoursColor}
         onBackgroundLongPress={onBackgroundLongPress}
         onBackgroundLongPressOut={onBackgroundLongPressOut}
       />
       {renderEvents()}
-      {showNowIndicator && <NowIndicator styles={styles.current} />}
+      {showNowIndicator && <NowIndicator hourBlockHeight={hourBlockHeight} styles={styles} />}
     </ScrollView>
   );
 };

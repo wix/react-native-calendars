@@ -8,7 +8,7 @@ type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {
   screenWidth?: number;
   dayStart?: number;
-  hourBlockHeight?: number;
+  hourBlockHeight: number;
   overlapEventsSpacing?: number;
   rightEdgeSpacing?: number;
 }
@@ -19,12 +19,11 @@ export interface UnavailableHours {
 }
 
 interface UnavailableHoursOptions {
-  hourBlockHeight?: number;
+  hourBlockHeight: number;
   dayStart: number;
   dayEnd: number;
 }
 
-export const HOUR_BLOCK_HEIGHT = 100;
 const OVERLAP_EVENTS_SPACINGS = 10;
 const RIGHT_EDGE_SPACING = 10;
 
@@ -32,7 +31,7 @@ function buildEvent(
   event: Event & {index: number},
   left: number,
   width: number,
-  {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions
+  {dayStart = 0, hourBlockHeight}: PopulateOptions
 ): PackedEvent {
   const startTime = new XDate(event.start);
   const endTime = event.end ? new XDate(event.end) : new XDate(startTime).addHours(1);
@@ -150,7 +149,7 @@ export function buildUnavailableHoursBlocks(
   unavailableHours: UnavailableHours[] = [],
   options: UnavailableHoursOptions
 ) {
-  const {hourBlockHeight = HOUR_BLOCK_HEIGHT, dayStart = 0, dayEnd = 24} = options || {};
+  const {hourBlockHeight, dayStart = 0, dayEnd = 24} = options || {};
   const totalDayHours = dayEnd - dayStart;
   const totalDayHeight = (dayEnd - dayStart) * hourBlockHeight;
   return (

@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet} from 'react-native';
 import range from 'lodash/range';
-import {buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
+import {buildUnavailableHoursBlocks, UnavailableHours} from './Packer';
 import {buildTimeString, calcTimeByPosition} from './helpers/presenter';
 import constants from '../commons/constants';
 
@@ -16,6 +16,7 @@ export interface TimelineHoursProps {
   end?: number;
   date?: string;
   format24h?: boolean;
+  hourBlockHeight: number;
   onBackgroundLongPress?: (timeString: string, time: NewEventTime) => void;
   onBackgroundLongPressOut?: (timeString: string, time: NewEventTime) => void;
   unavailableHours?: UnavailableHours[];
@@ -32,6 +33,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
     start = 0,
     end = 24,
     date,
+    hourBlockHeight,
     unavailableHours,
     unavailableHoursColor,
     styles,
@@ -41,8 +43,8 @@ const TimelineHours = (props: TimelineHoursProps) => {
 
   const lastLongPressEventTime = useRef<NewEventTime>();
   // const offset = this.calendarHeight / (end - start);
-  const offset = HOUR_BLOCK_HEIGHT;
-  const unavailableHoursBlocks = buildUnavailableHoursBlocks(unavailableHours, {dayStart: start, dayEnd: end});
+  const offset = hourBlockHeight;
+  const unavailableHoursBlocks = buildUnavailableHoursBlocks(unavailableHours, {dayStart: start, dayEnd: end, hourBlockHeight});
 
   const hours = useMemo(() => {
     return range(start, end + 1).map(i => {
@@ -66,7 +68,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
   const handleBackgroundPress = useCallback(
     event => {
       const yPosition = event.nativeEvent.locationY;
-      const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
+      const {hour, minutes} = calcTimeByPosition(yPosition, hourBlockHeight);
 
       lastLongPressEventTime.current = {hour, minutes, date};
 
