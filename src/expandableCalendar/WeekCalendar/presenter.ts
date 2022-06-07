@@ -15,7 +15,6 @@ const updateSources = commons.UpdateSources;
 const NUMBER_OF_PAGES = 2;
 
 class Presenter {
-
   private _applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
   // On Android+RTL there's an initial scroll that cause issues
   private _firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
@@ -63,10 +62,10 @@ class Presenter {
   };
 
   shouldComponentUpdate = (context: any, prevContext: any) => {
-    const {date, updateSource} = context;
+    const {date, updateSource, numberOfDays} = context;
     return (
-      date !== prevContext.date &&
-      updateSource !== updateSources.WEEK_SCROLL
+      (date !== prevContext.date && updateSource !== updateSources.WEEK_SCROLL) ||
+      numberOfDays !== prevContext.numberOfDays
     );
   };
 
