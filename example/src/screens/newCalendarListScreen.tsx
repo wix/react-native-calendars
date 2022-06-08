@@ -23,7 +23,6 @@ const NewCalendarListScreen = () => {
   }, [selected]);
 
   const onDayPress = useCallback(day => {
-    console.warn('dayPress: ', day);
     setSelected(day.dateString);
   }, [setSelected]);
 
