@@ -189,7 +189,7 @@ const AgendaList = (props: AgendaListProps) => {
       }
     }
     onViewableItemsChanged?.(info);
-  }, [_topSection.current, didScroll.current, avoidDateUpdates, setDate]);
+  }, [_topSection.current, didScroll.current, avoidDateUpdates, setDate, onViewableItemsChanged]);
 
   const _onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!didScroll.current) {
