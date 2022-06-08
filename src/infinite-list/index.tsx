@@ -24,7 +24,7 @@ export interface InfiniteListProps
   initialPageIndex?: number;
   scrollViewProps?: ScrollViewProps;
   reloadPages?: (pageIndex: number) => void;
-  positionIndex?: number;
+  dataAppendIndex?: number;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -42,7 +42,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     initialPageIndex = 0,
     extendedState,
     scrollViewProps,
-    positionIndex = 0
+    dataAppendIndex = 0
   } = props;
   
   const dataProvider = useMemo(() => {
@@ -69,7 +69,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   useEffect(() => {
     setTimeout(() => {
       const x = isHorizontal ? Math.floor(data.length / 2) * pageWidth : 0;
-      const y = isHorizontal ? 0 : positionIndex * pageHeight;
+      const y = isHorizontal ? 0 : dataAppendIndex * pageHeight;
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);

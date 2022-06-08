@@ -46,7 +46,7 @@ const CalendarList = (props: CalendarListProps) => {
   const style = useRef(styleConstructor(calendarProps?.theme));
   const list = useRef<ScrollView>();
   const [items, setItems] = useState(getDatesArray(initialDate, scrollRange));
-  const [positionIndex, setPositionIndex] = useState(scrollRange);
+  const [dataAppendIndex, setDataAppendIndex] = useState(scrollRange);
 
   /** Static Header */
 
@@ -164,7 +164,7 @@ const CalendarList = (props: CalendarListProps) => {
         }
       }
 
-      setPositionIndex(shouldAppend ? index : scrollRange - 1);
+      setDataAppendIndex(shouldAppend ? index : scrollRange - 1);
       setItems(array);
     }
   };
@@ -215,7 +215,7 @@ const CalendarList = (props: CalendarListProps) => {
         isHorizontal={horizontal}
         style={style.current.container}
         initialPageIndex={scrollRange}
-        positionIndex={positionIndex}
+        dataAppendIndex={dataAppendIndex}
         pageHeight={CALENDAR_HEIGHT}
         pageWidth={constants.screenWidth}
         onPageChange={onPageChange}
