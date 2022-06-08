@@ -107,7 +107,7 @@ const Calendar = (props: CalendarProps) => {
       return;
     }
     setCurrentMonth(newMonth);
-  }, []);
+  }, [currentMonth]);
 
   const addMonth = useCallback((count: number) => {
     const newMonth = currentMonth.clone().addMonths(count, true);
