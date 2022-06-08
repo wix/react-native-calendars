@@ -217,7 +217,6 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         {renderArrow ? (
           renderArrow(renderArrowDirection)
         ) : (
-          // @ts-expect-error style?: StyleProp<ImageStyle>
           <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>
         )}
       </TouchableOpacity>

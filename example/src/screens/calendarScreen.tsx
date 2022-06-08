@@ -138,12 +138,16 @@ const CalendarScreen = () => {
             selectedDayBackgroundColor: '#333248',
             arrowColor: 'white',
             // textDisabledColor: 'red',
-            'stylesheet.calendar.header': {
-              week: {
-                marginTop: 30,
-                marginHorizontal: 12,
-                flexDirection: 'row',
-                justifyContent: 'space-between'
+            stylesheet: {
+              calendar: {
+                header: {
+                  week: {
+                    marginTop: 30,
+                    marginHorizontal: 12,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                  }
+                }
               }
             }
           }}
