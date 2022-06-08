@@ -42,6 +42,7 @@ export default class MenuScreen extends Component<Props> {
           {this.renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'HorizontalCalendarListScreen')}
           {this.renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarListScreen')}
           {this.renderEntry(testIDs.menu.AGENDA, 'Agenda', 'AgendaScreen')}
+          {this.renderEntry(testIDs.menu.AGENDA_HIDE_EMPTY, 'Agenda Hide Emtpy Days', 'AgendaHideEmpty')}
           {this.renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
           {this.renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
           {this.renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
