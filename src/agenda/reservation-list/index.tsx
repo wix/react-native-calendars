@@ -47,7 +47,7 @@ export type ReservationListProps = ReservationProps & {
   /** Extractor for underlying FlatList. Ensure that this is unique per item, or else scrolling may have duplicated and / or missing items.  */
   reservationsKeyExtractor?: (item: DayAgenda, index: number) => string;
   /** Set this to true to hide empty days*/
-  hideEmptyDays?: boolean
+  hideEmptyDays?: boolean;
 };
 
 interface DayAgenda {
@@ -181,7 +181,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     let reservations: ({ date: XDate } | { date: XDate | undefined; reservation: AgendaEntry })[] = [];
     for (let iterator = from.clone(), i = 0; iterator.diffDays(lastReservation) >= 0 || i < 31; iterator.addDays(1), i++) {
       const res = this.getReservationsForDay(iterator, props);
-      if (res !== true && res !== false) {
+      if (res) {
         reservations = reservations.concat(res);
       }
     }
@@ -282,7 +282,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     const reservationProps = extractComponentProps(Reservation, this.props);
 
     if (hideEmptyDays && !item.reservation) {
-      return <View onLayout={this.onRowLayoutChange.bind(this, index)}/>
+      return <View onLayout={this.onRowLayoutChange.bind(this, index)}/>;
     }
 
     return (
