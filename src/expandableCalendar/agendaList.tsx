@@ -85,7 +85,7 @@ const AgendaList = (props: AgendaListProps) => {
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
   const style = useRef(styleConstructor(theme));
   const list = useRef<any>();
-  const _topSection = useRef(sections[0].title);
+  const _topSection = useRef(sections[0]?.title);
   const didScroll = useRef(false);
   const sectionScroll = useRef(false);
   const sectionHeight = useRef(0);
@@ -119,8 +119,8 @@ const AgendaList = (props: AgendaListProps) => {
   const getNextSectionIndex = (date: string) => {
     let i = 0;
     for (let j = 1; j < sections.length; j++) {
-      const prev = parseDate(sections[j - 1].title);
-      const next = parseDate(sections[j].title);
+      const prev = parseDate(sections[j - 1]?.title);
+      const next = parseDate(sections[j]?.title);
       const cur = parseDate(date);
       if (isGTE(cur, prev) && isGTE(next, cur)) {
         i = sameDate(prev, cur) ? j - 1 : j;
@@ -164,7 +164,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
     if (list?.current && sectionIndex !== undefined) {
       sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
-      _topSection.current = sections[sectionIndex].title;
+      _topSection.current = sections[sectionIndex]?.title;
 
       list?.current.scrollToLocation({
         animated: true,
@@ -199,14 +199,14 @@ const AgendaList = (props: AgendaListProps) => {
   const _onMomentumScrollBegin = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setDisabled?.(true);
     onMomentumScrollBegin?.(event);
-  }, [onMomentumScrollBegin]);
+  }, [onMomentumScrollBegin, setDisabled]);
 
   const _onMomentumScrollEnd = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     // when list momentum ends AND when scrollToSection scroll ends
     sectionScroll.current = false;
     setDisabled?.(false);
     onMomentumScrollEnd?.(event);
-  }, [onMomentumScrollEnd]);
+  }, [onMomentumScrollEnd, setDisabled]);
 
   const _onScrollToIndexFailed = useCallback((info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
     if (onScrollToIndexFailed) {
