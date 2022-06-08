@@ -1,4 +1,4 @@
-import {RefObject, useCallback, useRef, useState} from 'react';
+import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
 
 import inRange from 'lodash/inRange';
 import times from 'lodash/times';
@@ -25,6 +25,12 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
   );
   const [pages, setPages] = useState<string[]>(pagesRef.current);
   const shouldResetPages = useRef(false);
+
+  useEffect(() => {
+    setPages(times(PAGES_COUNT, i => {
+      return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
+    }));
+  }, [numberOfDays]);
 
   const isOutOfRange = useCallback((index: number) => {
     return !inRange(index, 0, PAGES_COUNT);

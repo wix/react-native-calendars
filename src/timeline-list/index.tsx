@@ -91,12 +91,12 @@ const TimelineList = (props: TimelineListProps) => {
 
   const onPageChange = useCallback(
     throttle((pageIndex: number) => {
-      const newDate = pagesRef.current[pageIndex];
+      const newDate = pages[pageIndex];
       if (newDate !== prevDate.current) {
         setDate(newDate, UpdateSources.LIST_DRAG);
       }
     }, 0),
-    []
+    [pages]
   );
 
   const onReachNearEdge = useCallback(() => {
