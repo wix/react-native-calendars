@@ -9,7 +9,7 @@ This module includes various customizable **React-Native** calendar components.
 
 The package is both **Android** and **iOS** compatible.
 
-See our new [Docs site](https://wix.github.io/react-native-calendars/)
+<h3>See our new [Docs site](https://wix.github.io/react-native-calendars/)<h3>
 
 ## Try it out
 
