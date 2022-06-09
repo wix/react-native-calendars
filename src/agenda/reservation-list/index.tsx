@@ -297,7 +297,8 @@ class ReservationList extends Component<ReservationListProps, State> {
   }
 
   render() {
-    const {items, selectedDay, theme, style} = this.props;
+    const {items, selectedDay, theme, style, hideEmptyDays} = this.props;
+    const {reservations} = this.state;
 
     if (!items || selectedDay && !items[toMarkingFormat(selectedDay)]) {
       if (isFunction(this.props.renderEmptyData)) {
@@ -306,12 +307,30 @@ class ReservationList extends Component<ReservationListProps, State> {
       return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
     }
 
+    // Per default only 10 items are rendered initially. Because of navigation issues we have to render every day,
+    // although the day itself can be an empty component (which we do, if we hide empty days).
+    // If the first 10 days are empty, nothing will be shown, the user can't scroll and therefore the component is broken.
+    // Here we calculate the initial number to render such that the first 10 appointments are shown.
+    let initialNumToRender = 10;
+    if (hideEmptyDays){
+      initialNumToRender = 0;
+      let numAppointments = 0;
+      reservations.some(r => {
+        initialNumToRender++;
+        if (r.reservation){
+          numAppointments++;
+        }
+        return numAppointments >= 10;
+      });
+    }
+
     return (
       <FlatList
         ref={this.list}
         style={style}
         contentContainerStyle={this.style.content}
-        data={this.state.reservations}
+        data={reservations}
+        initialNumToRender={initialNumToRender}
         renderItem={this.renderRow}
         keyExtractor={this.keyExtractor}
         showsVerticalScrollIndicator={false}

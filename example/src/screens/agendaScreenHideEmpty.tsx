@@ -46,14 +46,16 @@ export default class AgendaScreenHideEmpty extends Component<State> {
     const items = this.state.items || {};
 
     setTimeout(() => {
+
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
 
         if (!items[strTime]) {
           items[strTime] = [];
-          
-          const numItems = Math.floor(Math.random() * 15 - 13);
+
+          // Many days without appointments
+          const numItems = Math.floor(Math.random() * 10 - 8);
           for (let j = 0; j < numItems; j++) {
             items[strTime].push({
               name: 'Item for ' + strTime + ' #' + j,
@@ -63,7 +65,14 @@ export default class AgendaScreenHideEmpty extends Component<State> {
           }
         }
       }
-      
+
+      // No appointments in first 15 days -> Testing if initial rendering is correct
+      for (let i = 0; i < 15; i++) {
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strTime = this.timeToString(time);
+        items[strTime] = [];
+      }
+
       const newItems: AgendaSchedule = {};
       Object.keys(items).forEach(key => {
         newItems[key] = items[key];
