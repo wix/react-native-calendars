@@ -10,11 +10,9 @@ export default function (theme: Theme = {}) {
   return StyleSheet.create({
     header: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       paddingLeft: 10,
       paddingRight: 10,
-      marginTop: 6,
-      alignItems: 'center'
+      marginTop: 6
     },
     headerContainer: {
       flexDirection: 'row'
@@ -23,8 +21,7 @@ export default function (theme: Theme = {}) {
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
       fontWeight: appStyle.textMonthFontWeight,
-      color: appStyle.monthTextColor,
-      margin: 10
+      color: appStyle.monthTextColor
     },
     arrow: {
       padding: 10,
