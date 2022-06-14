@@ -13,7 +13,8 @@ import {
   StyleProp,
   ViewStyle,
   AccessibilityActionEvent,
-  ColorValue
+  ColorValue,
+  Dimensions
 } from 'react-native';
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import {
@@ -269,6 +270,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         {_renderArrow('right')}
       </View>
       {renderDayNames()}
+       <View style={{ width: Dimensions.get("window").width - 48, height: 1, borderBottomWidth: 1, borderColor: "#E7E0D8", alignSelf: "center", paddingBottom: 4 }} />
     </View>
   );
 });
