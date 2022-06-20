@@ -142,6 +142,7 @@ const TimelineList = (props: TimelineListProps) => {
 
   return (
     <InfiniteList
+      isHorizontal
       ref={listRef}
       data={pages}
       renderItem={renderPage}

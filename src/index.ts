@@ -1,6 +1,7 @@
 export {default as Calendar} from './calendar';
 export type {CalendarProps} from './calendar';
 export {default as CalendarList} from './calendar-list';
+export {default as NewCalendarList} from './calendar-list/new';
 export type {CalendarListProps} from './calendar-list';
 export {default as Agenda} from './agenda';
 export type {AgendaProps} from './agenda';
@@ -17,7 +18,7 @@ export {default as asCalendarConsumer} from './expandableCalendar/asCalendarCons
 export {default as Timeline} from './timeline/Timeline';
 export type {TimelineProps, TimelineEventProps, TimelinePackedEventProps} from './timeline/Timeline';
 export {default as TimelineList} from './timeline-list';
-export {TimelineListProps, TimelineListRenderItemInfo} from './timeline-list';
+export type {TimelineListProps, TimelineListRenderItemInfo} from './timeline-list';
 export {default as CalendarUtils} from './services';
 export type {DateData, AgendaEntry, AgendaSchedule} from './types';
 export {default as LocaleConfig} from 'xdate';

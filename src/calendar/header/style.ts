@@ -1,9 +1,12 @@
 import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
+import constants from '../../commons/constants';
 
 export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
+  const rtlStyle = constants.isRTL ? {transform: [{scaleX: -1}]} : undefined;
+
   return StyleSheet.create({
     header: {
       flexDirection: 'row',
@@ -28,6 +31,7 @@ export default function (theme: Theme = {}) {
       ...appStyle.arrowStyle
     },
     arrowImage: {
+      ...rtlStyle,
       tintColor: appStyle.arrowColor,
       ...Platform.select({
         web: {
@@ -37,9 +41,9 @@ export default function (theme: Theme = {}) {
       })
     },
     disabledArrowImage: {
+      ...rtlStyle,
       tintColor: appStyle.disabledArrowColor
     },
-    // @ts-expect-error
     week: {
       marginTop: 7,
       flexDirection: 'row',
@@ -58,6 +62,7 @@ export default function (theme: Theme = {}) {
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
     },
+    // @ts-expect-error
     ...(theme['stylesheet.calendar.header'] || {})
   });
 }

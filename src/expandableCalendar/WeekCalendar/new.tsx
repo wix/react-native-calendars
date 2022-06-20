@@ -18,8 +18,6 @@ import {DateData} from '../../types';
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
-  /** whether to hide the names of the week days */
-  hideDayNames?: boolean;
 }
 
 const NUMBER_OF_PAGES = 50;
@@ -112,6 +110,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       <View>
         <InfiniteList
           key="week-list"
+          isHorizontal
           ref={list}
           data={items}
           renderItem={renderItem}

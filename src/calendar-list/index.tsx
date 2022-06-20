@@ -71,23 +71,26 @@ type State = {
 };
 
 export const propTypes = {
-	...Calendar.propTypes,
-	pastScrollRange: PropTypes.number,
-	futureScrollRange: PropTypes.number,
-	calendarWidth: PropTypes.number,
-	calendarHeight: PropTypes.number,
-	calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-	staticHeader: PropTypes.bool,
-	showScrollIndicator: PropTypes.bool,
-	animateScroll: PropTypes.bool,
-	scrollEnabled: PropTypes.bool,
-	scrollsToTop: PropTypes.bool,
-	pagingEnabled: PropTypes.bool,
-	horizontal: PropTypes.bool,
-	keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
-	keyExtractor: PropTypes.func,
-	onEndReachedThreshold: PropTypes.number,
-	onEndReached: PropTypes.func
+  ...Calendar.propTypes,
+  pastScrollRange: PropTypes.number,
+  futureScrollRange: PropTypes.number,
+  calendarWidth: PropTypes.number,
+  calendarHeight: PropTypes.number,
+  calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+  staticHeader: PropTypes.bool,
+  showScrollIndicator: PropTypes.bool,
+  animateScroll: PropTypes.bool,
+  scrollEnabled: PropTypes.bool,
+  scrollsToTop: PropTypes.bool,
+  pagingEnabled: PropTypes.bool,
+  horizontal: PropTypes.bool,
+  keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
+  keyExtractor: PropTypes.func,
+  onEndReachedThreshold: PropTypes.number,
+  /** Called once when the scroll position gets within onEndReachedThreshold */
+  onEndReached: PropTypes.func,
+  /** Enables nested scrolling for Android API level 21+ */
+  nestedScrollEnabled: PropTypes.bool
 };
 
 /**
@@ -112,7 +115,8 @@ class CalendarList extends Component<CalendarListProps, State> {
     scrollsToTop: false,
     scrollEnabled: true,
     removeClippedSubviews: constants.isAndroid,
-    keyExtractor: (_: any, index: number) => String(index)
+    keyExtractor: (_: any, index: number) => String(index),
+    nestedScrollEnabled: true
   };
 
   style: any;
@@ -233,10 +237,8 @@ class CalendarList extends Component<CalendarListProps, State> {
   }
 
   addMonth = (count: number) => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
-  };
-
-  updateMonth(day: XDate) {
+    const day = this.state.currentMonth.clone().addMonths(count, true);
+    
     if (sameMonth(day, this.state.currentMonth)) {
       return;
     }
@@ -355,6 +357,7 @@ class CalendarList extends Component<CalendarListProps, State> {
           keyExtractor={this.props.keyExtractor}
           onEndReachedThreshold={this.props.onEndReachedThreshold}
           onEndReached={this.props.onEndReached}
+          nestedScrollEnabled={this.props.nestedScrollEnabled}
         />
         {this.renderStaticHeader()}
       </View>
