@@ -14,7 +14,10 @@ export default function (theme: Theme = {}) {
       paddingLeft: 10,
       paddingRight: 10,
       marginTop: 6,
-      alignItems: 'center'
+      alignItems: 'center',
+    },
+    partialHeader: {
+      paddingHorizontal: 15
     },
     headerContainer: {
       flexDirection: 'row'
@@ -47,7 +50,11 @@ export default function (theme: Theme = {}) {
     week: {
       marginTop: 7,
       flexDirection: 'row',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
+      paddingHorizontal: 15
+    },
+    partialWeek: {
+      paddingRight: 0
     },
     dayHeader: {
       marginTop: 2,

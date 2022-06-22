@@ -7,6 +7,7 @@ import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
 import constants from '../../commons/constants';
+import {generateDay} from '../../dateutils';
 
 const commons = require('../commons');
 const updateSources = commons.UpdateSources;
@@ -14,7 +15,6 @@ const updateSources = commons.UpdateSources;
 const NUMBER_OF_PAGES = 2;
 
 class Presenter {
-
   private _applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
   // On Android+RTL there's an initial scroll that cause issues
   private _firstAndroidRTLScrollIgnored = !this._applyAndroidRtlFix;
@@ -62,24 +62,30 @@ class Presenter {
   };
 
   shouldComponentUpdate = (context: any, prevContext: any) => {
-    const {date, updateSource} = context;
+    const {date, updateSource, numberOfDays} = context;
     return (
-      date !== prevContext.date &&
-      updateSource !== updateSources.WEEK_SCROLL
+      (date !== prevContext.date && updateSource !== updateSources.WEEK_SCROLL) ||
+      numberOfDays !== prevContext.numberOfDays
     );
   };
 
   getDate({current, context, firstDay = 0}: WeekCalendarProps, weekIndex: number) {
     const d = new XDate(current || context.date);
+    const numberOfDays = context.numberOfDays;
     // get the first day of the week as date (for the on scroll mark)
     let dayOfTheWeek = d.getDay();
     if (dayOfTheWeek < firstDay && firstDay > 0) {
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
 
-    // leave the current date in the visible week as is
-    const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
-    const newDate = dd.addWeeks(weekIndex);
+    let newDate;
+    if (numberOfDays > 1) {
+      newDate = generateDay(toMarkingFormat(d), weekIndex * numberOfDays);
+    } else {
+      // leave the current date in the visible week as is
+      const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+      newDate = dd.addWeeks(weekIndex);
+    }
     return toMarkingFormat(newDate);
   }
 

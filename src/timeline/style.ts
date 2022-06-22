@@ -4,7 +4,6 @@ import {Theme} from '../types';
 import constants from '../commons/constants';
 
 // const eventPaddingLeft = 4
-export const HOURS_SIDEBAR_WIDTH = 72;
 
 export default function styleConstructor(theme: Theme = {}, calendarHeight: number) {
   return StyleSheet.create({
@@ -16,7 +15,8 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     contentStyle: {
       backgroundColor: '#ffff',
       height: calendarHeight + 10,
-      ...theme.contentStyle
+      ...theme.contentStyle,
+      flexDirection: 'row',
     },
     header: {
       paddingHorizontal: 30,
@@ -84,10 +84,12 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       flexWrap: 'wrap',
       ...theme.eventTimes
     },
+    eventsContainer: {
+      flex: 1
+    },
     line: {
       height: 1,
       position: 'absolute',
-      left: HOURS_SIDEBAR_WIDTH - 16,
       backgroundColor: 'rgb(216,216,216)',
       ...theme.line
     },
@@ -95,12 +97,10 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       position: 'absolute',
       width: 1,
       height: '105%',
-      backgroundColor: 'rgb(216,216,216)',
-      left: HOURS_SIDEBAR_WIDTH
+      backgroundColor: 'rgb(216,216,216)'
     },
     nowIndicator: {
       position: 'absolute',
-      left: HOURS_SIDEBAR_WIDTH,
       right: 0
     },
     nowIndicatorLine: {
@@ -129,12 +129,10 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       fontWeight: '500',
       paddingLeft: 12,
       textAlign: 'center',
-      width: HOURS_SIDEBAR_WIDTH - 16,
       ...theme.timeLabel
     },
     unavailableHoursBlock: {
       position: 'absolute',
-      left: HOURS_SIDEBAR_WIDTH,
       right: 0,
       backgroundColor: '#F8F9FA'
     }
