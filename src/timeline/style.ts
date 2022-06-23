@@ -1,6 +1,6 @@
 // @flow
-import {StyleSheet} from 'react-native';
-import {Theme} from '../types';
+import { StyleSheet } from 'react-native';
+import { Theme } from '../types';
 import constants from '../commons/constants';
 
 // const eventPaddingLeft = 4
@@ -97,11 +97,13 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       position: 'absolute',
       width: 1,
       height: '105%',
-      backgroundColor: 'rgb(216,216,216)'
+      backgroundColor: 'rgb(216,216,216)',
+      ...theme.verticalLine
     },
     nowIndicator: {
       position: 'absolute',
-      right: 0
+      right: 0,
+      ...theme.nowIndicator
     },
     nowIndicatorLine: {
       height: 1,
@@ -134,7 +136,8 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     unavailableHoursBlock: {
       position: 'absolute',
       right: 0,
-      backgroundColor: '#F8F9FA'
+      backgroundColor: '#F8F9FA',
+      ...theme.unavailableHoursBlock
     }
   });
 }
