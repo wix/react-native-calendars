@@ -1,6 +1,6 @@
 // @flow
-import { StyleSheet } from 'react-native';
-import { Theme } from '../types';
+import {StyleSheet} from 'react-native';
+import {Theme} from '../types';
 import constants from '../commons/constants';
 
 // const eventPaddingLeft = 4
