@@ -165,9 +165,9 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
       const dayTextAtIndex = `dayTextAtIndex${index}`;
       // @ts-expect-error
-      if (style[dayTextAtIndex]) {
+      if (style.current[dayTextAtIndex]) {
         // @ts-expect-error
-        dayStyle.push(style[dayTextAtIndex]);
+        dayStyle.push(style.current[dayTextAtIndex]);
       }
 
       return (
