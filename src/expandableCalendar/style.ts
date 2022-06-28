@@ -47,7 +47,7 @@ export default function styleConstructor(theme: Theme = {}) {
       width: 40,
       height: 4,
       borderRadius: 3,
-      backgroundColor: '#e8ecf0'
+      backgroundColor: appStyle.expandableKnobColor
     },
     sectionText: {
       fontWeight: 'bold', 
