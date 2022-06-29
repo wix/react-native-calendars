@@ -1,8 +1,7 @@
-// @flow
+import inRange from 'lodash/inRange';
 import XDate from 'xdate';
 import constants from '../commons/constants';
 import {Event, PackedEvent} from './EventBlock';
-import inRange from 'lodash/inRange';
 
 type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {
