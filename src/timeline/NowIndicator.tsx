@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {View, TextStyle, ViewStyle} from 'react-native';
-import {HOUR_BLOCK_HEIGHT} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
+import {HOUR_BLOCK_HEIGHT} from './Packer';
 
 export interface NowIndicatorProps {
   styles: {[key: string]: ViewStyle | TextStyle};
@@ -20,8 +20,8 @@ const NowIndicator = (props: NowIndicatorProps) => {
 
   return (
     <View style={nowIndicatorStyle}>
-      <View style={[styles.nowIndicatorLine, {width}]} />
-      <View style={styles.nowIndicatorKnob} />
+      <View style={[styles.nowIndicatorLine, {width}]}/>
+      <View style={styles.nowIndicatorKnob}/>
     </View>
   );
 };
