@@ -15,11 +15,11 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
   return StyleSheet.create({
     container: {
       backgroundColor: appStyle.calendarBackground,
-      ...theme.container,
+      ...appStyle.container,
     },
     contentStyle: {
       backgroundColor: appStyle.calendarBackground,
-      ...theme.contentStyle,
+      ...appStyle.contentStyle,
       flexDirection: 'row',
       height: calendarHeight + 10
     },
@@ -32,7 +32,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     verticalLine: {
       width: 1,
       backgroundColor: LINE_COLOR,
-      ...theme.verticalLine,
+      ...appStyle.verticalLine,
       position: 'absolute',
       height: '105%'
     },
@@ -43,7 +43,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     nowIndicatorLine: {
       height: 1,
       backgroundColor: NOW_INDICATOR_COLOR, 
-      ...theme.nowIndicatorLine,
+      ...appStyle.nowIndicatorLine,
       position: 'absolute',
       left: 0,
       right: 0
@@ -53,7 +53,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       height: 7,
       borderRadius: 4,
       backgroundColor: NOW_INDICATOR_COLOR,
-      ...theme.nowIndicatorKnob,
+      ...appStyle.nowIndicatorKnob,
       position: 'absolute',
       left: -3,
       top: -3
@@ -65,7 +65,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       fontFamily: constants.isIOS ? 'Helvetica Neue' : 'Roboto',
       paddingLeft: 12,
       textAlign: 'center',
-      ...theme.timeLabel,
+      ...appStyle.timeLabel,
       position: 'absolute'
     },
     unavailableHoursBlock: {
@@ -81,7 +81,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       backgroundColor: '#F0F4FF',
       borderColor: '#DDE5FD',
       borderWidth: 1,
-      ...theme.event,
+      ...appStyle.event,
       position: 'absolute',
       flex: 1,
       flexDirection: 'column',
@@ -92,13 +92,13 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     eventTitle: {
       color: EVENT_TEXT_COLOR,
       fontWeight: '600',
-      ...theme.eventTitle,
+      ...appStyle.eventTitle,
       minHeight: 15
     },
     eventSummary: {
       color: EVENT_TEXT_COLOR,
       fontSize: 12,
-      ...theme.eventSummary,
+      ...appStyle.eventSummary,
       flexWrap: 'wrap'
     },
     eventTimes: {
@@ -106,7 +106,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       color: EVENT_TEXT_COLOR,
       fontSize: 10,
       fontWeight: 'bold',
-      ...theme.eventTimes,
+      ...appStyle.eventTimes,
       flexWrap: 'wrap'
     },
     eventsContainer: {
