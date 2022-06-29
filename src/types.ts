@@ -21,6 +21,7 @@ export interface Theme {
   eventSummary?: object;
   eventTimes?: object;
   line?: object;
+  verticalLine?: object;
   nowIndicatorLine?: object;
   nowIndicatorKnob?: object;
   timeLabel?: object;
@@ -96,6 +97,9 @@ export interface Theme {
       list?: object;
     };
     expandable?: {
+      main?: object;
+    };
+    timeline?: {
       main?: object;
     };
   };
