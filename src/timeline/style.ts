@@ -111,7 +111,6 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     },
     eventsContainer: {
       flex: 1
-    },
-    ...(theme?.stylesheet?.timeline?.main || {})
+    }
   });
 }

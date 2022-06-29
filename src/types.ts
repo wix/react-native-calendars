@@ -99,9 +99,6 @@ export interface Theme {
     expandable?: {
       main?: object;
     };
-    timeline?: {
-      main?: object;
-    };
   };
 }
 
