@@ -15,7 +15,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
   return StyleSheet.create({
     container: {
       backgroundColor: appStyle.calendarBackground,
-      ...appStyle.container,
+      ...appStyle.timelineContainer,
     },
     contentStyle: {
       backgroundColor: appStyle.calendarBackground,
