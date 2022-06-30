@@ -245,6 +245,7 @@ const Timeline = (props: TimelineProps) => {
       ref={scrollView}
       style={styles.current.container}
       contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      showsVerticalScrollIndicator={false}
       {...scrollEvents}
     >
       <TimelineHours
