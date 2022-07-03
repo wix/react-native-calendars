@@ -243,7 +243,9 @@ const Timeline = (props: TimelineProps) => {
     <ScrollView
       // @ts-expect-error
       ref={scrollView}
+      style={styles.current.container}
       contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      showsVerticalScrollIndicator={false}
       {...scrollEvents}
     >
       <TimelineHours

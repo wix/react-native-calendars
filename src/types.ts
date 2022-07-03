@@ -11,16 +11,14 @@ export type DateData = {
   dateString: string;
 };
 export interface Theme {
-  container?: object;
+  timelineContainer?: object;
   contentStyle?: ViewStyle;
-  header?: object;
-  headerText?: object;
-  arrowButton?: object;
   event?: object;
   eventTitle?: object;
   eventSummary?: object;
   eventTimes?: object;
   line?: object;
+  verticalLine?: object;
   nowIndicatorLine?: object;
   nowIndicatorKnob?: object;
   timeLabel?: object;
