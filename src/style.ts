@@ -51,6 +51,7 @@ export const agendaDayTextColor = AGENDA_TEXT_COLOR;
 export const agendaDayNumColor = AGENDA_TEXT_COLOR;
 export const agendaTodayColor = SECONDARY_TEXT_COLOR;
 export const agendaKnobColor = AGENDA_BG_COLOR;
+export const expandableKnobColor = '#e8ecf0';
 export const backgroundColor = AGENDA_BG_COLOR; // Agenda's reservations bg color - renamed: 'reservationsBackgroundColor'. TODO: remove in V2
 export const reservationsBackgroundColor = AGENDA_BG_COLOR;
 export const todayButtonTextColor = SECONDARY_TEXT_COLOR;
