@@ -455,7 +455,7 @@ const CalendarScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with custom header component</Text>
         <Calendar
-          initialDate={currentMonth}
+          initialDate={INITIAL_DATE}
           testID={testIDs.calendars.LAST}
           style={[styles.calendar, styles.customCalendar]}
           customHeader={CustomHeader}
