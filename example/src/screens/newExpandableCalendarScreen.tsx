@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
+import {NewExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from '../testIDs';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import AgendaItem from '../mocks/AgendaItem';
@@ -48,7 +48,7 @@ export default class NewExpandableCalendarScreen extends Component<Props> {
         {this.props.weekView ? (
           <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={this.marked}/>
         ) : (
-          <ExpandableCalendar
+          <NewExpandableCalendar
             testID={testIDs.expandableCalendar.CONTAINER}
             // horizontal={false}
             // hideArrows
