@@ -13,7 +13,7 @@ import _ from 'lodash';
 const INITIAL_TIME = {hour: 9, minutes: 0};
 const today = new Date();
 const getDate = (offset = 0) => CalendarUtils.getCalendarDateString(new Date().setDate(today.getDate() + offset));
-
+const EVENT_COLOR = '#e6add8';
 const EVENTS: TimelineEventProps[] = [
   {
     start: `${getDate(-1)} 09:20:00`,
@@ -26,56 +26,56 @@ const EVENTS: TimelineEventProps[] = [
     end: `${getDate()} 02:30:00`,
     title: 'Meeting A',
     summary: 'Summary for meeting A',
-    color: '#e6add8'
+    color: EVENT_COLOR
   },
   {
     start: `${getDate()} 01:30:00`,
     end: `${getDate()} 02:30:00`,
     title: 'Meeting B',
     summary: 'Summary for meeting B',
-    color: '#e6add8'
+    color: EVENT_COLOR
   },
   {
     start: `${getDate()} 01:45:00`,
     end: `${getDate()} 02:45:00`,
     title: 'Meeting C',
     summary: 'Summary for meeting C',
-    color: '#e6add8'
+    color: EVENT_COLOR
   },
   {
     start: `${getDate()} 02:40:00`,
     end: `${getDate()} 03:10:00`,
     title: 'Meeting D',
     summary: 'Summary for meeting D',
-    color: '#e6add8'
+    color: EVENT_COLOR
   },
   {
     start: `${getDate()} 02:50:00`,
     end: `${getDate()} 03:20:00`,
     title: 'Meeting E',
     summary: 'Summary for meeting E',
-    color: '#e6add8'
+    color: EVENT_COLOR
   },
   {
     start: `${getDate()} 04:30:00`,
     end: `${getDate()} 05:30:00`,
     title: 'Meeting F',
     summary: 'Summary for meeting F',
-    color: '#e6add8'
+    color: EVENT_COLOR
   },
   {
     start: `${getDate(1)} 00:30:00`,
     end: `${getDate(1)} 01:30:00`,
     title: 'Visit Grand Mother',
     summary: 'Visit Grand Mother and bring some fruits.',
-    color: '#ade6d8'
+    color: 'lightblue'
   },
   {
     start: `${getDate(1)} 02:30:00`,
     end: `${getDate(1)} 03:20:00`,
     title: 'Meeting with Prof. Behjet Zuhaira',
     summary: 'Meeting with Prof. Behjet at 130 in her office.',
-    color: '#e6add8'
+    color: EVENT_COLOR
   },
   {
     start: `${getDate(1)} 04:10:00`,
@@ -94,14 +94,14 @@ const EVENTS: TimelineEventProps[] = [
     end: `${getDate(1)} 16:30:00`,
     title: 'Meeting Some Friends in ARMED',
     summary: 'Arsalan, Hasnaat, Talha, Waleed, Bilal',
-    color: '#d8ade6'
+    color: 'pink'
   },
   {
     start: `${getDate(2)} 01:40:00`,
     end: `${getDate(2)} 02:25:00`,
     title: 'Meet Sir Khurram Iqbal',
     summary: 'Computer Science Dept. Comsats Islamabad',
-    color: '#e6bcad'
+    color: 'orange'
   },
   {
     start: `${getDate(2)} 04:10:00`,
@@ -166,7 +166,7 @@ export default class TimelineCalendarScreen extends Component {
       start: `${timeString}`,
       end: `${timeObject.date} ${hourString}:${minutesString}:00`,
       title: 'New Event',
-      color: '#ffffff'
+      color: 'white'
     };
 
     if (timeObject.date) {
@@ -204,7 +204,7 @@ export default class TimelineCalendarScreen extends Component {
             if (draftEvent) {
               draftEvent.id = undefined;
               draftEvent.title = eventTitle ?? 'New Event';
-              draftEvent.color = '#d8ade6';
+              draftEvent.color = 'lightgreen';
               eventsByDate[timeObject.date] = [...eventsByDate[timeObject.date]];
 
               this.setState({
@@ -239,6 +239,7 @@ export default class TimelineCalendarScreen extends Component {
         onMonthChange={this.onMonthChange}
         showTodayButton
         disabledOpacity={0.6}
+        // numberOfDays={3}
       >
         <ExpandableCalendar
           firstDay={1}

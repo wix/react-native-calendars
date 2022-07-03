@@ -1,11 +1,10 @@
 import React, {useState, useMemo, useCallback} from 'react';
-// @ts-expect-error
 import {CalendarList} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2020-05-16';
 
-const HorizontalCalendarList = () => {
+const HorizontalCalendarListScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const markedDates = useMemo(() => {
     return {
@@ -35,4 +34,4 @@ const HorizontalCalendarList = () => {
   );
 };
 
-export default HorizontalCalendarList;
+export default HorizontalCalendarListScreen;

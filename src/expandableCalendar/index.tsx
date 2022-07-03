@@ -98,6 +98,7 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
+  const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);  
   const {
     theme, 
     horizontal = true, 
@@ -113,7 +114,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     style: propsStyle, 
     calendarStyle,
     allowShadow = true, 
-    hideKnob, 
+    hideKnob = numberOfDays > 1, 
     hideArrows, 
     onPressArrowLeft,
     onPressArrowRight,
@@ -127,7 +128,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Date */
 
-  const {date, setDate} = useContext(Context);  
   const initialDate = date;
   const getYear = (date: string) => {
     const d = new XDate(date);
@@ -171,7 +171,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Position */
 
-  const closedHeight = CLOSED_HEIGHT + (hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
+  const closedHeight = CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT);
   const getOpenHeight = () => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
@@ -266,6 +266,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     scrollToDate(date);
   }, [date]);
 
+  useEffect(() => {
+    _wrapperStyles.current.style.height = closedHeight;
+    updateNativeStyles();
+  }, [closedHeight]);
+
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
   };
@@ -293,8 +298,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         if (dayOfTheWeek < firstDay && firstDay > 0) {
           dayOfTheWeek = 7 + dayOfTheWeek;
         }
+
+      if (numberOfDays) {
+        const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
+        d.addDays(next ? daysToAdd : -daysToAdd);
+      } else {
         const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
         d.addDays(firstDayOfWeek);
+        }
       }
 
       setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
@@ -340,12 +351,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
-  const panResponder = PanResponder.create({
+  const panResponder = numberOfDays <= 1 ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
     onPanResponderTerminate: handlePanResponderEnd
-  });
+  }) : PanResponder.create({});
 
   /** Animated */
 
@@ -405,7 +416,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [onPressArrowRight, scrollPage]);
 
   const _onDayPress = useCallback((value: DateData) => {
-    setDate?.(value.dateString, updateSources.DAY_PRESS);
+    numberOfDays <= 1 && setDate?.(value.dateString, updateSources.DAY_PRESS);
 
     if (closeOnDayPress) {
       setTimeout(() => {
@@ -418,6 +429,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
     onDayPress?.(value);
   }, [onDayPress, closeOnDayPress, isOpen]);
+  }, [setDate, onDayPress, closeOnDayPress, isOpen, numberOfDays]);
 
   const onVisibleMonthsChange = useCallback(throttle(
     (value: DateData[]) => {
@@ -566,6 +578,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
             hideExtraDays={!horizontal && isOpen}
             renderArrow={_renderArrow}
             staticHeader
+            numberOfDays={numberOfDays}
+            timelineLeftInset={timelineLeftInset}
           />
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}

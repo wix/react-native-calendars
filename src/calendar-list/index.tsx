@@ -234,10 +234,8 @@ class CalendarList extends Component<CalendarListProps, State> {
   }
 
   addMonth = (count: number) => {
-    this.updateMonth(this.state.currentMonth.clone().addMonths(count, true));
-  };
-
-  updateMonth(day: XDate) {
+    const day = this.state.currentMonth.clone().addMonths(count, true);
+    
     if (sameMonth(day, this.state.currentMonth)) {
       return;
     }

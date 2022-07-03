@@ -1,19 +1,21 @@
 import {Navigation} from 'react-native-navigation';
 
 import MenuScreen from './menuScreen';
-import CalendarsScreen from './calendarScreen';
+import CalendarScreen from './calendarScreen';
 import AgendaScreen from './agendaScreen';
-import CalendarsList from './calendarsList';
-import HorizontalCalendarList from './horizontalCalendarList';
+import CalendarsListScreen from './calendarListScreen';
+import HorizontalCalendarListScreen from './horizontalCalendarListScreen';
+import NewCalendarsListScreen from './newCalendarListScreen';
 import ExpandableCalendarScreen from './expandableCalendarScreen';
 import TimelineCalendarScreen from './timelineCalendarScreen';
 
 export function registerScreens() {
   Navigation.registerComponent('Menu', () => MenuScreen);
-  Navigation.registerComponent('Calendars', () => CalendarsScreen);
-  Navigation.registerComponent('Agenda', () => AgendaScreen);
-  Navigation.registerComponent('CalendarsList', () => CalendarsList);
-  Navigation.registerComponent('HorizontalCalendarList', () => HorizontalCalendarList);
+  Navigation.registerComponent('CalendarScreen', () => CalendarScreen);
+  Navigation.registerComponent('AgendaScreen', () => AgendaScreen);
+  Navigation.registerComponent('CalendarListScreen', () => CalendarsListScreen);
+  Navigation.registerComponent('HorizontalCalendarListScreen', () => HorizontalCalendarListScreen);
+  Navigation.registerComponent('NewCalendarListScreen', () => NewCalendarsListScreen);
   Navigation.registerComponent('ExpandableCalendarScreen', () => ExpandableCalendarScreen);
-  Navigation.registerComponent('TimelineCalendar', () => TimelineCalendarScreen);
+  Navigation.registerComponent('TimelineCalendarScreen', () => TimelineCalendarScreen);
 }

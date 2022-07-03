@@ -1,13 +1,15 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
-// import {Text} from 'react-native';
 import throttle from 'lodash/throttle';
+import flatten from 'lodash/flatten';
+import dropRight from 'lodash/dropRight';
 import XDate from 'xdate';
 
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+
+import {isToday, generateDay} from '../dateutils';
+import InfiniteList from '../infinite-list';
 import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';
-import {isToday} from '../dateutils';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
-import InfiniteList from '../infinite-list';
 import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
 
 export interface TimelineListRenderItemInfo {
@@ -51,13 +53,13 @@ export interface TimelineListProps {
 
 const TimelineList = (props: TimelineListProps) => {
   const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
-  const {date, updateSource, setDate} = useContext(Context);
+  const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
   const [timelineOffset, setTimelineOffset] = useState();
 
   const {pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange} =
-    useTimelinePages({date, listRef});
+    useTimelinePages({date, listRef, numberOfDays});
 
   useEffect(() => {
     if (date !== prevDate.current) {
@@ -89,12 +91,12 @@ const TimelineList = (props: TimelineListProps) => {
 
   const onPageChange = useCallback(
     throttle((pageIndex: number) => {
-      const newDate = pagesRef.current[pageIndex];
+      const newDate = pages[pageIndex];
       if (newDate !== prevDate.current) {
         setDate(newDate, UpdateSources.LIST_DRAG);
       }
     }, 0),
-    []
+    [pages]
   );
 
   const onReachNearEdge = useCallback(() => {
@@ -107,22 +109,25 @@ const TimelineList = (props: TimelineListProps) => {
 
   const renderPage = useCallback(
     (_type, item, index) => {
-      const timelineEvent = events[item];
       const isCurrent = prevDate.current === item;
       const isInitialPage = index === INITIAL_PAGE;
       const _isToday = isToday(new XDate(item));
-
+      const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
+      const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
+      const numberOfDaysToDrop = (7 - numberOfDays);
       const _timelineProps = {
         ...timelineProps,
         key: item,
-        date: item,
-        events: timelineEvent,
+        date: dropRight(weekDates, numberOfDaysToDrop),
+        events: flatten(dropRight(weekEvents, numberOfDaysToDrop)),
         scrollToNow: _isToday && isInitialPage && scrollToNow,
         initialTime: !_isToday && isInitialPage ? initialTime : undefined,
         scrollToFirst: !_isToday && isInitialPage && scrollToFirst,
         scrollOffset: timelineOffset,
         onChangeOffset: onTimelineOffsetChange,
-        showNowIndicator: _isToday && showNowIndicator
+        showNowIndicator: _isToday && showNowIndicator,
+        numberOfDays,
+        timelineLeftInset
       };
 
       if (renderItem) {
@@ -131,17 +136,18 @@ const TimelineList = (props: TimelineListProps) => {
 
       return (
         <>
-          <Timeline {..._timelineProps} />
+          <Timeline {..._timelineProps}/>
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text> */}
         </>
       );
     },
-    [events, timelineOffset, showNowIndicator]
+    [events, timelineOffset, showNowIndicator, numberOfDays]
   );
 
   return (
     <InfiniteList
+      isHorizontal
       ref={listRef}
       data={pages}
       renderItem={renderPage}

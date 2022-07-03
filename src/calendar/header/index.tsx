@@ -68,13 +68,18 @@ export interface CalendarHeaderProps {
   style?: StyleProp<ViewStyle>;
   accessibilityElementsHidden?: boolean;
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
+  /** The number of days to present in the header */
+  numberOfDays?: number;
+  /** The current date presented */
+  current?: string;
+  /** Left inset for the timeline calendar header, default is 72 */
+  timelineLeftInset?: number;
 }
 
 const accessibilityActions = [
   {name: 'increment', label: 'increment'},
   {name: 'decrement', label: 'decrement'}
 ];
-
 
 const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const {
@@ -99,10 +104,13 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     webAriaLevel,
     testID,
     accessibilityElementsHidden,
-    importantForAccessibility
+    importantForAccessibility,
+    numberOfDays = 1,
+    current = '',
+    timelineLeftInset
   } = props;
   const style = useRef(styleConstructor(theme));
-  
+
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -144,9 +152,11 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   };
 
   const renderWeekDays = useMemo(() => {
-    const weekDaysNames = weekDayNames(firstDay);
+    const dayOfTheWeek = new XDate(current).getDay();
+    const weekDaysNames = numberOfDays > 1 ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
+    const dayNames = numberOfDays > 1 ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
 
-    return weekDaysNames.map((day: string, index: number) => {
+    return dayNames.map((day: string, index: number) => {
       const dayStyle = [style.current.dayHeader];
 
       if (includes(disabledDaysIndexes, index)) {
@@ -166,7 +176,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         </Text>
       );
     });
-  }, [firstDay]);
+  }, [firstDay, current, numberOfDays]);
 
   const _renderHeader = () => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
@@ -217,7 +227,6 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         {renderArrow ? (
           renderArrow(renderArrowDirection)
         ) : (
-          // @ts-expect-error style?: StyleProp<ImageStyle>
           <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>
         )}
       </TouchableOpacity>
@@ -236,13 +245,20 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   };
 
   const renderWeekNumbersSpace = () => {
-    return showWeekNumbers && <View style={style.current.dayHeader}/>;
+    return showWeekNumbers && <View style={style.current.dayHeader} />;
   };
+
+  const partialWeekStyle = useMemo(() => {
+    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
+  }, [timelineLeftInset]);
 
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
-        <View style={style.current.week} testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}>
+        <View
+          style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined]}
+          testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}
+        >
           {renderWeekNumbersSpace()}
           {renderWeekDays}
         </View>
@@ -261,7 +277,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
       importantForAccessibility={importantForAccessibility} // Android
     >
-      <View style={style.current.header}>
+      <View style={[style.current.header, numberOfDays > 1 ? style.current.partialHeader : undefined]}>
         {_renderArrow('left')}
         <View style={style.current.headerContainer}>
           {_renderHeader()}
@@ -294,7 +310,10 @@ CalendarHeader.propTypes = {
   disabledDaysIndexes: PropTypes.any,
   renderHeader: PropTypes.any,
   customHeaderTitle: PropTypes.any,
-  webAriaLevel: PropTypes.number
+  webAriaLevel: PropTypes.number,
+  numberOfDays: PropTypes.number,
+  current: PropTypes.string,
+  timelineLeftInset: PropTypes.number
 };
 CalendarHeader.defaultProps = {
   monthFormat: 'MMMM yyyy',

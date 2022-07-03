@@ -116,6 +116,9 @@ export default function styleConstructor(theme: Theme = {}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+    partialWeek: {
+      paddingRight: 0
+    },
     dayContainer: {
       flex: 1, 
       alignItems: 'center'
