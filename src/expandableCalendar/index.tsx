@@ -428,7 +428,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
 
     onDayPress?.(value);
-  }, [onDayPress, closeOnDayPress, isOpen]);
   }, [onDayPress, closeOnDayPress, isOpen, numberOfDays]);
 
   const onVisibleMonthsChange = useCallback(throttle(
