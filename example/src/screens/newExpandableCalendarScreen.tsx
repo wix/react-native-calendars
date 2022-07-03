@@ -14,7 +14,7 @@ interface Props {
   weekView?: boolean;
 }
 
-export default class ExpandableCalendarScreen extends Component<Props> {
+export default class NewExpandableCalendarScreen extends Component<Props> {
   marked = getMarkedDates();
   theme = getTheme();
   todayBtnTheme = {
