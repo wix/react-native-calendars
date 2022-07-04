@@ -50,21 +50,26 @@ export default class NewExpandableCalendarScreen extends Component<Props> {
         ) : (
           <NewExpandableCalendar
             testID={testIDs.expandableCalendar.CONTAINER}
-            // horizontal={false}
-            // hideArrows
-            // disablePan
-            // hideKnob
-            // initialPosition={ExpandableCalendar.positions.OPEN}
-            // calendarStyle={styles.calendar}
-            // headerStyle={styles.calendar} // for horizontal only
-            // disableWeekScroll
-            theme={this.theme}
-            // disableAllTouchEventsForDisabledDays
-            firstDay={1}
-            markedDates={this.marked}
             leftArrowImageSource={leftArrowIcon}
             rightArrowImageSource={rightArrowIcon}
-            // animateScroll
+            // disablePan
+            // hideKnob
+            // disableWeekScroll
+            // initialPosition={ExpandableCalendar.positions.OPEN}
+            // calendarStyle={styles.calendar}
+
+            calendarListProps={{
+              // horizontal: false,
+              // animateScroll: true
+              calendarProps: {
+                theme: this.theme,
+                firstDay: 1,
+                markedDates: this.marked,
+                // hideArrows: true,
+                // disableAllTouchEventsForDisabledDays: true
+                // headerStyle={styles.calendar} // in ExpandableCalendar - for horizontal only
+              }
+            }}
           />
         )}
         <AgendaList

@@ -2,13 +2,19 @@ import isEmpty from 'lodash/isEmpty';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
-const futureDates = getFutureDates(9);
+const futureDates = getFutureDates(12);
 const dates = [fastDate, today].concat(futureDates);
 
 function getFutureDates(numberOfDays: number) {
   const array = [];
   for (let index = 1; index <= numberOfDays; index++) {
-    const date = new Date(Date.now() + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
+    let d = Date.now();
+    if (index > 8) {
+      // set dates on the next month
+      const newMonth = new Date(d).getMonth() + 1;
+      d = new Date(d).setMonth(newMonth);
+    }
+    const date = new Date(d + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
     const dateString = date.toISOString().split('T')[0];
     array.push(dateString);
   }
@@ -84,6 +90,26 @@ export const agendaItems = [
   },
   {
     title: dates[10], 
+    data: [
+      {hour: '12am', duration: '1h', title: 'Last Yoga'}
+    ]
+  },
+  {
+    title: dates[10],
+    data: [
+      {hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'},
+      {hour: '2pm', duration: '1h', title: 'Deep Stretches'},
+      {hour: '3pm', duration: '1h', title: 'Private Yoga'}
+    ]
+  },
+  {
+    title: dates[11], 
+    data: [
+      {hour: '12am', duration: '1h', title: 'Last Yoga'}
+    ]
+  },
+  {
+    title: dates[12], 
     data: [
       {hour: '12am', duration: '1h', title: 'Last Yoga'}
     ]
