@@ -24,7 +24,7 @@ export function getTheme() {
     textDayHeaderFontWeight: 'normal' as 'normal',
     // dates
     dayTextColor: themeColor,
-    todayTextColor: '#38edf2',
+    todayTextColor: '#af0078',
     textDayFontSize: 18,
     textDayFontFamily: 'HelveticaNeue',
     textDayFontWeight: '500' as '500',
