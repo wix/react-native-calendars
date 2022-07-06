@@ -20,6 +20,9 @@ const CalendarListScreen = (props: Props) => {
         disableTouchEvent: true,
         selectedColor: '#5E60CE',
         selectedTextColor: 'white'
+      },
+      ['2022-08-05']: {
+        selectedTextColor: 'pink'
       }
     };
   }, [selected]);
