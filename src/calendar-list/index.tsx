@@ -124,7 +124,7 @@ class CalendarList extends Component<CalendarListProps, State> {
 
   constructor(props: CalendarListProps) {
     super(props);
-
+    // console.log('ctor');
     this.style = styleConstructor(props.theme);
 
     const rows = [];
@@ -158,19 +158,26 @@ class CalendarList extends Component<CalendarListProps, State> {
     };
   }
 
-  componentDidUpdate(prevProps: CalendarListProps) {
+  componentDidUpdate(prevProps: CalendarListProps, prevState: State) {
     const prevCurrent = parseDate(prevProps.current);
     const current = parseDate(this.props.current);
 
     if (current && prevCurrent && current.getTime() !== prevCurrent.getTime()) {
       this.scrollToMonth(current);
     }
+
+    // Object.entries(this.props).forEach(([key, val]) =>
+    //   prevProps[key] !== val && console.log(`CalendarList Prop '${key}' changed to ${val}`)
+    // );
+    // Object.entries(this.state).forEach(([key, val]) =>
+    //   prevState[key] !== val && console.log(`CalendarList State '${key}' changed to ${val}`)
+    // );
   }
 
   static getDerivedStateFromProps(_: CalendarListProps, prevState: State) {
+    // console.log('derived state');
     const rowClone = prevState.rows;
     const newRows = [];
-
     for (let i = 0; i < rowClone.length; i++) {
       let val: XDate | string = prevState.texts[i];
       // @ts-expect-error
@@ -250,6 +257,7 @@ class CalendarList extends Component<CalendarListProps, State> {
   }
 
   onViewableItemsChanged = ({viewableItems}: any) => {
+    // console.log('onViewableItemsChanged');
     function rowIsCloseToViewable(index: number, distance: number) {
       for (let i = 0; i < viewableItems.length; i++) {
         if (Math.abs(index - parseInt(viewableItems[i].index)) <= distance) {
@@ -291,7 +299,7 @@ class CalendarList extends Component<CalendarListProps, State> {
 
   renderItem = ({item}: any) => {
     const {horizontal, calendarStyle, calendarWidth, testID, markedDates, ...others} = this.props;
-
+    // NOTE: now only 'item' and 'markedDates' change for the 3 calendar (item.getTime) items
     return (
       <CalendarListItem
         {...others}
