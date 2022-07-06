@@ -97,12 +97,12 @@ const ITEMS: any[] = [
   }
 ];
 
-type MarkedDate = {
+type MarkedDates = {
   [key: string]: object;
 }
 
 function getMarkedDates(items: any[]) {
-  const marked: MarkedDate = {};
+  const marked: MarkedDates = {};
 
   items.forEach(item => {
     // NOTE: only mark dates with data

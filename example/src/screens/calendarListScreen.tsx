@@ -1,21 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {StyleSheet, Text, View, TextStyle} from 'react-native';
 import {CalendarList, DateData} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const RANGE = 24;
-const initialDate = '2020-06-10';
+const initialDate = '2022-07-05';
 
 const CalendarListScreen = () => {
   const [selected, setSelected] = useState(initialDate);
-  const markedDates = {
-    [selected]: {
-      selected: true,
-      disableTouchEvent: true,
-      selectedColor: '#5E60CE',
-      selectedTextColor: 'white'
-    }
-  };
+  const marked = useMemo(() => {
+    return {
+      [selected]: {
+        selected: true,
+        disableTouchEvent: true,
+        selectedColor: '#5E60CE',
+        selectedTextColor: 'white'
+      }
+    };
+  }, [selected]);
   
   const onDayPress = (day: DateData) => {
     setSelected(day.dateString);
@@ -30,7 +32,7 @@ const CalendarListScreen = () => {
       renderHeader={renderCustomHeader}
       theme={theme}
       onDayPress={onDayPress}
-      markedDates={markedDates}
+      markedDates={marked}
     />
   );
 };
