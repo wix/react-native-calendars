@@ -290,11 +290,12 @@ class CalendarList extends Component<CalendarListProps, State> {
   };
 
   renderItem = ({item}: any) => {
-    const {calendarStyle, horizontal, calendarWidth, testID, ...others} = this.props;
+    const {horizontal, calendarStyle, calendarWidth, testID, markedDates, ...others} = this.props;
 
     return (
       <CalendarListItem
         {...others}
+        markedDates={item.getTime ? markedDates : undefined}
         item={item}
         testID={`${testID}_${item}`}
         style={calendarStyle}
