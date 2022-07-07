@@ -31,8 +31,7 @@
     "example/src/screens/timelineCalendarScreen.tsx",
     "example/src/screens/horizontalCalendarListScreen.tsx",
     "example/src/screens/calendarListScreen.tsx",
-    "example/src/screens/newCalendarListScreen.tsx",
-    "example/src/screens/NewExpandableCalendarScreen.tsx"
+    "example/src/screens/newCalendarListScreen.tsx"
   ],
   "exclude": ["node_modules", "testUtils"]
 }
