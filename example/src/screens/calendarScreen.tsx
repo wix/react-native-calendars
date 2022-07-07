@@ -1,15 +1,15 @@
 import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
-import {Calendar, CalendarProps} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
-const INITIAL_DATE = '2020-02-02';
+const INITIAL_DATE = '2022-07-06';
 
 const CalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
 
-  const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
+  const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
   }, []);
 
@@ -20,6 +20,10 @@ const CalendarScreen = () => {
         disableTouchEvent: true,
         selectedColor: 'orange',
         selectedTextColor: 'red'
+      },
+      ['2022-07-22']: {
+        dotColor: 'red',
+        marked: true
       }
     };
   }, [selected]);
