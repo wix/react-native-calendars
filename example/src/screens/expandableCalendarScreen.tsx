@@ -80,14 +80,14 @@ const ExpandableCalendarScreen = (props: Props) => {
 
 export default ExpandableCalendarScreen;
 
-// const styles = StyleSheet.create({
-//   calendar: {
-//     paddingLeft: 20,
-//     paddingRight: 20
-//   },
-//   section: {
-//     backgroundColor: lightThemeColor,
-//     color: 'grey',
-//     textTransform: 'capitalize'
-//   }
-// });
+const styles = StyleSheet.create({
+  calendar: {
+    paddingLeft: 20,
+    paddingRight: 20
+  },
+  section: {
+    backgroundColor: lightThemeColor,
+    color: 'grey',
+    textTransform: 'capitalize'
+  }
+});
