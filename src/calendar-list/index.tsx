@@ -292,7 +292,7 @@ class CalendarList extends Component<CalendarListProps, State> {
     
     if (markedDates) {      
       if (item && item.getTime) {
-        for (const [key, value] of Object.entries(markedDates)) {
+        for (const [key, _] of Object.entries(markedDates)) {
           if (sameMonth(new XDate(key), new XDate(item))) {
             return markedDates;
           }
