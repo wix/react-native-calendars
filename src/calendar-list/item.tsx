@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {useRef, useMemo, useContext} from 'react';
@@ -81,6 +80,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   if (item.getTime) {
     return (
       <Calendar
+        hideArrows={true}
+        hideExtraDays={true}
         {...props}
         testID={testID}
         current={getCalendarDateString(item.toString())}
@@ -106,14 +107,3 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
 
 export default CalendarListItem;
 CalendarListItem.displayName = 'CalendarListItem';
-CalendarListItem.propTypes = {
-  ...Calendar.propTypes,
-  item: PropTypes.any,
-  calendarWidth: PropTypes.number,
-  calendarHeight: PropTypes.number,
-  horizontal: PropTypes.bool
-};
-CalendarListItem.defaultProps = {
-  hideArrows: true,
-  hideExtraDays: true
-};
