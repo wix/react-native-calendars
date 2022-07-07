@@ -1,8 +1,8 @@
 import XDate from 'xdate';
-import React, {useRef} from 'react';
+import React, {useRef, useMemo} from 'react';
 import {View} from 'react-native';
 
-import {getWeekDates, sameMonth} from '../dateutils';
+import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractComponentProps} from '../componentUpdater';
@@ -15,7 +15,7 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
   const style = useRef(styleConstructor(theme));
 
   const getWeek = (date?: string) => {
@@ -54,8 +54,8 @@ const Week = (props: WeekProps) => {
   };
 
   const renderWeek = () => {
-    const dates = getWeek(current);
-    const week: any[] = [];
+    const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
+    let week: any[] = [];
   
     if (dates) {
       dates.forEach((day: XDate, id: number) => {
@@ -67,12 +67,21 @@ const Week = (props: WeekProps) => {
     //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
     // }
     
+    const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
+
+    if (numberOfDays > 1 && todayIndex > -1) {
+      week = week.slice(todayIndex, numberOfDays);
+    }
     return week;
   };
 
+  const partialWeekStyle = useMemo(() => {
+    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
+  }, [timelineLeftInset]);
+
   return (
     <View style={style.current.container}>
-      <View style={[style.current.week, propsStyle]}>{renderWeek()}</View>
+      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
     </View>
   );
 };

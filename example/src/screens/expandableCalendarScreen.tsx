@@ -97,12 +97,12 @@ const ITEMS: any[] = [
   }
 ];
 
-type MarkedDate = {
+type MarkedDates = {
   [key: string]: object;
 }
 
 function getMarkedDates(items: any[]) {
-  const marked: MarkedDate = {};
+  const marked: MarkedDates = {};
 
   items.forEach(item => {
     // NOTE: only mark dates with data
@@ -122,21 +122,23 @@ function getTheme() {
     // arrows
     arrowColor: 'black',
     arrowStyle: {padding: 0},
+    // knob
+    expandableKnobColor: themeColor,
     // month
     monthTextColor: 'black',
     textMonthFontSize: 16,
     textMonthFontFamily: 'HelveticaNeue',
-    textMonthFontWeight: 'bold',
+    textMonthFontWeight: 'bold' as 'bold',
     // day names
     textSectionTitleColor: 'black',
     textDayHeaderFontSize: 12,
     textDayHeaderFontFamily: 'HelveticaNeue',
-    textDayHeaderFontWeight: 'normal',
+    textDayHeaderFontWeight: 'normal' as 'normal',
     // dates
     dayTextColor: themeColor,
     textDayFontSize: 18,
     textDayFontFamily: 'HelveticaNeue',
-    textDayFontWeight: '500',
+    textDayFontWeight: '500' as '500',
     textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
     // selected date
     selectedDayBackgroundColor: themeColor,
@@ -186,7 +188,7 @@ export default class ExpandableCalendarScreen extends Component<Props> {
         onMonthChange={this.onMonthChange}
         showTodayButton
         disabledOpacity={0.6}
-        // theme={this.todayBtnTheme}
+        theme={this.todayBtnTheme}
         // todayBottomMargin={16}
       >
         {this.props.weekView ? (
@@ -202,7 +204,7 @@ export default class ExpandableCalendarScreen extends Component<Props> {
             // calendarStyle={styles.calendar}
             // headerStyle={styles.calendar} // for horizontal only
             // disableWeekScroll
-            // theme={this.theme}
+            theme={this.theme}
             // disableAllTouchEventsForDisabledDays
             firstDay={1}
             markedDates={this.marked}

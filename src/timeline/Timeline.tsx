@@ -1,11 +1,16 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, ScrollView} from 'react-native';
 import min from 'lodash/min';
 import map from 'lodash/map';
+import times from 'lodash/times';
+import groupBy from 'lodash/groupBy';
+
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {View, ScrollView} from 'react-native';
 
 import constants from '../commons/constants';
+import {generateDay} from '../dateutils';
+import {getCalendarDateString} from '../services';
 import {Theme} from '../types';
-import styleConstructor, {HOURS_SIDEBAR_WIDTH} from './style';
+import styleConstructor from './style';
 import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
@@ -15,9 +20,9 @@ import useTimelineOffset from './useTimelineOffset';
 
 export interface TimelineProps {
   /**
-   * The date of this timeline instance in ISO format (e.g. 2011-10-25)
+   * The date / dates of this timeline instance in ISO format (e.g. 2011-10-25)
    */
-  date?: string;
+  date?: string | string[];
   /**
    * List of events to display in this timeline
    */
@@ -50,6 +55,7 @@ export interface TimelineProps {
    */
   onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
+  /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
   /**
    * Should scroll to first event when loaded
@@ -99,6 +105,14 @@ export interface TimelineProps {
    * Background color for unavailable hours
    */
   unavailableHoursColor?: string;
+  /**
+   * The number of days to present in the timeline calendar
+   */
+  numberOfDays?: number;
+  /**
+   * The left inset of the timeline calendar (sidebar width), default is 72
+   */
+  timelineLeftInset?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -106,8 +120,8 @@ const Timeline = (props: TimelineProps) => {
     format24h = true,
     start = 0,
     end = 24,
-    date,
-    events = [],
+    date = '',
+    events,
     onEventPress,
     onBackgroundLongPress,
     onBackgroundLongPressOut,
@@ -119,30 +133,51 @@ const Timeline = (props: TimelineProps) => {
     showNowIndicator,
     scrollOffset,
     onChangeOffset,
-    overlapEventsSpacing,
-    rightEdgeSpacing,
+    overlapEventsSpacing = 0,
+    rightEdgeSpacing = 0,
     unavailableHours,
     unavailableHoursColor,
-    eventTapped
+    eventTapped,
+    numberOfDays = 1,
+    timelineLeftInset = 0
   } = props;
 
+  const pageDates = useMemo(() => {
+    return typeof date === 'string' ? [date] : date;
+  }, [date]);
+  const groupedEvents = useMemo(() => {
+    return groupBy(events, e => getCalendarDateString(e.start));
+  }, [events]);
+  const pageEvents = useMemo(() => {
+    return map(pageDates, d => groupedEvents[d] || []);
+  }, [pageDates, groupedEvents]);
   const scrollView = useRef<ScrollView>();
   const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
 
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
+  const width = useMemo(() => {
+    return constants.screenWidth - timelineLeftInset;
+  }, [timelineLeftInset]);
+
   const packedEvents = useMemo(() => {
-    const width = constants.screenWidth - HOURS_SIDEBAR_WIDTH;
-    return populateEvents(events, {screenWidth: width, dayStart: start, overlapEventsSpacing, rightEdgeSpacing});
-  }, [events, start]);
+    return map(pageEvents, (_e, i) => {
+      return populateEvents(pageEvents[i], {
+        screenWidth: width / numberOfDays,
+        dayStart: start,
+        overlapEventsSpacing: overlapEventsSpacing / numberOfDays,
+        rightEdgeSpacing: rightEdgeSpacing / numberOfDays
+      });
+    });
+  }, [pageEvents, start, numberOfDays]);
 
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
       initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
-    } else if (scrollToFirst && packedEvents.length > 0) {
-      initialPosition = min(map(packedEvents, 'top')) ?? 0;
+    } else if (scrollToFirst && packedEvents[0].length > 0) {
+      initialPosition = min(map(packedEvents[0], 'top')) ?? 0;
     } else if (initialTime) {
       initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }
@@ -158,8 +193,8 @@ const Timeline = (props: TimelineProps) => {
   }, []);
 
   const _onEventPress = useCallback(
-    (eventIndex: number) => {
-      const event = packedEvents[eventIndex];
+    (dateIndex: number, eventIndex: number) => {
+      const event = packedEvents[dateIndex][eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
         eventTapped(event);
@@ -167,28 +202,40 @@ const Timeline = (props: TimelineProps) => {
         onEventPress?.(event);
       }
     },
-    [packedEvents, onEventPress, eventTapped]
+    [onEventPress, eventTapped]
   );
 
-  const renderEvents = () => {
-    const events = packedEvents.map((event: PackedEvent, i: number) => {
+  const renderEvents = (dayIndex: number) => {
+    const events = packedEvents[dayIndex].map((event: PackedEvent, eventIndex: number) => {
+      const onEventPress = () => _onEventPress(dayIndex, eventIndex);
       return (
         <EventBlock
-          key={i}
-          index={i}
+          key={eventIndex}
+          index={eventIndex}
           event={event}
           styles={styles.current}
           format24h={format24h}
-          onPress={_onEventPress}
+          onPress={onEventPress}
           renderEvent={renderEvent}
         />
       );
     });
 
     return (
-      <View>
-        <View style={{marginLeft: HOURS_SIDEBAR_WIDTH}}>{events}</View>
+      <View pointerEvents={'box-none'}  style={[{marginLeft: dayIndex === 0 ? timelineLeftInset : undefined}, styles.current.eventsContainer]}>
+        {events}
       </View>
+    );
+  };
+
+  const renderTimelineDay = (dayIndex: number) => {
+    const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
+    const left = timelineLeftInset + indexOfToday * width / numberOfDays;
+    return (
+      <>
+        {renderEvents(dayIndex)}
+        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
+      </>
     );
   };
 
@@ -196,22 +243,26 @@ const Timeline = (props: TimelineProps) => {
     <ScrollView
       // @ts-expect-error
       ref={scrollView}
+      style={styles.current.container}
       contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      showsVerticalScrollIndicator={false}
       {...scrollEvents}
     >
       <TimelineHours
         start={start}
         end={end}
-        date={date}
+        date={pageDates[0]}
         format24h={format24h}
         styles={styles.current}
         unavailableHours={unavailableHours}
         unavailableHoursColor={unavailableHoursColor}
         onBackgroundLongPress={onBackgroundLongPress}
         onBackgroundLongPressOut={onBackgroundLongPressOut}
+        width={width}
+        numberOfDays={numberOfDays}
+        timelineLeftInset={timelineLeftInset}
       />
-      {renderEvents()}
-      {showNowIndicator && <NowIndicator styles={styles.current} />}
+      {times(numberOfDays, renderTimelineDay)}
     </ScrollView>
   );
 };

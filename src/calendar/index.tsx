@@ -102,12 +102,12 @@ const Calendar = (props: CalendarProps) => {
     }
   }, [currentMonth]);
 
-  const updateMonth = (newMonth: XDate) => {
+  const updateMonth = useCallback((newMonth: XDate) => {
     if (sameMonth(newMonth, currentMonth)) {
       return;
     }
     setCurrentMonth(newMonth);
-  };
+  }, [currentMonth]);
 
   const addMonth = useCallback((count: number) => {
     const newMonth = currentMonth.clone().addMonths(count, true);

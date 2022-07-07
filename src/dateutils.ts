@@ -175,6 +175,16 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
   }
 }
 
+export function getPartialWeekDates(date: string | undefined, numberOfDays = 7) {
+  let index = 0;
+  const partialWeek: string[] = [];
+  while (index < numberOfDays) {
+    partialWeek.push(generateDay(date || new XDate(), index));
+    index++;
+  }
+  return partialWeek;
+}
+
 export function generateDay(originDate: string, daysOffset = 0) {
   const baseDate = new XDate(originDate);
   return toMarkingFormat(baseDate.clone().addDays(daysOffset));
