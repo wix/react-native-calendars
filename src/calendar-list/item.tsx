@@ -20,7 +20,7 @@ export type CalendarListItemProps = CalendarProps & {
   scrollToMonth?: (date: XDate) => void;
 };
 
-const CalendarListItem = (props: CalendarListItemProps) => {  
+const CalendarListItem = React.memo((props: CalendarListItemProps) => {  
   const {
     theme,
     item,
@@ -102,7 +102,7 @@ const CalendarListItem = (props: CalendarListItemProps) => {
       </View>
     );
     }
-};
+});
 
 export default CalendarListItem;
 CalendarListItem.displayName = 'CalendarListItem';
