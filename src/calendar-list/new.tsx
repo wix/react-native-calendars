@@ -19,7 +19,7 @@ export interface CalendarListProps {
   /** Whether to use static header that will not scroll with the list (horizontal only) */
   staticHeader?: boolean;
   /** Props to pass the list */
-  scrollViewProps?: Omit<ScrollViewProps, 'horizontal'>;
+  scrollViewProps?: ScrollViewProps;
   /** Props to pass the list items */
   calendarProps?: CalendarProps;
   /** Identifier for testing */
