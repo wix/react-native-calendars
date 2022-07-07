@@ -1,9 +1,10 @@
+import {CalendarProps} from "./calendar";
+
 const get = require('lodash/get');
 const omit = require('lodash/omit');
 const pickBy = require('lodash/pickBy');
 const isEqual = require('lodash/isEqual');
 const includes = require('lodash/includes');
-
 
 export function shouldUpdate(props: any, newProps: any, paths: string[]) {
   for (let i = 0; i < paths.length; i++) {
@@ -26,4 +27,34 @@ export function extractComponentProps(component: any, props: any, ignoreProps?: 
     return componentProps;
   }
   return {};
+}
+
+export function extractDayProps(props: CalendarProps) {
+  const {
+    state,
+    marking,
+    markingType,
+    theme,
+    onPress,
+    onLongPress,
+    date,
+    disableAllTouchEventsForDisabledDays,
+    disableAllTouchEventsForInactiveDays,
+    dayComponent
+  } = props;
+
+  const dayProps = {
+    state,
+    marking,
+    markingType,
+    theme,
+    onPress,
+    onLongPress,
+    date,
+    disableAllTouchEventsForDisabledDays,
+    disableAllTouchEventsForInactiveDays,
+    dayComponent
+  };
+
+  return dayProps;
 }

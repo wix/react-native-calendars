@@ -41,5 +41,10 @@ export function parseDate(d?: any) {
 }
 
 export function toMarkingFormat(d: XDate) {
-  return d.toString('yyyy-MM-dd');
+  const year = `${d.getFullYear()}`;
+  const month = d.getMonth() + 1;
+  const doubleDigitMonth = month < 10 ? `0${month}` : `${month}`;
+  const day = d.getDate();
+  const doubleDigitDay = day < 10 ? `0${day}` : `${day}`;
+  return year + '-' + doubleDigitMonth + '-' + doubleDigitDay;
 }
