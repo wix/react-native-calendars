@@ -124,7 +124,6 @@ class CalendarList extends Component<CalendarListProps, State> {
 
   constructor(props: CalendarListProps) {
     super(props);
-
     this.style = styleConstructor(props.theme);
 
     const rows = [];
@@ -170,7 +169,6 @@ class CalendarList extends Component<CalendarListProps, State> {
   static getDerivedStateFromProps(_: CalendarListProps, prevState: State) {
     const rowClone = prevState.rows;
     const newRows = [];
-
     for (let i = 0; i < rowClone.length; i++) {
       let val: XDate | string = prevState.texts[i];
       // @ts-expect-error
@@ -289,12 +287,27 @@ class CalendarList extends Component<CalendarListProps, State> {
     });
   };
 
-  renderItem = ({item}: any) => {
-    const {calendarStyle, horizontal, calendarWidth, testID, ...others} = this.props;
+  getMarkedDatesForItem(item?: any) {
+    const {markedDates} = this.props;
+    
+    if (markedDates) {      
+      if (item && item.getTime) {
+        for (const [key, _] of Object.entries(markedDates)) {
+          if (sameMonth(new XDate(key), new XDate(item))) {
+            return markedDates;
+          }
+        }
+      }
+    }
+  }
 
+  renderItem = ({item}: any) => {
+    const {horizontal, calendarStyle, calendarWidth, testID, ...others} = this.props;
+    // NOTE: now only 'item' and 'markedDates' change for the 3 calendar (item.getTime) items
     return (
       <CalendarListItem
         {...others}
+        markedDates={this.getMarkedDatesForItem(item)}
         item={item}
         testID={`${testID}_${item}`}
         style={calendarStyle}
