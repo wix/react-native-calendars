@@ -1,26 +1,35 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-// @ts-expect-error
-import {CalendarList} from 'react-native-calendars';
+import React, {useState, useMemo, useCallback} from 'react';
+import {StyleSheet, Text, View, TextStyle} from 'react-native';
+import {CalendarList, DateData} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const RANGE = 24;
-const initialDate = '2020-06-10';
+const initialDate = '2022-07-05';
 
-const CalendarsList = () => {
+interface Props {
+  horizontalView?: boolean;
+}
+
+const CalendarListScreen = (props: Props) => {
+  const {horizontalView} = props;
   const [selected, setSelected] = useState(initialDate);
-  const markedDates = {
-    [selected]: {
-      selected: true,
-      disableTouchEvent: true,
-      selectedColor: '#5E60CE',
-      selectedTextColor: 'white'
-    }
-  };
+  const marked = useMemo(() => {
+    return {
+      [selected]: {
+        selected: true,
+        disableTouchEvent: true,
+        selectedColor: '#5E60CE',
+        selectedTextColor: 'white'
+      },
+      ['2022-08-05']: {
+        selectedTextColor: 'pink'
+      }
+    };
+  }, [selected]);
   
-  const onDayPress = day => {
+  const onDayPress = useCallback((day: DateData) => {
     setSelected(day.dateString);
-  };
+  }, []);
 
   return (
     <CalendarList
@@ -28,19 +37,26 @@ const CalendarsList = () => {
       current={initialDate}
       pastScrollRange={RANGE}
       futureScrollRange={RANGE}
-      renderHeader={renderCustomHeader}
-      theme={theme}
       onDayPress={onDayPress}
-      markedDates={markedDates}
+      markedDates={marked}
+      renderHeader={!horizontalView ? renderCustomHeader : undefined}
+      theme={!horizontalView ? theme : undefined}
+      horizontal={horizontalView}
+      pagingEnabled={horizontalView}
+      staticHeader={horizontalView}
     />
   );
 };
 
 const theme = {
-  'stylesheet.calendar.header': {
-    dayHeader: {
-      fontWeight: '600',
-      color: '#48BFE3'
+  stylesheet: {
+    calendar: {
+      header: {
+        dayHeader: {
+          fontWeight: '600',
+          color: '#48BFE3'
+        }
+      }
     }
   },
   'stylesheet.day.basic': {
@@ -55,10 +71,10 @@ const theme = {
   }
 };
 
-function renderCustomHeader(date) {
+function renderCustomHeader(date: any) {
   const header = date.toString('MMMM yyyy');
   const [month, year] = header.split(' ');
-  const textStyle = {
+  const textStyle: TextStyle = {
     fontSize: 18,
     fontWeight: 'bold',
     paddingTop: 10,
@@ -75,7 +91,7 @@ function renderCustomHeader(date) {
   );
 }
 
-export default CalendarsList;
+export default CalendarListScreen;
 
 const styles = StyleSheet.create({
   header: {

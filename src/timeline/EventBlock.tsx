@@ -1,6 +1,6 @@
+import XDate from 'xdate';
 import React, {useCallback, useMemo} from 'react';
 import {View, Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
-import XDate from 'xdate';
 
 export interface Event {
   id?: string;
@@ -29,6 +29,7 @@ export interface EventBlockProps {
 }
 
 const TEXT_LINE_HEIGHT = 17;
+const EVENT_DEFAULT_COLOR = '#add8e6';
 
 const EventBlock = (props: EventBlockProps) => {
   const {index, event, renderEvent, onPress, format24h, styles} = props;
@@ -43,7 +44,7 @@ const EventBlock = (props: EventBlockProps) => {
       height: event.height,
       width: event.width,
       top: event.top,
-      backgroundColor: event.color ? event.color : '#add8e6'
+      backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR
     };
   }, [event]);
 

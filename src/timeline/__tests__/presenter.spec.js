@@ -47,6 +47,28 @@ describe('timeline presenter', () => {
     });
   });
 
+  describe('calcDateByPosition', () => {
+    it('should return date by position - basic case 1', () => {
+      const date = uut.calcDateByPosition(100, 72, 1, '2022-10-10');
+      expect(date).toBe('2022-10-10');
+    });
+
+    it('should return date by position - basic case 2', () => {
+      const date = uut.calcDateByPosition(100, 72, 3, '2022-10-10');
+      expect(date).toBe('2022-10-10');
+    });
+
+    it('should return date by position - basic case 3', () => {
+      const date = uut.calcDateByPosition(500, 72, 3, '2022-10-10');
+      expect(date).toBe('2022-10-11');
+    });
+
+    it('should return date by position - basic case 3', () => {
+      const date = uut.calcDateByPosition(500, 72, 7, '2022-10-10');
+      expect(date).toBe('2022-10-14');
+    });
+  });
+
   describe('buildTimeString', () => {
     it('should construct time string based on given hour/mins', () => {
       expect(uut.buildTimeString(3, 12)).toBe('03:12:00');

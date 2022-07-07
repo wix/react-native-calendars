@@ -6,6 +6,8 @@ export interface CalendarContextProps {
   setDate: (date: string, source: UpdateSources) => void;
   updateSource: UpdateSources;
   setDisabled: (disable: boolean) => void;
+  numberOfDays?: number;
+  timelineLeftInset?: number;
 }
 
 // @ts-expect-error

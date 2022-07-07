@@ -42,6 +42,10 @@ export interface CalendarContextProviderProps extends ViewProps {
   todayButtonStyle?: ViewStyle;
   /** The opacity for the disabled today button (0-1) */
   disabledOpacity?: number;
+  /** The number of days to present in the timeline calendar */
+  numberOfDays?: number;
+  /** The left inset of the timeline calendar (sidebar width), default is 72 */
+  timelineLeftInset?: number;
 }
 
 /**
@@ -56,6 +60,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     todayBottomMargin,
     todayButtonStyle,
     style: propsStyle,
+    numberOfDays,
+    timelineLeftInset = 72,
     children
   } = props;
   const style = useRef(styleConstructor(theme));
@@ -109,9 +115,11 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       prevDate: prevDate,
       updateSource: updateSource,
       setDate: _setDate,
-      setDisabled: _setDisabled
+      setDisabled: _setDisabled,
+      numberOfDays,
+      timelineLeftInset
     };
-  }, [currentDate, prevDate, updateSource]);
+  }, [currentDate, prevDate, updateSource, numberOfDays]);
 
   const animateTodayButton = (date: string) => {
     if (shouldAnimateTodayButton(props)) {
@@ -174,5 +182,7 @@ CalendarProvider.propTypes = {
   showTodayButton: PropTypes.bool,
   todayBottomMargin: PropTypes.number,
   todayButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  disabledOpacity: PropTypes.number
+  disabledOpacity: PropTypes.number,
+  numberOfDays: PropTypes.number,
+  timelineLeftInset: PropTypes.number
 };
