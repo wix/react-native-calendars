@@ -15,7 +15,7 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
   const style = useRef(styleConstructor(theme));
 
   const getWeek = (date?: string) => {
@@ -31,7 +31,7 @@ const Week = (props: WeekProps) => {
   const renderDay = (day: XDate, id: number) => {
     const dayProps = extractComponentProps(Day, props);
     const currXdate = parseDate(current);
-    
+
     // hide extra days
     if (current && hideExtraDays) {
       if (!sameMonth(day, currXdate)) {
@@ -47,7 +47,7 @@ const Week = (props: WeekProps) => {
           state={getState(day, currXdate, props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={onDayPress}
-          onLongPress={onDayPress}
+          onLongPress={onLongPress}
         />
       </View>
     );
@@ -56,17 +56,17 @@ const Week = (props: WeekProps) => {
   const renderWeek = () => {
     const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
     let week: any[] = [];
-  
+
     if (dates) {
       dates.forEach((day: XDate, id: number) => {
         week.push(renderDay(day, id));
       }, this);
     }
-  
+
     // if (this.props.showWeekNumbers) {
     //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
     // }
-    
+
     const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
 
     if (numberOfDays > 1 && todayIndex > -1) {
