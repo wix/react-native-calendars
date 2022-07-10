@@ -83,8 +83,8 @@ const Calendar = (props: CalendarProps) => {
   const style = useRef(styleConstructor(theme));
   const header = useRef();
   const isMounted = useRef(false);
+  const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
  
-
   useEffect(() => {
     if (initialDate) {
       setCurrentMonth(parseDate(initialDate));
@@ -170,7 +170,7 @@ const Calendar = (props: CalendarProps) => {
       <View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
           key={`week-${weekNumber}`}
-          marking={{disabled: true, disableTouchEvent: true}}
+          marking={weekNumberMarking.current}
           // state='disabled'
           theme={theme}
           testID={`${WEEK_NUMBER}-${weekNumber}`}
@@ -185,7 +185,7 @@ const Calendar = (props: CalendarProps) => {
     const dayProps = extractComponentProps(Day, props);
 
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer} />;
+      return <View key={id} style={style.current.emptyDayContainer}/>;
     }
 
     return (
