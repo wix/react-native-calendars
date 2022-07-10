@@ -1,6 +1,5 @@
 import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
-import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
 
@@ -86,7 +85,3 @@ const Day = React.memo((props: DayProps) => {
 export default Day;
 
 Day.displayName = 'Day';
-Day.propTypes = {
-  ...BasicDay.propTypes,
-  dayComponent: PropTypes.any
-};

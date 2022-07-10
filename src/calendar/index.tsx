@@ -10,7 +10,7 @@ import constants from '../commons/constants';
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-import {extractComponentProps, extractDayProps} from '../componentUpdater';
+import {extractHeaderProps, extractDayProps} from '../componentUpdater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
 import {DateData, Theme} from '../types';
@@ -242,7 +242,7 @@ const Calendar = (props: CalendarProps) => {
       }
     }
 
-    const headerProps = extractComponentProps(CalendarHeader, props);
+    const headerProps = extractHeaderProps(props);
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;

@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-import {extractComponentProps} from '../componentUpdater';
+import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
@@ -29,7 +29,7 @@ const Week = (props: WeekProps) => {
   // }
 
   const renderDay = (day: XDate, id: number) => {
-    const dayProps = extractComponentProps(Day, props);
+    const dayProps = extractDayProps(props);
     const currXdate = parseDate(current);
     
     // hide extra days

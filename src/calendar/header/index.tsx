@@ -1,5 +1,4 @@
 import includes from 'lodash/includes';
-import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle, useRef} from 'react';
@@ -292,29 +291,6 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
 export default CalendarHeader;
 CalendarHeader.displayName = 'CalendarHeader';
-CalendarHeader.propTypes = {
-  month: PropTypes.instanceOf(XDate),
-  addMonth: PropTypes.func,
-  theme: PropTypes.object,
-  firstDay: PropTypes.number,
-  displayLoadingIndicator: PropTypes.bool,
-  showWeekNumbers: PropTypes.bool,
-  monthFormat: PropTypes.string,
-  hideDayNames: PropTypes.bool,
-  hideArrows: PropTypes.bool,
-  renderArrow: PropTypes.func,
-  onPressArrowLeft: PropTypes.func,
-  onPressArrowRight: PropTypes.func,
-  disableArrowLeft: PropTypes.bool,
-  disableArrowRight: PropTypes.bool,
-  disabledDaysIndexes: PropTypes.any,
-  renderHeader: PropTypes.any,
-  customHeaderTitle: PropTypes.any,
-  webAriaLevel: PropTypes.number,
-  numberOfDays: PropTypes.number,
-  current: PropTypes.string,
-  timelineLeftInset: PropTypes.number
-};
 CalendarHeader.defaultProps = {
   monthFormat: 'MMMM yyyy',
   webAriaLevel: 1
