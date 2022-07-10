@@ -16,8 +16,9 @@ import PeriodDay from './period';
 function areEqual(prevProps: DayProps, nextProps: DayProps) {
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
   const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
+  const arePropsWithoutMarkedDatesEqual = isEqual(prevPropsWithoutMarkDates, nextPropsWithoutMarkDates);
   const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
-  return prevPropsWithoutMarkDates === nextPropsWithoutMarkDates && isMarkingEqual;
+  return arePropsWithoutMarkedDatesEqual && isMarkingEqual;
 }
 
 export interface DayProps extends BasicDayProps {
