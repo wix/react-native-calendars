@@ -1,3 +1,4 @@
+import {CalendarListProps} from './calendar-list';
 import {CalendarProps} from './calendar';
 import {MarkingProps} from './calendar/day/marking';
 
@@ -134,4 +135,29 @@ export function extractHeaderProps(props: CalendarProps) {
   };
 
   return headerProps;
+}
+
+export function extractCalendarProps(props: CalendarListProps) {
+  const {
+    pastScrollRange,
+    futureScrollRange,
+    calendarWidth,
+    calendarHeight,
+    calendarStyle,
+    staticHeader,
+    showScrollIndicator,
+    animateScroll,
+    scrollEnabled,
+    scrollsToTop,
+    pagingEnabled,
+    horizontal,
+    keyboardShouldPersistTaps,
+    keyExtractor,
+    onEndReachedThreshold,
+    onEndReached,
+    nestedScrollEnabled,
+    ...others
+  } = props;
+
+  return others;
 }

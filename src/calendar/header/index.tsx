@@ -40,7 +40,7 @@ export interface CalendarHeaderProps {
   showWeekNumbers?: boolean;
   /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
   monthFormat?: string;
-  /**  Hide day names */
+  /** Hide day names */
   hideDayNames?: boolean;
   /** Hide month navigation arrows */
   hideArrows?: boolean;
