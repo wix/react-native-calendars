@@ -1,3 +1,6 @@
+import omit from 'lodash/omit';
+import isEqual from 'lodash/isEqual';
+import some from 'lodash/some';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
@@ -11,6 +14,16 @@ import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 
+function areEqual(prevProps: DayProps, nextProps: DayProps) {
+  const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
+  const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
+  const didPropsChange = some(prevPropsWithoutMarkDates, function(value, key) {
+    //@ts-expect-error
+    return value !== nextPropsWithoutMarkDates[key]; 
+  });
+  const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
+  return !didPropsChange && isMarkingEqual;
+}
 
 export interface DayProps extends BasicDayProps {
   /** Provide custom day rendering component */
@@ -72,7 +85,7 @@ const Day = React.memo((props: DayProps) => {
       {formatNumbers(_date?.getDate())}
     </Component>
   );
-}) as any;
+}, areEqual) as any;
 
 export default Day;
 
