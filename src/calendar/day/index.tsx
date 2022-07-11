@@ -1,5 +1,6 @@
 import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
+import some from 'lodash/some';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
@@ -16,9 +17,11 @@ import PeriodDay from './period';
 function areEqual(prevProps: DayProps, nextProps: DayProps) {
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
   const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
-  const arePropsWithoutMarkedDatesEqual = isEqual(prevPropsWithoutMarkDates, nextPropsWithoutMarkDates);
+  const areOthersEqual = some(prevPropsWithoutMarkDates, function(value, key) { 
+    return value === nextPropsWithoutMarkDates[key]; 
+  });
   const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
-  return arePropsWithoutMarkedDatesEqual && isMarkingEqual;
+  return areOthersEqual && isMarkingEqual;
 }
 
 export interface DayProps extends BasicDayProps {
