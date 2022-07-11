@@ -135,7 +135,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
   renderItem = ({item}: any) => {
     const {allowShadow, context, ...calendarListProps} = this.props;
-    const {style, onDayPress, markedDates, firstDay = 1, ...others} = extractCalendarProps(calendarListProps);
+    const {style, onDayPress, markedDates, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
 
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
