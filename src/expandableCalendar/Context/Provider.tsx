@@ -10,12 +10,12 @@ import styleConstructor from '../style';
 import {UpdateSources} from '../commons';
 import CalendarContext from './index';
 import {
-  getButtonIcon,
   setDate,
   setDisabled,
   shouldAnimateTodayButton,
-  getPositionAnimation,
   shouldAnimateOpacity,
+  getButtonIcon,
+  getPositionAnimation,
   getOpacityAnimation,
   getTodayDate,
   getTodayFormatted
