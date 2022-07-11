@@ -18,7 +18,7 @@ function areEqual(prevProps: DayProps, nextProps: DayProps) {
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
   const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
   const areOthersEqual = some(prevPropsWithoutMarkDates, function(value, key) { 
-    return value === nextPropsWithoutMarkDates[key]; 
+    return value !== nextPropsWithoutMarkDates[key]; 
   });
   const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
   return areOthersEqual && isMarkingEqual;
