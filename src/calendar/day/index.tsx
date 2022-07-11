@@ -1,7 +1,6 @@
 import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
 import some from 'lodash/some';
-import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
 
