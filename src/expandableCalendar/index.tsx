@@ -281,11 +281,13 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (!horizontal) {
       calendar?.current?.scrollToDay(new XDate(date), 0, true);
     } else if (getYear(date) !== visibleYear.current || getMonth(date) !== visibleMonth.current) {
+      // TODO: Investigate why this is being called when moving months with arrow press
       // don't scroll if the month is already visible
       calendar?.current?.scrollToMonth(date);
     }
   };
 
+  // TODO: Why we're not wrapping this with useCallback?
   const scrollPage = (next: boolean) => {
     if (horizontal) {
       const d = parseDate(date);
@@ -351,6 +353,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
+  // TODO: We should consider wrapping this with ref/useMemo cause it's being created on each render
   const panResponder = numberOfDays <= 1 ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
@@ -530,6 +533,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
+  // TODO: Shouldn't this be wrapped with useCallback? 
   const _renderArrow = (direction: Direction) => {
     if (isFunction(renderArrow)) {
       return renderArrow(direction);
@@ -562,6 +566,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
             horizontal={horizontal}
             firstDay={firstDay}
             calendarStyle={calendarStyle}
+            // TODO: others might container unwanted props, we should use extractCalendarListProps
             {...others}
             markedDates={_markedDates}
             theme={themeObject}

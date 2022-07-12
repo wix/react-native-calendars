@@ -50,6 +50,8 @@ const ExpandableCalendarScreen = (props: Props) => {
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}
+          // closeOnDayPress={false}
+          // initialPosition={ExpandableCalendar.positions.CLOSED}
           // horizontal={false}
           // hideArrows
           // disablePan
