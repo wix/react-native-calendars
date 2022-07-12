@@ -90,6 +90,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   }, [todayBottomMargin, currentDate]);
 
   const _setDate = (date: string, updateSource: UpdateSources) => {
+    // TODO: We should get rid of this presenter usages, it's very confusing and makes it impossible to refactor or understand the code
+    // Let's move the functionality back here, or at least transform the presenter to be pure calculation functions
     const updateState = (buttonIcon: number) => {
       setPrevDate(currentDate);
       setCurrentDate(date);
