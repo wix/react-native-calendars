@@ -141,6 +141,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       const prevSelectedDate = this.getSelectedDate(prevProps.selected);
       if (!sameDate(newSelectedDate, prevSelectedDate)) {
         this.setState({selectedDay: newSelectedDate});
+        this.calendar?.current?.scrollToDay(newSelectedDate, this.calendarOffset(), true);
       }
     } else if (!prevProps.items) {
       this.loadReservations(this.props);
