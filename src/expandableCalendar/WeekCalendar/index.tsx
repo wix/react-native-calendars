@@ -6,7 +6,7 @@ import {Map} from 'immutable';
 import React, {Component} from 'react';
 import {FlatList, View, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
-import {extractComponentProps} from '../../componentUpdater';
+import {extractCalendarProps} from '../../componentUpdater';
 import {sameWeek} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
@@ -24,9 +24,6 @@ const applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
-  /** whether to hide the names of the week days */
-  hideDayNames?: boolean;
-
   context?: any;
 }
 
@@ -44,9 +41,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
   static propTypes = {
     ...CalendarList.propTypes,
-    current: PropTypes.any,
-    allowShadow: PropTypes.bool,
-    hideDayNames: PropTypes.bool
+    allowShadow: PropTypes.bool
   };
 
   static defaultProps = {
@@ -139,8 +134,8 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
   };
 
   renderItem = ({item}: any) => {
-    const {style, onDayPress, markedDates, firstDay, ...others} = extractComponentProps(Week, this.props);
-    const {context} = this.props;
+    const {allowShadow, context, ...calendarListProps} = this.props;
+    const {style, onDayPress, markedDates, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
 
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;

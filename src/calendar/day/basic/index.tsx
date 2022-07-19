@@ -1,6 +1,4 @@
 import XDate from 'xdate';
-import values from 'lodash/values';
-import PropTypes from 'prop-types';
 import React, {Fragment, useCallback, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
@@ -203,14 +201,3 @@ const BasicDay = (props: BasicDayProps) => {
 
 export default BasicDay;
 BasicDay.displayName = 'BasicDay';
-BasicDay.propTypes = {
-  state: PropTypes.oneOf(['selected', 'disabled', 'inactive', 'today', '']),
-  marking: PropTypes.any,
-  markingType: PropTypes.oneOf(values(Marking.markings)),
-  theme: PropTypes.object,
-  onPress: PropTypes.func,
-  onLongPress: PropTypes.func,
-  date: PropTypes.string,
-  disableAllTouchEventsForDisabledDays: PropTypes.bool,
-  disableAllTouchEventsForInactiveDays: PropTypes.bool
-};
