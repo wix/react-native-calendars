@@ -31,7 +31,6 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
-    "fs": "^0.0.1-security",
     "hoist-non-react-statics": "^3.3.1",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
