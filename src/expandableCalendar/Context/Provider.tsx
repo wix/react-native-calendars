@@ -66,15 +66,16 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const buttonY = useRef(new Animated.Value(todayBottomMargin ? -todayBottomMargin : -TOP_POSITION));
   const opacity = useRef(new Animated.Value(1));
   const today = useRef(getTodayFormatted());
-  const wrapperStyle = useMemo(() => {
-    return [style.current.contextWrapper, propsStyle];
-  }, [style, propsStyle]);
-
+  
   const [prevDate, setPrevDate] = useState(date);
   const [currentDate, setCurrentDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
   const [isDisabled, setIsDisabled] = useState(false);
   const [buttonIcon, setButtonIcon] = useState(getButtonIcon(date, showTodayButton));
+
+  const wrapperStyle = useMemo(() => {
+    return [style.current.contextWrapper, propsStyle];
+  }, [style, propsStyle]);
 
   useEffect(() => {
     if (date) {
