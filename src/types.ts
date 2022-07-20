@@ -34,7 +34,7 @@ export interface Theme {
   arrowColor?: string;
   textDisabledColor?: string;
   textInactiveColor?: string;
-  backgroundColor?: string;
+  backgroundColor?: string; //TODO: remove in V2
   dotColor?: string;
   selectedDotColor?: string;
   disabledArrowColor?: string;
@@ -51,15 +51,6 @@ export interface Theme {
   agendaDayNumColor?: string;
   agendaTodayColor?: string;
   agendaKnobColor?: string;
-  foregroundColor?: string;
-  separatorColor?: string;
-  processedColor?: string;
-  processingColor?: string;
-  failedColor?: string;
-  textSecondaryColor?: string;
-  textDefaultColor?: string;
-  textColor?: string;
-  textLinkColor?: string;
   todayButtonFontFamily?: TextStyle['fontFamily'];
   todayButtonFontWeight?: TextStyle['fontWeight'];
   todayButtonFontSize?: number;
