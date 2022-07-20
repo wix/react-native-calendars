@@ -31,7 +31,6 @@ import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
 import WeekCalendar from './WeekCalendar';
 import Context from './Context';
-import {useWhyDidYouUpdate} from 'react-recipes';
 
 import constants from '../commons/constants';
 const commons = require('./commons');
@@ -99,8 +98,6 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  useWhyDidYouUpdate('Expandable', props);
-
   const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);  
   const {
     /** ExpandableCalendar props */
@@ -115,6 +112,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     openThreshold = PAN_GESTURE_THRESHOLD, 
     closeThreshold = PAN_GESTURE_THRESHOLD,
     closeOnDayPress = true,
+
     /** CalendarList props */
     horizontal = true, 
     calendarStyle,
@@ -408,6 +406,15 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
   };
 
+  const closeCalendar = () => {
+    setTimeout(() => {
+      // to allows setDate to be completed
+      if (isOpen) {
+        bounceToPosition(closedHeight);
+      }
+    }, 0);
+  };
+
   /** Events */
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
@@ -427,15 +434,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
     onDayPress?.(value);
   }, [onDayPress, closeOnDayPress, isOpen, numberOfDays]);
-
-  const closeCalendar = () => {
-    setTimeout(() => {
-      // to allows setDate to be completed
-      if (isOpen) {
-        bounceToPosition(closedHeight);
-      }
-    }, 0);
-  };
 
   const onVisibleMonthsChange = useCallback(throttle(
     (value: DateData[]) => {
@@ -469,12 +467,24 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           }, 0);
         }
       }
-    },
-    100,
-    {trailing: true, leading: false}
+    }, 100, {trailing: true, leading: false}
   ), [date, scrollPage]);
 
   /** Renders */
+
+  const _renderArrow = useCallback((direction: Direction) => {
+    if (isFunction(renderArrow)) {
+      return renderArrow(direction);
+    }
+
+    return (
+      <Image
+        source={direction === 'right' ? rightArrowImageSource : leftArrowImageSource}
+        style={style.current.arrowImage}
+        testID={`${testID}-${direction}-arrow`}
+      />
+    );
+  }, [renderArrow, rightArrowImageSource, leftArrowImageSource, testID]);
   
   const renderWeekDaysNames = () => {
     return (
@@ -487,7 +497,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  const renderHeader = () => {
+  const renderAnimatedHeader = () => {
     const monthYear = new XDate(date).toString('MMMM yyyy');
 
     return (
@@ -501,6 +511,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         </Text>
         {renderWeekDaysNames()}
       </Animated.View>
+    );
+  };
+
+  const renderKnob = () => {
+    return (
+      <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
+        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop}/>
+      </View>
     );
   };
 
@@ -528,27 +546,33 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  const renderKnob = () => {
+  const renderCalendarList = () => {
     return (
-      <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
-        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop}/>
-      </View>
-    );
-  };
-
-  const _renderArrow = useCallback((direction: Direction) => {
-    if (isFunction(renderArrow)) {
-      return renderArrow(direction);
-    }
-
-    return (
-      <Image
-        source={direction === 'right' ? rightArrowImageSource : leftArrowImageSource}
-        style={style.current.arrowImage}
-        testID={`${testID}-${direction}-arrow`}
+      <CalendarList
+        testID="calendar"
+        horizontal={horizontal}
+        firstDay={firstDay}
+        calendarStyle={calendarStyle}
+        {...others}
+        markedDates={_markedDates}
+        theme={themeObject}
+        ref={calendar}
+        current={initialDate}
+        onDayPress={_onDayPress}
+        onVisibleMonthsChange={onVisibleMonthsChange}
+        pagingEnabled
+        scrollEnabled={isOpen}
+        hideArrows={shouldHideArrows}
+        onPressArrowLeft={_onPressArrowLeft}
+        onPressArrowRight={_onPressArrowRight}
+        hideExtraDays={!horizontal && isOpen}
+        renderArrow={_renderArrow}
+        staticHeader
+        numberOfDays={numberOfDays}
+        timelineLeftInset={timelineLeftInset}
       />
     );
-  }, [renderArrow, rightArrowImageSource, leftArrowImageSource, testID]);
+  };
 
   return (
     <View testID={testID} style={containerStyle}>
@@ -563,32 +587,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         />
       ) : (
         <Animated.View ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
-          <CalendarList
-            testID="calendar"
-            horizontal={horizontal}
-            firstDay={firstDay}
-            calendarStyle={calendarStyle}
-            {...others}
-            markedDates={_markedDates}
-            theme={themeObject}
-            ref={calendar}
-            current={initialDate}
-            onDayPress={_onDayPress}
-            onVisibleMonthsChange={onVisibleMonthsChange}
-            pagingEnabled
-            scrollEnabled={isOpen}
-            hideArrows={shouldHideArrows}
-            onPressArrowLeft={_onPressArrowLeft}
-            onPressArrowRight={_onPressArrowRight}
-            hideExtraDays={!horizontal && isOpen}
-            renderArrow={_renderArrow}
-            staticHeader
-            numberOfDays={numberOfDays}
-            timelineLeftInset={timelineLeftInset}
-          />
+          {renderCalendarList()}
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}
-          {!horizontal && renderHeader()}
+          {!horizontal && renderAnimatedHeader()}
         </Animated.View>
       )}
     </View>
