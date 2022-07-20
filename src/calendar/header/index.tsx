@@ -75,6 +75,7 @@ export interface CalendarHeaderProps {
   timelineLeftInset?: number;
 }
 
+const arrowHitSlop = {left: 20, right: 20, top: 20, bottom: 20};
 const accessibilityActions = [
   {name: 'increment', label: 'increment'},
   {name: 'decrement', label: 'decrement'}
@@ -210,17 +211,17 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const isLeft = direction === 'left';
     const id = isLeft ? CHANGE_MONTH_LEFT_ARROW : CHANGE_MONTH_RIGHT_ARROW;
     const testId = testID ? `${id}-${testID}` : id;
-    const onPress = isLeft ? onPressLeft : onPressRight;
+    const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
+    const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
     const renderArrowDirection = isLeft ? 'left' : 'right';
-    const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
 
     return (
       <TouchableOpacity
-        onPress={!shouldDisable ? onPress : undefined}
+        onPress={onPress}
         disabled={shouldDisable}
         style={style.current.arrow}
-        hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+        hitSlop={arrowHitSlop}
         testID={testId}
       >
         {renderArrow ? (
@@ -251,11 +252,15 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
   }, [timelineLeftInset]);
 
+  const dayNamesStyle = useMemo(() => {
+    return [style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined];
+  }, [numberOfDays, partialWeekStyle]);
+
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
         <View
-          style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined]}
+          style={dayNamesStyle}
           testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}
         >
           {renderWeekNumbersSpace()}
