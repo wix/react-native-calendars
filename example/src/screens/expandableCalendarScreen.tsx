@@ -65,6 +65,7 @@ const ExpandableCalendarScreen = (props: Props) => {
           leftArrowImageSource={leftArrowIcon}
           rightArrowImageSource={rightArrowIcon}
           // animateScroll
+          // closeOnDayPress={false}
         />
       )}
       <AgendaList
