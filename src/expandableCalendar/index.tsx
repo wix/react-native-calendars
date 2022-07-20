@@ -1,10 +1,8 @@
 import first from 'lodash/first';
-import values from 'lodash/values';
 import isFunction from 'lodash/isFunction';
 import isNumber from 'lodash/isNumber';
 import throttle from 'lodash/throttle';
 
-import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
@@ -105,28 +103,30 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);  
   const {
-    theme, 
-    horizontal = true, 
+    /** ExpandableCalendar props */
     initialPosition = Positions.CLOSED, 
-    firstDay = 0, 
+    onCalendarToggled,
     disablePan, 
+    hideKnob = numberOfDays > 1, 
+    leftArrowImageSource = LEFT_ARROW,
+    rightArrowImageSource = RIGHT_ARROW, 
+    allowShadow = true, 
     disableWeekScroll,
     openThreshold = PAN_GESTURE_THRESHOLD, 
     closeThreshold = PAN_GESTURE_THRESHOLD,
-    onCalendarToggled,
     closeOnDayPress = true,
-    onDayPress,
-    style: propsStyle, 
+    /** CalendarList props */
+    horizontal = true, 
     calendarStyle,
-    allowShadow = true, 
-    hideKnob = numberOfDays > 1, 
+    theme, 
+    style: propsStyle, 
+    firstDay = 0, 
+    markedDates,
+    onDayPress,
     hideArrows, 
     onPressArrowLeft,
     onPressArrowRight,
     renderArrow, 
-    rightArrowImageSource = RIGHT_ARROW, 
-    leftArrowImageSource = LEFT_ARROW,
-    markedDates,
     testID,
     ...others
   } = props;
@@ -598,20 +598,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 export default ExpandableCalendar;
 
 ExpandableCalendar.displayName = 'ExpandableCalendar';
-ExpandableCalendar.propTypes = {
-  ...CalendarList.propTypes,
-  initialPosition: PropTypes.oneOf(values(Positions)),
-  onCalendarToggled: PropTypes.func,
-  disablePan: PropTypes.bool,
-  hideKnob: PropTypes.bool,
-  leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-  rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-  allowShadow: PropTypes.bool,
-  disableWeekScroll: PropTypes.bool,
-  openThreshold: PropTypes.number,
-  closeThreshold: PropTypes.number,
-  closeOnDayPress: PropTypes.bool
-};
 ExpandableCalendar.defaultProps = {
   horizontal: true,
   initialPosition: Positions.CLOSED,
