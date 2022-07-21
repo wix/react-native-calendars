@@ -54,6 +54,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const {
     theme,
     date,
+    onDateChanged,
+    onMonthChange,
     showTodayButton = false,
     todayBottomMargin,
     todayButtonStyle,
@@ -89,26 +91,26 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
 
   /** Context */
 
-  const _setDate = (date: string, updateSource: UpdateSources) => {
+  const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
     setPrevDate(currentDate);
     setCurrentDate(date);
     setUpdateSource(updateSource);
     setButtonIcon(getButtonIcon(date, showTodayButton));
 
-    props.onDateChanged?.(date, updateSource);
+    onDateChanged?.(date, updateSource);
 
     if (!sameMonth(new XDate(date), new XDate(currentDate))) {
-      props.onMonthChange?.(xdateToData(new XDate(date)), updateSource);
+      onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
-  };
+  }, [currentDate, onDateChanged, onMonthChange]);
 
-  const _setDisabled = (disabled: boolean) => {
+  const _setDisabled = useCallback((disabled: boolean) => {
     if (!showTodayButton || disabled === isDisabled) {
       return;
     }
     setIsDisabled(disabled);
     animateOpacity(disabled);
-  };
+  }, [showTodayButton]);
 
   const contextValue = useMemo(() => {
     return {
