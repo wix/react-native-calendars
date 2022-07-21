@@ -533,12 +533,16 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         pointerEvents={!isOpen ? 'auto' : 'none'}
       >
         <WeekComponent
-          {...props}
+          testID="week_calendar"
+          firstDay={firstDay}
+          {...others}
           {...weekCalendarProps}
           current={date}
-          onDayPress={_onDayPress}
+          markedDates={_markedDates}
+          theme={themeObject}
           style={calendarStyle}
           hideDayNames={true}
+          onDayPress={_onDayPress}
           accessibilityElementsHidden // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
         />
