@@ -131,7 +131,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Date */
 
-  const initialDate = date;
   const getYear = (date: string) => {
     const d = new XDate(date);
     return d.getFullYear();
@@ -561,7 +560,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         markedDates={_markedDates}
         theme={themeObject}
         ref={calendar}
-        current={initialDate}
+        // current={date}
         onDayPress={_onDayPress}
         onVisibleMonthsChange={onVisibleMonthsChange}
         pagingEnabled
