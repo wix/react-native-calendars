@@ -60,12 +60,15 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
   };
 
   componentDidUpdate(prevProps: WeekCalendarProps) {
-    const {context} = this.props;
+    const {context, firstDay = 0} = this.props;
     const {shouldComponentUpdate, getDatesArray, scrollToIndex} = this.presenter;
 
-    if (shouldComponentUpdate(context, prevProps.context)) {
-      this.setState({items: getDatesArray(this.props)});
-      scrollToIndex(false);
+    if (shouldComponentUpdate(this.props.context, prevProps.context)) {
+      if (!sameWeek(context.date, prevProps.context.date, firstDay)) {
+        // Don't update items if the new date is on the same week
+        this.setState({items: getDatesArray(this.props)});
+        scrollToIndex(false);
+      }
     }
   }
 
@@ -135,7 +138,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
   renderItem = ({item}: any) => {
     const {allowShadow, context, ...calendarListProps} = this.props;
-    const {style, onDayPress, markedDates, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
+    const {style, onDayPress = this.onDayPress, markedDates, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
 
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
@@ -148,7 +151,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
         firstDay={firstDay}
         style={this.getWeekStyle(this.containerWidth, style)}
         markedDates={markedDates}
-        onDayPress={onDayPress || this.onDayPress}
+        onDayPress={onDayPress}
         context={currentContext}
         numberOfDays={context.numberOfDays}
         timelineLeftInset={context.timelineLeftInset}
