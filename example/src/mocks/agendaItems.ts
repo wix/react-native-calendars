@@ -95,7 +95,7 @@ export const agendaItems = [
     ]
   },
   {
-    title: dates[10],
+    title: dates[11],
     data: [
       {hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'},
       {hour: '2pm', duration: '1h', title: 'Deep Stretches'},
@@ -103,13 +103,13 @@ export const agendaItems = [
     ]
   },
   {
-    title: dates[11], 
+    title: dates[12], 
     data: [
       {hour: '12am', duration: '1h', title: 'Last Yoga'}
     ]
   },
   {
-    title: dates[12], 
+    title: dates[13], 
     data: [
       {hour: '12am', duration: '1h', title: 'Last Yoga'}
     ]
