@@ -75,6 +75,7 @@ export interface CalendarHeaderProps {
   timelineLeftInset?: number;
 }
 
+const arrowHitSlop = {left: 20, right: 20, top: 20, bottom: 20};
 const accessibilityActions = [
   {name: 'increment', label: 'increment'},
   {name: 'decrement', label: 'decrement'}
@@ -108,7 +109,17 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     current = '',
     timelineLeftInset
   } = props;
+  
   const style = useRef(styleConstructor(theme));
+  const headerStyle = useMemo(() => {
+    return [style.current.header, numberOfDays > 1 ? style.current.partialHeader : undefined];
+  }, [numberOfDays]);
+  const partialWeekStyle = useMemo(() => {
+    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
+  }, [timelineLeftInset]);
+  const dayNamesStyle = useMemo(() => {
+    return [style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined];
+  }, [numberOfDays, partialWeekStyle]);
 
   useImperativeHandle(ref, () => ({
     onPressLeft,
@@ -137,7 +148,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     return addMonth();
   }, [onPressArrowRight, addMonth, month]);
 
-  const onAccessibilityAction = (event: AccessibilityActionEvent) => {
+  const onAccessibilityAction = useCallback((event: AccessibilityActionEvent) => {
     switch (event.nativeEvent.actionName) {
       case 'decrement':
         onPressLeft();
@@ -148,7 +159,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       default:
         break;
     }
-  };
+  }, [onPressLeft, onPressRight]);
 
   const renderWeekDays = useMemo(() => {
     const dayOfTheWeek = new XDate(current).getDay();
@@ -210,17 +221,17 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const isLeft = direction === 'left';
     const id = isLeft ? CHANGE_MONTH_LEFT_ARROW : CHANGE_MONTH_RIGHT_ARROW;
     const testId = testID ? `${id}-${testID}` : id;
-    const onPress = isLeft ? onPressLeft : onPressRight;
+    const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
+    const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
     const renderArrowDirection = isLeft ? 'left' : 'right';
-    const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
 
     return (
       <TouchableOpacity
-        onPress={!shouldDisable ? onPress : undefined}
+        onPress={onPress}
         disabled={shouldDisable}
         style={style.current.arrow}
-        hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+        hitSlop={arrowHitSlop}
         testID={testId}
       >
         {renderArrow ? (
@@ -247,15 +258,11 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     return showWeekNumbers && <View style={style.current.dayHeader} />;
   };
 
-  const partialWeekStyle = useMemo(() => {
-    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
-  }, [timelineLeftInset]);
-
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
         <View
-          style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined]}
+          style={dayNamesStyle}
           testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}
         >
           {renderWeekNumbersSpace()}
@@ -276,7 +283,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
       importantForAccessibility={importantForAccessibility} // Android
     >
-      <View style={[style.current.header, numberOfDays > 1 ? style.current.partialHeader : undefined]}>
+      <View style={headerStyle}>
         {_renderArrow('left')}
         <View style={style.current.headerContainer}>
           {_renderHeader()}
