@@ -405,14 +405,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
   };
 
-  const closeCalendar = () => {
+  const closeCalendar = useCallback(() => {
     setTimeout(() => {
       // to allows setDate to be completed
       if (isOpen) {
         bounceToPosition(closedHeight);
       }
     }, 0);
-  };
+  }, [isOpen]);
 
   /** Events */
 
@@ -516,7 +516,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const renderKnob = () => {
     return (
       <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
-        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop}/>
+        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={!isOpen ? 1 : undefined}/>
       </View>
     );
   };
