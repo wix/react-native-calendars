@@ -68,8 +68,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const buttonY = useRef(new Animated.Value(todayBottomMargin ? -todayBottomMargin : -TOP_POSITION));
   const opacity = useRef(new Animated.Value(1));
   const today = useRef(getTodayFormatted());
-  
-  const [prevDate, setPrevDate] = useState(date);
+  const prevDate = useRef(date);
   const [currentDate, setCurrentDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -92,14 +91,14 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   /** Context */
 
   const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
-    setPrevDate(currentDate);
+    prevDate.current = currentDate;
     setCurrentDate(date);
     setUpdateSource(updateSource);
     setButtonIcon(getButtonIcon(date, showTodayButton));
 
     onDateChanged?.(date, updateSource);
 
-    if (!sameMonth(new XDate(date), new XDate(currentDate))) {
+    if (!sameMonth(new XDate(date), new XDate(date))) {
       onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
   }, [currentDate, onDateChanged, onMonthChange]);
@@ -122,7 +121,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       numberOfDays,
       timelineLeftInset
     };
-  }, [currentDate, prevDate, updateSource, numberOfDays]);
+  }, [currentDate, updateSource, numberOfDays]);
 
   /** Animations */
 
