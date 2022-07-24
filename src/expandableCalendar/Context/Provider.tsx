@@ -114,7 +114,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const contextValue = useMemo(() => {
     return {
       date: currentDate,
-      prevDate: prevDate,
+      prevDate: prevDate.current,
       updateSource: updateSource,
       setDate: _setDate,
       setDisabled: _setDisabled,
