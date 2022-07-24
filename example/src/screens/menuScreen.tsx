@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Platform, StyleSheet, I18nManager, View, ScrollView, TouchableOpacity, Text, Image, Switch} from 'react-native';
+import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, I18nManager, Switch} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import testIDs from '../testIDs';
 
@@ -69,6 +69,7 @@ const MenuScreen = (props: Props) => {
         {renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
         {renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
         {renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
+        {/* {renderEntry(testIDs.menu.PLAYGROUND, 'Playground', 'Playground')} */}
         <View style={styles.switchContainer}>
           <Text>Force RTL</Text>
           <Switch value={forceRTL} onValueChange={toggleRTL}/>
