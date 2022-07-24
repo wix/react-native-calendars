@@ -15,7 +15,7 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
   const style = useRef(styleConstructor(theme));
 
   const getWeek = (date?: string) => {
@@ -47,7 +47,7 @@ const Week = (props: WeekProps) => {
           state={getState(day, currXdate, props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={onDayPress}
-          onLongPress={onDayPress}
+          onLongPress={onDayLongPress}
         />
       </View>
     );
