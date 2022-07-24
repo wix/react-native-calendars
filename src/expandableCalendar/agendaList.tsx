@@ -81,7 +81,8 @@ const AgendaList = (props: AgendaListProps) => {
     dayFormat = 'dddd, MMM d', 
     useMoment, 
     markToday = true,
-    onViewableItemsChanged
+    onViewableItemsChanged,
+    onEndReached
   } = props;
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
   const style = useRef(styleConstructor(theme));
@@ -183,6 +184,7 @@ const AgendaList = (props: AgendaListProps) => {
       if (topSection && topSection !== _topSection.current) {
         _topSection.current = topSection;
         if (didScroll.current && !avoidDateUpdates) {
+          console.log('AgendaList _onViewableItemsChanged: ');
           // to avoid setDate() on first load (while setting the initial context.date value)
           setDate?.(_topSection.current, UpdateSources.LIST_DRAG);
         }
@@ -206,9 +208,18 @@ const AgendaList = (props: AgendaListProps) => {
   const _onMomentumScrollEnd = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     // when list momentum ends AND when scrollToSection scroll ends
     sectionScroll.current = false;
+    console.log('AgendaList _onMomentumScrollEnd: ', sectionScroll.current);
     setDisabled?.(false);
     onMomentumScrollEnd?.(event);
   }, [onMomentumScrollEnd, setDisabled]);
+
+  const _onEndReached = useCallback((info) => {
+    // fix for when onMomentumScrollEnd called before onViewableItemsChanged
+    sectionScroll.current = true;
+    // didScroll.current = false;
+    console.log('AgendaList _onEndReached: ', sectionScroll.current);
+    onEndReached?.(info);
+  }, []);
 
   const _onScrollToIndexFailed = useCallback((info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
     if (onScrollToIndexFailed) {
@@ -253,6 +264,7 @@ const AgendaList = (props: AgendaListProps) => {
       onMomentumScrollBegin={_onMomentumScrollBegin}
       onMomentumScrollEnd={_onMomentumScrollEnd}
       onScrollToIndexFailed={_onScrollToIndexFailed}
+      onEndReached={_onEndReached}
       // getItemLayout={_getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
     />
   );
