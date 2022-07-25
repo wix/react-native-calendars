@@ -22,6 +22,10 @@ export interface WeekCalendarProps extends CalendarListProps {
 
 const NUMBER_OF_PAGES = 50;
 
+const SCROLL_VIEW_PROPS = {
+  showsHorizontalScrollIndicator: false
+};
+
 const WeekCalendar = (props: WeekCalendarProps) => {
   const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, testID} = props;
   const context = useContext(CalendarContext);
@@ -30,11 +34,13 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const list = useRef();
   const [items, setItems] = useState(getDatesArray(current || date, firstDay, NUMBER_OF_PAGES));
 
-  const extraData = {
-    current,
-    date: context.date,
-    firstDay
-  };
+  const extraData = useMemo(() => {
+    return {
+      current,
+      date: context.date,
+      firstDay
+    };
+  }, [current, firstDay, context.date]);
 
   const containerWidth = calendarWidth || constants.screenWidth;
   const weekStyle = useMemo(() => {
@@ -76,7 +82,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   const renderItem = useCallback(
     (_type: any, item: string) => {
-      const {allowShadow, ...calendarListProps} = props;
+      const {...calendarListProps} = props;
       const {/* style,  */ ...others} = extractCalendarProps(calendarListProps);
 
       const isSameWeek = sameWeek(item, date, firstDay);
@@ -122,9 +128,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           pageHeight={48}
           pageWidth={containerWidth}
           onPageChange={onPageChange}
-          scrollViewProps={{
-            showsHorizontalScrollIndicator: false
-          }}
+          scrollViewProps={SCROLL_VIEW_PROPS}
         />
       </View>
     </View>
