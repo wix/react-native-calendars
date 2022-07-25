@@ -30,7 +30,7 @@ const Week = (props: WeekProps) => {
   //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
   // }
 
-  const renderDay = useCallback((day: XDate, id: number) => {
+  const renderDay = (day: XDate, id: number) => {
     // hide extra days
     if (current && hideExtraDays) {
       if (!sameMonth(day, currXdate)) {
@@ -50,7 +50,7 @@ const Week = (props: WeekProps) => {
         />
       </View>
     );
-  }, [props]);
+  };
 
   const renderWeek = () => {
     const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
