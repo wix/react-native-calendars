@@ -2,8 +2,8 @@ import get from 'lodash/get';
 import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
+import debounce from 'lodash/debounce';
 
-import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {useCallback, useContext, useEffect, useRef} from 'react';
@@ -94,7 +94,7 @@ const AgendaList = (props: AgendaListProps) => {
   useEffect(() => {
     if (date !== _topSection.current) {
       setTimeout(() => {
-        scrollToSection();
+        scrollToSection(date);
       }, 500);
     }
   }, []);
@@ -102,7 +102,7 @@ const AgendaList = (props: AgendaListProps) => {
   useEffect(() => {
     // NOTE: on first init data should set first section to the current date!!!
     if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
-      scrollToSection();
+      scrollToSection(date);
     }
   }, [date]);
 
@@ -158,8 +158,8 @@ const AgendaList = (props: AgendaListProps) => {
     return sectionTitle;
   };
 
-  const scrollToSection = () => {
-    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(date) : getSectionIndex(date);
+  const scrollToSection = useCallback(debounce((d) => {
+    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
     if (isUndefined(sectionIndex)) {
       return;
     }
@@ -175,7 +175,7 @@ const AgendaList = (props: AgendaListProps) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  };
+  }, 1000, {leading: false, trailing: true}), []);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
@@ -265,15 +265,6 @@ const AgendaList = (props: AgendaListProps) => {
 export default AgendaList;
 
 AgendaList.displayName = 'AgendaList';
-AgendaList.propTypes = {
-  // ...SectionList.propTypes,
-  dayFormat: PropTypes.string,
-  dayFormatter: PropTypes.func,
-  useMoment: PropTypes.bool,
-  markToday: PropTypes.bool,
-  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  avoidDateUpdates: PropTypes.bool
-};
 AgendaList.defaultProps = {
   dayFormat: 'dddd, MMM d',
   stickySectionHeadersEnabled: true,
