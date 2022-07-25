@@ -24,7 +24,7 @@ const Week = (props: WeekProps) => {
     if (date) {
       return getWeekDates(date, firstDay);
     }
-  }, []);
+  }, [firstDay]);
 
   // renderWeekNumber (weekNumber) {
   //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
@@ -54,23 +54,19 @@ const Week = (props: WeekProps) => {
 
   const renderWeek = () => {
     const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
-    let week: any[] = [];
+    const week: JSX.Element[] = [];
+    const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
 
     if (dates) {
-      dates.forEach((day: XDate, id: number) => {
+      const datesToRender = numberOfDays > 1 && todayIndex > -1 ? dates.slice(todayIndex, numberOfDays) : dates;
+      datesToRender.forEach((day: XDate, id: number) => {
         week.push(renderDay(day, id));
       }, this);
     }
-
     // if (this.props.showWeekNumbers) {
     //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
     // }
 
-    const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
-
-    if (numberOfDays > 1 && todayIndex > -1) {
-      week = week.slice(todayIndex, numberOfDays);
-    }
     return week;
   };
 
