@@ -22,7 +22,8 @@ const CalendarListScreen = (props: Props) => {
         selectedTextColor: 'white'
       },
       ['2022-08-05']: {
-        selectedTextColor: 'pink'
+        selectedTextColor: 'pink',
+        marked: true
       }
     };
   }, [selected]);
@@ -39,7 +40,7 @@ const CalendarListScreen = (props: Props) => {
       futureScrollRange={RANGE}
       onDayPress={onDayPress}
       markedDates={marked}
-      renderHeader={!horizontalView ? renderCustomHeader : undefined}
+      // renderHeader={!horizontalView ? renderCustomHeader : undefined}
       theme={!horizontalView ? theme : undefined}
       horizontal={horizontalView}
       pagingEnabled={horizontalView}

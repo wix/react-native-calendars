@@ -1,10 +1,6 @@
 import XDate from 'xdate';
-
-import React, {useRef, useMemo, useContext} from 'react';
-import {Text, View} from 'react-native';
-
+import React, {useRef, useMemo, useContext, useCallback} from 'react';
 import {Theme} from '../types';
-import {formatNumbers} from '../dateutils';
 import {getCalendarDateString} from '../services';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';
@@ -27,7 +23,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     horizontal,
     calendarHeight,
     calendarWidth,
-    testID,
     style: propsStyle,
     headerStyle,
     onPressArrowLeft,
@@ -47,7 +42,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     ];
   }, [calendarWidth, calendarHeight, propsStyle]);
 
-  const _onPressArrowLeft = (method: () => void, month?: XDate) => {
+  const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
     const monthClone = month?.clone();
     if (monthClone) {
       if (onPressArrowLeft) {
@@ -55,7 +50,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       } else if (scrollToMonth) {
         const currentMonth = monthClone.getMonth();
         monthClone.addMonths(-1);
-
         // Make sure we actually get the previous month, not just 30 days before currentMonth.
         while (monthClone.getMonth() === currentMonth) {
           monthClone.setDate(monthClone.getDate() - 1);
@@ -63,9 +57,9 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
         scrollToMonth(monthClone);
       }
     }
-  };
+  }, [onPressArrowLeft, scrollToMonth]);
 
-  const _onPressArrowRight = (method: () => void, month?: XDate) => {
+  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
     const monthClone = month?.clone();
     if (monthClone) {
       if (onPressArrowRight) {
@@ -75,34 +69,22 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
         scrollToMonth(monthClone);
       }
     }
-  };
+  }, [onPressArrowRight, scrollToMonth]);
 
-  if (item.getTime) {
-    return (
-      <Calendar
-        hideArrows={true}
-        hideExtraDays={true}
-        {...props}
-        testID={testID}
-        current={getCalendarDateString(item.toString())}
-        style={calendarStyle}
-        headerStyle={horizontal ? headerStyle : undefined}
-        disableMonthChange
-        onPressArrowLeft={horizontal ? _onPressArrowLeft : onPressArrowLeft}
-        onPressArrowRight={horizontal ? _onPressArrowRight : onPressArrowRight}
-        context={context} // ???
-      />
-    );
-  } else {
-    const text = formatNumbers(item.toString());
-    return (
-      <View style={[{height: calendarHeight, width: calendarWidth}, style.current.placeholder]}>
-        <Text allowFontScaling={false} style={style.current.placeholderText}>
-          {text}
-        </Text>
-      </View>
-    );
-    }
+  return (
+    <Calendar
+      hideArrows={true}
+      hideExtraDays={true}
+      {...props}
+      // current={getCalendarDateString(item.toString())}
+      style={calendarStyle}
+      headerStyle={horizontal ? headerStyle : undefined}
+      disableMonthChange
+      onPressArrowLeft={horizontal ? _onPressArrowLeft : onPressArrowLeft}
+      onPressArrowRight={horizontal ? _onPressArrowRight : onPressArrowRight}
+      context={context} // ???
+    />
+  );
 });
 
 export default CalendarListItem;
