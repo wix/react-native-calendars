@@ -22,7 +22,8 @@ const CalendarListScreen = (props: Props) => {
         selectedTextColor: 'white'
       },
       ['2022-08-05']: {
-        selectedTextColor: 'pink',
+        selected: selected === '2022-08-05',
+        selectedTextColor: '#5E60CE',
         marked: true
       }
     };
