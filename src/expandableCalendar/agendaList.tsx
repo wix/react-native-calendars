@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import get from 'lodash/get';
 import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
@@ -265,6 +267,14 @@ const AgendaList = (props: AgendaListProps) => {
 export default AgendaList;
 
 AgendaList.displayName = 'AgendaList';
+AgendaList.propTypes = {
+  dayFormat: PropTypes.string,
+  dayFormatter: PropTypes.func,
+  useMoment: PropTypes.bool,
+  markToday: PropTypes.bool,
+  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+  avoidDateUpdates: PropTypes.bool
+};
 AgendaList.defaultProps = {
   dayFormat: 'dddd, MMM d',
   stickySectionHeadersEnabled: true,
