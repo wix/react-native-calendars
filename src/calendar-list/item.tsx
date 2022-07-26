@@ -1,9 +1,10 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useContext, useCallback} from 'react';
 import {Theme} from '../types';
-import {getCalendarDateString} from '../services';
-import Calendar, {CalendarProps} from '../calendar';
+import {toMarkingFormat} from '../interface';
+import {extractCalendarProps} from '../componentUpdater';
 import styleConstructor from './style';
+import Calendar, {CalendarProps} from '../calendar';
 import CalendarContext from '../expandableCalendar/Context';
 
 export type CalendarListItemProps = CalendarProps & {
@@ -17,8 +18,8 @@ export type CalendarListItemProps = CalendarProps & {
 
 const CalendarListItem = React.memo((props: CalendarListItemProps) => {  
   const {
-    theme,
     item,
+    theme,
     scrollToMonth,
     horizontal,
     calendarHeight,
@@ -41,6 +42,9 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       propsStyle
     ];
   }, [calendarWidth, calendarHeight, propsStyle]);
+  const calendarProps = useMemo(() => {
+    return extractCalendarProps(props);
+  }, [props]);
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
     const monthClone = month?.clone();
@@ -75,8 +79,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     <Calendar
       hideArrows={true}
       hideExtraDays={true}
-      {...props}
-      // current={getCalendarDateString(item.toString())}
+      {...calendarProps}
+      current={toMarkingFormat(item)}
       style={calendarStyle}
       headerStyle={horizontal ? headerStyle : undefined}
       disableMonthChange
