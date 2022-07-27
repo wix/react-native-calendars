@@ -20,6 +20,7 @@ import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
 
+
 type MarkedDatesType = {
   [key: string]: MarkingProps;
 };
