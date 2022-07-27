@@ -94,6 +94,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   const style = useRef(styleConstructor(theme));
   const list = useRef();
   const didMount = useRef(false);
+  const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current));
   const visibleMonth = useRef();
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
@@ -209,6 +210,16 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     };
   }, []);
 
+  const isDateInRange = useCallback((date) => {
+    for(let i = -range.current; i <= range.current; i++) {
+      const newMonth = currentMonth.clone().addMonths(i);
+      if (sameMonth(date, newMonth)) {
+        return true;
+      }
+    }
+    return false;
+  }, [currentMonth]);
+
   const renderItem = useCallback(({item}: any) => {
     return (
       <CalendarListItem
@@ -222,9 +233,10 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         calendarWidth={calendarWidth}
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
+        visible={isDateInRange(item)}
       />
     );
-  }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem]);
+  }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange]);
 
   const renderStaticHeader = () => {
     if (staticHeader && horizontal) {
@@ -274,7 +286,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         data={items}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
-        initialNumToRender={3}
+        initialNumToRender={range.current}
         initialScrollIndex={initialDateIndex} 
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         testID={testID}

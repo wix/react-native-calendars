@@ -35,6 +35,7 @@ export default function PlaygroundScreen() {
         style={styles.calendar}
         horizontal
         pagingEnabled
+        staticHeader
       />
     );
   };

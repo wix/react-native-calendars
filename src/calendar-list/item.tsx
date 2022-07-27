@@ -1,5 +1,6 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useContext, useCallback} from 'react';
+import {Text} from 'react-native';
 import {Theme} from '../types';
 import {toMarkingFormat} from '../interface';
 import {extractCalendarProps} from '../componentUpdater';
@@ -14,6 +15,7 @@ export type CalendarListItemProps = CalendarProps & {
   horizontal?: boolean;
   theme?: Theme;
   scrollToMonth?: (date: XDate) => void;
+  visible?: boolean;
 };
 
 const CalendarListItem = React.memo((props: CalendarListItemProps) => {  
@@ -27,7 +29,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     style: propsStyle,
     headerStyle,
     onPressArrowLeft,
-    onPressArrowRight
+    onPressArrowRight,
+    visible
   } = props;
   const context = useContext(CalendarContext);
   
@@ -75,6 +78,9 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     }
   }, [onPressArrowRight, scrollToMonth]);
 
+  if (!visible) {
+    return <Text style={calendarStyle}>Hello</Text>;
+  }
   return (
     <Calendar
       hideArrows={true}
