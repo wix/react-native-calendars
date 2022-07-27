@@ -12,7 +12,7 @@ const BLUE = '#00BBF2';
 
 export default function PlaygroundScreen() {
   const [selectedDate, setSelectedDate] = useState(INITIAL_DATE);
-  const [element, setElement] = useState('Calendar');
+  const [element, setElement] = useState(elements.LIST);
 
 
   const onDayPress = useCallback((day) => {
@@ -33,6 +33,7 @@ export default function PlaygroundScreen() {
       <CalendarList
         current={INITIAL_DATE}
         style={styles.calendar}
+        horizontal
       />
     );
   };
