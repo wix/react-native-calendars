@@ -54,11 +54,11 @@ export interface CalendarListRefMethods {
  */
 const CalendarList = (props: CalendarListProps, ref: any) => {
   useImperativeHandle(ref, () => ({
-    scrollToDay: (date: XDate, offset: number, animated: boolean) => {
-      scrollToDay(date, offset, animated);
+    scrollToDay: (date: string, offset: number, animated: boolean) => {
+      scrollToDay(new XDate(date), offset, animated);
     },
-    scrollToMonth: (date: XDate) => {
-      scrollToMonth(date);
+    scrollToMonth: (date: string) => {
+      scrollToMonth(new XDate(date));
     }
   }));
 
