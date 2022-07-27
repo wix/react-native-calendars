@@ -62,6 +62,9 @@ class Presenter {
   };
 
   shouldComponentUpdate = (context: any, prevContext: any) => {
+    if (!context) {
+      return true;
+    }
     const {date, updateSource, numberOfDays} = context;
     return (
       (date !== prevContext.date && updateSource !== updateSources.WEEK_SCROLL) ||

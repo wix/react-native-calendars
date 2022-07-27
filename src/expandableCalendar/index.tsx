@@ -29,7 +29,7 @@ import WeekDaysNames from '../commons/WeekDaysNames';
 import Calendar from '../calendar';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
-import WeekCalendar from './WeekCalendar/new';
+import WeekCalendar from './WeekCalendar';
 import Context from './Context';
 
 import constants from '../commons/constants';
