@@ -560,7 +560,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         markedDates={_markedDates}
         theme={themeObject}
         ref={calendar}
-        // current={date}
+        current={date}
         onDayPress={_onDayPress}
         onVisibleMonthsChange={onVisibleMonthsChange}
         pagingEnabled

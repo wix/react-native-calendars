@@ -54,6 +54,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const {
     theme,
     date,
+    onDateChanged,
+    onMonthChange,
     showTodayButton = false,
     todayBottomMargin,
     todayButtonStyle,
@@ -66,8 +68,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const buttonY = useRef(new Animated.Value(todayBottomMargin ? -todayBottomMargin : -TOP_POSITION));
   const opacity = useRef(new Animated.Value(1));
   const today = useRef(getTodayFormatted());
-  
-  const [prevDate, setPrevDate] = useState(date);
+  const prevDate = useRef(date);
+  const currDate = useRef(date); // for setDate only to keep prevDate up to date
   const [currentDate, setCurrentDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -89,38 +91,39 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
 
   /** Context */
 
-  const _setDate = (date: string, updateSource: UpdateSources) => {
-    setPrevDate(currentDate);
+  const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
+    prevDate.current = currDate.current;
+    currDate.current = date;
     setCurrentDate(date);
     setUpdateSource(updateSource);
     setButtonIcon(getButtonIcon(date, showTodayButton));
 
-    props.onDateChanged?.(date, updateSource);
+    onDateChanged?.(date, updateSource);
 
-    if (!sameMonth(new XDate(date), new XDate(currentDate))) {
-      props.onMonthChange?.(xdateToData(new XDate(date)), updateSource);
+    if (!sameMonth(new XDate(date), new XDate(date))) {
+      onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
-  };
+  }, [onDateChanged, onMonthChange]);
 
-  const _setDisabled = (disabled: boolean) => {
+  const _setDisabled = useCallback((disabled: boolean) => {
     if (!showTodayButton || disabled === isDisabled) {
       return;
     }
     setIsDisabled(disabled);
     animateOpacity(disabled);
-  };
+  }, [showTodayButton]);
 
   const contextValue = useMemo(() => {
     return {
       date: currentDate,
-      prevDate: prevDate,
+      prevDate: prevDate.current,
       updateSource: updateSource,
       setDate: _setDate,
       setDisabled: _setDisabled,
       numberOfDays,
       timelineLeftInset
     };
-  }, [currentDate, prevDate, updateSource, numberOfDays]);
+  }, [currentDate, updateSource, numberOfDays]);
 
   /** Animations */
 
