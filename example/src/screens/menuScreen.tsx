@@ -69,7 +69,7 @@ const MenuScreen = (props: Props) => {
         {renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
         {renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
         {renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
-        {/* {renderEntry(testIDs.menu.PLAYGROUND, 'Playground', 'Playground')} */}
+        {renderEntry(testIDs.menu.PLAYGROUND, 'Playground', 'Playground')}
         <View style={styles.switchContainer}>
           <Text>Force RTL</Text>
           <Switch value={forceRTL} onValueChange={toggleRTL}/>
