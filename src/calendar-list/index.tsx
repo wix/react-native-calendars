@@ -41,8 +41,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
 }
 
 export interface CalendarListRefMethods {
-  scrollToDay: (date: string, offset: number, animated: boolean) => void;
-  scrollToMonth: (date: string) => void;
+  scrollToDay: (date: XDate, offset: number, animated: boolean) => void;
+  scrollToMonth: (date: XDate) => void;
 }
 
 /**
