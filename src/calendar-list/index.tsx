@@ -1,4 +1,3 @@
-import indexOf from 'lodash/indexOf';
 import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';

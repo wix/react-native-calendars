@@ -41,7 +41,8 @@ const CalendarListScreen = (props: Props) => {
       futureScrollRange={RANGE}
       onDayPress={onDayPress}
       markedDates={marked}
-      // renderHeader={!horizontalView ? renderCustomHeader : undefined}
+      renderHeader={!horizontalView ? renderCustomHeader : undefined}
+      calendarHeight={390}
       theme={!horizontalView ? theme : undefined}
       horizontal={horizontalView}
       pagingEnabled={horizontalView}
