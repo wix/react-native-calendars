@@ -17,7 +17,7 @@ export default function getStyle(theme: Theme = {}) {
       justifyContent: 'center'
     },
     placeholderText: {
-      fontSize: 30,
+      fontSize: 20,
       fontWeight: '200',
       color: appStyle.dayTextColor
     },

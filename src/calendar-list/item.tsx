@@ -35,6 +35,9 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   const context = useContext(CalendarContext);
   
   const style = useRef(styleConstructor(theme));
+  const dateString = useMemo(() => {
+    return toMarkingFormat(item);
+  }, [item]);
   const calendarStyle = useMemo(() => {
     return [
       {
@@ -45,6 +48,9 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       propsStyle
     ];
   }, [calendarWidth, calendarHeight, propsStyle]);
+  const textStyle = useMemo(() => {
+    return [calendarStyle, style.current.placeholderText];
+  }, [calendarStyle]);
   const calendarProps = useMemo(() => {
     return extractCalendarProps(props);
   }, [props]);
@@ -79,14 +85,16 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   }, [onPressArrowRight, scrollToMonth]);
 
   if (!visible) {
-    return <Text style={calendarStyle}>Hello</Text>;
+    return (
+      <Text style={textStyle}>{dateString}</Text>
+    );
   }
   return (
     <Calendar
       hideArrows={true}
       hideExtraDays={true}
       {...calendarProps}
-      current={toMarkingFormat(item)}
+      current={dateString}
       style={calendarStyle}
       headerStyle={horizontal ? headerStyle : undefined}
       disableMonthChange
