@@ -2,7 +2,7 @@ import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import React, {useImperativeHandle, useRef, useEffect, useState, useCallback, useMemo} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef, useEffect, useState, useCallback, useMemo} from 'react';
 import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
 
 import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
@@ -312,7 +312,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   );
 };
 
-export default CalendarList;
+export default forwardRef(CalendarList);
 CalendarList.displayName = 'CalendarList';
 CalendarList.propTypes = {
   ...Calendar.propTypes,
