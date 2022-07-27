@@ -69,6 +69,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const opacity = useRef(new Animated.Value(1));
   const today = useRef(getTodayFormatted());
   const prevDate = useRef(date);
+  const currDate = useRef(date); // for setDate only to keep prevDate up to date
   const [currentDate, setCurrentDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -91,7 +92,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   /** Context */
 
   const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
-    prevDate.current = currentDate;
+    prevDate.current = currDate.current;
+    currDate.current = date;
     setCurrentDate(date);
     setUpdateSource(updateSource);
     setButtonIcon(getButtonIcon(date, showTodayButton));
@@ -101,7 +103,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     if (!sameMonth(new XDate(date), new XDate(date))) {
       onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
-  }, [currentDate, onDateChanged, onMonthChange]);
+  }, [onDateChanged, onMonthChange]);
 
   const _setDisabled = useCallback((disabled: boolean) => {
     if (!showTodayButton || disabled === isDisabled) {
