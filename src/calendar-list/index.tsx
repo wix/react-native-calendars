@@ -274,7 +274,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         data={items}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
-        initialNumToRender={5}
+        initialNumToRender={3}
         initialScrollIndex={initialDateIndex} 
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         testID={testID}
