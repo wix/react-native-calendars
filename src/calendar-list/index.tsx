@@ -2,7 +2,7 @@ import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import React, {forwardRef, useImperativeHandle, useRef, useEffect, useState, useCallback, useMemo} from 'react';
+import React, {useImperativeHandle, useRef, useEffect, useState, useCallback, useMemo} from 'react';
 import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
 
 import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
@@ -38,6 +38,11 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+}
+
+export interface CalendarListRefMethods {
+  scrollToDay: (date: string, offset: number, animated: boolean) => void;
+  scrollToMonth: (date: string) => void;
 }
 
 /**
@@ -307,7 +312,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   );
 };
 
-export default forwardRef(CalendarList);
+export default CalendarList;
 CalendarList.displayName = 'CalendarList';
 CalendarList.propTypes = {
   ...Calendar.propTypes,
