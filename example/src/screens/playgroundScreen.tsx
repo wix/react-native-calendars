@@ -1,19 +1,44 @@
 import React, {useState, useCallback} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {ExpandableCalendar, CalendarProvider} from 'react-native-calendars';
+import {View, Text, Button, StyleSheet} from 'react-native';
+import {Profiler, Calendar, CalendarList, ExpandableCalendar, CalendarProvider} from 'react-native-calendars';
 
-const INITIAL_DATE = '2019-04-01';
+const INITIAL_DATE = '2022-07-07';
+const enum elements {
+  CALENDAR = 'Calendar',
+  LIST = 'CalendarList',
+  EXPANDABLE = 'Expandable',
+}
+const BLUE = '#00BBF2';
 
 export default function PlaygroundScreen() {
   const [selectedDate, setSelectedDate] = useState(INITIAL_DATE);
+  const [element, setElement] = useState('Calendar');
+
 
   const onDayPress = useCallback((day) => {
     setSelectedDate(day.dateString);
   }, [selectedDate]);
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Selected Date: {selectedDate}</Text>
+  const renderCalendar = () => {
+    return (
+      <Calendar
+        current={INITIAL_DATE}
+        style={styles.calendar}
+      />
+    );
+  };
+
+  const renderCalendarList = () => {
+    return (
+      <CalendarList
+        current={INITIAL_DATE}
+        style={styles.calendar}
+      />
+    );
+  };
+
+  const renderExpendableCalendar = () => {
+    return (
       <CalendarProvider date={INITIAL_DATE}>
         <ExpandableCalendar
             pastScrollRange={3}
@@ -23,22 +48,50 @@ export default function PlaygroundScreen() {
             style={styles.calendar}
         />
       </CalendarProvider>
-    </View>
+    );
+  };
+
+  const renderElement = () => {
+    switch (element) {
+      case elements.CALENDAR:
+        return renderCalendar();
+      case elements.LIST:
+        return renderCalendarList();
+      case elements.EXPANDABLE:
+        return renderExpendableCalendar();
+      default:
+        return renderCalendar(); 
+    }
+  };
+
+  return (
+    <>
+      <View style={styles.buttonsContainer}>
+        <Button color={BLUE} title='Calendar' onPress={() => setElement(elements.CALENDAR)}/>
+        <Button color={BLUE} title='Calendar List' onPress={() => setElement(elements.LIST)}/>
+        <Button color={BLUE} title='Expandable' onPress={() => setElement(elements.EXPANDABLE)}/>
+      </View>
+      <Text style={styles.text}>Selected Date: {selectedDate}</Text>
+      <Profiler id={element}>
+        {renderElement()}
+      </Profiler>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container : {
-    flex : 1
+  buttonsContainer: {
+    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   calendar: {
     borderWidth: 1,
     borderColor: '#b6c1cd'
   },
   text : {
-    marginLeft: 10,
+    alignSelf: 'center',
     padding : 20,
-    color : '#00BBF2',
     fontSize: 16
   }
 });
