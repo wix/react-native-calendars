@@ -66,3 +66,4 @@ ios/Pods
 ios/Podfile.lock
 
 .eslintcache
+.reassure 
