@@ -35,9 +35,11 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   const context = useContext(CalendarContext);
   
   const style = useRef(styleConstructor(theme));
+  
   const dateString = useMemo(() => {
     return toMarkingFormat(item);
   }, [item]);
+  
   const calendarStyle = useMemo(() => {
     return [
       {
@@ -48,9 +50,11 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       propsStyle
     ];
   }, [calendarWidth, calendarHeight, propsStyle]);
+  
   const textStyle = useMemo(() => {
     return [calendarStyle, style.current.placeholderText];
   }, [calendarStyle]);
+  
   const calendarProps = useMemo(() => {
     return extractCalendarProps(props);
   }, [props]);

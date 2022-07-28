@@ -266,7 +266,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   });
 
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
-    const newVisibleMonth = parseDate(viewableItems[0].item);
+    const newVisibleMonth = parseDate(viewableItems[0]?.item);
     if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
       visibleMonth.current = newVisibleMonth;
       setCurrentMonth(visibleMonth.current);
