@@ -2,12 +2,14 @@ import React from 'react';
 import {measurePerformance} from 'reassure';
 import {Calendar, CalendarList} from '../../index';
 
+const INITIAL_DATE = '2022-07-07';
+
 describe('Playground testing', () => {
   const TestCase = () => {
-    return <Calendar />;
+    return <Calendar current={INITIAL_DATE} />;
   };
   const TestCaseList = () => {
-    return <CalendarList />;
+    return <CalendarList current={INITIAL_DATE} />;
   };
 
   it('calendar', async () => {

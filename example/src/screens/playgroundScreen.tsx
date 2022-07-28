@@ -34,6 +34,8 @@ export default function PlaygroundScreen() {
         current={INITIAL_DATE}
         style={styles.calendar}
         horizontal
+        pagingEnabled
+        staticHeader
       />
     );
   };

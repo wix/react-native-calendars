@@ -308,6 +308,3 @@ Calendar.propTypes = {
   customHeader: PropTypes.any,
   allowSelectionOutOfRange: PropTypes.bool
 };
-Calendar.defaultProps = {
-  enableSwipeMonths: false
-};
