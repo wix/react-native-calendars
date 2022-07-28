@@ -112,7 +112,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       months.push(rangeDate);
     }
     return months;
-  }, [current, pastScrollRange, futureScrollRange]);
+  }, [pastScrollRange, futureScrollRange]);
 
   const calendarProps = useMemo(() => {
     return extractCalendarProps(props);
