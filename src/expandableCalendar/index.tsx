@@ -281,7 +281,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const scrollToDate = (date: string) => {
     if (!horizontal) {
-      calendar?.current?.scrollToDay(new XDate(date), 0, true);
+      calendar?.current?.scrollToDay(date, 0, true);
     } else if (getYear(date) !== visibleYear.current || getMonth(date) !== visibleMonth.current) {
       // don't scroll if the month is already visible
       calendar?.current?.scrollToMonth(date);

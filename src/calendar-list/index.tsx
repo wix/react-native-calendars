@@ -41,8 +41,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
 }
 
 export interface CalendarListRefMethods {
-  scrollToDay: (date: XDate, offset: number, animated: boolean) => void;
-  scrollToMonth: (date: XDate) => void;
+  scrollToDay: (date: any, offset: number, animated: boolean) => void;
+  scrollToMonth: (date: any) => void;
 }
 
 /**
@@ -54,11 +54,11 @@ export interface CalendarListRefMethods {
  */
 const CalendarList = (props: CalendarListProps, ref: any) => {
   useImperativeHandle(ref, () => ({
-    scrollToDay: (date: XDate, offset: number, animated: boolean) => {
-      scrollToDay(date, offset, animated);
+    scrollToDay: (date: any, offset: number, animated: boolean) => {
+      scrollToDay(new XDate(date), offset, animated);
     },
-    scrollToMonth: (date: XDate) => {
-      scrollToMonth(date);
+    scrollToMonth: (date: any) => {
+      scrollToMonth(new XDate(date));
     }
   }));
 
