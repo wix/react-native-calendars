@@ -183,8 +183,9 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   }, [calendarSize]);
 
   const initialDateIndex = useMemo(() => {
+    const date = initialDate?.current || new XDate();
     return findIndex(items, function(item) { 
-      return item.toString() === initialDate?.current?.toString(); 
+      return item.toString() === date.toString(); 
     });
   }, [items]);
 
@@ -217,7 +218,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
 
   const isDateInRange = useCallback((date) => {
     for(let i = -range.current; i <= range.current; i++) {
-      const newMonth = currentMonth.clone().addMonths(i);
+      const newMonth = currentMonth?.clone().addMonths(i);
       if (sameMonth(date, newMonth)) {
         return true;
       }
