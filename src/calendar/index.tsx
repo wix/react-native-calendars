@@ -10,7 +10,7 @@ import constants from '../commons/constants';
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-import {extractComponentProps} from '../componentUpdater';
+import {extractHeaderProps, extractDayProps} from '../componentUpdater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
 import {DateData, Theme} from '../types';
@@ -83,8 +83,8 @@ const Calendar = (props: CalendarProps) => {
   const style = useRef(styleConstructor(theme));
   const header = useRef();
   const isMounted = useRef(false);
+  const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
  
-
   useEffect(() => {
     if (initialDate) {
       setCurrentMonth(parseDate(initialDate));
@@ -170,7 +170,7 @@ const Calendar = (props: CalendarProps) => {
       <View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
           key={`week-${weekNumber}`}
-          marking={{disabled: true, disableTouchEvent: true}}
+          marking={weekNumberMarking.current}
           // state='disabled'
           theme={theme}
           testID={`${WEEK_NUMBER}-${weekNumber}`}
@@ -182,10 +182,10 @@ const Calendar = (props: CalendarProps) => {
   };
 
   const renderDay = (day: XDate, id: number) => {
-    const dayProps = extractComponentProps(Day, props);
+    const dayProps = extractDayProps(props);
 
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer} />;
+      return <View key={id} style={style.current.emptyDayContainer}/>;
     }
 
     return (
@@ -242,7 +242,7 @@ const Calendar = (props: CalendarProps) => {
       }
     }
 
-    const headerProps = extractComponentProps(CalendarHeader, props);
+    const headerProps = extractHeaderProps(props);
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
@@ -307,7 +307,4 @@ Calendar.propTypes = {
   headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   customHeader: PropTypes.any,
   allowSelectionOutOfRange: PropTypes.bool
-};
-Calendar.defaultProps = {
-  enableSwipeMonths: false
 };

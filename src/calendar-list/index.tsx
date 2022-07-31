@@ -4,7 +4,7 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {FlatList, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
-import {extractComponentProps} from '../componentUpdater';
+import {extractHeaderProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
@@ -321,7 +321,7 @@ class CalendarList extends Component<CalendarListProps, State> {
   renderStaticHeader() {
     const {staticHeader, horizontal, headerStyle} = this.props;
     const useStaticHeader = staticHeader && horizontal;
-    const headerProps = extractComponentProps(CalendarHeader, this.props);
+    const headerProps = extractHeaderProps(this.props);
 
     if (useStaticHeader) {
       return (
