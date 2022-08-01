@@ -1,10 +1,9 @@
 import {Map} from 'immutable';
 
-import React, {LegacyRef, useState, useCallback, useMemo} from 'react';
-import {View, NativeSyntheticEvent, NativeScrollEvent, StyleProp, ViewStyle} from 'react-native';
+import React, {useState, useCallback, useMemo, useEffect, useRef} from 'react';
+import {View, NativeSyntheticEvent, NativeScrollEvent, FlatList} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 
-import {extractCalendarProps} from '../../componentUpdater';
 import {sameWeek} from '../../dateutils';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
@@ -12,8 +11,13 @@ import asCalendarConsumer from '../asCalendarConsumer';
 import {CalendarListProps} from '../../calendar-list';
 import WeekDaysNames from '../../commons/WeekDaysNames';
 import Week from '../week';
-import Presenter from './presenter';
+import {
+  getDatesArray,
+  onScroll,
+  shouldComponentUpdate
+} from './presenter';
 import constants from '../../commons/constants';
+import {UpdateSources} from '../commons';
 
 const NUMBER_OF_PAGES = 2; // must be a positive number
 
@@ -21,6 +25,7 @@ export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
   context?: any;
+  useFlashList?: boolean; // todo find better naming
 }
 
 /**
@@ -28,72 +33,91 @@ export interface WeekCalendarProps extends CalendarListProps {
  * @note: Should be wrapped with 'CalendarProvider'
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const WeekCalendar = (props: WeekCalendarProps) => {
-  const {calendarWidth, firstDay, hideDayNames, current, markedDates, allowShadow, context, theme, style} = props;
-  const defaultStyle = useMemo(() => styleConstructor(theme), [theme]);
-  const presenter = new Presenter();
-  let page = NUMBER_OF_PAGES;
-  const [items, setItems] = useState(presenter.getDatesArray(props));
-  const {dayHeader} = defaultStyle;
+const WeekCalendar = React.forwardRef((props: WeekCalendarProps, ref) => {
+  const {
+    calendarWidth,
+    firstDay = 0,
+    hideDayNames,
+    current,
+    markedDates,
+    allowShadow = true,
+    context,
+    theme,
+    style: propsStyle,
+    onDayPress,
+    importantForAccessibility,
+    testID,
+    accessibilityElementsHidden,
+    useFlashList,
+  } = props;
+  const style = useRef(styleConstructor(theme));
+  const [page, setPage] = useState(NUMBER_OF_PAGES);
+  const [items, setItems] = useState(getDatesArray(props));
+
+  const list = useRef<FlashList<string> | FlatList>(null);
+  const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
+
+  useEffect(() => {
+    setItems(getDatesArray(props));
+  }, []);
 
   const containerWidth = useMemo(() => {
-    return calendarWidth || constants.screenWidth;
+    return calendarWidth ?? constants.screenWidth;
   }, [calendarWidth]);
 
   const onDayPressCallback = useCallback((value: DateData) => {
-    presenter.onDayPress(context, value);
-  }, [context]);
+    if (onDayPress) {
+      onDayPress(value);
+    } else {
+      context.setDate?.(value.dateString, UpdateSources.DAY_PRESS);
+    }
+  }, [context, onDayPress]);
 
-  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const onScrollCallback = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const x = event.nativeEvent.contentOffset.x;
-    const {onScroll} = presenter;
-    const {context} = props;
+    setPage(onScroll({context, x, page, items, width: containerWidth, firstAndroidRTLScroll, setFirstAndroidRTLScroll}));
+  }, [context, containerWidth, page, items, firstAndroidRTLScroll, setFirstAndroidRTLScroll]);
 
-    const updateState = (newData: string[], newPage: number) => {
-      page = newPage;
-      setItems([...newData]);
-    };
+  const getWeekStyle = useCallback((width, style) => {
+      return [{width}, style];
+  }, []);
 
-    onScroll({context, updateState, x, page, items, width: containerWidth});
-  };
+  const isFirstPage = useCallback((page: number) => {
+    return page === 0;
+  }, []);
 
-  const getWeekStyle = useMemo(() => {
-    return [{containerWidth}, style] as StyleProp<ViewStyle>;
-  }, [containerWidth, style]);
+  const isLastPage = useCallback((page: number, items: string[]) => {
+    return page === items.length - 1;
+  }, []);
 
-  const onMomentumScrollEnd = () => {
-    const {onMomentumScrollEnd} = presenter;
+  const onMomentumScrollEndCallback = useCallback(() => {
+    if (isFirstPage(page) || isLastPage(page, items)) {
+      setItems(getDatesArray(props));
+      scrollToIndex(list);
+    }
+  }, [isFirstPage, isLastPage, list, page]);
 
-    const updateItems = (items: string[]) => {
-      setTimeout(() => {
-        setItems([...items]);
-      }, 100);
-    };
-
-    onMomentumScrollEnd({items, props, page, updateItems});
-  };
   const renderItem = useCallback(({item}: {item: string}) => {
-    const {allowShadow, context, ...calendarListProps} = props;
-    const {style, onDayPress = onDayPressCallback, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
-
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
-
     return (
       <Week
-        {...others}
-        key={item}
+        importantForAccessibility={importantForAccessibility}
+        testID={testID}
+        hideDayNames={hideDayNames}
+        accessibilityElementsHidden={accessibilityElementsHidden}
+        theme={theme}
         current={item}
         firstDay={firstDay}
-        style={getWeekStyle}
+        style={getWeekStyle(containerWidth, propsStyle)}
         markedDates={markedDates}
-        onDayPress={onDayPress}
+        onDayPress={onDayPressCallback}
         context={currentContext}
         numberOfDays={context.numberOfDays}
         timelineLeftInset={context.timelineLeftInset}
       />
     );
-  },[]);
+  },[ref, importantForAccessibility, testID, hideDayNames, accessibilityElementsHidden, theme, firstDay, containerWidth, propsStyle, markedDates, onDayPressCallback, context]);
 
   const keyExtractor = useCallback((_, index: number) => index.toString(), []);
 
@@ -101,32 +125,57 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return (
       <WeekDaysNames
         firstDay={firstDay}
-        style={dayHeader}
+        style={style.current.dayHeader}
       />
     );
-  },[firstDay, dayHeader]);
+  },[firstDay]);
 
-  const extraData = Map({
+  const extraData = useMemo(() => Map({
     current,
     date: context.date,
     firstDay
-  });
+  }), [current, context.date, firstDay]);
 
+  const scrollToIndex = (list: React.RefObject<any>, animated = false) => {
+    list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
+  };
+
+  const weekCalendarStyle = useMemo(() => {
+    return [
+      allowShadow && style.current.containerShadow,
+      !hideDayNames && style.current.containerWrapper
+    ];
+  }, [allowShadow, hideDayNames]);
+  const containerStyle = useMemo(() => {
+    return [style.current.week, style.current.weekCalendar];
+  }, []);
+  const flashListContainerStyle = useMemo(() => {
+    return style.current.container;
+  }, []);
+
+  const getItemLayout = useCallback((_, index: number) => {
+      return {
+        length: containerWidth,
+        offset: containerWidth * index,
+        index
+      };
+  }, [containerWidth]);
   return (
     <View
       testID={props.testID}
-      style={[allowShadow && defaultStyle.containerShadow, !hideDayNames && defaultStyle.containerWrapper]}
+      style={weekCalendarStyle}
     >
       {!hideDayNames && (
-        <View style={[defaultStyle.week, defaultStyle.weekCalendar]}>
+        <View style={containerStyle}>
           {renderWeekDaysNames}
         </View>
       )}
+      <View style={flashListContainerStyle}>
+        {useFlashList ? (
           <FlashList
-            ref={presenter.list as unknown as LegacyRef<FlashList<string>>}
+            ref={list as React.RefObject<FlashList<string>>}
             data={items}
             extraData={extraData}
-            contentContainerStyle={defaultStyle.container}
             horizontal
             showsHorizontalScrollIndicator={false}
             pagingEnabled
@@ -134,22 +183,38 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
-            onScroll={onScroll}
-            onMomentumScrollEnd={onMomentumScrollEnd}
-            estimatedItemSize={30}
+            estimatedFirstItemOffset={14}
+            onScroll={onScrollCallback}
+            onMomentumScrollEnd={onMomentumScrollEndCallback}
+            estimatedItemSize={20.4}
           />
+        ) : (
+          <FlatList
+            ref={list as React.RefObject<FlatList>}
+            data={items}
+            extraData={extraData}
+            style={style.current.container}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            scrollEnabled
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            initialScrollIndex={NUMBER_OF_PAGES}
+            getItemLayout={getItemLayout}
+            onScroll={onScrollCallback}
+            onMomentumScrollEnd={onMomentumScrollEndCallback}
+            />
+        )}
+
+      </View>
     </View>
   );
-};
+});
 
 WeekCalendar.displayName = 'WeekCalendar';
-WeekCalendar.defaultProps = {
-  firstDay: 0,
-  allowShadow: true
-};
 
 function shouldUpdate(prevProps: WeekCalendarProps, nextProps: WeekCalendarProps) {
-  const {shouldComponentUpdate} = new Presenter();
   if (shouldComponentUpdate(nextProps.context, prevProps.context)) {
     if (!sameWeek(nextProps.context?.date, prevProps.context?.date, nextProps.firstDay ?? 0)) {
       return true;
@@ -158,4 +223,4 @@ function shouldUpdate(prevProps: WeekCalendarProps, nextProps: WeekCalendarProps
   return false;
 }
 
-export default React.memo(asCalendarConsumer<WeekCalendarProps>(WeekCalendar, true), shouldUpdate);
+export default asCalendarConsumer(React.memo(WeekCalendar, shouldUpdate));
