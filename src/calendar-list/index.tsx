@@ -11,6 +11,7 @@ import {page, sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import constants from '../commons/constants';
+import {useDidUpdate} from '../hooks';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
@@ -98,7 +99,6 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   
   const style = useRef(styleConstructor(theme));
   const list = useRef();
-  const didMount = useRef(false);
   const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current));
   const visibleMonth = useRef();
@@ -140,14 +140,10 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     }
   }, [current]);
 
-  useEffect(() => {
-    if (didMount.current) {
-      const currMont = currentMonth?.clone();
-      onMonthChange?.(xdateToData(currMont));
-      onVisibleMonthsChange?.([xdateToData(currMont)]);
-    } else {
-      didMount.current = true;
-    }
+  useDidUpdate(() => {
+    const currMont = currentMonth?.clone();
+    onMonthChange?.(xdateToData(currMont));
+    onVisibleMonthsChange?.([xdateToData(currMont)]);
   }, [currentMonth]);
 
   const scrollToDay = (date: XDate, offset: number, animated: boolean) => {
