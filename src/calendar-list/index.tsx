@@ -8,10 +8,10 @@ import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
 import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
-// @ts-expect-error
-import {STATIC_HEADER} from '../testIDs';
 import constants from '../commons/constants';
 import {useDidUpdate} from '../hooks';
+// @ts-expect-error
+import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
@@ -42,8 +42,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
 }
 
 export interface CalendarListRefMethods {
-  scrollToDay: (date: any, offset: number, animated: boolean) => void;
-  scrollToMonth: (date: any) => void;
+  scrollToDay: (date: XDate | string, offset: number, animated: boolean) => void;
+  scrollToMonth: (date: XDate | string) => void;
 }
 
 /**
@@ -55,11 +55,11 @@ export interface CalendarListRefMethods {
  */
 const CalendarList = (props: CalendarListProps, ref: any) => {
   useImperativeHandle(ref, () => ({
-    scrollToDay: (date: any, offset: number, animated: boolean) => {
-      scrollToDay(new XDate(date), offset, animated);
+    scrollToDay: (date: XDate | string, offset: number, animated: boolean) => {
+      scrollToDay(date, offset, animated);
     },
-    scrollToMonth: (date: any) => {
-      scrollToMonth(new XDate(date));
+    scrollToMonth: (date: XDate | string) => {
+      scrollToMonth(date);
     }
   }));
 
@@ -111,7 +111,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
 
   const items = useMemo(() => {
     const months = [];
-    const date = initialDate.current || new XDate();
+    const date: XDate = initialDate?.current || new XDate();
     for (let i = 0; i <= pastScrollRange + futureScrollRange; i++) {
       const rangeDate = date.clone().addMonths(i - pastScrollRange, true);
       months.push(rangeDate);
@@ -139,9 +139,9 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     onVisibleMonthsChange?.([xdateToData(currMont)]);
   }, [currentMonth]);
 
-  const scrollToDay = (date: XDate, offset: number, animated: boolean) => {
+  const scrollToDay = (date: XDate | string, offset: number, animated: boolean) => {
     const scrollTo = parseDate(date);
-    const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
+    const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
 
     let scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize + (offset || 0);
 
@@ -161,18 +161,19 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     list?.current?.scrollToOffset({offset: scrollAmount, animated});
   };
 
-  const scrollToMonth = useCallback((date: XDate) => {
+  const scrollToMonth = useCallback((date: XDate | string) => {
     const scrollTo = parseDate(date);
-    const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo.clone().setDate(1)));
+    const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
     if (diffMonths !== 0) {
       const scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize;
+      
       // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
   }, [calendarSize]);
 
   const initialDateIndex = useMemo(() => {
-    const date = initialDate?.current || new XDate();
+    const date: XDate = initialDate?.current || new XDate();
     return findIndex(items, function(item) { 
       return item.toString() === date.toString(); 
     });
@@ -187,7 +188,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     setCurrentMonth(day);
   }, [currentMonth]);
 
-  const getMarkedDatesForItem = useCallback((item?: any) => {    
+  const getMarkedDatesForItem = useCallback((item?: XDate) => {    
     if (markedDates && item) {      
       for (const [key, _] of Object.entries(markedDates)) {
         if (sameMonth(new XDate(key), new XDate(item))) {
