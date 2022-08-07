@@ -1,21 +1,21 @@
 import {View, NativeSyntheticEvent, NativeScrollEvent, FlatList} from 'react-native';
-import {sameWeek} from '../../dateutils';
+import {generateDay, sameWeek} from '../../dateutils';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
 import asCalendarConsumer from '../asCalendarConsumer';
 import {CalendarListProps} from '../../calendar-list';
 import WeekDaysNames from '../../commons/WeekDaysNames';
 import Week from '../week';
-import {
-  getDatesArray,
-  onScroll,
-  shouldComponentUpdate
-} from './presenter';
+import {Map} from 'immutable';
 import constants from '../../commons/constants';
 import {UpdateSources} from '../commons';
 import {forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import XDate from 'xdate';
+import {toMarkingFormat} from '../../interface';
 
 const NUMBER_OF_PAGES = 2; // must be a positive number
+
+const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -44,15 +44,38 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     testID,
     accessibilityElementsHidden,
   } = props;
+
   const style = useRef(styleConstructor(theme));
+
+  const getDate = useCallback((weekIndex: number) => {
+    const d = new XDate(current || context.date);
+    const numberOfDays = context.numberOfDays;
+    // get the first day of the week as date (for the on scroll mark)
+    let dayOfTheWeek = d.getDay();
+    if (dayOfTheWeek < firstDay && firstDay > 0) {
+      dayOfTheWeek = 7 + dayOfTheWeek;
+    }
+    const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+
+    const newDate = numberOfDays > 1 ? generateDay(toMarkingFormat(d), weekIndex * numberOfDays) : dd.addWeeks(weekIndex);
+
+    return toMarkingFormat(newDate);
+  }, [current, context.date, firstDay]);
+
+  const getDatesArray = useMemo(() => {
+    return [...Array(NUMBER_OF_PAGES + 1).keys()].map((index) => {
+      return getDate(index-NUMBER_OF_PAGES);
+    });
+  }, [getDate]);
+
   const [page, setPage] = useState(NUMBER_OF_PAGES);
-  const [items, setItems] = useState(getDatesArray(props));
+  const [items, setItems] = useState(getDatesArray);
 
   const list = useRef<FlatList>(null);
   const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
 
   useEffect(() => {
-    setItems(getDatesArray(props));
+    setItems(getDatesArray);
   }, []);
 
   const containerWidth = useMemo(() => {
@@ -68,8 +91,19 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
   }, [context, onDayPress]);
 
   const onScrollCallback = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const x = event.nativeEvent.contentOffset.x;
-    setPage(onScroll({context, x, page, items, width: containerWidth, firstAndroidRTLScroll, setFirstAndroidRTLScroll}));
+    if (firstAndroidRTLScroll) {
+      setFirstAndroidRTLScroll(false);
+      return;
+    }
+
+    const overallWidth = (items?.length - 1) * containerWidth;
+    const eventXOffset = event.nativeEvent.contentOffset.x;
+    const x = APPLY_ANDROID_FIX ? (overallWidth - eventXOffset) : eventXOffset;
+    const newPage = Math.round(x / containerWidth);
+    if (page !== newPage) {
+      context.setDate?.(items[newPage], UpdateSources.WEEK_SCROLL);
+    }
+    setPage(newPage);
   }, [context, containerWidth, page, items, firstAndroidRTLScroll, setFirstAndroidRTLScroll]);
 
   const getWeekStyle = useCallback((width, style) => {
@@ -86,10 +120,10 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
   const onMomentumScrollEndCallback = useCallback(() => {
     if (isFirstPage(page) || isLastPage(page, items)) {
-      setItems(getDatesArray(props));
+      setItems(getDatesArray);
       scrollToIndex(list);
     }
-  }, [isFirstPage, isLastPage, list, page]);
+  }, [isFirstPage, isLastPage, list, page, getDatesArray]);
 
   const renderItem = useCallback(({item}: {item: string}) => {
     const isSameWeek = sameWeek(item, context.date, firstDay);
@@ -189,12 +223,17 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 WeekCalendar.displayName = 'WeekCalendar';
 
 function shouldUpdate(prevProps: WeekCalendarProps, nextProps: WeekCalendarProps) {
-  if (shouldComponentUpdate(nextProps.context, prevProps.context)) {
-    if (!sameWeek(nextProps.context?.date, prevProps.context?.date, nextProps.firstDay ?? 0)) {
-      return true;
-    }
+  if (!nextProps.context || !prevProps.context) {
+    return true;
   }
-  return false;
+
+  const contextRequireUpdate = nextProps.context?.date !== prevProps.context?.date && nextProps.context.updateSource !== UpdateSources.WEEK_SCROLL ||
+    nextProps.context.numberOfDays !== prevProps.context.numberOfDays;
+
+  return contextRequireUpdate && !sameWeek(
+    nextProps.context?.date,
+    prevProps.context?.date,
+    nextProps.firstDay ?? 0);
 }
 
 export default asCalendarConsumer(memo(WeekCalendar, shouldUpdate));
