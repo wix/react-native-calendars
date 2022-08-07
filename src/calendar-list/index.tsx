@@ -322,8 +322,6 @@ CalendarList.propTypes = {
   keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
   keyExtractor: PropTypes.func,
   onEndReachedThreshold: PropTypes.number,
-  /** Called once when the scroll position gets within onEndReachedThreshold */
   onEndReached: PropTypes.func,
-  /** Enables nested scrolling for Android API level 21+ */
   nestedScrollEnabled: PropTypes.bool
 };
