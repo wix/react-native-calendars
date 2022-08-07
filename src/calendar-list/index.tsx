@@ -130,9 +130,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     return [style.current.container, propsStyle];
   }, [propsStyle]);
 
-  const calendarSize = useMemo(() => {
-    return horizontal ? calendarWidth : calendarHeight;
-  }, [horizontal, calendarWidth, calendarHeight]);
+  const calendarSize = horizontal ? calendarWidth : calendarHeight;
 
   useEffect(() => {
     if (current) {
