@@ -13,9 +13,9 @@ import {
 } from './presenter';
 import constants from '../../commons/constants';
 import {UpdateSources} from '../commons';
+import {forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 const NUMBER_OF_PAGES = 2; // must be a positive number
-const applyAndroidRtlFix = constants.isAndroid && constants.isRTL;
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -28,7 +28,7 @@ export interface WeekCalendarProps extends CalendarListProps {
  * @note: Should be wrapped with 'CalendarProvider'
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const WeekCalendar = React.forwardRef((props: WeekCalendarProps, ref) => {
+const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
   const {
     calendarWidth,
     firstDay = 0,
@@ -197,4 +197,4 @@ function shouldUpdate(prevProps: WeekCalendarProps, nextProps: WeekCalendarProps
   return false;
 }
 
-export default asCalendarConsumer(React.memo(WeekCalendar, shouldUpdate));
+export default asCalendarConsumer(memo(WeekCalendar, shouldUpdate));
