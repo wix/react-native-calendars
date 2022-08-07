@@ -97,11 +97,16 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     onEndReached
   } = props;
   
+  const calendarProps = extractCalendarProps(props);
+  const headerProps = extractHeaderProps(props);
+  const calendarSize = horizontal ? calendarWidth : calendarHeight;
+
   const style = useRef(styleConstructor(theme));
   const list = useRef();
   const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current));
   const visibleMonth = useRef();
+
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
   const items = useMemo(() => {
@@ -114,14 +119,6 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     return months;
   }, [pastScrollRange, futureScrollRange]);
 
-  const calendarProps = useMemo(() => {
-    return extractCalendarProps(props);
-  }, [props]);
-
-  const headerProps = useMemo(() => {
-    return extractHeaderProps(props);
-  }, [props]); 
-
   const _headerStyle = useMemo(() => {
     return [style.current.staticHeader, headerStyle];
   }, [headerStyle]);
@@ -129,8 +126,6 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   const _listStyle = useMemo(() => {
     return [style.current.container, propsStyle];
   }, [propsStyle]);
-
-  const calendarSize = horizontal ? calendarWidth : calendarHeight;
 
   useEffect(() => {
     if (current) {

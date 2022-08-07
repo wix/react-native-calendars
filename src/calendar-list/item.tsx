@@ -33,12 +33,11 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     visible
   } = props;
   const context = useContext(CalendarContext);
-  
+
   const style = useRef(styleConstructor(theme));
   
-  const dateString = useMemo(() => {
-    return toMarkingFormat(item);
-  }, [item]);
+  const calendarProps = extractCalendarProps(props);
+  const dateString = toMarkingFormat(item);
   
   const calendarStyle = useMemo(() => {
     return [
@@ -55,10 +54,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     return [calendarStyle, style.current.placeholderText];
   }, [calendarStyle]);
   
-  const calendarProps = useMemo(() => {
-    return extractCalendarProps(props);
-  }, [props]);
-
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
     const monthClone = month?.clone();
     if (monthClone) {
