@@ -54,9 +54,9 @@ const Week = (props: WeekProps) => {
   const renderWeek = () => {
     const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
     const week: JSX.Element[] = [];
-    const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
 
     if (dates) {
+      const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
       const datesToRender = numberOfDays > 1 && todayIndex > -1 ? dates.slice(todayIndex, numberOfDays) : dates;
       datesToRender.forEach((day: XDate, id: number) => {
         week.push(renderDay(day, id));
