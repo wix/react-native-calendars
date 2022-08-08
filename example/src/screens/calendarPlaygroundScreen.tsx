@@ -84,7 +84,7 @@ const NewCalendarScreen = () => {
     return {
       arrowColor: 'grey',
       textInactiveColor: PINK,
-      textSectionTitleDisabledColor: 'lightgrey',
+      textSectionTitleDisabledColor: '#a5e8cf',
       textSectionTitleColor: GREEN
     };
   }, []);
