@@ -1,6 +1,6 @@
 import times from 'lodash/times';
 import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
-import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch} from 'react-native';
+import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch, Alert} from 'react-native';
 import {Calendar, CalendarUtils} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
@@ -20,12 +20,18 @@ const NewCalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
   const [markingType, setMarkingType] = useState(Markings.DOT);
-
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
+
   /** props */
+  const [firstDay, setFirstDay] = useState(0);
+  const [minAndMax, setMinAndMax] = useState(false);
+  const [allowSelectionOutOfRange, setAllowSelectionOutOfRange] = useState(false);
   const [enableSwipeMonths, setEnableSwipeMonths] = useState(false);
+  const [disableMonthChange, setDisableMonthChange] = useState(false);
   const [showWeekNumbers, setShowWeekNumbers] = useState(false);
+  const [showSixWeeks, setShowSixWeeks] = useState(false);
   const [hideExtraDays, setHideExtraDays] = useState(false);
+  const [hideDayNames, setHideDayNames] = useState(false);
   const [hideArrows, setHideArrows] = useState(false);
   const [disabledByDefault, setDisabledByDefault] = useState(false);
   const [disableAllTouchEventsForDisabledDays, setDisableAllTouchEventsForDisabledDays] = useState(false);
@@ -35,10 +41,18 @@ const NewCalendarScreen = () => {
   const [dayComponent, setDayComponent] = useState(false);
   const [customHeader, setCustomHeader] = useState(false);
   const [customHeaderTitle, setCustomHeaderTitle] = useState(false);
+  const [renderArrow, setRenderArrow] = useState(false);
+  const [disableArrowLeft, setDisableArrowLeft] = useState(false);
+  const [disableArrowRight, setDisableArrowRight] = useState(false);
 
+  const toggleMinAndMax = useCallback(() => setMinAndMax(!minAndMax), [minAndMax]);
+  const toggleAllowSelectionOutOfRange = useCallback(() => setAllowSelectionOutOfRange(!allowSelectionOutOfRange), [allowSelectionOutOfRange]);
   const toggleEnableSwipeMonths = useCallback(() => setEnableSwipeMonths(!enableSwipeMonths), [enableSwipeMonths]);
+  const toggleDisableMonthChange = useCallback(() => setDisableMonthChange(!disableMonthChange), [disableMonthChange]);
   const toggleShowWeekNumbers = useCallback(() => setShowWeekNumbers(!showWeekNumbers), [showWeekNumbers]);
+  const toggleShowSixWeeks = useCallback(() => setShowSixWeeks(!showSixWeeks), [showSixWeeks]);
   const toggleHideExtraDays = useCallback(() => setHideExtraDays(!hideExtraDays), [hideExtraDays]);
+  const toggleHideDayNames = useCallback(() => setHideDayNames(!hideDayNames), [hideDayNames]);
   const toggleHideArrows = useCallback(() => setHideArrows(!hideArrows), [hideArrows]);
   const toggleDisabledByDefault = useCallback(() => setDisabledByDefault(!disabledByDefault), [disabledByDefault]);
   const toggleDisableAllTouchEventsForDisabledDays = useCallback(() => setDisableAllTouchEventsForDisabledDays(!disableAllTouchEventsForDisabledDays), [disableAllTouchEventsForDisabledDays]);
@@ -48,7 +62,9 @@ const NewCalendarScreen = () => {
   const toggleDayComponent = useCallback(() => setDayComponent(!dayComponent), [dayComponent]);
   const toggleCustomHeader = useCallback(() => setCustomHeader(!customHeader), [customHeader]);
   const toggleCustomHeaderTitle = useCallback(() => setCustomHeaderTitle(!customHeaderTitle), [customHeaderTitle]);
-
+  const toggleRenderArrow = useCallback(() => setRenderArrow(!renderArrow), [renderArrow]);
+  const toggleDisableArrowLeft = useCallback(() => setDisableArrowLeft(!disableArrowLeft), [disableArrowLeft]);
+  const toggleDisableArrowRight = useCallback(() => setDisableArrowRight(!disableArrowRight), [disableArrowRight]);
 
   const getDate = (count) => {
     const date = new Date(INITIAL_DATE);
@@ -58,6 +74,10 @@ const NewCalendarScreen = () => {
 
   const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
+  }, []);
+
+  const onDayLongPress = useCallback((day) => {
+    Alert.alert(`Date: ${day.dateString}`);
   }, []);
 
   const theme = useMemo(() => {
@@ -289,14 +309,19 @@ const NewCalendarScreen = () => {
         style={styles.calendar}
         theme={theme}
         onDayPress={onDayPress}
+        onDayLongPress={onDayLongPress}
         markingType={markingType}
         markedDates={disableAllTouchEventsForInactiveDays ? inactiveMarks : markingForType()}
-        // minDate={minDate} //'2012-05-10'
-        // maxDate={maxDate} //'2012-05-20'
-        firstDay={1}
+        minDate={minAndMax ? INITIAL_DATE : undefined}
+        maxDate={minAndMax ? getDate(21) : undefined}
+        allowSelectionOutOfRange={allowSelectionOutOfRange}
+        firstDay={firstDay}
         enableSwipeMonths={enableSwipeMonths}
+        disableMonthChange={disableMonthChange}
         showWeekNumbers={showWeekNumbers}
+        showSixWeeks={showSixWeeks}
         hideExtraDays={hideExtraDays}
+        hideDayNames={hideDayNames}
         hideArrows={hideArrows}
         disabledByDefault={disabledByDefault}
         disableAllTouchEventsForDisabledDays={disableAllTouchEventsForDisabledDays}
@@ -308,6 +333,9 @@ const NewCalendarScreen = () => {
         customHeaderTitle={customHeaderTitle ? CustomHeaderTitle : undefined}
         onPressArrowLeft={customHeaderTitle ? onPressArrowLeft : undefined}
         onPressArrowRight={customHeaderTitle ? onPressArrowRight : undefined}
+        renderArrow={renderArrow ? _renderArrow : undefined}
+        disableArrowLeft={disableArrowLeft}
+        disableArrowRight={disableArrowRight}
       />
     );
   };
@@ -396,6 +424,14 @@ const NewCalendarScreen = () => {
     </TouchableOpacity>
   );
 
+  /** Custom Arrow */
+  const _renderArrow = useCallback((direction) => {
+    const text = direction === 'left' ? '<<' : '>>';
+    return (
+      <Text>{text}</Text>
+    );
+  }, []);
+
   /** Props Switches */
   const renderSwitch = (label: string, state: any, toggleSwitch: any) => {
     return (
@@ -405,7 +441,7 @@ const NewCalendarScreen = () => {
           onValueChange={toggleSwitch}
           trackColor={{true: GREEN}}
         />
-        <Text style={styles.switchText}>{label}</Text>
+        <Text style={[styles.switchText, styles.text]}>{label}</Text>
       </View>
     );
   };
@@ -413,9 +449,14 @@ const NewCalendarScreen = () => {
   const renderSwitches = () => {
     return (
       <View>
+        {renderSwitch('Min and Max Dates', minAndMax, toggleMinAndMax)}
+        {renderSwitch('Allow Selection Out Of Range', allowSelectionOutOfRange, toggleAllowSelectionOutOfRange)}
         {renderSwitch('Enable Swipe Months', enableSwipeMonths, toggleEnableSwipeMonths)}
+        {renderSwitch('Disable Month Change', disableMonthChange, toggleDisableMonthChange)}
         {renderSwitch('Show Week Numbers', showWeekNumbers, toggleShowWeekNumbers)}
+        {renderSwitch('Show Six Weeks', showSixWeeks, toggleShowSixWeeks)}
         {renderSwitch('Hide Extra Days', hideExtraDays, toggleHideExtraDays)}
+        {renderSwitch('Hide Day Names', hideDayNames, toggleHideDayNames)}
         {renderSwitch('Hide Arrows', hideArrows, toggleHideArrows)}
         {renderSwitch('Disabled By Default', disabledByDefault, toggleDisabledByDefault)}
         {renderSwitch('Disable All Touch Events For Disabled Days', disableAllTouchEventsForDisabledDays, toggleDisableAllTouchEventsForDisabledDays)}
@@ -425,10 +466,14 @@ const NewCalendarScreen = () => {
         {renderSwitch('Day Component', dayComponent, toggleDayComponent)}
         {renderSwitch('Custom Header', customHeader, toggleCustomHeader)}
         {renderSwitch('Custom Header Title', customHeaderTitle, toggleCustomHeaderTitle)}
+        {renderSwitch('Render Arrow', renderArrow, toggleRenderArrow)}
+        {renderSwitch('Disable Arrow Left', disableArrowLeft, toggleDisableArrowLeft)}
+        {renderSwitch('Disable Arrow Right', disableArrowRight, toggleDisableArrowRight)}
       </View>
     );
   };
 
+  /** Buttons */
   const getValue = (index = 0) => {
     return Object.values(Markings)[index];
   };
@@ -458,12 +503,24 @@ const NewCalendarScreen = () => {
     });
   };
 
+  const renderButton = () => {
+    return (
+      <View style={[styles.row, styles.addButton]}>
+        <Text style={styles.text}>First day</Text>
+        <TouchableOpacity onPress={() => setFirstDay(firstDay + 1)}>
+          <Text style={styles.buttonText}>+ 1</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   const renderOptions = () => {
     return (
       <View style={styles.container}>
-        <View style={styles.radioButtonsContainer}>
-          <Text style={styles.radioButtonsTitle}>Marking Type</Text>
+        <View style={styles.buttonsContainer}>
+          <Text style={[styles.radioButtonsTitle, styles.text]}>Marking Type</Text>
           {renderRadioButtons()}
+          {renderButton()}
         </View>
         {renderSwitches()}
       </View>
@@ -489,9 +546,11 @@ const styles = StyleSheet.create({
     borderBottomColor: 'lightgrey'
   },
   container: {
-    // flexDirection: 'row',
     marginHorizontal: 5,
     marginVertical: 10
+  },
+  row: {
+    flexDirection: 'row'
   },
   switchContainer: {
     flexDirection: 'row',
@@ -499,17 +558,30 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     alignItems: 'center'
   },
-  switchText: {
-    marginHorizontal: 10,
-    fontSize: 14,
-    fontWeight: 'bold'
+  text: {
+    fontSize: 14, 
+    fontWeight: 'bold', 
   },
-  radioButtonsContainer: {
+  buttonText: {
+    color: GREEN,
+    marginLeft: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: GREEN,
+    borderRadius: 10
+  },
+  addButton: {
+    alignItems: 'center',
+    marginVertical: 5
+  },
+  switchText: {
+    marginHorizontal: 10
+  },
+  buttonsContainer: {
     margin: 10
   },
   radioButtonsTitle: {
-    fontSize: 14, 
-    fontWeight: 'bold', 
     marginBottom: 5
   },
   radioButtonContainer: {
@@ -542,7 +614,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   customHeader: {
-    backgroundColor: '#FCC',
+    backgroundColor: PINK,
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginHorizontal: -4,
