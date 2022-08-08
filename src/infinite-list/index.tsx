@@ -44,7 +44,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     scrollViewProps,
     positionIndex = 0
   } = props;
-  
+
   const dataProvider = useMemo(() => {
     return dataProviderMaker(data);
   }, [data]);
@@ -78,7 +78,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {
       reloadPagesDebounce?.cancel();
-      
+
       const {x, y} = event.nativeEvent.contentOffset;
       const newPageIndex = Math.round(isHorizontal ? x / pageWidth : y / pageHeight);
 
@@ -106,7 +106,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
             onMomentumScrollEnd(event);
           }, 100);
         }
-        
+
         pageIndex.current = newPageIndex;
       }
 
@@ -125,7 +125,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
           reloadPagesDebounce?.(pageIndex.current);
           onReachNearEdge?.(pageIndex.current!);
         }
-  
+
         scrollViewProps?.onMomentumScrollEnd?.(event);
       }
     },
@@ -135,6 +135,16 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const onScrollBeginDrag = useCallback(() => {
     scrolledByUser.current = true;
   }, []);
+
+  const scrollViewPropsMemo = useMemo(() => {
+    return {
+      pagingEnabled: isHorizontal,
+      bounces: false,
+      ...scrollViewProps,
+      onScrollBeginDrag,
+      onMomentumScrollEnd
+    };
+  }, [onScrollBeginDrag, onMomentumScrollEnd, scrollViewProps, isHorizontal]);
 
   const style = useMemo(() => {
     return {height: pageHeight};
@@ -153,13 +163,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       renderAheadOffset={5 * pageWidth}
       onScroll={onScroll}
       style={style}
-      scrollViewProps={{
-        pagingEnabled: isHorizontal,
-        bounces: false,
-        ...scrollViewProps,
-        onScrollBeginDrag,
-        onMomentumScrollEnd
-      }}
+      scrollViewProps={scrollViewPropsMemo}
     />
   );
 };
