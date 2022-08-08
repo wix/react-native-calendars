@@ -82,10 +82,10 @@ const NewCalendarScreen = () => {
 
   const theme = useMemo(() => {
     return {
+      arrowColor: 'grey',
       textInactiveColor: PINK,
-      textSectionTitleDisabledColor: 'grey',
-      textSectionTitleColor: GREEN,
-      arrowColor: 'grey'
+      textSectionTitleDisabledColor: 'lightgrey',
+      textSectionTitleColor: GREEN
     };
   }, []);
 
