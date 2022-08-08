@@ -127,6 +127,13 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     return [style.current.container, propsStyle];
   }, [propsStyle]);
 
+  const initialDateIndex = useMemo(() => {
+    const date: XDate = initialDate?.current || new XDate();
+    return findIndex(items, function(item) { 
+      return item.toString() === date.toString(); 
+    });
+  }, [items]);
+
   useEffect(() => {
     if (current) {
       scrollToMonth(new XDate(current));
@@ -171,13 +178,6 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
   }, [calendarSize]);
-
-  const initialDateIndex = useMemo(() => {
-    const date: XDate = initialDate?.current || new XDate();
-    return findIndex(items, function(item) { 
-      return item.toString() === date.toString(); 
-    });
-  }, [items]);
 
   const addMonth = useCallback((count: number) => {
     const day = currentMonth?.clone().addMonths(count, true);
