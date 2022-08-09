@@ -72,6 +72,10 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeThreshold?: number;
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
+  /** Whether to close the calendar header. Default = false. */
+  closeCalendarHeader: boolean;
+  /** Whether to close the calendar WeekCalendar. Default = false. */
+  closeWeekCalendar: boolean;
 }
 
 const headerStyleOverride = {
@@ -126,6 +130,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onPressArrowRight,
     renderArrow, 
     testID,
+    closeCalendarHeader = false,
+    closeWeekCalendar = false,
     ...others
   } = props;
 
@@ -591,9 +597,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       ) : (
         <Animated.View ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
           {renderCalendarList()}
-          {renderWeekCalendar()}
+          {!closeWeekCalendar && renderWeekCalendar()}
           {!hideKnob && renderKnob()}
-          {!horizontal && renderAnimatedHeader()}
+          {!horizontal && !closeCalendarHeader && renderAnimatedHeader()}
         </Animated.View>
       )}
     </View>
