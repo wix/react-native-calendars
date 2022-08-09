@@ -20,7 +20,6 @@ import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
 
-
 type MarkedDatesType = {
   [key: string]: MarkingProps;
 };
@@ -78,8 +77,6 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
 const Calendar = (props: CalendarProps) => {
-  useWhyDidYouUpdate(props.current, props);
-
   const {
     initialDate,
     current,
