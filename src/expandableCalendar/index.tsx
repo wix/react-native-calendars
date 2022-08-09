@@ -76,6 +76,8 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeCalendarHeader: boolean;
   /** Whether to close the calendar WeekCalendar. Default = false. */
   closeWeekCalendar: boolean;
+  /**a fixed openHeight for calendar */
+  fixedOpenHeight: number;
 }
 
 const headerStyleOverride = {
@@ -132,6 +134,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     testID,
     closeCalendarHeader = false,
     closeWeekCalendar = false,
+    fixedOpenHeight,
     ...others
   } = props;
 
@@ -182,6 +185,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const closedHeight = CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT);
   const getOpenHeight = () => {
     if (!horizontal) {
+      if (fixedOpenHeight != null) return fixedOpenHeight;
       return Math.max(constants.screenHeight, constants.screenWidth);
     }
     return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
