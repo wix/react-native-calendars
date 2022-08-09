@@ -70,6 +70,12 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
+  /** Filter days in calendar.If it is '',then all date will be show,or it only show current row's date. */
+  targetDateStr: string;
+  /** Add to filter month when page scroll.Handler when page scroll,day's row number will change,then give a callback. */
+  targetMonth: number;
+  /** With props targetMonth */
+  onMonthChangeRowsChange: (row: number, month: number) => void;
 }
 
 /**
@@ -78,7 +84,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
 const Calendar = (props: CalendarProps) => {
-  const {initialDate, current, theme, disableMonthChange, allowSelectionOutOfRange, minDate, maxDate, onDayPress, onDayLongPress, hideExtraDays, markedDates, firstDay, showSixWeeks, customHeader, headerStyle, displayLoadingIndicator, testID, enableSwipeMonths, accessibilityElementsHidden, importantForAccessibility, onMonthChange, onVisibleMonthsChange, style: propsStyle} = props;
+  const {initialDate, current, theme, disableMonthChange, allowSelectionOutOfRange, minDate, maxDate, onDayPress, onDayLongPress, hideExtraDays, markedDates, firstDay, showSixWeeks, customHeader, headerStyle, displayLoadingIndicator, testID, enableSwipeMonths, accessibilityElementsHidden, importantForAccessibility, onMonthChange, onVisibleMonthsChange, style: propsStyle, targetDateStr, targetMonth, onMonthChangeRowsChange} = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
@@ -224,8 +230,23 @@ const Calendar = (props: CalendarProps) => {
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
     const days = page(currentMonth, firstDay, shouldShowSixWeeks);
     const weeks = [];
-
+    const myMonth = (currentMonth.getMonth() + 1) > 12 ? 1 : (currentMonth.getMonth() + 1);
+    if (myMonth === targetMonth) {
+        onMonthChangeRowsChange(~~(days.length/7),myMonth);
+    }
     while (days.length) {
+      const mydays = days.slice(0, 7);
+      let skip = true;
+      mydays.forEach(day => {
+        if (!targetDateStr) skip = false;
+        if (new XDate(targetDateStr).diffDays(new XDate(day)) == 0) {
+            skip = false;
+        }
+    });
+    if (skip) {
+        days.splice(0, 7);
+        continue;
+    }
       weeks.push(renderWeek(days.splice(0, 7), weeks.length));
     }
 

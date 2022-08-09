@@ -76,7 +76,7 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeCalendarHeader: boolean;
   /** Whether to close the calendar WeekCalendar. Default = false. */
   closeWeekCalendar: boolean;
-  /**a fixed openHeight for calendar */
+  /** a fixed openHeight for calendar */
   fixedOpenHeight: number;
 }
 
@@ -107,30 +107,30 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);  
   const {
     /** ExpandableCalendar props */
-    initialPosition = Positions.CLOSED, 
+    initialPosition = Positions.CLOSED,
     onCalendarToggled,
-    disablePan, 
-    hideKnob = numberOfDays > 1, 
+    disablePan,
+    hideKnob = numberOfDays > 1,
     leftArrowImageSource = LEFT_ARROW,
-    rightArrowImageSource = RIGHT_ARROW, 
-    allowShadow = true, 
+    rightArrowImageSource = RIGHT_ARROW,
+    allowShadow = true,
     disableWeekScroll,
-    openThreshold = PAN_GESTURE_THRESHOLD, 
+    openThreshold = PAN_GESTURE_THRESHOLD,
     closeThreshold = PAN_GESTURE_THRESHOLD,
     closeOnDayPress = true,
 
     /** CalendarList props */
-    horizontal = true, 
+    horizontal = true,
     calendarStyle,
-    theme, 
-    style: propsStyle, 
-    firstDay = 0, 
+    theme,
+    style: propsStyle,
+    firstDay = 0,
     markedDates,
     onDayPress,
-    hideArrows, 
+    hideArrows,
     onPressArrowLeft,
     onPressArrowRight,
-    renderArrow, 
+    renderArrow,
     testID,
     closeCalendarHeader = false,
     closeWeekCalendar = false,
