@@ -1,6 +1,6 @@
 import {isUndefined, isDate, isString, isNumber} from 'lodash';
 import XDate from 'xdate';
-const {padNumber, toMarkingFormat} = require('../utils/dateutils');
+const {padNumber, toMarkingFormat, getLocale} = require('../utils/dateutils');
 
 export function getCalendarDateString(date?: Date | string | number) {
   if (!isUndefined(date)) {
@@ -17,7 +17,7 @@ export function getCalendarDateString(date?: Date | string | number) {
 }
 
 export function getDefaultLocale(): any {
-  return XDate.locales[XDate.defaultLocale];
+  return getLocale();
 }
 
 export default {
