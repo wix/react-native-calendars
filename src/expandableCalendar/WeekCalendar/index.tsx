@@ -1,17 +1,19 @@
+import XDate from 'xdate';
+import {Map} from 'immutable';
+
+import {forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {View, NativeSyntheticEvent, NativeScrollEvent, FlatList} from 'react-native';
+
 import {generateDay, sameWeek} from '../../dateutils';
+import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
 import asCalendarConsumer from '../asCalendarConsumer';
 import {CalendarListProps} from '../../calendar-list';
 import WeekDaysNames from '../../commons/WeekDaysNames';
 import Week from '../week';
-import {Map} from 'immutable';
-import constants from '../../commons/constants';
 import {UpdateSources} from '../commons';
-import {forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import XDate from 'xdate';
-import {toMarkingFormat} from '../../interface';
+import constants from '../../commons/constants';
 
 const NUMBER_OF_PAGES = 2; // must be a positive number
 
