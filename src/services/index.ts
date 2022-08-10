@@ -1,6 +1,6 @@
 import {isUndefined, isDate, isString, isNumber} from 'lodash';
 import XDate from 'xdate';
-const {padNumber, toMarkingFormat} = require('../interface');
+const {padNumber, toMarkingFormat} = require('../utils/dateutils');
 
 export function getCalendarDateString(date?: Date | string | number) {
   if (!isUndefined(date)) {

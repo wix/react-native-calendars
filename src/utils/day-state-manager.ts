@@ -1,6 +1,5 @@
 const XDate = require('xdate');
-const {isToday, isDateNotInTheRange, sameMonth} = require('./dateutils');
-const {parseDate, toMarkingFormat} = require('./interface');
+const {isToday, isDateNotInTheRange, sameMonth, parseDate, toMarkingFormat} = require('./dateutils');
 
 
 export function getState(day: XDate, current: XDate, props: any) {

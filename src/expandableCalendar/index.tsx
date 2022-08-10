@@ -20,9 +20,8 @@ import {
 } from 'react-native';
 
 // @ts-expect-error
-import {CALENDAR_KNOB} from '../testIDs';
-import {page} from '../dateutils';
-import {parseDate, toMarkingFormat} from '../interface';
+import {CALENDAR_KNOB} from '../utils/testIDs';
+import {page, parseDate, toMarkingFormat} from '../utils/dateutils';
 import {DateData, Direction} from '../types';
 import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';

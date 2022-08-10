@@ -13,12 +13,11 @@ import {
   NativeScrollEvent
 } from 'react-native';
 
-import {extractComponentProps} from '../componentUpdater';
-import {parseDate, xdateToData, toMarkingFormat} from '../interface';
-import {sameDate, sameMonth} from '../dateutils';
+import {extractComponentProps} from '../utils/componentUpdater';
+import {sameDate, sameMonth, parseDate, xdateToData, toMarkingFormat} from '../utils/dateutils';
 // @ts-expect-error
-import {AGENDA_CALENDAR_KNOB} from '../testIDs';
-import {VelocityTracker} from '../velocityTracker';
+import {AGENDA_CALENDAR_KNOB} from '../utils/testIDs';
+import {VelocityTracker} from './velocityTracker';
 import {DateData, AgendaSchedule} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';

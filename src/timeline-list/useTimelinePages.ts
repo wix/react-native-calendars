@@ -5,7 +5,7 @@ import times from 'lodash/times';
 import debounce from 'lodash/debounce';
 
 import constants from '../commons/constants';
-import {generateDay} from '../dateutils';
+import {generateDay} from '../utils/dateutils';
 
 export const PAGES_COUNT = 100;
 export const NEAR_EDGE_THRESHOLD = 10;

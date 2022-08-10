@@ -3,8 +3,7 @@ import XDate from 'xdate';
 import React, {useEffect, useRef, useState, useCallback, useMemo} from 'react';
 import {Animated, TouchableOpacity, View, ViewStyle, ViewProps, StyleProp} from 'react-native';
 
-import {sameMonth} from '../../dateutils';
-import {xdateToData} from '../../interface';
+import {sameMonth, xdateToData} from '../../utils/dateutils';
 import {Theme, DateData} from '../../types';
 import {UpdateSources} from '../commons';
 import styleConstructor from '../style';

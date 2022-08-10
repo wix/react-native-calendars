@@ -1,6 +1,5 @@
 import XDate from 'xdate';
-import {isToday, isPastDate} from '../../dateutils';
-import {toMarkingFormat} from '../../interface';
+import {isToday, isPastDate, toMarkingFormat} from '../../utils/dateutils';
 import {getDefaultLocale} from '../../services';
 import {CalendarContextProviderProps} from './Provider';
 

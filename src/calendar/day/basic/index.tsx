@@ -2,7 +2,7 @@ import XDate from 'xdate';
 import React, {Fragment, useCallback, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
-import {xdateToData} from '../../../interface';
+import {xdateToData} from '../../../utils/dateutils';
 import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';

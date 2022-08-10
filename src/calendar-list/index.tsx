@@ -4,11 +4,10 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {FlatList, View, ViewStyle, LayoutChangeEvent, FlatListProps} from 'react-native';
 
-import {extractHeaderProps} from '../componentUpdater';
-import {xdateToData, parseDate} from '../interface';
-import {page, sameDate, sameMonth} from '../dateutils';
+import {extractHeaderProps} from '../utils/componentUpdater';
+import {page, sameDate, sameMonth, xdateToData, parseDate} from '../utils/dateutils';
 // @ts-expect-error
-import {STATIC_HEADER} from '../testIDs';
+import {STATIC_HEADER} from '../utils/testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';

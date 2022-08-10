@@ -5,7 +5,7 @@ import XDate from 'xdate';
 
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 
-import {isToday, generateDay} from '../dateutils';
+import {isToday, generateDay} from '../utils/dateutils';
 import InfiniteList from '../infinite-list';
 import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';

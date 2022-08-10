@@ -2,10 +2,9 @@ import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
 import {View} from 'react-native';
 
-import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
-import {parseDate, toMarkingFormat} from '../interface';
-import {getState} from '../day-state-manager';
-import {extractDayProps} from '../componentUpdater';
+import {getPartialWeekDates, getWeekDates, sameMonth, parseDate, toMarkingFormat} from '../utils/dateutils';
+import {getState} from '../utils/day-state-manager';
+import {extractDayProps} from '../utils/componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';

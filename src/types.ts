@@ -1,4 +1,5 @@
 import {ViewStyle, TextStyle} from 'react-native';
+import {MarkingProps} from './calendar/day/marking';
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
@@ -9,6 +10,9 @@ export type DateData = {
   day: number;
   timestamp: number;
   dateString: string;
+};
+export type MarkedDates = {
+  [key: string]: MarkingProps;
 };
 export interface Theme {
   timelineContainer?: object;

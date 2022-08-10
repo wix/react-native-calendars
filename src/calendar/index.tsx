@@ -7,22 +7,17 @@ import {View, ViewStyle, StyleProp} from 'react-native';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import constants from '../commons/constants';
-import {page, isGTE, isLTE, sameMonth} from '../dateutils';
-import {xdateToData, parseDate, toMarkingFormat} from '../interface';
-import {getState} from '../day-state-manager';
-import {extractHeaderProps, extractDayProps} from '../componentUpdater';
+import {page, isGTE, isLTE, sameMonth, xdateToData, parseDate, toMarkingFormat} from '../utils/dateutils';
+import {getState} from '../utils/day-state-manager';
+import {extractHeaderProps, extractDayProps} from '../utils/componentUpdater';
 // @ts-expect-error
-import {WEEK_NUMBER} from '../testIDs';
-import {DateData, Theme} from '../types';
+import {WEEK_NUMBER} from '../utils/testIDs';
+import {DateData, Theme, MarkedDates} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
-import {MarkingProps} from './day/marking';
 
-type MarkedDatesType = {
-  [key: string]: MarkingProps;
-};
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
@@ -44,7 +39,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
   maxDate?: string;
   /** Collection of dates that have to be marked */
-  markedDates?: MarkedDatesType;
+  markedDates?: MarkedDates;
   /** Do not show days of other months in month page */
   hideExtraDays?: boolean;
   /** Always show six weeks on each month (only when hideExtraDays = false) */

@@ -4,11 +4,10 @@ import some from 'lodash/some';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
 
-import {formatNumbers, isToday} from '../../dateutils';
+import {formatNumbers, isToday, xdateToData} from '../../utils/dateutils';
 import {getDefaultLocale} from '../../services';
-import {xdateToData} from '../../interface';
 // @ts-expect-error
-import {SELECT_DATE_SLOT} from '../../testIDs';
+import {SELECT_DATE_SLOT} from '../../utils/testIDs';
 import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';

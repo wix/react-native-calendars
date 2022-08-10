@@ -5,10 +5,10 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
-import {isToday} from '../../dateutils';
+import {isToday} from '../../utils/dateutils';
 import {getDefaultLocale} from '../../services';
 // @ts-expect-error
-import {RESERVATION_DATE} from '../../testIDs';
+import {RESERVATION_DATE} from '../../utils/testIDs';
 import styleConstructor from './style';
 import {Theme, AgendaEntry} from '../../types';
 

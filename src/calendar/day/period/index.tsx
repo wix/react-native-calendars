@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, {useCallback, useRef, useMemo} from 'react';
 import {TouchableWithoutFeedback, TouchableOpacity, Text, View, ViewStyle, ViewProps, TextStyle, StyleProp} from 'react-native';
 
-import {xdateToData} from '../../../interface';
+import {xdateToData} from '../../../utils/dateutils';
 import {Theme, DayState, DateData} from '../../../types';
 import styleConstructor from './style';
 import Dot from '../dot';

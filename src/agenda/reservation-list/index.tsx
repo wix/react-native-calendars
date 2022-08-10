@@ -5,9 +5,8 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
-import {extractComponentProps} from '../../componentUpdater';
-import {sameDate} from '../../dateutils';
-import {toMarkingFormat} from '../../interface';
+import {extractComponentProps} from '../../utils/componentUpdater';
+import {sameDate, toMarkingFormat} from '../../utils/dateutils';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
 import {AgendaEntry, AgendaSchedule} from '../../types';

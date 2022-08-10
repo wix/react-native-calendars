@@ -6,7 +6,7 @@ import {
   CHANGE_MONTH_RIGHT_ARROW,
   HEADER_DAY_NAMES,
   HEADER_LOADING_INDICATOR
-} from '../../testIDs';
+} from '../../utils/testIDs';
 
 export class CalendarHeaderDriver extends ComponentDriver {
   constructor(testID) {

@@ -6,9 +6,8 @@ import {Map} from 'immutable';
 import React, {Component} from 'react';
 import {FlatList, View, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
-import {extractCalendarProps} from '../../componentUpdater';
-import {sameWeek} from '../../dateutils';
-import {toMarkingFormat} from '../../interface';
+import {extractCalendarProps} from '../../utils/componentUpdater';
+import {sameWeek, toMarkingFormat} from '../../utils/dateutils';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
 import asCalendarConsumer from '../asCalendarConsumer';

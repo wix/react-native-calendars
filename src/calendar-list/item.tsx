@@ -4,7 +4,7 @@ import React, {useRef, useMemo, useContext} from 'react';
 import {Text, View} from 'react-native';
 
 import {Theme} from '../types';
-import {formatNumbers} from '../dateutils';
+import {formatNumbers} from '../utils/dateutils';
 import {getCalendarDateString} from '../services';
 import Calendar, {CalendarProps} from '../calendar';
 import styleConstructor from './style';

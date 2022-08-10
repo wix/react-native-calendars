@@ -14,7 +14,7 @@ import {
   AccessibilityActionEvent,
   ColorValue
 } from 'react-native';
-import {formatNumbers, weekDayNames} from '../../dateutils';
+import {formatNumbers, weekDayNames} from '../../utils/dateutils';
 import {
   CHANGE_MONTH_LEFT_ARROW,
   CHANGE_MONTH_RIGHT_ARROW,
@@ -22,7 +22,7 @@ import {
   HEADER_LOADING_INDICATOR,
   HEADER_MONTH_NAME
   // @ts-expect-error
-} from '../../testIDs';
+} from '../../utils/testIDs';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
 

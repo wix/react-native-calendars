@@ -3,7 +3,7 @@ import React, {useRef} from 'react';
 import {View, ViewStyle, TextStyle, StyleProp} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
-import {extractDotProps} from '../../../componentUpdater';
+import {extractDotProps} from '../../../utils/componentUpdater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
 

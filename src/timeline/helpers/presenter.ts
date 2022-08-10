@@ -1,7 +1,6 @@
 import XDate from 'xdate';
 import constants from '../../commons/constants';
-import {generateDay} from '../../dateutils';
-import {toMarkingFormat} from '../../interface';
+import {generateDay, toMarkingFormat} from '../../utils/dateutils';
 
 export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
   let time = yPosition / hourBlockHeight;

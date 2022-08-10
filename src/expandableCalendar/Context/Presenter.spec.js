@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 // import {UpdateSources} from '../commons';
-import {toMarkingFormat} from '../../interface';
+import {toMarkingFormat} from '../../utils/dateutils';
 import {
   getButtonIcon,
   // setDate,

@@ -1,6 +1,6 @@
-import {CalendarListProps} from './calendar-list';
-import {CalendarProps} from './calendar';
-import {MarkingProps} from './calendar/day/marking';
+import {CalendarListProps} from '../calendar-list';
+import {CalendarProps} from '../calendar';
+import {MarkingProps} from '../calendar/day/marking';
 
 const get = require('lodash/get');
 const omit = require('lodash/omit');

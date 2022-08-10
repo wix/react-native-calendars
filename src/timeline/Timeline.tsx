@@ -7,7 +7,7 @@ import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {View, ScrollView} from 'react-native';
 
 import constants from '../commons/constants';
-import {generateDay} from '../dateutils';
+import {generateDay} from '../utils/dateutils';
 import {getCalendarDateString} from '../services';
 import {Theme} from '../types';
 import styleConstructor from './style';

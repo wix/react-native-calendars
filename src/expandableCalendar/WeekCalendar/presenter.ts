@@ -3,11 +3,10 @@ import XDate from 'xdate';
 import React from 'react';
 import {FlatList} from 'react-native';
 
-import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
 import constants from '../../commons/constants';
-import {generateDay} from '../../dateutils';
+import {generateDay, toMarkingFormat} from '../../utils/dateutils';
 
 const commons = require('../commons');
 const updateSources = commons.UpdateSources;
