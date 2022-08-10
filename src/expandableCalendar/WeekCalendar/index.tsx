@@ -1,7 +1,7 @@
 import XDate from 'xdate';
 import {Map} from 'immutable';
 
-import {forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {View, NativeSyntheticEvent, NativeScrollEvent, FlatList} from 'react-native';
 
 import {generateDay, sameWeek} from '../../dateutils';
