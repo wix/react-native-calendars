@@ -111,7 +111,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     }
     setIsDisabled(disabled);
     animateOpacity(disabled);
-  }, [showTodayButton]);
+  }, [showTodayButton, isDisabled]);
 
   const contextValue = useMemo(() => {
     return {
@@ -123,7 +123,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       numberOfDays,
       timelineLeftInset
     };
-  }, [currentDate, updateSource, numberOfDays]);
+  }, [currentDate, updateSource, numberOfDays, _setDisabled]);
 
   /** Animations */
 
