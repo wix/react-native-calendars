@@ -16,8 +16,8 @@ export const onScroll = ({context, x, page, items, width, firstAndroidRTLScroll,
   }
 
   x = getX(x, items?.length, width);
-  const newPage = getNewPage(x, width);
-  if (shouldUpdateState(page, newPage)) {
+  const newPage = Math.round(x / width);
+  if (page !== newPage) {
     context.setDate?.(items[newPage], UpdateSources.WEEK_SCROLL);
   }
   return newPage;
@@ -70,14 +70,6 @@ const getX = (x: number, itemsCount: number, containerWidth: number) => {
     return overallWidth - x;
   }
   return x;
-};
-
-const getNewPage = (x: number, containerWidth: number) => {
-  return Math.round(x / containerWidth);
-};
-
-const shouldUpdateState = (page: number, newPage: number) => {
-  return page !== newPage;
 };
 
 const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
