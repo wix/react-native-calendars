@@ -136,6 +136,16 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     scrolledByUser.current = true;
   }, []);
 
+  const scrollViewPropsMemo = useMemo(() => {
+    return {
+      pagingEnabled: isHorizontal,
+      bounces: false,
+      ...scrollViewProps,
+      onScrollBeginDrag,
+      onMomentumScrollEnd
+    };
+  }, [onScrollBeginDrag, onMomentumScrollEnd, scrollViewProps, isHorizontal]);
+
   const style = useMemo(() => {
     return {height: pageHeight};
   }, [pageHeight]);
@@ -153,13 +163,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       renderAheadOffset={5 * pageWidth}
       onScroll={onScroll}
       style={style}
-      scrollViewProps={{
-        pagingEnabled: isHorizontal,
-        bounces: false,
-        ...scrollViewProps,
-        onScrollBeginDrag,
-        onMomentumScrollEnd
-      }}
+      scrollViewProps={scrollViewPropsMemo}
     />
   );
 };
