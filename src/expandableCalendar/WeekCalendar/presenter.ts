@@ -78,15 +78,13 @@ class Presenter {
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
 
-    let newDate;
     if (numberOfDays > 1) {
-      newDate = generateDay(toMarkingFormat(d), weekIndex * numberOfDays);
+      return generateDay(d, weekIndex * numberOfDays);
     } else {
       // leave the current date in the visible week as is
       const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
-      newDate = dd.addWeeks(weekIndex);
+      return toMarkingFormat(dd.addWeeks(weekIndex));
     }
-    return toMarkingFormat(newDate);
   }
 
   getDatesArray = (args: WeekCalendarProps) => {
