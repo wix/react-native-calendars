@@ -71,7 +71,7 @@ const Day = React.memo((props: DayProps) => {
   }, [_date, marking, _isToday]);
   
   const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
-  const dayComponentProps = dayComponent ? {date: xdateToData(date ? new XDate(date) : new XDate())} : undefined;
+  const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate())} : undefined;
 
   return (
     //@ts-expect-error
