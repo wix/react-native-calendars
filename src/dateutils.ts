@@ -1,5 +1,5 @@
 const XDate = require('xdate');
-const {parseDate, toMarkingFormat} = require('./interface');
+const {toMarkingFormat} = require('./interface');
 const {getDefaultLocale} = require('./services');
 
 const latinNumbersPattern = /[0-9]/g;
@@ -142,27 +142,27 @@ export function isDateNotInTheRange(minDate: XDate, maxDate: XDate, date: XDate)
 }
 
 export function getWeekDates(date: string, firstDay = 0, format?: string) {
-  if (date && parseDate(date).valid()) {
-    const current = parseDate(date);
-    const daysArray = [current];
-    let dayOfTheWeek = current.getDay() - firstDay;
+  const d: XDate = new XDate(date);
+  if (date && d.valid()) {
+    const daysArray = [d];
+    let dayOfTheWeek = d.getDay() - firstDay;
     if (dayOfTheWeek < 0) {
       // to handle firstDay > 0
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
 
-    let newDate = current;
+    let newDate = d;
     let index = dayOfTheWeek - 1;
     while (index >= 0) {
-      newDate = parseDate(newDate).addDays(-1);
+      newDate = newDate.clone().addDays(-1);
       daysArray.unshift(newDate);
       index -= 1;
     }
 
-    newDate = current;
+    newDate = d;
     index = dayOfTheWeek + 1;
     while (index < 7) {
-      newDate = parseDate(newDate).addDays(1);
+      newDate = newDate.clone().addDays(1);
       daysArray.push(newDate);
       index += 1;
     }
