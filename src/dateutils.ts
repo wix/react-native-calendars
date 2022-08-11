@@ -49,8 +49,9 @@ export function isPastDate(date: string) {
   return false;
 }
 
-export function isToday(date?: XDate) {
-  return sameDate(date, XDate.today());
+export function isToday(date?: XDate | string) {
+  const d = date instanceof XDate ? date : new XDate(date);
+  return sameDate(d, XDate.today());
 }
 
 export function isGTE(a: XDate, b: XDate) {

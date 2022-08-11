@@ -153,7 +153,7 @@ const AgendaList = (props: AgendaListProps) => {
 
     if (markToday) {
       const string = getDefaultLocale().today || todayString;
-      const today = isToday(new XDate(title));
+      const today = isToday(title);
       sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
     }
 
