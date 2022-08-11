@@ -1,5 +1,5 @@
 const XDate = require('xdate');
-const {parseDate, toMarkingFormat} = require('./interface');
+const {toMarkingFormat} = require('./interface');
 const {getDefaultLocale} = require('./services');
 
 const latinNumbersPattern = /[0-9]/g;
@@ -26,7 +26,8 @@ export function sameDate(a?: XDate, b?: XDate) {
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
   const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
-  return weekDates?.includes(b);
+  const element = weekDates instanceof XDate ? new XDate(b) : b;
+  return weekDates?.includes(element);
 }
 
 export function isPastDate(date: string) {
@@ -143,27 +144,27 @@ export function isDateNotInRange(date: XDate, minDate: string, maxDate: string) 
 }
 
 export function getWeekDates(date: string, firstDay = 0, format?: string) {
-  if (date && parseDate(date).valid()) {
-    const current = parseDate(date);
-    const daysArray = [current];
-    let dayOfTheWeek = current.getDay() - firstDay;
+  const d: XDate = new XDate(date);
+  if (date && d.valid()) {
+    const daysArray = [d];
+    let dayOfTheWeek = d.getDay() - firstDay;
     if (dayOfTheWeek < 0) {
       // to handle firstDay > 0
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
 
-    let newDate = current;
+    let newDate = d;
     let index = dayOfTheWeek - 1;
     while (index >= 0) {
-      newDate = parseDate(newDate).addDays(-1);
+      newDate = newDate.clone().addDays(-1);
       daysArray.unshift(newDate);
       index -= 1;
     }
 
-    newDate = current;
+    newDate = d;
     index = dayOfTheWeek + 1;
     while (index < 7) {
-      newDate = parseDate(newDate).addDays(1);
+      newDate = newDate.clone().addDays(1);
       daysArray.push(newDate);
       index += 1;
     }

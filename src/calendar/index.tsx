@@ -138,11 +138,9 @@ const Calendar = (props: CalendarProps) => {
   }, [currentMonth, updateMonth]);
 
   const handleDayInteraction = useCallback((date: DateData, interaction?: (date: DateData) => void) => {
-    const day = parseDate(date);
-    const min = parseDate(minDate);
-    const max = parseDate(maxDate);
+    const day = new XDate(date.dateString);
 
-    if (allowSelectionOutOfRange || !(min && !isGTE(day, min)) && !(max && !isLTE(day, max))) {
+    if (allowSelectionOutOfRange || !(minDate && !isGTE(day, new XDate(minDate))) && !(maxDate && !isLTE(day, new XDate(maxDate)))) {
       if (!disableMonthChange) {
         updateMonth(day);
       }
