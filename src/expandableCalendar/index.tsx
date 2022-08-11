@@ -312,7 +312,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
     }
-  }, [horizontal, isOpen, firstDay, numberOfDays, setDate]);
+  }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
   /** Pan Gesture */
 
