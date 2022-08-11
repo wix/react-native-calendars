@@ -1,4 +1,3 @@
-const XDate = require('xdate');
 const {isToday, isDateNotInTheRange, sameMonth} = require('./dateutils');
 const {parseDate, toMarkingFormat} = require('./interface');
 
@@ -18,7 +17,7 @@ export function getState(day: XDate, current: XDate, props: any) {
     state = 'disabled';
   } else if (isDateNotInTheRange(_minDate, _maxDate, day)) {
     state = 'disabled';
-  } else if (!sameMonth(new XDate(day), new XDate(current))) {
+  } else if (!sameMonth(day, current)) {
     state = 'disabled';
   }
 
