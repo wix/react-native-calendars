@@ -26,7 +26,8 @@ export function sameDate(a?: XDate, b?: XDate) {
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
   const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
-  return weekDates?.includes(b);
+  const element = weekDates instanceof XDate ? new XDate(b) : b;
+  return weekDates?.includes(element);
 }
 
 export function isPastDate(date: string) {
