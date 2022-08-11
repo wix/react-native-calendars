@@ -1,4 +1,3 @@
-import XDate from 'xdate';
 import React, {Fragment, useCallback, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
@@ -58,7 +57,7 @@ const BasicDay = (props: BasicDayProps) => {
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
-  const dateData = date ? xdateToData(new XDate(date)) : undefined;
+  const dateData = date ? xdateToData(date) : undefined;
 
   const shouldDisableTouchEvent = () => {
     const {disableTouchEvent} = _marking;

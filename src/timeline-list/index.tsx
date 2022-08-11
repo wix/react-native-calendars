@@ -1,7 +1,6 @@
 import throttle from 'lodash/throttle';
 import flatten from 'lodash/flatten';
 import dropRight from 'lodash/dropRight';
-import XDate from 'xdate';
 
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 
@@ -111,7 +110,7 @@ const TimelineList = (props: TimelineListProps) => {
     (_type, item, index) => {
       const isCurrent = prevDate.current === item;
       const isInitialPage = index === INITIAL_PAGE;
-      const _isToday = isToday(new XDate(item));
+      const _isToday = isToday(item);
       const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
       const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
       const numberOfDaysToDrop = (7 - numberOfDays);

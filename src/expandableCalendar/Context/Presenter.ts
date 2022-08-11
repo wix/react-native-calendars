@@ -42,7 +42,7 @@ export const shouldAnimateTodayButton = (props: CalendarContextProviderProps) =>
 };
 
 export const getPositionAnimation = (date: string, todayBottomMargin = 0) => {
-  const toValue = isToday(new XDate(date)) ? TOP_POSITION : -todayBottomMargin || -TOP_POSITION;
+  const toValue = isToday(date) ? TOP_POSITION : -todayBottomMargin || -TOP_POSITION;
   return {
     toValue,
     tension: 30,
