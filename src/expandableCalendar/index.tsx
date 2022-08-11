@@ -166,7 +166,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   /** Number of weeks */
 
   const getNumberOfWeeksInMonth = (month: string) => {
-    const days = page(parseDate(month), firstDay);
+    const days = page(new XDate(month), firstDay);
     return days.length / 7;
   };
   const numberOfWeeks = useRef(getNumberOfWeeksInMonth(date));
@@ -312,7 +312,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
     }
-  }, [horizontal, isOpen, firstDay, numberOfDays, setDate]);
+  }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
   /** Pan Gesture */
 
