@@ -137,8 +137,8 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   return before.concat(days.slice(1, days.length - 1), after);
 }
 
-export function isDateNotInTheRange(minDate: XDate, maxDate: XDate, date: XDate) {
-  return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
+export function isDateNotInRange(date: XDate, minDate: string, maxDate: string) {
+  return (minDate && !isGTE(date, new XDate(minDate))) || (maxDate && !isLTE(date, new XDate(maxDate)));
 }
 
 export function getWeekDates(date: string, firstDay = 0, format?: string) {
