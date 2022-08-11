@@ -66,7 +66,7 @@ export function formatNumbers(date: any) {
   return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
 }
 
-export function fromTo(a: XDate, b: XDate): XDate[] {
+function fromTo(a: XDate, b: XDate): XDate[] {
   const days: XDate[] = [];
   let from = +a;
   const to = +b;
