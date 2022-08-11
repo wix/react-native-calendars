@@ -279,11 +279,7 @@ class Calendar extends Component {
     }
 
     const dates = this.props.markedDates[day.toString('yyyy-MM-dd')] || EmptyArray;
-    if (dates.length || dates) {
-      return dates;
-    } else {
-      return false;
-    }
+    return dates.length || dates ? dates : false
   }
 
   onSwipe = (gestureName) => {
@@ -335,11 +331,10 @@ class Calendar extends Component {
       week.push(this.renderDay(day, id2));
     }, this);
 
-    if (this.props.showWeekNumbers) {
-      week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()));
-    }
-
-    return (<View style={this.style.week} key={id}>{week}</View>);
+    this.props.showWeekNumbers ? 
+      week.unshift(this.renderWeekNumber(days[days.length - 1].getWeek()))
+      :
+      (<View style={this.style.week} key={id}>{week}</View>);
   }
 
   render() {
@@ -356,9 +351,9 @@ class Calendar extends Component {
     let indicator;
     const current = parseDate(this.props.current);
     if (current) {
-      const lastMonthOfDay = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
+      const lastDayOfMonth = current.clone().addMonths(1, true).setDate(1).addDays(-1).toString('yyyy-MM-dd');
       if (this.props.displayLoadingIndicator &&
-        !(this.props.markedDates && this.props.markedDates[lastMonthOfDay])) {
+        !(this.props.markedDates && this.props.markedDates[lastDayOfMonth])) {
         indicator = true;
       }
     }
