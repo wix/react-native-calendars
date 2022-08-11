@@ -175,7 +175,7 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
   }
 }
 
-export function getPartialWeekDates(date: string | undefined, numberOfDays = 7) {
+export function getPartialWeekDates(date?: string, numberOfDays = 7) {
   let index = 0;
   const partialWeek: string[] = [];
   while (index < numberOfDays) {
