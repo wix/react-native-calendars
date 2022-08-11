@@ -66,7 +66,7 @@ export function formatNumbers(date: any) {
   return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
 }
 
-export function fromTo(a: XDate, b: XDate): XDate[] {
+function fromTo(a: XDate, b: XDate): XDate[] {
   const days: XDate[] = [];
   let from = +a;
   const to = +b;
@@ -77,13 +77,13 @@ export function fromTo(a: XDate, b: XDate): XDate[] {
   return days;
 }
 
-export function month(date: XDate) {
+export function month(date: XDate) { // exported for tests only
   const year = date.getFullYear(),
     month = date.getMonth();
   const days = new XDate(year, month + 1, 0).getDate();
 
-  const firstDay = new XDate(year, month, 1, 0, 0, 0, true);
-  const lastDay = new XDate(year, month, days, 0, 0, 0, true);
+  const firstDay: XDate = new XDate(year, month, 1, 0, 0, 0, true);
+  const lastDay: XDate = new XDate(year, month, days, 0, 0, 0, true);
 
   return fromTo(firstDay, lastDay);
 }
