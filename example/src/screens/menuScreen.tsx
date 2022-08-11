@@ -62,6 +62,7 @@ const MenuScreen = (props: Props) => {
       <View style={styles.container} testID={testIDs.menu.CONTAINER}>
         <Image source={appIcon} style={styles.image}/>
         {renderEntry(testIDs.menu.CALENDARS, 'Calendar', 'CalendarScreen')}
+        {renderEntry(testIDs.menu.CALENDARS, 'Calendar Playground', 'CalendarPlaygroundScreen')}
         {renderEntry(testIDs.menu.CALENDAR_LIST, 'Calendar List', 'CalendarListScreen')}
         {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'CalendarListScreen', {horizontalView: true})}
         {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarListScreen')}
