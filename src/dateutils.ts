@@ -186,6 +186,6 @@ export function getPartialWeekDates(date: string | undefined, numberOfDays = 7) 
 }
 
 export function generateDay(originDate: string | XDate, daysOffset = 0) {
-  const baseDate = originDate instanceof XDate ? new XDate(originDate) : originDate;
+  const baseDate = originDate instanceof XDate ? originDate : new XDate(originDate);
   return toMarkingFormat(baseDate.clone().addDays(daysOffset));
 }
