@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import React, {useRef, useState, useEffect, useCallback} from 'react';
+import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -19,7 +19,6 @@ import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
 import {MarkingProps} from './day/marking';
-
 
 type MarkedDatesType = {
   [key: string]: MarkingProps;
@@ -78,7 +77,31 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
 const Calendar = (props: CalendarProps) => {
-  const {initialDate, current, theme, disableMonthChange, allowSelectionOutOfRange, minDate, maxDate, onDayPress, onDayLongPress, hideExtraDays, markedDates, firstDay, showSixWeeks, customHeader, headerStyle, displayLoadingIndicator, testID, enableSwipeMonths, accessibilityElementsHidden, importantForAccessibility, onMonthChange, onVisibleMonthsChange, style: propsStyle} = props;
+  const {
+    initialDate,
+    current,
+    theme,
+    markedDates,
+    minDate,
+    maxDate,
+    allowSelectionOutOfRange,
+    onDayPress,
+    onDayLongPress,
+    onMonthChange,
+    onVisibleMonthsChange,
+    disableMonthChange,
+    enableSwipeMonths,
+    hideExtraDays,
+    firstDay,
+    showSixWeeks,
+    displayLoadingIndicator,
+    customHeader,
+    headerStyle,
+    accessibilityElementsHidden,
+    importantForAccessibility,
+    testID,
+    style: propsStyle
+  } = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
@@ -232,16 +255,17 @@ const Calendar = (props: CalendarProps) => {
     return <View style={style.current.monthView}>{weeks}</View>;
   };
 
-  const renderHeader = () => {
-    let indicator;
-
+  const shouldDisplayIndicator = useMemo(() => {
     if (currentMonth) {
       const lastMonthOfDay = toMarkingFormat(currentMonth.clone().addMonths(1, true).setDate(1).addDays(-1));
       if (displayLoadingIndicator && !markedDates?.[lastMonthOfDay]) {
-        indicator = true;
+        return true;
       }
     }
+    return false;
+  }, [currentMonth, displayLoadingIndicator, markedDates]);
 
+  const renderHeader = () => {
     const headerProps = extractHeaderProps(props);
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
@@ -255,7 +279,7 @@ const Calendar = (props: CalendarProps) => {
         ref={ref}
         month={currentMonth}
         addMonth={addMonth}
-        displayLoadingIndicator={indicator}
+        displayLoadingIndicator={shouldDisplayIndicator}
       />
     );
   };
