@@ -436,26 +436,27 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const onVisibleMonthsChange = useCallback(throttle(
     (value: DateData[]) => {
-      if (first(value)) {
-        const month = first(value)?.month;
+      const newDate = first(value);
+      if (newDate) {
+        const month = newDate.month;
         if (month && visibleMonth.current !== month) {
           visibleMonth.current = month;
           
-          const year = first(value)?.year;
+          const year = newDate.year;
           if (year) {
             visibleYear.current = year;
           }
   
           // for horizontal scroll
           if (visibleMonth.current !== getMonth(date)) {
-            const next = isLaterDate(first(value), date);
+            const next = isLaterDate(newDate, date);
             scrollPage(next);
           }
   
           // updating openHeight
           setTimeout(() => {
             // to wait for setDate() call in horizontal scroll (scrollPage())
-            const _numberOfWeeks = getNumberOfWeeksInMonth(date);
+            const _numberOfWeeks = getNumberOfWeeksInMonth(newDate.dateString);
             if (_numberOfWeeks !== numberOfWeeks.current) {
               numberOfWeeks.current = _numberOfWeeks;
               openHeight.current = getOpenHeight();
