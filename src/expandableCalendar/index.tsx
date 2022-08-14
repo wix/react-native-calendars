@@ -199,7 +199,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const themeObject = Object.assign(headerStyleOverride, theme);
 
   const _wrapperStyles = useRef({style: {height: startHeight}});
-  const _headerStyles = {style: {top: !isOpen ? 0 : -HEADER_HEIGHT}};
+  const _headerStyles = {style: {top: isOpen ? -HEADER_HEIGHT : 0}};
   const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
   
   const shouldHideArrows = !horizontal ? true : hideArrows || false;
@@ -513,7 +513,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const renderKnob = () => {
     return (
       <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
-        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={!isOpen ? 1 : undefined}/>
+        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={isOpen ? undefined : 1}/>
       </View>
     );
   };
@@ -526,7 +526,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       <Animated.View
         ref={weekCalendar}
         style={weekCalendarStyle}
-        pointerEvents={!isOpen ? 'auto' : 'none'}
+        pointerEvents={isOpen ? 'none' : 'auto'}
       >
         <WeekComponent
           testID="week_calendar"
