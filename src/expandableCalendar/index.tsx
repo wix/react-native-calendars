@@ -167,10 +167,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Position */
   const [position, setPosition] = useState(initialPosition);
-  
-  const isOpen = useMemo(() => {
-    return position === Positions.OPEN;
-  }, [position]);
+  const isOpen = position === Positions.OPEN;
 
   const closedHeight = CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT);
   const getOpenHeight = () => {
