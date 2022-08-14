@@ -12,7 +12,7 @@ describe('Playground testing', () => {
     return <CalendarList current={INITIAL_DATE} />;
   };
   const TestCaseExpandable = () => {
-    return <CalendarList current={INITIAL_DATE} />;
+    return <ExpandableCalendar current={INITIAL_DATE} />;
   };
 
   it('calendar', async () => {
