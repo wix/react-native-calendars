@@ -1,5 +1,5 @@
 const XDate = require('xdate');
-const {parseDate, toMarkingFormat} = require('./interface');
+const {toMarkingFormat} = require('./interface');
 const {getDefaultLocale} = require('./services');
 
 const latinNumbersPattern = /[0-9]/g;
@@ -26,7 +26,8 @@ export function sameDate(a?: XDate, b?: XDate) {
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
   const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
-  return weekDates?.includes(b);
+  const element = weekDates instanceof XDate ? new XDate(b) : b;
+  return weekDates?.includes(element);
 }
 
 export function isPastDate(date: string) {
@@ -49,8 +50,9 @@ export function isPastDate(date: string) {
   return false;
 }
 
-export function isToday(date?: XDate) {
-  return sameDate(date, XDate.today());
+export function isToday(date?: XDate | string) {
+  const d = date instanceof XDate ? date : new XDate(date);
+  return sameDate(d, XDate.today());
 }
 
 export function isGTE(a: XDate, b: XDate) {
@@ -137,32 +139,32 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   return before.concat(days.slice(1, days.length - 1), after);
 }
 
-export function isDateNotInTheRange(minDate: XDate, maxDate: XDate, date: XDate) {
-  return (minDate && !isGTE(date, minDate)) || (maxDate && !isLTE(date, maxDate));
+export function isDateNotInRange(date: XDate, minDate: string, maxDate: string) {
+  return (minDate && !isGTE(date, new XDate(minDate))) || (maxDate && !isLTE(date, new XDate(maxDate)));
 }
 
 export function getWeekDates(date: string, firstDay = 0, format?: string) {
-  if (date && parseDate(date).valid()) {
-    const current = parseDate(date);
-    const daysArray = [current];
-    let dayOfTheWeek = current.getDay() - firstDay;
+  const d: XDate = new XDate(date);
+  if (date && d.valid()) {
+    const daysArray = [d];
+    let dayOfTheWeek = d.getDay() - firstDay;
     if (dayOfTheWeek < 0) {
       // to handle firstDay > 0
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
 
-    let newDate = current;
+    let newDate = d;
     let index = dayOfTheWeek - 1;
     while (index >= 0) {
-      newDate = parseDate(newDate).addDays(-1);
+      newDate = newDate.clone().addDays(-1);
       daysArray.unshift(newDate);
       index -= 1;
     }
 
-    newDate = current;
+    newDate = d;
     index = dayOfTheWeek + 1;
     while (index < 7) {
-      newDate = parseDate(newDate).addDays(1);
+      newDate = newDate.clone().addDays(1);
       daysArray.push(newDate);
       index += 1;
     }
@@ -175,7 +177,7 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
   }
 }
 
-export function getPartialWeekDates(date: string | undefined, numberOfDays = 7) {
+export function getPartialWeekDates(date?: string, numberOfDays = 7) {
   let index = 0;
   const partialWeek: string[] = [];
   while (index < numberOfDays) {
@@ -185,7 +187,7 @@ export function getPartialWeekDates(date: string | undefined, numberOfDays = 7) 
   return partialWeek;
 }
 
-export function generateDay(originDate: string, daysOffset = 0) {
-  const baseDate = new XDate(originDate);
+export function generateDay(originDate: string | XDate, daysOffset = 0) {
+  const baseDate = originDate instanceof XDate ? originDate : new XDate(originDate);
   return toMarkingFormat(baseDate.clone().addDays(daysOffset));
 }

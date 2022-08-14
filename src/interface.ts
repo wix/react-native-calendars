@@ -7,7 +7,8 @@ export function padNumber(n: number) {
   return n;
 }
 
-export function xdateToData(d: XDate) {
+export function xdateToData(date: XDate | string) {
+  const d = date instanceof XDate ? date : new XDate(date);
   const dateString = toMarkingFormat(d);
   return {
     year: d.getFullYear(),
