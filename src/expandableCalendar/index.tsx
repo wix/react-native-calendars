@@ -188,7 +188,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   /** Components' refs */
 
   const wrapper = useRef<any>();
-  const calendar = useRef<any>();
+  const calendarList = useRef<any>();
   const header = useRef<any>();
   const weekCalendar = useRef<any>();
 
@@ -269,10 +269,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const scrollToDate = (date: string) => {
     if (!horizontal) {
-      calendar?.current?.scrollToDay(new XDate(date), 0, true);
+      calendarList?.current?.scrollToDay(new XDate(date), 0, true);
     } else if (getYear(date) !== visibleYear.current || getMonth(date) !== visibleMonth.current) {
       // don't scroll if the month is already visible
-      calendar?.current?.scrollToMonth(date);
+      calendarList?.current?.scrollToMonth(date);
     }
   };
 
@@ -545,7 +545,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         calendarStyle={calendarStyle}
         {...others}
         theme={themeObject}
-        ref={calendar}
+        ref={calendarList}
         onDayPress={_onDayPress}
         onVisibleMonthsChange={onVisibleMonthsChange}
         pagingEnabled
