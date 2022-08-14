@@ -166,6 +166,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const numberOfWeeks = useRef(getNumberOfWeeksInMonth(date));
 
   /** Position */
+
   const [position, setPosition] = useState(initialPosition);
   const isOpen = position === Positions.OPEN;
 
@@ -177,10 +178,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
   };
   const openHeight = useRef(getOpenHeight());
-  const startHeight = !isOpen ? closedHeight : openHeight.current;
+  const startHeight = isOpen ? openHeight.current : closedHeight;
   const _height = useRef(startHeight);
   const deltaY = useRef(new Animated.Value(startHeight));
-  const headerDeltaY = useRef(new Animated.Value(!isOpen ? 0 : -HEADER_HEIGHT));
+  const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
 
   /** Components' refs */
 
@@ -257,11 +258,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     // date was changed from AgendaList, arrows or scroll
     scrollToDate(date);
   }, [date]);
-
-  useEffect(() => {
-    _wrapperStyles.current.style.height = closedHeight;
-    updateNativeStyles();
-  }, [closedHeight]);
 
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
