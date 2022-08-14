@@ -27,6 +27,6 @@ describe('Playground testing', () => {
 
   it('expandable calendar', async () => {
     const measurement = await measurePerformance(<TestCaseExpandable />);
-    expect(measurement.meanDuration).toBeLessThan(50);
+    expect(measurement.meanDuration).toBeLessThan(100);
   });
 });
