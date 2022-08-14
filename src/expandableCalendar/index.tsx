@@ -190,8 +190,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const wrapper = useRef<any>();
   const calendarList = useRef<any>();
   const header = useRef<any>();
-  const weekCalendar = useRef<any>();
-
+  const weekCalendarWrapper = useRef<any>();
 
   /** Styles */
 
@@ -210,7 +209,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (!horizontal) {
       header?.current?.setNativeProps(_headerStyles);
     } else {
-      weekCalendar?.current?.setNativeProps(_weekCalendarStyles);
+      weekCalendarWrapper?.current?.setNativeProps(_weekCalendarStyles);
     }
   };
 
@@ -524,7 +523,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
     return (
       <Animated.View
-        ref={weekCalendar}
+        ref={weekCalendarWrapper}
         style={weekCalendarStyle}
         pointerEvents={isOpen ? 'none' : 'auto'}
       >
