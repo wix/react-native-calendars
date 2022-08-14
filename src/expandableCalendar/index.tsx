@@ -98,13 +98,13 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);  
+  const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);  
   const {
     /** ExpandableCalendar props */
     initialPosition = Positions.CLOSED, 
     onCalendarToggled,
     disablePan, 
-    hideKnob = numberOfDays > 1, 
+    hideKnob = numberOfDays && numberOfDays > 1, 
     leftArrowImageSource = LEFT_ARROW,
     rightArrowImageSource = RIGHT_ARROW, 
     allowShadow = true, 
@@ -285,17 +285,19 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         d.addMonths(next ? 1 : -1);
       } else {
         let dayOfTheWeek = d.getDay();
+
         if (dayOfTheWeek < firstDay && firstDay > 0) {
           dayOfTheWeek = 7 + dayOfTheWeek;
         }
 
-      if (numberOfDays) {
-        const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
-        d.addDays(next ? daysToAdd : -daysToAdd);
-      } else {
-        const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-        d.addDays(firstDayOfWeek);
+        if (numberOfDays) {
+          const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
+          d.addDays(next ? daysToAdd : -daysToAdd);
+        } else {
+          const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
+          d.addDays(firstDayOfWeek);
         }
+
       }
 
       setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
@@ -341,7 +343,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
-  const panResponder = useMemo(() => numberOfDays <= 1 ? PanResponder.create({
+  const numberOfDaysCondition = useMemo(() => {
+    return !numberOfDays || numberOfDays && numberOfDays <= 1; 
+  }, [numberOfDays]);
+
+  const panResponder = useMemo(() => numberOfDaysCondition ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
@@ -415,7 +421,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [onPressArrowRight, scrollPage]);
 
   const _onDayPress = useCallback((value: DateData) => {
-    numberOfDays <= 1 && setDate?.(value.dateString, updateSources.DAY_PRESS);
+    if (numberOfDaysCondition) {
+      setDate?.(value.dateString, updateSources.DAY_PRESS);
+    }
     if (closeOnDayPress) {
       closeCalendar();
     }
