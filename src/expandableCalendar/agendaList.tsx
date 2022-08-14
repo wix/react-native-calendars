@@ -124,7 +124,7 @@ const AgendaList = (props: AgendaListProps) => {
     for (let j = 1; j < sections.length; j++) {
       const prev = parseDate(sections[j - 1]?.title);
       const next = parseDate(sections[j]?.title);
-      const cur = parseDate(date);
+      const cur = new XDate(date);
       if (isGTE(cur, prev) && isGTE(next, cur)) {
         i = sameDate(prev, cur) ? j - 1 : j;
         break;
@@ -153,7 +153,7 @@ const AgendaList = (props: AgendaListProps) => {
 
     if (markToday) {
       const string = getDefaultLocale().today || todayString;
-      const today = isToday(new XDate(title));
+      const today = isToday(title);
       sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
     }
 

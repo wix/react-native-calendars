@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import {extractComponentProps} from '../componentUpdater';
-import {parseDate, xdateToData, toMarkingFormat} from '../interface';
+import {xdateToData, toMarkingFormat} from '../interface';
 import {sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
@@ -155,8 +155,8 @@ export default class Agenda extends Component<AgendaProps, State> {
     return null;
   }
 
-  getSelectedDate(selected?: string) {
-    return selected ? parseDate(selected) : new XDate(true);
+  getSelectedDate(date?: string) {
+    return date ? new XDate(date) : new XDate(true);
   }
 
   calendarOffset() {
@@ -213,7 +213,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   chooseDay(d: DateData, optimisticScroll: boolean) {
-    const day = parseDate(d);
+    const day = new XDate(d.dateString);
 
     this.setState({
       calendarScrollable: false,

@@ -57,9 +57,11 @@ const Week = (props: WeekProps) => {
 
     if (dates) {
       const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
-      const datesToRender = numberOfDays > 1 && todayIndex > -1 ? dates.slice(todayIndex, numberOfDays) : dates;
-      datesToRender.forEach((day: XDate, id: number) => {
-        week.push(renderDay(day, id));
+      const sliced = dates.slice(todayIndex, numberOfDays);
+      const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
+      datesToRender.forEach((day: XDate | string, id: number) => {
+        const d = day instanceof XDate ? day : new XDate(day);
+        week.push(renderDay(d, id));
       }, this);
     }
 

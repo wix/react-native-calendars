@@ -100,7 +100,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
 
     onDateChanged?.(date, updateSource);
 
-    if (!sameMonth(new XDate(date), new XDate(date))) {
+    if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
       onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
   }, [onDateChanged, onMonthChange]);
