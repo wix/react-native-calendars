@@ -354,7 +354,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
-  const panResponder = useMemo(() => numberOfDays && numberOfDays <= 1 ? PanResponder.create({
+  const numberOfDaysCondition = useMemo(() => {
+    return !numberOfDays || numberOfDays && numberOfDays <= 1; 
+  }, [numberOfDays]);
+
+  const panResponder = useMemo(() => numberOfDaysCondition ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
@@ -428,7 +432,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [onPressArrowRight, scrollPage]);
 
   const _onDayPress = useCallback((value: DateData) => {
-    if (numberOfDays && numberOfDays <= 1) {
+    if (numberOfDaysCondition) {
       setDate?.(value.dateString, updateSources.DAY_PRESS);
     }
     if (closeOnDayPress) {
