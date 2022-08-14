@@ -12,7 +12,7 @@ const BLUE = '#00BBF2';
 
 export default function PlaygroundScreen() {
   const [selectedDate, setSelectedDate] = useState(INITIAL_DATE);
-  const [element, setElement] = useState(elements.LIST);
+  const [element, setElement] = useState(elements.EXPANDABLE);
 
 
   const onDayPress = useCallback((day) => {
