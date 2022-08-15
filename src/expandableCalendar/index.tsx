@@ -551,6 +551,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         firstDay={firstDay}
         calendarStyle={calendarStyle}
         {...others}
+        current={date}
         theme={themeObject}
         ref={calendarList}
         onDayPress={_onDayPress}
