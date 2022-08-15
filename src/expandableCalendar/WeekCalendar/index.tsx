@@ -64,7 +64,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
     const {shouldComponentUpdate, getDatesArray, scrollToIndex} = this.presenter;
 
     if (shouldComponentUpdate(this.props.context, prevProps.context)) {
-      if (!sameWeek(context.date, prevProps.context.date, firstDay)) {
+      if (!sameWeek(context.date, prevProps.context.date, firstDay) || context.numberOfDays) {
         // Don't update items if the new date is on the same week
         this.setState({items: getDatesArray(this.props)});
         scrollToIndex(false);
