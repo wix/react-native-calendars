@@ -2,24 +2,19 @@ import times from 'lodash/times';
 import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch, Alert} from 'react-native';
 import {Calendar, CalendarUtils} from 'react-native-calendars';
+
 import testIDs from '../testIDs';
+import Marking from '../../../src/calendar/day/marking';
 
 const INITIAL_DATE = '2022-07-06';
 const GREEN = '#13ba7d';
 const PINK = '#a68a9f';
 const RED = '#ba1313';
-enum Markings {
-  DOT = 'dot',
-  MULTI_DOT = 'multi-dot',
-  PERIOD = 'period',
-  MULTI_PERIOD = 'multi-period',
-  CUSTOM = 'custom'
-}
 
 const NewCalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
-  const [markingType, setMarkingType] = useState(Markings.DOT);
+  const [markingType, setMarkingType] = useState(Marking.markings.DOT);
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
   /** props */
@@ -289,15 +284,15 @@ const NewCalendarScreen = () => {
 
   const markingForType = useCallback(() => {
     switch (markingType) {
-      case Markings.DOT:
+      case Marking.markings.DOT:
         return dotMarks;
-      case Markings.MULTI_DOT:
+      case Marking.markings.MULTI_DOT:
         return multiDotMarks;
-      case Markings.PERIOD:
+      case Marking.markings.PERIOD:
         return periodWithDotsMarks; //periodMarks;
-      case Markings.MULTI_PERIOD:
+      case Marking.markings.MULTI_PERIOD:
         return multiPeriodMarks;
-      case Markings.CUSTOM:
+      case Marking.markings.CUSTOM:
         return customMarks;
     }
   }, [markingType, selected]);
@@ -475,7 +470,7 @@ const NewCalendarScreen = () => {
 
   /** Buttons */
   const getValue = (index = 0) => {
-    return Object.values(Markings)[index];
+    return Object.values(Marking.markings)[index];
   };
 
   const setType = (index = 0) => {
