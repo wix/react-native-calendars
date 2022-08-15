@@ -22,7 +22,7 @@ export interface BasicDayProps extends ViewProps {
   /** The date to return from press callbacks */
   date?: string;
   /** is the day selected */
-  selected?: boolean;
+  isSelected?: boolean;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
@@ -48,11 +48,11 @@ const BasicDay = (props: BasicDayProps) => {
     accessibilityLabel,
     children,
     testID,
-    selected,
+    isSelected,
   } = props;
   const style = useRef(styleConstructor(theme));
   const _marking = marking || {};
-  const isSelected = selected || _marking.selected || state === 'selected';
+  const selected = isSelected || _marking.selected || state === 'selected';
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
   const isInactive = _marking?.inactive;
   const isToday = state === 'today';
@@ -79,7 +79,7 @@ const BasicDay = (props: BasicDayProps) => {
     const {customStyles, selectedColor} = _marking;
     const styles = [style.current.base];
 
-    if (isSelected) {
+    if (selected) {
       styles.push(style.current.selected);
       if (selectedColor) {
         styles.push({backgroundColor: selectedColor});
@@ -103,7 +103,7 @@ const BasicDay = (props: BasicDayProps) => {
     const {customStyles, selectedTextColor} = _marking;
     const styles = [style.current.text];
 
-    if (isSelected) {
+    if (selected) {
       styles.push(style.current.selectedText);
       if (selectedTextColor) {
         styles.push({color: selectedTextColor});
@@ -140,7 +140,7 @@ const BasicDay = (props: BasicDayProps) => {
         type={markingType}
         theme={theme}
         marked={isMultiDot ? true : marked}
-        selected={isSelected}
+        selected={selected}
         disabled={isDisabled}
         inactive={isInactive}
         today={isToday}

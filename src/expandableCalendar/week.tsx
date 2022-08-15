@@ -40,7 +40,7 @@ const Week = (props: WeekProps) => {
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
-          selected={props.selectedDay === toMarkingFormat(day)}
+          isSelected={props.selectedDay === toMarkingFormat(day)}
           {...dayProps}
           date={toMarkingFormat(day)}
           state={getState(day, currXdate, props)}
