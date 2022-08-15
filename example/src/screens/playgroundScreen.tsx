@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
 import {Profiler, Calendar, CalendarList, ExpandableCalendar, CalendarProvider} from 'react-native-calendars';
 
@@ -13,7 +13,17 @@ const BLUE = '#00BBF2';
 export default function PlaygroundScreen() {
   const [selectedDate, setSelectedDate] = useState(INITIAL_DATE);
   const [element, setElement] = useState(elements.LIST);
-
+  
+  const marked = useMemo(() => {
+    return {
+      [selectedDate]: {
+        selected: true,
+        disableTouchEvent: true,
+        selectedColor: '#5E60CE',
+        selectedTextColor: 'white'
+      }
+    };
+  }, [selectedDate]);
 
   const onDayPress = useCallback((day) => {
     setSelectedDate(day.dateString);
@@ -24,6 +34,8 @@ export default function PlaygroundScreen() {
       <Calendar
         current={INITIAL_DATE}
         style={styles.calendar}
+        onDayPress={onDayPress}
+        markedDates={marked}
       />
     );
   };
@@ -36,6 +48,8 @@ export default function PlaygroundScreen() {
         horizontal
         pagingEnabled
         staticHeader
+        onDayPress={onDayPress}
+        markedDates={marked}
       />
     );
   };
@@ -48,6 +62,7 @@ export default function PlaygroundScreen() {
             futureScrollRange={3}
             allowShadow={false}
             onDayPress={onDayPress}
+            markedDates={marked}
             style={styles.calendar}
         />
       </CalendarProvider>

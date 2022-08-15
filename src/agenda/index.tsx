@@ -23,7 +23,7 @@ import {DateData, AgendaSchedule} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';
-import CalendarList, {CalendarListProps} from '../calendar-list';
+import CalendarList, {CalendarListProps, CalendarListImperativeMethods} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
 
@@ -93,7 +93,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   private knobTracker: VelocityTracker;
   private _isMounted: boolean | undefined;
   private scrollPad: React.RefObject<any> = React.createRef();
-  private calendar: React.RefObject<CalendarList> = React.createRef();
+  private calendar: React.RefObject<CalendarListImperativeMethods> = React.createRef();
   private knob: React.RefObject<View> = React.createRef();
   public list: React.RefObject<ReservationList> = React.createRef();
 
@@ -259,7 +259,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   onCalendarListLayout = () => {
-    this.calendar?.current?.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+    this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset(), false);
   };
 
   onLayout = (event: LayoutChangeEvent) => {

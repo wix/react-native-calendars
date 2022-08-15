@@ -98,13 +98,13 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
+  const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);
   const {
     /** ExpandableCalendar props */
     initialPosition = Positions.CLOSED,
     onCalendarToggled,
     disablePan,
-    hideKnob = numberOfDays > 1,
+    hideKnob = numberOfDays && numberOfDays > 1,
     leftArrowImageSource = LEFT_ARROW,
     rightArrowImageSource = RIGHT_ARROW,
     allowShadow = true,
@@ -119,7 +119,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     theme,
     style: propsStyle,
     firstDay = 0,
-    markedDates,
     onDayPress,
     hideArrows,
     onPressArrowLeft,
@@ -128,6 +127,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     testID,
     ...others
   } = props;
+
+  const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
 
   /** Date */
 
@@ -156,12 +157,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return false;
   };
 
-  const _markedDates = useMemo(() => {
-    return {
-      ...markedDates,
-    };
-  }, [markedDates]);
-
   /** Number of weeks */
 
   const getNumberOfWeeksInMonth = (month: string) => {
@@ -172,7 +167,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Position */
 
-  const closedHeight = CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT);
+  const [position, setPosition] = useState(initialPosition);
+  const isOpen = position === Positions.OPEN;
+
   const getOpenHeight = () => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
@@ -180,16 +177,13 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
   };
   const openHeight = useRef(getOpenHeight());
-  const startHeight = initialPosition === Positions.CLOSED ? closedHeight : openHeight.current;
-  const _height = useRef(startHeight);
-  const deltaY = useRef(new Animated.Value(startHeight));
-  const headerDeltaY = useRef(new Animated.Value(initialPosition === Positions.CLOSED ? 0 : -HEADER_HEIGHT));
+  const closedHeight = useRef(CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT));
 
-  const [position, setPosition] = useState(initialPosition || Positions.CLOSED);
-  const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-  const isOpen = useMemo(() => {
-    return position === Positions.OPEN;
-  }, [position]);
+  const startHeight = isOpen ? openHeight.current : closedHeight.current;
+  const _height = useRef(startHeight);
+
+  const deltaY = useRef(new Animated.Value(startHeight));
+  const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
 
   const shadowInWeekComponent = useMemo(() => {
     return disableWeekScroll ? undefined : false;
@@ -198,10 +192,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   /** Components' refs */
 
   const wrapper = useRef<any>();
-  const calendar = useRef<any>();
+  const calendarList = useRef<any>();
   const header = useRef<any>();
-  const weekCalendar = useRef<any>();
-
+  const weekCalendarWrapper = useRef<any>();
 
   /** Styles */
 
@@ -209,7 +202,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const themeObject = Object.assign(headerStyleOverride, theme);
 
   const _wrapperStyles = useRef({style: {height: startHeight}});
-  const _headerStyles = {style: {top: initialPosition === Positions.CLOSED ? 0 : -HEADER_HEIGHT}};
+  const _headerStyles = {style: {top: isOpen ? -HEADER_HEIGHT : 0}};
   const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
 
   const shouldHideArrows = !horizontal ? true : hideArrows || false;
@@ -220,7 +213,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (!horizontal) {
       header?.current?.setNativeProps(_headerStyles);
     } else {
-      weekCalendar?.current?.setNativeProps(_weekCalendarStyles);
+      weekCalendarWrapper?.current?.setNativeProps(_weekCalendarStyles);
     }
   };
 
@@ -271,11 +264,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     scrollToDate(date);
   }, [date]);
 
-  useEffect(() => {
-    _wrapperStyles.current.style.height = closedHeight;
-    updateNativeStyles();
-  }, [closedHeight]);
-
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
   };
@@ -284,10 +272,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const scrollToDate = (date: string) => {
     if (!horizontal) {
-      calendar?.current?.scrollToDay(new XDate(date), 0, true);
+      calendarList?.current?.scrollToDay(date, 0, true);
     } else if (getYear(date) !== visibleYear.current || getMonth(date) !== visibleMonth.current) {
       // don't scroll if the month is already visible
-      calendar?.current?.scrollToMonth(date);
+      calendarList?.current?.scrollToMonth(date);
     }
   };
 
@@ -300,17 +288,19 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         d.addMonths(next ? 1 : -1);
       } else {
         let dayOfTheWeek = d.getDay();
+
         if (dayOfTheWeek < firstDay && firstDay > 0) {
           dayOfTheWeek = 7 + dayOfTheWeek;
         }
 
-      if (numberOfDays) {
-        const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
-        d.addDays(next ? daysToAdd : -daysToAdd);
-      } else {
-        const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-        d.addDays(firstDayOfWeek);
+        if (numberOfDays) {
+          const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
+          d.addDays(next ? daysToAdd : -daysToAdd);
+        } else {
+          const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
+          d.addDays(firstDayOfWeek);
         }
+
       }
 
       setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
@@ -336,7 +326,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
     // limit min height to closed height
-    _wrapperStyles.current.style.height = Math.max(closedHeight, _height.current + gestureState.dy);
+    _wrapperStyles.current.style.height = Math.max(closedHeight.current, _height.current + gestureState.dy);
 
     if (!horizontal) {
       // vertical CalenderList header
@@ -356,7 +346,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     bounceToPosition();
   };
 
-  const panResponder = useMemo(() => numberOfDays <= 1 ? PanResponder.create({
+  const numberOfDaysCondition = useMemo(() => {
+    return !numberOfDays || numberOfDays && numberOfDays <= 1;
+  }, [numberOfDays]);
+
+  const panResponder = useMemo(() => numberOfDaysCondition ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
@@ -367,9 +361,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const bounceToPosition = (toValue = 0) => {
     if (!disablePan) {
-      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
+      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight.current + openThreshold;
       let _isOpen = _height.current >= threshold;
-      const newValue = _isOpen ? openHeight.current : closedHeight;
+      const newValue = _isOpen ? openHeight.current : closedHeight.current;
 
       deltaY.current.setValue(_height.current); // set the start position for the animated value
       _height.current = toValue || newValue;
@@ -384,7 +378,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       onCalendarToggled?.(_isOpen);
 
-      setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
+      setPosition(() => _height.current === closedHeight.current ? Positions.CLOSED : Positions.OPEN);
       closeHeader(_isOpen);
       resetWeekCalendarOpacity(_isOpen);
     }
@@ -412,7 +406,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     setTimeout(() => {
       // to allows setDate to be completed
       if (isOpen) {
-        bounceToPosition(closedHeight);
+        bounceToPosition(closedHeight.current);
       }
     }, 0);
   }, [isOpen]);
@@ -430,7 +424,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [onPressArrowRight, scrollPage]);
 
   const _onDayPress = useCallback((value: DateData) => {
-    numberOfDays <= 1 && setDate?.(value.dateString, updateSources.DAY_PRESS);
+    if (numberOfDaysCondition) {
+      setDate?.(value.dateString, updateSources.DAY_PRESS);
+    }
     if (closeOnDayPress) {
       closeCalendar();
     }
@@ -520,7 +516,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const renderKnob = () => {
     return (
       <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
-        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={!isOpen ? 1 : undefined}/>
+        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={isOpen ? undefined : 1}/>
       </View>
     );
   };
@@ -530,16 +526,15 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
     return (
       <Animated.View
-        ref={weekCalendar}
+        ref={weekCalendarWrapper}
         style={weekCalendarStyle}
-        pointerEvents={!isOpen ? 'auto' : 'none'}
+        pointerEvents={isOpen ? 'none' : 'auto'}
       >
         <WeekComponent
           testID="week_calendar"
           firstDay={firstDay}
           {...others}
           allowShadow={shadowInWeekComponent}
-          markedDates={_markedDates}
           theme={themeObject}
           style={calendarStyle}
           hideDayNames={true}
@@ -559,10 +554,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         firstDay={firstDay}
         calendarStyle={calendarStyle}
         {...others}
-        markedDates={_markedDates}
-        theme={themeObject}
-        ref={calendar}
         current={date}
+        theme={themeObject}
+        ref={calendarList}
         onDayPress={_onDayPress}
         onVisibleMonthsChange={onVisibleMonthsChange}
         pagingEnabled

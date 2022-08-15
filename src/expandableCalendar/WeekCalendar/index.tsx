@@ -137,6 +137,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
   const renderItem = useCallback(({item}: {item: string}) => {
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
+
     return (
       <Week
         selectedDay={context.date}
