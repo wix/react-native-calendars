@@ -60,7 +60,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     todayBottomMargin,
     todayButtonStyle,
     style: propsStyle,
-    numberOfDays = 1,
+    numberOfDays,
     timelineLeftInset = 72,
     children
   } = props;

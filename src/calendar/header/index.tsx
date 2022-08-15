@@ -120,11 +120,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const partialWeekStyle = useMemo(() => {
     return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
   }, [timelineLeftInset]);
-  const partialDayNamesStyle = useMemo(() => {
-    return numberOfDays && numberOfDays <= 1 ? style.current.partialHeader : undefined;
-  }, [numberOfDays]);
   const dayNamesStyle = useMemo(() => {
-    return [style.current.week, partialDayNamesStyle, numberOfDaysCondition ? partialWeekStyle : undefined];
+    return [style.current.week, numberOfDaysCondition ? partialWeekStyle : undefined];
   }, [numberOfDaysCondition, partialWeekStyle]);
 
   useImperativeHandle(ref, () => ({
