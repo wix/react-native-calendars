@@ -1,3 +1,7 @@
+import groupBy from 'lodash/groupBy';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+
 import React, {Component} from 'react';
 import {Alert} from 'react-native';
 import {
@@ -8,6 +12,7 @@ import {
   TimelineProps,
   CalendarUtils
 } from 'react-native-calendars';
+
 import {timelineEvents, getDate} from '../mocks/timelineEvents';
 
 const INITIAL_TIME = {hour: 9, minutes: 0};
@@ -16,7 +21,7 @@ export default class TimelineCalendarScreen extends Component {
   state = {
     currentDate: getDate(),
     events: EVENTS,
-    eventsByDate: _.groupBy(EVENTS, e => CalendarUtils.getCalendarDateString(e.start)) as {
+    eventsByDate: groupBy(EVENTS, e => CalendarUtils.getCalendarDateString(e.start)) as {
       [key: string]: TimelineEventProps[];
     }
   };
@@ -69,7 +74,7 @@ export default class TimelineCalendarScreen extends Component {
         text: 'Cancel',
         onPress: () => {
           if (timeObject.date) {
-            eventsByDate[timeObject.date] = _.filter(eventsByDate[timeObject.date], e => e.id !== 'draft');
+            eventsByDate[timeObject.date] = filter(eventsByDate[timeObject.date], e => e.id !== 'draft');
 
             this.setState({
               eventsByDate
@@ -81,7 +86,7 @@ export default class TimelineCalendarScreen extends Component {
         text: 'Create',
         onPress: eventTitle => {
           if (timeObject.date) {
-            const draftEvent = _.find(eventsByDate[timeObject.date], {id: 'draft'});
+            const draftEvent = find(eventsByDate[timeObject.date], {id: 'draft'});
             if (draftEvent) {
               draftEvent.id = undefined;
               draftEvent.title = eventTitle ?? 'New Event';
