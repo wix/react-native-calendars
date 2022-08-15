@@ -1,5 +1,5 @@
 import times from 'lodash/times';
-import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
+import React, {useState, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch, Alert} from 'react-native';
 import {Calendar, CalendarUtils} from 'react-native-calendars';
 
@@ -445,25 +445,29 @@ const NewCalendarScreen = () => {
     return (
       <View>
         {renderSwitch('Min and Max Dates', minAndMax, toggleMinAndMax)}
-        {renderSwitch('Allow Selection Out Of Range', allowSelectionOutOfRange, toggleAllowSelectionOutOfRange)}
+        <View style={styles.subSwitchContainer}>
+          {minAndMax && renderSwitch('Allow Selection Out Of Range', allowSelectionOutOfRange, toggleAllowSelectionOutOfRange)}
+        </View>
         {renderSwitch('Enable Swipe Months', enableSwipeMonths, toggleEnableSwipeMonths)}
         {renderSwitch('Disable Month Change', disableMonthChange, toggleDisableMonthChange)}
         {renderSwitch('Show Week Numbers', showWeekNumbers, toggleShowWeekNumbers)}
         {renderSwitch('Show Six Weeks', showSixWeeks, toggleShowSixWeeks)}
         {renderSwitch('Hide Extra Days', hideExtraDays, toggleHideExtraDays)}
         {renderSwitch('Hide Day Names', hideDayNames, toggleHideDayNames)}
-        {renderSwitch('Hide Arrows', hideArrows, toggleHideArrows)}
         {renderSwitch('Disabled By Default', disabledByDefault, toggleDisabledByDefault)}
         {renderSwitch('Disable All Touch Events For Disabled Days', disableAllTouchEventsForDisabledDays, toggleDisableAllTouchEventsForDisabledDays)}
         {renderSwitch('Disable All Touch Events For Inactive Days', disableAllTouchEventsForInactiveDays, toggleDisableAllTouchEventsForInactiveDays)}
         {renderSwitch('Display Loading Indicator', displayLoadingIndicator, toggleDisplayLoadingIndicator)}
         {renderSwitch('Disabled Days Indexes', disabledDaysIndexes, toggleDisabledDaysIndexes)}
+        {renderSwitch('Hide Arrows', hideArrows, toggleHideArrows)}
+        <View style={styles.subSwitchContainer}>
+          {!hideArrows && renderSwitch('Disable Arrow Left', disableArrowLeft, toggleDisableArrowLeft)}
+          {!hideArrows && renderSwitch('Disable Arrow Right', disableArrowRight, toggleDisableArrowRight)}
+          {!hideArrows && renderSwitch('Render Arrow', renderArrow, toggleRenderArrow)}
+        </View>
         {renderSwitch('Day Component', dayComponent, toggleDayComponent)}
         {renderSwitch('Custom Header', customHeader, toggleCustomHeader)}
         {renderSwitch('Custom Header Title', customHeaderTitle, toggleCustomHeaderTitle)}
-        {renderSwitch('Render Arrow', renderArrow, toggleRenderArrow)}
-        {renderSwitch('Disable Arrow Left', disableArrowLeft, toggleDisableArrowLeft)}
-        {renderSwitch('Disable Arrow Right', disableArrowRight, toggleDisableArrowRight)}
       </View>
     );
   };
@@ -523,12 +527,12 @@ const NewCalendarScreen = () => {
   };
 
   return (
-    <Fragment>
+    <>
       {renderCalendar()}
       <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
         {renderOptions()}
       </ScrollView>
-    </Fragment>
+    </>
   );
 };
 
@@ -572,6 +576,9 @@ const styles = StyleSheet.create({
   },
   switchText: {
     marginHorizontal: 10
+  },
+  subSwitchContainer: {
+    marginLeft: 20
   },
   buttonsContainer: {
     margin: 10
