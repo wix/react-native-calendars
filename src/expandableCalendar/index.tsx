@@ -543,6 +543,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
+  const numberOfDaysHeaderStyle = useMemo(() => {
+    if (numberOfDays && numberOfDays > 1) {
+      return {paddingHorizontal: 0};
+    }
+  }, [numberOfDays]);
+
   const renderCalendarList = () => {
     return (
       <CalendarList
@@ -565,6 +571,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         renderArrow={_renderArrow}
         staticHeader
         numberOfDays={numberOfDays}
+        headerStyle={numberOfDaysHeaderStyle}
         timelineLeftInset={timelineLeftInset}
       />
     );
