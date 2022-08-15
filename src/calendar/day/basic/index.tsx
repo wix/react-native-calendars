@@ -21,7 +21,8 @@ export interface BasicDayProps extends ViewProps {
   onLongPress?: (date?: DateData) => void;
   /** The date to return from press callbacks */
   date?: string;
-
+  /** is the day selected */
+  selected?: boolean;
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
@@ -46,11 +47,12 @@ const BasicDay = (props: BasicDayProps) => {
     disableAllTouchEventsForInactiveDays,
     accessibilityLabel,
     children,
-    testID
+    testID,
+    selected,
   } = props;
   const style = useRef(styleConstructor(theme));
   const _marking = marking || {};
-  const isSelected = _marking.selected || state === 'selected';
+  const isSelected = selected || _marking.selected || state === 'selected';
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
   const isInactive = _marking?.inactive;
   const isToday = state === 'today';

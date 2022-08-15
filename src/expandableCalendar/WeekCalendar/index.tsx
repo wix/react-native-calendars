@@ -1,7 +1,7 @@
 import XDate from 'xdate';
 import {Map} from 'immutable';
 
-import React, {forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {forwardRef, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {View, NativeSyntheticEvent, NativeScrollEvent, FlatList} from 'react-native';
 
 import {generateDay, sameWeek} from '../../dateutils';
@@ -62,10 +62,17 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     const newDate = numberOfDays > 1 ? generateDay(toMarkingFormat(d), weekIndex * numberOfDays) : dd.addWeeks(weekIndex);
 
     return toMarkingFormat(newDate);
-  }, [current, context.date, firstDay]);
+  }, [current, context, firstDay]);
+
+  useEffect(() => {
+    if (context.updateSource !== UpdateSources.WEEK_SCROLL) {
+      const pageIndex = items.findIndex(item => sameWeek(item, context.date, firstDay));
+      list.current?.scrollToOffset?.({offset: pageIndex * containerWidth, animated: false});
+    }
+  }, [context.date, context.updateSource]);
 
   const getDatesArray = useMemo(() => {
-    return [...Array(NUMBER_OF_PAGES + 1).keys()].map((index) => {
+    return [...Array(NUMBER_OF_PAGES * 2 + 1).keys()].map((index) => {
       return getDate(index-NUMBER_OF_PAGES);
     });
   }, [getDate]);
@@ -132,6 +139,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     const currentContext = isSameWeek ? context : undefined;
     return (
       <Week
+        selectedDay={context.date}
         importantForAccessibility={importantForAccessibility}
         testID={testID}
         hideDayNames={hideDayNames}
@@ -176,6 +184,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
       !hideDayNames && style.current.containerWrapper
     ];
   }, [allowShadow, hideDayNames]);
+
   const containerStyle = useMemo(() => {
     return [style.current.week, style.current.weekCalendar];
   }, []);
@@ -224,18 +233,4 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
 WeekCalendar.displayName = 'WeekCalendar';
 
-function shouldUpdate(prevProps: WeekCalendarProps, nextProps: WeekCalendarProps) {
-  if (!nextProps.context || !prevProps.context) {
-    return true;
-  }
-
-  const contextRequireUpdate = nextProps.context?.date !== prevProps.context?.date && nextProps.context.updateSource !== UpdateSources.WEEK_SCROLL ||
-    nextProps.context.numberOfDays !== prevProps.context.numberOfDays;
-
-  return contextRequireUpdate && !sameWeek(
-    nextProps.context?.date,
-    prevProps.context?.date,
-    nextProps.firstDay ?? 0);
-}
-
-export default asCalendarConsumer(memo(WeekCalendar, shouldUpdate));
+export default asCalendarConsumer<WeekCalendarProps>(WeekCalendar);

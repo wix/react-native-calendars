@@ -69,6 +69,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
+  /** selected day */
+  selectedDay?: string;
 }
 
 /**
@@ -107,7 +109,7 @@ const Calendar = (props: CalendarProps) => {
   const header = useRef();
   const isMounted = useRef(false);
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
- 
+
   useEffect(() => {
     if (initialDate) {
       setCurrentMonth(parseDate(initialDate));
@@ -268,7 +270,7 @@ const Calendar = (props: CalendarProps) => {
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-    
+
     return (
       <HeaderComponent
         {...headerProps}

@@ -98,33 +98,33 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);  
+  const {date, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const {
     /** ExpandableCalendar props */
-    initialPosition = Positions.CLOSED, 
+    initialPosition = Positions.CLOSED,
     onCalendarToggled,
-    disablePan, 
-    hideKnob = numberOfDays > 1, 
+    disablePan,
+    hideKnob = numberOfDays > 1,
     leftArrowImageSource = LEFT_ARROW,
-    rightArrowImageSource = RIGHT_ARROW, 
-    allowShadow = true, 
+    rightArrowImageSource = RIGHT_ARROW,
+    allowShadow = true,
     disableWeekScroll,
-    openThreshold = PAN_GESTURE_THRESHOLD, 
+    openThreshold = PAN_GESTURE_THRESHOLD,
     closeThreshold = PAN_GESTURE_THRESHOLD,
     closeOnDayPress = true,
 
     /** CalendarList props */
-    horizontal = true, 
+    horizontal = true,
     calendarStyle,
-    theme, 
-    style: propsStyle, 
-    firstDay = 0, 
+    theme,
+    style: propsStyle,
+    firstDay = 0,
     markedDates,
     onDayPress,
-    hideArrows, 
+    hideArrows,
     onPressArrowLeft,
     onPressArrowRight,
-    renderArrow, 
+    renderArrow,
     testID,
     ...others
   } = props;
@@ -159,9 +159,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const _markedDates = useMemo(() => {
     return {
       ...markedDates,
-      [date]: {selected: true}
     };
-  }, [markedDates, date]);
+  }, [markedDates]);
 
   /** Number of weeks */
 
@@ -192,6 +191,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return position === Positions.OPEN;
   }, [position]);
 
+  const shadowInWeekComponent = useMemo(() => {
+    return disableWeekScroll ? undefined : false;
+  }, [disableWeekScroll]);
+
   /** Components' refs */
 
   const wrapper = useRef<any>();
@@ -208,7 +211,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const _wrapperStyles = useRef({style: {height: startHeight}});
   const _headerStyles = {style: {top: initialPosition === Positions.CLOSED ? 0 : -HEADER_HEIGHT}};
   const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
-  
+
   const shouldHideArrows = !horizontal ? true : hideArrows || false;
 
   const updateNativeStyles = () => {
@@ -330,7 +333,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
     return gestureState.dy > 5 || gestureState.dy < -5;
   };
-  
+
   const handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
     // limit min height to closed height
     _wrapperStyles.current.style.height = Math.max(closedHeight, _height.current + gestureState.dy);
@@ -347,7 +350,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
     updateNativeStyles();
   };
-  
+
   const handlePanResponderEnd = () => {
     _height.current = Number(_wrapperStyles.current.style.height);
     bounceToPosition();
@@ -441,18 +444,18 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         const month = newDate.month;
         if (month && visibleMonth.current !== month) {
           visibleMonth.current = month;
-          
+
           const year = newDate.year;
           if (year) {
             visibleYear.current = year;
           }
-  
+
           // for horizontal scroll
           if (visibleMonth.current !== getMonth(date)) {
             const next = isLaterDate(newDate, date);
             scrollPage(next);
           }
-  
+
           // updating openHeight
           setTimeout(() => {
             // to wait for setDate() call in horizontal scroll (scrollPage())
@@ -485,7 +488,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       />
     );
   }, [renderArrow, rightArrowImageSource, leftArrowImageSource, testID]);
-  
+
   const renderWeekDaysNames = () => {
     return (
       <View style={weekDaysStyle}>
@@ -524,7 +527,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const renderWeekCalendar = () => {
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
-    const weekCalendarProps = disableWeekScroll ? undefined : {allowShadow: false};
 
     return (
       <Animated.View
@@ -536,8 +538,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           testID="week_calendar"
           firstDay={firstDay}
           {...others}
-          {...weekCalendarProps}
-          current={date}
+          allowShadow={shadowInWeekComponent}
           markedDates={_markedDates}
           theme={themeObject}
           style={calendarStyle}
