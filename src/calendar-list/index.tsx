@@ -119,11 +119,11 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     return months;
   }, [pastScrollRange, futureScrollRange]);
 
-  const _headerStyle = useMemo(() => {
+  const staticHeaderStyle = useMemo(() => {
     return [style.current.staticHeader, headerStyle];
   }, [headerStyle]);
 
-  const _listStyle = useMemo(() => {
+  const listStyle = useMemo(() => {
     return [style.current.container, propsStyle];
   }, [propsStyle]);
 
@@ -240,7 +240,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         <CalendarHeader
           {...headerProps}
           testID={STATIC_HEADER}
-          style={_headerStyle}
+          style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}
           accessibilityElementsHidden={true} // iOS
@@ -276,7 +276,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       <FlatList
         // @ts-expect-error
         ref={list}
-        style={_listStyle}
+        style={listStyle}
         showsVerticalScrollIndicator={showScrollIndicator}
         showsHorizontalScrollIndicator={showScrollIndicator}
         data={items}
