@@ -5,6 +5,8 @@ import testIDs from '../testIDs';
 
 const RANGE = 24;
 const initialDate = '2022-07-05';
+const nextWeekDate = '2022-07-14';
+const nextMonthDate = '2022-08-05';
 
 interface Props {
   horizontalView?: boolean;
@@ -21,8 +23,15 @@ const CalendarListScreen = (props: Props) => {
         selectedColor: '#5E60CE',
         selectedTextColor: 'white'
       },
-      ['2022-08-05']: {
-        selectedTextColor: 'pink'
+      [nextWeekDate]: {
+        selected: selected === nextWeekDate,
+        selectedTextColor: '#5E60CE',
+        marked: true
+      },
+      [nextMonthDate]: {
+        selected: selected === nextMonthDate,
+        selectedTextColor: '#5E60CE',
+        marked: true
       }
     };
   }, [selected]);
@@ -40,6 +49,7 @@ const CalendarListScreen = (props: Props) => {
       onDayPress={onDayPress}
       markedDates={marked}
       renderHeader={!horizontalView ? renderCustomHeader : undefined}
+      calendarHeight={!horizontalView ? 390 : undefined}
       theme={!horizontalView ? theme : undefined}
       horizontal={horizontalView}
       pagingEnabled={horizontalView}

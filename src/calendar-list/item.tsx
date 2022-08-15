@@ -1,13 +1,11 @@
 import XDate from 'xdate';
-
-import React, {useRef, useMemo, useContext} from 'react';
-import {Text, View} from 'react-native';
-
+import React, {useRef, useMemo, useContext, useCallback} from 'react';
+import {Text} from 'react-native';
 import {Theme} from '../types';
-import {formatNumbers} from '../dateutils';
-import {getCalendarDateString} from '../services';
-import Calendar, {CalendarProps} from '../calendar';
+import {toMarkingFormat} from '../interface';
+import {extractCalendarProps} from '../componentUpdater';
 import styleConstructor from './style';
+import Calendar, {CalendarProps} from '../calendar';
 import CalendarContext from '../expandableCalendar/Context';
 
 export type CalendarListItemProps = CalendarProps & {
@@ -17,25 +15,30 @@ export type CalendarListItemProps = CalendarProps & {
   horizontal?: boolean;
   theme?: Theme;
   scrollToMonth?: (date: XDate) => void;
+  visible?: boolean;
 };
 
 const CalendarListItem = React.memo((props: CalendarListItemProps) => {  
   const {
-    theme,
     item,
+    theme,
     scrollToMonth,
     horizontal,
     calendarHeight,
     calendarWidth,
-    testID,
     style: propsStyle,
     headerStyle,
     onPressArrowLeft,
-    onPressArrowRight
+    onPressArrowRight,
+    visible
   } = props;
   const context = useContext(CalendarContext);
-  
+
   const style = useRef(styleConstructor(theme));
+  
+  const calendarProps = extractCalendarProps(props);
+  const dateString = toMarkingFormat(item);
+  
   const calendarStyle = useMemo(() => {
     return [
       {
@@ -46,8 +49,12 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       propsStyle
     ];
   }, [calendarWidth, calendarHeight, propsStyle]);
-
-  const _onPressArrowLeft = (method: () => void, month?: XDate) => {
+  
+  const textStyle = useMemo(() => {
+    return [calendarStyle, style.current.placeholderText];
+  }, [calendarStyle]);
+  
+  const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
     const monthClone = month?.clone();
     if (monthClone) {
       if (onPressArrowLeft) {
@@ -55,7 +62,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       } else if (scrollToMonth) {
         const currentMonth = monthClone.getMonth();
         monthClone.addMonths(-1);
-
         // Make sure we actually get the previous month, not just 30 days before currentMonth.
         while (monthClone.getMonth() === currentMonth) {
           monthClone.setDate(monthClone.getDate() - 1);
@@ -63,9 +69,9 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
         scrollToMonth(monthClone);
       }
     }
-  };
+  }, [onPressArrowLeft, scrollToMonth]);
 
-  const _onPressArrowRight = (method: () => void, month?: XDate) => {
+  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
     const monthClone = month?.clone();
     if (monthClone) {
       if (onPressArrowRight) {
@@ -75,34 +81,27 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
         scrollToMonth(monthClone);
       }
     }
-  };
+  }, [onPressArrowRight, scrollToMonth]);
 
-  if (item.getTime) {
+  if (!visible) {
     return (
-      <Calendar
-        hideArrows={true}
-        hideExtraDays={true}
-        {...props}
-        testID={testID}
-        current={getCalendarDateString(item.toString())}
-        style={calendarStyle}
-        headerStyle={horizontal ? headerStyle : undefined}
-        disableMonthChange
-        onPressArrowLeft={horizontal ? _onPressArrowLeft : onPressArrowLeft}
-        onPressArrowRight={horizontal ? _onPressArrowRight : onPressArrowRight}
-        context={context} // ???
-      />
+      <Text style={textStyle}>{dateString}</Text>
     );
-  } else {
-    const text = formatNumbers(item.toString());
-    return (
-      <View style={[{height: calendarHeight, width: calendarWidth}, style.current.placeholder]}>
-        <Text allowFontScaling={false} style={style.current.placeholderText}>
-          {text}
-        </Text>
-      </View>
-    );
-    }
+  }
+  return (
+    <Calendar
+      hideArrows={true}
+      hideExtraDays={true}
+      {...calendarProps}
+      current={dateString}
+      style={calendarStyle}
+      headerStyle={horizontal ? headerStyle : undefined}
+      disableMonthChange
+      onPressArrowLeft={horizontal ? _onPressArrowLeft : onPressArrowLeft}
+      onPressArrowRight={horizontal ? _onPressArrowRight : onPressArrowRight}
+      context={context} // ???
+    />
+  );
 });
 
 export default CalendarListItem;
