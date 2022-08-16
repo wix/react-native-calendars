@@ -98,7 +98,7 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);  
+  const {date, setDate, numberOfDays, timelineLeftInset, updateSource} = useContext(Context);  
   const {
     /** ExpandableCalendar props */
     initialPosition = Positions.CLOSED, 
@@ -257,8 +257,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   useEffect(() => {
     // date was changed from AgendaList, arrows or scroll
-    scrollToDate(date);
-  }, [date]);
+    if (updateSource !== updateSources.PAGE_SCROLL) {
+      scrollToDate(date);
+    }
+  }, [date, updateSource]);
 
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
@@ -275,7 +277,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
   };
 
-  const scrollPage = useCallback((next: boolean) => {
+  const scrollPage = useCallback((next: boolean, updateSource = updateSources.ARROW_PRESS) => {
     if (horizontal) {
       const d = parseDate(date);
 
@@ -299,7 +301,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       }
 
-      setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
+      setDate?.(toMarkingFormat(d), updateSource);
     }
   }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
@@ -445,12 +447,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           // for horizontal scroll
           if (visibleMonth.current !== getMonth(date)) {
             const next = isLaterDate(newDate, date);
-            scrollPage(next);
+            scrollPage(next, updateSources.PAGE_SCROLL);
           }
   
           // updating openHeight
           setTimeout(() => {
-            // to wait for setDate() call in horizontal scroll (scrollPage())
+            // to wait for setDate call in horizontal scroll (scrollPage)
             const _numberOfWeeks = getNumberOfWeeksInMonth(newDate.dateString);
             if (_numberOfWeeks !== numberOfWeeks.current) {
               numberOfWeeks.current = _numberOfWeeks;
