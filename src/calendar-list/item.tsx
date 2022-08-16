@@ -88,6 +88,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       <Text style={textStyle}>{dateString}</Text>
     );
   }
+  console.log('calendarListItem press day: ', calendarProps.onDayPress);
+
   return (
     <Calendar
       hideArrows={true}

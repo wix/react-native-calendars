@@ -217,6 +217,8 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   }, [currentMonth]);
 
   const renderItem = useCallback(({item}: any) => {
+    console.log('calendarList press day: ', calendarProps.onDayPress);
+
     return (
       <CalendarListItem
         {...calendarProps}

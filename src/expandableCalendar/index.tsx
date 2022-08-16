@@ -407,6 +407,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }, 0);
   }, [isOpen]);
 
+  const toggleCalendarPosition = useCallback(() => {
+    bounceToPosition(isOpen ? closedHeight.current : openHeight.current);
+  }, [isOpen, bounceToPosition]);
+
   /** Events */
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
@@ -426,6 +430,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (closeOnDayPress) {
       closeCalendar();
     }
+    console.log('expandable press day: ', onDayPress);
     onDayPress?.(value);
   }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
 
@@ -512,7 +517,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const renderKnob = () => {
     return (
       <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
-        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={isOpen ? undefined : 1}/>
+        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={toggleCalendarPosition} hitSlop={knobHitSlop} /* activeOpacity={isOpen ? undefined : 1} *//>
       </View>
     );
   };
