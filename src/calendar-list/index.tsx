@@ -232,7 +232,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         visible={isDateInRange(item)}
       />
     );
-  }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange]);
+  }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
   const renderStaticHeader = () => {
     if (staticHeader && horizontal) {
