@@ -257,7 +257,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   useEffect(() => {
     // date was changed from AgendaList, arrows or scroll
-    if (updateSource !== updateSources.PAGE_SCROLL) {
+    if (updateSource === updateSources.ARROW_PRESS) {
       scrollToDate(date);
     }
   }, [date, updateSource]);
