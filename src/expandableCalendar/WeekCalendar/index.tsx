@@ -16,6 +16,7 @@ import {UpdateSources} from '../commons';
 import constants from '../../commons/constants';
 
 const NUMBER_OF_PAGES = 2; // must be a positive number
+const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
 
 const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
@@ -46,33 +47,38 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     testID,
     accessibilityElementsHidden,
   } = props;
+  const {date, numberOfDays, updateSource, prevDate} = context;
 
   const style = useRef(styleConstructor(theme));
 
   const getDate = useCallback((weekIndex: number) => {
-    const d = new XDate(current || context.date);
-    const numberOfDays = context.numberOfDays;
+    const d = new XDate(current || date);
     // get the first day of the week as date (for the on scroll mark)
     let dayOfTheWeek = d.getDay();
     if (dayOfTheWeek < firstDay && firstDay > 0) {
       dayOfTheWeek = 7 + dayOfTheWeek;
     }
-    const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+    if (weekIndex !== 0) {
+      d.addDays(firstDay - dayOfTheWeek);
+    }
 
-    const newDate = numberOfDays > 1 ? generateDay(toMarkingFormat(d), weekIndex * numberOfDays) : dd.addWeeks(weekIndex);
+    const newDate = numberOfDays > 1 ? generateDay(toMarkingFormat(d), weekIndex * numberOfDays) : d.addWeeks(weekIndex);
 
     return toMarkingFormat(newDate);
-  }, [current, context, firstDay]);
+  }, [current, date, numberOfDays, firstDay]);
 
   useEffect(() => {
-    if (context.updateSource !== UpdateSources.WEEK_SCROLL) {
-      const pageIndex = items.findIndex(item => sameWeek(item, context.date, firstDay));
-      list.current?.scrollToOffset?.({offset: pageIndex * containerWidth, animated: false});
+    if (updateSource !== UpdateSources.WEEK_SCROLL) {
+      const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
+      const oldIndex = items.findIndex(item => sameWeek(item, prevDate, firstDay));
+      if (pageIndex !== oldIndex) {
+        list.current?.scrollToOffset?.({offset: pageIndex * containerWidth, animated: false});
+      }
     }
-  }, [context.date, context.updateSource]);
+  }, [date, updateSource]);
 
   const getDatesArray = useMemo(() => {
-    return [...Array(NUMBER_OF_PAGES * 2 + 1).keys()].map((index) => {
+    return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
       return getDate(index-NUMBER_OF_PAGES);
     });
   }, [getDate]);
@@ -82,10 +88,6 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
   const list = useRef<FlatList>(null);
   const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
-
-  useEffect(() => {
-    setItems(getDatesArray);
-  }, []);
 
   const containerWidth = useMemo(() => {
     return calendarWidth ?? constants.screenWidth;
@@ -105,7 +107,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
       return;
     }
 
-    const overallWidth = (items?.length - 1) * containerWidth;
+    const overallWidth = (NUM_OF_ITEMS - 1) * containerWidth;
     const eventXOffset = event.nativeEvent.contentOffset.x;
     const x = APPLY_ANDROID_FIX ? (overallWidth - eventXOffset) : eventXOffset;
     const newPage = Math.round(x / containerWidth);
@@ -119,28 +121,20 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     return [{width}, style];
   }, []);
 
-  const isFirstPage = useCallback((page: number) => {
-    return page === 0;
-  }, []);
-
-  const isLastPage = useCallback((page: number, items: string[]) => {
-    return page === items.length - 1;
-  }, []);
-
   const onMomentumScrollEndCallback = useCallback(() => {
-    if (isFirstPage(page) || isLastPage(page, items)) {
+    if (page === 0 || page === NUM_OF_ITEMS - 1) {
       setItems(getDatesArray);
       scrollToIndex(list);
     }
-  }, [isFirstPage, isLastPage, list, page, getDatesArray]);
+  }, [list, page, getDatesArray]);
 
   const renderItem = useCallback(({item}: {item: string}) => {
-    const isSameWeek = sameWeek(item, context.date, firstDay);
+    const isSameWeek = sameWeek(item, date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
 
     return (
       <Week
-        selectedDay={context.date}
+        selectedDay={date}
         importantForAccessibility={importantForAccessibility}
         testID={testID}
         hideDayNames={hideDayNames}
@@ -152,7 +146,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
         markedDates={markedDates}
         onDayPress={onDayPressCallback}
         context={currentContext}
-        numberOfDays={context.numberOfDays}
+        numberOfDays={numberOfDays}
         timelineLeftInset={context.timelineLeftInset}
       />
     );
@@ -171,9 +165,9 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
   const extraData = useMemo(() => Map({
     current,
-    date: context.date,
+    date,
     firstDay
-  }), [current, context.date, firstDay]);
+  }), [current, date, firstDay]);
 
   const scrollToIndex = (list: React.RefObject<any>, animated = false) => {
     list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
@@ -189,7 +183,8 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
   const containerStyle = useMemo(() => {
     return [style.current.week, style.current.weekCalendar];
   }, []);
-  const flashListContainerStyle = useMemo(() => {
+
+  const flatListContainerStyle = useMemo(() => {
     return style.current.container;
   }, []);
 
@@ -200,6 +195,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
       index
     };
   }, [containerWidth]);
+
   return (
     <View
       testID={props.testID}
@@ -210,9 +206,9 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
           {renderWeekDaysNames}
         </View>
       )}
-      <View style={flashListContainerStyle}>
+      <View style={flatListContainerStyle}>
           <FlatList
-            ref={list as React.RefObject<FlatList>}
+            ref={list}
             data={items}
             extraData={extraData}
             style={style.current.container}
@@ -223,6 +219,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
+            initialNumToRender={1}
             getItemLayout={getItemLayout}
             onScroll={onScrollCallback}
             onMomentumScrollEnd={onMomentumScrollEndCallback}
