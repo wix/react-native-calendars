@@ -151,7 +151,6 @@ const Calendar = (props: CalendarProps) => {
   }, [minDate, maxDate, allowSelectionOutOfRange, disableMonthChange, updateMonth]);
 
   const _onDayPress = useCallback((date?: DateData) => {
-    console.log('calendar day press: ', onDayPress);
     if (date)
     handleDayInteraction(date, onDayPress);
   }, [handleDayInteraction, onDayPress]);
@@ -209,7 +208,7 @@ const Calendar = (props: CalendarProps) => {
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
       return <View key={id} style={style.current.emptyDayContainer}/>;
     }
-    // console.log(props.testID);
+
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day

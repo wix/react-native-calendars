@@ -63,7 +63,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
     const {context, firstDay = 0} = this.props;
     const {shouldComponentUpdate, getDatesArray, scrollToIndex} = this.presenter;
 
-    if (shouldComponentUpdate(this.props.context, prevProps.context)) {
+    if (shouldComponentUpdate(context, prevProps.context)) {
       if (!sameWeek(context.date, prevProps.context.date, firstDay) || context.numberOfDays) {
         // Don't update items if the new date is on the same week
         this.setState({items: getDatesArray(this.props)});
@@ -142,11 +142,11 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
-
+    
     return (
       <Week
         {...others}
-        key={item}
+        // key={item}
         current={item}
         firstDay={firstDay}
         style={this.getWeekStyle(this.containerWidth, style)}
@@ -178,7 +178,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
   };
 
   render() {
-    const {allowShadow, firstDay, hideDayNames, current, context} = this.props;
+    const {allowShadow, firstDay, hideDayNames, current, context, testID} = this.props;
     const {items} = this.state;
     const extraData = Map({
       current,
@@ -188,7 +188,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
     return (
       <View
-        testID={this.props.testID}
+        testID={testID}
         style={[allowShadow && this.style.containerShadow, !hideDayNames && this.style.containerWrapper]}
       >
         {!hideDayNames && (

@@ -23,19 +23,21 @@ const TestCase = props => {
   );
 };
 
-describe.only('ExpandableCalendar', () => {
+describe('ExpandableCalendar', () => {
   beforeEach(() => {
     onDayPressMock.mockClear();
   });
 
-  describe('xxx prop', () => {
+  describe('onDayPress prop', () => {
     it('should ', () => {
       const renderTree = render(<TestCase />);
 
       const expandable = renderTree.getByTestId(testIdExpandable);
       const knob = renderTree.getByTestId(`${testIdExpandable}-knob`);
       fireEvent(knob, 'toggleCalendarPosition');
-      const dayComponent = renderTree.getByTestId('calendar_1660608000000');
+      const dayComponent = renderTree.getByTestId(
+        'calendar_list_item_2022-08-17-native.calendar.SELECT_DATE_SLOT-2022-08-17'
+      );
       fireEvent(dayComponent, 'press');
       expect(onDayPressMock).toHaveBeenCalled();
     });

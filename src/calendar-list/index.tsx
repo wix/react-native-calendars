@@ -217,14 +217,11 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   }, [currentMonth]);
 
   const renderItem = useCallback(({item}: any) => {
-    console.log('calendarList press day: ', calendarProps.onDayPress);
-
     return (
       <CalendarListItem
         {...calendarProps}
         markedDates={getMarkedDatesForItem(item)}
         item={item}
-        testID={`${testID}_${item}`}
         style={calendarStyle}
         // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal}

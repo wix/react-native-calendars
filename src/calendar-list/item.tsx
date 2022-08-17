@@ -30,7 +30,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     headerStyle,
     onPressArrowLeft,
     onPressArrowRight,
-    visible
+    visible,
+    testID
   } = props;
   const context = useContext(CalendarContext);
 
@@ -88,13 +89,13 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       <Text style={textStyle}>{dateString}</Text>
     );
   }
-  console.log('calendarListItem press day: ', calendarProps.onDayPress);
 
   return (
     <Calendar
       hideArrows={true}
       hideExtraDays={true}
       {...calendarProps}
+      testID={`${testID}_item_${dateString}`}
       current={dateString}
       style={calendarStyle}
       headerStyle={horizontal ? headerStyle : undefined}

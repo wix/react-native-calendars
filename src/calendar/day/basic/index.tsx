@@ -123,7 +123,6 @@ const BasicDay = (props: BasicDayProps) => {
   };
 
   const _onPress = useCallback(() => {
-    console.log('Day pressed!: ', onPress);
     onPress?.(dateData);
   }, [onPress, date]);
 

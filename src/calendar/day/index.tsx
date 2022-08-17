@@ -30,7 +30,7 @@ export interface DayProps extends BasicDayProps {
 }
 
 const Day = React.memo((props: DayProps) => {
-  const {date, marking, dayComponent, markingType} = props;
+  const {date, marking, dayComponent, markingType, testID} = props;
   const _date = date ? new XDate(date) : undefined;
   const _isToday = isToday(_date);
 
@@ -78,7 +78,7 @@ const Day = React.memo((props: DayProps) => {
     <Component
       {...props}
       accessibilityLabel={getAccessibilityLabel}
-      testID={`${SELECT_DATE_SLOT}-${date}`}
+      testID={`${testID}-${SELECT_DATE_SLOT}-${date}`}
       {...dayComponentProps}
     >
       {formatNumbers(_date?.getDate())}

@@ -430,7 +430,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (closeOnDayPress) {
       closeCalendar();
     }
-    console.log('expandable press day: ', onDayPress);
     onDayPress?.(value);
   }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
 
@@ -557,7 +556,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const renderCalendarList = () => {
     return (
       <CalendarList
-        testID="calendar"
+        testID="calendar_list"
         horizontal={horizontal}
         firstDay={firstDay}
         calendarStyle={calendarStyle}
