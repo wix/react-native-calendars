@@ -14,6 +14,7 @@ import {extractHeaderProps, extractDayProps} from '../componentUpdater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
 import {DateData, Theme} from '../types';
+import {useDidUpdate} from '../hooks';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
@@ -105,7 +106,6 @@ const Calendar = (props: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
-  const isMounted = useRef(false);
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
  
   useEffect(() => {
@@ -114,15 +114,10 @@ const Calendar = (props: CalendarProps) => {
     }
   }, [initialDate]);
 
-  useEffect(() => {
-    if (isMounted.current) {
-      // Avoid callbacks call on mount
-      const _currentMonth = currentMonth.clone();
-      onMonthChange?.(xdateToData(_currentMonth));
-      onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
-    } else {
-      isMounted.current = true;
-    }
+  useDidUpdate(() => {
+    const _currentMonth = currentMonth.clone();
+    onMonthChange?.(xdateToData(_currentMonth));
+    onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
   }, [currentMonth]);
 
   const updateMonth = useCallback((newMonth: XDate) => {
