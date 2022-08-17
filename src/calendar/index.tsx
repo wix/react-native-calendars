@@ -69,8 +69,6 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
-  /** selected day */
-  selectedDay?: string;
 }
 
 /**

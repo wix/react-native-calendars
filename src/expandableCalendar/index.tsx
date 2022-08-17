@@ -185,9 +185,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const deltaY = useRef(new Animated.Value(startHeight));
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
 
-  const shadowInWeekComponent = useMemo(() => {
-    return disableWeekScroll ? undefined : false;
-  }, [disableWeekScroll]);
+  // const shadowInWeekComponent = useMemo(() => {
+  //   return disableWeekScroll ? undefined : false;
+  // }, [disableWeekScroll]);
 
   /** Components' refs */
 
@@ -523,6 +523,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const renderWeekCalendar = () => {
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
+    const weekCalendarProps = disableWeekScroll ? undefined : {allowShadow: false};
 
     return (
       <Animated.View
@@ -534,7 +535,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           testID="week_calendar"
           firstDay={firstDay}
           {...others}
-          allowShadow={shadowInWeekComponent}
+          {...weekCalendarProps}
           theme={themeObject}
           style={calendarStyle}
           hideDayNames={true}
