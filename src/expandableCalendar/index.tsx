@@ -519,7 +519,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const renderWeekCalendar = () => {
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
-    const weekCalendarProps = disableWeekScroll ? undefined : {allowShadow: false};
 
     return (
       <Animated.View
@@ -531,7 +530,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           testID="week_calendar"
           firstDay={firstDay}
           {...others}
-          {...weekCalendarProps}
+          allowShadow={disableWeekScroll ? undefined : false}
+          current={date}
           theme={themeObject}
           style={calendarStyle}
           hideDayNames={true}
