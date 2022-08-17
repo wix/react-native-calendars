@@ -101,13 +101,13 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   const headerProps = extractHeaderProps(props);
   const calendarSize = horizontal ? calendarWidth : calendarHeight;
 
+  const [currentMonth, setCurrentMonth] = useState(parseDate(current));
+
   const style = useRef(styleConstructor(theme));
   const list = useRef();
   const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current));
-  const visibleMonth = useRef();
-
-  const [currentMonth, setCurrentMonth] = useState(parseDate(current));
+  const visibleMonth = useRef(currentMonth);
 
   const items = useMemo(() => {
     const months = [];
