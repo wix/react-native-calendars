@@ -72,13 +72,14 @@ const Day = React.memo((props: DayProps) => {
   
   const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
   const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate())} : undefined;
+  const testId = testID ? `${testID}-${SELECT_DATE_SLOT}-${date}` : `${SELECT_DATE_SLOT}-${date}`;
 
   return (
     //@ts-expect-error
     <Component
       {...props}
       accessibilityLabel={getAccessibilityLabel}
-      testID={`${testID}-${SELECT_DATE_SLOT}-${date}`}
+      testID={testId}
       {...dayComponentProps}
     >
       {formatNumbers(_date?.getDate())}

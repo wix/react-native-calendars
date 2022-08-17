@@ -43,7 +43,11 @@ export class CalendarDriver extends ComponentDriver {
   }
 
   getDay(dateString, type = 'basic') {
-    const node = this.getByID(`${SELECT_DATE_SLOT}-${dateString}`);
+    const testId = this.testID
+      ? `${this.testID}-${SELECT_DATE_SLOT}-${dateString}`
+      : `${SELECT_DATE_SLOT}-${dateString}`;
+    // console.log('driver: ', testId);
+    const node = this.getByID(testId);
     if (!node) {
       throw new Error(`Date ${dateString} not found.`);
     }
