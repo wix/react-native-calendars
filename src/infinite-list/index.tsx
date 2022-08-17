@@ -7,7 +7,7 @@ import {ScrollViewProps} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 
 import constants from '../commons/constants';
-import useCombinedRefs from '../commons/useCombinedRefs';
+import {useCombinedRefs} from '../hooks';
 
 const dataProviderMaker = (items: string[]) => new DataProvider((item1, item2) => item1 !== item2).cloneWithRows(items);
 
