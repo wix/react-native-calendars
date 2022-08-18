@@ -2,6 +2,7 @@ import first from 'lodash/first';
 import isFunction from 'lodash/isFunction';
 import isNumber from 'lodash/isNumber';
 import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 
 import XDate from 'xdate';
 
@@ -98,7 +99,7 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays, timelineLeftInset, updateSource} = useContext(Context);  
+  const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);  
   const {
     /** ExpandableCalendar props */
     initialPosition = Positions.CLOSED, 
@@ -178,7 +179,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
   const openHeight = useRef(getOpenHeight());
   const closedHeight = useRef(CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT));
-  
   const startHeight = isOpen ? openHeight.current : closedHeight.current;
   const _height = useRef(startHeight);
   
@@ -242,6 +242,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return {height: deltaY.current};
   }, [deltaY.current]);
 
+  const numberOfDaysCondition = useMemo(() => {
+    return !numberOfDays || numberOfDays && numberOfDays <= 1; 
+  }, [numberOfDays]);
+
   /** Effects */
 
   useEffect(() => {
@@ -254,13 +258,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       }
     }
   }, []);
-
-  useEffect(() => {
-    // date was changed from AgendaList, arrows or scroll
-    if (updateSource === updateSources.ARROW_PRESS) {
-      scrollToDate(date);
-    }
-  }, [date, updateSource]);
 
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
@@ -301,7 +298,13 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       }
 
-      setDate?.(toMarkingFormat(d), updateSource);
+      if (updateSource === updateSources.ARROW_PRESS) {
+        scrollToDate(d);
+      }
+
+       setTimeout(() => {
+         setDate?.(toMarkingFormat(d), updateSource);
+       }, 0);
     }
   }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
@@ -343,10 +346,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     _height.current = Number(_wrapperStyles.current.style.height);
     bounceToPosition();
   };
-
-  const numberOfDaysCondition = useMemo(() => {
-    return !numberOfDays || numberOfDays && numberOfDays <= 1; 
-  }, [numberOfDays]);
 
   const panResponder = useMemo(() => numberOfDaysCondition ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
@@ -409,6 +408,20 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }, 0);
   }, [isOpen]);
 
+  const updateOpenHeight = debounce((date: DateData) => {
+    setTimeout(() => {
+      // to wait for setDate call in horizontal scroll (scrollPage)
+      const _numberOfWeeks = getNumberOfWeeksInMonth(date.dateString);
+      if (_numberOfWeeks !== numberOfWeeks.current) {
+        numberOfWeeks.current = _numberOfWeeks;
+        openHeight.current = getOpenHeight();
+        if (isOpen) {
+          bounceToPosition(openHeight.current);
+        }
+      }
+    }, 0);
+  }, 1000, {leading: false, trailing: true});
+
   /** Events */
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
@@ -431,10 +444,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onDayPress?.(value);
   }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
 
-  const onVisibleMonthsChange = useCallback(throttle(
-    (value: DateData[]) => {
+  const onVisibleMonthsChange = useCallback(throttle((value: DateData[]) => {
       const newDate = first(value);
       if (newDate) {
+        updateOpenHeight.cancel();
+
         const month = newDate.month;
         if (month && visibleMonth.current !== month) {
           visibleMonth.current = month;
@@ -451,17 +465,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           }
   
           // updating openHeight
-          setTimeout(() => {
-            // to wait for setDate call in horizontal scroll (scrollPage)
-            const _numberOfWeeks = getNumberOfWeeksInMonth(newDate.dateString);
-            if (_numberOfWeeks !== numberOfWeeks.current) {
-              numberOfWeeks.current = _numberOfWeeks;
-              openHeight.current = getOpenHeight();
-              if (isOpen) {
-                bounceToPosition(openHeight.current);
-              }
-            }
-          }, 0);
+          updateOpenHeight(newDate);
         }
       }
     }, 100, {trailing: true, leading: false}
