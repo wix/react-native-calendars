@@ -15,9 +15,9 @@ import Week from '../week';
 import {UpdateSources} from '../commons';
 import constants from '../../commons/constants';
 
-const NUMBER_OF_PAGES = 2; // must be a positive number
+const NUMBER_OF_PAGES = 3; // must be a positive number
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
-
+const NUM_TO_RENDER = 3;
 const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
 export interface WeekCalendarProps extends CalendarListProps {
@@ -84,7 +84,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
   const [page, setPage] = useState(NUMBER_OF_PAGES);
   const [items, setItems] = useState(getDatesArray);
-  const visibleWeek = useRef<string>(items[page]);
+  const visibleWeek = useRef(items[page]);
 
   const list = useRef<FlatList>(null);
   const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
@@ -101,8 +101,13 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     }
   }, [onDayPress]);
 
-  const isWeekVisible = useCallback((item: string) => {
-    return sameWeek(item, visibleWeek.current, firstDay);
+  const isWeekInRange = useCallback((item: string) => {
+    return [...Array(NUM_TO_RENDER).keys()]
+      .map(index => index - 1).some(
+        weekIndex => sameWeek(
+          item,
+          new XDate(visibleWeek.current).addWeeks(weekIndex).toString('yyyy-MM-dd'),
+          firstDay));
   }, [visibleWeek, firstDay]);
 
   const onScrollCallback = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -138,7 +143,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
     return (
       <Week
-        visible={isSameWeek}
+        visible={isWeekInRange(item)}
         selectedDay={date}
         importantForAccessibility={importantForAccessibility}
         testID={testID}
@@ -155,7 +160,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
         timelineLeftInset={context.timelineLeftInset}
       />
     );
-  },[ref, importantForAccessibility, testID, hideDayNames, accessibilityElementsHidden, theme, firstDay, containerWidth, propsStyle, markedDates, onDayPressCallback, context, date, isWeekVisible]);
+  },[ref, importantForAccessibility, testID, hideDayNames, accessibilityElementsHidden, theme, firstDay, containerWidth, propsStyle, markedDates, onDayPressCallback, context, date, isWeekInRange]);
 
   const keyExtractor = useCallback((_, index: number) => index.toString(), []);
 
