@@ -63,7 +63,6 @@ const ExpandableCalendarScreen = (props: Props) => {
           markedDates={marked.current}
           leftArrowImageSource={leftArrowIcon}
           rightArrowImageSource={rightArrowIcon}
-          onMonthChange={onMonthChange}
           // animateScroll
           // closeOnDayPress={false}
         />

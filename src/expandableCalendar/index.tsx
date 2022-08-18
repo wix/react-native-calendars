@@ -431,7 +431,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       closeCalendar();
     }
     onDayPress?.(value);
-  }, [onDayPress, closeOnDayPress, isOpen, numberOfDays]);
+  }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
 
   const onVisibleMonthsChange = useCallback(throttle(
     (value: DateData[]) => {
@@ -523,7 +523,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const renderWeekCalendar = () => {
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
-    const weekCalendarProps = disableWeekScroll ? undefined : {allowShadow: false};
 
     return (
       <Animated.View
@@ -535,7 +534,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           testID="week_calendar"
           firstDay={firstDay}
           {...others}
-          {...weekCalendarProps}
+          allowShadow={disableWeekScroll ? undefined : false}
+          current={date}
           theme={themeObject}
           style={calendarStyle}
           hideDayNames={true}
@@ -546,6 +546,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       </Animated.View>
     );
   };
+
+  const numberOfDaysHeaderStyle = useMemo(() => {
+    if (numberOfDays && numberOfDays > 1) {
+      return {paddingHorizontal: 0};
+    }
+  }, [numberOfDays]);
 
   const renderCalendarList = () => {
     return (
@@ -569,6 +575,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         renderArrow={_renderArrow}
         staticHeader
         numberOfDays={numberOfDays}
+        headerStyle={numberOfDaysHeaderStyle}
         timelineLeftInset={timelineLeftInset}
       />
     );
