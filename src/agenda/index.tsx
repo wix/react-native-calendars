@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import {extractComponentProps} from '../componentUpdater';
-import {parseDate, xdateToData, toMarkingFormat} from '../interface';
+import {xdateToData, toMarkingFormat} from '../interface';
 import {sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
@@ -23,7 +23,7 @@ import {DateData, AgendaSchedule} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';
-import CalendarList, {CalendarListProps} from '../calendar-list';
+import CalendarList, {CalendarListProps, CalendarListImperativeMethods} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
 
@@ -93,7 +93,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   private knobTracker: VelocityTracker;
   private _isMounted: boolean | undefined;
   private scrollPad: React.RefObject<any> = React.createRef();
-  private calendar: React.RefObject<CalendarList> = React.createRef();
+  private calendar: React.RefObject<CalendarListImperativeMethods> = React.createRef();
   private knob: React.RefObject<View> = React.createRef();
   public list: React.RefObject<ReservationList> = React.createRef();
 
@@ -155,8 +155,8 @@ export default class Agenda extends Component<AgendaProps, State> {
     return null;
   }
 
-  getSelectedDate(selected?: string) {
-    return selected ? parseDate(selected) : new XDate(true);
+  getSelectedDate(date?: string) {
+    return date ? new XDate(date) : new XDate(true);
   }
 
   calendarOffset() {
@@ -213,7 +213,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   chooseDay(d: DateData, optimisticScroll: boolean) {
-    const day = parseDate(d);
+    const day = new XDate(d.dateString);
 
     this.setState({
       calendarScrollable: false,
@@ -259,7 +259,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   onCalendarListLayout = () => {
-    this.calendar?.current?.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+    this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset(), false);
   };
 
   onLayout = (event: LayoutChangeEvent) => {

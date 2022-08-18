@@ -130,6 +130,11 @@ describe('dateutils', function () {
       expect(days.length).toBe(31);
     });
 
+    it('2014 June', function () {
+      const days = month(XDate(2014, 5, 1));
+      expect(days.length).toBe(30);
+    });
+
     it('2014 August', function () {
       const days = month(XDate(2014, 7, 1));
       expect(days.length).toBe(31);

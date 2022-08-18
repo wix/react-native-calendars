@@ -22,13 +22,12 @@ const ExpandableCalendarScreen = (props: Props) => {
     todayButtonTextColor: themeColor
   });
 
-  const onDateChanged = useCallback((/* date, updateSource */) => {
-    // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
-    // fetch and set data for date + week ahead
+  const onDateChanged = useCallback((date, updateSource) => {
+    console.log('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
   }, []);
 
-  const onMonthChange = useCallback((/* month, updateSource */) => {
-    // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
+  const onMonthChange = useCallback(({dateString}) => {
+    console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   }, []);
 
   const renderItem = useCallback(({item}: any) => {
@@ -65,6 +64,7 @@ const ExpandableCalendarScreen = (props: Props) => {
           leftArrowImageSource={leftArrowIcon}
           rightArrowImageSource={rightArrowIcon}
           // animateScroll
+          // closeOnDayPress={false}
         />
       )}
       <AgendaList

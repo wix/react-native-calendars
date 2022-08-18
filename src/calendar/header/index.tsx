@@ -105,21 +105,24 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     testID,
     accessibilityElementsHidden,
     importantForAccessibility,
-    numberOfDays = 1,
+    numberOfDays,
     current = '',
     timelineLeftInset
   } = props;
   
+  const numberOfDaysCondition = useMemo(() => {
+    return numberOfDays && numberOfDays > 1;
+  }, [numberOfDays]);
   const style = useRef(styleConstructor(theme));
   const headerStyle = useMemo(() => {
-    return [style.current.header, numberOfDays > 1 ? style.current.partialHeader : undefined];
-  }, [numberOfDays]);
+    return [style.current.header, numberOfDaysCondition ? style.current.partialHeader : undefined];
+  }, [numberOfDaysCondition]);
   const partialWeekStyle = useMemo(() => {
     return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
   }, [timelineLeftInset]);
   const dayNamesStyle = useMemo(() => {
-    return [style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined];
-  }, [numberOfDays, partialWeekStyle]);
+    return [style.current.week, numberOfDaysCondition ? partialWeekStyle : undefined];
+  }, [numberOfDaysCondition, partialWeekStyle]);
 
   useImperativeHandle(ref, () => ({
     onPressLeft,
@@ -163,8 +166,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
   const renderWeekDays = useMemo(() => {
     const dayOfTheWeek = new XDate(current).getDay();
-    const weekDaysNames = numberOfDays > 1 ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
-    const dayNames = numberOfDays > 1 ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
+    const weekDaysNames = numberOfDaysCondition ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
+    const dayNames = numberOfDaysCondition ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
 
     return dayNames.map((day: string, index: number) => {
       const dayStyle = [style.current.dayHeader];
@@ -186,7 +189,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         </Text>
       );
     });
-  }, [firstDay, current, numberOfDays]);
+  }, [firstDay, current, numberOfDaysCondition, numberOfDays, disabledDaysIndexes]);
 
   const _renderHeader = () => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
