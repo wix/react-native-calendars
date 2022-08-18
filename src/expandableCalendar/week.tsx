@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
@@ -9,25 +9,25 @@ import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
-// import BasicDay from '../calendar/day/basic';
 
 
-export type WeekProps = CalendarProps;
+export type WeekProps = CalendarProps & {visible?: boolean};
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset, visible = true} = props;
   const style = useRef(styleConstructor(theme));
-  const dayProps = extractDayProps(props);
-  const currXdate = parseDate(current);
   const getWeek = useCallback((date?: string) => {
     if (date) {
       return getWeekDates(date, firstDay);
     }
   }, [firstDay]);
 
-  // renderWeekNumber (weekNumber) {
-  //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
-  // }
+  const partialWeekStyle = useMemo(() => {
+    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
+  }, [timelineLeftInset]);
+
+  const dayProps = extractDayProps(props);
+  const currXdate = parseDate(current);
 
   const renderDay = (day: XDate, id: number) => {
     // hide extra days
@@ -68,9 +68,14 @@ const Week = (props: WeekProps) => {
     return week;
   };
 
-  const partialWeekStyle = useMemo(() => {
-    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
-  }, [timelineLeftInset]);
+  if(!visible) {
+    return (
+      <View style={style.current.container}>
+        <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
+          <Text style={{alignContent: 'center'}}>{props.date}</Text>
+        </View>
+      </View>);
+  }
 
   return (
     <View style={style.current.container}>

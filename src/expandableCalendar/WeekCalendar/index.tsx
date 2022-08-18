@@ -48,7 +48,6 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     accessibilityElementsHidden,
   } = props;
   const {date, numberOfDays, updateSource, prevDate} = context;
-
   const style = useRef(styleConstructor(theme));
 
   const getDate = useCallback((weekIndex: number) => {
@@ -85,6 +84,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
   const [page, setPage] = useState(NUMBER_OF_PAGES);
   const [items, setItems] = useState(getDatesArray);
+  const visibleWeek = useRef<string>(items[page]);
 
   const list = useRef<FlatList>(null);
   const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
@@ -99,7 +99,11 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     } else {
       context.setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
-  }, [context, onDayPress]);
+  }, [onDayPress]);
+
+  const isWeekVisible = useCallback((item: string) => {
+    return sameWeek(item, visibleWeek.current, firstDay);
+  }, [visibleWeek, firstDay]);
 
   const onScrollCallback = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (firstAndroidRTLScroll) {
@@ -117,8 +121,8 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     setPage(newPage);
   }, [context, containerWidth, page, items, firstAndroidRTLScroll, setFirstAndroidRTLScroll]);
 
-  const getWeekStyle = useCallback((width, style) => {
-    return [{width}, style];
+  const getWeekStyle = useMemo(() => {
+    return [{width: containerWidth}, propsStyle];
   }, []);
 
   const onMomentumScrollEndCallback = useCallback(() => {
@@ -134,6 +138,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
 
     return (
       <Week
+        visible={isSameWeek}
         selectedDay={date}
         importantForAccessibility={importantForAccessibility}
         testID={testID}
@@ -142,7 +147,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
         theme={theme}
         current={item}
         firstDay={firstDay}
-        style={getWeekStyle(containerWidth, propsStyle)}
+        style={getWeekStyle}
         markedDates={markedDates}
         onDayPress={onDayPressCallback}
         context={currentContext}
@@ -150,7 +155,7 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
         timelineLeftInset={context.timelineLeftInset}
       />
     );
-  },[ref, importantForAccessibility, testID, hideDayNames, accessibilityElementsHidden, theme, firstDay, containerWidth, propsStyle, markedDates, onDayPressCallback, context]);
+  },[ref, importantForAccessibility, testID, hideDayNames, accessibilityElementsHidden, theme, firstDay, containerWidth, propsStyle, markedDates, onDayPressCallback, context, date, isWeekVisible]);
 
   const keyExtractor = useCallback((_, index: number) => index.toString(), []);
 
@@ -196,6 +201,20 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
     };
   }, [containerWidth]);
 
+  const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
+    const newVisibleWeek = viewableItems[0]?.item;
+    if (!sameWeek(newVisibleWeek, visibleWeek.current, firstDay)) {
+      visibleWeek.current = newVisibleWeek;
+    }
+  }, []);
+
+  const viewabilityConfigCallbackPairs = useRef([{
+      viewabilityConfig: {
+        viewAreaCoveragePercentThreshold: 1
+      },
+      onViewableItemsChanged,
+    }]);
+
   return (
     <View
       testID={props.testID}
@@ -219,10 +238,11 @@ const WeekCalendar = forwardRef((props: WeekCalendarProps, ref) => {
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
-            initialNumToRender={1}
+            initialNumToRender={items.length}
             getItemLayout={getItemLayout}
             onScroll={onScrollCallback}
             onMomentumScrollEnd={onMomentumScrollEndCallback}
+            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
           />
       </View>
     </View>
