@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleProp, TextStyle} from 'react-native';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
@@ -68,13 +68,31 @@ const Week = (props: WeekProps) => {
     return week;
   };
 
+  const datesOfWeek = useMemo(() => {
+    if (current) {
+      const day = new XDate(current);
+      const dayOffset = day.getDay() - (firstDay ?? 0);
+      return [...Array(7).keys()].map(index => day.clone().addDays(index - dayOffset).getDate());
+    }
+    return [];
+  }, [firstDay, current]);
+
   if(!visible) {
+    const dates = datesOfWeek;
+    const elements = dates?.map(date => (
+          <View style={[]}>
+            <Text allowFontScaling={false} style={dummyDayStyle}>
+              {date}
+            </Text>
+          </View>
+        ));
     return (
       <View style={style.current.container}>
         <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
-          <Text style={{alignContent: 'center'}}>{props.date}</Text>
+          {elements}
         </View>
-      </View>);
+      </View>
+    );
   }
 
   return (
@@ -85,6 +103,15 @@ const Week = (props: WeekProps) => {
 };
 
 export default Week;
+
+const dummyDayStyle: StyleProp<TextStyle> = {
+  marginTop: 2,
+  fontSize: 18,
+  fontFamily: 'HelveticaNeue',
+  fontWeight: '500',
+  color: '#00AAAF',
+  backgroundColor: 'white',
+};
 
 Week.displayName = 'Week';
 Week.propTypes = {
