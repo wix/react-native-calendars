@@ -99,3 +99,8 @@ export type AgendaEntry = {
 export type AgendaSchedule = {
   [date: string]: AgendaEntry[];
 }
+
+export interface DayAgenda {
+  reservation?: AgendaEntry;
+  date?: XDate;
+}

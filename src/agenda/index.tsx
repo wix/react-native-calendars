@@ -13,7 +13,7 @@ import {
   NativeScrollEvent
 } from 'react-native';
 
-import {extractComponentProps} from '../componentUpdater';
+import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
 import {xdateToData, toMarkingFormat} from '../interface';
 import {sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
@@ -328,7 +328,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   renderReservations() {
-    const reservationListProps = extractComponentProps(ReservationList, this.props);
+    const reservationListProps = extractReservationListProps(this.props);
 
     return (
       <ReservationList
@@ -344,7 +344,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   renderCalendarList() {
     const {markedDates, items} = this.props;
     const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
-    const calendarListProps = extractComponentProps(CalendarList, this.props);
+    const calendarListProps = extractCalendarListProps(this.props);
 
     return (
       <CalendarList
