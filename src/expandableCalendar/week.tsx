@@ -9,6 +9,7 @@ import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
+import {textDisabledColor} from '../style';
 
 
 export type WeekProps = CalendarProps & {visible?: boolean};
@@ -72,24 +73,21 @@ const Week = (props: WeekProps) => {
     if (current) {
       const day = new XDate(current);
       const dayOffset = day.getDay() - (firstDay ?? 0);
-      return [...Array(7).keys()].map(index => day.clone().addDays(index - dayOffset).getDate());
+      return [...Array(7).keys()].map(index => day.clone().addDays(index - dayOffset).getDate())
+        .map(date => (
+          <Text allowFontScaling={false} style={dummyDayStyle} key={date}>
+            {date}
+          </Text>
+        ));
     }
     return [];
   }, [firstDay, current]);
 
   if(!visible) {
-    const dates = datesOfWeek;
-    const elements = dates?.map(date => (
-          <View style={[]}>
-            <Text allowFontScaling={false} style={dummyDayStyle}>
-              {date}
-            </Text>
-          </View>
-        ));
     return (
       <View style={style.current.container}>
         <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
-          {elements}
+          {datesOfWeek}
         </View>
       </View>
     );
@@ -109,7 +107,7 @@ const dummyDayStyle: StyleProp<TextStyle> = {
   fontSize: 18,
   fontFamily: 'HelveticaNeue',
   fontWeight: '500',
-  color: '#00AAAF',
+  color: textDisabledColor,
   backgroundColor: 'white',
 };
 
