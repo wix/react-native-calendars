@@ -1,9 +1,9 @@
-const XDate = require('xdate');
-
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react-native';
 import CalendarProvider from '../Context/Provider';
 import ExpandableCalendar from '../index';
+import {ExpandableCalendarDriver} from '../driver';
+
+const XDate = require('xdate');
 
 const testIdExpandable = 'expandableCalendar';
 const today = new XDate();
@@ -23,23 +23,29 @@ const TestCase = props => {
   );
 };
 
+const driver = new ExpandableCalendarDriver(testIdExpandable, <TestCase />);
+
 describe('ExpandableCalendar', () => {
   beforeEach(() => {
+    jest.useFakeTimers();
+    driver.render();
     onDayPressMock.mockClear();
   });
 
-  describe('onDayPress prop', () => {
-    it('should ', () => {
-      const renderTree = render(<TestCase />);
+  describe('Knob', () => {
+    it('should expand expandable header ', () => {
+      driver.toggleKnob();
+      jest.runAllTimers();
 
-      const expandable = renderTree.getByTestId(testIdExpandable);
-      const knob = renderTree.getByTestId(`${testIdExpandable}-knob`);
-      fireEvent(knob, 'toggleCalendarPosition');
-      const dayComponent = renderTree.getByTestId(
-        'calendar_list_item_2022-08-17-native.calendar.SELECT_DATE_SLOT-2022-08-17'
-      );
-      fireEvent(dayComponent, 'press');
-      expect(onDayPressMock).toHaveBeenCalled();
+      expect(driver.isHeaderExpanded()).toBe(true);
+    });
+
+    it('should day press close expandable header', () => {
+      driver.toggleKnob();
+      jest.runAllTimers();
+      driver.selectDay('2022-08-21');
+      jest.runAllTimers();
+      expect(driver.isHeaderExpanded()).toBe(false);
     });
   });
 });

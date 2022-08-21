@@ -6,7 +6,7 @@ import React, {forwardRef, useImperativeHandle, useRef, useEffect, useState, use
 import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
 
 import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
-import {xdateToData, parseDate} from '../interface';
+import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
 import {useDidUpdate} from '../hooks';
@@ -216,10 +216,14 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     return false;
   }, [currentMonth]);
 
-  const renderItem = useCallback(({item}: any) => {
+  const renderItem = useCallback(({item}: {item: XDate}) => {
+    const dateString = toMarkingFormat(item);
+    const [year, month] = dateString.split('-');
+    const _testID = `${testID}.item_${year}-${month}`;
     return (
       <CalendarListItem
         {...calendarProps}
+        testID={_testID}
         markedDates={getMarkedDatesForItem(item)}
         item={item}
         style={calendarStyle}
@@ -238,7 +242,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       return (
         <CalendarHeader
           {...headerProps}
-          testID={STATIC_HEADER}
+          testID={`${testID}.header`}
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}

@@ -12,7 +12,7 @@
     "e2e": "node ./scripts/test-e2e.js --release",
     "test": "npm run lint && npm run unit",
     "test:perf": "TEST_RUNNER_ARGS='--testMatch **/*.perf.js' reassure measure",
-    "unit": "jest src/calendar/index.spec.js",
+    "unit": "jest",
     "lint": "eslint src/ example/src --ext .tsx,.ts,.js",
     "release": "node ./scripts/release.js",
     "start": "react-native start",

@@ -138,7 +138,7 @@ describe('Calendar', () => {
 
     describe('Accessibility labels', () => {
       it('should have default accessibility label', () => {
-        const drv = new CalendarDriver().render();
+        const drv = new CalendarDriver().withDefaultProps().render();
         expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020');
       });
 

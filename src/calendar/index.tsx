@@ -11,8 +11,6 @@ import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-// @ts-expect-error
-import {WEEK_NUMBER} from '../testIDs';
 import {DateData, Theme} from '../types';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
@@ -107,7 +105,7 @@ const Calendar = (props: CalendarProps) => {
   const header = useRef();
   const isMounted = useRef(false);
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
- 
+
   useEffect(() => {
     if (initialDate) {
       setCurrentMonth(parseDate(initialDate));
@@ -194,7 +192,7 @@ const Calendar = (props: CalendarProps) => {
           marking={weekNumberMarking.current}
           // state='disabled'
           theme={theme}
-          testID={`${WEEK_NUMBER}-${weekNumber}`}
+          testID={`${testID}.week_${weekNumber}`}
         >
           {weekNumber}
         </BasicDay>
@@ -209,13 +207,16 @@ const Calendar = (props: CalendarProps) => {
       return <View key={id} style={style.current.emptyDayContainer}/>;
     }
 
+    const dateString = toMarkingFormat(day);
+
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
-          date={toMarkingFormat(day)}
+          testID={`${testID}.day_${dateString}`}
+          date={dateString}
           state={getState(day, currentMonth, props)}
-          marking={markedDates?.[toMarkingFormat(day)]}
+          marking={markedDates?.[dateString]}
           onPress={_onDayPress}
           onLongPress={onLongPressDay}
         />
@@ -268,11 +269,11 @@ const Calendar = (props: CalendarProps) => {
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-    
+
     return (
       <HeaderComponent
         {...headerProps}
-        testID={testID}
+        testID={`${testID}.header`}
         style={headerStyle}
         ref={ref}
         month={currentMonth}

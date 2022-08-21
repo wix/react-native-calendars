@@ -31,7 +31,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     onPressArrowLeft,
     onPressArrowRight,
     visible,
-    testID
   } = props;
   const context = useContext(CalendarContext);
 
@@ -95,7 +94,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       hideArrows={true}
       hideExtraDays={true}
       {...calendarProps}
-      testID={`${testID}_item_${dateString}`}
       current={dateString}
       style={calendarStyle}
       headerStyle={horizontal ? headerStyle : undefined}
