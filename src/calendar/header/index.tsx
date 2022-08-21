@@ -230,15 +230,20 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-    const renderArrowDirection = isLeft ? 'left' : 'right';
-    const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
-
+    const renderArrowDirection = isLeft ? 'left' : 'right';   
+    const hitSlop: Insets | undefined = useMemo(() =>
+        typeof arrowsHitSlop === 'number'
+          ? {top: arrowsHitSlop, left: arrowsHitSlop, bottom: arrowsHitSlop, right: arrowsHitSlop}
+          : arrowsHitSlop,
+      [arrowsHitSlop]
+    );
+      
     return (
       <TouchableOpacity
         onPress={onPress}
         disabled={shouldDisable}
         style={style.current.arrow}
-        hitSlop={arrowsHitSlop}
+        hitSlop={hitSlop}
         testID={testId}
       >
         {renderArrow ? (
