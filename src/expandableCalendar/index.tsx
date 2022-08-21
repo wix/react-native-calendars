@@ -185,10 +185,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const deltaY = useRef(new Animated.Value(startHeight));
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
 
-  // const shadowInWeekComponent = useMemo(() => {
-  //   return disableWeekScroll ? undefined : false;
-  // }, [disableWeekScroll]);
-
   /** Components' refs */
 
   const wrapper = useRef<any>();
@@ -535,7 +531,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           firstDay={firstDay}
           {...others}
           allowShadow={disableWeekScroll ? undefined : false}
-          current={date}
+          current={disableWeekScroll ? date : undefined}
           theme={themeObject}
           style={calendarStyle}
           hideDayNames={true}

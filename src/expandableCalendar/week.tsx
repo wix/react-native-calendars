@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
-import {View, Text, StyleProp, TextStyle} from 'react-native';
+import {View, Text} from 'react-native';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
@@ -9,7 +9,6 @@ import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
-import {textDisabledColor} from '../style';
 
 
 export type WeekProps = CalendarProps & {visible?: boolean};
@@ -69,25 +68,18 @@ const Week = (props: WeekProps) => {
     return week;
   };
 
-  const datesOfWeek = useMemo(() => {
-    if (current) {
-      const day = new XDate(current);
-      const dayOffset = day.getDay() - (firstDay ?? 0);
-      return [...Array(7).keys()].map(index => day.clone().addDays(index - dayOffset).getDate())
-        .map(date => (
-          <Text allowFontScaling={false} style={dummyDayStyle} key={date}>
-            {date}
-          </Text>
-        ));
-    }
-    return [];
-  }, [firstDay, current]);
+  const weekString = useMemo(() => {
+    const day = new XDate(current ?? '');
+    const firstDayOfWeek = day.toString('dd.MM.yyyy');
+    const lastDayOfWeek = day.addDays(numberOfDays > 1 ? numberOfDays : 6).toString('dd.MM.yyyy');
+    return `${firstDayOfWeek} - ${lastDayOfWeek}`;
+  }, []);
 
   if(!visible) {
     return (
       <View style={style.current.container}>
         <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
-          {datesOfWeek}
+          <Text allowFontScaling={false} adjustsFontSizeToFit>{weekString}</Text>
         </View>
       </View>
     );
@@ -100,16 +92,12 @@ const Week = (props: WeekProps) => {
   );
 };
 
-export default Week;
-
-const dummyDayStyle: StyleProp<TextStyle> = {
-  marginTop: 2,
-  fontSize: 18,
-  fontFamily: 'HelveticaNeue',
-  fontWeight: '500',
-  color: textDisabledColor,
-  backgroundColor: 'white',
+const shouldUpdate = (_: WeekProps, nextProps: WeekProps) => {
+  console.log('aaa', _.visible, nextProps.visible);
+  return nextProps.visible ?? true;
 };
+
+export default React.memo(Week, shouldUpdate);
 
 Week.displayName = 'Week';
 Week.propTypes = {
