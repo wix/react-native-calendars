@@ -1,38 +1,36 @@
 import first from 'lodash/first';
-import values from 'lodash/values';
 import isFunction from 'lodash/isFunction';
+import isNumber from 'lodash/isNumber';
 import throttle from 'lodash/throttle';
-import PropTypes from 'prop-types';
-import memoize from 'memoize-one';
+
 import XDate from 'xdate';
 
-import React, {Component} from 'react';
+import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
 import {
   AccessibilityInfo,
   PanResponder,
   Animated,
   View,
-  ViewStyle,
   Text,
   Image,
   ImageSourcePropType,
-  PanResponderInstance,
   GestureResponderEvent,
-  PanResponderGestureState
+  PanResponderGestureState,
+  TouchableOpacity
 } from 'react-native';
 
 // @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
 import {page} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
-import {Theme, DateData, Direction} from '../types';
+import {DateData, Direction} from '../types';
 import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';
 import Calendar from '../calendar';
 import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
 import WeekCalendar from './WeekCalendar';
-import asCalendarConsumer from './asCalendarConsumer';
+import Context from './Context';
 
 import constants from '../commons/constants';
 const commons = require('./commons');
@@ -49,6 +47,7 @@ const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
 const LEFT_ARROW = require('../calendar/img/previous.png');
 const RIGHT_ARROW = require('../calendar/img/next.png');
+const knobHitSlop = {left: 10, right: 10, top: 10, bottom: 10};
 
 export interface ExpandableCalendarProps extends CalendarListProps {
   /** the initial position of the calendar ('open' or 'closed') */
@@ -73,16 +72,22 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeThreshold?: number;
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
-  
-  context?: any;
 }
 
-interface State {
-  deltaY: Animated.Value;
-  headerDeltaY: Animated.Value;
-  position: Positions;
-  screenReaderEnabled: boolean;
-}
+const headerStyleOverride = {
+  stylesheet: {
+    calendar: {
+      header: {
+        week: {
+          marginTop: 7,
+          marginBottom: -4, // reduce space between dayNames and first line of dates
+          flexDirection: 'row',
+          justifyContent: 'space-around'
+        }
+      }
+    }
+  }
+};
 
 /**
  * @description: Expandable calendar component
@@ -91,457 +96,378 @@ interface State {
  * @extendslink: docs/CalendarList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
-  static displayName = 'ExpandableCalendar';
 
-  static propTypes = {
-    ...CalendarList.propTypes,
-    initialPosition: PropTypes.oneOf(values(Positions)),
-    onCalendarToggled: PropTypes.func,
-    disablePan: PropTypes.bool,
-    hideKnob: PropTypes.bool,
-    leftArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    rightArrowImageSource: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.func]),
-    allowShadow: PropTypes.bool,
-    disableWeekScroll: PropTypes.bool,
-    openThreshold: PropTypes.number,
-    closeThreshold: PropTypes.number,
-    closeOnDayPress: PropTypes.bool
-  };
+const ExpandableCalendar = (props: ExpandableCalendarProps) => {
+  const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);  
+  const {
+    /** ExpandableCalendar props */
+    initialPosition = Positions.CLOSED, 
+    onCalendarToggled,
+    disablePan, 
+    hideKnob = numberOfDays && numberOfDays > 1, 
+    leftArrowImageSource = LEFT_ARROW,
+    rightArrowImageSource = RIGHT_ARROW, 
+    allowShadow = true, 
+    disableWeekScroll,
+    openThreshold = PAN_GESTURE_THRESHOLD, 
+    closeThreshold = PAN_GESTURE_THRESHOLD,
+    closeOnDayPress = true,
 
-  static defaultProps = {
-    horizontal: true,
-    initialPosition: Positions.CLOSED,
-    firstDay: 0,
-    leftArrowImageSource: LEFT_ARROW,
-    rightArrowImageSource: RIGHT_ARROW,
-    allowShadow: true,
-    openThreshold: PAN_GESTURE_THRESHOLD,
-    closeThreshold: PAN_GESTURE_THRESHOLD,
-    closeOnDayPress: true
-  };
+    /** CalendarList props */
+    horizontal = true, 
+    calendarStyle,
+    theme, 
+    style: propsStyle, 
+    firstDay = 0, 
+    onDayPress,
+    hideArrows, 
+    onPressArrowLeft,
+    onPressArrowRight,
+    renderArrow, 
+    testID,
+    ...others
+  } = props;
 
-  static positions = Positions;
+  const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
 
-  style = styleConstructor(this.props.theme);
-  panResponder: PanResponderInstance;
-  closedHeight: number;
-  numberOfWeeks: number;
-  openHeight: number;
-  _height: number;
-  _wrapperStyles: {
-    style: ViewStyle;
-  };
-  _headerStyles: {
-    style: ViewStyle;
-  };
-  _weekCalendarStyles: {
-    style: ViewStyle;
-  };
-  visibleMonth: number;
-  visibleYear: number | undefined;
-  initialDate: string;
-  headerStyleOverride: Theme;
-  header: React.RefObject<any> = React.createRef();
-  wrapper: React.RefObject<any> = React.createRef();
-  calendar: React.RefObject<CalendarList> = React.createRef();
-  weekCalendar: React.RefObject<any> = React.createRef();
+  /** Date */
 
-  constructor(props: ExpandableCalendarProps) {
-    super(props);
-
-    this.closedHeight = CLOSED_HEIGHT + (props.hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-    this.numberOfWeeks = this.getNumberOfWeeksInMonth(this.props.context.date);
-    this.openHeight = this.getOpenHeight();
-
-    const startHeight = props.initialPosition === Positions.CLOSED ? this.closedHeight : this.openHeight;
-    this._height = startHeight;
-    this._wrapperStyles = {style: {height: startHeight}};
-    this._headerStyles = {style: {top: props.initialPosition === Positions.CLOSED ? 0 : -HEADER_HEIGHT}};
-    this._weekCalendarStyles = {style: {}};
-
-    this.visibleMonth = this.getMonth(this.props.context.date);
-    this.visibleYear = this.getYear(this.props.context.date);
-    this.initialDate = props.context.date;
-    this.headerStyleOverride = {
-      stylesheet: {
-        calendar: {
-          header: {
-            week: {
-              marginTop: 7,
-              marginBottom: -4, // reduce space between dayNames and first line of dates
-              flexDirection: 'row',
-              justifyContent: 'space-around'
-            }
-          }
-        }
-      }
-    };
-
-    this.state = {
-      deltaY: new Animated.Value(startHeight),
-      headerDeltaY: new Animated.Value(props.initialPosition === Positions.CLOSED ? 0 : -HEADER_HEIGHT),
-      position: props.initialPosition || Positions.CLOSED,
-      screenReaderEnabled: false
-    };
-
-    this.panResponder = PanResponder.create({
-      onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
-      onPanResponderMove: this.handlePanResponderMove,
-      onPanResponderRelease: this.handlePanResponderEnd,
-      onPanResponderTerminate: this.handlePanResponderEnd
-    });
-  }
-
-  componentDidMount() {
-    if (AccessibilityInfo) {
-      if (AccessibilityInfo.isScreenReaderEnabled) {
-        AccessibilityInfo.isScreenReaderEnabled().then(this.handleScreenReaderStatus);
-      } else if (AccessibilityInfo.fetch) {
-        // Support for older RN versions
-        AccessibilityInfo.fetch().then(this.handleScreenReaderStatus);
-      }
-    }
-  }
-
-  componentDidUpdate(prevProps: ExpandableCalendarProps) {
-    const {date} = this.props.context;
-    if (date !== prevProps.context.date) {
-      // date was changed from AgendaList, arrows or scroll
-      this.scrollToDate(date);
-    }
-  }
-
-  handleScreenReaderStatus = (screenReaderEnabled: any) => {
-    this.setState({screenReaderEnabled});
-  };
-
-  updateNativeStyles() {
-    this.wrapper?.current?.setNativeProps(this._wrapperStyles);
-
-    if (!this.props.horizontal) {
-      this.header?.current?.setNativeProps(this._headerStyles);
-    } else {
-      this.weekCalendar?.current?.setNativeProps(this._weekCalendarStyles);
-    }
-  }
-
-  /** Scroll */
-
-  scrollToDate(date: XDate) {
-    if (!this.props.horizontal) {
-      this.calendar?.current?.scrollToDay(date, 0, true);
-    } else if (this.getYear(date) !== this.visibleYear || this.getMonth(date) !== this.visibleMonth) {
-      // don't scroll if the month is already visible
-      this.calendar?.current?.scrollToMonth(date);
-    }
-  }
-
-  scrollPage(next: boolean) {
-    if (this.props.horizontal) {
-      const d = parseDate(this.props.context.date);
-
-      if (this.state.position === Positions.OPEN) {
-        d.setDate(1);
-        d.addMonths(next ? 1 : -1);
-      } else {
-        const {firstDay = 0} = this.props;
-        let dayOfTheWeek = d.getDay();
-        if (dayOfTheWeek < firstDay && firstDay > 0) {
-          dayOfTheWeek = 7 + dayOfTheWeek;
-        }
-        const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-        d.addDays(firstDayOfWeek);
-      }
-      this.props.context.setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
-    }
-  }
-
-  /** Utils */
-  getOpenHeight() {
-    if (!this.props.horizontal) {
-      return Math.max(constants.screenHeight, constants.screenWidth);
-    }
-    return CLOSED_HEIGHT + (WEEK_HEIGHT * (this.numberOfWeeks - 1)) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
-  }
-
-  getYear(date: XDate) {
+  const getYear = (date: string) => {
     const d = new XDate(date);
     return d.getFullYear();
-  }
-
-  getMonth(date: XDate) {
+  };
+  const getMonth = (date: string) => {
     const d = new XDate(date);
-    // getMonth() returns the month of the year (0-11). Value is zero-index, meaning Jan=0, Feb=1, Mar=2, etc.
-    return d.getMonth() + 1;
-  }
+    return d.getMonth() + 1; // getMonth() returns month's index' (0-11)
+  };
+  const visibleMonth = useRef(getMonth(date));
+  const visibleYear = useRef(getYear(date));
 
-  getNumberOfWeeksInMonth(month: string) {
-    const days = page(parseDate(month), this.props.firstDay);
-    return days.length / 7;
-  }
-
-  shouldHideArrows() {
-    if (!this.props.horizontal) {
-      return true;
-    }
-    return this.props.hideArrows || false;
-  }
-
-  isLaterDate(date1?: DateData, date2?: XDate) {
+  const isLaterDate = (date1?: DateData, date2?: string) => {
     if (date1 && date2) {
-      if (date1.year > this.getYear(date2)) {
+      if (date1.year > getYear(date2)) {
         return true;
       }
-      if (date1.year === this.getYear(date2)) {
-        if (date1.month > this.getMonth(date2)) {
+      if (date1.year === getYear(date2)) {
+        if (date1.month > getMonth(date2)) {
           return true;
         }
       }
     }
     return false;
-  }
+  };
+
+  /** Number of weeks */
+
+  const getNumberOfWeeksInMonth = (month: string) => {
+    const days = page(new XDate(month), firstDay);
+    return days.length / 7;
+  };
+  const numberOfWeeks = useRef(getNumberOfWeeksInMonth(date));
+
+  /** Position */
+
+  const [position, setPosition] = useState(initialPosition);
+  const isOpen = position === Positions.OPEN;
+
+  const getOpenHeight = () => {
+    if (!horizontal) {
+      return Math.max(constants.screenHeight, constants.screenWidth);
+    }
+    return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
+  };
+  const openHeight = useRef(getOpenHeight());
+  const closedHeight = useRef(CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT));
+  
+  const startHeight = isOpen ? openHeight.current : closedHeight.current;
+  const _height = useRef(startHeight);
+  
+  const deltaY = useRef(new Animated.Value(startHeight));
+  const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
+
+  /** Components' refs */
+
+  const wrapper = useRef<any>();
+  const calendarList = useRef<any>();
+  const header = useRef<any>();
+  const weekCalendarWrapper = useRef<any>();
+
+  /** Styles */
+
+  const style = useRef(styleConstructor(theme));
+  const themeObject = Object.assign(headerStyleOverride, theme);
+
+  const _wrapperStyles = useRef({style: {height: startHeight}});
+  const _headerStyles = {style: {top: isOpen ? -HEADER_HEIGHT : 0}};
+  const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
+  
+  const shouldHideArrows = !horizontal ? true : hideArrows || false;
+
+  const updateNativeStyles = () => {
+    wrapper?.current?.setNativeProps(_wrapperStyles.current);
+
+    if (!horizontal) {
+      header?.current?.setNativeProps(_headerStyles);
+    } else {
+      weekCalendarWrapper?.current?.setNativeProps(_weekCalendarStyles);
+    }
+  };
+
+  const weekDaysStyle = useMemo(() => {
+    const leftPaddings = calendarStyle?.paddingLeft;
+    const rightPaddings = calendarStyle?.paddingRight;
+
+    return [
+      style.current.weekDayNames,
+      {
+        paddingLeft: isNumber(leftPaddings) ? leftPaddings + 6 : DAY_NAMES_PADDING,
+        paddingRight: isNumber(rightPaddings) ? rightPaddings + 6 : DAY_NAMES_PADDING
+      }
+    ];
+  }, [calendarStyle]);
+
+  const headerStyle = useMemo(() => {
+    return [style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}];
+  }, [headerDeltaY.current]);
+
+  const weekCalendarStyle = useMemo(() => {
+    return [style.current.weekContainer, isOpen ? style.current.hidden : style.current.visible];
+  }, [isOpen]);
+
+  const containerStyle = useMemo(() => {
+    return [allowShadow && style.current.containerShadow, propsStyle];
+  }, [allowShadow, propsStyle]);
+
+  const wrapperStyle = useMemo(() => {
+    return {height: deltaY.current};
+  }, [deltaY.current]);
+
+  /** Effects */
+
+  useEffect(() => {
+    if (AccessibilityInfo) {
+      if (AccessibilityInfo.isScreenReaderEnabled) {
+        AccessibilityInfo.isScreenReaderEnabled().then(handleScreenReaderStatus);
+      } else if (AccessibilityInfo.fetch) {
+        // Support for older RN versions
+        AccessibilityInfo.fetch().then(handleScreenReaderStatus);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // date was changed from AgendaList, arrows or scroll
+    scrollToDate(date);
+  }, [date]);
+
+  const handleScreenReaderStatus = (screenReaderEnabled: any) => {
+    setScreenReaderEnabled(screenReaderEnabled);
+  };
+
+  /** Scroll */
+
+  const scrollToDate = (date: string) => {
+    if (!horizontal) {
+      calendarList?.current?.scrollToDay(date, 0, true);
+    } else if (getYear(date) !== visibleYear.current || getMonth(date) !== visibleMonth.current) {
+      // don't scroll if the month is already visible
+      calendarList?.current?.scrollToMonth(date);
+    }
+  };
+
+  const scrollPage = useCallback((next: boolean) => {
+    if (horizontal) {
+      const d = parseDate(date);
+
+      if (isOpen) {
+        d.setDate(1);
+        d.addMonths(next ? 1 : -1);
+      } else {
+        let dayOfTheWeek = d.getDay();
+
+        if (dayOfTheWeek < firstDay && firstDay > 0) {
+          dayOfTheWeek = 7 + dayOfTheWeek;
+        }
+
+        if (numberOfDays) {
+          const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
+          d.addDays(next ? daysToAdd : -daysToAdd);
+        } else {
+          const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
+          d.addDays(firstDayOfWeek);
+        }
+
+      }
+
+      setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
+    }
+  }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
   /** Pan Gesture */
 
-  handleMoveShouldSetPanResponder = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
-    if (this.props.disablePan) {
+  const handleMoveShouldSetPanResponder = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+    if (disablePan) {
       return false;
     }
-    if (!this.props.horizontal && this.state.position === Positions.OPEN) {
+    if (!horizontal && isOpen) {
       // disable pan detection when vertical calendar is open to allow calendar scroll
       return false;
     }
-    if (this.state.position === Positions.CLOSED && gestureState.dy < 0) {
+    if (!isOpen && gestureState.dy < 0) {
       // disable pan detection to limit to closed height
       return false;
     }
     return gestureState.dy > 5 || gestureState.dy < -5;
   };
-  handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+  
+  const handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
     // limit min height to closed height
-    this._wrapperStyles.style.height = Math.max(this.closedHeight, this._height + gestureState.dy);
+    _wrapperStyles.current.style.height = Math.max(closedHeight.current, _height.current + gestureState.dy);
 
-    if (!this.props.horizontal) {
+    if (!horizontal) {
       // vertical CalenderList header
-      this._headerStyles.style.top = Math.min(Math.max(-gestureState.dy, -HEADER_HEIGHT), 0);
+      _headerStyles.style.top = Math.min(Math.max(-gestureState.dy, -HEADER_HEIGHT), 0);
     } else {
       // horizontal Week view
-      if (this.state.position === Positions.CLOSED) {
-        this._weekCalendarStyles.style.opacity = Math.min(1, Math.max(1 - gestureState.dy / 100, 0));
+      if (!isOpen) {
+        _weekCalendarStyles.style.opacity = Math.min(1, Math.max(1 - gestureState.dy / 100, 0));
       }
     }
 
-    this.updateNativeStyles();
+    updateNativeStyles();
   };
-  handlePanResponderEnd = () => {
-    this._height = Number(this._wrapperStyles.style.height);
-    this.bounceToPosition();
+  
+  const handlePanResponderEnd = () => {
+    _height.current = Number(_wrapperStyles.current.style.height);
+    bounceToPosition();
   };
+
+  const numberOfDaysCondition = useMemo(() => {
+    return !numberOfDays || numberOfDays && numberOfDays <= 1; 
+  }, [numberOfDays]);
+
+  const panResponder = useMemo(() => numberOfDaysCondition ? PanResponder.create({
+    onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
+    onPanResponderMove: handlePanResponderMove,
+    onPanResponderRelease: handlePanResponderEnd,
+    onPanResponderTerminate: handlePanResponderEnd
+  }) : PanResponder.create({}), [numberOfDays]);
 
   /** Animated */
 
-  bounceToPosition(toValue = 0) {
-    if (!this.props.disablePan) {
-      const {deltaY, position} = this.state;
-      const {openThreshold = PAN_GESTURE_THRESHOLD, closeThreshold = PAN_GESTURE_THRESHOLD} = this.props;
-      const threshold =
-        position === Positions.OPEN ? this.openHeight - closeThreshold : this.closedHeight + openThreshold;
+  const bounceToPosition = (toValue = 0) => {
+    if (!disablePan) {
+      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight.current + openThreshold;
+      let _isOpen = _height.current >= threshold;
+      const newValue = _isOpen ? openHeight.current : closedHeight.current;
 
-      let isOpen = this._height >= threshold;
-      const newValue = isOpen ? this.openHeight : this.closedHeight;
+      deltaY.current.setValue(_height.current); // set the start position for the animated value
+      _height.current = toValue || newValue;
+      _isOpen = _height.current >= threshold; // re-check after _height.current was set
 
-      deltaY.setValue(this._height); // set the start position for the animated value
-      this._height = toValue || newValue;
-      isOpen = this._height >= threshold; // re-check after this._height was set
-
-      Animated.spring(deltaY, {
-        toValue: this._height,
+      Animated.spring(deltaY.current, {
+        toValue: _height.current,
         speed: SPEED,
         bounciness: BOUNCINESS,
         useNativeDriver: false
-      }).start(this.onAnimatedFinished);
+      }).start();
 
-      this.props.onCalendarToggled?.(isOpen);
+      onCalendarToggled?.(_isOpen);
 
-      this.setPosition();
-      this.closeHeader(isOpen);
-      this.resetWeekCalendarOpacity(isOpen);
-    }
-  }
-
-  onAnimatedFinished = (result: {finished: boolean}) => {
-    if (result?.finished) {
-      // this.setPosition();
+      setPosition(() => _height.current === closedHeight.current ? Positions.CLOSED : Positions.OPEN);
+      closeHeader(_isOpen);
+      resetWeekCalendarOpacity(_isOpen);
     }
   };
 
-  setPosition() {
-    const isClosed = this._height === this.closedHeight;
-    this.setState({position: isClosed ? Positions.CLOSED : Positions.OPEN});
-  }
+  const resetWeekCalendarOpacity = (isOpen: boolean) => {
+    _weekCalendarStyles.style.opacity = isOpen ? 0 : 1;
+    updateNativeStyles();
+  };
 
-  resetWeekCalendarOpacity(isOpen: boolean) {
-    this._weekCalendarStyles.style.opacity = isOpen ? 0 : 1;
-    this.updateNativeStyles();
-  }
+  const closeHeader = (isOpen: boolean) => {
+    headerDeltaY.current.setValue(Number(_headerStyles.style.top)); // set the start position for the animated value
 
-  closeHeader(isOpen: boolean) {
-    const {headerDeltaY} = this.state;
-
-    headerDeltaY.setValue(Number(this._headerStyles.style.top)); // set the start position for the animated value
-
-    if (!this.props.horizontal && !isOpen) {
-      Animated.spring(headerDeltaY, {
+    if (!horizontal && !isOpen) {
+      Animated.spring(headerDeltaY.current, {
         toValue: 0,
         speed: SPEED / 10,
         bounciness: 1,
         useNativeDriver: false
       }).start();
     }
-  }
+  };
+
+  const closeCalendar = useCallback(() => {
+    setTimeout(() => {
+      // to allows setDate to be completed
+      if (isOpen) {
+        bounceToPosition(closedHeight.current);
+      }
+    }, 0);
+  }, [isOpen]);
 
   /** Events */
 
-  onPressArrowLeft = (method: () => void, month?: XDate) => {
-    this.props.onPressArrowLeft?.(method, month);
-    this.scrollPage(false);
-  };
+  const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
+    onPressArrowLeft?.(method, month);
+    scrollPage(false);
+  }, [onPressArrowLeft, scrollPage]);
 
-  onPressArrowRight = (method: () => void, month?: XDate) => {
-    this.props.onPressArrowRight?.(method, month);
-    this.scrollPage(true);
-  };
+  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
+    onPressArrowRight?.(method, month);
+    scrollPage(true);
+  }, [onPressArrowRight, scrollPage]);
 
-  onDayPress = (value: DateData) => {
-    // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
-    this.props.context.setDate?.(value.dateString, updateSources.DAY_PRESS);
-
-    if (this.props.closeOnDayPress) {
-      setTimeout(() => {
-        // to allows setDate to be completed
-        if (this.state.position === Positions.OPEN) {
-          this.bounceToPosition(this.closedHeight);
-        }
-      }, 0);
+  const _onDayPress = useCallback((value: DateData) => {
+    if (numberOfDaysCondition) {
+      setDate?.(value.dateString, updateSources.DAY_PRESS);
     }
-
-    if (this.props.onDayPress) {
-      this.props.onDayPress(value);
+    if (closeOnDayPress) {
+      closeCalendar();
     }
-  };
+    onDayPress?.(value);
+  }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
 
-  onVisibleMonthsChange = throttle(
+  const onVisibleMonthsChange = useCallback(throttle(
     (value: DateData[]) => {
-      const month = first(value)?.month; // equivalent to this.getMonth(value[0].dateString)
-      if (month && this.visibleMonth !== month) {
-        this.visibleMonth = month;
-        if (first(value)?.year) {
-          this.visibleYear = first(value)?.year;
-        }
-
-        // for horizontal scroll
-        const {date} = this.props.context;
-        if (this.visibleMonth !== this.getMonth(date)) {
-          const next = this.isLaterDate(first(value), date);
-          this.scrollPage(next);
-        }
-
-        // updating openHeight
-        setTimeout(() => {
-          // to wait for setDate() call in horizontal scroll (this.scrollPage())
-          const numberOfWeeks = this.getNumberOfWeeksInMonth(this.props.context.date);
-          if (numberOfWeeks !== this.numberOfWeeks) {
-            this.numberOfWeeks = numberOfWeeks;
-            this.openHeight = this.getOpenHeight();
-            if (this.state.position === Positions.OPEN) {
-              this.bounceToPosition(this.openHeight);
-            }
+      const newDate = first(value);
+      if (newDate) {
+        const month = newDate.month;
+        if (month && visibleMonth.current !== month) {
+          visibleMonth.current = month;
+          
+          const year = newDate.year;
+          if (year) {
+            visibleYear.current = year;
           }
-        }, 0);
+  
+          // for horizontal scroll
+          if (visibleMonth.current !== getMonth(date)) {
+            const next = isLaterDate(newDate, date);
+            scrollPage(next);
+          }
+  
+          // updating openHeight
+          setTimeout(() => {
+            // to wait for setDate() call in horizontal scroll (scrollPage())
+            const _numberOfWeeks = getNumberOfWeeksInMonth(newDate.dateString);
+            if (_numberOfWeeks !== numberOfWeeks.current) {
+              numberOfWeeks.current = _numberOfWeeks;
+              openHeight.current = getOpenHeight();
+              if (isOpen) {
+                bounceToPosition(openHeight.current);
+              }
+            }
+          }, 0);
+        }
       }
-    },
-    100,
-    {trailing: true, leading: false}
-  );
+    }, 100, {trailing: true, leading: false}
+  ), [date, scrollPage]);
 
   /** Renders */
-  getWeekDaysStyle = memoize(calendarStyle => {
-    return [
-      this.style.weekDayNames,
-      {
-        paddingLeft: calendarStyle?.paddingLeft + 6 || DAY_NAMES_PADDING,
-        paddingRight: calendarStyle?.paddingRight + 6 || DAY_NAMES_PADDING
-      }
-    ];
-  });
 
-  renderWeekDaysNames = () => {
-    return (
-      <View style={this.getWeekDaysStyle(this.props.calendarStyle)}>
-        <WeekDaysNames
-          firstDay={this.props.firstDay}
-          style={this.style.dayHeader}
-        />
-      </View>
-    );
-  };
-
-  renderHeader() {
-    const monthYear = new XDate(this.props.context.date).toString('MMMM yyyy');
-
-    return (
-      <Animated.View
-        ref={this.header}
-        style={[this.style.header, {height: HEADER_HEIGHT, top: this.state.headerDeltaY}]}
-        pointerEvents={'none'}
-      >
-        <Text allowFontScaling={false} style={this.style.headerTitle}>
-          {monthYear}
-        </Text>
-        {this.renderWeekDaysNames()}
-      </Animated.View>
-    );
-  }
-
-  renderWeekCalendar() {
-    const {position} = this.state;
-    const {disableWeekScroll} = this.props;
-    const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
-    const weekCalendarProps = disableWeekScroll ? undefined : {allowShadow: false};
-
-    return (
-      <Animated.View
-        ref={this.weekCalendar}
-        style={[this.style.weekContainer, position === Positions.OPEN ? this.style.hidden : this.style.visible]}
-        pointerEvents={position === Positions.CLOSED ? 'auto' : 'none'}
-      >
-        <WeekComponent
-          {...this.props}
-          {...weekCalendarProps}
-          current={this.props.context.date}
-          onDayPress={this.onDayPress}
-          style={this.props.calendarStyle}
-          hideDayNames={true}
-          accessibilityElementsHidden // iOS
-          importantForAccessibility={'no-hide-descendants'} // Android
-        />
-      </Animated.View>
-    );
-  }
-
-  renderKnob() {
-    // TODO: turn to TouchableOpacity with onPress that closes it
-    return (
-      <View style={this.style.knobContainer} pointerEvents={'none'} testID={`${this.props.testID}-knob`}>
-        <View style={this.style.knob} testID={CALENDAR_KNOB} />
-      </View>
-    );
-  }
-
-  renderArrow = (direction: Direction) => {
-    const {renderArrow, rightArrowImageSource = RIGHT_ARROW, leftArrowImageSource = LEFT_ARROW, testID} = this.props;
-
+  const _renderArrow = useCallback((direction: Direction) => {
     if (isFunction(renderArrow)) {
       return renderArrow(direction);
     }
@@ -549,57 +475,143 @@ class ExpandableCalendar extends Component<ExpandableCalendarProps, State> {
     return (
       <Image
         source={direction === 'right' ? rightArrowImageSource : leftArrowImageSource}
-        style={this.style.arrowImage}
+        style={style.current.arrowImage}
         testID={`${testID}-${direction}-arrow`}
+      />
+    );
+  }, [renderArrow, rightArrowImageSource, leftArrowImageSource, testID]);
+  
+  const renderWeekDaysNames = () => {
+    return (
+      <View style={weekDaysStyle}>
+        <WeekDaysNames
+          firstDay={firstDay}
+          style={style.current.dayHeader}
+        />
+      </View>
+    );
+  };
+
+  const renderAnimatedHeader = () => {
+    const monthYear = new XDate(date).toString('MMMM yyyy');
+
+    return (
+      <Animated.View
+        ref={header}
+        style={headerStyle}
+        pointerEvents={'none'}
+      >
+        <Text allowFontScaling={false} style={style.current.headerTitle}>
+          {monthYear}
+        </Text>
+        {renderWeekDaysNames()}
+      </Animated.View>
+    );
+  };
+
+  const renderKnob = () => {
+    return (
+      <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
+        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={isOpen ? undefined : 1}/>
+      </View>
+    );
+  };
+
+  const renderWeekCalendar = () => {
+    const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
+
+    return (
+      <Animated.View
+        ref={weekCalendarWrapper}
+        style={weekCalendarStyle}
+        pointerEvents={isOpen ? 'none' : 'auto'}
+      >
+        <WeekComponent
+          testID="week_calendar"
+          firstDay={firstDay}
+          {...others}
+          allowShadow={disableWeekScroll ? undefined : false}
+          current={date}
+          theme={themeObject}
+          style={calendarStyle}
+          hideDayNames={true}
+          onDayPress={_onDayPress}
+          accessibilityElementsHidden // iOS
+          importantForAccessibility={'no-hide-descendants'} // Android
+        />
+      </Animated.View>
+    );
+  };
+
+  const numberOfDaysHeaderStyle = useMemo(() => {
+    if (numberOfDays && numberOfDays > 1) {
+      return {paddingHorizontal: 0};
+    }
+  }, [numberOfDays]);
+
+  const renderCalendarList = () => {
+    return (
+      <CalendarList
+        testID="calendar"
+        horizontal={horizontal}
+        firstDay={firstDay}
+        calendarStyle={calendarStyle}
+        {...others}
+        current={date}
+        theme={themeObject}
+        ref={calendarList}
+        onDayPress={_onDayPress}
+        onVisibleMonthsChange={onVisibleMonthsChange}
+        pagingEnabled
+        scrollEnabled={isOpen}
+        hideArrows={shouldHideArrows}
+        onPressArrowLeft={_onPressArrowLeft}
+        onPressArrowRight={_onPressArrowRight}
+        hideExtraDays={!horizontal && isOpen}
+        renderArrow={_renderArrow}
+        staticHeader
+        numberOfDays={numberOfDays}
+        headerStyle={numberOfDaysHeaderStyle}
+        timelineLeftInset={timelineLeftInset}
       />
     );
   };
 
-  render() {
-    const {style, hideKnob, horizontal, allowShadow, theme, ...others} = this.props;
-    const {deltaY, position, screenReaderEnabled} = this.state;
-    const isOpen = position === Positions.OPEN;
-    const themeObject = Object.assign(this.headerStyleOverride, theme);
+  return (
+    <View testID={testID} style={containerStyle}>
+      {screenReaderEnabled ? (
+        <Calendar
+          testID="calendar"
+          {...others}
+          theme={themeObject}
+          onDayPress={_onDayPress}
+          hideExtraDays
+          renderArrow={_renderArrow}
+        />
+      ) : (
+        <Animated.View ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
+          {renderCalendarList()}
+          {renderWeekCalendar()}
+          {!hideKnob && renderKnob()}
+          {!horizontal && renderAnimatedHeader()}
+        </Animated.View>
+      )}
+    </View>
+  );
+};
 
-    return (
-      <View testID={this.props.testID} style={[allowShadow && this.style.containerShadow, style]}>
-        {screenReaderEnabled ? (
-          <Calendar
-            testID="calendar"
-            {...others}
-            theme={themeObject}
-            onDayPress={this.onDayPress}
-            hideExtraDays
-            renderArrow={this.renderArrow}
-          />
-        ) : (
-          <Animated.View ref={this.wrapper} style={{height: deltaY}} {...this.panResponder.panHandlers}>
-            <CalendarList
-              testID="calendar"
-              horizontal={horizontal}
-              {...others}
-              theme={themeObject}
-              ref={this.calendar}
-              current={this.initialDate}
-              onDayPress={this.onDayPress}
-              onVisibleMonthsChange={this.onVisibleMonthsChange}
-              pagingEnabled
-              scrollEnabled={isOpen}
-              hideArrows={this.shouldHideArrows()}
-              onPressArrowLeft={this.onPressArrowLeft}
-              onPressArrowRight={this.onPressArrowRight}
-              hideExtraDays={!horizontal && isOpen}
-              renderArrow={this.renderArrow}
-              staticHeader
-            />
-            {horizontal && this.renderWeekCalendar()}
-            {!hideKnob && this.renderKnob()}
-            {!horizontal && this.renderHeader()}
-          </Animated.View>
-        )}
-      </View>
-    );
-  }
-}
+export default ExpandableCalendar;
 
-export default asCalendarConsumer<ExpandableCalendarProps>(ExpandableCalendar);
+ExpandableCalendar.displayName = 'ExpandableCalendar';
+ExpandableCalendar.defaultProps = {
+  horizontal: true,
+  initialPosition: Positions.CLOSED,
+  firstDay: 0,
+  leftArrowImageSource: LEFT_ARROW,
+  rightArrowImageSource: RIGHT_ARROW,
+  allowShadow: true,
+  openThreshold: PAN_GESTURE_THRESHOLD,
+  closeThreshold: PAN_GESTURE_THRESHOLD,
+  closeOnDayPress: true
+};
+ExpandableCalendar.positions = Positions;

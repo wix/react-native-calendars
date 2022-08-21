@@ -47,7 +47,7 @@ export default function styleConstructor(theme: Theme = {}) {
       width: 40,
       height: 4,
       borderRadius: 3,
-      backgroundColor: '#e8ecf0'
+      backgroundColor: appStyle.expandableKnobColor
     },
     sectionText: {
       fontWeight: 'bold', 
@@ -116,6 +116,9 @@ export default function styleConstructor(theme: Theme = {}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
+    partialWeek: {
+      paddingRight: 0
+    },
     dayContainer: {
       flex: 1, 
       alignItems: 'center'
@@ -126,6 +129,9 @@ export default function styleConstructor(theme: Theme = {}) {
     arrowImage: {
       tintColor: appStyle.arrowColor,
       transform: constants.isRTL ? [{scaleX: -1}] : undefined
+    },
+    contextWrapper: {
+      flex: 1
     },
     todayButtonContainer: {
       alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',

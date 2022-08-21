@@ -1,14 +1,15 @@
-import React, {useState, Fragment, useCallback, useMemo} from 'react';
+import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
-import {Calendar, CalendarProps} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
-const INITIAL_DATE = '2020-02-02';
+const INITIAL_DATE = '2022-07-06';
 
 const CalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
+  const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
 
-  const onDayPress: CalendarProps['onDayPress'] = useCallback(day => {
+  const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
   }, []);
 
@@ -19,6 +20,10 @@ const CalendarScreen = () => {
         disableTouchEvent: true,
         selectedColor: 'orange',
         selectedTextColor: 'red'
+      },
+      ['2022-07-22']: {
+        dotColor: 'red',
+        marked: true
       }
     };
   }, [selected]);
@@ -138,12 +143,16 @@ const CalendarScreen = () => {
             selectedDayBackgroundColor: '#333248',
             arrowColor: 'white',
             // textDisabledColor: 'red',
-            'stylesheet.calendar.header': {
-              week: {
-                marginTop: 30,
-                marginHorizontal: 12,
-                flexDirection: 'row',
-                justifyContent: 'space-between'
+            stylesheet: {
+              calendar: {
+                header: {
+                  week: {
+                    marginTop: 30,
+                    marginHorizontal: 12,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                  }
+                }
               }
             }
           }}
@@ -411,14 +420,36 @@ const CalendarScreen = () => {
     );
   };
 
+  const customHeaderProps: any = useRef();
+
+  const setCustomHeaderNewMonth = (next = false) => {
+    const add = next ? 1 : -1;
+    const month = customHeaderProps?.current?.month;
+    const newMonth = new Date(month.setMonth(month.getMonth() + add));
+    customHeaderProps?.current?.addMonth(add);
+    setCurrentMonth(newMonth.toISOString().split('T')[0]);
+  };
+  const moveNext = () => {
+    setCustomHeaderNewMonth(true);
+  };
+  const movePrevious = () => {
+    setCustomHeaderNewMonth(false);
+  };
+
   const renderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
+      customHeaderProps.current = props;
+      
       return (
         // @ts-expect-error
         <View ref={ref} {...props} style={styles.customHeader}>
-          <Text>This is a custom header!</Text>
-          <TouchableOpacity onPress={() => console.warn('Tapped!')}>
-            <Text>Tap Me</Text>
+          <TouchableOpacity onPress={movePrevious}>
+            <Text>Previous</Text>
+          </TouchableOpacity>
+          <Text>Custom header!</Text>
+          <Text>{currentMonth}</Text>
+          <TouchableOpacity onPress={moveNext}>
+            <Text>Next</Text>
           </TouchableOpacity>
         </View>
       );
@@ -428,6 +459,7 @@ const CalendarScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with custom header component</Text>
         <Calendar
+          initialDate={INITIAL_DATE}
           testID={testIDs.calendars.LAST}
           style={[styles.calendar, styles.customCalendar]}
           customHeader={CustomHeader}

@@ -1,31 +1,23 @@
-import {StyleSheet, Platform, TextStyle, ViewStyle, ImageStyle} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
 import constants from '../../commons/constants';
 
-type Styles = {
-  header: ViewStyle;
-  headerContainer: ViewStyle;
-  monthText: TextStyle;
-  arrow: ViewStyle;
-  arrowImage: ImageStyle;
-  disabledArrowImage: ImageStyle;
-  week: ViewStyle;
-  dayHeader: ViewStyle;
-  disabledDayHeader: ViewStyle;
-};
-
 export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
-  const flipStyle = constants.isRTL ? {transform: [{scaleX: -1}]} : undefined;
-  return StyleSheet.create<Styles>({
+  const rtlStyle = constants.isRTL ? {transform: [{scaleX: -1}]} : undefined;
+
+  return StyleSheet.create({
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingLeft: 10,
       paddingRight: 10,
       marginTop: 6,
-      alignItems: 'center'
+      alignItems: 'center',
+    },
+    partialHeader: {
+      paddingHorizontal: 15
     },
     headerContainer: {
       flexDirection: 'row'
@@ -42,7 +34,7 @@ export default function (theme: Theme = {}) {
       ...appStyle.arrowStyle
     },
     arrowImage: {
-      ...flipStyle,
+      ...rtlStyle,
       tintColor: appStyle.arrowColor,
       ...Platform.select({
         web: {
@@ -52,14 +44,16 @@ export default function (theme: Theme = {}) {
       })
     },
     disabledArrowImage: {
-      ...flipStyle,
+      ...rtlStyle,
       tintColor: appStyle.disabledArrowColor
     },
-    // @ts-expect-error
     week: {
       marginTop: 7,
       flexDirection: 'row',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
+    },
+    partialWeek: {
+      paddingRight: 0
     },
     dayHeader: {
       marginTop: 2,
@@ -74,6 +68,7 @@ export default function (theme: Theme = {}) {
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
     },
+    // @ts-expect-error
     ...(theme['stylesheet.calendar.header'] || {})
   });
 }

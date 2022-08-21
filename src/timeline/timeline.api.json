@@ -14,11 +14,6 @@
       "description": "Specify theme properties to override specific styles for calendar parts"
     },
     {
-      "name": "style",
-      "type": "ViewStyle",
-      "description": "Specify style for calendar container element"
-    },
-    {
       "name": "events",
       "type": "Event[]",
       "description": "List of events to render on the timeline"

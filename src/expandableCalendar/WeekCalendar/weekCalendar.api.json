@@ -15,11 +15,6 @@
       "type": "boolean",
       "description": "Whether to have shadow/elevation for the calendar",
       "default": "true"
-    },
-    {
-      "name": "hideDayNames",
-      "type": "boolean",
-      "description": "Whether to hide the names of the week days"
     }
   ]
 }

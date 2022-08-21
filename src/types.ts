@@ -1,4 +1,4 @@
-import {ViewStyle, TextStyle, StyleProp} from 'react-native';
+import {ViewStyle, TextStyle} from 'react-native';
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
@@ -11,31 +11,20 @@ export type DateData = {
   dateString: string;
 };
 export interface Theme {
-  container?: object;
+  timelineContainer?: object;
   contentStyle?: ViewStyle;
-  header?: object;
-  headerText?: object;
-  arrowButton?: object;
   event?: object;
   eventTitle?: object;
   eventSummary?: object;
   eventTimes?: object;
   line?: object;
+  verticalLine?: object;
   nowIndicatorLine?: object;
   nowIndicatorKnob?: object;
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
   indicatorColor?: string;
-  stylesheet?: {
-    calendar?: {main?: object; header?: object};
-    day?: {basic?: object; period?: object};
-    dot?: object;
-    marking?: object;
-    'calendar-list'?: {main?: object};
-    agenda?: {main?: object; list?: object};
-    expandable?: {main?: object};
-  };
   textSectionTitleColor?: string;
   textSectionTitleDisabledColor?: string;
   dayTextColor?: string;
@@ -45,7 +34,7 @@ export interface Theme {
   arrowColor?: string;
   textDisabledColor?: string;
   textInactiveColor?: string;
-  backgroundColor?: string;
+  backgroundColor?: string; //TODO: remove in V2
   dotColor?: string;
   selectedDotColor?: string;
   disabledArrowColor?: string;
@@ -62,15 +51,6 @@ export interface Theme {
   agendaDayNumColor?: string;
   agendaTodayColor?: string;
   agendaKnobColor?: string;
-  foregroundColor?: string;
-  separatorColor?: string;
-  processedColor?: string;
-  processingColor?: string;
-  failedColor?: string;
-  textSecondaryColor?: string;
-  textDefaultColor?: string;
-  textColor?: string;
-  textLinkColor?: string;
   todayButtonFontFamily?: TextStyle['fontFamily'];
   todayButtonFontWeight?: TextStyle['fontWeight'];
   todayButtonFontSize?: number;
@@ -86,8 +66,27 @@ export interface Theme {
   arrowHeight?: number;
   arrowWidth?: number;
   weekVerticalMargin?: number;
-  'stylesheet.calendar.header'?: {
-    week: StyleProp<ViewStyle>;
+  stylesheet?: {
+    calendar?: {
+      main?: object; 
+      header?: object;
+    };
+    day?: {
+      basic?: object; 
+      period?: object;
+    };
+    dot?: object;
+    marking?: object;
+    'calendar-list'?: {
+      main?: object;
+    };
+    agenda?: {
+      main?: object; 
+      list?: object;
+    };
+    expandable?: {
+      main?: object;
+    };
   };
 }
 

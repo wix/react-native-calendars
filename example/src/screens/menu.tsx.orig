@@ -94,7 +94,7 @@ export default class MenuScreen extends Component<Props> {
   }
 
   onCalendarListPress() {
-    this.pushScreen('CalendarsList');
+    this.pushScreen('CalendarListScreen');
   }
 
   onHorizontalCalendarListPress() {
