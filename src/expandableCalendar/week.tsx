@@ -7,13 +7,31 @@ import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
-import Calendar, {CalendarProps} from '../calendar';
+import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
+import omit from 'lodash/omit';
+import some from 'lodash/some';
+import isEqual from 'lodash/isEqual';
+import {CalendarContextProps} from './Context';
 
 
-export type WeekProps = CalendarProps & {visible?: boolean};
+export type WeekProps = CalendarProps & {
+  visible?: boolean;
+  context?: CalendarContextProps;
+};
 
-const Week = (props: WeekProps) => {
+const shouldUseMemo = (prevProps: WeekProps, nextProps: WeekProps) => {
+  const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
+  const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
+  const didPropsChange = some(prevPropsWithoutMarkDates, function(value, key) {
+    //@ts-expect-error
+    return value !== nextPropsWithoutMarkDates[key];
+  });
+  const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
+  return !didPropsChange && isMarkingEqual && !nextProps.visible;
+};
+
+const Week = React.memo((props: WeekProps) => {
   const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset, visible = true} = props;
   const style = useRef(styleConstructor(theme));
   const getWeek = useCallback((date?: string) => {
@@ -90,16 +108,8 @@ const Week = (props: WeekProps) => {
       <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
     </View>
   );
-};
+}, shouldUseMemo);
 
-const shouldUpdate = (_: WeekProps, nextProps: WeekProps) => {
-  console.log('aaa', _.visible, nextProps.visible);
-  return nextProps.visible ?? true;
-};
-
-export default React.memo(Week, shouldUpdate);
+export default Week;
 
 Week.displayName = 'Week';
-Week.propTypes = {
-  ...Calendar.propTypes
-};

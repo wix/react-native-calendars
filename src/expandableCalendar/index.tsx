@@ -530,6 +530,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           testID="week_calendar"
           firstDay={firstDay}
           {...others}
+          visible={true}
           allowShadow={disableWeekScroll ? undefined : false}
           current={disableWeekScroll ? date : undefined}
           theme={themeObject}

@@ -15,7 +15,7 @@ import constants from '../../commons/constants';
 import {extractCalendarProps} from '../../componentUpdater';
 import CalendarContext from '../Context';
 
-const NUMBER_OF_PAGES = 8; // must be a positive number
+const NUMBER_OF_PAGES = 5; // must be a positive number
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
 const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
@@ -76,7 +76,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   const [page, setPage] = useState(NUMBER_OF_PAGES);
   const [items, setItems] = useState(getDatesArray);
-  const visibleWeek = useRef(items[page]);
 
   const list = useRef<FlatList>(null);
   const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
@@ -92,10 +91,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
   }, [onDayPress]);
-
-  const isWeekInRange = useCallback((item: string) => {
-    return sameWeek(item, visibleWeek.current, firstDay);
-  }, [visibleWeek, firstDay]);
 
   const onScrollCallback = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (firstAndroidRTLScroll) {
@@ -139,10 +134,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         onDayPress={onDayPressCallback}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
-        visible={isWeekInRange(item)}
+        visible={isSameWeek}
       />
     );
-  },[firstDay, onDayPressCallback, context, date, isWeekInRange]);
+  },[firstDay, onDayPressCallback, context, date]);
 
   const keyExtractor = useCallback((item) => item, []);
 
@@ -182,20 +177,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     };
   }, [containerWidth]);
 
-  const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
-    const newVisibleWeek = viewableItems[0]?.item;
-    if (!sameWeek(newVisibleWeek, visibleWeek.current, firstDay)) {
-      visibleWeek.current = newVisibleWeek;
-    }
-  }, []);
-
-  const viewabilityConfigCallbackPairs = useRef([{
-      viewabilityConfig: {
-        viewAreaCoveragePercentThreshold: 1
-      },
-      onViewableItemsChanged,
-    }]);
-
   return (
     <View
       testID={props.testID}
@@ -218,11 +199,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
-            initialNumToRender={items.length}
+            initialNumToRender={NUM_OF_ITEMS}
             getItemLayout={getItemLayout}
             onScroll={onScrollCallback}
             onMomentumScrollEnd={onMomentumScrollEndCallback}
-            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
           />
       </View>
     </View>
