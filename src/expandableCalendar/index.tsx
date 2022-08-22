@@ -409,17 +409,15 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [isOpen]);
 
   const updateOpenHeight = debounce((date: DateData) => {
-    setTimeout(() => {
-      // to wait for setDate call in horizontal scroll (scrollPage)
-      const _numberOfWeeks = getNumberOfWeeksInMonth(date.dateString);
-      if (_numberOfWeeks !== numberOfWeeks.current) {
-        numberOfWeeks.current = _numberOfWeeks;
-        openHeight.current = getOpenHeight();
-        if (isOpen) {
-          bounceToPosition(openHeight.current);
-        }
+    // wait for setDate call in horizontal scroll (scrollPage)
+    const _numberOfWeeks = getNumberOfWeeksInMonth(date.dateString);
+    if (_numberOfWeeks !== numberOfWeeks.current) {
+      numberOfWeeks.current = _numberOfWeeks;
+      openHeight.current = getOpenHeight();
+      if (isOpen) {
+        bounceToPosition(openHeight.current);
       }
-    }, 0);
+    }
   }, 1000, {leading: false, trailing: true});
 
   /** Events */
@@ -468,7 +466,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           updateOpenHeight(newDate);
         }
       }
-    }, 100, {trailing: true, leading: false}
+    }, 100, {leading: false, trailing: true}
   ), [date, scrollPage]);
 
   /** Renders */
