@@ -32,7 +32,7 @@ export class ExpandableCalendarDriver {
   }
 
   getExpandableHeader() {
-    return this.renderTree.getByTestId(`${this.testID}.expandableHeader`);
+    return this.renderTree.getByTestId(`${this.testID}.expandableContainer`);
   }
 
   getDay(date: string) {

@@ -591,7 +591,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           renderArrow={_renderArrow}
         />
       ) : (
-        <Animated.View testID={`${testID}.expandableHeader`} ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
+        <Animated.View testID={`${testID}.expandableContainer`} ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
           {renderCalendarList()}
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}
