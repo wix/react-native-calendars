@@ -217,11 +217,11 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   const renderItem = useCallback(({item}: {item: XDate}) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
-    const _testID = `${testID}.item_${year}-${month}`;
+    const testId = `${testID}.item_${year}-${month}`;
     return (
       <CalendarListItem
         {...calendarProps}
-        testID={_testID}
+        testID={testId}
         markedDates={getMarkedDatesForItem(item)}
         item={item}
         style={calendarStyle}
