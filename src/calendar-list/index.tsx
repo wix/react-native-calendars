@@ -161,8 +161,10 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       }
     }
 
-    // @ts-expect-error
-    list?.current?.scrollToOffset({offset: scrollAmount, animated});
+    if (scrollAmount != 0) {
+      // @ts-expect-error
+      list?.current?.scrollToOffset({offset: scrollAmount, animated});
+    }
   };
 
   const scrollToMonth = useCallback((date: XDate | string) => {
@@ -170,8 +172,10 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
     const scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize;
     
-    // @ts-expect-error
-    list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
+    if (scrollAmount != 0) {
+      // @ts-expect-error
+      list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
+    }
   }, [calendarSize]);
 
   const addMonth = useCallback((count: number) => {
