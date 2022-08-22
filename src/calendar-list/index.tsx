@@ -161,7 +161,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       }
     }
 
-    if (scrollAmount != 0) {
+    if (scrollAmount !== 0) {
       // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated});
     }
@@ -172,7 +172,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
     const scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize;
     
-    if (scrollAmount != 0) {
+    if (scrollAmount !== 0) {
       // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
