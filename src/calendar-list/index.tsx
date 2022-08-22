@@ -242,7 +242,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       return (
         <CalendarHeader
           {...headerProps}
-          testID={`${testID}.header`}
+          testID={`${testID}.staticHeader`}
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}
