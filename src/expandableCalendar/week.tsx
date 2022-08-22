@@ -56,7 +56,7 @@ const Week = (props: WeekProps) => {
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
-          testID={`${testID}_week_${dayString}`}
+          testID={`${testID}.day_${dayString}`}
           date={dayString}
           state={getState(day, currXdate, props)}
           marking={markedDates?.[dayString]}
