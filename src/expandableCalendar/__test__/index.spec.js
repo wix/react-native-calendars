@@ -37,7 +37,7 @@ describe('ExpandableCalendar', () => {
       driver.toggleKnob();
       jest.runAllTimers();
 
-      expect(driver.isHeaderExpanded()).toBe(true);
+      expect(driver.isCalendarExpanded()).toBe(true);
     });
 
     it('should day press close expandable header', () => {
@@ -45,7 +45,7 @@ describe('ExpandableCalendar', () => {
       jest.runAllTimers();
       driver.selectDay('2022-08-21');
       jest.runAllTimers();
-      expect(driver.isHeaderExpanded()).toBe(false);
+      expect(driver.isCalendarExpanded()).toBe(false);
     });
   });
 });

@@ -31,7 +31,7 @@ export class ExpandableCalendarDriver {
     return this.renderTree?.getByTestId(`${this.testID}.knob`);
   }
 
-  getExpandableHeader() {
+  getExpandableContainer() {
     return this.renderTree.getByTestId(`${this.testID}.expandableContainer`);
   }
 
@@ -43,9 +43,9 @@ export class ExpandableCalendarDriver {
     fireEvent(this.getKnob(), 'onPress');
   }
 
-  isHeaderExpanded() {
-    const headerHeight = this.getExpandableHeader().props?.style?.height;
-    return headerHeight > 145;
+  isCalendarExpanded() {
+    const calendarHeight = this.getExpandableContainer().props?.style?.height;
+    return calendarHeight > 145;
   }
 
   selectDay(date: string) {
