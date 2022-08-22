@@ -30,7 +30,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     headerStyle,
     onPressArrowLeft,
     onPressArrowRight,
-    visible,
+    visible
   } = props;
   const context = useContext(CalendarContext);
 
