@@ -192,7 +192,7 @@ const Calendar = (props: CalendarProps) => {
           marking={weekNumberMarking.current}
           // state='disabled'
           theme={theme}
-          testID={`${testID}.week_${weekNumber}`}
+          testID={`${testID}.weekNumber_${weekNumber}`}
         >
           {weekNumber}
         </BasicDay>

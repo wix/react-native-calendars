@@ -66,6 +66,6 @@ export class CalendarDriver extends ComponentDriver {
   }
 
   getWeekNumbers() {
-    return getTextNodes(this.filterByID(new RegExp('week_')));
+    return getTextNodes(this.filterByID(new RegExp('weekNumber_')));
   }
 }
