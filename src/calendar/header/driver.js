@@ -8,7 +8,7 @@ export class CalendarHeaderDriver extends ComponentDriver {
   }
 
   getTitle() {
-    return getTextNodes(this.getByID(`${this.testID}.label`)).join('');
+    return getTextNodes(this.getByID(`${this.testID}.title`)).join('');
   }
 
   getDayNames() {

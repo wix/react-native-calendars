@@ -199,7 +199,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         <Text
           allowFontScaling={false}
           style={style.current.monthText}
-          testID={`${testID}.label`}
+          testID={`${testID}.title`}
           {...webProps}
         >
           {formatNumbers(month?.toString(monthFormat))}
