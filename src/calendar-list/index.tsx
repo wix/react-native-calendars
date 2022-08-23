@@ -9,7 +9,7 @@ import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
-import {useDidUpdate} from '../utils/hooks';
+import {useDidUpdate} from '../hooks';
 // @ts-expect-error
 import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';

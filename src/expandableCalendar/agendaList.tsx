@@ -23,7 +23,7 @@ import {
 } from 'react-native';
 
 import {isToday, isGTE, sameDate} from '../dateutils';
-import {getMoment} from '../utils/momentResolver';
+import {getMoment} from '../momentResolver';
 import {parseDate} from '../interface';
 import {getDefaultLocale} from '../services';
 import {UpdateSources, todayString} from './commons';
