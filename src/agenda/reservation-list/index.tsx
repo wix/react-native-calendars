@@ -5,12 +5,12 @@ import XDate from 'xdate';
 import React, {Component} from 'react';
 import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
 
-import {extractComponentProps} from '../../componentUpdater';
+import {extractReservationProps} from '../../componentUpdater';
 import {sameDate} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
-import {AgendaEntry, AgendaSchedule} from '../../types';
+import {AgendaEntry, AgendaSchedule, DayAgenda} from '../../types';
 
 
 export type ReservationListProps = ReservationProps & {
@@ -47,11 +47,6 @@ export type ReservationListProps = ReservationProps & {
   /** Extractor for underlying FlatList. Ensure that this is unique per item, or else scrolling may have duplicated and / or missing items.  */
   reservationsKeyExtractor?: (item: DayAgenda, index: number) => string;
 };
-
-interface DayAgenda {
-  reservation?: AgendaEntry;
-  date?: XDate;
-}
 
 interface State {
   reservations: DayAgenda[];
@@ -252,7 +247,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   };
 
   renderRow = ({item, index}: {item: DayAgenda; index: number}) => {
-    const reservationProps = extractComponentProps(Reservation, this.props);
+    const reservationProps = extractReservationProps(this.props);
 
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>

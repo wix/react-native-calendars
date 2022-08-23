@@ -5,6 +5,7 @@ import {Animated, TouchableOpacity, View, ViewStyle, ViewProps, StyleProp} from 
 
 import {sameMonth} from '../../dateutils';
 import {xdateToData} from '../../interface';
+import {useDidUpdate} from '../../hooks';
 import {Theme, DateData} from '../../types';
 import {UpdateSources} from '../commons';
 import styleConstructor from '../style';
@@ -79,7 +80,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     return [style.current.contextWrapper, propsStyle];
   }, [style, propsStyle]);
 
-  useEffect(() => {
+  useDidUpdate(() => {
     if (date) {
       _setDate(date, UpdateSources.PROP_UPDATE);
     }
