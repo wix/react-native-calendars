@@ -13,17 +13,12 @@ import {getState} from '../day-state-manager';
 import {extractHeaderProps, extractDayProps} from '../componentUpdater';
 // @ts-expect-error
 import {WEEK_NUMBER} from '../testIDs';
-import {DateData, Theme} from '../types';
+import {DateData, Theme, MarkedDates} from '../types';
 import {useDidUpdate} from '../hooks';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
-import {MarkingProps} from './day/marking';
-
-type MarkedDatesType = {
-  [key: string]: MarkingProps;
-};
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
@@ -45,7 +40,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
   maxDate?: string;
   /** Collection of dates that have to be marked */
-  markedDates?: MarkedDatesType;
+  markedDates?: MarkedDates;
   /** Do not show days of other months in month page */
   hideExtraDays?: boolean;
   /** Always show six weeks on each month (only when hideExtraDays = false) */
