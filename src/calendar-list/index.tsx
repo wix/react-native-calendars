@@ -81,20 +81,24 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     animateScroll = false,
     showScrollIndicator = false,
     staticHeader,
-    /** FlatList props */
+    /** View props */
     testID,
     style: propsStyle,
-    horizontal = false,
     onLayout,
     removeClippedSubviews,
+    /** ScrollView props */
+    horizontal = false,
+    keyExtractor = (_: any, index: number) => String(index),
+    /** FlatList props */
     pagingEnabled,
     scrollEnabled = true,
     nestedScrollEnabled = true,
     scrollsToTop = false,
     keyboardShouldPersistTaps,
-    keyExtractor = (_: any, index: number) => String(index),
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
+    onMomentumScrollBegin,
+    onMomentumScrollEnd
   } = props;
   
   const calendarProps = extractCalendarProps(props);
@@ -296,6 +300,8 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         onEndReachedThreshold={onEndReachedThreshold}
         onEndReached={onEndReached}
         nestedScrollEnabled={nestedScrollEnabled}
+        onMomentumScrollBegin={onMomentumScrollBegin}
+        onMomentumScrollEnd={onMomentumScrollEnd}
       />
       {renderStaticHeader()}
     </View>
