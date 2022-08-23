@@ -131,7 +131,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
 
-  /** Date */
+  /** Date Utils */
 
   const getYear = (date: string) => {
     const d = new XDate(date);
@@ -264,19 +264,30 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
 
   /** Scroll */
+  const autoScroll = useRef(false);
 
-  const scrollToDate = (date: string) => {
+  const scrollToDate = throttle((date: string) => {
+    autoScroll.current = true;
+
     if (!horizontal) {
       calendarList?.current?.scrollToDay(date, 0, true);
     } else if (getYear(date) !== visibleYear.current || getMonth(date) !== visibleMonth.current) {
       // don't scroll if the month is already visible
       calendarList?.current?.scrollToMonth(date);
     }
-  };
+  }, 100, {leading: false, trailing: true});
 
-  const scrollPage = useCallback((next: boolean, updateSource = updateSources.ARROW_PRESS) => {
+  /** Update Date */
+
+  const newTempDate = useRef(date);
+
+  const _setDate = debounce((updateSource = updateSources.PAGE_SCROLL) => {
+    setDate?.(newTempDate.current, updateSource);
+  }, 300, {leading: false, trailing: true});
+
+  const updatePage = useCallback((next: boolean, updateSource = updateSources.ARROW_PRESS) => {
     if (horizontal) {
-      const d = parseDate(date);
+      const d = parseDate(newTempDate.current);
 
       if (isOpen) {
         d.setDate(1);
@@ -302,11 +313,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         scrollToDate(d);
       }
 
-       setTimeout(() => {
-         setDate?.(toMarkingFormat(d), updateSource);
-       }, 0);
+      newTempDate.current = toMarkingFormat(d);
+      _setDate(updateSource);
     }
-  }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
+  }, [horizontal, isOpen, firstDay, numberOfDays, _setDate]);
 
   /** Pan Gesture */
 
@@ -408,9 +418,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }, 0);
   }, [isOpen]);
 
-  const updateOpenHeight = debounce((date: DateData) => {
-    // wait for setDate call in horizontal scroll (scrollPage)
-    const _numberOfWeeks = getNumberOfWeeksInMonth(date.dateString);
+  const updateOpenHeight = debounce((date: string) => {
+    const _numberOfWeeks = getNumberOfWeeksInMonth(date);
     if (_numberOfWeeks !== numberOfWeeks.current) {
       numberOfWeeks.current = _numberOfWeeks;
       openHeight.current = getOpenHeight();
@@ -422,16 +431,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   /** Events */
 
-  const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
-    onPressArrowLeft?.(method, month);
-    scrollPage(false);
-  }, [onPressArrowLeft, scrollPage]);
-
-  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
-    onPressArrowRight?.(method, month);
-    scrollPage(true);
-  }, [onPressArrowRight, scrollPage]);
-
   const _onDayPress = useCallback((value: DateData) => {
     if (numberOfDaysCondition) {
       setDate?.(value.dateString, updateSources.DAY_PRESS);
@@ -442,32 +441,45 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onDayPress?.(value);
   }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
 
-  const onVisibleMonthsChange = useCallback(throttle((value: DateData[]) => {
-      const newDate = first(value);
-      if (newDate) {
-        updateOpenHeight.cancel();
+  const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
+    onPressArrowLeft?.(method, month);
+    updatePage(false);
+  }, [onPressArrowLeft, updatePage]);
 
-        const month = newDate.month;
-        if (month && visibleMonth.current !== month) {
-          visibleMonth.current = month;
-          
-          const year = newDate.year;
-          if (year) {
-            visibleYear.current = year;
-          }
-  
-          // for horizontal scroll
-          if (visibleMonth.current !== getMonth(date)) {
-            const next = isLaterDate(newDate, date);
-            scrollPage(next, updateSources.PAGE_SCROLL);
-          }
-  
-          // updating openHeight
-          updateOpenHeight(newDate);
+  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
+    onPressArrowRight?.(method, month);
+    updatePage(true);
+  }, [onPressArrowRight, updatePage]);
+
+  const onVisibleMonthsChange = useCallback((value: DateData[]) => {
+    const newDate = first(value);
+    if (newDate) {
+      updateOpenHeight.cancel();
+
+      const month = newDate.month;
+      if (month && visibleMonth.current !== month) {
+        visibleMonth.current = month;
+        
+        const year = newDate.year;
+        if (year) {
+          visibleYear.current = year;
         }
+
+        // for horizontal scroll (by user)
+        if (visibleMonth.current !== getMonth(date) && !autoScroll.current) {
+          const next = isLaterDate(newDate, date);
+          updatePage(next, updateSources.PAGE_SCROLL);
+        } else {
+          autoScroll.current = false;
+        }
+
+        setTimeout(() => {
+          // wait for setDate call in horizontal scroll (updatePage)
+          updateOpenHeight(newDate.dateString);
+        }, 0);
       }
-    }, 100, {leading: false, trailing: true}
-  ), [date, scrollPage]);
+    }
+  }, [date, updatePage]);
 
   /** Renders */
 
