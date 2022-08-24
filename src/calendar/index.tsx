@@ -51,9 +51,9 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Always show six weeks on each month (only when hideExtraDays = false) */
   showSixWeeks?: boolean;
   /** Handler which gets executed on day press */
-  onDayPress?: (date: DateData) => void;
+  onDayPress?: (date?: DateData) => void;
   /** Handler which gets executed on day long press */
-  onDayLongPress?: (date: DateData) => void;
+  onDayLongPress?: (date?: DateData) => void;
   /** Handler which gets executed when month changes in calendar */
   onMonthChange?: (date: DateData) => void;
   /** Handler which gets executed when visible month changes in calendar */
@@ -301,7 +301,7 @@ export default Calendar;
 Calendar.displayName = 'Calendar';
 Calendar.propTypes = {
   ...CalendarHeader.propTypes,
-  ...Day.propTypes,
+  ...(Day as React.ComponentType<DayProps>).propTypes,
   theme: PropTypes.object,
   firstDay: PropTypes.number,
   displayLoadingIndicator: PropTypes.bool,

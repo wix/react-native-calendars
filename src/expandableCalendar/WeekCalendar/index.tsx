@@ -1,7 +1,7 @@
 import XDate from 'xdate';
 
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
-import {View, NativeSyntheticEvent, NativeScrollEvent, FlatList} from 'react-native';
+import {FlatList, View, ViewToken} from 'react-native';
 
 import {generateDay, sameWeek} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
@@ -15,9 +15,9 @@ import constants from '../../commons/constants';
 import {extractCalendarProps} from '../../componentUpdater';
 import CalendarContext from '../Context';
 
-const NUMBER_OF_PAGES = 5; // must be a positive number
+const NUMBER_OF_PAGES = 6; // must be a positive number
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
-const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
+// const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -42,86 +42,39 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const {date, numberOfDays, updateSource, prevDate, setDate, timelineLeftInset} = context;
   const style = useRef(styleConstructor(theme));
 
-  const getDate = useCallback((weekIndex: number) => {
-    const d = new XDate(current || date);
-    // get the first day of the week as date (for the on scroll mark)
-    let dayOfTheWeek = d.getDay();
-    if (dayOfTheWeek < firstDay && firstDay > 0) {
-      dayOfTheWeek = 7 + dayOfTheWeek;
-    }
-    if (weekIndex !== 0) {
-      d.addDays(firstDay - dayOfTheWeek);
-    }
-
-    const newDate = numberOfDays && numberOfDays > 1 ? generateDay(d, weekIndex * numberOfDays) : d.addWeeks(weekIndex);
-
-    return toMarkingFormat(newDate);
-  }, [current, date, numberOfDays, firstDay]);
-
   useEffect(() => {
+    console.log(updateSource);
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
       const oldIndex = items.findIndex(item => sameWeek(item, prevDate, firstDay));
       if (pageIndex !== oldIndex) {
-        list.current?.scrollToOffset?.({offset: pageIndex * containerWidth, animated: false});
+        list?.current?.scrollToIndex({index: pageIndex, animated: false});
       }
     }
   }, [date, updateSource]);
 
-  const getDatesArray = useCallback(() => {
-    return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
-      return getDate(index-NUMBER_OF_PAGES);
-    });
-  }, [getDate]);
-
-  const [page, setPage] = useState(NUMBER_OF_PAGES);
-  const [items, setItems] = useState(getDatesArray);
-
+  const [items, setItems] = useState(getDatesArray(current ?? date, firstDay, numberOfDays));
   const list = useRef<FlatList>(null);
-  const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
+  // const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
 
   const containerWidth = useMemo(() => {
     return calendarWidth ?? constants.screenWidth;
   }, [calendarWidth]);
 
-  const onDayPressCallback = useCallback((value: DateData) => {
+  const onDayPressCallback = useCallback((value?: DateData) => {
     if (onDayPress) {
       onDayPress(value);
-    } else {
+    } else if (value) {
       setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
   }, [onDayPress]);
-
-  const onScrollCallback = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (firstAndroidRTLScroll) {
-      setFirstAndroidRTLScroll(false);
-      return;
-    }
-
-    const overallWidth = (NUM_OF_ITEMS - 1) * containerWidth;
-    const eventXOffset = event.nativeEvent.contentOffset.x;
-    const x = APPLY_ANDROID_FIX ? (overallWidth - eventXOffset) : eventXOffset;
-    const newPage = Math.round(x / containerWidth);
-    if (page !== newPage) {
-      setDate?.(items[newPage], UpdateSources.WEEK_SCROLL);
-    }
-    setPage(newPage);
-  }, [setDate, containerWidth, page, items, firstAndroidRTLScroll, setFirstAndroidRTLScroll]);
 
   const getWeekStyle = useMemo(() => {
     return [{width: containerWidth}, propsStyle];
   }, [containerWidth, propsStyle]);
 
-  const onMomentumScrollEndCallback = useCallback(() => {
-    if (page === 0 || page === NUM_OF_ITEMS - 1) {
-      setItems(getDatesArray());
-      scrollToIndex(list);
-    }
-  }, [list, page]);
-
   const renderItem = useCallback(({item}: {item: string}) => {
-    const isSameWeek = sameWeek(item, date, firstDay);
-    const currentContext = isSameWeek ? context : undefined;
+    const currentContext = date === item ? context : undefined;
 
     return (
       <Week
@@ -134,7 +87,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         onDayPress={onDayPressCallback}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
-        visible={isSameWeek}
       />
     );
   },[firstDay, onDayPressCallback, context, date]);
@@ -149,10 +101,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       />
     );
   },[firstDay]);
-
-  const scrollToIndex = (list: React.RefObject<any>, animated = false) => {
-    list?.current?.scrollToIndex({animated, index: NUMBER_OF_PAGES});
-  };
 
   const weekCalendarStyle = useMemo(() => {
     return [
@@ -177,6 +125,25 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     };
   }, [containerWidth]);
 
+  const viewabilityConfigCallbackPairs = useMemo(() => {
+    return [{
+      viewabilityConfig: {
+        itemVisiblePercentThreshold: 20,
+      },
+      onViewableItemsChanged: ({viewableItems}: { viewableItems: Array<ViewToken>}) => {
+        const newDate = viewableItems[0]?.item;
+        if (newDate !== date) {
+          setDate(newDate, UpdateSources.WEEK_SCROLL);
+        }
+      }
+    }];
+  }, []);
+
+  const onEndReached = useCallback(() => {
+    setItems(getDatesArray(date, firstDay, numberOfDays));
+    list?.current?.scrollToIndex({index: NUMBER_OF_PAGES, animated: false});
+  }, [date, firstDay, numberOfDays]);
+
   return (
     <View
       testID={props.testID}
@@ -190,8 +157,8 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       <View style={flatListContainerStyle}>
           <FlatList
             ref={list}
-            data={items}
             style={style.current.container}
+            data={items}
             horizontal
             showsHorizontalScrollIndicator={false}
             pagingEnabled
@@ -199,15 +166,37 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
-            initialNumToRender={NUM_OF_ITEMS}
             getItemLayout={getItemLayout}
-            onScroll={onScrollCallback}
-            onMomentumScrollEnd={onMomentumScrollEndCallback}
+            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={2}
           />
       </View>
     </View>
   );
 };
+
+function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays?: number) {
+  const d = new XDate(date);
+  // get the first day of the week as date (for the on scroll mark)
+  let dayOfTheWeek = d.getDay();
+  if (dayOfTheWeek < firstDay && firstDay > 0) {
+    dayOfTheWeek = 7 + dayOfTheWeek;
+  }
+  if (weekIndex !== 0) {
+    d.addDays(firstDay - dayOfTheWeek);
+  }
+
+  const newDate = numberOfDays && numberOfDays > 1 ? generateDay(d, weekIndex * numberOfDays) : d.addWeeks(weekIndex);
+
+  return toMarkingFormat(newDate);
+}
+
+function getDatesArray (date: string, firstDay: number, numberOfDays?: number) {
+  return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
+    return getDate(date, firstDay, index-NUMBER_OF_PAGES, numberOfDays);
+  });
+}
 
 WeekCalendar.displayName = 'WeekCalendar';
 

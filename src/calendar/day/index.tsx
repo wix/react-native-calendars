@@ -1,6 +1,3 @@
-import omit from 'lodash/omit';
-import isEqual from 'lodash/isEqual';
-import some from 'lodash/some';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
 
@@ -12,13 +9,14 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
+import {isEqual, omit, some} from 'lodash';
 
 function areEqual(prevProps: DayProps, nextProps: DayProps) {
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
   const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
   const didPropsChange = some(prevPropsWithoutMarkDates, function(value, key) {
     //@ts-expect-error
-    return value !== nextPropsWithoutMarkDates[key]; 
+    return value !== nextPropsWithoutMarkDates[key];
   });
   const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
   return !didPropsChange && isMarkingEqual;
@@ -29,7 +27,7 @@ export interface DayProps extends BasicDayProps {
   dayComponent?: React.ComponentType<DayProps & {date?: DateData}>; // TODO: change 'date' prop type to string by removing it from overriding BasicDay's 'date' prop (breaking change for V2)
 }
 
-const Day = React.memo((props: DayProps) => {
+const Day = (props: DayProps) => {
   const {date, marking, dayComponent, markingType} = props;
   const _date = date ? new XDate(date) : undefined;
   const _isToday = isToday(_date);
@@ -69,7 +67,7 @@ const Day = React.memo((props: DayProps) => {
 
     return `${_isToday ? today : ''} ${_date?.toString(formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
   }, [_date, marking, _isToday]);
-  
+
   const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
   const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate())} : undefined;
 
@@ -84,8 +82,8 @@ const Day = React.memo((props: DayProps) => {
       {formatNumbers(_date?.getDate())}
     </Component>
   );
-}, areEqual) as any;
+};
 
-export default Day;
+export default React.memo(Day, areEqual);
 
 Day.displayName = 'Day';

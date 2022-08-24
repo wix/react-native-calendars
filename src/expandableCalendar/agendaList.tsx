@@ -67,21 +67,21 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
  */
 const AgendaList = (props: AgendaListProps) => {
   const {
-    theme, 
-    sections, 
-    scrollToNextEvent, 
-    viewOffset = 0, 
-    avoidDateUpdates, 
-    onScroll, 
-    onMomentumScrollBegin, 
+    theme,
+    sections,
+    scrollToNextEvent,
+    viewOffset = 0,
+    avoidDateUpdates,
+    onScroll,
+    onMomentumScrollBegin,
     onMomentumScrollEnd,
     onScrollToIndexFailed,
     renderSectionHeader,
     sectionStyle,
     keyExtractor,
-    dayFormatter, 
-    dayFormat = 'dddd, MMM d', 
-    useMoment, 
+    dayFormatter,
+    dayFormat = 'dddd, MMM d',
+    useMoment,
     markToday = true,
     onViewableItemsChanged
   } = props;
@@ -135,30 +135,7 @@ const AgendaList = (props: AgendaListProps) => {
     return i;
   };
 
-  const getSectionTitle = (title: string) => {
-    if (!title) return;
 
-    let sectionTitle = title;
-
-    if (dayFormatter) {
-      sectionTitle = dayFormatter(title);
-    } else if (dayFormat) {
-      if (useMoment) {
-        const moment = getMoment();
-        sectionTitle = moment(title).format(dayFormat);
-      } else {
-        sectionTitle = new XDate(title).toString(dayFormat);
-      }
-    }
-
-    if (markToday) {
-      const string = getDefaultLocale().today || todayString;
-      const today = isToday(title);
-      sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
-    }
-
-    return sectionTitle;
-  };
 
   const scrollToSection = useCallback(debounce((d) => {
     const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
@@ -231,11 +208,12 @@ const AgendaList = (props: AgendaListProps) => {
       return renderSectionHeader(title);
     }
 
-    return (
-      <Text allowFontScaling={false} style={[style.current.sectionText, sectionStyle]} onLayout={onHeaderLayout}>
-        {getSectionTitle(title)}
-      </Text>
-    );
+    return AgendaListHeader({
+      title,
+      style: [style.current.sectionText, sectionStyle],
+      onHeaderLayout,
+      dayFormatter,
+    });
   }, []);
 
   const _keyExtractor = useCallback((item: any, index: number) => {
@@ -263,6 +241,44 @@ const AgendaList = (props: AgendaListProps) => {
   //   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
   // }
 };
+interface AgendaHeaderProps { //todo typing
+  title: string;
+  style: any;
+  onHeaderLayout: any;
+  dayFormatter: any;
+}
+const AgendaListHeader = React.memo(({title, style, onHeaderLayout, dayFormatter}: AgendaHeaderProps) => {
+  return (
+    <Text allowFontScaling={false} style={style} onLayout={onHeaderLayout}>
+      {getSectionTitle(title, dayFormatter)}
+    </Text>
+  );
+});
+
+function getSectionTitle (title: string, dayFormatter: any, dayFormat?: string, useMoment?: boolean, markToday?: boolean) { //todo typing
+  if (!title) return;
+
+  let sectionTitle = title;
+
+  if (dayFormatter) {
+    sectionTitle = dayFormatter(title);
+  } else if (dayFormat) {
+    if (useMoment) {
+      const moment = getMoment();
+      sectionTitle = moment(title).format(dayFormat);
+    } else {
+      sectionTitle = new XDate(title).toString(dayFormat);
+    }
+  }
+
+  if (markToday) {
+    const string = getDefaultLocale().today || todayString;
+    const today = isToday(title);
+    sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
+  }
+
+  return sectionTitle;
+}
 
 export default AgendaList;
 

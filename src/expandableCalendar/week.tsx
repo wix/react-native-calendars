@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
@@ -9,30 +9,20 @@ import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
 import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
-import omit from 'lodash/omit';
-import some from 'lodash/some';
-import isEqual from 'lodash/isEqual';
 import {CalendarContextProps} from './Context';
+import {isEmpty, isEqual} from 'lodash';
 
 
 export type WeekProps = CalendarProps & {
-  visible?: boolean;
   context?: CalendarContextProps;
 };
 
-const shouldUseMemo = (prevProps: WeekProps, nextProps: WeekProps) => {
-  const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
-  const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
-  const didPropsChange = some(prevPropsWithoutMarkDates, function(value, key) {
-    //@ts-expect-error
-    return value !== nextPropsWithoutMarkDates[key];
-  });
-  const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
-  return !didPropsChange && isMarkingEqual && !nextProps.visible;
+const propsAreEqual = (prevProps: WeekProps, nextProps: WeekProps) => {
+  return isEmpty(nextProps.context) || isEqual(prevProps, nextProps);
 };
 
 const Week = React.memo((props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset, visible = true} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
   const style = useRef(styleConstructor(theme));
   const getWeek = useCallback((date?: string) => {
     if (date) {
@@ -45,7 +35,7 @@ const Week = React.memo((props: WeekProps) => {
   }, [timelineLeftInset]);
 
   const dayProps = extractDayProps(props);
-  const currXdate = parseDate(current);
+  const currXdate = useMemo(() => parseDate(current), [current]);
 
   const renderDay = (day: XDate, id: number) => {
     // hide extra days
@@ -86,29 +76,12 @@ const Week = React.memo((props: WeekProps) => {
     return week;
   };
 
-  const weekString = useMemo(() => {
-    const day = new XDate(current ?? '');
-    const firstDayOfWeek = day.toString('dd.MM.yyyy');
-    const lastDayOfWeek = day.addDays(numberOfDays > 1 ? numberOfDays : 6).toString('dd.MM.yyyy');
-    return `${firstDayOfWeek} - ${lastDayOfWeek}`;
-  }, []);
-
-  if(!visible) {
-    return (
-      <View style={style.current.container}>
-        <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
-          <Text allowFontScaling={false} adjustsFontSizeToFit>{weekString}</Text>
-        </View>
-      </View>
-    );
-  }
-
   return (
     <View style={style.current.container}>
       <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
     </View>
   );
-}, shouldUseMemo);
+}, propsAreEqual);
 
 export default Week;
 
