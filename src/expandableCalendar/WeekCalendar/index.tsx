@@ -17,7 +17,7 @@ import CalendarContext from '../Context';
 
 const NUMBER_OF_PAGES = 6; // must be a positive number
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
-// const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
+const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -40,10 +40,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const {allowShadow = true, ...calendarListProps} = props;
   const {style: propsStyle, onDayPress, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
   const {date, numberOfDays, updateSource, prevDate, setDate, timelineLeftInset} = context;
+  const currentWeek = useRef(date);
   const style = useRef(styleConstructor(theme));
 
   useEffect(() => {
-    console.log(updateSource);
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
       const oldIndex = items.findIndex(item => sameWeek(item, prevDate, firstDay));
@@ -74,7 +74,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   }, [containerWidth, propsStyle]);
 
   const renderItem = useCallback(({item}: {item: string}) => {
-    const currentContext = date === item ? context : undefined;
+    const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
 
     return (
       <Week
@@ -132,17 +132,27 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       },
       onViewableItemsChanged: ({viewableItems}: { viewableItems: Array<ViewToken>}) => {
         const newDate = viewableItems[0]?.item;
-        if (newDate !== date) {
-          setDate(newDate, UpdateSources.WEEK_SCROLL);
+        if (newDate !== currentWeek.current) {
+          if (APPLY_ANDROID_FIX) {
+            //in android RTL the item we see is the one in the opposite direction
+            const prevIndex = items.indexOf(currentWeek.current);
+            const newDateOffset = -1 * (prevIndex - items.indexOf(newDate));
+            const adjustedNewDate = items[prevIndex - newDateOffset];
+            currentWeek.current = adjustedNewDate;
+            setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
+          } else {
+            currentWeek.current = newDate;
+            setDate(newDate, UpdateSources.WEEK_SCROLL);
+          }
         }
       }
     }];
   }, []);
 
   const onEndReached = useCallback(() => {
-    setItems(getDatesArray(date, firstDay, numberOfDays));
+    setItems(getDatesArray(currentWeek.current, firstDay, numberOfDays));
     list?.current?.scrollToIndex({index: NUMBER_OF_PAGES, animated: false});
-  }, [date, firstDay, numberOfDays]);
+  }, [firstDay, numberOfDays]);
 
   return (
     <View
@@ -169,7 +179,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             getItemLayout={getItemLayout}
             viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
             onEndReached={onEndReached}
-            onEndReachedThreshold={2}
+            onEndReachedThreshold={0.5}
           />
       </View>
     </View>

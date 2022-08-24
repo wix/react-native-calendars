@@ -409,17 +409,19 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   /** Events */
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
+    console.log('press left');
     onPressArrowLeft?.(method, month);
     scrollPage(false);
   }, [onPressArrowLeft, scrollPage]);
 
   const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
+    console.log('press right');
     onPressArrowRight?.(method, month);
     scrollPage(true);
   }, [onPressArrowRight, scrollPage]);
 
-  const _onDayPress = useCallback((value: DateData) => {
-    if (numberOfDaysCondition) {
+  const _onDayPress = useCallback((value?: DateData) => {
+    if (numberOfDaysCondition && value) {
       setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
     if (closeOnDayPress) {
@@ -529,7 +531,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           testID="week_calendar"
           firstDay={firstDay}
           {...others}
-          visible={true}
           allowShadow={disableWeekScroll ? undefined : false}
           current={disableWeekScroll ? date : undefined}
           theme={themeObject}

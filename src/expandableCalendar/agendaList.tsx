@@ -208,12 +208,11 @@ const AgendaList = (props: AgendaListProps) => {
       return renderSectionHeader(title);
     }
 
-    return AgendaListHeader({
-      title,
-      style: [style.current.sectionText, sectionStyle],
-      onHeaderLayout,
-      dayFormatter,
-    });
+    return (
+      <Text allowFontScaling={false} style={[style.current.sectionText, sectionStyle]} onLayout={onHeaderLayout}>
+      {getSectionTitle({title, dayFormatter, dayFormat, useMoment, markToday})}
+    </Text>
+    );
   }, []);
 
   const _keyExtractor = useCallback((item: any, index: number) => {
@@ -241,21 +240,20 @@ const AgendaList = (props: AgendaListProps) => {
   //   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
   // }
 };
-interface AgendaHeaderProps { //todo typing
-  title: string;
-  style: any;
-  onHeaderLayout: any;
-  dayFormatter: any;
-}
-const AgendaListHeader = React.memo(({title, style, onHeaderLayout, dayFormatter}: AgendaHeaderProps) => {
-  return (
-    <Text allowFontScaling={false} style={style} onLayout={onHeaderLayout}>
-      {getSectionTitle(title, dayFormatter)}
-    </Text>
-  );
-});
 
-function getSectionTitle (title: string, dayFormatter: any, dayFormat?: string, useMoment?: boolean, markToday?: boolean) { //todo typing
+function getSectionTitle ({
+  title,
+  dayFormatter,
+  dayFormat,
+  useMoment,
+  markToday
+}: {
+  title: string;
+  dayFormatter?: (arg: string) => string;
+  dayFormat: string;
+  useMoment?: boolean;
+  markToday: boolean;
+}) {
   if (!title) return;
 
   let sectionTitle = title;

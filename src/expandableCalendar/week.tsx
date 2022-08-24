@@ -18,7 +18,20 @@ export type WeekProps = CalendarProps & {
 };
 
 const propsAreEqual = (prevProps: WeekProps, nextProps: WeekProps) => {
-  return isEmpty(nextProps.context) || isEqual(prevProps, nextProps);
+  if (isEmpty(nextProps.context)) {
+    return true;
+  }
+  const prevPropsToCheck = {
+    ...prevProps.markedDates,
+    ...prevProps.context,
+  };
+
+  const nextPropsToCheck = {
+    ...nextProps.markedDates,
+    ...nextProps.context,
+  };
+
+  return isEmpty(nextProps.context) || isEqual(prevPropsToCheck, nextPropsToCheck);
 };
 
 const Week = React.memo((props: WeekProps) => {
