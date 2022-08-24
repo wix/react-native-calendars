@@ -1,3 +1,4 @@
+import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
@@ -43,6 +44,8 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   onDayChange?: (data: DateData) => void;
   /** specify how agenda knob should look like */
   renderKnob?: () => JSX.Element;
+  /** override inner list with a custom implemented component */
+  renderList?: (listProps: ReservationListProps) => JSX.Element;
   /** initially selected day */
   selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
   /** Hide knob button. Default = false */
@@ -79,6 +82,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     onCalendarToggled: PropTypes.func,
     onDayChange: PropTypes.func,
     renderKnob: PropTypes.func,
+    renderList: PropTypes.func,
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
     showClosingKnob: PropTypes.bool
@@ -329,6 +333,14 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   renderReservations() {
     const reservationListProps = extractReservationListProps(this.props);
+    if (isFunction(this.props.renderList)) {
+      return this.props.renderList({
+        ...reservationListProps,
+        selectedDay: this.state.selectedDay,
+        topDay: this.state.topDay,
+        onDayChange: this.onDayChange,
+      });
+    }
 
     return (
       <ReservationList
