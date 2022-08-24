@@ -81,18 +81,24 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     animateScroll = false,
     showScrollIndicator = false,
     staticHeader,
-    /** FlatList props */
+    /** View props */
     testID,
     style: propsStyle,
-    horizontal = false,
     onLayout,
     removeClippedSubviews,
+    /** ScrollView props */
+    horizontal = false,
     pagingEnabled,
     scrollEnabled = true,
     nestedScrollEnabled = true,
     scrollsToTop = false,
-    keyboardShouldPersistTaps,
     keyExtractor = (_: any, index: number) => String(index),
+    keyboardShouldPersistTaps,
+    onScrollBeginDrag,
+    onScrollEndDrag,
+    onMomentumScrollBegin,
+    onMomentumScrollEnd,
+    /** FlatList props */
     onEndReachedThreshold,
     onEndReached
   } = props;
@@ -272,31 +278,35 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
 
   return (
     <View style={style.current.flatListContainer}>
-      {/*<FlatList*/}
-      {/*  // @ts-expect-error*/}
-      {/*  ref={list}*/}
-      {/*  style={listStyle}*/}
-      {/*  showsVerticalScrollIndicator={showScrollIndicator}*/}
-      {/*  showsHorizontalScrollIndicator={showScrollIndicator}*/}
-      {/*  data={items}*/}
-      {/*  renderItem={renderItem}*/}
-      {/*  getItemLayout={getItemLayout}*/}
-      {/*  initialNumToRender={range.current}*/}
-      {/*  initialScrollIndex={initialDateIndex} */}
-      {/*  viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}*/}
-      {/*  testID={testID}*/}
-      {/*  onLayout={onLayout}*/}
-      {/*  removeClippedSubviews={removeClippedSubviews}*/}
-      {/*  pagingEnabled={pagingEnabled}*/}
-      {/*  scrollEnabled={scrollEnabled}*/}
-      {/*  scrollsToTop={scrollsToTop}*/}
-      {/*  horizontal={horizontal}*/}
-      {/*  keyboardShouldPersistTaps={keyboardShouldPersistTaps}*/}
-      {/*  keyExtractor={keyExtractor}*/}
-      {/*  onEndReachedThreshold={onEndReachedThreshold}*/}
-      {/*  onEndReached={onEndReached}*/}
-      {/*  nestedScrollEnabled={nestedScrollEnabled}*/}
-      {/*/>*/}
+      <FlatList
+        // @ts-expect-error
+        ref={list}
+        style={listStyle}
+        showsVerticalScrollIndicator={showScrollIndicator}
+        showsHorizontalScrollIndicator={showScrollIndicator}
+        data={items}
+        renderItem={renderItem}
+        getItemLayout={getItemLayout}
+        initialNumToRender={range.current}
+        initialScrollIndex={initialDateIndex}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        testID={testID}
+        onLayout={onLayout}
+        removeClippedSubviews={removeClippedSubviews}
+        pagingEnabled={pagingEnabled}
+        scrollEnabled={scrollEnabled}
+        scrollsToTop={scrollsToTop}
+        horizontal={horizontal}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        keyExtractor={keyExtractor}
+        onEndReachedThreshold={onEndReachedThreshold}
+        onEndReached={onEndReached}
+        nestedScrollEnabled={nestedScrollEnabled}
+        onMomentumScrollBegin={onMomentumScrollBegin}
+        onMomentumScrollEnd={onMomentumScrollEnd}
+        onScrollBeginDrag={onScrollBeginDrag}
+        onScrollEndDrag={onScrollEndDrag}
+      />
       {renderStaticHeader()}
     </View>
   );
