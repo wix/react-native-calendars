@@ -126,7 +126,14 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const dayNamesStyle = useMemo(() => {
     return [style.current.week, numberOfDaysCondition ? partialWeekStyle : undefined];
   }, [numberOfDaysCondition, partialWeekStyle]);
-
+  const hitSlop: Insets | undefined = useMemo(
+    () =>
+      typeof arrowsHitSlop === 'number'
+        ? {top: arrowsHitSlop, left: arrowsHitSlop, bottom: arrowsHitSlop, right: arrowsHitSlop}
+        : arrowsHitSlop,
+    [arrowsHitSlop]
+  );
+  
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -231,12 +238,6 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
     const renderArrowDirection = isLeft ? 'left' : 'right';   
-    const hitSlop: Insets | undefined = useMemo(() =>
-        typeof arrowsHitSlop === 'number'
-          ? {top: arrowsHitSlop, left: arrowsHitSlop, bottom: arrowsHitSlop, right: arrowsHitSlop}
-          : arrowsHitSlop,
-      [arrowsHitSlop]
-    );
       
     return (
       <TouchableOpacity
