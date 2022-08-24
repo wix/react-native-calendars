@@ -1,15 +1,14 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
-// import {Text} from 'react-native';
 import throttle from 'lodash/throttle';
 import flatten from 'lodash/flatten';
 import dropRight from 'lodash/dropRight';
-import XDate from 'xdate';
 
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+
+import {isToday, generateDay} from '../dateutils';
+import InfiniteList from '../infinite-list';
 import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';
-import {isToday, generateDay} from '../dateutils';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
-import InfiniteList from '../infinite-list';
 import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
 
 export interface TimelineListRenderItemInfo {
@@ -111,7 +110,7 @@ const TimelineList = (props: TimelineListProps) => {
     (_type, item, index) => {
       const isCurrent = prevDate.current === item;
       const isInitialPage = index === INITIAL_PAGE;
-      const _isToday = isToday(new XDate(item));
+      const _isToday = isToday(item);
       const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
       const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
       const numberOfDaysToDrop = (7 - numberOfDays);
@@ -136,7 +135,7 @@ const TimelineList = (props: TimelineListProps) => {
 
       return (
         <>
-          <Timeline {..._timelineProps} />
+          <Timeline {..._timelineProps}/>
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text> */}
         </>

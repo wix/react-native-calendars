@@ -1,11 +1,11 @@
 import XDate from 'xdate';
-import React, {useRef, useMemo} from 'react';
+import React, {useRef, useMemo, useCallback} from 'react';
 import {View} from 'react-native';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-import {extractComponentProps} from '../componentUpdater';
+import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
@@ -15,23 +15,21 @@ import Day from '../calendar/day/index';
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
+  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
   const style = useRef(styleConstructor(theme));
-
-  const getWeek = (date?: string) => {
+  const dayProps = extractDayProps(props);
+  const currXdate = parseDate(current);
+  const getWeek = useCallback((date?: string) => {
     if (date) {
       return getWeekDates(date, firstDay);
     }
-  };
+  }, [firstDay]);
 
   // renderWeekNumber (weekNumber) {
   //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
   // }
 
   const renderDay = (day: XDate, id: number) => {
-    const dayProps = extractComponentProps(Day, props);
-    const currXdate = parseDate(current);
-    
     // hide extra days
     if (current && hideExtraDays) {
       if (!sameMonth(day, currXdate)) {
@@ -47,7 +45,7 @@ const Week = (props: WeekProps) => {
           state={getState(day, currXdate, props)}
           marking={markedDates?.[toMarkingFormat(day)]}
           onPress={onDayPress}
-          onLongPress={onDayPress}
+          onLongPress={onDayLongPress}
         />
       </View>
     );
@@ -55,23 +53,18 @@ const Week = (props: WeekProps) => {
 
   const renderWeek = () => {
     const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
-    let week: any[] = [];
-  
+    const week: JSX.Element[] = [];
+
     if (dates) {
-      dates.forEach((day: XDate, id: number) => {
-        week.push(renderDay(day, id));
+      const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
+      const sliced = dates.slice(todayIndex, numberOfDays);
+      const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
+      datesToRender.forEach((day: XDate | string, id: number) => {
+        const d = day instanceof XDate ? day : new XDate(day);
+        week.push(renderDay(d, id));
       }, this);
     }
-  
-    // if (this.props.showWeekNumbers) {
-    //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
-    // }
-    
-    const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
 
-    if (numberOfDays > 1 && todayIndex > -1) {
-      week = week.slice(todayIndex, numberOfDays);
-    }
     return week;
   };
 

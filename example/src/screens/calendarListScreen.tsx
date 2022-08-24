@@ -1,25 +1,44 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo, useCallback} from 'react';
 import {StyleSheet, Text, View, TextStyle} from 'react-native';
 import {CalendarList, DateData} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const RANGE = 24;
-const initialDate = '2020-06-10';
+const initialDate = '2022-07-05';
+const nextWeekDate = '2022-07-14';
+const nextMonthDate = '2022-08-05';
 
-const CalendarListScreen = () => {
+interface Props {
+  horizontalView?: boolean;
+}
+
+const CalendarListScreen = (props: Props) => {
+  const {horizontalView} = props;
   const [selected, setSelected] = useState(initialDate);
-  const markedDates = {
-    [selected]: {
-      selected: true,
-      disableTouchEvent: true,
-      selectedColor: '#5E60CE',
-      selectedTextColor: 'white'
-    }
-  };
+  const marked = useMemo(() => {
+    return {
+      [selected]: {
+        selected: true,
+        disableTouchEvent: true,
+        selectedColor: '#5E60CE',
+        selectedTextColor: 'white'
+      },
+      [nextWeekDate]: {
+        selected: selected === nextWeekDate,
+        selectedTextColor: '#5E60CE',
+        marked: true
+      },
+      [nextMonthDate]: {
+        selected: selected === nextMonthDate,
+        selectedTextColor: '#5E60CE',
+        marked: true
+      }
+    };
+  }, [selected]);
   
-  const onDayPress = (day: DateData) => {
+  const onDayPress = useCallback((day: DateData) => {
     setSelected(day.dateString);
-  };
+  }, []);
 
   return (
     <CalendarList
@@ -27,10 +46,14 @@ const CalendarListScreen = () => {
       current={initialDate}
       pastScrollRange={RANGE}
       futureScrollRange={RANGE}
-      renderHeader={renderCustomHeader}
-      theme={theme}
       onDayPress={onDayPress}
-      markedDates={markedDates}
+      markedDates={marked}
+      renderHeader={!horizontalView ? renderCustomHeader : undefined}
+      calendarHeight={!horizontalView ? 390 : undefined}
+      theme={!horizontalView ? theme : undefined}
+      horizontal={horizontalView}
+      pagingEnabled={horizontalView}
+      staticHeader={horizontalView}
     />
   );
 };

@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useRef, useState, useMemo} from 'react';
 import {View, ScrollViewProps, ScrollView} from 'react-native';
 import constants from '../commons/constants';
 import {toMarkingFormat} from '../interface';
-import {extractComponentProps} from '../componentUpdater';
+import {extractHeaderProps} from '../componentUpdater';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarHeader from '../calendar/header';
 import InfiniteList from '../infinite-list';
@@ -48,7 +48,7 @@ const CalendarList = (props: CalendarListProps) => {
 
   const [currentMonth, setCurrentMonth] = useState(initialDate || items[scrollRange]);
   const shouldRenderStaticHeader = staticHeader && horizontal;
-  const headerProps = extractComponentProps(CalendarHeader, props);
+  const headerProps = extractHeaderProps(props);
   const staticHeaderStyle = useMemo(() => {
     return [style.current.staticHeader, calendarProps?.headerStyle];
   }, [calendarProps?.headerStyle]);

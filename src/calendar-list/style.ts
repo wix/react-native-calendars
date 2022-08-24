@@ -17,7 +17,7 @@ export default function getStyle(theme: Theme = {}) {
       justifyContent: 'center'
     },
     placeholderText: {
-      fontSize: 30,
+      fontSize: 20,
       fontWeight: '200',
       color: appStyle.dayTextColor
     },
@@ -30,7 +30,8 @@ export default function getStyle(theme: Theme = {}) {
       left: 0,
       right: 0,
       top: 0,
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: appStyle.calendarBackground,
+      paddingHorizontal: 15
     },
     // @ts-expect-error
     ...(theme['stylesheet.calendar-list.main'] || {})

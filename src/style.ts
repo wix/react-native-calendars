@@ -1,15 +1,12 @@
-export const foregroundColor = 'white';
-export const backgroundColor = '#f2F4f5'; // Agenda's reservations bg color
+// default values for app style (see all options for theme type in types.ts)
 
-export const separatorColor = '#f2F4f5'; // not in use
-export const processedColor = '#a7e0a3'; // not in use
-export const processingColor = '#ffce5c'; // not in use
-export const failedColor = '#f67e7e'; // not in use
-export const textSecondaryColor = '#7a92a5'; // not in use
+const FOREGROUND_COLOR = 'white';
+const DEFAULT_TEXT_COLOR = '#2d4150';
+const SECONDARY_TEXT_COLOR = '#00BBF2';
+const AGENDA_TEXT_COLOR = '#7a92a5';
+const AGENDA_BG_COLOR = '#f2F4f5';
+const DISABLED_COLOR = '#d9e1e8';
 
-export const textDefaultColor = '#2d4150';
-export const textColor = '#43515c';
-export const textLinkColor = '#00BBF2';
 
 export const textDayFontFamily = 'System';
 export const textMonthFontFamily = 'System';
@@ -30,30 +27,34 @@ export const textDayStyle = undefined;
 export const dotStyle = undefined;
 export const arrowStyle = undefined;
 
-export const calendarBackground = foregroundColor;
+export const calendarBackground = FOREGROUND_COLOR;
+
 export const textSectionTitleColor = '#b6c1cd';
-export const textSectionTitleDisabledColor = '#d9e1e8';
-export const selectedDayBackgroundColor = textLinkColor;
-export const selectedDayTextColor = foregroundColor;
+export const textSectionTitleDisabledColor = DISABLED_COLOR;
+export const selectedDayBackgroundColor = SECONDARY_TEXT_COLOR;
+export const selectedDayTextColor = FOREGROUND_COLOR;
 export const todayBackgroundColor = undefined;
-export const todayTextColor = textLinkColor;
-export const dayTextColor = textDefaultColor;
-export const textDisabledColor = '#d9e1e8';
-export const textInactiveColor = '#d9e1e8';
-export const dotColor = textLinkColor;
-export const selectedDotColor = foregroundColor;
+export const todayTextColor = SECONDARY_TEXT_COLOR;
+export const dayTextColor = DEFAULT_TEXT_COLOR;
+export const textDisabledColor = DISABLED_COLOR;
+export const textInactiveColor = DISABLED_COLOR;
+export const dotColor = SECONDARY_TEXT_COLOR;
+export const selectedDotColor = FOREGROUND_COLOR;
 export const disabledDotColor = undefined;
 export const inactiveDotColor = undefined;
 export const todayDotColor = undefined;
-export const arrowColor = textLinkColor;
-export const disabledArrowColor = '#d9e1e8';
-export const monthTextColor = textDefaultColor;
+export const arrowColor = SECONDARY_TEXT_COLOR;
+export const disabledArrowColor = DISABLED_COLOR;
+export const monthTextColor = DEFAULT_TEXT_COLOR;
 export const indicatorColor = undefined; // use the default color of React Native ActivityIndicator
-export const agendaDayTextColor = '#7a92a5';
-export const agendaDayNumColor = '#7a92a5';
-export const agendaTodayColor = textLinkColor;
-export const agendaKnobColor = '#f2F4f5';
-export const todayButtonTextColor = textLinkColor;
+export const agendaDayTextColor = AGENDA_TEXT_COLOR;
+export const agendaDayNumColor = AGENDA_TEXT_COLOR;
+export const agendaTodayColor = SECONDARY_TEXT_COLOR;
+export const agendaKnobColor = AGENDA_BG_COLOR;
+export const expandableKnobColor = '#e8ecf0';
+export const backgroundColor = AGENDA_BG_COLOR; // Agenda's reservations bg color - renamed: 'reservationsBackgroundColor'. TODO: remove in V2
+export const reservationsBackgroundColor = AGENDA_BG_COLOR;
+export const todayButtonTextColor = SECONDARY_TEXT_COLOR;
 export const todayButtonPosition = undefined; // right' / 'left'(default)
 
 export const weekVerticalMargin = 7;

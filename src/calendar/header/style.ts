@@ -51,7 +51,6 @@ export default function (theme: Theme = {}) {
       marginTop: 7,
       flexDirection: 'row',
       justifyContent: 'space-around',
-      paddingHorizontal: 15
     },
     partialWeek: {
       paddingRight: 0

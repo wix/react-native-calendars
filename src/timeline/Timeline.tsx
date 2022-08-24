@@ -1,11 +1,14 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, ScrollView} from 'react-native';
 import min from 'lodash/min';
 import map from 'lodash/map';
 import times from 'lodash/times';
 import groupBy from 'lodash/groupBy';
 
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {View, ScrollView} from 'react-native';
+
 import constants from '../commons/constants';
+import {generateDay} from '../dateutils';
+import {getCalendarDateString} from '../services';
 import {Theme} from '../types';
 import styleConstructor from './style';
 import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
@@ -14,8 +17,6 @@ import TimelineHours, {TimelineHoursProps} from './TimelineHours';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
 import NowIndicator from './NowIndicator';
 import useTimelineOffset from './useTimelineOffset';
-import {generateDay} from '../dateutils';
-import {getCalendarDateString} from '../services';
 
 export interface TimelineProps {
   /**
@@ -54,6 +55,7 @@ export interface TimelineProps {
    */
   onBackgroundLongPressOut?: TimelineHoursProps['onBackgroundLongPressOut'];
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
+  /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
   /**
    * Should scroll to first event when loaded
@@ -110,7 +112,7 @@ export interface TimelineProps {
   /**
    * The left inset of the timeline calendar (sidebar width), default is 72
    */
-   timelineLeftInset?: number;
+  timelineLeftInset?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -241,7 +243,9 @@ const Timeline = (props: TimelineProps) => {
     <ScrollView
       // @ts-expect-error
       ref={scrollView}
+      style={styles.current.container}
       contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      showsVerticalScrollIndicator={false}
       {...scrollEvents}
     >
       <TimelineHours

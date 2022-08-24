@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types';
+
 import get from 'lodash/get';
 import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
+import debounce from 'lodash/debounce';
 
-import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {useCallback, useContext, useEffect, useRef} from 'react';
@@ -94,7 +96,7 @@ const AgendaList = (props: AgendaListProps) => {
   useEffect(() => {
     if (date !== _topSection.current) {
       setTimeout(() => {
-        scrollToSection();
+        scrollToSection(date);
       }, 500);
     }
   }, []);
@@ -102,7 +104,7 @@ const AgendaList = (props: AgendaListProps) => {
   useEffect(() => {
     // NOTE: on first init data should set first section to the current date!!!
     if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
-      scrollToSection();
+      scrollToSection(date);
     }
   }, [date]);
 
@@ -122,7 +124,7 @@ const AgendaList = (props: AgendaListProps) => {
     for (let j = 1; j < sections.length; j++) {
       const prev = parseDate(sections[j - 1]?.title);
       const next = parseDate(sections[j]?.title);
-      const cur = parseDate(date);
+      const cur = new XDate(date);
       if (isGTE(cur, prev) && isGTE(next, cur)) {
         i = sameDate(prev, cur) ? j - 1 : j;
         break;
@@ -151,15 +153,15 @@ const AgendaList = (props: AgendaListProps) => {
 
     if (markToday) {
       const string = getDefaultLocale().today || todayString;
-      const today = isToday(new XDate(title));
+      const today = isToday(title);
       sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
     }
 
     return sectionTitle;
   };
 
-  const scrollToSection = () => {
-    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(date) : getSectionIndex(date);
+  const scrollToSection = useCallback(debounce((d) => {
+    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
     if (isUndefined(sectionIndex)) {
       return;
     }
@@ -175,7 +177,7 @@ const AgendaList = (props: AgendaListProps) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  };
+  }, 1000, {leading: false, trailing: true}), []);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
@@ -266,7 +268,6 @@ export default AgendaList;
 
 AgendaList.displayName = 'AgendaList';
 AgendaList.propTypes = {
-  // ...SectionList.propTypes,
   dayFormat: PropTypes.string,
   dayFormatter: PropTypes.func,
   useMoment: PropTypes.bool,

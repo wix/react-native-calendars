@@ -1,10 +1,10 @@
 import XDate from 'xdate';
-import {UpdateSources} from '../commons';
+// import {UpdateSources} from '../commons';
 import {toMarkingFormat} from '../../interface';
 import {
   getButtonIcon,
-  setDate,
-  setDisabled,
+  // setDate,
+  // setDisabled,
   shouldAnimateTodayButton,
   getPositionAnimation,
   getOpacityAnimation,
@@ -16,7 +16,7 @@ describe('Context provider tests', () => {
   const pastDate = '2021-04-04';
   const futureDate = '2050-04-04';
   const todayDate = toMarkingFormat(XDate());
-  const updateSources = UpdateSources.CALENDAR_INIT;
+  // const updateSources = UpdateSources.CALENDAR_INIT;
 
   describe('Button Icon test', () => {
     it('Expect to get down button on past date', () => {
@@ -32,71 +32,71 @@ describe('Context provider tests', () => {
     });
   });
 
-  describe('Set Date test suit', () => {
-    const onDateChanged = jest.fn();
-    const onMonthChange = jest.fn();
-    const updateState = jest.fn();
+  // describe('Set Date test suit', () => {
+  //   const onDateChanged = jest.fn();
+  //   const onMonthChange = jest.fn();
+  //   const updateState = jest.fn();
 
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
+  //   afterEach(() => {
+  //     jest.resetAllMocks();
+  //   });
 
-    it('Expect onDataChanged and updateState to be called on same months dates passed', () => {
-      const date = '2021-01-01';
-      const sameMonthDate = '2021-01-20';
-      const props = {onDateChanged, onMonthChange, showTodayButton: false};
+  //   it('Expect onDataChanged and updateState to be called on same months dates passed', () => {
+  //     const date = '2021-01-01';
+  //     const sameMonthDate = '2021-01-20';
+  //     const props = {onDateChanged, onMonthChange, showTodayButton: false};
 
-      setDate(props, date, sameMonthDate, updateState, updateSources);
+  //     setDate(props, date, sameMonthDate, updateState, updateSources);
 
-      expect(updateState).toBeCalled();
-      expect(onDateChanged).toBeCalledWith(date, updateSources);
-      expect(onMonthChange).not.toBeCalled();
-    });
+  //     expect(updateState).toBeCalled();
+  //     expect(onDateChanged).toBeCalledWith(date, updateSources);
+  //     expect(onMonthChange).not.toBeCalled();
+  //   });
 
-    it('Expect onMonthChange to be called when different months date passed', () => {
-      const date = '2021-01-01';
-      const differentMonth = '2021-02-20';
-      const props = {onDateChanged, onMonthChange, showTodayButton: false};
+  //   it('Expect onMonthChange to be called when different months date passed', () => {
+  //     const date = '2021-01-01';
+  //     const differentMonth = '2021-02-20';
+  //     const props = {onDateChanged, onMonthChange, showTodayButton: false};
 
-      setDate(props, date, differentMonth, updateState, updateSources);
+  //     setDate(props, date, differentMonth, updateState, updateSources);
 
-      expect(updateState).toBeCalled();
-      expect(onDateChanged).toBeCalledWith(date, updateSources);
-      expect(onMonthChange).toBeCalled();
-    });
-  });
+  //     expect(updateState).toBeCalled();
+  //     expect(onDateChanged).toBeCalledWith(date, updateSources);
+  //     expect(onMonthChange).toBeCalled();
+  //   });
+  // });
 
-  describe('Set Disabled test suit', () => {
-    it('Expect setDisabled would not call updateState when showTodayButton', () => {
-      const updateStateMock = jest.fn();
-      const showTodayButton = false;
+  // describe('Set Disabled test suit', () => {
+  //   it('Expect setDisabled would not call updateState when showTodayButton', () => {
+  //     const updateStateMock = jest.fn();
+  //     const showTodayButton = false;
 
-      setDisabled(showTodayButton, false, true, updateStateMock);
-      expect(updateStateMock).not.toBeCalled();
-    });
+  //     setDisabled(showTodayButton, false, true, updateStateMock);
+  //     expect(updateStateMock).not.toBeCalled();
+  //   });
 
-    it('Expect setDisabled will call updateState when showTodayButton is true and disabled value changed', () => {
-      const updateStateMock = jest.fn();
-      const showTodayButton = true;
+  //   it('Expect setDisabled will call updateState when showTodayButton is true and disabled value changed', () => {
+  //     const updateStateMock = jest.fn();
+  //     const showTodayButton = true;
 
-      setDisabled(showTodayButton, false, true, updateStateMock);
-      expect(updateStateMock).toBeCalledWith(false);
+  //     setDisabled(showTodayButton, false, true, updateStateMock);
+  //     expect(updateStateMock).toBeCalledWith(false);
 
-      setDisabled(showTodayButton, true, false, updateStateMock);
-      expect(updateStateMock).toBeCalledWith(true);
-    });
+  //     setDisabled(showTodayButton, true, false, updateStateMock);
+  //     expect(updateStateMock).toBeCalledWith(true);
+  //   });
 
-    it('Expect setDisabled will NOT call updateState when showTodayButton is true and disabled value is the same', () => {
-      const updateStateMock = jest.fn();
-      const showTodayButton = true;
+  //   it('Expect setDisabled will NOT call updateState when showTodayButton is true and disabled value is the same', () => {
+  //     const updateStateMock = jest.fn();
+  //     const showTodayButton = true;
 
-      setDisabled(showTodayButton, true, true, updateStateMock);
-      expect(updateStateMock).not.toBeCalled();
+  //     setDisabled(showTodayButton, true, true, updateStateMock);
+  //     expect(updateStateMock).not.toBeCalled();
 
-      setDisabled(showTodayButton, false, false, updateStateMock);
-      expect(updateStateMock).not.toBeCalled();
-    });
-  });
+  //     setDisabled(showTodayButton, false, false, updateStateMock);
+  //     expect(updateStateMock).not.toBeCalled();
+  //   });
+  // });
 
   describe("Animate Today's Button", () => {
     it('Expect shouldAnimateTodayButton to return same value as props.showTodayButton', () => {
