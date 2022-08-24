@@ -6,16 +6,19 @@ const exec = require('shell-utils').exec;
 const cp = require('child_process');
 
 let IS_SNAPSHOT;
+let IS_HOTFIX;
 const isReleaseBuild = process.env.BUILDKITE_MESSAGE.match(/^release$/i);
 const isPRBuild = process.env.BUILDKITE_PULL_REQUEST === 'true';
 
 if (isReleaseBuild) {
   IS_SNAPSHOT = cp.execSync(`buildkite-agent meta-data get is-snapshot`).toString();
+  IS_HOTFIX = cp.execSync(`buildkite-agent meta-data get is-hotfix`).toString();
 }
 const ONLY_ON_BRANCH = 'release';
 const isSnapshotBuild = (!isPRBuild && !isReleaseBuild) || IS_SNAPSHOT === 'true';
 const VERSION_TAG = isSnapshotBuild ? 'snapshot' : 'latest';
-const VERSION_INC = 'minor';
+const isHotFixBuild = !isPRBuild && isReleaseBuild && IS_HOTFIX === 'true';
+const VERSION_INC = isHotFixBuild ? 'patch' : 'minor';
 
 function run() {
   if (!validateEnv()) {
@@ -72,6 +75,7 @@ function versionTagAndPublish() {
     version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, VERSION_INC);
   }
 
+  console.log(`Publishing version: ${version}`);
   tryPublishAndTag(version);
 }
 
@@ -84,14 +88,14 @@ function tryPublishAndTag(version) {
   for (let retry = 0; retry < 5; retry++) {
     try {
       tagAndPublish(theCandidate);
-      console.log(`Released ${theCandidate}`);
+      console.log(`Released version ${theCandidate}`);
       return;
     } catch (err) {
       const alreadyPublished = _.includes(err.toString(), 'You cannot publish over the previously published version');
       if (!alreadyPublished) {
         throw err;
       }
-      console.log(`previously published. retrying with increased ${VERSION_INC}...`);
+      console.log(`previous version published. Retrying with increased ${VERSION_INC}...`);
       theCandidate = semver.inc(theCandidate, VERSION_INC);
     }
   }
@@ -99,12 +103,14 @@ function tryPublishAndTag(version) {
 
 function tagAndPublish(newVersion) {
   console.log(`trying to publish ${newVersion}...`);
-  exec.execSync(`npm --no-git-tag-version --allow-same-version version ${newVersion}`);
-  exec.execSyncRead(`npm publish --tag ${VERSION_TAG}`);
-  if (isReleaseBuild && !IS_SNAPSHOT) {
+  exec.execSync(`npm --no-git-tag-version version ${newVersion}`); // --allow-same-version
+  exec.execSync(`npm publish --tag ${VERSION_TAG}`); // execSyncRead
+
+  if (isReleaseBuild && !isSnapshotBuild) {
     exec.execSync(`git tag -a ${newVersion} -m "${newVersion}"`);
     console.log(`tagging git for version ${newVersion}...`);
-    exec.execSyncSilent(`git push origin ${newVersion}`);
+    // exec.execSyncSilent(`git push origin ${newVersion}`);
+    exec.execSyncSilent(`git push deploy ${newVersion} || true`);
   }
 }
 
