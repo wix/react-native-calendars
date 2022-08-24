@@ -31,10 +31,9 @@ import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
 import WeekCalendar from './WeekCalendar';
 import Context from './Context';
-
 import constants from '../commons/constants';
-const commons = require('./commons');
-const updateSources = commons.UpdateSources;
+import {UpdateSources} from './commons';
+
 enum Positions {
   CLOSED = 'closed',
   OPEN = 'open'
@@ -299,7 +298,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       }
 
-      setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
+      setDate?.(toMarkingFormat(d), UpdateSources.PAGE_SCROLL);
     }
   }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
@@ -421,7 +420,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const _onDayPress = useCallback((value: DateData) => {
     if (numberOfDaysCondition) {
-      setDate?.(value.dateString, updateSources.DAY_PRESS);
+      setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
     if (closeOnDayPress) {
       closeCalendar();
