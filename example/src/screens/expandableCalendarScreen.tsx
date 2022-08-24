@@ -1,6 +1,6 @@
 import React, {useRef, useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
+import {ExpandableCalendar, CalendarProvider, WeekCalendar, AgendaList} from 'react-native-calendars';
 import testIDs from '../testIDs';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import AgendaItem from '../mocks/AgendaItem';
@@ -39,7 +39,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       date={ITEMS[1].title}
       onDateChanged={onDateChanged}
       onMonthChange={onMonthChange}
-      showTodayButton
+      // showTodayButton
       disabledOpacity={0.6}
       theme={todayBtnTheme.current}
       // todayBottomMargin={16}
