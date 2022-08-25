@@ -42,7 +42,7 @@ const AgendaItem = React.memo((props: ItemProps) => {
   );
 }, isEqual);
 
-export default AgendaItem;
+export default React.memo(AgendaItem);
 
 
 const styles = StyleSheet.create({

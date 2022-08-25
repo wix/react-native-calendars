@@ -17,12 +17,6 @@ const CalendarListScreen = (props: Props) => {
   const [selected, setSelected] = useState(initialDate);
   const marked = useMemo(() => {
     return {
-      [selected]: {
-        selected: true,
-        disableTouchEvent: true,
-        selectedColor: '#5E60CE',
-        selectedTextColor: 'white'
-      },
       [nextWeekDate]: {
         selected: selected === nextWeekDate,
         selectedTextColor: '#5E60CE',
@@ -32,6 +26,12 @@ const CalendarListScreen = (props: Props) => {
         selected: selected === nextMonthDate,
         selectedTextColor: '#5E60CE',
         marked: true
+      },
+      [selected]: {
+        selected: true,
+        disableTouchEvent: true,
+        selectedColor: '#5E60CE',
+        selectedTextColor: 'white'
       }
     };
   }, [selected]);

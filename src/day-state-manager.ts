@@ -11,8 +11,7 @@ export function getState(day: XDate, current: XDate, props: any): DayState {
     state = 'selected';
   } else if (isToday(day)) {
     state = 'today';
-  }
-  if (disabledByDefault) {
+  } else if (disabledByDefault) {
     state = 'disabled';
   } else if (isDateNotInRange(day, minDate, maxDate)) {
     state = 'disabled';
