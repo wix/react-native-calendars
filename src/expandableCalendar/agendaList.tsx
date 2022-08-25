@@ -8,7 +8,7 @@ import debounce from 'lodash/debounce';
 
 import XDate from 'xdate';
 
-import React, {useCallback, useContext, useEffect, useRef} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   Text,
   SectionList,
@@ -213,6 +213,8 @@ const AgendaList = (props: AgendaListProps) => {
     onMomentumScrollEnd?.(event);
   }, [onMomentumScrollEnd, setDisabled]);
 
+  const headerTextStyle = useMemo(() => [style.current.sectionText, sectionStyle], [sectionStyle]);
+
   const _onScrollToIndexFailed = useCallback((info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
     if (onScrollToIndexFailed) {
       onScrollToIndexFailed(info);
@@ -232,10 +234,9 @@ const AgendaList = (props: AgendaListProps) => {
       return renderSectionHeader(title);
     }
 
-    const textStyle = [style.current.sectionText, sectionStyle];
     const headerTitle = getSectionTitle(title);
-    return <AgendaSectionHeader title={headerTitle} style={textStyle} onLayout={onHeaderLayout}/>;
-  }, []);
+    return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
+  }, [headerTextStyle]);
 
   const _keyExtractor = useCallback((item: any, index: number) => {
     return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
