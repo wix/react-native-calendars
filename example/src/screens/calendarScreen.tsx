@@ -15,15 +15,15 @@ const CalendarScreen = () => {
 
   const marked = useMemo(() => {
     return {
+      ['2022-07-22']: {
+        dotColor: 'red',
+        marked: true
+      },
       [selected]: {
         selected: true,
         disableTouchEvent: true,
         selectedColor: 'orange',
         selectedTextColor: 'red'
-      },
-      ['2022-07-22']: {
-        dotColor: 'red',
-        marked: true
       }
     };
   }, [selected]);
