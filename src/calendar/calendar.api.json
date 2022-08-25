@@ -133,6 +133,11 @@
       "description": "Whether to hide the arrows"
     },
     {
+      "name": "arrowsHitSlop",
+      "type": "null | Insets | number",
+      "default": 20
+    },
+    {
       "name": "disableArrowLeft",
       "type": "boolean",
       "description": "Whether to disable the left arrow"
