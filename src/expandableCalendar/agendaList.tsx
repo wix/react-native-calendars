@@ -19,7 +19,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   LayoutChangeEvent,
-  ViewToken
+  ViewToken, TextProps
 } from 'react-native';
 
 import {isToday, isGTE, sameDate} from '../dateutils';
@@ -31,6 +31,7 @@ import {Theme} from '../types';
 import styleConstructor from './style';
 import constants from '../commons/constants';
 import Context from './Context';
+import {isEqual} from 'lodash';
 
 
 const viewabilityConfig = {
@@ -67,23 +68,23 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
  */
 const AgendaList = (props: AgendaListProps) => {
   const {
-    theme, 
-    sections, 
-    scrollToNextEvent, 
-    viewOffset = 0, 
-    avoidDateUpdates, 
-    onScroll, 
-    onMomentumScrollBegin, 
+    theme,
+    sections,
+    scrollToNextEvent,
+    viewOffset = 0,
+    avoidDateUpdates,
+    onScroll,
+    onMomentumScrollBegin,
     onMomentumScrollEnd,
     onScrollToIndexFailed,
     renderSectionHeader,
     sectionStyle,
     keyExtractor,
-    dayFormatter, 
-    dayFormat = 'dddd, MMM d', 
-    useMoment, 
+    dayFormatter,
+    dayFormat = 'dddd, MMM d',
+    useMoment,
     markToday = true,
-    onViewableItemsChanged
+    onViewableItemsChanged,
   } = props;
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
   const style = useRef(styleConstructor(theme));
@@ -135,7 +136,7 @@ const AgendaList = (props: AgendaListProps) => {
     return i;
   };
 
-  const getSectionTitle = (title: string) => {
+  const getSectionTitle = useCallback((title: string) => {
     if (!title) return;
 
     let sectionTitle = title;
@@ -158,7 +159,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
 
     return sectionTitle;
-  };
+  }, []);
 
   const scrollToSection = useCallback(debounce((d) => {
     const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
@@ -231,11 +232,9 @@ const AgendaList = (props: AgendaListProps) => {
       return renderSectionHeader(title);
     }
 
-    return (
-      <Text allowFontScaling={false} style={[style.current.sectionText, sectionStyle]} onLayout={onHeaderLayout}>
-        {getSectionTitle(title)}
-      </Text>
-    );
+    const textStyle = [style.current.sectionText, sectionStyle];
+    const headerTitle = getSectionTitle(title);
+    return <AgendaSectionHeader title={headerTitle} style={textStyle} onLayout={onHeaderLayout}/>;
   }, []);
 
   const _keyExtractor = useCallback((item: any, index: number) => {
@@ -264,6 +263,24 @@ const AgendaList = (props: AgendaListProps) => {
   // }
 };
 
+interface AgendaSectionHeaderProps {
+  title?: string;
+  onLayout: TextProps['onLayout'];
+  style: TextProps['style'];
+}
+
+function areTextPropsEqual(prev: AgendaSectionHeaderProps, next: AgendaSectionHeaderProps): boolean {
+  return isEqual(prev.style, next.style) && prev.title === next.title;
+}
+
+const AgendaSectionHeader = React.memo((props: AgendaSectionHeaderProps) => {
+  return (
+    <Text allowFontScaling={false} style={props.style} onLayout={props.onLayout}>
+      {props.title}
+    </Text>
+  );
+}, areTextPropsEqual);
+
 export default AgendaList;
 
 AgendaList.displayName = 'AgendaList';
@@ -277,6 +294,6 @@ AgendaList.propTypes = {
 };
 AgendaList.defaultProps = {
   dayFormat: 'dddd, MMM d',
-  stickySectionHeadersEnabled: true,
+  stickySectionHeadersEnabled: false,
   markToday: true
 };
