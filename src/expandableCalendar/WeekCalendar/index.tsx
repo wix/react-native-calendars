@@ -40,22 +40,24 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const {allowShadow = true, ...calendarListProps} = props;
   const {style: propsStyle, onDayPress, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
   const {date, numberOfDays, updateSource, prevDate, setDate, timelineLeftInset} = context;
-  const currentWeek = useRef(date);
+  const visibleWeek = useRef(date);
   const style = useRef(styleConstructor(theme));
+  const [items, setItems] = useState(getDatesArray(current ?? date, firstDay, numberOfDays));
+  const changedItems = useRef(false);
+  const list = useRef<FlatList>(null);
 
   useEffect(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
       const oldIndex = items.findIndex(item => sameWeek(item, prevDate, firstDay));
       if (pageIndex !== oldIndex) {
-        list?.current?.scrollToIndex({index: pageIndex, animated: false});
+        if (pageIndex >= 0) {
+          visibleWeek.current = items[pageIndex];
+        }
+        pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: pageIndex, animated: false});
       }
     }
-  }, [date, updateSource]);
-
-  const [items, setItems] = useState(getDatesArray(current ?? date, firstDay, numberOfDays));
-  const list = useRef<FlatList>(null);
-  // const [firstAndroidRTLScroll, setFirstAndroidRTLScroll] = useState(constants.isAndroid && constants.isRTL);
+  }, [date, updateSource, items]);
 
   const containerWidth = useMemo(() => {
     return calendarWidth ?? constants.screenWidth;
@@ -125,32 +127,40 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     };
   }, [containerWidth]);
 
-  const viewabilityConfigCallbackPairs = useMemo(() => {
-    return [{
+  const onViewableItemsChanged = useCallback(({viewableItems}: { viewableItems: Array<ViewToken>}) => {
+    const newDate = viewableItems[0]?.item;
+    if (changedItems.current) {
+      changedItems.current = false;
+      return;
+    }
+    if (newDate !== visibleWeek.current) {
+      if (APPLY_ANDROID_FIX) {
+        //in android RTL the item we see is the one in the opposite direction
+        const prevIndex = items.indexOf(visibleWeek.current);
+        const newDateOffset = -1 * (prevIndex - items.indexOf(newDate));
+        const adjustedNewDate = items[prevIndex - newDateOffset];
+        visibleWeek.current = adjustedNewDate;
+        setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
+      } else {
+        visibleWeek.current = newDate;
+        setDate(newDate, UpdateSources.WEEK_SCROLL);
+      }
+      if (visibleWeek.current === items[0]) {
+        onEndReached();
+      }
+    }
+  }, [items]);
+
+  const viewabilityConfigCallbackPairs = useRef([{
       viewabilityConfig: {
         itemVisiblePercentThreshold: 20,
       },
-      onViewableItemsChanged: ({viewableItems}: { viewableItems: Array<ViewToken>}) => {
-        const newDate = viewableItems[0]?.item;
-        if (newDate !== currentWeek.current) {
-          if (APPLY_ANDROID_FIX) {
-            //in android RTL the item we see is the one in the opposite direction
-            const prevIndex = items.indexOf(currentWeek.current);
-            const newDateOffset = -1 * (prevIndex - items.indexOf(newDate));
-            const adjustedNewDate = items[prevIndex - newDateOffset];
-            currentWeek.current = adjustedNewDate;
-            setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
-          } else {
-            currentWeek.current = newDate;
-            setDate(newDate, UpdateSources.WEEK_SCROLL);
-          }
-        }
-      }
-    }];
-  }, []);
+      onViewableItemsChanged,
+    }]);
 
   const onEndReached = useCallback(() => {
-    setItems(getDatesArray(currentWeek.current, firstDay, numberOfDays));
+    changedItems.current = true;
+    setItems(getDatesArray(visibleWeek.current, firstDay, numberOfDays));
     list?.current?.scrollToIndex({index: NUMBER_OF_PAGES, animated: false});
   }, [firstDay, numberOfDays]);
 
@@ -177,7 +187,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
             getItemLayout={getItemLayout}
-            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
+            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
           />

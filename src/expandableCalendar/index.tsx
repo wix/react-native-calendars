@@ -494,7 +494,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
 
   const renderAnimatedHeader = () => {
-    const monthYear = new XDate(date).toString('MMMM yyyy');
+    const monthYear = new XDate(date)?.toString('MMMM yyyy');
 
     return (
       <Animated.View
