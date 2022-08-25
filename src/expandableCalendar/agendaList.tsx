@@ -22,6 +22,7 @@ import {
   ViewToken
 } from 'react-native';
 
+import {useDidUpdate} from '../hooks';
 import {isToday, isGTE, sameDate} from '../dateutils';
 import {getMoment} from '../momentResolver';
 import {parseDate} from '../interface';
@@ -85,7 +86,9 @@ const AgendaList = (props: AgendaListProps) => {
     markToday = true,
     onViewableItemsChanged
   } = props;
+
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
+  
   const style = useRef(styleConstructor(theme));
   const list = useRef<any>();
   const _topSection = useRef(sections[0]?.title);
@@ -101,7 +104,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
   }, []);
 
-  useEffect(() => {
+  useDidUpdate(() => {
     // NOTE: on first init data should set first section to the current date!!!
     if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
       scrollToSection(date);
@@ -191,14 +194,15 @@ const AgendaList = (props: AgendaListProps) => {
       }
     }
     onViewableItemsChanged?.(info);
-  }, [_topSection.current, didScroll.current, avoidDateUpdates, setDate, onViewableItemsChanged]);
+  }, [avoidDateUpdates, setDate, onViewableItemsChanged]);
 
   const _onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!didScroll.current) {
       didScroll.current = true;
+      scrollToSection.cancel();
     }
     onScroll?.(event);
-  }, [didScroll.current, onScroll]);
+  }, [onScroll]);
 
   const _onMomentumScrollBegin = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setDisabled?.(true);
