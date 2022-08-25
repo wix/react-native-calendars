@@ -295,6 +295,6 @@ AgendaList.propTypes = {
 };
 AgendaList.defaultProps = {
   dayFormat: 'dddd, MMM d',
-  stickySectionHeadersEnabled: false,
+  stickySectionHeadersEnabled: true,
   markToday: true
 };
