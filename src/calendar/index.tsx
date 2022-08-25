@@ -296,7 +296,7 @@ export default Calendar;
 Calendar.displayName = 'Calendar';
 Calendar.propTypes = {
   ...CalendarHeader.propTypes,
-  ...(Day as React.ComponentType<DayProps>).propTypes,
+  ...Day.propTypes,
   theme: PropTypes.object,
   firstDay: PropTypes.number,
   displayLoadingIndicator: PropTypes.bool,

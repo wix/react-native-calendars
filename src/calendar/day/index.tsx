@@ -27,7 +27,7 @@ export interface DayProps extends BasicDayProps {
   dayComponent?: React.ComponentType<DayProps & {date?: DateData}>; // TODO: change 'date' prop type to string by removing it from overriding BasicDay's 'date' prop (breaking change for V2)
 }
 
-const Day = (props: DayProps) => {
+const Day = React.memo((props: DayProps) => {
   const {date, marking, dayComponent, markingType} = props;
   const _date = date ? new XDate(date) : undefined;
   const _isToday = isToday(_date);
@@ -82,8 +82,8 @@ const Day = (props: DayProps) => {
       {formatNumbers(_date?.getDate())}
     </Component>
   );
-};
+}, areEqual) as any;
 
-export default React.memo(Day, areEqual);
+export default Day;
 
 Day.displayName = 'Day';
