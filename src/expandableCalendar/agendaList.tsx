@@ -5,6 +5,8 @@ import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
+
 
 import XDate from 'xdate';
 
@@ -19,7 +21,8 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   LayoutChangeEvent,
-  ViewToken, TextProps
+  ViewToken,
+  TextProps
 } from 'react-native';
 
 import {isToday, isGTE, sameDate} from '../dateutils';
@@ -31,7 +34,6 @@ import {Theme} from '../types';
 import styleConstructor from './style';
 import constants from '../commons/constants';
 import Context from './Context';
-import {isEqual} from 'lodash';
 
 
 const viewabilityConfig = {
