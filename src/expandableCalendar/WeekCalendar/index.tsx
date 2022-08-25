@@ -106,7 +106,6 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
   onDayPress = (value: DateData) => {
     this.presenter.onDayPress(this.props.context, value);
-    this.props.onDayPress?.(value);
   };
 
   onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -139,7 +138,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
 
   renderItem = ({item}: any) => {
     const {allowShadow, context, ...calendarListProps} = this.props;
-    const {style, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
+    const {style, firstDay = 0, onDayPress = this.onDayPress, ...others} = extractCalendarProps(calendarListProps);
 
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
@@ -151,7 +150,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
         current={item}
         firstDay={firstDay}
         style={this.getWeekStyle(this.containerWidth, style)}
-        onDayPress={this.onDayPress}
+        onDayPress={onDayPress}
         context={currentContext}
         numberOfDays={context.numberOfDays}
         timelineLeftInset={context.timelineLeftInset}
