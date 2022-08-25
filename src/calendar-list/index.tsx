@@ -314,23 +314,23 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
 
 export default forwardRef(CalendarList);
 CalendarList.displayName = 'CalendarList';
-// CalendarList.propTypes = {
-//   ...Calendar.propTypes,
-//   pastScrollRange: PropTypes.number,
-//   futureScrollRange: PropTypes.number,
-//   calendarWidth: PropTypes.number,
-//   calendarHeight: PropTypes.number,
-//   calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-//   staticHeader: PropTypes.bool,
-//   showScrollIndicator: PropTypes.bool,
-//   animateScroll: PropTypes.bool,
-//   scrollEnabled: PropTypes.bool,
-//   scrollsToTop: PropTypes.bool,
-//   pagingEnabled: PropTypes.bool,
-//   horizontal: PropTypes.bool,
-//   keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
-//   keyExtractor: PropTypes.func,
-//   onEndReachedThreshold: PropTypes.number,
-//   onEndReached: PropTypes.func,
-//   nestedScrollEnabled: PropTypes.bool
-// };
+CalendarList.propTypes = {
+  ...Calendar.propTypes,
+  pastScrollRange: PropTypes.number,
+  futureScrollRange: PropTypes.number,
+  calendarWidth: PropTypes.number,
+  calendarHeight: PropTypes.number,
+  calendarStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+  staticHeader: PropTypes.bool,
+  showScrollIndicator: PropTypes.bool,
+  animateScroll: PropTypes.bool,
+  scrollEnabled: PropTypes.bool,
+  scrollsToTop: PropTypes.bool,
+  pagingEnabled: PropTypes.bool,
+  horizontal: PropTypes.bool,
+  keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
+  keyExtractor: PropTypes.func,
+  onEndReachedThreshold: PropTypes.number,
+  onEndReached: PropTypes.func,
+  nestedScrollEnabled: PropTypes.bool
+};
