@@ -43,7 +43,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const visibleWeek = useRef(date);
   const style = useRef(styleConstructor(theme));
   const [items, setItems] = useState(getDatesArray(current ?? date, firstDay, numberOfDays));
-  const changedItems = useRef(false);
+  const changedItems = useRef(constants.isRTL);
   const list = useRef<FlatList>(null);
 
   useEffect(() => {
@@ -136,17 +136,19 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     if (newDate !== visibleWeek.current) {
       if (APPLY_ANDROID_FIX) {
         //in android RTL the item we see is the one in the opposite direction
-        const prevIndex = items.indexOf(visibleWeek.current);
-        const newDateOffset = -1 * (prevIndex - items.indexOf(newDate));
-        const adjustedNewDate = items[prevIndex - newDateOffset];
+        const newDateOffset = -1 * (NUMBER_OF_PAGES - items.indexOf(newDate));
+        const adjustedNewDate = items[NUMBER_OF_PAGES - newDateOffset];
         visibleWeek.current = adjustedNewDate;
         setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
+        if (visibleWeek.current === items[items.length - 1]) {
+          onEndReached();
+        }
       } else {
         visibleWeek.current = newDate;
         setDate(newDate, UpdateSources.WEEK_SCROLL);
-      }
-      if (visibleWeek.current === items[0]) {
-        onEndReached();
+        if (visibleWeek.current === items[0]) {
+          onEndReached();
+        }
       }
     }
   }, [items]);

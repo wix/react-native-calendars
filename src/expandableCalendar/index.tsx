@@ -409,13 +409,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   /** Events */
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
-    console.log('press left');
     onPressArrowLeft?.(method, month);
     scrollPage(false);
   }, [onPressArrowLeft, scrollPage]);
 
   const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
-    console.log('press right');
     onPressArrowRight?.(method, month);
     scrollPage(true);
   }, [onPressArrowRight, scrollPage]);
