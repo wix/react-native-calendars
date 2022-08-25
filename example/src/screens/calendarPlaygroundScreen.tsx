@@ -86,16 +86,20 @@ const NewCalendarScreen = () => {
 
   const dotMarks = useMemo(() => {
     return {
+      [getDate(1)]: {
+        disabled: true,
+        dotColor: RED,
+        marked: true
+      },
+      [getDate(2)]: {
+        dotColor: RED,
+        marked: true
+      },
       [selected]: {
         selected: true,
         disableTouchEvent: true,
         selectedColor: PINK,
         selectedTextColor: RED
-      },
-      [getDate(1)]: {
-        disabled: true,
-        dotColor: RED,
-        marked: true
       }
     };
   }, [selected]);
