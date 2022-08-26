@@ -52,7 +52,7 @@ export default class AgendaScreen extends Component {
           const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
             this.state.items[strTime].push({
-              name: 'Item for ' + strTime + ' #' + j,
+              name: `Item for ${strTime} # ${j}`,
               height: Math.max(50, Math.floor(Math.random() * 150))
             });
           }
