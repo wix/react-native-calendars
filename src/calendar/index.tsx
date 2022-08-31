@@ -199,7 +199,7 @@ const Calendar = (props: CalendarProps) => {
       return <View key={id} style={style.current.emptyDayContainer}/>;
     }
 
-    const _marking = (markedDates?.[toMarkingFormat(day)] ?? markedDates?.[day.getDay()]) || undefined
+    const _marking = (markedDates?.[toMarkingFormat(day)] ?? markedDates?.[day.getDay()]) || undefined;
 
     return (
       <View style={style.current.dayContainer} key={id}>
