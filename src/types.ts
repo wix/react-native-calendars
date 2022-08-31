@@ -3,7 +3,7 @@ import {MarkingProps} from './calendar/day/marking';
 
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type MarkedDates = {
-  [key: string]: MarkingProps;
+  [key: string | number]: MarkingProps;
 };
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 export type Direction = 'left' | 'right';

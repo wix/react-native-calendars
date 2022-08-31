@@ -196,7 +196,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   const getMarkedDatesForItem = useCallback((item?: XDate) => {    
     if (markedDates && item) {      
       for (const [key, _] of Object.entries(markedDates)) {
-        if (sameMonth(new XDate(key), new XDate(item))) {
+        if (sameMonth(new XDate(key), new XDate(item)) || (typeof key === 'number' && key >= 0 && key <= 7)) {
           return markedDates;
         }
       }
