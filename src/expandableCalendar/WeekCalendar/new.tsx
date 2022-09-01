@@ -76,7 +76,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   const renderItem = useCallback(
     (_type: any, item: string) => {
-      const {allowShadow, ...calendarListProps} = props;
       const {/* style,  */ ...others} = extractComponentProps(Week, props);
 
       const isSameWeek = sameWeek(item, date, firstDay);
