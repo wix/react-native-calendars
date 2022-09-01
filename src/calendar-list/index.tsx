@@ -5,7 +5,7 @@ import XDate from 'xdate';
 import React, {forwardRef, useImperativeHandle, useRef, useEffect, useState, useCallback, useMemo} from 'react';
 import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
 
-import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
+import {extractHeaderProps, extractCalendarProps, extractComponentProps} from '../componentUpdater';
 import {xdateToData, parseDate} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
@@ -104,7 +104,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   } = props;
   
   const calendarProps = extractCalendarProps(props);
-  const headerProps = extractHeaderProps(props);
+  const headerProps = extractComponentProps(CalendarHeader, props);
   const calendarSize = horizontal ? calendarWidth : calendarHeight;
 
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));

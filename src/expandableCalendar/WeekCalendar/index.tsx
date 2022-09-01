@@ -6,7 +6,7 @@ import {Map} from 'immutable';
 import React, {Component} from 'react';
 import {FlatList, View, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
-import {extractCalendarProps} from '../../componentUpdater';
+import {extractCalendarProps, extractComponentProps} from '../../componentUpdater';
 import {sameWeek} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
@@ -137,8 +137,8 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
   };
 
   renderItem = ({item}: any) => {
-    const {allowShadow, context, ...calendarListProps} = this.props;
-    const {style, onDayPress = this.onDayPress, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
+    const {context} = this.props;
+    const {style, onDayPress = this.onDayPress, firstDay = 0, ...others} = extractComponentProps(Week, this.props);
 
     const isSameWeek = sameWeek(item, context.date, firstDay);
     const currentContext = isSameWeek ? context : undefined;
@@ -169,12 +169,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
   keyExtractor = (_: string, index: number) => index.toString();
 
   renderWeekDaysNames = () => {
-    return (
-      <WeekDaysNames 
-        firstDay={this.props.firstDay} 
-        style={this.style.dayHeader} 
-      />
-    );
+    return <WeekDaysNames firstDay={this.props.firstDay} style={this.style.dayHeader} />;
   };
 
   render() {

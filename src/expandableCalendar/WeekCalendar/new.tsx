@@ -9,7 +9,7 @@ import {CalendarListProps} from '../../calendar-list';
 import CalendarContext from '../../expandableCalendar/Context';
 import styleConstructor from '../style';
 import {toMarkingFormat} from '../../interface';
-import {extractCalendarProps} from '../../componentUpdater';
+import {extractCalendarProps, extractComponentProps} from '../../componentUpdater';
 import constants from '../../commons/constants';
 import {UpdateSources} from '../commons';
 import {sameWeek} from '../../dateutils';
@@ -77,7 +77,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const renderItem = useCallback(
     (_type: any, item: string) => {
       const {allowShadow, ...calendarListProps} = props;
-      const {/* style,  */ ...others} = extractCalendarProps(calendarListProps);
+      const {/* style,  */ ...others} = extractComponentProps(Week, props);
 
       const isSameWeek = sameWeek(item, date, firstDay);
 
@@ -104,7 +104,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     >
       {!hideDayNames && (
         <View style={[style.current.week, style.current.weekCalendar]}>
-          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader}/>
+          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader} />
         </View>
       )}
       <View>

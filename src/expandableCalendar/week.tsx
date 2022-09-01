@@ -5,25 +5,38 @@ import {View} from 'react-native';
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-import {extractDayProps} from '../componentUpdater';
+import {extractComponentProps } from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
-
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
+  const {
+    theme,
+    current,
+    firstDay,
+    hideExtraDays,
+    markedDates,
+    onDayPress,
+    onDayLongPress,
+    style: propsStyle,
+    numberOfDays = 1,
+    timelineLeftInset
+  } = props;
   const style = useRef(styleConstructor(theme));
-  const dayProps = extractDayProps(props);
+  const dayProps = extractComponentProps(Day, props);
   const currXdate = parseDate(current);
-  const getWeek = useCallback((date?: string) => {
-    if (date) {
-      return getWeekDates(date, firstDay);
-    }
-  }, [firstDay]);
+  const getWeek = useCallback(
+    (date?: string) => {
+      if (date) {
+        return getWeekDates(date, firstDay);
+      }
+    },
+    [firstDay]
+  );
 
   // renderWeekNumber (weekNumber) {
   //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
@@ -33,7 +46,7 @@ const Week = (props: WeekProps) => {
     // hide extra days
     if (current && hideExtraDays) {
       if (!sameMonth(day, currXdate)) {
-        return <View key={id} style={style.current.emptyDayContainer}/>;
+        return <View key={id} style={style.current.emptyDayContainer} />;
       }
     }
 
@@ -74,7 +87,9 @@ const Week = (props: WeekProps) => {
 
   return (
     <View style={style.current.container}>
-      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
+      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
+        {renderWeek()}
+      </View>
     </View>
   );
 };

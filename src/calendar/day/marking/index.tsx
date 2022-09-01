@@ -3,7 +3,7 @@ import React, {useRef} from 'react';
 import {View, ViewStyle, TextStyle, StyleProp} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
-import {extractDotProps} from '../../../componentUpdater';
+import {extractComponentProps} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
 
@@ -108,7 +108,7 @@ const Marking = (props: MarkingProps) => {
   };
 
   const renderDot = (index?: number, item?: any) => {
-    const dotProps = extractDotProps(props);
+    const dotProps = extractComponentProps(Dot, props);
     let key = index;
     let color = dotColor;
 
