@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useRef, useState, useMemo} from 'react';
 import {View, ScrollViewProps, ScrollView} from 'react-native';
 import constants from '../commons/constants';
 import {toMarkingFormat} from '../interface';
-import {extractComponentProps, extractHeaderProps} from '../componentUpdater';
+import {extractComponentProps} from '../componentUpdater';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarHeader from '../calendar/header';
 import InfiniteList from '../infinite-list';
@@ -32,9 +32,9 @@ const CALENDAR_HEIGHT = 360;
 const CalendarList = (props: CalendarListProps) => {
   const {
     initialDate,
-    horizontal, 
+    horizontal,
     scrollRange = NUMBER_OF_PAGES,
-    staticHeader, 
+    staticHeader,
     scrollViewProps,
     calendarProps,
     testID
@@ -57,56 +57,74 @@ const CalendarList = (props: CalendarListProps) => {
     scrollToMonth(currentMonth);
   }, [currentMonth]);
 
-  const getMonthIndex = useCallback((month?: XDate) => {
-    if (!month) {
-      return -1;
-    }
-    return items.findIndex(item => item.includes(month.toString('yyyy-MM')));
-  }, [items]);
-
-  const scrollToMonth = useCallback((month?: string) => {
-    if (month) {
-      const index = getMonthIndex(new XDate(month));
-      if (index !== -1) {
-        const shouldAnimate = constants.isAndroid && !horizontal ? false : true;
-        // @ts-expect-error
-        list.current?.scrollToOffset?.(index * constants.screenWidth, 0, shouldAnimate);
+  const getMonthIndex = useCallback(
+    (month?: XDate) => {
+      if (!month) {
+        return -1;
       }
-    }
-  }, [getMonthIndex]);
+      return items.findIndex(item => item.includes(month.toString('yyyy-MM')));
+    },
+    [items]
+  );
 
-  const updateMonth = useCallback((count: number, month?: XDate) => {
-    if (month) {
-      const next = new XDate(month).addMonths(count, true);
-      const nextNext = new XDate(month).addMonths(count * 2, true);
-      const nextNextIndex = getMonthIndex(nextNext);
-      if (nextNextIndex !== -1) {
-        setCurrentMonth(toMarkingFormat(next));
+  const scrollToMonth = useCallback(
+    (month?: string) => {
+      if (month) {
+        const index = getMonthIndex(new XDate(month));
+        if (index !== -1) {
+          const shouldAnimate = constants.isAndroid && !horizontal ? false : true;
+          // @ts-expect-error
+          list.current?.scrollToOffset?.(index * constants.screenWidth, 0, shouldAnimate);
+        }
       }
-    }
-  }, [getMonthIndex]);
+    },
+    [getMonthIndex]
+  );
 
-  const scrollToNextMonth = useCallback((method: () => void, month?: XDate) => {
-    if (calendarProps?.onPressArrowLeft) {
-      calendarProps?.onPressArrowLeft?.(method, month);
-    } else {
-      updateMonth(1, month);
-    }
-  }, [updateMonth]);
+  const updateMonth = useCallback(
+    (count: number, month?: XDate) => {
+      if (month) {
+        const next = new XDate(month).addMonths(count, true);
+        const nextNext = new XDate(month).addMonths(count * 2, true);
+        const nextNextIndex = getMonthIndex(nextNext);
+        if (nextNextIndex !== -1) {
+          setCurrentMonth(toMarkingFormat(next));
+        }
+      }
+    },
+    [getMonthIndex]
+  );
 
-  const scrollToPreviousMonth = useCallback((method: () => void, month?: XDate) => {
-    if (calendarProps?.onPressArrowRight) {
-      calendarProps?.onPressArrowRight?.(method, month);
-    } else {
-      updateMonth(-1, month);
-    }
-  }, [updateMonth]);
+  const scrollToNextMonth = useCallback(
+    (method: () => void, month?: XDate) => {
+      if (calendarProps?.onPressArrowLeft) {
+        calendarProps?.onPressArrowLeft?.(method, month);
+      } else {
+        updateMonth(1, month);
+      }
+    },
+    [updateMonth]
+  );
 
-  const onPageChange = useCallback((pageIndex: number, _: number, info: {scrolledByUser: boolean}) => {
-    if (shouldRenderStaticHeader && info.scrolledByUser) {
-      setCurrentMonth(items[pageIndex]);
-    }
-  }, [items]);
+  const scrollToPreviousMonth = useCallback(
+    (method: () => void, month?: XDate) => {
+      if (calendarProps?.onPressArrowRight) {
+        calendarProps?.onPressArrowRight?.(method, month);
+      } else {
+        updateMonth(-1, month);
+      }
+    },
+    [updateMonth]
+  );
+
+  const onPageChange = useCallback(
+    (pageIndex: number, _: number, info: {scrolledByUser: boolean}) => {
+      if (shouldRenderStaticHeader && info.scrolledByUser) {
+        setCurrentMonth(items[pageIndex]);
+      }
+    },
+    [items]
+  );
 
   const renderStaticHeader = () => {
     if (shouldRenderStaticHeader) {
@@ -143,7 +161,7 @@ const CalendarList = (props: CalendarListProps) => {
     const array = [...items];
     const startingDate = items[index];
     const shouldAppend = index > scrollRange;
-    
+
     if (startingDate) {
       if (shouldAppend) {
         for (let i = 2; i <= scrollRange; i++) {
@@ -176,24 +194,27 @@ const CalendarList = (props: CalendarListProps) => {
     };
   }, [scrollViewProps]);
 
-  const renderItem = useCallback((_type: any, item: string) => {
-    return (
-      <Calendar
-        {...calendarProps}
-        {...headerProps}
-        initialDate={item}
-        disableMonthChange
-        hideArrows={!horizontal}
-        onPressArrowRight={scrollToNextMonth}
-        onPressArrowLeft={scrollToPreviousMonth} 
-        hideExtraDays={calendarProps?.hideExtraDays || true}
-        style={[style.current.calendar, calendarProps?.style]}
-        headerStyle={horizontal ? calendarProps?.headerStyle : undefined}
-        testID={`${testID}_${item}`}
-        // context={context}
-      />
-    );
-  }, [calendarProps, scrollToNextMonth, scrollToPreviousMonth]);
+  const renderItem = useCallback(
+    (_type: any, item: string) => {
+      return (
+        <Calendar
+          {...calendarProps}
+          {...headerProps}
+          initialDate={item}
+          disableMonthChange
+          hideArrows={!horizontal}
+          onPressArrowRight={scrollToNextMonth}
+          onPressArrowLeft={scrollToPreviousMonth}
+          hideExtraDays={calendarProps?.hideExtraDays || true}
+          style={[style.current.calendar, calendarProps?.style]}
+          headerStyle={horizontal ? calendarProps?.headerStyle : undefined}
+          testID={`${testID}_${item}`}
+          // context={context}
+        />
+      );
+    },
+    [calendarProps, scrollToNextMonth, scrollToPreviousMonth]
+  );
 
   return (
     <View style={listContainerStyle}>
@@ -220,14 +241,13 @@ const CalendarList = (props: CalendarListProps) => {
 };
 export default CalendarList;
 
-
 function getDate(date: string, index: number) {
   const d = new XDate(date);
   d.addMonths(index, true);
-  
+
   // if (index !== 0) {
-    d.setDate(1);
-    // }
+  d.setDate(1);
+  // }
   return toMarkingFormat(d);
 }
 

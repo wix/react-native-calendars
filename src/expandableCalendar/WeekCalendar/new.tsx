@@ -9,7 +9,7 @@ import {CalendarListProps} from '../../calendar-list';
 import CalendarContext from '../../expandableCalendar/Context';
 import styleConstructor from '../style';
 import {toMarkingFormat} from '../../interface';
-import {extractCalendarProps, extractComponentProps} from '../../componentUpdater';
+import {extractComponentProps} from '../../componentUpdater';
 import constants from '../../commons/constants';
 import {UpdateSources} from '../commons';
 import {sameWeek} from '../../dateutils';
