@@ -1,6 +1,6 @@
 import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
-import {Calendar} from 'react-native-calendars';
+import {Calendar, CalendarUtils} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2022-07-06';
@@ -9,21 +9,27 @@ const CalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
 
+  const getDate = (count: number) => {
+    const date = new Date(INITIAL_DATE);
+    const newDate = date.setDate(date.getDate() + count);
+    return CalendarUtils.getCalendarDateString(newDate);
+  };
+
   const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
   }, []);
 
   const marked = useMemo(() => {
     return {
+      [getDate(-1)]: {
+        dotColor: 'red',
+        marked: true
+      },
       [selected]: {
         selected: true,
         disableTouchEvent: true,
         selectedColor: 'orange',
         selectedTextColor: 'red'
-      },
-      ['2022-07-22']: {
-        dotColor: 'red',
-        marked: true
       }
     };
   }, [selected]);
@@ -60,9 +66,10 @@ const CalendarScreen = () => {
         <Calendar
           style={styles.calendar}
           hideExtraDays
-          current={'2012-05-16'}
-          minDate={'2012-05-10'}
-          maxDate={'2012-05-20'}
+          current={INITIAL_DATE}
+          minDate={getDate(-6)}
+          maxDate={getDate(6)}
+          disableAllTouchEventsForDisabledDays
         />
       </Fragment>
     );
@@ -74,16 +81,15 @@ const CalendarScreen = () => {
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
         <Calendar
           style={styles.calendar}
-          current={'2012-05-16'}
+          current={INITIAL_DATE}
           hideExtraDays
-          disableAllTouchEventsForDisabledDays
           firstDay={1}
           markedDates={{
-            '2012-05-23': {selected: true, marked: true, disableTouchEvent: true},
-            '2012-05-24': {selected: true, marked: true, dotColor: 'red'},
-            '2012-05-25': {marked: true, dotColor: 'red', disableTouchEvent: true},
-            '2012-05-26': {marked: true},
-            '2012-05-27': {disabled: true, activeOpacity: 0, disableTouchEvent: false}
+            [getDate(6)]: {selected: true, marked: true, disableTouchEvent: true},
+            [getDate(7)]: {selected: true, marked: true, dotColor: 'red'},
+            [getDate(8)]: {marked: true, dotColor: 'red', disableTouchEvent: true},
+            [getDate(9)]: {marked: true},
+            [getDate(10)]: {disabled: true, activeOpacity: 0, disableTouchEvent: false}
           }}
           hideArrows={true}
           // disabledByDefault={true}
@@ -98,17 +104,17 @@ const CalendarScreen = () => {
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
         <Calendar
           style={styles.calendar}
-          current={'2012-05-16'}
+          current={INITIAL_DATE}
           markingType={'multi-dot'}
           markedDates={{
-            '2012-05-08': {
+            [getDate(2)]: {
               selected: true,
               dots: [
                 {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
                 {key: 'massage', color: 'red', selectedDotColor: 'white'}
               ]
             },
-            '2012-05-09': {
+            [getDate(3)]: {
               disabled: true,
               dots: [
                 {key: 'vacation', color: 'green', selectedDotColor: 'red'},
@@ -127,8 +133,8 @@ const CalendarScreen = () => {
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
         <Calendar
           // style={styles.calendar}
-          current={'2012-05-16'}
-          minDate={'2012-05-10'}
+          current={INITIAL_DATE}
+          minDate={getDate(-5)}
           displayLoadingIndicator
           markingType={'period'}
           theme={{
@@ -157,15 +163,15 @@ const CalendarScreen = () => {
             }
           }}
           markedDates={{
-            '2012-05-17': {disabled: true},
-            '2012-05-08': {textColor: 'pink'},
-            '2012-05-09': {textColor: 'pink'},
-            '2012-05-14': {startingDay: true, color: 'green', endingDay: true},
-            '2012-05-21': {startingDay: true, color: 'green'},
-            '2012-05-22': {endingDay: true, color: 'gray'},
-            '2012-05-24': {startingDay: true, color: 'gray'},
-            '2012-05-25': {color: 'gray'},
-            '2012-05-26': {endingDay: true, color: 'gray'}
+            [getDate(-2)]: {disabled: true},
+            [getDate(1)]: {textColor: 'pink'},
+            [getDate(2)]: {textColor: 'pink'},
+            [getDate(12)]: {startingDay: true, color: 'green', endingDay: true},
+            [getDate(22)]: {startingDay: true, color: 'green'},
+            [getDate(23)]: {endingDay: true, color: 'gray'},
+            [getDate(25)]: {startingDay: true, color: 'gray'},
+            [getDate(26)]: {color: 'gray'},
+            [getDate(27)]: {endingDay: true, color: 'gray'}
           }}
         />
       </Fragment>
@@ -177,23 +183,23 @@ const CalendarScreen = () => {
       <Fragment>
         <Text style={styles.text}>Calendar with period marking and dot marking</Text>
         <Calendar
-          current={'2012-05-16'}
-          minDate={'2012-05-01'}
+          current={INITIAL_DATE}
+          minDate={getDate(-14)}
           markingType={'period'}
           markedDates={{
-            '2012-05-15': {marked: true, dotColor: '#50cebb'},
-            '2012-05-16': {marked: true, dotColor: '#50cebb'},
-            '2012-05-21': {startingDay: true, color: '#50cebb', textColor: 'white'},
-            '2012-05-22': {
+            [INITIAL_DATE]: {marked: true, dotColor: '#50cebb'},
+            [getDate(4)]: {marked: true, dotColor: '#50cebb'},
+            [getDate(9)]: {startingDay: true, color: '#50cebb', textColor: 'white'},
+            [getDate(10)]: {
               color: '#70d7c7',
               customTextStyle: {
                 color: '#FFFAAA',
                 fontWeight: '700'
               }
             },
-            '2012-05-23': {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
-            '2012-05-24': {color: '#70d7c7', inactive: true},
-            '2012-05-25': {
+            [getDate(11)]: {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
+            [getDate(12)]: {color: '#70d7c7', inactive: true},
+            [getDate(13)]: {
               endingDay: true,
               color: '#50cebb',
               textColor: 'white',
@@ -202,7 +208,7 @@ const CalendarScreen = () => {
                 borderBottomRightRadius: 5
               }
             },
-            '2012-05-30': {inactive: true, disableTouchEvent: true}
+            [getDate(25)]: {inactive: true, disableTouchEvent: true}
           }}
           disabledDaysIndexes={[0, 6]}
           theme={{
@@ -223,23 +229,23 @@ const CalendarScreen = () => {
         <Text style={styles.text}>Calendar with multi-period marking</Text>
         <Calendar
           style={styles.calendar}
-          current={'2012-05-16'}
+          current={INITIAL_DATE}
           markingType={'multi-period'}
           markedDates={{
-            '2012-05-16': {
+            [INITIAL_DATE]: {
               periods: [
                 {startingDay: true, endingDay: false, color: 'green'},
                 {startingDay: true, endingDay: false, color: 'orange'}
               ]
             },
-            '2012-05-17': {
+            [getDate(1)]: {
               periods: [
                 {startingDay: false, endingDay: true, color: 'green'},
                 {startingDay: false, endingDay: true, color: 'orange'},
                 {startingDay: true, endingDay: false, color: 'pink'}
               ]
             },
-            '2012-05-18': {
+            [getDate(3)]: {
               periods: [
                 {startingDay: true, endingDay: true, color: 'orange'},
                 {color: 'transparent'},
@@ -259,11 +265,11 @@ const CalendarScreen = () => {
         <Calendar
           style={styles.calendar}
           hideExtraDays
-          current={'2018-03-01'}
-          minDate={'2018-03-01'}
+          current={INITIAL_DATE}
+          minDate={INITIAL_DATE}
           markingType={'custom'}
           markedDates={{
-            '2018-03-01': {
+            [INITIAL_DATE]: {
               customStyles: {
                 container: {
                   backgroundColor: 'white',
@@ -275,10 +281,10 @@ const CalendarScreen = () => {
                 }
               }
             },
-            '2018-03-08': {
+            [getDate(8)]: {
               selected: true
             },
-            '2018-03-09': {
+            [getDate(9)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'red',
@@ -289,7 +295,7 @@ const CalendarScreen = () => {
                 }
               }
             },
-            '2018-03-14': {
+            [getDate(14)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'green'
@@ -299,7 +305,7 @@ const CalendarScreen = () => {
                 }
               }
             },
-            '2018-03-15': {
+            [getDate(15)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'black',
@@ -310,10 +316,10 @@ const CalendarScreen = () => {
                 }
               }
             },
-            '2018-03-21': {
+            [getDate(21)]: {
               disabled: true
             },
-            '2018-03-28': {
+            [getDate(28)]: {
               customStyles: {
                 text: {
                   color: 'black',
@@ -321,7 +327,7 @@ const CalendarScreen = () => {
                 }
               }
             },
-            '2018-03-30': {
+            [getDate(30)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'pink',
@@ -336,7 +342,7 @@ const CalendarScreen = () => {
                 }
               }
             },
-            '2018-03-31': {
+            [getDate(31)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'orange',
@@ -477,10 +483,10 @@ const CalendarScreen = () => {
           disableAllTouchEventsForInactiveDays
           current={INITIAL_DATE}
           markedDates={{
-            '2020-02-10': {
+            [getDate(3)]: {
               inactive: true
             },
-            '2020-02-11': {
+            [getDate(4)]: {
               inactive: true
             }
           }}

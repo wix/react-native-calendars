@@ -1,6 +1,5 @@
 const XDate = require('xdate');
 const {toMarkingFormat} = require('./interface');
-const {getDefaultLocale} = require('./services');
 
 const latinNumbersPattern = /[0-9]/g;
 
@@ -64,7 +63,7 @@ export function isLTE(a: XDate, b: XDate) {
 }
 
 export function formatNumbers(date: any) {
-  const numbers = getDefaultLocale().numbers;
+  const numbers = getLocale().numbers;
   return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
 }
 
@@ -91,7 +90,7 @@ export function month(date: XDate) { // exported for tests only
 }
 
 export function weekDayNames(firstDayOfWeek = 0) {
-  let weekDaysNames = getDefaultLocale().dayNamesShort;
+  let weekDaysNames = getLocale().dayNamesShort;
   const dayShift = firstDayOfWeek % 7;
   if (dayShift) {
     weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));
@@ -190,4 +189,8 @@ export function getPartialWeekDates(date?: string, numberOfDays = 7) {
 export function generateDay(originDate: string | XDate, daysOffset = 0) {
   const baseDate = originDate instanceof XDate ? originDate : new XDate(originDate);
   return toMarkingFormat(baseDate.clone().addDays(daysOffset));
+}
+
+export function getLocale() {
+  return XDate.locales[XDate.defaultLocale];
 }

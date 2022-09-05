@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import {MarkedDates} from '../../../src/types';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
@@ -116,12 +117,8 @@ export const agendaItems = [
   }
 ];
 
-type MarkedDate = {
-  [key: string]: object;
-}
-
 export function getMarkedDates() {
-  const marked: MarkedDate = {};
+  const marked: MarkedDates = {};
 
   agendaItems.forEach(item => {
     // NOTE: only mark dates with data

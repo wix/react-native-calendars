@@ -11,16 +11,12 @@ import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-import {DateData, Theme} from '../types';
+import {DateData, Theme, MarkedDates} from '../types';
+import {useDidUpdate} from '../hooks';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
 import Day, {DayProps} from './day/index';
 import BasicDay from './day/basic';
-import {MarkingProps} from './day/marking';
-
-type MarkedDatesType = {
-  [key: string]: MarkingProps;
-};
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
@@ -42,7 +38,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
   maxDate?: string;
   /** Collection of dates that have to be marked */
-  markedDates?: MarkedDatesType;
+  markedDates?: MarkedDates;
   /** Do not show days of other months in month page */
   hideExtraDays?: boolean;
   /** Always show six weeks on each month (only when hideExtraDays = false) */
@@ -62,7 +58,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Disable days by default */
   disabledByDefault?: boolean;
   /** Style passed to the header */
-  headerStyle?: ViewStyle;
+  headerStyle?: StyleProp<ViewStyle>;
   /** Allow rendering a totally custom header */
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
@@ -103,7 +99,6 @@ const Calendar = (props: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
-  const isMounted = useRef(false);
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
 
   useEffect(() => {
@@ -112,15 +107,10 @@ const Calendar = (props: CalendarProps) => {
     }
   }, [initialDate]);
 
-  useEffect(() => {
-    if (isMounted.current) {
-      // Avoid callbacks call on mount
-      const _currentMonth = currentMonth.clone();
-      onMonthChange?.(xdateToData(_currentMonth));
-      onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
-    } else {
-      isMounted.current = true;
-    }
+  useDidUpdate(() => {
+    const _currentMonth = currentMonth.clone();
+    onMonthChange?.(xdateToData(_currentMonth));
+    onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
   }, [currentMonth]);
 
   const updateMonth = useCallback((newMonth: XDate) => {

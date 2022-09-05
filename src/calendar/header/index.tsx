@@ -12,7 +12,8 @@ import {
   StyleProp,
   ViewStyle,
   AccessibilityActionEvent,
-  ColorValue
+  ColorValue,
+  Insets
 } from 'react-native';
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import styleConstructor from './style';
@@ -42,6 +43,8 @@ export interface CalendarHeaderProps {
   onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
+  /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20 */
+  arrowsHitSlop?: Insets | number;
   /** Disable left arrow */
   disableArrowLeft?: boolean;
   /** Disable right arrow */
@@ -67,7 +70,6 @@ export interface CalendarHeaderProps {
   timelineLeftInset?: number;
 }
 
-const arrowHitSlop = {left: 20, right: 20, top: 20, bottom: 20};
 const accessibilityActions = [
   {name: 'increment', label: 'increment'},
   {name: 'decrement', label: 'decrement'}
@@ -87,6 +89,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     renderArrow,
     onPressArrowLeft,
     onPressArrowRight,
+    arrowsHitSlop = 20,
     disableArrowLeft,
     disableArrowRight,
     disabledDaysIndexes,
@@ -115,7 +118,14 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const dayNamesStyle = useMemo(() => {
     return [style.current.week, numberOfDaysCondition ? partialWeekStyle : undefined];
   }, [numberOfDaysCondition, partialWeekStyle]);
-
+  const hitSlop: Insets | undefined = useMemo(
+    () =>
+      typeof arrowsHitSlop === 'number'
+        ? {top: arrowsHitSlop, left: arrowsHitSlop, bottom: arrowsHitSlop, right: arrowsHitSlop}
+        : arrowsHitSlop,
+    [arrowsHitSlop]
+  );
+  
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -169,10 +179,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       }
 
       const dayTextAtIndex = `dayTextAtIndex${index}`;
-      // @ts-expect-error
-      if (style[dayTextAtIndex]) {
-        // @ts-expect-error
-        dayStyle.push(style[dayTextAtIndex]);
+      if (style.current[dayTextAtIndex]) {
+        dayStyle.push(style.current[dayTextAtIndex]);
       }
 
       return (
@@ -218,14 +226,14 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-    const renderArrowDirection = isLeft ? 'left' : 'right';
-
+    const renderArrowDirection = isLeft ? 'left' : 'right';   
+      
     return (
       <TouchableOpacity
         onPress={onPress}
         disabled={shouldDisable}
         style={style.current.arrow}
-        hitSlop={arrowHitSlop}
+        hitSlop={hitSlop}
         testID={`${testID}.${arrowId}`}
       >
         {renderArrow ? (
@@ -294,5 +302,6 @@ export default CalendarHeader;
 CalendarHeader.displayName = 'CalendarHeader';
 CalendarHeader.defaultProps = {
   monthFormat: 'MMMM yyyy',
-  webAriaLevel: 1
+  webAriaLevel: 1,
+  arrowsHitSlop: 20
 };
