@@ -279,11 +279,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const newTempDate = useRef(date);
 
-  const _setDate = useCallback(debounce((updateSource = updateSources.PAGE_SCROLL) => {
+  const _setDate = useCallback(debounce((updateSource = UpdateSources.PAGE_SCROLL) => {
     setDate?.(newTempDate.current, updateSource);
   }, 300, {leading: false, trailing: true}), [setDate]);
 
-  const updatePage = useCallback((next: boolean, updateSource = updateSources.ARROW_PRESS) => {
+  const updatePage = useCallback((next: boolean, updateSource = UpdateSources.ARROW_PRESS) => {
     if (horizontal) {
       const d = parseDate(newTempDate.current);
 
@@ -307,7 +307,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       }
 
-      if (updateSource === updateSources.ARROW_PRESS) {
+      if (updateSource === UpdateSources.ARROW_PRESS) {
         scrollToDate(d);
       }
 
@@ -466,7 +466,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         // for horizontal scroll (by user)
         if (visibleMonth.current !== getMonth(date) && !autoScroll.current) {
           const next = isLaterDate(newDate, date);
-          updatePage(next, updateSources.PAGE_SCROLL);
+          updatePage(next, UpdateSources.PAGE_SCROLL);
         } else {
           autoScroll.current = false;
         }
