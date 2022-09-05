@@ -307,7 +307,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       }
 
-      if (updateSource === UpdateSources.ARROW_PRESS) {
+      if (updateSource === UpdateSources.ARROW_PRESS && isOpen) { // for CalendarList scroll
         scrollToDate(d);
       }
 
