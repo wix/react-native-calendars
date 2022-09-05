@@ -5,10 +5,12 @@ import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
+
 
 import XDate from 'xdate';
 
-import React, {useCallback, useContext, useEffect, useRef} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   Text,
   SectionList,
@@ -19,9 +21,11 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   LayoutChangeEvent,
-  ViewToken
+  ViewToken,
+  TextProps
 } from 'react-native';
 
+import {useDidUpdate} from '../hooks';
 import {isToday, isGTE, sameDate} from '../dateutils';
 import {getMoment} from '../momentResolver';
 import {parseDate} from '../interface';
@@ -67,25 +71,27 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
  */
 const AgendaList = (props: AgendaListProps) => {
   const {
-    theme, 
-    sections, 
-    scrollToNextEvent, 
-    viewOffset = 0, 
-    avoidDateUpdates, 
-    onScroll, 
-    onMomentumScrollBegin, 
+    theme,
+    sections,
+    scrollToNextEvent,
+    viewOffset = 0,
+    avoidDateUpdates,
+    onScroll,
+    onMomentumScrollBegin,
     onMomentumScrollEnd,
     onScrollToIndexFailed,
     renderSectionHeader,
     sectionStyle,
     keyExtractor,
-    dayFormatter, 
-    dayFormat = 'dddd, MMM d', 
-    useMoment, 
+    dayFormatter,
+    dayFormat = 'dddd, MMM d',
+    useMoment,
     markToday = true,
-    onViewableItemsChanged
+    onViewableItemsChanged,
   } = props;
+
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
+  
   const style = useRef(styleConstructor(theme));
   const list = useRef<any>();
   const _topSection = useRef(sections[0]?.title);
@@ -101,7 +107,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
   }, []);
 
-  useEffect(() => {
+  useDidUpdate(() => {
     // NOTE: on first init data should set first section to the current date!!!
     if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
       scrollToSection(date);
@@ -135,7 +141,7 @@ const AgendaList = (props: AgendaListProps) => {
     return i;
   };
 
-  const getSectionTitle = (title: string) => {
+  const getSectionTitle = useCallback((title: string) => {
     if (!title) return;
 
     let sectionTitle = title;
@@ -158,7 +164,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
 
     return sectionTitle;
-  };
+  }, []);
 
   const scrollToSection = useCallback(debounce((d) => {
     const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
@@ -191,14 +197,15 @@ const AgendaList = (props: AgendaListProps) => {
       }
     }
     onViewableItemsChanged?.(info);
-  }, [_topSection.current, didScroll.current, avoidDateUpdates, setDate, onViewableItemsChanged]);
+  }, [avoidDateUpdates, setDate, onViewableItemsChanged]);
 
   const _onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!didScroll.current) {
       didScroll.current = true;
+      scrollToSection.cancel();
     }
     onScroll?.(event);
-  }, [didScroll.current, onScroll]);
+  }, [onScroll]);
 
   const _onMomentumScrollBegin = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setDisabled?.(true);
@@ -211,6 +218,8 @@ const AgendaList = (props: AgendaListProps) => {
     setDisabled?.(false);
     onMomentumScrollEnd?.(event);
   }, [onMomentumScrollEnd, setDisabled]);
+
+  const headerTextStyle = useMemo(() => [style.current.sectionText, sectionStyle], [sectionStyle]);
 
   const _onScrollToIndexFailed = useCallback((info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
     if (onScrollToIndexFailed) {
@@ -231,12 +240,9 @@ const AgendaList = (props: AgendaListProps) => {
       return renderSectionHeader(title);
     }
 
-    return (
-      <Text allowFontScaling={false} style={[style.current.sectionText, sectionStyle]} onLayout={onHeaderLayout}>
-        {getSectionTitle(title)}
-      </Text>
-    );
-  }, []);
+    const headerTitle = getSectionTitle(title);
+    return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
+  }, [headerTextStyle]);
 
   const _keyExtractor = useCallback((item: any, index: number) => {
     return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
@@ -263,6 +269,24 @@ const AgendaList = (props: AgendaListProps) => {
   //   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
   // }
 };
+
+interface AgendaSectionHeaderProps {
+  title?: string;
+  onLayout: TextProps['onLayout'];
+  style: TextProps['style'];
+}
+
+function areTextPropsEqual(prev: AgendaSectionHeaderProps, next: AgendaSectionHeaderProps): boolean {
+  return isEqual(prev.style, next.style) && prev.title === next.title;
+}
+
+const AgendaSectionHeader = React.memo((props: AgendaSectionHeaderProps) => {
+  return (
+    <Text allowFontScaling={false} style={props.style} onLayout={props.onLayout}>
+      {props.title}
+    </Text>
+  );
+}, areTextPropsEqual);
 
 export default AgendaList;
 

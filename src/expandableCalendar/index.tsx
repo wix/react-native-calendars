@@ -32,10 +32,9 @@ import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
 import WeekCalendar from './WeekCalendar';
 import Context from './Context';
-
 import constants from '../commons/constants';
-const commons = require('./commons');
-const updateSources = commons.UpdateSources;
+import {UpdateSources} from './commons';
+
 enum Positions {
   CLOSED = 'closed',
   OPEN = 'open'
@@ -226,7 +225,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     ];
   }, [calendarStyle]);
 
-  const headerStyle = useMemo(() => {
+  const animatedHeaderStyle = useMemo(() => {
     return [style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}];
   }, [headerDeltaY.current]);
 
@@ -432,7 +431,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const _onDayPress = useCallback((value: DateData) => {
     if (numberOfDaysCondition) {
-      setDate?.(value.dateString, updateSources.DAY_PRESS);
+      setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
     if (closeOnDayPress) {
       closeCalendar();
@@ -513,7 +512,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={header}
-        style={headerStyle}
+        style={animatedHeaderStyle}
         pointerEvents={'none'}
       >
         <Text allowFontScaling={false} style={style.current.headerTitle}>
@@ -564,6 +563,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
   }, [numberOfDays]);
 
+  const _headerStyle = useMemo(() => {
+    return [numberOfDaysHeaderStyle, props.headerStyle];
+  }, [props.headerStyle]);
+
   const renderCalendarList = () => {
     return (
       <CalendarList
@@ -586,7 +589,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         renderArrow={_renderArrow}
         staticHeader
         numberOfDays={numberOfDays}
-        headerStyle={numberOfDaysHeaderStyle}
+        headerStyle={_headerStyle}
         timelineLeftInset={timelineLeftInset}
       />
     );
