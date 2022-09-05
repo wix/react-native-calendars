@@ -55,7 +55,7 @@ const ExpandableCalendarScreen = (props: Props) => {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           // calendarStyle={styles.calendar}
-          // headerStyle={styles.calendar} // for horizontal only
+          // headerStyle={styles.header} // for horizontal only
           // disableWeekScroll
           theme={theme.current}
           // disableAllTouchEventsForDisabledDays
@@ -72,7 +72,7 @@ const ExpandableCalendarScreen = (props: Props) => {
         renderItem={renderItem}
         // scrollToNextEvent
         sectionStyle={styles.section}
-        // dayFormat={'YYYY-MM-d'}
+        // dayFormat={'yyyy-MM-d'}
       />
     </CalendarProvider>
   );
@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
   calendar: {
     paddingLeft: 20,
     paddingRight: 20
+  },
+  header: {
+    backgroundColor: 'lightgrey'
   },
   section: {
     backgroundColor: lightThemeColor,

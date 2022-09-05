@@ -60,7 +60,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Disable days by default */
   disabledByDefault?: boolean;
   /** Style passed to the header */
-  headerStyle?: ViewStyle;
+  headerStyle?: StyleProp<ViewStyle>;
   /** Allow rendering a totally custom header */
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
