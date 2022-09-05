@@ -262,9 +262,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
 
   /** Scroll */
+  
   const autoScroll = useRef(false);
 
-  const scrollToDate = throttle((date: string) => {
+  const scrollToDate = useCallback(throttle((date: string) => {
     autoScroll.current = true;
 
     if (!horizontal) {
@@ -273,15 +274,15 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       // don't scroll if the month is already visible
       calendarList?.current?.scrollToMonth(date);
     }
-  }, 100, {leading: false, trailing: true});
+  }, 300, {leading: true, trailing: false}), [horizontal]);
 
   /** Update Date */
 
   const newTempDate = useRef(date);
 
-  const _setDate = debounce((updateSource = updateSources.PAGE_SCROLL) => {
+  const _setDate = useCallback(debounce((updateSource = updateSources.PAGE_SCROLL) => {
     setDate?.(newTempDate.current, updateSource);
-  }, 300, {leading: false, trailing: true});
+  }, 300, {leading: false, trailing: true}), [setDate]);
 
   const updatePage = useCallback((next: boolean, updateSource = updateSources.ARROW_PRESS) => {
     if (horizontal) {
