@@ -242,9 +242,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return {height: deltaY.current};
   }, [deltaY.current]);
 
-  const numberOfDaysCondition = useMemo(() => {
-    return !numberOfDays || numberOfDays && numberOfDays <= 1; 
-  }, [numberOfDays]);
+  const numberOfDaysCondition = !numberOfDays || numberOfDays && numberOfDays <= 1; 
 
   /** Effects */
 
@@ -439,7 +437,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       closeCalendar();
     }
     onDayPress?.(value);
-  }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
+  }, [onDayPress, closeOnDayPress, closeCalendar]);
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
     onPressArrowLeft?.(method, month);
