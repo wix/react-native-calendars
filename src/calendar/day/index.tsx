@@ -1,5 +1,8 @@
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
+import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
+import some from 'lodash/some';
 
 import {formatNumbers, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
@@ -9,7 +12,6 @@ import {SELECT_DATE_SLOT} from '../../testIDs';
 import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
-import {isEqual, omit, some} from 'lodash';
 
 function areEqual(prevProps: DayProps, nextProps: DayProps) {
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');

@@ -2,14 +2,13 @@ import isEmpty from 'lodash/isEmpty';
 import React, {useCallback} from 'react';
 import {StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import testIDs from '../testIDs';
-import {isEqual} from 'lodash';
 
 
 interface ItemProps {
   item: any;
 }
 
-const AgendaItem = React.memo((props: ItemProps) => {
+const AgendaItem = (props: ItemProps) => {
   const {item} = props;
 
   const buttonPressed = useCallback(() => {
@@ -40,7 +39,7 @@ const AgendaItem = React.memo((props: ItemProps) => {
       </View>
     </TouchableOpacity>
   );
-}, isEqual);
+};
 
 export default React.memo(AgendaItem);
 

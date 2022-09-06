@@ -39,20 +39,21 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
   const {style: propsStyle, onDayPress, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
-  const {date, numberOfDays, updateSource, prevDate, setDate, timelineLeftInset} = context;
+  const {date, numberOfDays, updateSource, setDate, timelineLeftInset} = context;
   const visibleWeek = useRef(date);
   const style = useRef(styleConstructor(theme));
   const [items, setItems] = useState(getDatesArray(current ?? date, firstDay, numberOfDays));
   const changedItems = useRef(constants.isRTL);
   const list = useRef<FlatList>(null);
+  const currentIndex = useRef(NUMBER_OF_PAGES);
 
   useEffect(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
-      const oldIndex = items.findIndex(item => sameWeek(item, prevDate, firstDay));
-      if (pageIndex !== oldIndex) {
+      if (pageIndex !== currentIndex.current) {
         if (pageIndex >= 0) {
           visibleWeek.current = items[pageIndex];
+          currentIndex.current = pageIndex;
         }
         pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: pageIndex, animated: false});
       }
@@ -63,15 +64,15 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return calendarWidth ?? constants.screenWidth;
   }, [calendarWidth]);
 
-  const onDayPressCallback = useCallback((value?: DateData) => {
+  const onDayPressCallback = useCallback((value: DateData) => {
     if (onDayPress) {
       onDayPress(value);
-    } else if (value) {
+    } else {
       setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
   }, [onDayPress]);
 
-  const getWeekStyle = useMemo(() => {
+  const weekStyle = useMemo(() => {
     return [{width: containerWidth}, propsStyle];
   }, [containerWidth, propsStyle]);
 
@@ -84,7 +85,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         key={item}
         current={item}
         firstDay={firstDay}
-        style={getWeekStyle}
+        style={weekStyle}
         context={currentContext}
         onDayPress={onDayPressCallback}
         numberOfDays={numberOfDays}
@@ -127,12 +128,20 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     };
   }, [containerWidth]);
 
+  const onEndReached = useCallback(() => {
+    changedItems.current = true;
+    setItems(getDatesArray(visibleWeek.current, firstDay, numberOfDays));
+    currentIndex.current = NUMBER_OF_PAGES;
+    list?.current?.scrollToIndex({index: NUMBER_OF_PAGES, animated: false});
+  }, [firstDay, numberOfDays]);
+
   const onViewableItemsChanged = useCallback(({viewableItems}: { viewableItems: Array<ViewToken>}) => {
-    const newDate = viewableItems[0]?.item;
     if (changedItems.current) {
       changedItems.current = false;
       return;
     }
+
+    const newDate = viewableItems[0]?.item;
     if (newDate !== visibleWeek.current) {
       if (APPLY_ANDROID_FIX) {
         //in android RTL the item we see is the one in the opposite direction
@@ -151,7 +160,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         }
       }
     }
-  }, [items]);
+  }, [items, onEndReached]);
 
   const viewabilityConfigCallbackPairs = useRef([{
       viewabilityConfig: {
@@ -159,12 +168,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       },
       onViewableItemsChanged,
     }]);
-
-  const onEndReached = useCallback(() => {
-    changedItems.current = true;
-    setItems(getDatesArray(visibleWeek.current, firstDay, numberOfDays));
-    list?.current?.scrollToIndex({index: NUMBER_OF_PAGES, animated: false});
-  }, [firstDay, numberOfDays]);
 
   return (
     <View
@@ -214,7 +217,7 @@ function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays
   return toMarkingFormat(newDate);
 }
 
-function getDatesArray (date: string, firstDay: number, numberOfDays?: number) {
+function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
   return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
     return getDate(date, firstDay, index-NUMBER_OF_PAGES, numberOfDays);
   });

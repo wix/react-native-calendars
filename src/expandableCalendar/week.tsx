@@ -1,6 +1,7 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
 import {View} from 'react-native';
+import isEqual from 'lodash/isEqual';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
@@ -10,7 +11,6 @@ import styleConstructor from './style';
 import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 import {CalendarContextProps} from './Context';
-import {isEmpty, isEqual} from 'lodash';
 
 
 export type WeekProps = CalendarProps & {
@@ -18,9 +18,6 @@ export type WeekProps = CalendarProps & {
 };
 
 const propsAreEqual = (prevProps: WeekProps, nextProps: WeekProps) => {
-  if (isEmpty(nextProps.context)) {
-    return true;
-  }
   const prevPropsToCheck = {
     ...prevProps.markedDates,
     ...prevProps.context,
@@ -31,7 +28,7 @@ const propsAreEqual = (prevProps: WeekProps, nextProps: WeekProps) => {
     ...nextProps.context,
   };
 
-  return isEmpty(nextProps.context) || isEqual(prevPropsToCheck, nextPropsToCheck);
+  return isEqual(prevPropsToCheck, nextPropsToCheck);
 };
 
 const Week = React.memo((props: WeekProps) => {
