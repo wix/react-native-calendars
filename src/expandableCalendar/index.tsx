@@ -225,7 +225,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     ];
   }, [calendarStyle]);
 
-  const headerStyle = useMemo(() => {
+  const animatedHeaderStyle = useMemo(() => {
     return [style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}];
   }, [headerDeltaY.current]);
 
@@ -497,7 +497,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={header}
-        style={headerStyle}
+        style={animatedHeaderStyle}
         pointerEvents={'none'}
       >
         <Text allowFontScaling={false} style={style.current.headerTitle}>
@@ -548,6 +548,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
   }, [numberOfDays]);
 
+  const _headerStyle = useMemo(() => {
+    return [numberOfDaysHeaderStyle, props.headerStyle];
+  }, [props.headerStyle]);
+
   const renderCalendarList = () => {
     return (
       <CalendarList
@@ -570,7 +574,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         renderArrow={_renderArrow}
         staticHeader
         numberOfDays={numberOfDays}
-        headerStyle={numberOfDaysHeaderStyle}
+        headerStyle={_headerStyle}
         timelineLeftInset={timelineLeftInset}
       />
     );
