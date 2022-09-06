@@ -1,8 +1,8 @@
+import omit from 'lodash/omit';
+import isEqual from 'lodash/isEqual';
+import some from 'lodash/some';
 import XDate from 'xdate';
 import React, {useMemo} from 'react';
-import isEqual from 'lodash/isEqual';
-import omit from 'lodash/omit';
-import some from 'lodash/some';
 
 import {formatNumbers, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';

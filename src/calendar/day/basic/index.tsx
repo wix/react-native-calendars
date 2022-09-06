@@ -21,6 +21,7 @@ export interface BasicDayProps extends ViewProps {
   onLongPress?: (date?: DateData) => void;
   /** The date to return from press callbacks */
   date?: string;
+
   /** Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/

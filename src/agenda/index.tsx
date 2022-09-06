@@ -212,10 +212,8 @@ export default class Agenda extends Component<AgendaProps, State> {
     }
   }
 
-  onDayPress = (d?: DateData) => {
-    if (d) {
-      this.chooseDay(d, !this.state.calendarScrollable);
-    }
+  onDayPress = (d: DateData) => {
+    this.chooseDay(d, !this.state.calendarScrollable);
   };
 
   chooseDay(d: DateData, optimisticScroll: boolean) {

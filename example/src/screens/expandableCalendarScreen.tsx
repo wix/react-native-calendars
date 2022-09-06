@@ -25,7 +25,7 @@ const ExpandableCalendarScreen = (props: Props) => {
   // const onDateChanged = useCallback((date, updateSource) => {
   //   console.log('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
   // }, []);
-  //
+
   // const onMonthChange = useCallback(({dateString}) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);

@@ -217,7 +217,7 @@ const CalendarScreen = () => {
             textSectionTitleColor: '#319e8e',
             arrowColor: '#319e8e'
           }}
-          onDayPress={(day) => console.warn(`${day?.dateString} pressed`)}
+          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
         />
       </Fragment>
     );
