@@ -7,10 +7,9 @@ import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
-
 import XDate from 'xdate';
 
-import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
+import React, {forwardRef, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   Text,
   SectionList,
@@ -250,6 +249,7 @@ const AgendaList = (props: AgendaListProps) => {
 
   return (
     <SectionList
+      stickySectionHeadersEnabled
       {...props}
       ref={list}
       keyExtractor={_keyExtractor}
@@ -288,7 +288,8 @@ const AgendaSectionHeader = React.memo((props: AgendaSectionHeaderProps) => {
   );
 }, areTextPropsEqual);
 
-export default AgendaList;
+//@ts-expect-error
+export default forwardRef(AgendaList);
 
 AgendaList.displayName = 'AgendaList';
 AgendaList.propTypes = {
@@ -298,9 +299,4 @@ AgendaList.propTypes = {
   markToday: PropTypes.bool,
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   avoidDateUpdates: PropTypes.bool
-};
-AgendaList.defaultProps = {
-  dayFormat: 'dddd, MMM d',
-  stickySectionHeadersEnabled: true,
-  markToday: true
 };
