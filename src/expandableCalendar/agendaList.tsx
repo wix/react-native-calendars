@@ -25,16 +25,15 @@ import {
 } from 'react-native';
 
 import {useDidUpdate} from '../hooks';
-import {isToday, isGTE, sameDate} from '../dateutils';
 import {getMoment} from '../momentResolver';
+import {isToday, isGTE, sameDate} from '../dateutils';
 import {parseDate} from '../interface';
 import {getDefaultLocale} from '../services';
-import {UpdateSources, todayString} from './commons';
 import {Theme} from '../types';
-import styleConstructor from './style';
+import {UpdateSources, todayString} from './commons';
 import constants from '../commons/constants';
+import styleConstructor from './style';
 import Context from './Context';
-
 
 const viewabilityConfig = {
   itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
