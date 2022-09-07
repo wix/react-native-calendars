@@ -1,11 +1,10 @@
-import {DayState} from './types';
 const {isToday, isDateNotInRange, sameMonth} = require('./dateutils');
 const {toMarkingFormat} = require('./interface');
 
 
 export function getState(day: XDate, current: XDate, props: any) {
   const {minDate, maxDate, disabledByDefault, context} = props;
-  let state: DayState = '';
+  let state = '';
 
   if ((context?.date ?? toMarkingFormat(current)) === toMarkingFormat(day)) {
     state = 'selected';
