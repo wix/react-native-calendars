@@ -7,7 +7,6 @@ import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
-
 import XDate from 'xdate';
 
 import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
@@ -26,16 +25,15 @@ import {
 } from 'react-native';
 
 import {useDidUpdate} from '../hooks';
-import {isToday, isGTE, sameDate} from '../dateutils';
 import {getMoment} from '../momentResolver';
+import {isToday, isGTE, sameDate} from '../dateutils';
 import {parseDate} from '../interface';
 import {getDefaultLocale} from '../services';
-import {UpdateSources, todayString} from './commons';
 import {Theme} from '../types';
-import styleConstructor from './style';
+import {UpdateSources, todayString} from './commons';
 import constants from '../commons/constants';
+import styleConstructor from './style';
 import Context from './Context';
-
 
 const viewabilityConfig = {
   itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
@@ -183,7 +181,7 @@ const AgendaList = (props: AgendaListProps) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  }, 1000, {leading: false, trailing: true}), []);
+  }, 1000, {leading: false, trailing: true}), [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
@@ -250,6 +248,7 @@ const AgendaList = (props: AgendaListProps) => {
 
   return (
     <SectionList
+      stickySectionHeadersEnabled
       {...props}
       ref={list}
       keyExtractor={_keyExtractor}
@@ -298,9 +297,4 @@ AgendaList.propTypes = {
   markToday: PropTypes.bool,
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   avoidDateUpdates: PropTypes.bool
-};
-AgendaList.defaultProps = {
-  dayFormat: 'dddd, MMM d',
-  stickySectionHeadersEnabled: true,
-  markToday: true
 };
