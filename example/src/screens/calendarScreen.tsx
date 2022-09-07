@@ -430,7 +430,7 @@ const CalendarScreen = () => {
 
   const setCustomHeaderNewMonth = (next = false) => {
     const add = next ? 1 : -1;
-    const month = customHeaderProps?.current?.month;
+    const month = new Date(customHeaderProps?.current?.month);
     const newMonth = new Date(month.setMonth(month.getMonth() + add));
     customHeaderProps?.current?.addMonth(add);
     setCurrentMonth(newMonth.toISOString().split('T')[0]);

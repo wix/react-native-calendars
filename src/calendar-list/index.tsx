@@ -146,8 +146,11 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
 
   useDidUpdate(() => {
     const currMont = currentMonth?.clone();
-    onMonthChange?.(xdateToData(currMont));
-    onVisibleMonthsChange?.([xdateToData(currMont)]);
+    if (currMont) {
+      const data = xdateToData(currMont);
+      onMonthChange?.(data);
+      onVisibleMonthsChange?.([data]);
+    }
   }, [currentMonth]);
 
   const scrollToDay = (date: XDate | string, offset: number, animated: boolean) => {
