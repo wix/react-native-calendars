@@ -9,7 +9,7 @@ import isEqual from 'lodash/isEqual';
 
 import XDate from 'xdate';
 
-import React, {forwardRef, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   Text,
   SectionList,
@@ -288,8 +288,7 @@ const AgendaSectionHeader = React.memo((props: AgendaSectionHeaderProps) => {
   );
 }, areTextPropsEqual);
 
-//@ts-expect-error
-export default forwardRef(AgendaList);
+export default AgendaList;
 
 AgendaList.displayName = 'AgendaList';
 AgendaList.propTypes = {
