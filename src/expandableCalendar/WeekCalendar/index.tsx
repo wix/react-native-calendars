@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 
-import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
 
 import {sameWeek} from '../../dateutils';
@@ -14,8 +14,9 @@ import {UpdateSources} from '../commons';
 import constants from '../../commons/constants';
 import {extractCalendarProps} from '../../componentUpdater';
 import CalendarContext from '../Context';
+import {useDidUpdate} from '../../hooks';
 
-const NUMBER_OF_PAGES = 6; // must be a positive number
+const NUMBER_OF_PAGES = 6;
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
 const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
@@ -48,7 +49,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const list = useRef<FlatList>(null);
   const currentIndex = useRef(NUMBER_OF_PAGES);
 
-  useEffect(() => {
+  useDidUpdate(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.current.findIndex(item => sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
@@ -68,7 +69,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return calendarWidth ?? constants.screenWidth;
   }, [calendarWidth]);
 
-  const onDayPressCallback = useCallback((value: DateData) => {
+  const _onDayPress = useCallback((value: DateData) => {
     if (onDayPress) {
       onDayPress(value);
     } else {
@@ -91,12 +92,12 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         firstDay={firstDay}
         style={weekStyle}
         context={currentContext}
-        onDayPress={onDayPressCallback}
+        onDayPress={_onDayPress}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
       />
     );
-  },[firstDay, onDayPressCallback, context, date]);
+  },[firstDay, _onDayPress, context, date]);
 
   const keyExtractor = useCallback((item) => item, []);
 
@@ -118,10 +119,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   const containerStyle = useMemo(() => {
     return [style.current.week, style.current.weekCalendar];
-  }, []);
-
-  const flatListContainerStyle = useMemo(() => {
-    return style.current.container;
   }, []);
 
   const getItemLayout = useCallback((_, index: number) => {
@@ -186,7 +183,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           {renderWeekDaysNames}
         </View>
       )}
-      <View style={flatListContainerStyle}>
+      <View style={style.current.container}>
           <FlatList
             ref={list}
             style={style.current.container}
