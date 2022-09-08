@@ -8,9 +8,8 @@ import {DateData} from '../../types';
 import {WeekCalendarProps} from './index';
 import constants from '../../commons/constants';
 import {generateDay} from '../../dateutils';
+import {UpdateSources} from '../commons';
 
-const commons = require('../commons');
-const updateSources = commons.UpdateSources;
 // must be a positive number
 const NUMBER_OF_PAGES = 2;
 
@@ -26,7 +25,7 @@ class Presenter {
 
   // Events
   onDayPress = (context: any, value: DateData) => {
-    context.setDate?.(value.dateString, updateSources.DAY_PRESS);
+    context.setDate?.(value.dateString, UpdateSources.DAY_PRESS);
   };
 
   onScroll = ({context, updateState, x, page, items, width}: any) => {
@@ -39,7 +38,7 @@ class Presenter {
     const newPage = this._getNewPage(x, width);
 
     if (this._shouldUpdateState(page, newPage)) {
-      context.setDate?.(items[newPage], updateSources.WEEK_SCROLL);
+      context.setDate?.(items[newPage], UpdateSources.WEEK_SCROLL);
       const data = this._getItemsForPage(newPage, items);
       updateState(data, newPage);
     }
@@ -64,7 +63,7 @@ class Presenter {
   shouldComponentUpdate = (context: any, prevContext: any) => {
     const {date, updateSource, numberOfDays} = context;
     return (
-      (date !== prevContext.date && updateSource !== updateSources.WEEK_SCROLL) ||
+      (date !== prevContext.date && updateSource !== UpdateSources.WEEK_SCROLL) ||
       numberOfDays !== prevContext.numberOfDays
     );
   };

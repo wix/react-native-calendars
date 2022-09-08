@@ -557,6 +557,10 @@ An advanced `Agenda` component that can display interactive listings for calenda
   renderKnob={() => {
     return <View />;
   }}
+  // Override inner list with a custom implemented component
+  renderList={(listProps) => {
+    return <MyCustomList {...listProps} />
+  }}
   // Specify what should be rendered instead of ActivityIndicator
   renderEmptyData={() => {
     return <View />;

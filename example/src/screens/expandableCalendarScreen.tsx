@@ -22,13 +22,13 @@ const ExpandableCalendarScreen = (props: Props) => {
     todayButtonTextColor: themeColor
   });
 
-  const onDateChanged = useCallback((date, updateSource) => {
-    console.log('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
-  }, []);
+  // const onDateChanged = useCallback((date, updateSource) => {
+  //   console.log('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
+  // }, []);
 
-  const onMonthChange = useCallback(({dateString}) => {
-    console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
-  }, []);
+  // const onMonthChange = useCallback(({dateString}) => {
+  //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
+  // }, []);
 
   const renderItem = useCallback(({item}: any) => {
     return <AgendaItem item={item}/>;
@@ -37,8 +37,8 @@ const ExpandableCalendarScreen = (props: Props) => {
   return (
     <CalendarProvider
       date={ITEMS[1].title}
-      onDateChanged={onDateChanged}
-      onMonthChange={onMonthChange}
+      // onDateChanged={onDateChanged}
+      // onMonthChange={onMonthChange}
       showTodayButton
       disabledOpacity={0.6}
       theme={todayBtnTheme.current}
@@ -55,7 +55,7 @@ const ExpandableCalendarScreen = (props: Props) => {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           // calendarStyle={styles.calendar}
-          // headerStyle={styles.calendar} // for horizontal only
+          // headerStyle={styles.header} // for horizontal only
           // disableWeekScroll
           theme={theme.current}
           // disableAllTouchEventsForDisabledDays
@@ -72,7 +72,7 @@ const ExpandableCalendarScreen = (props: Props) => {
         renderItem={renderItem}
         // scrollToNextEvent
         sectionStyle={styles.section}
-        // dayFormat={'YYYY-MM-d'}
+        // dayFormat={'yyyy-MM-d'}
       />
     </CalendarProvider>
   );
@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
   calendar: {
     paddingLeft: 20,
     paddingRight: 20
+  },
+  header: {
+    backgroundColor: 'lightgrey'
   },
   section: {
     backgroundColor: lightThemeColor,
