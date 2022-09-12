@@ -17,6 +17,13 @@ export type WeekProps = CalendarProps & {
   context?: CalendarContextProps;
 };
 
+function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {
+  const {context: prevContext, markedDates: prevMarkings, ...prevRest} = prevProps;
+  const {context: nextContext, markedDates: nextMarkings, ...nextRest} = nextProps;
+
+  return isEqual(prevContext, nextContext) && isEqual(prevMarkings, nextMarkings) && isEqual(prevRest, nextRest);
+}
+
 const Week = React.memo((props: WeekProps) => {
   const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
   const style = useRef(styleConstructor(theme));
@@ -77,7 +84,7 @@ const Week = React.memo((props: WeekProps) => {
       <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
     </View>
   );
-}, isEqual);
+}, arePropsEqual);
 
 export default Week;
 
