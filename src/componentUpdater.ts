@@ -209,6 +209,7 @@ export function extractReservationListProps(props: AgendaProps) {
   const {
     // ReservationList props
     items,
+    theme,
     selectedDay,
     topDay,
     onDayChange,
