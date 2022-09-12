@@ -18,10 +18,10 @@ export type WeekProps = CalendarProps & {
 };
 
 function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {
-  const {context: prevContext, markedDates: prevMarkings, ...prevRest} = prevProps;
-  const {context: nextContext, markedDates: nextMarkings, ...nextRest} = nextProps;
+  const {context: prevContext, markedDates: prevMarkings, ...prevOthers} = prevProps;
+  const {context: nextContext, markedDates: nextMarkings, ...nextOthers} = nextProps;
 
-  return isEqual(prevContext, nextContext) && isEqual(prevMarkings, nextMarkings) && isEqual(prevRest, nextRest);
+  return isEqual(prevContext, nextContext) && isEqual(prevMarkings, nextMarkings) && isEqual(prevOthers, nextOthers);
 }
 
 const Week = React.memo((props: WeekProps) => {
