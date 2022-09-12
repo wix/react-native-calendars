@@ -232,10 +232,10 @@ const Timeline = (props: TimelineProps) => {
     const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
     const left = timelineLeftInset + indexOfToday * width / numberOfDays;
     return (
-      <>
+      <React.Fragment key={dayIndex}>
         {renderEvents(dayIndex)}
         {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
-      </>
+      </React.Fragment>
     );
   };
 
