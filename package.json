@@ -47,6 +47,7 @@
     "@babel/runtime": "^7.12.5",
     "@testing-library/react-native": "^11.0.0",
     "@tsconfig/docusaurus": "^1.0.4",
+    "@types/jest": "^29.0.1",
     "@types/lodash": "^4.14.170",
     "@types/react": "^17.0.44",
     "@types/react-native": "^0.64.19",

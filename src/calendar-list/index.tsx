@@ -281,7 +281,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   ]);
 
   return (
-    <View style={style.current.flatListContainer}>
+    <View style={style.current.flatListContainer} testID={`${testID}.listContainer`}>
       <FlatList
         // @ts-expect-error
         ref={list}

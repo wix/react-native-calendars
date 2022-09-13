@@ -28,7 +28,7 @@ export class ExpandableCalendarDriver {
   }
 
   getKnob() {
-    return this.renderTree?.getByTestId(`${this.testID}.knob`);
+    return this.renderTree?.getByTestId(this.knobTestID);
   }
 
   getExpandableContainer() {

@@ -6,7 +6,7 @@ import {ExpandableCalendarDriver} from '../driver';
 
 const XDate = require('xdate');
 
-const testIdExpandable = 'expandableCalendar';
+const testIdExpandable = 'myExpandableCalendar';
 const today = new XDate();
 const onDayPressMock = jest.fn();
 

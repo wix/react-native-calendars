@@ -3,7 +3,6 @@ import {swipeDirections} from 'react-native-swipe-gestures';
 import Calendar from '.';
 import {BasicDayDriver} from './day/basic/driver';
 import {CalendarHeaderDriver} from './header/driver';
-import {SELECT_DATE_SLOT, WEEK_NUMBER} from '../testIDs';
 
 export class CalendarDriver extends ComponentDriver {
   constructor(testID = 'calendar') {
