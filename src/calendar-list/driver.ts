@@ -1,4 +1,5 @@
 import React from 'react';
+import {FlatList} from 'react-native';
 import {fireEvent, render, screen, within} from '@testing-library/react-native';
 import {getDefaultLocale} from '../services';
 
@@ -17,21 +18,26 @@ export class CalendarListDriver {
     return render(element);
   }
 
-  /** List item */
+  /** List */
+
+  getList() {
+    return screen.UNSAFE_getAllByType(FlatList);
+  }
 
   getItemTestID(date: string) {
     const [year, month] = date.split('-');
     return `${this.testID}.item_${year}-${month}`;
   }
 
-  getCalendarListItem(date: string) {
+  getListItem(date: string) {
+    console.log('item: ', screen.getByTestId(this.getItemTestID(date)));
     return screen.getByTestId(this.getItemTestID(date));
   }
 
-  getCalendarItemTitle(date: string) {
+  getListItemTitle(date: string) {
     const year = new Date(date).getFullYear();
     const monthName = getDefaultLocale().monthNames[new Date(date).getMonth()];
-    return within(this.getCalendarListItem(date)).getByText(`${monthName} ${year}`);
+    return within(this.getListItem(date)).getByText(`${monthName} ${year}`);
   }
 
   /** Static header */

@@ -44,8 +44,10 @@ describe('CalendarList', () => {
       it('should display current month', () => {
         expect(driver.getStaticHeaderTitle()).toBe(CURRENT_MONTH_TITLE);
 
-        expect(driver.getCalendarItemTitle(CURRENT)).toBeDefined();
-        // expect(driver.getCalendarListItem(CURRENT)).toHaveProperty('visible', true);
+        expect(driver.getList()).toHaveLength(1);
+        expect(driver.getListItem(CURRENT)).toBeDefined();
+        // expect(driver.getListItem(CURRENT)).toHaveProperty('visible', true);
+        expect(driver.getListItemTitle(CURRENT)).toBeDefined();
 
         expect(onMonthChangeMock).not.toHaveBeenCalled();
         expect(onVisibleMonthsChangeMock).not.toHaveBeenCalled();
@@ -63,7 +65,7 @@ describe('CalendarList', () => {
         expect(driver.getStaticHeaderTitle()).toBe(NEXT_MONTH_TITLE);
 
         // NOTE: check visible list item - only first item is rendered and arrow press doesn't actually scrolls the list
-        // expect(driver.getCalendarItemTitle(NEXT_MONTH)).toBeDefined();
+        // expect(driver.getListItemTitle(NEXT_MONTH)).toBeDefined();
       });
 
       it('should change month on left arrow press', () => {
