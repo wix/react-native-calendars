@@ -1,5 +1,4 @@
 import React from 'react';
-import {FlatList} from 'react-native';
 import {fireEvent, render, screen, within} from '@testing-library/react-native';
 import {getDefaultLocale} from '../services';
 
@@ -20,8 +19,13 @@ export class CalendarListDriver {
 
   /** List */
 
-  getList() {
-    return screen.UNSAFE_getAllByType(FlatList);
+  // fireOnViewableItemsChanged(changed: any[], visibleItems: any[]) {
+  //   fireEvent(screen.getByTestId(this.testID), 'viewabilityConfigCallbackPairs.onViewableItemsChanged', {info: {changed: changed, viewableItems: visibleItems}});
+  // }
+
+  getListProp() {
+    const props = screen.getByTestId(this.testID).props;
+    return props;
   }
 
   getItemTestID(date: string) {
@@ -30,7 +34,6 @@ export class CalendarListDriver {
   }
 
   getListItem(date: string) {
-    console.log('item: ', screen.getByTestId(this.getItemTestID(date)));
     return screen.getByTestId(this.getItemTestID(date));
   }
 
