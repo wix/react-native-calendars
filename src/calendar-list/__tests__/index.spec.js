@@ -13,6 +13,8 @@ const prevMonthData = {dateString: '2022-08-09', day: 9, month: 8, timestamp: 16
 const testIdCalendarList = 'myCalendarList';
 const onMonthChangeMock = jest.fn();
 const onVisibleMonthsChangeMock = jest.fn();
+const pastScrollRange = 10;
+const futureScrollRange = 5;
 // const initialVisibleItems = [
 //   {
 //     "index": 50,
@@ -56,6 +58,24 @@ const TestCase = props => {
 };
 
 describe('CalendarList', () => {
+  describe('Props', () => {
+    describe('past/futureScrollRange', () => {
+      const driver = new CalendarListDriver(
+        testIdCalendarList,
+        <TestCase pastScrollRange={pastScrollRange} futureScrollRange={futureScrollRange} />
+      );
+
+      beforeEach(() => {
+        jest.useFakeTimers();
+        driver.render();
+      });
+
+      it('should have correct number of list items', () => {
+        expect(driver.getListProps().data.length).toBe(pastScrollRange + futureScrollRange + 1);
+      });
+    });
+  });
+
   describe('Horizontal Mode', () => {
     const driver = new CalendarListDriver(testIdCalendarList, <TestCase horizontal={true} staticHeader={true} />);
 
@@ -75,10 +95,10 @@ describe('CalendarList', () => {
         expect(driver.getStaticHeaderTitle()).toBe(getMonthTitle(CURRENT));
 
         // list
-        expect(driver.getListProp().horizontal).toBe(true);
-        expect(driver.getListProp().data.length).toBe(101);
-        expect(driver.getListProp().initialScrollIndex).toBe(50);
-        expect(driver.getListProp().initialNumToRender).toBe(1);
+        expect(driver.getListProps().horizontal).toBe(true);
+        expect(driver.getListProps().data.length).toBe(101);
+        expect(driver.getListProps().initialScrollIndex).toBe(50);
+        expect(driver.getListProps().initialNumToRender).toBe(1);
 
         // list items
         expect(driver.getListItem(CURRENT)).toBeDefined();

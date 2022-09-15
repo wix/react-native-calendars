@@ -24,7 +24,7 @@ export class CalendarListDriver {
   //   fireEvent(screen.getByTestId(this.testID), 'viewabilityConfigCallbackPairs.onViewableItemsChanged', {info: {changed: changed, viewableItems: visibleItems}});
   // }
 
-  getListProp() {
+  getListProps() {
     const props = screen.getByTestId(this.testID).props;
     return props;
   }
