@@ -1,6 +1,6 @@
 import React from 'react';
 import CalendarList from '../index';
-import {CalendarListDriver} from './driver';
+import {CalendarListDriver} from '../driver';
 //@ts-expect-error
 import {getMonthTitle} from '../../testUtils';
 
