@@ -1,8 +1,8 @@
 import {ComponentDriver, getTextNodes} from 'react-component-driver';
 import {swipeDirections} from 'react-native-swipe-gestures';
-import Calendar from '.';
-import {BasicDayDriver} from './day/basic/driver';
-import {CalendarHeaderDriver} from './header/driver';
+import Calendar from '..';
+import {BasicDayDriver} from '../day/basic/driver';
+import {CalendarHeaderDriver} from '../header/driver';
 
 export class CalendarDriver extends ComponentDriver {
   constructor(testID = 'calendar') {

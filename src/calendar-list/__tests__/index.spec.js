@@ -1,13 +1,12 @@
 import React from 'react';
 import CalendarList from '../index';
-import {CalendarListDriver} from '../driver';
+import {CalendarListDriver} from './driver';
+//@ts-expect-error
+import {getMonthTitle} from '../../testUtils';
 
 const CURRENT = '2022-09-09';
-// const NEXT_MONTH = '2022-10-09';
-// const PREV_MONTH = '2022-08-09';
-const CURRENT_MONTH_TITLE = 'September 2022';
-const NEXT_MONTH_TITLE = 'October 2022';
-const PREV_MONTH_TITLE = 'August 2022';
+const NEXT_MONTH = '2022-10-09';
+const PREV_MONTH = '2022-08-09';
 const nextMonthData = {dateString: '2022-10-09', day: 9, month: 10, timestamp: 1665273600000, year: 2022};
 const prevMonthData = {dateString: '2022-08-09', day: 9, month: 8, timestamp: 1660003200000, year: 2022};
 
@@ -73,7 +72,7 @@ describe('CalendarList', () => {
     describe('Init', () => {
       it('should display current month', () => {
         // static header
-        expect(driver.getStaticHeaderTitle()).toBe(CURRENT_MONTH_TITLE);
+        expect(driver.getStaticHeaderTitle()).toBe(getMonthTitle(CURRENT));
 
         // list
         expect(driver.getListProp().horizontal).toBe(true);
@@ -98,7 +97,7 @@ describe('CalendarList', () => {
         expect(onMonthChangeMock).toHaveBeenCalledWith(nextMonthData);
         expect(onVisibleMonthsChangeMock).toHaveBeenCalledWith([nextMonthData]);
 
-        expect(driver.getStaticHeaderTitle()).toBe(NEXT_MONTH_TITLE);
+        expect(driver.getStaticHeaderTitle()).toBe(getMonthTitle(NEXT_MONTH));
 
         // NOTE: check visible list item - only first item is rendered and arrow press doesn't actually scrolls the list
         // expect(driver.getListItemTitle(NEXT_MONTH)).toBeDefined();
@@ -110,7 +109,7 @@ describe('CalendarList', () => {
         expect(onMonthChangeMock).toHaveBeenCalledWith(prevMonthData);
         expect(onVisibleMonthsChangeMock).toHaveBeenCalledWith([prevMonthData]);
 
-        expect(driver.getStaticHeaderTitle()).toBe(PREV_MONTH_TITLE);
+        expect(driver.getStaticHeaderTitle()).toBe(getMonthTitle(PREV_MONTH));
       });
     });
 
@@ -122,7 +121,7 @@ describe('CalendarList', () => {
     //     expect(onMonthChangeMock).toHaveBeenCalledWith(nextMonthData);
     //     expect(onVisibleMonthsChangeMock).toHaveBeenCalledWith([nextMonthData]);
 
-    //     expect(driver.getStaticHeaderTitle()).toBe(NEXT_MONTH_TITLE);
+    //     expect(driver.getStaticHeaderTitle()).toBe(getMonthTitle(NEXT_MONTH));
     //   });
     // });
   });

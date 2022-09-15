@@ -1,6 +1,7 @@
 import React from 'react';
 import {fireEvent, render, screen, within} from '@testing-library/react-native';
-import {getDefaultLocale} from '../services';
+//@ts-expect-error
+import {getMonthTitle} from '../../testUtils';
 
 export class CalendarListDriver {
   testID: string;
@@ -38,9 +39,7 @@ export class CalendarListDriver {
   }
 
   getListItemTitle(date: string) {
-    const year = new Date(date).getFullYear();
-    const monthName = getDefaultLocale().monthNames[new Date(date).getMonth()];
-    return within(this.getListItem(date)).getByText(`${monthName} ${year}`);
+    return within(this.getListItem(date)).getByText(getMonthTitle(date));
   }
 
   /** Static header */
