@@ -3,7 +3,7 @@ import CalendarList from '../index';
 import {CalendarListDriver} from '../driver';
 
 const CURRENT = '2022-09-09';
-const NEXT_MONTH = '2022-10-09';
+// const NEXT_MONTH = '2022-10-09';
 // const PREV_MONTH = '2022-08-09';
 const CURRENT_MONTH_TITLE = 'September 2022';
 const NEXT_MONTH_TITLE = 'October 2022';
@@ -14,7 +14,6 @@ const prevMonthData = {dateString: '2022-08-09', day: 9, month: 8, timestamp: 16
 const testIdCalendarList = 'myCalendarList';
 const onMonthChangeMock = jest.fn();
 const onVisibleMonthsChangeMock = jest.fn();
-const initialNumToRender = 3;
 // const initialVisibleItems = [
 //   {
 //     "index": 50,
@@ -59,10 +58,7 @@ const TestCase = props => {
 
 describe('CalendarList', () => {
   describe('Horizontal Mode', () => {
-    const driver = new CalendarListDriver(
-      testIdCalendarList,
-      <TestCase horizontal={true} staticHeader={true} initialNumToRender={initialNumToRender} />
-    );
+    const driver = new CalendarListDriver(testIdCalendarList, <TestCase horizontal={true} staticHeader={true} />);
 
     beforeEach(() => {
       jest.useFakeTimers();
@@ -83,18 +79,11 @@ describe('CalendarList', () => {
         expect(driver.getListProp().horizontal).toBe(true);
         expect(driver.getListProp().data.length).toBe(101);
         expect(driver.getListProp().initialScrollIndex).toBe(50);
-        expect(driver.getListProp().initialNumToRender).toBe(initialNumToRender);
+        expect(driver.getListProp().initialNumToRender).toBe(1);
 
         // list items
         expect(driver.getListItem(CURRENT)).toBeDefined();
         expect(driver.getListItemTitle(CURRENT)).toBeDefined();
-
-        if (initialNumToRender > 1) {
-          expect(driver.getListItem(NEXT_MONTH)).toBeDefined();
-          expect(driver.getListItemTitle(NEXT_MONTH)).toBeDefined();
-          // NOTE: initial number will render additional items from left to right
-          // expect(driver.getListItem(PREV_MONTH)).toBeDefined();
-        }
 
         // events
         expect(onMonthChangeMock).not.toHaveBeenCalled();
