@@ -6,7 +6,7 @@ export function getState(day: XDate, current: XDate, props: any) {
   const {minDate, maxDate, disabledByDefault, context} = props;
   let state = '';
 
-  if (context?.date === toMarkingFormat(day)) {
+  if ((context?.date ?? toMarkingFormat(current)) === toMarkingFormat(day)) {
     state = 'selected';
   } else if (isToday(day)) {
     state = 'today';
