@@ -132,8 +132,9 @@ Whether to hide the arrows
 
 ### arrowsHitSlop
 
-Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20 
+Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20
 <span style={{color: 'grey'}}>null | Insets | number</span>
+
 ### disableArrowLeft
 
 Whether to disable the left arrow  

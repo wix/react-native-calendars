@@ -12,7 +12,6 @@ import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 import {CalendarContextProps} from './Context';
 
-
 export type WeekProps = CalendarProps & {
   context?: CalendarContextProps;
 };
@@ -25,8 +24,21 @@ function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {
 }
 
 const Week = React.memo((props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
+  const {
+    theme,
+    current,
+    firstDay,
+    hideExtraDays,
+    markedDates,
+    onDayPress,
+    onDayLongPress,
+    style: propsStyle,
+    numberOfDays = 1,
+    timelineLeftInset,
+    testID,
+  } = props;
   const style = useRef(styleConstructor(theme));
+
   const getWeek = useCallback((date?: string) => {
     if (date) {
       return getWeekDates(date, firstDay);
@@ -47,14 +59,16 @@ const Week = React.memo((props: WeekProps) => {
         return <View key={id} style={style.current.emptyDayContainer}/>;
       }
     }
+    const dayString = toMarkingFormat(day);
 
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
-          date={toMarkingFormat(day)}
+          testID={`${testID}.day_${dayString}`}
+          date={dayString}
           state={getState(day, currXdate, props)}
-          marking={markedDates?.[toMarkingFormat(day)]}
+          marking={markedDates?.[dayString]}
           onPress={onDayPress}
           onLongPress={onDayLongPress}
         />
@@ -81,7 +95,9 @@ const Week = React.memo((props: WeekProps) => {
 
   return (
     <View style={style.current.container}>
-      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
+      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
+        {renderWeek()}
+      </View>
     </View>
   );
 }, arePropsEqual);

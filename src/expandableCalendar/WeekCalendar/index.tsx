@@ -87,7 +87,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return (
       <Week
         {...others}
-        key={item}
         current={item}
         firstDay={firstDay}
         style={weekStyle}

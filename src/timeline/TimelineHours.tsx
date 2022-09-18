@@ -100,8 +100,9 @@ const TimelineHours = (props: TimelineHoursProps) => {
       <TouchableWithoutFeedback onLongPress={handleBackgroundPress} onPressOut={handlePressOut}>
         <View style={StyleSheet.absoluteFillObject} />
       </TouchableWithoutFeedback>
-      {unavailableHoursBlocks.map(block => (
+      {unavailableHoursBlocks.map((block, index) => (
         <View
+          key={index}
           style={[
             styles.unavailableHoursBlock,
             block,
@@ -132,7 +133,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
           </React.Fragment>
         );
       })}
-      {times(numberOfDays, (index) => <View style={[styles.verticalLine, {right: (index + 1) * width / numberOfDays}]} />)}
+      {times(numberOfDays, (index) => <View key={index} style={[styles.verticalLine, {right: (index + 1) * width / numberOfDays}]} />)}
     </>
   );
 };
