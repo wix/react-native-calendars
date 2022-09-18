@@ -19,8 +19,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-// @ts-expect-error
-import {CALENDAR_KNOB} from '../testIDs';
 import {page} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {DateData, Direction} from '../types';
@@ -31,10 +29,9 @@ import CalendarList, {CalendarListProps} from '../calendar-list';
 import Week from './week';
 import WeekCalendar from './WeekCalendar';
 import Context from './Context';
-
 import constants from '../commons/constants';
-const commons = require('./commons');
-const updateSources = commons.UpdateSources;
+import {UpdateSources} from './commons';
+
 enum Positions {
   CLOSED = 'closed',
   OPEN = 'open'
@@ -226,7 +223,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     ];
   }, [calendarStyle]);
 
-  const headerStyle = useMemo(() => {
+  const animatedHeaderStyle = useMemo(() => {
     return [style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}];
   }, [headerDeltaY.current]);
 
@@ -299,7 +296,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
       }
 
-      setDate?.(toMarkingFormat(d), updateSources.PAGE_SCROLL);
+      setDate?.(toMarkingFormat(d), UpdateSources.PAGE_SCROLL);
     }
   }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
@@ -407,6 +404,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }, 0);
   }, [isOpen]);
 
+  const toggleCalendarPosition = useCallback(() => {
+    bounceToPosition(isOpen ? closedHeight.current : openHeight.current);
+  }, [isOpen, bounceToPosition]);
+
   /** Events */
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
@@ -421,7 +422,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const _onDayPress = useCallback((value: DateData) => {
     if (numberOfDaysCondition) {
-      setDate?.(value.dateString, updateSources.DAY_PRESS);
+      setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
     if (closeOnDayPress) {
       closeCalendar();
@@ -476,7 +477,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       <Image
         source={direction === 'right' ? rightArrowImageSource : leftArrowImageSource}
         style={style.current.arrowImage}
-        testID={`${testID}-${direction}-arrow`}
+        testID={`${testID}.${direction}Arrow`}
       />
     );
   }, [renderArrow, rightArrowImageSource, leftArrowImageSource, testID]);
@@ -498,7 +499,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={header}
-        style={headerStyle}
+        style={animatedHeaderStyle}
         pointerEvents={'none'}
       >
         <Text allowFontScaling={false} style={style.current.headerTitle}>
@@ -511,8 +512,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const renderKnob = () => {
     return (
-      <View style={style.current.knobContainer} testID={`${testID}-knob`} pointerEvents={'box-none'}>
-        <TouchableOpacity style={style.current.knob} testID={CALENDAR_KNOB} onPress={closeCalendar} hitSlop={knobHitSlop} activeOpacity={isOpen ? undefined : 1}/>
+      <View style={style.current.knobContainer} pointerEvents={'box-none'}>
+        <TouchableOpacity style={style.current.knob} testID={`${testID}.knob`} onPress={toggleCalendarPosition} hitSlop={knobHitSlop} /* activeOpacity={isOpen ? undefined : 1} *//>
       </View>
     );
   };
@@ -527,7 +528,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         pointerEvents={isOpen ? 'none' : 'auto'}
       >
         <WeekComponent
-          testID="week_calendar"
+          testID={`${testID}.weekCalendar`}
           firstDay={firstDay}
           {...others}
           allowShadow={disableWeekScroll ? undefined : false}
@@ -549,10 +550,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }
   }, [numberOfDays]);
 
+  const _headerStyle = useMemo(() => {
+    return [numberOfDaysHeaderStyle, props.headerStyle];
+  }, [props.headerStyle]);
+
   const renderCalendarList = () => {
     return (
       <CalendarList
-        testID="calendar"
+        testID={`${testID}.calendarList`}
         horizontal={horizontal}
         firstDay={firstDay}
         calendarStyle={calendarStyle}
@@ -571,7 +576,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         renderArrow={_renderArrow}
         staticHeader
         numberOfDays={numberOfDays}
-        headerStyle={numberOfDaysHeaderStyle}
+        headerStyle={_headerStyle}
         timelineLeftInset={timelineLeftInset}
       />
     );
@@ -581,7 +586,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     <View testID={testID} style={containerStyle}>
       {screenReaderEnabled ? (
         <Calendar
-          testID="calendar"
+          testID={`${testID}.calendarAccessible`}
           {...others}
           theme={themeObject}
           onDayPress={_onDayPress}
@@ -589,7 +594,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           renderArrow={_renderArrow}
         />
       ) : (
-        <Animated.View ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
+        <Animated.View testID={`${testID}.expandableContainer`} ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
           {renderCalendarList()}
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}

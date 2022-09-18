@@ -12,17 +12,10 @@ import {
   StyleProp,
   ViewStyle,
   AccessibilityActionEvent,
-  ColorValue
+  ColorValue,
+  Insets
 } from 'react-native';
 import {formatNumbers, weekDayNames} from '../../dateutils';
-import {
-  CHANGE_MONTH_LEFT_ARROW,
-  CHANGE_MONTH_RIGHT_ARROW,
-  HEADER_DAY_NAMES,
-  HEADER_LOADING_INDICATOR,
-  HEADER_MONTH_NAME
-  // @ts-expect-error
-} from '../../testIDs';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
 
@@ -50,6 +43,8 @@ export interface CalendarHeaderProps {
   onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
+  /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20 */
+  arrowsHitSlop?: Insets | number;
   /** Disable left arrow */
   disableArrowLeft?: boolean;
   /** Disable right arrow */
@@ -75,7 +70,6 @@ export interface CalendarHeaderProps {
   timelineLeftInset?: number;
 }
 
-const arrowHitSlop = {left: 20, right: 20, top: 20, bottom: 20};
 const accessibilityActions = [
   {name: 'increment', label: 'increment'},
   {name: 'decrement', label: 'decrement'}
@@ -95,6 +89,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     renderArrow,
     onPressArrowLeft,
     onPressArrowRight,
+    arrowsHitSlop = 20,
     disableArrowLeft,
     disableArrowRight,
     disabledDaysIndexes,
@@ -123,7 +118,14 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const dayNamesStyle = useMemo(() => {
     return [style.current.week, numberOfDaysCondition ? partialWeekStyle : undefined];
   }, [numberOfDaysCondition, partialWeekStyle]);
-
+  const hitSlop: Insets | undefined = useMemo(
+    () =>
+      typeof arrowsHitSlop === 'number'
+        ? {top: arrowsHitSlop, left: arrowsHitSlop, bottom: arrowsHitSlop, right: arrowsHitSlop}
+        : arrowsHitSlop,
+    [arrowsHitSlop]
+  );
+  
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -205,7 +207,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         <Text
           allowFontScaling={false}
           style={style.current.monthText}
-          testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
+          testID={`${testID}.title`}
           {...webProps}
         >
           {formatNumbers(month?.toString(monthFormat))}
@@ -220,20 +222,19 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     }
 
     const isLeft = direction === 'left';
-    const id = isLeft ? CHANGE_MONTH_LEFT_ARROW : CHANGE_MONTH_RIGHT_ARROW;
-    const testId = testID ? `${id}-${testID}` : id;
+    const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-    const renderArrowDirection = isLeft ? 'left' : 'right';
-
+    const renderArrowDirection = isLeft ? 'left' : 'right';   
+      
     return (
       <TouchableOpacity
         onPress={onPress}
         disabled={shouldDisable}
         style={style.current.arrow}
-        hitSlop={arrowHitSlop}
-        testID={testId}
+        hitSlop={hitSlop}
+        testID={`${testID}.${arrowId}`}
       >
         {renderArrow ? (
           renderArrow(renderArrowDirection)
@@ -249,7 +250,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       return (
         <ActivityIndicator
           color={theme?.indicatorColor as ColorValue}
-          testID={testID ? `${HEADER_LOADING_INDICATOR}-${testID}` : HEADER_LOADING_INDICATOR}
+          testID={`${testID}.loader`}
         />
       );
     }
@@ -264,7 +265,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       return (
         <View
           style={dayNamesStyle}
-          testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}
+          testID={`${testID}.dayNames`}
         >
           {renderWeekNumbersSpace()}
           {renderWeekDays}
@@ -301,5 +302,6 @@ export default CalendarHeader;
 CalendarHeader.displayName = 'CalendarHeader';
 CalendarHeader.defaultProps = {
   monthFormat: 'MMMM yyyy',
-  webAriaLevel: 1
+  webAriaLevel: 1,
+  arrowsHitSlop: 20
 };
