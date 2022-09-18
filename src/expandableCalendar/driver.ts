@@ -12,40 +12,55 @@ export class ExpandableCalendarDriver {
     this.renderTree = this.render(element);
   }
 
-  get knobTestID() {
-    return `${this.testID}.knob`;
-  }
-
-  getDayTestID(date: string) {
-    const [year, month] = date.split('-');
-    return `${this.testID}.calendarList.item_${year}-${month}.day_${date}`;
-  }
-
   render(element = this.element): ReturnType<typeof render> {
     if (!element) throw 'Element is missing';
     this.renderTree = render(element);
     return this.renderTree;
   }
 
-  getKnob() {
-    return this.renderTree?.getByTestId(this.knobTestID);
-  }
-
+  /** Container */
+  
   getExpandableContainer() {
     return this.renderTree.getByTestId(`${this.testID}.expandableContainer`);
   }
 
-  getDay(date: string) {
-    return this.renderTree?.getByTestId(this.getDayTestID(date));
+  isCalendarExpanded() {
+    const calendarHeight = this.getExpandableContainer().props?.style?.height;
+    return calendarHeight > 145;
+  }
+
+  getCalendarList() {
+    return this.renderTree.getByTestId(`${this.testID}.calendarList.list`);
+  }
+
+  getWeekCalendar() {
+    return this.renderTree.getByTestId(`${this.testID}.weekCalendar.list`);
+  }
+
+  /** Knob and Position */
+
+  get knobTestID() {
+    return `${this.testID}.knob`;
+  }
+
+  getKnob() {
+    // NOTE: using query as the Knob is not rendered in all cases
+    return this.renderTree?.queryByTestId(this.knobTestID);
   }
 
   toggleKnob() {
     fireEvent(this.getKnob(), 'onPress');
   }
 
-  isCalendarExpanded() {
-    const calendarHeight = this.getExpandableContainer().props?.style?.height;
-    return calendarHeight > 145;
+  /** Day */
+
+  getDayTestID(date: string) {
+    const [year, month] = date.split('-');
+    return `${this.testID}.calendarList.item_${year}-${month}.day_${date}`;
+  }
+
+  getDay(date: string) {
+    return this.renderTree?.getByTestId(this.getDayTestID(date));
   }
 
   selectDay(date: string) {

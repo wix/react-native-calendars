@@ -25,7 +25,7 @@ export class CalendarListDriver {
   // }
 
   getListProps() {
-    const props = screen.getByTestId(this.testID).props;
+    const props = screen.getByTestId(`${this.testID}.list`).props;
     return props;
   }
 

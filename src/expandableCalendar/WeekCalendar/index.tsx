@@ -198,6 +198,7 @@ class WeekCalendar extends Component<WeekCalendarProps, State> {
           </View>
         )}
         <FlatList
+          testID={`${testID}.list`}
           ref={this.presenter.list}
           data={items}
           extraData={extraData}
