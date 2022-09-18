@@ -6,12 +6,10 @@ import React, {forwardRef, useImperativeHandle, useRef, useEffect, useState, use
 import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
 
 import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
-import {xdateToData, parseDate} from '../interface';
+import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
 import {useDidUpdate} from '../hooks';
-// @ts-expect-error
-import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
@@ -224,13 +222,16 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     return false;
   }, [currentMonth]);
 
-  const renderItem = useCallback(({item}: any) => {
+  const renderItem = useCallback(({item}: {item: XDate}) => {
+    const dateString = toMarkingFormat(item);
+    const [year, month] = dateString.split('-');
+    const testId = `${testID}.item_${year}-${month}`;
     return (
       <CalendarListItem
         {...calendarProps}
+        testID={testId}
         markedDates={getMarkedDatesForItem(item)}
         item={item}
-        testID={`${testID}_${item}`}
         style={calendarStyle}
         // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal}
@@ -247,7 +248,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       return (
         <CalendarHeader
           {...headerProps}
-          testID={STATIC_HEADER}
+          testID={`${testID}.staticHeader`}
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}

@@ -11,8 +11,6 @@ import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-// @ts-expect-error
-import {WEEK_NUMBER} from '../testIDs';
 import {DateData, Theme, MarkedDates} from '../types';
 import {useDidUpdate} from '../hooks';
 import styleConstructor from './style';
@@ -102,7 +100,7 @@ const Calendar = (props: CalendarProps) => {
   const style = useRef(styleConstructor(theme));
   const header = useRef();
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
- 
+
   useEffect(() => {
     if (initialDate) {
       setCurrentMonth(parseDate(initialDate));
@@ -140,7 +138,7 @@ const Calendar = (props: CalendarProps) => {
     }
   }, [minDate, maxDate, allowSelectionOutOfRange, disableMonthChange, updateMonth]);
 
-  const onPressDay = useCallback((date?: DateData) => {
+  const _onDayPress = useCallback((date?: DateData) => {
     if (date)
     handleDayInteraction(date, onDayPress);
   }, [handleDayInteraction, onDayPress]);
@@ -184,7 +182,7 @@ const Calendar = (props: CalendarProps) => {
           marking={weekNumberMarking.current}
           // state='disabled'
           theme={theme}
-          testID={`${WEEK_NUMBER}-${weekNumber}`}
+          testID={`${testID}.weekNumber_${weekNumber}`}
         >
           {weekNumber}
         </BasicDay>
@@ -199,14 +197,17 @@ const Calendar = (props: CalendarProps) => {
       return <View key={id} style={style.current.emptyDayContainer}/>;
     }
 
+    const dateString = toMarkingFormat(day);
+
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
-          date={toMarkingFormat(day)}
+          testID={`${testID}.day_${dateString}`}
+          date={dateString}
           state={getState(day, currentMonth, props)}
-          marking={markedDates?.[toMarkingFormat(day)]}
-          onPress={onPressDay}
+          marking={markedDates?.[dateString]}
+          onPress={_onDayPress}
           onLongPress={onLongPressDay}
         />
       </View>
@@ -258,11 +259,11 @@ const Calendar = (props: CalendarProps) => {
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-    
+
     return (
       <HeaderComponent
         {...headerProps}
-        testID={testID}
+        testID={`${testID}.header`}
         style={headerStyle}
         ref={ref}
         month={currentMonth}

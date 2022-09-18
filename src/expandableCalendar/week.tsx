@@ -11,14 +11,28 @@ import Calendar, {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 // import BasicDay from '../calendar/day/basic';
 
-
 export type WeekProps = CalendarProps;
 
 const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset} = props;
+  const {
+    theme,
+    current,
+    firstDay,
+    hideExtraDays,
+    markedDates,
+    onDayPress,
+    onDayLongPress,
+    style: propsStyle,
+    numberOfDays = 1,
+    timelineLeftInset,
+    testID
+  } = props;
+
   const style = useRef(styleConstructor(theme));
+  
   const dayProps = extractDayProps(props);
   const currXdate = parseDate(current);
+  
   const getWeek = useCallback((date?: string) => {
     if (date) {
       return getWeekDates(date, firstDay);
@@ -36,14 +50,16 @@ const Week = (props: WeekProps) => {
         return <View key={id} style={style.current.emptyDayContainer}/>;
       }
     }
+    const dayString = toMarkingFormat(day);
 
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
-          date={toMarkingFormat(day)}
+          testID={`${testID}.day_${dayString}`}
+          date={dayString}
           state={getState(day, currXdate, props)}
-          marking={markedDates?.[toMarkingFormat(day)]}
+          marking={markedDates?.[dayString]}
           onPress={onDayPress}
           onLongPress={onDayLongPress}
         />
@@ -74,7 +90,9 @@ const Week = (props: WeekProps) => {
 
   return (
     <View style={style.current.container}>
-      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>{renderWeek()}</View>
+      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
+        {renderWeek()}
+      </View>
     </View>
   );
 };
