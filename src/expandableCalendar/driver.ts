@@ -29,14 +29,6 @@ export class ExpandableCalendarDriver {
     return calendarHeight > 145;
   }
 
-  getCalendarList() {
-    return this.renderTree.getByTestId(`${this.testID}.calendarList.list`);
-  }
-
-  getWeekCalendar() {
-    return this.renderTree.getByTestId(`${this.testID}.weekCalendar.list`);
-  }
-
   /** Knob and Position */
 
   get knobTestID() {
@@ -52,7 +44,11 @@ export class ExpandableCalendarDriver {
     fireEvent(this.getKnob(), 'onPress');
   }
 
-  /** Day */
+  /** CalendarList */
+
+  getCalendarList() {
+    return this.renderTree.getByTestId(`${this.testID}.calendarList.list`);
+  }
 
   getDayTestID(date: string) {
     const [year, month] = date.split('-');
@@ -65,5 +61,23 @@ export class ExpandableCalendarDriver {
 
   selectDay(date: string) {
     fireEvent(this.getDay(date), 'onPress');
+  }
+
+  /** WeekCalendar */
+
+  getWeekCalendar() {
+    return this.renderTree.getByTestId(`${this.testID}.weekCalendar.list`);
+  }
+
+  getWeekDayTestID(date: string) {
+    return `${this.testID}.weekCalendar.day_${date}`;
+  }
+
+  getWeekDay(date: string) {
+    return this.renderTree?.getByTestId(this.getWeekDayTestID(date));
+  }
+
+  selectWeekDay(date: string) {
+    fireEvent(this.getWeekDay(date), 'onPress');
   }
 }

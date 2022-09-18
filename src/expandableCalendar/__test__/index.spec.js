@@ -80,22 +80,6 @@ describe('ExpandableCalendar', () => {
     });
   });
 
-  describe('Updates', () => {
-    it('should day press update date', () => {
-      driver.selectDay('2022-09-16');
-
-      // WeekCalendar
-      const weekCalendarProps = driver.getWeekCalendar().props;
-      const initialScrollIndex = weekCalendarProps.initialScrollIndex;
-      const currentWeek = weekCalendarProps.data[initialScrollIndex];
-      expect(currentWeek).toBe('2022-09-16');
-
-      // events
-      expect(onDayPressMock).toHaveBeenCalled();
-      // expect(onVisibleMonthsChangeMock).toHaveBeenCalled();
-    });
-  });
-
   describe('Knob', () => {
     it('should expand expandable header ', () => {
       driver.toggleKnob();
@@ -110,6 +94,41 @@ describe('ExpandableCalendar', () => {
       driver.selectDay(toMarkingFormat(today));
       jest.runAllTimers();
       expect(driver.isCalendarExpanded()).toBe(false);
+    });
+  });
+
+  describe('CalendarList updates', () => {
+    describe('Day Press', () => {
+      it('should day press update date', () => {
+        driver.selectDay('2022-09-16');
+
+        // WeekCalendar
+        const weekCalendarProps = driver.getWeekCalendar().props;
+        const initialScrollIndex = weekCalendarProps.initialScrollIndex;
+        const currentWeek = weekCalendarProps.data[initialScrollIndex];
+        expect(currentWeek).toBe('2022-09-16');
+
+        // events
+        expect(onDayPressMock).toHaveBeenCalled();
+        // expect(onVisibleMonthsChangeMock).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('WeekCalendar updates', () => {
+    describe('Day Press', () => {
+      it('should day press update date', () => {
+        driver.selectWeekDay('2022-09-16');
+
+        // WeekCalendar
+        const weekCalendarProps = driver.getWeekCalendar().props;
+        const initialScrollIndex = weekCalendarProps.initialScrollIndex;
+        const currentWeek = weekCalendarProps.data[initialScrollIndex];
+        expect(currentWeek).toBe('2022-09-16');
+
+        // events
+        expect(onDayPressMock).toHaveBeenCalled();
+      });
     });
   });
 });
