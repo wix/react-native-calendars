@@ -397,7 +397,7 @@ const CalendarScreen = () => {
       },
       [getNewSelectedDate]
     );
-  
+
     const onPressArrowRight = useCallback(
       (add, month) => {
         const newDate = getNewSelectedDate(month, true);
@@ -445,7 +445,7 @@ const CalendarScreen = () => {
   const renderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
       customHeaderProps.current = props;
-      
+
       return (
         // @ts-expect-error
         <View ref={ref} {...props} style={styles.customHeader}>
@@ -565,8 +565,8 @@ const styles = StyleSheet.create({
     padding: 8
   },
   customTitleContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10
   },
   customTitle: {
