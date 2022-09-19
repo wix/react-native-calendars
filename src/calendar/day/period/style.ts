@@ -38,12 +38,15 @@ export default function styleConstructor(theme: Theme = {}) {
     },
 
     text: {
-      marginTop: 7,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)'
+    },
+    dotContainer: {
+      position: 'absolute',
+      bottom: 3
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor
