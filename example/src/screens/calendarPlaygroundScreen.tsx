@@ -139,6 +139,7 @@ const NewCalendarScreen = () => {
 
   const periodWithDotsMarks = useMemo(() => {
     return {
+      [getDate(-3)]: {marked: true, dotColor: 'white', startingDay: true, endingDay: true, color: '#50cebb', textColor: 'white'},
       [INITIAL_DATE]: {marked: true, dotColor: '#50cebb'},
       [getDate(1)]: {disabled: true, marked: true, dotColor: '#50cebb'},
       [getDate(2)]: {startingDay: true, color: '#50cebb', textColor: 'white'},
