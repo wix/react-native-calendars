@@ -1,42 +1,51 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Animated, TouchableOpacity, ViewStyle, ViewProps, StyleProp} from 'react-native';
-import {Theme} from '../types';
-import {getDefaultLocale} from '../services';
-import styleConstructor from './style';
+import XDate from 'xdate';
 
-const commons = require('./commons');
+import React, {forwardRef, useImperativeHandle, useEffect, useRef, useState, useContext, useCallback} from 'react';
+import {Animated, TouchableOpacity, ViewStyle, ViewProps, StyleProp} from 'react-native';
+
+import {Theme} from '../../types';
+import {getDefaultLocale} from '../../services';
+import {toMarkingFormat} from '../../interface';
+import {isToday, isPastDate} from '../../dateutils';
+import {UpdateSources, todayString} from '../commons';
+import styleConstructor from '../style';
+import Context from './index';
+
 const TOP_POSITION = 65;
-const DOWN_ICON = require('../img/down.png');
-const UP_ICON = require('../img/up.png');
+const DOWN_ICON = require('../../img/down.png');
+const UP_ICON = require('../../img/up.png');
 
 export interface TodayButtonProps extends ViewProps {
-  /** -1 for past date | 0 for today's date | 1 for future date */
-  state?: -1 | 0 | 1;
-  /** Is the button disabled */
-  disabled?: boolean;
-  /** Specify theme properties to override specific styles for calendar parts */
-  theme?: Theme;
-  /** The button's top position */
-  margin?: number;
   /** The opacity for the disabled button (0-1) */
   disabledOpacity?: number;
+  /** The button's top position */
+  margin?: number;
+  /** Specify theme properties to override specific styles for calendar parts */
+  theme?: Theme;
   style?: StyleProp<ViewStyle>;
-  /** Callback for the button's press event */
-  onPress?: () => void;
 }
 
-const TodayButton = (props: TodayButtonProps) => {
+export interface TodayButtonImperativeMethods {
+  disable: (shouldDisable: boolean) => void;
+}
+
+const TodayButton = (props: TodayButtonProps, ref: any) => {
+  useImperativeHandle(ref, () => ({
+    disable: (shouldDisable: boolean) => {
+      disable(shouldDisable);
+    }
+  }));
+
   const {
-    state = 0,
-    disabled = false,
     margin = 0,
     disabledOpacity = 0,
     theme,
     style: propsStyle,
-    onPress
   } = props;
-
+  const {date, setDate} = useContext(Context);
+  const [disabled, setDisabled] = useState(false);
   const style = useRef(styleConstructor(theme));
+  const state = isToday(date) ? 0 : isPastDate(date) ? -1 : 1;
   const shouldShow = state !== 0;
 
   /** Effects */
@@ -52,14 +61,21 @@ const TodayButton = (props: TodayButtonProps) => {
     if (!shouldShow) {
       return;
     }
+
     animateOpacity();
   }, [disabled]);
+
+  const disable = (shouldDisable: boolean) => {
+    if (shouldDisable !== disabled) {
+      setDisabled(shouldDisable);
+    }
+  };
 
   /** Label */
 
   const getFormattedLabel = () => {
-    const todayString = getDefaultLocale().today || commons.todayString;
-    const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
+    const todayStr = getDefaultLocale().today || todayString;
+    const today = todayStr.charAt(0).toUpperCase() + todayStr.slice(1);
     return today;
   };
 
@@ -112,6 +128,14 @@ const TodayButton = (props: TodayButtonProps) => {
     }).start();
   };
 
+  const getTodayDate = () => {
+    return toMarkingFormat(new XDate());
+  };
+
+  const onPress = useCallback(() => {
+    setDate(getTodayDate(), UpdateSources.TODAY_PRESS);
+  }, [setDate]);
+
   return (
     <Animated.View style={[style.current.todayButtonContainer, {transform: [{translateY: buttonY.current}]}]}>
       <TouchableOpacity
@@ -128,4 +152,4 @@ const TodayButton = (props: TodayButtonProps) => {
   );
 };
 
-export default TodayButton;
+export default forwardRef(TodayButton);
