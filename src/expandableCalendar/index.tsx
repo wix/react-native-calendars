@@ -38,7 +38,7 @@ enum Positions {
 }
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = constants.isIOS ? 115 : 120; // header + 1 week
+const CLOSED_HEIGHT = constants.isIOS ? 116 : 120; // header + 1 week
 const WEEK_HEIGHT = 46;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
