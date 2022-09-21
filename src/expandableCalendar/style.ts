@@ -41,13 +41,15 @@ export default function styleConstructor(theme: Theme = {}) {
       bottom: 0,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: appStyle.calendarBackground,
+      ...appStyle.expandableKnobContainer
     },
     knob: {
       width: 40,
       height: 4,
       borderRadius: 3,
-      backgroundColor: appStyle.expandableKnobColor
+      backgroundColor: appStyle.expandableKnobColor,
+      ...appStyle.expandableKnob
     },
     sectionText: {
       fontWeight: 'bold', 
