@@ -38,8 +38,8 @@ enum Positions {
 }
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 120; // header + 1 week
-const WEEK_HEIGHT = 46;
+const CLOSED_HEIGHT = 130; // header + 1 week
+const WEEK_HEIGHT = 48;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
 const LEFT_ARROW = require('../calendar/img/previous.png');
