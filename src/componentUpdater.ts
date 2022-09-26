@@ -234,6 +234,7 @@ export function extractReservationListProps(props: AgendaProps) {
     renderDay,
     renderItem,
     renderEmptyDate,
+    ...others
   } = props;
 
   const ReservationListProps = {
@@ -260,6 +261,7 @@ export function extractReservationListProps(props: AgendaProps) {
     renderDay,
     renderItem,
     renderEmptyDate,
+    ...others
   };
 
   return ReservationListProps;
