@@ -38,7 +38,7 @@ enum Positions {
 }
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 120; // header + 1 week
+const CLOSED_HEIGHT = constants.isIOS ? 116 : 120; // header + 1 week
 const WEEK_HEIGHT = 46;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
@@ -221,7 +221,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         paddingRight: isNumber(rightPaddings) ? rightPaddings + 6 : DAY_NAMES_PADDING
       }
     ];
-  }, [calendarStyle]);
+  }, [calendarStyle, numberOfDays]);
 
   const animatedHeaderStyle = useMemo(() => {
     return [style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}];
