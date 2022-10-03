@@ -14,6 +14,8 @@
 .*/Libraries/react-native/React.js
 .*/Libraries/react-native/ReactNative.js
 
+.*/node_modules/resolve/test/resolver/malformed_package_json/package\.json$
+
 [include]
 
 [libs]
@@ -44,4 +46,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 unsafe.enable_getters_and_setters=true
 
 [version]
-^0.158.0
+^0.170.0
