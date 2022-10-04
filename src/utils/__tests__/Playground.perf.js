@@ -1,6 +1,6 @@
 import React from 'react';
 import {measurePerformance} from 'reassure';
-import {Calendar, CalendarList} from '../../index';
+import {Calendar, CalendarList, ExpandableCalendar} from '../../index';
 
 const INITIAL_DATE = '2022-07-07';
 
