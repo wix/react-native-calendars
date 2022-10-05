@@ -28,7 +28,8 @@ class CalendarHeader extends Component {
     disableArrowRight: PropTypes.bool,
     webAriaLevel: PropTypes.number,
     disabledDaysIndexes: PropTypes.arrayOf(PropTypes.number),
-    renderHeader: PropTypes.any
+    renderHeader: PropTypes.any,
+    renderMonthInWeekNumber: PropTypes.any
   };
 
   static defaultProps = {
@@ -214,6 +215,7 @@ class CalendarHeader extends Component {
         {!this.props.hideDayNames &&
           <View style={this.style.week}>
             {this.props.weekNumbers &&
+            this.props.renderMonthInWeekNumber ? this.props.renderMonthInWeekNumber():
               <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
             }
             {this.renderWeekDays(weekDaysNames)}

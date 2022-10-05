@@ -58,6 +58,12 @@ const CalendarsScreen = () => {
           style={styles.calendar}
           hideExtraDays
           showWeekNumbers
+        /**
+         * @Type  renderMonthInWeekNumber: React.ReactNode
+         * @DESC display month component in the top of the weeknumber 
+         * @Design https://app.zeplin.io/project/5adc60b66618bc1bbd6962c9/screen/633c30491ba53d5892a40f79
+         */
+          // renderMonthInWeekNumber={()=> <View style={{backgroundColor:'red', height: 50, width: 50}}/>}
         />
       </Fragment>
     );
