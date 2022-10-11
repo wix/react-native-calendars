@@ -184,7 +184,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       }
 
       return (
-        <Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
+        <Text allowFontScaling={false} key={index} style={[dayStyle, {flex: 1}]} numberOfLines={1} accessibilityLabel={''}>
           {day}
         </Text>
       );
