@@ -11,6 +11,7 @@
     "build:docs": "node ./scripts/build-docs.js",
     "e2e": "node ./scripts/test-e2e.js --release",
     "test": "npm run lint && npm run unit",
+    "test:perf": "TEST_RUNNER_ARGS='--testMatch **/*.perf.js' reassure measure",
     "unit": "jest",
     "lint": "eslint src/ example/src --ext .tsx,.ts,.js",
     "release": "node ./scripts/release.js",
@@ -31,7 +32,6 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
-    "fs": "^0.0.1-security",
     "hoist-non-react-statics": "^3.3.1",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
@@ -45,6 +45,7 @@
     "@babel/core": "^7.12.9",
     "@babel/eslint-parser": "^7.13.4",
     "@babel/runtime": "^7.12.5",
+    "@testing-library/react-native": "^11.0.0",
     "@tsconfig/docusaurus": "^1.0.4",
     "@types/lodash": "^4.14.170",
     "@types/react": "^17.0.44",
@@ -72,7 +73,9 @@
     "react-component-driver": "^0.10.0",
     "react-native": "0.66.4",
     "react-native-navigation": "^7.23.1",
+    "react-recipes": "^1.4.0",
     "react-test-renderer": "^17.0.2",
+    "reassure": "^0.4.1",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "typescript": "^4.3.3"

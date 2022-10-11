@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import sortBy from 'lodash/sortBy';
 import * as uut from '../Packer';
 
 describe('Timeline Packer utils', () => {
@@ -100,7 +100,7 @@ describe('Timeline Packer utils', () => {
         overlapEventsSpacing: 4,
         hourBlockHeight: 100
       });
-      packedEvents = _.sortBy(packedEvents, 'index');
+      packedEvents = sortBy(packedEvents, 'index');
       expect(packedEvents[0].width).toBe(96);
       expect(packedEvents[1].width).toBe(96);
       expect(packedEvents[2].width).toBe(100);

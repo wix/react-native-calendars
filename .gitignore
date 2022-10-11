@@ -63,5 +63,7 @@ fastlane/screenshots
 
 # CocoaPods
 ios/Pods
+ios/Podfile.lock
 
 .eslintcache
+.reassure 

@@ -1,3 +1,4 @@
+import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
@@ -13,8 +14,8 @@ import {
   NativeScrollEvent
 } from 'react-native';
 
-import {extractComponentProps} from '../componentUpdater';
-import {parseDate, xdateToData, toMarkingFormat} from '../interface';
+import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
+import {xdateToData, toMarkingFormat} from '../interface';
 import {sameDate, sameMonth} from '../dateutils';
 // @ts-expect-error
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
@@ -23,7 +24,7 @@ import {DateData, AgendaSchedule} from '../types';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';
-import CalendarList, {CalendarListProps} from '../calendar-list';
+import CalendarList, {CalendarListProps, CalendarListImperativeMethods} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
 
 
@@ -43,6 +44,8 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   onDayChange?: (data: DateData) => void;
   /** specify how agenda knob should look like */
   renderKnob?: () => JSX.Element;
+  /** override inner list with a custom implemented component */
+  renderList?: (listProps: ReservationListProps) => JSX.Element;
   /** initially selected day */
   selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
   /** Hide knob button. Default = false */
@@ -79,6 +82,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     onCalendarToggled: PropTypes.func,
     onDayChange: PropTypes.func,
     renderKnob: PropTypes.func,
+    renderList: PropTypes.func,
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
     showClosingKnob: PropTypes.bool
@@ -93,7 +97,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   private knobTracker: VelocityTracker;
   private _isMounted: boolean | undefined;
   private scrollPad: React.RefObject<any> = React.createRef();
-  private calendar: React.RefObject<CalendarList> = React.createRef();
+  private calendar: React.RefObject<CalendarListImperativeMethods> = React.createRef();
   private knob: React.RefObject<View> = React.createRef();
   public list: React.RefObject<ReservationList> = React.createRef();
 
@@ -136,11 +140,12 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   componentDidUpdate(prevProps: AgendaProps, prevState: State) {
     const newSelectedDate = this.getSelectedDate(this.props.selected);
-    
+
     if (!sameDate(newSelectedDate, prevState.selectedDay)) {
       const prevSelectedDate = this.getSelectedDate(prevProps.selected);
       if (!sameDate(newSelectedDate, prevSelectedDate)) {
         this.setState({selectedDay: newSelectedDate});
+        this.calendar?.current?.scrollToDay(newSelectedDate, this.calendarOffset(), true);
       }
     } else if (!prevProps.items) {
       this.loadReservations(this.props);
@@ -154,8 +159,8 @@ export default class Agenda extends Component<AgendaProps, State> {
     return null;
   }
 
-  getSelectedDate(selected?: string) {
-    return selected ? parseDate(selected) : new XDate(true);
+  getSelectedDate(date?: string) {
+    return date ? new XDate(date) : new XDate(true);
   }
 
   calendarOffset() {
@@ -183,7 +188,7 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   enableCalendarScrolling(enable = true) {
     this.setState({calendarScrollable: enable});
-    
+
     this.props.onCalendarToggled?.(enable);
 
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
@@ -212,7 +217,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   chooseDay(d: DateData, optimisticScroll: boolean) {
-    const day = parseDate(d);
+    const day = new XDate(d.dateString);
 
     this.setState({
       calendarScrollable: false,
@@ -258,7 +263,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   onCalendarListLayout = () => {
-    this.calendar?.current?.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+    this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset(), false);
   };
 
   onLayout = (event: LayoutChangeEvent) => {
@@ -320,14 +325,22 @@ export default class Agenda extends Component<AgendaProps, State> {
   onDayChange = (day: XDate) => {
     const withAnimation = sameMonth(day, this.state.selectedDay);
     this.calendar?.current?.scrollToDay(day, this.calendarOffset(), withAnimation);
-    
+
     this.setState({selectedDay: day});
 
     this.props.onDayChange?.(xdateToData(day));
   };
 
   renderReservations() {
-    const reservationListProps = extractComponentProps(ReservationList, this.props);
+    const reservationListProps = extractReservationListProps(this.props);
+    if (isFunction(this.props.renderList)) {
+      return this.props.renderList({
+        ...reservationListProps,
+        selectedDay: this.state.selectedDay,
+        topDay: this.state.topDay,
+        onDayChange: this.onDayChange,
+      });
+    }
 
     return (
       <ReservationList
@@ -343,7 +356,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   renderCalendarList() {
     const {markedDates, items} = this.props;
     const shouldHideExtraDays = this.state.calendarScrollable ? this.props.hideExtraDays : false;
-    const calendarListProps = extractComponentProps(CalendarList, this.props);
+    const calendarListProps = extractCalendarListProps(this.props);
 
     return (
       <CalendarList
@@ -378,9 +391,9 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   renderWeekDaysNames = () => {
     return (
-      <WeekDaysNames 
-        firstDay={this.props.firstDay} 
-        style={this.style.dayHeader} 
+      <WeekDaysNames
+        firstDay={this.props.firstDay}
+        style={this.style.dayHeader}
       />
     );
   };

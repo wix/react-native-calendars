@@ -55,6 +55,17 @@
       "name": "disabledOpacity",
       "type": "number",
       "description": "The opacity for the disabled today button (0-1)"
+    },
+    {
+      "name": "numberOfDays",
+      "type": "number",
+      "description": "The number of days to present in the timeline calendar (1-7)"
+    },
+    {
+      "name": "timelineLeftInset",
+      "type": "number",
+      "description": "The left inset of the timeline calendar (sidebar width)",
+      "default": "72"
     }
   ]
 }

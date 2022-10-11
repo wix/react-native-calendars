@@ -1,85 +1,107 @@
 import XDate from 'xdate';
-import React, {useRef} from 'react';
+import React, {useRef, useMemo, useCallback} from 'react';
 import {View} from 'react-native';
+import isEqual from 'lodash/isEqual';
 
-import {getWeekDates, sameMonth} from '../dateutils';
+import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
-import {extractComponentProps} from '../componentUpdater';
+import {extractDayProps} from '../componentUpdater';
 import styleConstructor from './style';
-import Calendar, {CalendarProps} from '../calendar';
+import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
-// import BasicDay from '../calendar/day/basic';
+import {CalendarContextProps} from './Context';
 
+export type WeekProps = CalendarProps & {
+  context?: CalendarContextProps;
+};
 
-export type WeekProps = CalendarProps;
+function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {
+  const {context: prevContext, markedDates: prevMarkings, ...prevOthers} = prevProps;
+  const {context: nextContext, markedDates: nextMarkings, ...nextOthers} = nextProps;
 
-const Week = (props: WeekProps) => {
-  const {theme, current, firstDay, hideExtraDays, markedDates, onDayPress, style: propsStyle} = props;
+  return isEqual(prevContext, nextContext) && isEqual(prevMarkings, nextMarkings) && isEqual(prevOthers, nextOthers);
+}
+
+const Week = React.memo((props: WeekProps) => {
+  const {
+    theme,
+    current,
+    firstDay,
+    hideExtraDays,
+    markedDates,
+    onDayPress,
+    onDayLongPress,
+    style: propsStyle,
+    numberOfDays = 1,
+    timelineLeftInset,
+    testID,
+  } = props;
   const style = useRef(styleConstructor(theme));
 
-  const getWeek = (date?: string) => {
+  const getWeek = useCallback((date?: string) => {
     if (date) {
       return getWeekDates(date, firstDay);
     }
-  };
+  }, [firstDay]);
 
-  // renderWeekNumber (weekNumber) {
-  //   return <BasicDay key={`week-${weekNumber}`} theme={this.props.theme} marking={{disableTouchEvent: true}} state='disabled'>{weekNumber}</BasicDay>;
-  // }
+  const partialWeekStyle = useMemo(() => {
+    return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
+  }, [timelineLeftInset]);
+
+  const dayProps = extractDayProps(props);
+  const currXdate = useMemo(() => parseDate(current), [current]);
 
   const renderDay = (day: XDate, id: number) => {
-    const dayProps = extractComponentProps(Day, props);
-    const currXdate = parseDate(current);
-    
     // hide extra days
     if (current && hideExtraDays) {
       if (!sameMonth(day, currXdate)) {
         return <View key={id} style={style.current.emptyDayContainer}/>;
       }
     }
+    const dayString = toMarkingFormat(day);
 
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
-          date={toMarkingFormat(day)}
+          testID={`${testID}.day_${dayString}`}
+          date={dayString}
           state={getState(day, currXdate, props)}
-          marking={markedDates?.[toMarkingFormat(day)]}
+          marking={markedDates?.[dayString]}
           onPress={onDayPress}
-          onLongPress={onDayPress}
+          onLongPress={onDayLongPress}
         />
       </View>
     );
   };
 
   const renderWeek = () => {
-    const dates = getWeek(current);
-    const week: any[] = [];
-  
+    const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
+    const week: JSX.Element[] = [];
+
     if (dates) {
-      dates.forEach((day: XDate, id: number) => {
-        week.push(renderDay(day, id));
+      const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
+      const sliced = dates.slice(todayIndex, numberOfDays);
+      const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
+      datesToRender.forEach((day: XDate | string, id: number) => {
+        const d = day instanceof XDate ? day : new XDate(day);
+        week.push(renderDay(d, id));
       }, this);
     }
-  
-    // if (this.props.showWeekNumbers) {
-    //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
-    // }
-    
+
     return week;
   };
 
   return (
     <View style={style.current.container}>
-      <View style={[style.current.week, propsStyle]}>{renderWeek()}</View>
+      <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
+        {renderWeek()}
+      </View>
     </View>
   );
-};
+}, arePropsEqual);
 
 export default Week;
 
 Week.displayName = 'Week';
-Week.propTypes = {
-  ...Calendar.propTypes
-};
