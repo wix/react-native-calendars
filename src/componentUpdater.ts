@@ -70,7 +70,8 @@ export function extractDayProps(props: CalendarProps) {
     date,
     disableAllTouchEventsForDisabledDays,
     disableAllTouchEventsForInactiveDays,
-    dayComponent
+    dayComponent,
+    testID
   } = props;
 
   const dayProps = {
@@ -83,7 +84,8 @@ export function extractDayProps(props: CalendarProps) {
     date,
     disableAllTouchEventsForDisabledDays,
     disableAllTouchEventsForInactiveDays,
-    dayComponent
+    dayComponent,
+    testID
   };
 
   return dayProps;
@@ -111,7 +113,8 @@ export function extractHeaderProps(props: CalendarProps) {
     webAriaLevel,
     numberOfDays,
     current,
-    timelineLeftInset
+    timelineLeftInset,
+    testID
   } = props;
 
   const headerProps = {
@@ -135,7 +138,8 @@ export function extractHeaderProps(props: CalendarProps) {
     webAriaLevel,
     numberOfDays,
     current,
-    timelineLeftInset
+    timelineLeftInset,
+    testID
   };
 
   return headerProps;
@@ -226,6 +230,7 @@ export function extractReservationListProps(props: AgendaProps) {
     // Reservation props
     date,
     item,
+    theme,
     rowHasChanged,
     renderDay,
     renderItem,
@@ -252,6 +257,7 @@ export function extractReservationListProps(props: AgendaProps) {
     // Reservation props
     date,
     item,
+    theme,
     rowHasChanged,
     renderDay,
     renderItem,

@@ -7,8 +7,6 @@ import React, {useMemo} from 'react';
 import {formatNumbers, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 import {xdateToData} from '../../interface';
-// @ts-expect-error
-import {SELECT_DATE_SLOT} from '../../testIDs';
 import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
@@ -16,9 +14,9 @@ import PeriodDay from './period';
 function areEqual(prevProps: DayProps, nextProps: DayProps) {
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
   const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
-  const didPropsChange = some(prevPropsWithoutMarkDates, function(value, key) {
+  const didPropsChange = some(prevPropsWithoutMarkDates, function (value, key) {
     //@ts-expect-error
-    return value !== nextPropsWithoutMarkDates[key]; 
+    return value !== nextPropsWithoutMarkDates[key];
   });
   const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
   return !didPropsChange && isMarkingEqual;
@@ -69,18 +67,13 @@ const Day = React.memo((props: DayProps) => {
 
     return `${_isToday ? today : ''} ${_date?.toString(formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
   }, [_date, marking, _isToday]);
-  
+
   const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
   const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate())} : undefined;
 
   return (
     //@ts-expect-error
-    <Component
-      {...props}
-      accessibilityLabel={getAccessibilityLabel}
-      testID={`${SELECT_DATE_SLOT}-${date}`}
-      {...dayComponentProps}
-    >
+    <Component {...props} accessibilityLabel={getAccessibilityLabel} {...dayComponentProps}>
       {formatNumbers(_date?.getDate())}
     </Component>
   );

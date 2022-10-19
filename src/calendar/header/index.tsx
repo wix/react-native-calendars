@@ -16,14 +16,6 @@ import {
   Insets
 } from 'react-native';
 import {formatNumbers, weekDayNames} from '../../dateutils';
-import {
-  CHANGE_MONTH_LEFT_ARROW,
-  CHANGE_MONTH_RIGHT_ARROW,
-  HEADER_DAY_NAMES,
-  HEADER_LOADING_INDICATOR,
-  HEADER_MONTH_NAME
-  // @ts-expect-error
-} from '../../testIDs';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
 
@@ -215,7 +207,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         <Text
           allowFontScaling={false}
           style={style.current.monthText}
-          testID={testID ? `${HEADER_MONTH_NAME}-${testID}` : HEADER_MONTH_NAME}
+          testID={`${testID}.title`}
           {...webProps}
         >
           {formatNumbers(month?.toString(monthFormat))}
@@ -230,8 +222,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     }
 
     const isLeft = direction === 'left';
-    const id = isLeft ? CHANGE_MONTH_LEFT_ARROW : CHANGE_MONTH_RIGHT_ARROW;
-    const testId = testID ? `${id}-${testID}` : id;
+    const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
@@ -243,7 +234,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         disabled={shouldDisable}
         style={style.current.arrow}
         hitSlop={hitSlop}
-        testID={testId}
+        testID={`${testID}.${arrowId}`}
       >
         {renderArrow ? (
           renderArrow(renderArrowDirection)
@@ -259,7 +250,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       return (
         <ActivityIndicator
           color={theme?.indicatorColor as ColorValue}
-          testID={testID ? `${HEADER_LOADING_INDICATOR}-${testID}` : HEADER_LOADING_INDICATOR}
+          testID={`${testID}.loader`}
         />
       );
     }
@@ -274,7 +265,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       return (
         <View
           style={dayNamesStyle}
-          testID={testID ? `${HEADER_DAY_NAMES}-${testID}` : HEADER_DAY_NAMES}
+          testID={`${testID}.dayNames`}
         >
           {renderWeekNumbersSpace()}
           {renderWeekDays}

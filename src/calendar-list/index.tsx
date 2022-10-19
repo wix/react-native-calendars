@@ -6,12 +6,10 @@ import React, {forwardRef, useImperativeHandle, useRef, useEffect, useState, use
 import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
 
 import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
-import {xdateToData, parseDate} from '../interface';
+import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
 import {useDidUpdate} from '../hooks';
-// @ts-expect-error
-import {STATIC_HEADER} from '../testIDs';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
@@ -102,7 +100,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     onEndReachedThreshold,
     onEndReached
   } = props;
-  
+
   const calendarProps = extractCalendarProps(props);
   const headerProps = extractHeaderProps(props);
   const calendarSize = horizontal ? calendarWidth : calendarHeight;
@@ -133,8 +131,8 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   }, [propsStyle]);
 
   const initialDateIndex = useMemo(() => {
-    return findIndex(items, function(item) { 
-      return item.toString() === initialDate.current?.toString(); 
+    return findIndex(items, function(item) {
+      return item.toString() === initialDate.current?.toString();
     });
   }, [items]);
 
@@ -180,7 +178,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     const scrollTo = parseDate(date);
     const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
     const scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize;
-    
+
     if (scrollAmount !== 0) {
       // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
@@ -196,8 +194,8 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     setCurrentMonth(day);
   }, [currentMonth, scrollToMonth]);
 
-  const getMarkedDatesForItem = useCallback((item?: XDate) => {    
-    if (markedDates && item) {      
+  const getMarkedDatesForItem = useCallback((item?: XDate) => {
+    if (markedDates && item) {
       for (const [key, _] of Object.entries(markedDates)) {
         if (sameMonth(new XDate(key), new XDate(item))) {
           return markedDates;
@@ -224,13 +222,16 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     return false;
   }, [currentMonth]);
 
-  const renderItem = useCallback(({item}: any) => {
+  const renderItem = useCallback(({item}: {item: XDate}) => {
+    const dateString = toMarkingFormat(item);
+    const [year, month] = dateString.split('-');
+    const testId = `${testID}.item_${year}-${month}`;
     return (
       <CalendarListItem
         {...calendarProps}
+        testID={testId}
         markedDates={getMarkedDatesForItem(item)}
         item={item}
-        testID={`${testID}_${item}`}
         style={calendarStyle}
         // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal}
@@ -247,7 +248,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
       return (
         <CalendarHeader
           {...headerProps}
-          testID={STATIC_HEADER}
+          testID={`${testID}.staticHeader`}
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}
@@ -273,7 +274,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   }, []);
 
   const viewabilityConfigCallbackPairs = useRef([
-    { 
+    {
       viewabilityConfig: viewabilityConfig.current,
       onViewableItemsChanged
     },
@@ -291,7 +292,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         initialNumToRender={range.current}
-        initialScrollIndex={initialDateIndex} 
+        initialScrollIndex={initialDateIndex}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         testID={testID}
         onLayout={onLayout}

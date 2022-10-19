@@ -177,7 +177,9 @@ const PeriodDay = (props: PeriodDayProps) => {
           <Text allowFontScaling={false} style={textStyle}>
             {String(children)}
           </Text>
-          <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked}/>
+          <View style={style.current.dotContainer}>
+            <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked}/>
+          </View>
         </View>
       </View>
     </Component>

@@ -88,6 +88,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       <Text style={textStyle}>{dateString}</Text>
     );
   }
+
   return (
     <Calendar
       hideArrows={true}
