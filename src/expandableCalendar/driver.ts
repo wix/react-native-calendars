@@ -12,35 +12,16 @@ export class ExpandableCalendarDriver {
     this.renderTree = this.render(element);
   }
 
-  get knobTestID() {
-    return `${this.testID}.knob`;
-  }
-
-  getDayTestID(date: string) {
-    const [year, month] = date.split('-');
-    return `${this.testID}.calendarList.item_${year}-${month}.day_${date}`;
-  }
-
   render(element = this.element): ReturnType<typeof render> {
     if (!element) throw 'Element is missing';
     this.renderTree = render(element);
     return this.renderTree;
   }
 
-  getKnob() {
-    return this.renderTree?.getByTestId(`${this.testID}.knob`);
-  }
-
+  /** Container */
+  
   getExpandableContainer() {
     return this.renderTree.getByTestId(`${this.testID}.expandableContainer`);
-  }
-
-  getDay(date: string) {
-    return this.renderTree?.getByTestId(this.getDayTestID(date));
-  }
-
-  toggleKnob() {
-    fireEvent(this.getKnob(), 'onPress');
   }
 
   isCalendarExpanded() {
@@ -48,7 +29,55 @@ export class ExpandableCalendarDriver {
     return calendarHeight > 145;
   }
 
+  /** Knob and Position */
+
+  get knobTestID() {
+    return `${this.testID}.knob`;
+  }
+
+  getKnob() {
+    // NOTE: using query as the Knob is not rendered in all cases
+    return this.renderTree?.queryByTestId(this.knobTestID);
+  }
+
+  toggleKnob() {
+    fireEvent(this.getKnob(), 'onPress');
+  }
+
+  /** CalendarList */
+
+  getCalendarList() {
+    return this.renderTree.getByTestId(`${this.testID}.calendarList.list`);
+  }
+
+  getDayTestID(date: string) {
+    const [year, month] = date.split('-');
+    return `${this.testID}.calendarList.item_${year}-${month}.day_${date}`;
+  }
+
+  getDay(date: string) {
+    return this.renderTree?.getByTestId(this.getDayTestID(date));
+  }
+
   selectDay(date: string) {
     fireEvent(this.getDay(date), 'onPress');
+  }
+
+  /** WeekCalendar */
+
+  getWeekCalendar() {
+    return this.renderTree.getByTestId(`${this.testID}.weekCalendar.list`);
+  }
+
+  getWeekDayTestID(date: string) {
+    return `${this.testID}.weekCalendar.day_${date}`;
+  }
+
+  getWeekDay(date: string) {
+    return this.renderTree?.getByTestId(this.getWeekDayTestID(date));
+  }
+
+  selectWeekDay(date: string) {
+    fireEvent(this.getWeekDay(date), 'onPress');
   }
 }

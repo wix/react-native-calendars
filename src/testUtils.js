@@ -1,3 +1,5 @@
+import {getDefaultLocale} from './services';
+
 export const extractStyles = node => {
   if (!node || !node.props || !node.props.style) {
     return {};
@@ -12,6 +14,12 @@ export const getDaysArray = (start, end) => {
     days.push(i.toString());
   }
   return days;
+};
+
+export const getMonthTitle = date => {
+  const year = new Date(date).getFullYear();
+  const monthName = getDefaultLocale().monthNames[new Date(date).getMonth()];
+  return `${monthName} ${year}`;
 };
 
 export const partial = obj => expect.objectContaining(obj);
