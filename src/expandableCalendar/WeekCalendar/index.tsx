@@ -36,6 +36,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     hideDayNames,
     current,
     theme,
+    testID
   } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
@@ -174,7 +175,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   return (
     <View
-      testID={props.testID}
+      testID={testID}
       style={weekCalendarStyle}
     >
       {!hideDayNames && (
@@ -184,6 +185,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       )}
       <View style={style.current.container}>
           <FlatList
+            testID={`${testID}.list`}
             ref={list}
             style={style.current.container}
             data={listData}

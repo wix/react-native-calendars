@@ -10,6 +10,7 @@ const XDate = require('xdate');
 
 const testIdExpandable = 'myExpandableCalendar';
 const today = new XDate();
+const dashedToday = toMarkingFormat(today);
 const onDayPressMock = jest.fn();
 const onVisibleMonthsChangeMock = jest.fn();
 
@@ -70,7 +71,7 @@ describe('ExpandableCalendar', () => {
       const weekCalendarProps = driver.getWeekCalendar().props;
       const initialScrollIndex = weekCalendarProps.initialScrollIndex;
       const currentWeek = weekCalendarProps.data[initialScrollIndex];
-      expect(currentWeek).toBe(toMarkingFormat(today));
+      expect(currentWeek).toBe(dashedToday);
 
       // container
       expect(driver.isCalendarExpanded()).toBe(false);
@@ -91,7 +92,7 @@ describe('ExpandableCalendar', () => {
     it('should day press close expandable header', () => {
       driver.toggleKnob();
       jest.runAllTimers();
-      driver.selectDay(toMarkingFormat(today));
+      driver.selectDay(dashedToday);
       jest.runAllTimers();
       expect(driver.isCalendarExpanded()).toBe(false);
     });
@@ -100,13 +101,13 @@ describe('ExpandableCalendar', () => {
   describe('CalendarList updates', () => {
     describe('Day Press', () => {
       it('should day press update date', () => {
-        driver.selectDay('2022-09-16');
+        driver.selectDay(dashedToday);
 
         // WeekCalendar
         const weekCalendarProps = driver.getWeekCalendar().props;
         const initialScrollIndex = weekCalendarProps.initialScrollIndex;
         const currentWeek = weekCalendarProps.data[initialScrollIndex];
-        expect(currentWeek).toBe('2022-09-16');
+        expect(currentWeek).toBe(dashedToday);
 
         // events
         expect(onDayPressMock).toHaveBeenCalled();
@@ -118,13 +119,13 @@ describe('ExpandableCalendar', () => {
   describe('WeekCalendar updates', () => {
     describe('Day Press', () => {
       it('should day press update date', () => {
-        driver.selectWeekDay('2022-09-16');
+        driver.selectWeekDay(dashedToday);
 
         // WeekCalendar
         const weekCalendarProps = driver.getWeekCalendar().props;
         const initialScrollIndex = weekCalendarProps.initialScrollIndex;
         const currentWeek = weekCalendarProps.data[initialScrollIndex];
-        expect(currentWeek).toBe('2022-09-16');
+        expect(currentWeek).toBe(dashedToday);
 
         // events
         expect(onDayPressMock).toHaveBeenCalled();

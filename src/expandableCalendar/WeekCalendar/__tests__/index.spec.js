@@ -30,8 +30,8 @@ describe('WeekCalendar', () => {
       it('should display current week', () => {
         // list
         expect(driver.getListProps().horizontal).toBe(true);
-        expect(driver.getListProps().data.length).toBe(5);
-        expect(driver.getListProps().initialScrollIndex).toBe(2);
+        expect(driver.getListProps().data.length).toBe(13);
+        expect(driver.getListProps().initialScrollIndex).toBe(6);
 
         // list items
         expect(driver.getListItem(CURRENT)).toBeDefined();
