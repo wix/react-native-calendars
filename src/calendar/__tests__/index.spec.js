@@ -130,7 +130,10 @@ describe('Calendar', () => {
         const date = '2020-04-01';
         const todayTextColor = '#AAAAAA';
         const todayBackgroundColor = '#BBBBBB';
-        const drv = new CalendarDriver().withDefaultProps({theme: {todayTextColor, todayBackgroundColor}}).render();
+        const context = {date: '2020-04-02'};
+        const drv = new CalendarDriver()
+          .withDefaultProps({theme: {todayTextColor, todayBackgroundColor}, context})
+          .render();
         expect(drv.getDay(date).getStyle()).toEqual(partial({backgroundColor: todayBackgroundColor, borderRadius: 16}));
         expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: todayTextColor}));
       });

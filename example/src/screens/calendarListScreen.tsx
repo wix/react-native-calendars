@@ -35,7 +35,7 @@ const CalendarListScreen = (props: Props) => {
       }
     };
   }, [selected]);
-  
+
   const onDayPress = useCallback((day: DateData) => {
     setSelected(day.dateString);
   }, []);
