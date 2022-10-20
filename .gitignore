@@ -61,9 +61,10 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 
-# CocoaPods
+# Ruby / CocoaPods
 ios/Pods
 ios/Podfile.lock
+/vendor/bundle/
 
 .eslintcache
 .reassure 
