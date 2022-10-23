@@ -37,6 +37,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+  /** Custom placeholder to be rendered while calendar is not visible. Especially useful when scrolling fast. If not provided, the default behaviour is to render a Text component with the datestring. */
+  renderPlaceholder?: (year: number, month: number) => React.ReactElement;
 }
 
 export interface CalendarListImperativeMethods {
@@ -79,6 +81,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
     animateScroll = false,
     showScrollIndicator = false,
     staticHeader,
+    renderPlaceholder,
     /** View props */
     testID,
     style: propsStyle,
@@ -239,6 +242,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
+        renderPlaceholder={renderPlaceholder}
       />
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
