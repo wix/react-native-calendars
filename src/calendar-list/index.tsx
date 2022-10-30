@@ -19,6 +19,7 @@ const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
+const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
 export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
@@ -268,8 +269,17 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
     const newVisibleMonth = parseDate(viewableItems[0]?.item);
     if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
-      visibleMonth.current = newVisibleMonth;
-      setCurrentMonth(visibleMonth.current);
+      //in android RTL the item we see is the one in the opposite direction
+      if (APPLY_ANDROID_FIX) {
+        const dateStrings = items.map((item: XDate) => item.toISOString())
+        const newMonthOffset = -1 * (PAST_SCROLL_RANGE - dateStrings.indexOf(newVisibleMonth?.toISOString()));
+        const adjustedNewMonth = items[PAST_SCROLL_RANGE - newMonthOffset];
+        visibleMonth.current = adjustedNewMonth;
+        setCurrentMonth(adjustedNewMonth);
+      } else {
+        visibleMonth.current = newVisibleMonth;
+        setCurrentMonth(visibleMonth.current);
+      }
     }
   }, []);
 
