@@ -3,6 +3,8 @@ package com.calendarsexample;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.config.ReactFeatureFlags;
+import com.calendarsexample.newarchitecture.MainApplicationReactNativeHost;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
 
@@ -27,8 +29,15 @@ public class MainApplication extends NavigationApplication {
         }
     };
 
+    private final ReactNativeHost mNewArchitectureNativeHost =
+      new MainApplicationReactNativeHost(this);
+
     @Override
     public ReactNativeHost getReactNativeHost() {
-        return mReactNativeHost;
+        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+            return mNewArchitectureNativeHost;
+          } else {
+            return mReactNativeHost;
+          }
     }
 }

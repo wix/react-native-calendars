@@ -283,6 +283,7 @@ const Calendar = (props: CalendarProps) => {
     <GestureComponent {...gestureProps}>
       <View
         style={[style.current.container, propsStyle]}
+        testID={testID}
         accessibilityElementsHidden={accessibilityElementsHidden} // iOS
         importantForAccessibility={importantForAccessibility} // Android
       >

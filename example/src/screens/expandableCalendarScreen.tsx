@@ -36,11 +36,11 @@ const ExpandableCalendarScreen = (props: Props) => {
 
   return (
     <CalendarProvider
-      date={ITEMS[1].title}
+      date={ITEMS[1]?.title}
       // onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton
-      disabledOpacity={0.6}
+      disabledOpacity={0.5}
       theme={todayBtnTheme.current}
       // todayBottomMargin={16}
     >

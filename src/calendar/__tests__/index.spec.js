@@ -2,8 +2,8 @@ import XDate from 'xdate';
 import React from 'react';
 import {getTextNodes} from 'react-component-driver';
 import {advanceTo, clear as clearDate} from 'jest-date-mock';
-import {getDaysArray, partial} from '../testUtils';
-import {CalendarDriver} from './driver';
+import {getDaysArray, partial} from '../../testUtils';
+import {CalendarDriver} from '../driver';
 
 describe('Calendar', () => {
   let currentDate;

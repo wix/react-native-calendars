@@ -94,7 +94,7 @@ const Week = React.memo((props: WeekProps) => {
   };
 
   return (
-    <View style={style.current.container}>
+    <View style={style.current.container} testID={`${testID}.week_${current}`}>
       <View style={[style.current.week, numberOfDays > 1 ? partialWeekStyle : undefined, propsStyle]}>
         {renderWeek()}
       </View>

@@ -214,7 +214,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
 
   const isDateInRange = useCallback((date) => {
     for(let i = -range.current; i <= range.current; i++) {
-      const newMonth = currentMonth?.clone().addMonths(i);
+      const newMonth = currentMonth?.clone().addMonths(i, true);
       if (sameMonth(date, newMonth)) {
         return true;
       }
@@ -281,7 +281,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
   ]);
 
   return (
-    <View style={style.current.flatListContainer}>
+    <View style={style.current.flatListContainer} testID={testID}>
       <FlatList
         // @ts-expect-error
         ref={list}
@@ -294,7 +294,7 @@ const CalendarList = (props: CalendarListProps, ref: any) => {
         initialNumToRender={range.current}
         initialScrollIndex={initialDateIndex}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        testID={testID}
+        testID={`${testID}.list`}
         onLayout={onLayout}
         removeClippedSubviews={removeClippedSubviews}
         pagingEnabled={pagingEnabled}
