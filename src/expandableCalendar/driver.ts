@@ -6,7 +6,7 @@ export class ExpandableCalendarDriver {
   element: React.ReactElement;
   renderTree: ReturnType<typeof render>;
 
-  constructor(testID: string, element: React.ReactElement) {
+    constructor(testID: string, element: React.ReactElement) {
     this.testID = testID;
     this.element = element;
     this.renderTree = this.render(element);
@@ -19,7 +19,7 @@ export class ExpandableCalendarDriver {
   }
 
   /** Container */
-  
+
   getExpandableContainer() {
     return this.renderTree.getByTestId(`${this.testID}.expandableContainer`);
   }
@@ -27,6 +27,16 @@ export class ExpandableCalendarDriver {
   isCalendarExpanded() {
     const calendarHeight = this.getExpandableContainer().props?.style?.height;
     return calendarHeight > 145;
+  }
+
+  /** Header */
+
+  getRightArrow() {
+    return this.renderTree.getAllByTestId(`${this.testID}.rightArrow`)[0];
+  }
+
+  getLeftArrow() {
+    return this.renderTree.getAllByTestId(`${this.testID}.leftArrow`)[0];
   }
 
   /** Knob and Position */
@@ -79,5 +89,29 @@ export class ExpandableCalendarDriver {
 
   selectWeekDay(date: string) {
     fireEvent(this.getWeekDay(date), 'onPress');
+  }
+
+  /** today button */
+
+  getTodayButton() {
+    try {
+       return this.renderTree.getByText('Today');
+  } catch (e) {
+      return undefined;
+    }
+  }
+
+  /** actions */
+
+  pressOnTodayButton() {
+    const todayButton = this.getTodayButton();
+    if (todayButton) {
+      fireEvent(todayButton, 'onPress');
+    }
+  }
+
+  pressOnHeaderArrow({left}: {left?: boolean} = {}) {
+    const element = left ? this.getLeftArrow() : this.getRightArrow();
+    fireEvent(element, 'onPress');
   }
 }

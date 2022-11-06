@@ -32,7 +32,7 @@ import Context from './Context';
 import constants from '../commons/constants';
 import {UpdateSources} from './commons';
 
-enum Positions {
+export enum Positions {
   CLOSED = 'closed',
   OPEN = 'open'
 }
