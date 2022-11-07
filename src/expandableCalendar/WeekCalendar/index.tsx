@@ -3,7 +3,7 @@ import XDate from 'xdate';
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
 
-import {sameWeek} from '../../dateutils';
+import {sameWeek, sameWeekRange} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
@@ -23,6 +23,7 @@ const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
+  disableSelection?: boolean;
 }
 
 /**
@@ -36,7 +37,8 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     hideDayNames,
     current,
     theme,
-    testID
+    testID,
+    disableSelection,
   } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
@@ -52,7 +54,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   useDidUpdate(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
-      const pageIndex = items.current.findIndex(item => sameWeek(item, date, firstDay));
+      const pageIndex = items.current.findIndex(
+        item => (numberOfDays && numberOfDays > 1) ?
+          sameWeekRange(item, date, numberOfDays, item) :
+          sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
         if (pageIndex >= 0) {
           visibleWeek.current = items.current[pageIndex];
@@ -95,9 +100,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         onDayPress={_onDayPress}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
+        disableSelection={disableSelection}
       />
     );
-  },[firstDay, _onDayPress, context, date]);
+  },[firstDay, _onDayPress, context, date, disableSelection]);
 
   const keyExtractor = useCallback((item) => item, []);
 
@@ -130,6 +136,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   }, [containerWidth]);
 
   const onEndReached = useCallback(() => {
+    console.log('end reach');
     changedItems.current = true;
     items.current = (getDatesArray(visibleWeek.current, firstDay, numberOfDays));
     setListData(items.current);

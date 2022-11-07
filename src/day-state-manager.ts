@@ -3,10 +3,10 @@ const {toMarkingFormat} = require('./interface');
 
 
 export function getState(day: XDate, current: XDate, props: any) {
-  const {minDate, maxDate, disabledByDefault, context} = props;
+  const {minDate, maxDate, disabledByDefault, context, disableSelection} = props;
   let state = '';
 
-  if ((context?.date ?? toMarkingFormat(current)) === toMarkingFormat(day)) {
+  if (!disableSelection && ((context?.date ?? toMarkingFormat(current)) === toMarkingFormat(day))) {
     state = 'selected';
   } else if (isToday(day)) {
     state = 'today';

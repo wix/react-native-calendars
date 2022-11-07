@@ -20,7 +20,20 @@ export function sameDate(a?: XDate, b?: XDate) {
     return false;
   } else {
     return a?.getFullYear() === b?.getFullYear() && a?.getMonth() === b?.getMonth() && a?.getDate() === b?.getDate();
-  } 
+  }
+}
+
+export function sameWeekRange(a: string, b: string, numberOfDays: number, firstDayOfWeek: string){
+  const aDate = new XDate(a);
+  const bDate = new XDate(b);
+  const firstDayDate = new XDate(firstDayOfWeek);
+  const aDiff = aDate.getTime() - firstDayDate.getTime();
+  const bDiff = bDate.getTime() - firstDayDate.getTime();
+  const aTotalDays = Math.ceil(aDiff / (1000 * 3600 * 24));
+  const bTotalDays = Math.ceil(bDiff / (1000 * 3600 * 24));
+  const aWeek = Math.floor(aTotalDays / numberOfDays);
+  const bWeek = Math.floor(bTotalDays / numberOfDays);
+  return aWeek === bWeek;
 }
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {

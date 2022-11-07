@@ -221,7 +221,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         paddingRight: isNumber(rightPaddings) ? rightPaddings + 6 : DAY_NAMES_PADDING
       }
     ];
-  }, [calendarStyle, numberOfDays]);
+  }, [calendarStyle]);
 
   const animatedHeaderStyle = useMemo(() => {
     return [style.current.header, {height: HEADER_HEIGHT + 10, top: headerDeltaY.current}];
@@ -539,6 +539,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           onDayPress={_onDayPress}
           accessibilityElementsHidden // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
+          disableSelection={!!numberOfDays && numberOfDays > 1}
         />
       </Animated.View>
     );
