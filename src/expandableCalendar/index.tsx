@@ -539,7 +539,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           onDayPress={_onDayPress}
           accessibilityElementsHidden // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
-          disableSelection={!!numberOfDays && numberOfDays > 1}
+          disableDaySelection={!!numberOfDays && numberOfDays > 1}
         />
       </Animated.View>
     );

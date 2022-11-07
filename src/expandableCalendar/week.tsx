@@ -14,7 +14,7 @@ import {CalendarContextProps} from './Context';
 
 export type WeekProps = CalendarProps & {
   context?: CalendarContextProps;
-  disableSelection?: boolean;
+  disableDaySelection?: boolean;
 };
 
 function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {

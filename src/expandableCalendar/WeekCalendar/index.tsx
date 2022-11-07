@@ -23,7 +23,7 @@ const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
-  disableSelection?: boolean;
+  disableDaySelection?: boolean;
 }
 
 /**
@@ -38,7 +38,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     current,
     theme,
     testID,
-    disableSelection,
+    disableDaySelection,
   } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
@@ -100,10 +100,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         onDayPress={_onDayPress}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
-        disableSelection={disableSelection}
+        disableDaySelection={disableDaySelection}
       />
     );
-  },[firstDay, _onDayPress, context, date, disableSelection]);
+  },[firstDay, _onDayPress, context, date, disableDaySelection]);
 
   const keyExtractor = useCallback((item) => item, []);
 
@@ -136,7 +136,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   }, [containerWidth]);
 
   const onEndReached = useCallback(() => {
-    console.log('end reach');
     changedItems.current = true;
     items.current = (getDatesArray(visibleWeek.current, firstDay, numberOfDays));
     setListData(items.current);
