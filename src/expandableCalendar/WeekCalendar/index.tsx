@@ -23,6 +23,7 @@ const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
+  disableSelection?: boolean;
 }
 
 /**

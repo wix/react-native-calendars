@@ -26,7 +26,6 @@ export interface BasicDayProps extends ViewProps {
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days. can be override with disableTouchEvent in markedDates*/
   disableAllTouchEventsForInactiveDays?: boolean;
-
   /** Test ID */
   testID?: string;
   /** Accessibility label */
@@ -50,10 +49,10 @@ const BasicDay = (props: BasicDayProps) => {
   } = props;
   const style = useRef(styleConstructor(theme));
   const _marking = marking || {};
-  const isSelected = _marking.selected || state === 'selected';
+  const isSelected = (_marking.selected || state === 'selected');
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
   const isInactive = _marking?.inactive;
-  const isToday = state === 'today';
+  const isToday = state === 'today' ;
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
