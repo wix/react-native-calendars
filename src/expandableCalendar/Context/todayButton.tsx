@@ -38,7 +38,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
 
   const {
     margin = 0,
-    disabledOpacity = 0,
+    disabledOpacity = 0.3,
     theme,
     style: propsStyle,
   } = props;
