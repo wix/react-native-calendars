@@ -11,6 +11,7 @@ import styleConstructor from './style';
 import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 import {CalendarContextProps} from './Context';
+import {MarkedDates} from '../types';
 
 export type WeekProps = CalendarProps & {
   context?: CalendarContextProps;
@@ -54,6 +55,18 @@ const Week = React.memo((props: WeekProps) => {
   const dayProps = extractDayProps(props);
   const currXdate = useMemo(() => parseDate(current), [current]);
 
+  const markings = useMemo(() => {
+    if (!markedDates) {
+      return markedDates;
+    }
+    return Object.keys(markedDates).reduce((acc, day) => {
+      const dayMarking = markedDates?.[day];
+      return {
+        ...acc,
+        [day]: disableDaySelection ? {...dayMarking, disableTouchEvent: true} : dayMarking};
+    }, {} as MarkedDates);
+  }, []);
+
   const renderDay = (day: XDate, id: number) => {
     // hide extra days
     if (current && hideExtraDays) {
@@ -62,7 +75,6 @@ const Week = React.memo((props: WeekProps) => {
       }
     }
     const dayString = toMarkingFormat(day);
-    const markings = markedDates?.[dayString];
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
@@ -70,7 +82,7 @@ const Week = React.memo((props: WeekProps) => {
           testID={`${testID}.day_${dayString}`}
           date={dayString}
           state={getState(day, currXdate, props)}
-          marking={disableDaySelection ? {...markings, disableTouchEvent: true} : {markings}}
+          marking={markings?.[dayString]}
           onPress={onDayPress}
           onLongPress={onDayLongPress}
         />

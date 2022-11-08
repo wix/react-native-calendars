@@ -23,10 +23,10 @@ export function sameDate(a?: XDate, b?: XDate) {
   }
 }
 
-export function sameWeekRange(a: string, b: string, numberOfDays: number, firstDayOfWeek: string){
+export function sameWeekRange(a: string, b: string, numberOfDays: number, firstDateInWeek: string){
   const aDate = new XDate(a);
   const bDate = new XDate(b);
-  const firstDayDate = new XDate(firstDayOfWeek);
+  const firstDayDate = new XDate(firstDateInWeek);
   const aDiff = aDate.getTime() - firstDayDate.getTime();
   const bDiff = bDate.getTime() - firstDayDate.getTime();
   const aTotalDays = Math.ceil(aDiff / (1000 * 3600 * 24));
