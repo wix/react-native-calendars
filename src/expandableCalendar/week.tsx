@@ -37,6 +37,7 @@ const Week = React.memo((props: WeekProps) => {
     numberOfDays = 1,
     timelineLeftInset,
     testID,
+    disableDaySelection,
   } = props;
   const style = useRef(styleConstructor(theme));
 
@@ -61,7 +62,7 @@ const Week = React.memo((props: WeekProps) => {
       }
     }
     const dayString = toMarkingFormat(day);
-
+    const markings = markedDates?.[dayString];
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
@@ -69,7 +70,7 @@ const Week = React.memo((props: WeekProps) => {
           testID={`${testID}.day_${dayString}`}
           date={dayString}
           state={getState(day, currXdate, props)}
-          marking={markedDates?.[dayString]}
+          marking={disableDaySelection ? {...markings, disableTouchEvent: true} : {markings}}
           onPress={onDayPress}
           onLongPress={onDayLongPress}
         />
