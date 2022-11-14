@@ -73,7 +73,7 @@
     "react": "17.0.2",
     "react-component-driver": "^0.10.0",
     "react-native": "0.68.3",
-    "react-native-navigation": "^7.29.0",
+    "react-native-navigation": "7.30.0",
     "react-recipes": "^1.4.0",
     "react-test-renderer": "^17.0.2",
     "reassure": "^0.4.1",
