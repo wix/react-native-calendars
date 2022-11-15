@@ -16,7 +16,6 @@ enum Direction {
   RIGHT = 'right',
 }
 
-const testIdExpandable = 'myExpandableCalendar';
 const today = new XDate();
 
 const dashedToday = toMarkingFormat(today);
@@ -41,13 +40,13 @@ const TestCase = ({
   });
 };
 
-let driver = new ExpandableCalendarDriver(testIdExpandable, TestCase());
+let driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase());
 
 describe('ExpandableCalendar', () => {
   beforeEach(() => {
     onDateChanged = jest.fn();
     onMonthChange = jest.fn();
-    driver = new ExpandableCalendarDriver(testIdExpandable, TestCase({
+    driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({
       calendarContextProps: {
         onDateChanged,
         onMonthChange,
@@ -58,7 +57,7 @@ describe('ExpandableCalendar', () => {
 
   describe('Props', () => {
     describe('initialPosition', () => {
-      const driver = new ExpandableCalendarDriver(testIdExpandable, TestCase({expandableCalendarProps: {initialPosition: Positions.OPEN}, calendarContextProps: {onDateChanged, onMonthChange}}));
+      const driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({expandableCalendarProps: {initialPosition: Positions.OPEN}, calendarContextProps: {onDateChanged, onMonthChange}}));
       driver.render();
 
       it('should be expanded if initialPosition prop = "open"', () => {
@@ -67,7 +66,7 @@ describe('ExpandableCalendar', () => {
     });
 
     describe('hideKnob', () => {
-      const driver = new ExpandableCalendarDriver(testIdExpandable, TestCase({expandableCalendarProps: {hideKnob: true}}));
+      const driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({expandableCalendarProps: {hideKnob: true}}));
 
       beforeEach(() => {
         jest.useFakeTimers();
@@ -160,7 +159,7 @@ describe('ExpandableCalendar', () => {
         expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
-      it(`should call onDateChanged and onMonthChanged for first day in current month when changing to current month`, () => {
+      it(`should call onDateChanged and onMonthChanged for first day in initial month when changing to initial month`, () => {
         driver.toggleKnob();
         jest.runAllTimers();
         driver.pressOnHeaderArrow({left: false});
@@ -177,12 +176,13 @@ describe('ExpandableCalendar', () => {
         jest.runAllTimers();
         times(6, () => {
           driver.pressOnHeaderArrow({left: false});
-          jest.runAllTimers();
         });
+        jest.runAllTimers();
         const expectedFutureDate = today.clone().addMonths(6).setDate(1);
         expect(onDateChanged).toHaveBeenNthCalledWith(6, toMarkingFormat(expectedFutureDate), UpdateSources.PAGE_SCROLL);
         expect(onMonthChange).toHaveBeenNthCalledWith(6, xdateToData(expectedFutureDate), UpdateSources.PAGE_SCROLL);
         times(6, () => driver.pressOnHeaderArrow({left: true}));
+        jest.runAllTimers();
         const expectedDate = today.clone().setDate(1);
         expect(onDateChanged).toHaveBeenNthCalledWith(12, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
         expect(onMonthChange).toHaveBeenNthCalledWith(12, xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
@@ -220,7 +220,7 @@ describe('ExpandableCalendar', () => {
         expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
-      it(`should call onDateChanged for first day of current week when changing to current week`, () => {
+      it(`should call onDateChanged for first day of initial week when changing to initial week`, () => {
         driver.pressOnHeaderArrow({left: false});
         driver.pressOnHeaderArrow({left: true});
         const expectedDate = today.clone().addDays(-(today.getDay()));
@@ -237,8 +237,9 @@ describe('ExpandableCalendar', () => {
 
       it('should call onMonthChange when new week first day is in a different month', () => {
         const endOfMonth = new XDate(today.getFullYear(), today.getMonth() + 1, 0, 0, 0 ,0 , 0, true);
-        const diff = Math.ceil(((endOfMonth.getUTCDate() + 1) - today.getUTCDate()) / 7) + (today.getUTCDay() ? 1 : 0);
+        const diff = Math.ceil(((endOfMonth.getUTCDate() + 1) - today.getUTCDate()) / 7) + ((today.getUTCDay() > endOfMonth.getUTCDay()) ? 1 : 0);
         const expectedDate = today.clone().setDate(today.getDate() + 7 * diff - today.getDay());
+        console.log(diff, endOfMonth, expectedDate);
         times(diff, () => driver.pressOnHeaderArrow({left: false}));
         expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
@@ -247,7 +248,7 @@ describe('ExpandableCalendar', () => {
 
   describe.skip('today button', () => {
     //check if button appear even on today
-    it.each([['', `isn't`, false], ['not ', 'is', true]])('should %sappear when the current date %s today', (_message1, _message2, isToday) => {
+    it.each([['', `isn't`, false], ['not ', 'is', true]])('should %sappear when the initial date %s today', (_message1, _message2, isToday) => {
       const component = generateExpandableCalendarWithContext({
         calendarContextProps: {
           onDateChanged,
@@ -263,7 +264,7 @@ describe('ExpandableCalendar', () => {
         expect(todayButton).toBeDefined();
     });
 
-    it('should call onDateChanged with current date when today button pressed', () => {
+    it(`should call onDateChanged with today's date when today button pressed`, () => {
       const component = generateExpandableCalendarWithContext({
         calendarContextProps: {
           onDateChanged,
@@ -277,7 +278,7 @@ describe('ExpandableCalendar', () => {
       expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(today), UpdateSources.TODAY_PRESS);
     });
 
-    it('should call onMonthChanged with current month when today button pressed while current date is not in current month', () => {
+    it('should call onMonthChanged with initial month when today button pressed while initial date is not in initial month', () => {
       const component = generateExpandableCalendarWithContext({
         calendarContextProps: {
           onDateChanged,
