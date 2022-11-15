@@ -11,11 +11,9 @@ import styleConstructor from './style';
 import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 import {CalendarContextProps} from './Context';
-import {MarkedDates} from '../types';
 
 export type WeekProps = CalendarProps & {
   context?: CalendarContextProps;
-  disableDaySelection?: boolean;
 };
 
 function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {
@@ -38,9 +36,12 @@ const Week = React.memo((props: WeekProps) => {
     numberOfDays = 1,
     timelineLeftInset,
     testID,
-    disableDaySelection,
   } = props;
   const style = useRef(styleConstructor(theme));
+
+  const disableDaySelection = useMemo(() => {
+    return !!numberOfDays && numberOfDays > 1;
+  }, [numberOfDays])
 
   const getWeek = useCallback((date?: string) => {
     if (date) {
@@ -54,18 +55,6 @@ const Week = React.memo((props: WeekProps) => {
 
   const dayProps = extractDayProps(props);
   const currXdate = useMemo(() => parseDate(current), [current]);
-
-  const markings = useMemo(() => {
-    if (!markedDates) {
-      return markedDates;
-    }
-    return Object.keys(markedDates).reduce((acc, day) => {
-      const dayMarking = markedDates?.[day];
-      return {
-        ...acc,
-        [day]: disableDaySelection ? {...dayMarking, disableTouchEvent: true} : dayMarking};
-    }, {} as MarkedDates);
-  }, []);
 
   const renderDay = (day: XDate, id: number) => {
     // hide extra days
@@ -81,8 +70,8 @@ const Week = React.memo((props: WeekProps) => {
           {...dayProps}
           testID={`${testID}.day_${dayString}`}
           date={dayString}
-          state={getState(day, currXdate, props)}
-          marking={markings?.[dayString]}
+          state={getState(day, currXdate, {...props, disableDaySelection})}
+          marking={disableDaySelection ? {...markedDates?.[dayString], disableTouchEvent: true} : markedDates?.[dayString]}
           onPress={onDayPress}
           onLongPress={onDayLongPress}
         />

@@ -3,7 +3,7 @@ import XDate from 'xdate';
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
 
-import {sameWeek, sameWeekRange} from '../../dateutils';
+import {sameWeek, sameDayRange} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
@@ -23,7 +23,6 @@ const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
-  disableDaySelection?: boolean;
 }
 
 /**
@@ -38,7 +37,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     current,
     theme,
     testID,
-    disableDaySelection,
   } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
@@ -53,10 +51,21 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const currentIndex = useRef(NUMBER_OF_PAGES);
 
   useDidUpdate(() => {
+    items.current = getDatesArray(date, firstDay, numberOfDays);
+    setListData(items.current);
+    visibleWeek.current = date;
+  }, [numberOfDays])
+
+  useDidUpdate(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.current.findIndex(
         item => (numberOfDays && numberOfDays > 1) ?
-          sameWeekRange(item, date, numberOfDays, item) :
+          sameDayRange({
+            firstDay: item,
+            secondDay: date,
+            numberOfDays,
+            firstDateInRange: item
+          }) :
           sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
         if (pageIndex >= 0) {
@@ -100,10 +109,9 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         onDayPress={_onDayPress}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
-        disableDaySelection={disableDaySelection}
       />
     );
-  },[firstDay, _onDayPress, context, date, disableDaySelection]);
+  },[firstDay, _onDayPress, context, date]);
 
   const keyExtractor = useCallback((item) => item, []);
 
@@ -212,6 +220,14 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   );
 };
 
+function getDateForDayRange(date: string, weekIndex: number, numberOfDays: number) {
+  const d = new XDate(date);
+  if (weekIndex !== 0) {
+    d.addDays(numberOfDays * weekIndex);
+  }
+  return toMarkingFormat(d);
+}
+
 function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays?: number) {
   const d = new XDate(date);
   // get the first day of the week as date (for the on scroll mark)
@@ -231,7 +247,10 @@ function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays
 
 function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
   return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
-    return getDate(date, firstDay, index - NUMBER_OF_PAGES, numberOfDays);
+    if (numberOfDays && numberOfDays > 1) {
+      return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays)
+    }
+    return getDate(date, firstDay, index - NUMBER_OF_PAGES);
   });
 }
 
