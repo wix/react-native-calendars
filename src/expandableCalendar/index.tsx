@@ -183,7 +183,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   useEffect(() => {
     _height.current = startHeight;
     deltaY.setValue(startHeight);
-  }, [startHeight])
+  }, [startHeight]);
 
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
 

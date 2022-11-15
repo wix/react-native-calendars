@@ -41,7 +41,7 @@ const Week = React.memo((props: WeekProps) => {
 
   const disableDaySelection = useMemo(() => {
     return !!numberOfDays && numberOfDays > 1;
-  }, [numberOfDays])
+  }, [numberOfDays]);
 
   const getWeek = useCallback((date?: string) => {
     if (date) {

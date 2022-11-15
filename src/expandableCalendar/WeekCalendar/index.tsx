@@ -54,7 +54,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     items.current = getDatesArray(date, firstDay, numberOfDays);
     setListData(items.current);
     visibleWeek.current = date;
-  }, [numberOfDays])
+  }, [numberOfDays]);
 
   useDidUpdate(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
@@ -248,7 +248,7 @@ function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays
 function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
   return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
     if (numberOfDays && numberOfDays > 1) {
-      return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays)
+      return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays);
     }
     return getDate(date, firstDay, index - NUMBER_OF_PAGES);
   });
