@@ -227,6 +227,7 @@ export function extractReservationListProps(props: AgendaProps) {
     refreshing,
     onRefresh,
     reservationsKeyExtractor,
+    horizontalList,
     // Reservation props
     date,
     item,
@@ -254,6 +255,7 @@ export function extractReservationListProps(props: AgendaProps) {
     refreshing,
     onRefresh,
     reservationsKeyExtractor,
+    horizontalList,
     // Reservation props
     date,
     item,

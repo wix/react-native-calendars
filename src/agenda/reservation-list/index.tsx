@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {Component} from 'react';
-import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent} from 'react-native';
+import {ActivityIndicator, View, FlatList, StyleProp, ViewStyle, TextStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent, Dimensions} from 'react-native';
 
 import {extractReservationProps} from '../../componentUpdater';
 import {sameDate} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
-import {AgendaEntry, AgendaSchedule, DayAgenda} from '../../types';
+import {AgendaEntry, AgendaSchedule, DayAgenda, HorizontalDayAgenda} from '../../types';
 
+const WINDOW_WIDTH = Dimensions.get("window").width;
 
 export type ReservationListProps = ReservationProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
@@ -45,11 +46,13 @@ export type ReservationListProps = ReservationProps & {
   /** If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly */
   onRefresh?: () => void;
   /** Extractor for underlying FlatList. Ensure that this is unique per item, or else scrolling may have duplicated and / or missing items.  */
-  reservationsKeyExtractor?: (item: DayAgenda, index: number) => string;
+  reservationsKeyExtractor?: (item: DayAgenda | HorizontalDayAgenda, index: number) => string;
+  /** Determines whether flatlist scrolls vertically or horizontally */
+  horizontalList?: boolean;
 };
 
 interface State {
-  reservations: DayAgenda[];
+  reservations: DayAgenda[] | HorizontalDayAgenda[];
 }
 
 class ReservationList extends Component<ReservationListProps, State> {
@@ -73,7 +76,8 @@ class ReservationList extends Component<ReservationListProps, State> {
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
-    reservationsKeyExtractor: PropTypes.func
+    reservationsKeyExtractor: PropTypes.func,
+    horizontalList: PropTypes.bool,
   };
   
   static defaultProps = {
@@ -101,11 +105,11 @@ class ReservationList extends Component<ReservationListProps, State> {
     this.selectedDay = props.selectedDay;
     this.scrollOver = true;
   }
-
+  
   componentDidMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
   }
-
+  
   componentDidUpdate(prevProps: ReservationListProps) {
     if (this.props.topDay && prevProps.topDay && prevProps !== this.props) {
       if (!sameDate(prevProps.topDay, this.props.topDay)) {
@@ -118,7 +122,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     }
   }
 
-  updateDataSource(reservations: DayAgenda[]) {
+  updateDataSource(reservations: DayAgenda[] | HorizontalDayAgenda[]) {
     this.setState({reservations});
   }
 
@@ -128,8 +132,12 @@ class ReservationList extends Component<ReservationListProps, State> {
     
     if (!showOnlySelectedDayItems && this.list && !sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
-      for (let i = 0; i < reservations.scrollPosition; i++) {
-        scrollPosition += this.heights[i] || 0;
+      if (this.props.horizontalList) {
+        scrollPosition = reservations.scrollPosition * WINDOW_WIDTH;
+      } else {
+        for (let i = 0; i < reservations.scrollPosition; i++) {
+          scrollPosition += this.heights[i] || 0;
+        }
       }
       this.scrollOver = false;
       this.list?.current?.scrollToOffset({offset: scrollPosition, animated: true});
@@ -143,7 +151,15 @@ class ReservationList extends Component<ReservationListProps, State> {
     const day = iterator.clone();
     const res = props.items?.[toMarkingFormat(day)];
     
-    if (res && res.length) {
+    if (res && res.length && this.props.horizontalList) {
+      return [{
+        date: day, 
+        reservation: res.map((reservation: AgendaEntry) => 
+        {
+          return reservation;
+        })
+      }];
+    } else if (res && res.length) {
       return res.map((reservation: AgendaEntry, i: number) => {
         return {
           reservation,
@@ -168,7 +184,7 @@ class ReservationList extends Component<ReservationListProps, State> {
       return {reservations: [], scrollPosition: 0};
     }
 
-    let reservations: DayAgenda[] = [];
+    let reservations: DayAgenda[] | HorizontalDayAgenda[] = [];
     if (this.state.reservations && this.state.reservations.length) {
       const iterator = this.state.reservations[0].date?.clone();
       if (iterator) {
@@ -178,7 +194,7 @@ class ReservationList extends Component<ReservationListProps, State> {
             reservations = [];
             break;
           } else {
-            reservations = reservations.concat(res);
+            reservations = [...reservations, ...res] as DayAgenda[] | HorizontalDayAgenda[];
           }
           iterator.addDays(1);
         }
@@ -199,7 +215,7 @@ class ReservationList extends Component<ReservationListProps, State> {
         const res = this.getReservationsForDay(iterator, props);
 
         if (res) {
-          reservations = reservations.concat(res);
+          reservations = [...reservations, ...res] as DayAgenda[] | HorizontalDayAgenda[];
         }
         iterator.addDays(1);
       }
@@ -212,26 +228,60 @@ class ReservationList extends Component<ReservationListProps, State> {
     const yOffset = event.nativeEvent.contentOffset.y;
     this.props.onScroll?.(yOffset);
 
-    let topRowOffset = 0;
-    let topRow;
-    for (topRow = 0; topRow < this.heights.length; topRow++) {
-      if (topRowOffset + this.heights[topRow] / 2 >= yOffset) {
-        break;
+    if (!this.props.horizontalList) {
+      let topRowOffset = 0;
+      let topRow;
+      for (topRow = 0; topRow < this.heights.length; topRow++) {
+        if (topRowOffset + this.heights[topRow] / 2 >= yOffset) {
+          break;
+        }
+        topRowOffset += this.heights[topRow];
       }
-      topRowOffset += this.heights[topRow];
-    }
-
-    const row = this.state.reservations[topRow];
-    if (!row) return;
-
-    const day = row.date;
-    if (day) {
-      if (!sameDate(day, this.selectedDay) && this.scrollOver) {
-        this.selectedDay = day.clone();
-        this.props.onDayChange?.(day.clone());
+  
+      const row = this.state.reservations[topRow];
+      if (!row) return;
+  
+      const day = row.date;
+      if (day) {
+        if (!sameDate(day, this.selectedDay) && this.scrollOver) {
+          this.selectedDay = day.clone();
+          this.props.onDayChange?.(day.clone());
+        }
       }
     }
   };
+
+  onScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    this.props.onScrollEndDrag?.(event);
+    if (this.selectedDay && this.props.horizontalList) {
+      const xOffset = event.nativeEvent.contentOffset.x;
+      const firstReservationDate = this.state.reservations[0].date;
+      if (firstReservationDate) {
+        const datesDiff = Math.round((this.selectedDay.getMilliseconds() - firstReservationDate?.getMilliseconds())/(1000*60*60*24));
+  
+        if (xOffset < datesDiff * WINDOW_WIDTH - WINDOW_WIDTH/2 || xOffset > datesDiff * WINDOW_WIDTH - WINDOW_WIDTH/2) {
+          this.selectedDay?.setDate(firstReservationDate?.getDate() + Math.round(xOffset/WINDOW_WIDTH));
+          this.props.onDayChange?.(this.selectedDay?.clone());
+        }
+      }
+    }
+  }
+  
+  onMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    this.props.onMomentumScrollEnd?.(event);
+    if (this.selectedDay && this.props.horizontalList) {
+      const xOffset = event.nativeEvent.contentOffset.x;
+      const firstReservationDate = this.state.reservations[0].date;
+      if (firstReservationDate) {
+        const datesDiff = Math.round((this.selectedDay.getMilliseconds() - firstReservationDate?.getMilliseconds())/(1000*60*60*24));
+        
+        if (xOffset < datesDiff * WINDOW_WIDTH - WINDOW_WIDTH/2 || xOffset > datesDiff * WINDOW_WIDTH - WINDOW_WIDTH/2) {
+          this.selectedDay?.setDate(firstReservationDate?.getDate() + Math.round(xOffset/WINDOW_WIDTH));
+          this.props.onDayChange?.(this.selectedDay?.clone());
+        }
+      }
+    }
+  }
 
   onListTouch() {
     this.scrollOver = true;
@@ -246,6 +296,14 @@ class ReservationList extends Component<ReservationListProps, State> {
     return false;
   };
 
+  renderItem = (props: {item: DayAgenda | HorizontalDayAgenda; index: number}) => {
+    if (this.props.horizontalList) {
+      return this.renderColumn(props as {item: HorizontalDayAgenda; index: number});
+    } else {
+      return this.renderRow(props as {item: DayAgenda; index: number});
+    }
+  }
+
   renderRow = ({item, index}: {item: DayAgenda; index: number}) => {
     const reservationProps = extractReservationProps(this.props);
 
@@ -255,9 +313,21 @@ class ReservationList extends Component<ReservationListProps, State> {
       </View>
     );
   };
+  
+  renderColumn = ({item, index}: {item: HorizontalDayAgenda; index: number}) => {
+    const reservationProps = extractReservationProps(this.props);
+    
+    return (
+      <View onLayout={this.onRowLayoutChange.bind(this, index)} style={this.style.horizontalItemContainer}>
+        {item.reservation?.map((reservation, i)=>{
+          return <Reservation {...reservationProps} item={reservation} date={item.date} key={i} />;
+        })}
+      </View>
+    );
+  }
 
-  keyExtractor = (item: DayAgenda, index: number) => {
-    return this.props.reservationsKeyExtractor?.(item, index) || `${item?.reservation?.day}${index}`;
+  keyExtractor = (item: DayAgenda | HorizontalDayAgenda, index: number) => {
+    return this.props.reservationsKeyExtractor?.(item, index) || `${item?.date}${index}`;
   }
 
   render() {
@@ -272,11 +342,13 @@ class ReservationList extends Component<ReservationListProps, State> {
 
     return (
       <FlatList
+        horizontal={this.props.horizontalList}
+        pagingEnabled={this.props.horizontalList}
         ref={this.list}
         style={style}
         contentContainerStyle={this.style.content}
         data={this.state.reservations}
-        renderItem={this.renderRow}
+        renderItem={this.renderItem}
         keyExtractor={this.keyExtractor}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
@@ -286,9 +358,9 @@ class ReservationList extends Component<ReservationListProps, State> {
         refreshing={this.props.refreshing}
         onRefresh={this.props.onRefresh}
         onScrollBeginDrag={this.props.onScrollBeginDrag}
-        onScrollEndDrag={this.props.onScrollEndDrag}
+        onScrollEndDrag={this.onScrollEndDrag}
         onMomentumScrollBegin={this.props.onMomentumScrollBegin}
-        onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        onMomentumScrollEnd={this.onMomentumScrollEnd}
       />
     );
   }

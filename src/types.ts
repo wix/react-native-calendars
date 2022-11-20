@@ -108,3 +108,8 @@ export interface DayAgenda {
   reservation?: AgendaEntry;
   date?: XDate;
 }
+
+export interface HorizontalDayAgenda {
+  reservation?: AgendaEntry[];
+  date?: XDate;
+}
