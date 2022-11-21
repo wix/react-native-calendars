@@ -1,2 +1,0 @@
-Target dependency graph (1 target)
-CalendarsExample in CalendarsExample, no dependencies
