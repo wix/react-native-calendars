@@ -70,7 +70,7 @@ const Week = React.memo((props: WeekProps) => {
           {...dayProps}
           testID={`${testID}.day_${dayString}`}
           date={dayString}
-          state={getState(day, currXdate, {...props, disableDaySelection})}
+          state={getState(day, currXdate, props, disableDaySelection)}
           marking={disableDaySelection ? {...markedDates?.[dayString], disableTouchEvent: true} : markedDates?.[dayString]}
           onPress={onDayPress}
           onLongPress={onDayLongPress}

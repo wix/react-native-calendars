@@ -59,11 +59,11 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   useDidUpdate(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.current.findIndex(
-        item => (numberOfDays && numberOfDays > 1) ?
+        item => isCustomNumberOfDays(numberOfDays) ?
           onSameDAteRange({
             firstDay: item,
             secondDay: date,
-            numberOfDays,
+            numberOfDays: numberOfDays as number,
             firstDateInRange: item
           }) :
           sameWeek(item, date, firstDay));
@@ -247,11 +247,15 @@ function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays
 
 function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
   return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
-    if (numberOfDays && numberOfDays > 1) {
-      return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays);
+    if(isCustomNumberOfDays(numberOfDays)) {
+      return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays as number);
     }
     return getDate(date, firstDay, index - NUMBER_OF_PAGES);
   });
+}
+
+function isCustomNumberOfDays(numberOfDays?: number) {
+  return numberOfDays && numberOfDays > 1;
 }
 
 WeekCalendar.displayName = 'WeekCalendar';
