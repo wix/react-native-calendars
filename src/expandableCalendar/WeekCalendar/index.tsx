@@ -3,7 +3,7 @@ import XDate from 'xdate';
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
 
-import {sameWeek, sameDayRange} from '../../dateutils';
+import {sameWeek, onSameDAteRange} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData} from '../../types';
 import styleConstructor from '../style';
@@ -60,7 +60,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.current.findIndex(
         item => (numberOfDays && numberOfDays > 1) ?
-          sameDayRange({
+          onSameDAteRange({
             firstDay: item,
             secondDay: date,
             numberOfDays,

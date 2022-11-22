@@ -71,7 +71,7 @@ const TimelineList = (props: TimelineListProps) => {
       }
     }
     prevDate.current = date;
-  }, [pagesRef.current, updateSource]);
+  }, [updateSource]);
 
   useEffect(() => {
     if (date !== prevDate.current) {

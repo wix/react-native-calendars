@@ -23,7 +23,7 @@ export function sameDate(a?: XDate, b?: XDate) {
   }
 }
 
-export function sameDayRange({
+export function onSameDAteRange({
   firstDay,
   secondDay,
   numberOfDays,
