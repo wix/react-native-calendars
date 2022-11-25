@@ -82,6 +82,8 @@ class Reservation extends Component<ReservationProps> {
 
     const today = date && isToday(date) ? this.style.today : undefined;
     const dayNames = getDefaultLocale().dayNamesShort;
+    const dayNamesShort = XDate.locales[XDate.defaultLocale].dayNamesShort
+
 
     if (date) {
       return (
@@ -90,7 +92,7 @@ class Reservation extends Component<ReservationProps> {
             {date.getDate()}
           </Text>
           <Text allowFontScaling={false} style={[this.style.dayText, today]}>
-            {dayNames ? dayNames[date.getDay()] : undefined}
+            {dayNamesShort ? dayNamesShort[date.getDay()] : dayNames[date.getDay()]}
           </Text>
         </View>
       );

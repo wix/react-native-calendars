@@ -3,7 +3,7 @@ import * as defaultStyle from '../style';
 import platformStyles from './platform-style';
 import {Theme} from '../types';
 
-export default function styleConstructor(theme: Theme = {}) {
+export default function /*  */styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   const {knob, weekdays} = platformStyles(appStyle);
 
@@ -23,6 +23,11 @@ export default function styleConstructor(theme: Theme = {}) {
       position: 'absolute',
       height: '100%',
       width: '100%'
+    }, 
+    calendar: {
+      flex: 1,
+      borderBottomWidth: 1,
+      // borderColor: appStyle.separatorColor,
     },
     knobContainer: {
       flex: 1,
@@ -41,12 +46,28 @@ export default function styleConstructor(theme: Theme = {}) {
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
       color: appStyle.textSectionTitleColor
+    }, 
+    weekday: {
+      width: 32,
+      textAlign: 'center',
+      color: appStyle.textSectionTitleColor,
+      fontSize: appStyle.textDayHeaderFontSize,
+      fontFamily: appStyle.textDayHeaderFontFamily,
+      fontWeight: appStyle.textDayHeaderFontWeight,
     },
-    reservations: {
+    month: {
+      textAlign: 'center',
+      fontSize: 17,
+      fontFamily: 'Montserrat-Medium',
+      color: '#626e84',
+      marginBottom: 10,
+    },
+  reservations: {
       flex: 1,
-      marginTop: 104,
+      marginTop: 155,
+      // @ts-ignore
       backgroundColor: appStyle.reservationsBackgroundColor || appStyle.backgroundColor //TODO: remove 2nd in V2
-    },
+  },
     scrollPadStyle: {
       position: 'absolute',
       width: '100%',

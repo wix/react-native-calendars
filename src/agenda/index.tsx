@@ -11,11 +11,12 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
+  Text
 } from 'react-native';
 
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
-import {xdateToData, toMarkingFormat} from '../interface';
+import {xdateToData, toMarkingFormat, parseDate} from '../interface';
 import {sameDate, sameMonth} from '../dateutils';
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import {VelocityTracker} from '../velocityTracker';
@@ -25,9 +26,11 @@ import styleConstructor from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';
 import CalendarList, {CalendarListProps, CalendarListImperativeMethods} from '../calendar-list';
 import ReservationList, {ReservationListProps}  from './reservation-list';
+import { Platform } from 'react-native';
 
 
-const HEADER_HEIGHT = 104;
+const HEADER_HEIGHT = 150; // the full agenda header heigh
+const CALENDAR_OFFSET = Platform.OS === 'ios' ? 80 : 86; //Platform.OS === 'ios' ? 68 : 76; // aligs the day in the correct space  for ios
 const KNOB_HEIGHT = 24;
 
 export type AgendaProps = CalendarListProps & ReservationListProps & {
@@ -125,6 +128,7 @@ export default class Agenda extends Component<AgendaProps, State> {
 
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
+    // this.fullCalendarVisible = true;
   }
 
   componentDidMount() {
@@ -163,7 +167,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   }
 
   calendarOffset() {
-    return 96 - this.viewHeight / 2;
+    return CALENDAR_OFFSET - this.viewHeight / 2;
   }
 
   initialScrollPadPosition = () => {
@@ -189,7 +193,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     this.setState({calendarScrollable: enable});
 
     this.props.onCalendarToggled?.(enable);
-
+    // this.fullCalendarVisible = true;
     // Enlarge calendarOffset here as a workaround on iOS to force repaint.
     // Otherwise the month after current one or before current one remains invisible.
     // The problem is caused by overflow: 'hidden' style, which we need for dragging
@@ -224,6 +228,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     });
 
     this.props.onCalendarToggled?.(false);
+    // this.fullCalendarVisible = false;
 
     if (!optimisticScroll) {
       this.setState({topDay: day.clone()});
@@ -308,17 +313,17 @@ export default class Agenda extends Component<AgendaProps, State> {
   onVisibleMonthsChange = (months: DateData[]) => {
     this.props.onVisibleMonthsChange?.(months);
 
-    if (this.props.items && !this.state.firstReservationLoad) {
+    // if (this.props.items && !this.state.firstReservationLoad) {
       if (this.scrollTimeout) {
         clearTimeout(this.scrollTimeout);
       }
 
       this.scrollTimeout = setTimeout(() => {
         if (this._isMounted) {
-          this.props.loadItemsForMonth?.(months[0]);
+          this.props.loadItemsForMonth?.(months[months.length - 1])
         }
       }, 200);
-    }
+    // }
   };
 
   onDayChange = (day: XDate) => {
@@ -390,12 +395,21 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   renderWeekDaysNames = () => {
     return (
-      <WeekDaysNames
-        firstDay={this.props.firstDay}
-        style={this.style.dayHeader}
-      />
-    );
+        <View
+        style={{
+          flexDirection: 'column',
+          flex: 1,
+          // alignItem: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text style={this.style.month}>{parseDate(this.state.selectedDay).toString('MMMM yyyy')}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+            <WeekDaysNames firstDay={this.props.firstDay} style={this.style.dayHeader}/>
+            </View>
+      </View>)
   };
+
 
   renderWeekNumbersSpace = () => {
     return this.props.showWeekNumbers && <View style={this.style.dayHeader}/>;

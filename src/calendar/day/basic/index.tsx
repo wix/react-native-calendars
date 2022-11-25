@@ -77,6 +77,14 @@ const BasicDay = (props: BasicDayProps) => {
     const {customStyles, selectedColor} = _marking;
     const styles = [style.current.base];
 
+//Custom marking type
+if (isCustom && customStyles && customStyles.container) {
+  if (customStyles.container.borderRadius === undefined) {
+    customStyles.container.borderRadius = 16;
+  }
+  styles.push(customStyles.container);
+}
+
     if (isSelected) {
       styles.push(style.current.selected);
       if (selectedColor) {
@@ -85,21 +93,17 @@ const BasicDay = (props: BasicDayProps) => {
     } else if (isToday) {
       styles.push(style.current.today);
     }
-
-    //Custom marking type
-    if (isCustom && customStyles && customStyles.container) {
-      if (customStyles.container.borderRadius === undefined) {
-        customStyles.container.borderRadius = 16;
-      }
-      styles.push(customStyles.container);
-    }
-
     return styles;
   };
 
   const getTextStyle = () => {
     const {customStyles, selectedTextColor} = _marking;
     const styles = [style.current.text];
+
+    //Custom marking type
+    if (isCustom && customStyles && customStyles.text) {
+      styles.push(customStyles.text);
+    }
 
     if (isSelected) {
       styles.push(style.current.selectedText);
@@ -114,10 +118,7 @@ const BasicDay = (props: BasicDayProps) => {
       styles.push(style.current.inactiveText);
     }
 
-    //Custom marking type
-    if (isCustom && customStyles && customStyles.text) {
-      styles.push(customStyles.text);
-    }
+    
 
     return styles;
   };

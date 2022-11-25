@@ -11,8 +11,8 @@ export default function styleConstructor(theme: Theme = {}) {
       alignItems: 'center'
     },
     base: {
-      width: 32,
-      height: 32,
+      width: 50,
+      height: 50,
       alignItems: 'center'
     },
     text: {
@@ -29,7 +29,7 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
+      borderRadius: 2
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
