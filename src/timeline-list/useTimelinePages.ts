@@ -23,13 +23,16 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
       return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
     })
   );
+
   const [pages, setPages] = useState<string[]>(pagesRef.current);
   const shouldResetPages = useRef(false);
 
   useEffect(() => {
-    setPages(times(PAGES_COUNT, i => {
+    const updatedDays = times(PAGES_COUNT, i => {
       return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
-    }));
+    });
+    pagesRef.current = updatedDays;
+    setPages(updatedDays);
   }, [numberOfDays]);
 
   const isOutOfRange = useCallback((index: number) => {
