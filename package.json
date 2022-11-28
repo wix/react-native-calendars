@@ -91,7 +91,7 @@
       "./jest-setup.js"
     ],
     "testMatch": [
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx}"
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts}"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(@react-native|react-native|react-native-swipe-gestures)/)"

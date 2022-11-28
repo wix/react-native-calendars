@@ -16,7 +16,7 @@ import {extractCalendarProps} from '../../componentUpdater';
 import CalendarContext from '../Context';
 import {useDidUpdate} from '../../hooks';
 
-const NUMBER_OF_PAGES = 6;
+export const NUMBER_OF_PAGES = 6;
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
 const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
 
