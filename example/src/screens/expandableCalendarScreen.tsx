@@ -40,7 +40,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       // onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton
-      disabledOpacity={0.5}
+      // disabledOpacity={0.6}
       theme={todayBtnTheme.current}
       // todayBottomMargin={16}
     >
