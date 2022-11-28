@@ -124,6 +124,15 @@ describe('ExpandableCalendar', () => {
       jest.runAllTimers();
       expect(driver.isCalendarExpanded()).toBe(false);
     });
+
+    it('should not close expandable header on day press when closeOnDayPress is false', () => {
+      const aDriver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({expandableCalendarProps: {closeOnDayPress: false}}));
+      aDriver.toggleKnob();
+      jest.runAllTimers();
+      aDriver.selectDay(dashedToday);
+      jest.runAllTimers();
+      expect(aDriver.isCalendarExpanded()).toBe(true);
+    });
   });
 
   describe('CalendarList updates', () => {
