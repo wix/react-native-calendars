@@ -113,8 +113,8 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       flex: 1
     },
     circle: {
-      height: 15,
-      width: 15,
+      height: 13,
+      width: 13,
       backgroundColor: "white", 
       borderWidth: 3,
       borderColor: '#EBEBEB',
