@@ -31,7 +31,7 @@ class Calendar extends Component {
     /** Collection of dates that have to be marked. Default = {} */
     markedDates: PropTypes.object,
     /** Specify style for calendar container element. Default = {} */
-    style: any,
+    style: PropTypes.any,
     /** Initially visible month. Default = Date() */
     current: PropTypes.any,
     /** Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined */
