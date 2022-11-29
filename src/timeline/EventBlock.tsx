@@ -53,27 +53,31 @@ const EventBlock = (props: EventBlockProps) => {
   }, [index, onPress]);
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[styles.event, eventStyle]}>
-      {renderEvent ? (
-        renderEvent(event)
-      ) : (
-        <View>
-          <Text numberOfLines={1} style={styles.eventTitle}>
-            {event.title || 'Event'}
-          </Text>
-          {numberOfLines > 1 ? (
-            <Text numberOfLines={numberOfLines - 1} style={[styles.eventSummary]}>
-              {event.summary || ' '}
+    <View >
+      <View style={[styles.circle, {top: event.top, left: -60}]} />
+      <View style={[styles.circle, {top: event.top+event.height - 20, left: -60}]} />
+      <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[styles.event, eventStyle]}>
+        {renderEvent ? (
+          renderEvent(event)
+        ) : (
+          <View>
+            <Text numberOfLines={1} style={styles.eventTitle}>
+              {event.title || 'Event'}
             </Text>
-          ) : null}
-          {numberOfLines > 2 ? (
-            <Text style={styles.eventTimes} numberOfLines={1}>
-              {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
-            </Text>
-          ) : null}
-        </View>
-      )}
-    </TouchableOpacity>
+            {numberOfLines > 1 ? (
+              <Text numberOfLines={numberOfLines - 1} style={[styles.eventSummary]}>
+                {event.summary || ' '}
+              </Text>
+            ) : null}
+            {numberOfLines > 2 ? (
+              <Text style={styles.eventTimes} numberOfLines={1}>
+                {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
+              </Text>
+            ) : null}
+          </View>
+        )}
+      </TouchableOpacity>
+    </View>
   );
 };
 

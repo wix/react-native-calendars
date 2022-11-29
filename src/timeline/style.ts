@@ -111,6 +111,15 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     },
     eventsContainer: {
       flex: 1
+    },
+    circle: {
+      height: 15,
+      width: 15,
+      backgroundColor: "white", 
+      borderWidth: 3,
+      borderColor: '#EBEBEB',
+      borderRadius: 20,
+      ...appStyle.event,
     }
   });
 }
