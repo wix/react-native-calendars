@@ -79,7 +79,7 @@ export default function styleConstructor(theme: Theme = {}) {
       paddingBottom: 18,
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
-      fontWeight: '700'
+      fontWeight: '700',
       color: appStyle.monthTextColor
     },
     weekDayNames: {
