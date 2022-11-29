@@ -21,7 +21,7 @@ export default class AgendaView extends Component {
     theme: PropTypes.object,
 
     // agenda container style
-    style: any,
+    style: PropTypes.any,
 
     // the list of items that have to be displayed in agenda. If you want to render item as empty date
     // the value of date key has to be an empty array []. If there exists no value for date key it is
