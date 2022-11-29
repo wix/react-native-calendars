@@ -44,15 +44,10 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.calendarBackground
     },
     knob: {
-      width: 28,
-      height: 28,
-      borderBottomWidth:4,
-      borderRightWidth:4,
-      borderRadius: 0,
-      borderColor: '#595959',
-      backgroundColor: 'white',
-      transform: [{ rotateX: "70deg" }, { rotateZ: "45deg" }],
-      marginBottom: 5,
+      width: 40,
+      height: 4,
+      borderRadius: 3,
+      backgroundColor: appStyle.expandableKnobColor
     },
     sectionText: {
       fontWeight: 'bold', 
@@ -79,7 +74,7 @@ export default function styleConstructor(theme: Theme = {}) {
       paddingBottom: 18,
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
-      fontWeight: '700',
+      fontWeight: appStyle.textMonthFontWeight,
       color: appStyle.monthTextColor
     },
     weekDayNames: {
@@ -92,7 +87,7 @@ export default function styleConstructor(theme: Theme = {}) {
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
-      color: 'black'
+      color: appStyle.textSectionTitleColor
     },
     monthView: {
       backgroundColor: appStyle.calendarBackground
