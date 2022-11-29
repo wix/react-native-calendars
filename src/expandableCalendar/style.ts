@@ -77,9 +77,9 @@ export default function styleConstructor(theme: Theme = {}) {
       alignSelf: 'center',
       paddingTop: 13,
       paddingBottom: 18,
-      fontSize: appStyle.textMonthFontSize,
-      fontFamily: appStyle.textMonthFontFamily,
-      fontWeight: appStyle.textMonthFontWeight,
+      fontSize: 18,
+      fontFamily: 'Apercu Pro',
+      fontWeight: '700',
       color: appStyle.monthTextColor
     },
     weekDayNames: {
@@ -89,10 +89,10 @@ export default function styleConstructor(theme: Theme = {}) {
     dayHeader: {
       width: 32,
       textAlign: 'center',
-      fontSize: appStyle.textDayHeaderFontSize,
+      fontSize: 'Apercu Pro',
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
+      color: 'black'
     },
     monthView: {
       backgroundColor: appStyle.calendarBackground
