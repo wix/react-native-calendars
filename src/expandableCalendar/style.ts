@@ -44,10 +44,15 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.calendarBackground
     },
     knob: {
-      width: 40,
-      height: 4,
-      borderRadius: 3,
-      backgroundColor: appStyle.expandableKnobColor
+      width: 28,
+      height: 28,
+      borderBottomWidth:4,
+      borderRightWidth:4,
+      borderRadius: 0,
+      borderColor: '#595959',
+      backgroundColor: 'white',
+      transform: [{ rotateX: "70deg" }, { rotateZ: "45deg" }],
+      marginBottom: 5,
     },
     sectionText: {
       fontWeight: 'bold', 
