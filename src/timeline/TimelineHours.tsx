@@ -27,7 +27,6 @@ export interface TimelineHoursProps {
   width: number;
   numberOfDays: number;
   timelineLeftInset?: number;
-  hourBlockHeight?: number;
 }
 
 const dimensionWidth = constants.screenWidth;
@@ -46,13 +45,12 @@ const TimelineHours = (props: TimelineHoursProps) => {
     onBackgroundLongPressOut,
     width,
     numberOfDays = 1,
-    timelineLeftInset = 0,
-    hourBlockHeight = HOUR_BLOCK_HEIGHT,
+    timelineLeftInset = 0
   } = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();
   // const offset = this.calendarHeight / (end - start);
-  const offset = hourBlockHeight;
+  const offset = HOUR_BLOCK_HEIGHT;
   const unavailableHoursBlocks = buildUnavailableHoursBlocks(unavailableHours, {dayStart: start, dayEnd: end});
 
   const hours = useMemo(() => {
