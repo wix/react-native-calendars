@@ -113,6 +113,10 @@ export interface TimelineProps {
    * The left inset of the timeline calendar (sidebar width), default is 72
    */
   timelineLeftInset?: number;
+  /** 
+   * the height of each hour block
+   */
+  hourBlockHeight?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -139,7 +143,8 @@ const Timeline = (props: TimelineProps) => {
     unavailableHoursColor,
     eventTapped,
     numberOfDays = 1,
-    timelineLeftInset = 0
+    timelineLeftInset = 0,
+    hourBlockHeight = HOUR_BLOCK_HEIGHT,
   } = props;
 
   const pageDates = useMemo(() => {
@@ -152,7 +157,7 @@ const Timeline = (props: TimelineProps) => {
     return map(pageDates, d => groupedEvents[d] || []);
   }, [pageDates, groupedEvents]);
   const scrollView = useRef<ScrollView>();
-  const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
+  const calendarHeight = useRef((end - start) * hourBlockHeight);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
 
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
@@ -175,17 +180,17 @@ const Timeline = (props: TimelineProps) => {
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+      initialPosition = calcTimeOffset(hourBlockHeight);
     } else if (scrollToFirst && packedEvents[0].length > 0) {
       initialPosition = min(map(packedEvents[0], 'top')) ?? 0;
     } else if (initialTime) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+      initialPosition = calcTimeOffset(hourBlockHeight, initialTime.hour, initialTime.minutes);
     }
 
     if (initialPosition) {
       setTimeout(() => {
         scrollView?.current?.scrollTo({
-          y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
+          y: Math.max(0, initialPosition - hourBlockHeight),
           animated: true
         });
       }, 0);
@@ -234,7 +239,7 @@ const Timeline = (props: TimelineProps) => {
     return (
       <React.Fragment key={dayIndex}>
         {renderEvents(dayIndex)}
-        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
+        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} hourBlockHeight={hourBlockHeight}/>}
       </React.Fragment>
     );
   };
@@ -261,6 +266,7 @@ const Timeline = (props: TimelineProps) => {
         width={width}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
+        hourBlockHeight
       />
       {times(numberOfDays, renderTimelineDay)}
     </ScrollView>
