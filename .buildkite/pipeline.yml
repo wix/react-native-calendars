@@ -1,3 +1,5 @@
+agents:
+  queue: mbms
 env:
   LC_ALL: 'en_US'
 steps:
