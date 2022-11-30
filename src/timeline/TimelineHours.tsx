@@ -109,12 +109,15 @@ const TimelineHours = (props: TimelineHoursProps) => {
             unavailableHoursColor ? {backgroundColor: unavailableHoursColor} : undefined,
             {left: timelineLeftInset}
           ]}
-        ></View>
+        >
+          <View style={[styles.circle, {left: -60}]} />
+        </View>
       ))}
 
       {hours.map(({timeText, time}, index) => {
         return (
           <React.Fragment key={time}>
+            <View style={[styles.circle, {left: -60}]} />
             <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 16}]}>
               {timeText}
             </Text>
