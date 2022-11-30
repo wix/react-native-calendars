@@ -15,12 +15,12 @@ const NowIndicator = (props: NowIndicatorProps) => {
   const indicatorPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
 
   const nowIndicatorStyle = useMemo(() => {
-    return [styles.nowIndicator, {top: indicatorPosition, left: left-45}];
+    return [styles.nowIndicator, {top: indicatorPosition, left: left-48}];
   }, [indicatorPosition, left]);
 
   return (
     <View style={nowIndicatorStyle}>
-      <View style={[styles.nowIndicatorLine, {width: width+45}]}/>
+      <View style={[styles.nowIndicatorLine, {width: width+48}]}/>
       <View style={styles.nowIndicatorKnob}/>
     </View>
   );
