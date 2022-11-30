@@ -40,7 +40,7 @@ const EventBlock = (props: EventBlockProps) => {
   const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
   const eventStyle = useMemo(() => {
     return {
-      left: event.left,
+      left: event.left + 10,
       height: event.height,
       width: event.width,
       top: event.top,
