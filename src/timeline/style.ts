@@ -120,6 +120,9 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       borderColor: '#EBEBEB',
       borderRadius: 20,
       ...appStyle.event,
+    },
+    lines: {
+      height: 60
     }
   });
 }
