@@ -113,8 +113,8 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       flex: 1
     },
     circle: {
-      height: 13,
-      width: 13,
+      height: 12,
+      width: 12,
       backgroundColor: "white", 
       borderWidth: 3,
       borderColor: '#EBEBEB',
@@ -122,8 +122,8 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       ...appStyle.event,
     },
     lines: {
-      position: 'absolute' , height: 60, width: 1, marginLeft: 5
+      position: 'absolute' , height: 65, width: 1, marginLeft: 4
     },
-    solidLine: {position: 'absolute' , height: 60, width: 1, marginLeft: 5, backgroundColor: '#B3B3B3'}
+    solidLine: {position: 'absolute' , height: 65, width: 1, marginLeft: 4, backgroundColor: '#B3B3B3'}
   });
 }
