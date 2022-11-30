@@ -117,14 +117,17 @@ const TimelineHours = (props: TimelineHoursProps) => {
       ))}
 
       {hours.map(({timeText, time}, index) => {
+        const today = new Date();
+        const toDate = new Date(date ? date : '');
+        console.log("today: " + (toDate.toString().split(' ').slice(0, 4).join(' ') === today.toString().split(' ').slice(0, 4).join(' ')));
         return (
           <React.Fragment key={time}>
-            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 16}]}>
-            <View style={{flexDirection: 'column'}}>
-              <Image source={line} style={styles.lines}/>
-              <View style={[styles.circle]} />
+            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 14}]}>
+            <View style={{flexDirection: 'column', width: 5}}>
+              {(toDate > today || (toDate.toString().split(' ').slice(0, 4).join(' ') === today.toString().split(' ').slice(0, 4).join(' ')  && time >= today.getHours())) ? <Image source={line} style={styles.lines}/> : <View style={styles.solidLine}/>}
+              {time%2 === 0 && <View style={[styles.circle]} />}
             </View>
-              {timeText}
+              {time%2 === 0 && timeText}
             </Text>
             {time === start ? null : (
               <View
