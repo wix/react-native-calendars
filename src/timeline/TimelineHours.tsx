@@ -117,8 +117,8 @@ const TimelineHours = (props: TimelineHoursProps) => {
       {hours.map(({timeText, time}, index) => {
         return (
           <React.Fragment key={time}>
-            <View style={[styles.circle, {left: -60}]} />
             <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 16}]}>
+              <View style={[styles.circle]} />
               {timeText}
             </Text>
             {time === start ? null : (
