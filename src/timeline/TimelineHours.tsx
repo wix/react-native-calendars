@@ -120,8 +120,10 @@ const TimelineHours = (props: TimelineHoursProps) => {
         return (
           <React.Fragment key={time}>
             <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 16}]}>
-              <View style={[styles.circle]} />
+            <View style={{flexDirection: 'column'}}>
               <Image src={line} style={styles.lines}/>
+              <View style={[styles.circle]} />
+            </View>
               {timeText}
             </Text>
             {time === start ? null : (

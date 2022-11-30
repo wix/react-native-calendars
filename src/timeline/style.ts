@@ -122,7 +122,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       ...appStyle.event,
     },
     lines: {
-      height: 60
+      position: 'absolute' , height: 60, width: 1, backgroundColor:'black', marginLeft: 5
     }
   });
 }
