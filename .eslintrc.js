@@ -29,6 +29,8 @@ module.exports = {
     'react/jsx-uses-vars': 2,
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-var-requires': 0,
-    '@typescript-eslint/explicit-function-return-type': 0
+    '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/ban-types': 0,
+    '@typescript-eslint/ban-ts-comment': 1
   }
 };
