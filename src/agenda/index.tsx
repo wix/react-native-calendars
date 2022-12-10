@@ -52,6 +52,9 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   hideKnob?: boolean;
   /** Whether the knob should always be visible (when hideKnob = false) */
   showClosingKnob?: boolean;
+  /** Hide the calendar and consequently disable the ability to see day changes while scrolling agenda list 
+  and to select a day from the calendar component. Default = false */
+  hideCalendar?: boolean;
 }
 
 type State = {
@@ -85,7 +88,8 @@ export default class Agenda extends Component<AgendaProps, State> {
     renderList: PropTypes.func,
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
-    showClosingKnob: PropTypes.bool
+    showClosingKnob: PropTypes.bool,
+    hideCalendar: PropTypes.bool
   };
 
   private style: {[key: string]: ViewStyle};
@@ -403,7 +407,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   render() {
-    const {hideKnob, style, testID} = this.props;
+    const {hideKnob, style, testID, hideCalendar} = this.props;
     const agendaHeight = this.initialScrollPadPosition();
     const weekdaysStyle = [
       this.style.weekdays,
@@ -458,9 +462,20 @@ export default class Agenda extends Component<AgendaProps, State> {
       top: scrollPadPosition,
     };
 
+    if (hideCalendar) {
+      return (
+        <View onLayout={this.onLayout} style={[style, this.style.container]}>
+          <View style={[this.style.reservations, { marginTop: 0 }]}>
+            {this.renderReservations()}
+          </View>
+        </View>
+      );
+    }
+
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
         <View style={this.style.reservations}>{this.renderReservations()}</View>
+        
         <Animated.View style={headerStyle}>
           <Animated.View style={[this.style.animatedContainer, {transform: [{translateY: contentTranslate}]}]}>
             {this.renderCalendarList()}
