@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useContext, useCallback} from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {Theme} from '../types';
 import {toMarkingFormat} from '../interface';
 import {extractCalendarProps} from '../componentUpdater';
@@ -9,13 +9,14 @@ import Calendar, {CalendarProps} from '../calendar';
 import CalendarContext from '../expandableCalendar/Context';
 
 export type CalendarListItemProps = CalendarProps & {
-  item: any;
+  item: XDate;
   calendarWidth?: number;
   calendarHeight?: number;
   horizontal?: boolean;
   theme?: Theme;
   scrollToMonth?: (date: XDate) => void;
   visible?: boolean;
+  renderPlaceholder?: (year: number, month: number) => React.ReactElement;
 };
 
 const CalendarListItem = React.memo((props: CalendarListItemProps) => {  
@@ -30,7 +31,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     headerStyle,
     onPressArrowLeft,
     onPressArrowRight,
-    visible
+    visible,
+    renderPlaceholder,
   } = props;
   const context = useContext(CalendarContext);
 
@@ -84,9 +86,13 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   }, [onPressArrowRight, scrollToMonth]);
 
   if (!visible) {
-    return (
-      <Text style={textStyle}>{dateString}</Text>
-    );
+    if (renderPlaceholder) {
+      const year = item.getFullYear();
+      const month = item.getMonth();
+      return <View style={calendarStyle}>{renderPlaceholder(year, month)}</View>;
+    }
+
+    return <Text style={textStyle}>{dateString}</Text>;
   }
 
   return (
