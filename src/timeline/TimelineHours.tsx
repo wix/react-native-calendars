@@ -120,7 +120,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
         const today = new Date();
         const toDate = new Date(date ? date : '');
         const nextDay = (new Date())
-        nextDay.setDate(today.getDate() + 1);
+        nextDay.setDate(today.getDate());
         return (
           <React.Fragment key={time}>
             <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 14}]}>
