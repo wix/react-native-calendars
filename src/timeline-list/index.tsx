@@ -24,6 +24,7 @@ export interface TimelineListProps {
    * Map of all timeline events ({[date]: events})
    */
   events: {[date: string]: TimelineProps['events']};
+  suggestions: {[date: string]:  TimelineProps['events']};
   /**
    * General timeline props to pass to each timeline item
    */
@@ -51,8 +52,8 @@ export interface TimelineListProps {
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
-  const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
+  const {timelineProps, events, suggestions, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
+  const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset, showSuggestion} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
   const [timelineOffset, setTimelineOffset] = useState();
@@ -115,6 +116,7 @@ const TimelineList = (props: TimelineListProps) => {
       const isInitialPage = index === INITIAL_PAGE;
       const _isToday = isToday(item);
       const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
+      const weekSuggestions = [suggestions[item] || [], suggestions[generateDay(item, 1)] || [], suggestions[generateDay(item, 2)] || [], suggestions[generateDay(item, 3)] || [], suggestions[generateDay(item, 4)] || [], suggestions[generateDay(item, 5)] || [], suggestions[generateDay(item, 6)] || []];
       const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
       const numberOfDaysToDrop = (7 - numberOfDays);
       const _timelineProps = {
@@ -122,6 +124,8 @@ const TimelineList = (props: TimelineListProps) => {
         key: item,
         date: dropRight(weekDates, numberOfDaysToDrop),
         events: flatten(dropRight(weekEvents, numberOfDaysToDrop)),
+        showSuggestion,
+        suggestions: flatten(dropRight(weekSuggestions, numberOfDaysToDrop)),
         scrollToNow: _isToday && isInitialPage && scrollToNow,
         initialTime: !_isToday && isInitialPage ? initialTime : undefined,
         scrollToFirst: !_isToday && isInitialPage && scrollToFirst,

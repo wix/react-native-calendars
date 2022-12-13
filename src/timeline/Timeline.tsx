@@ -113,6 +113,8 @@ export interface TimelineProps {
    * The left inset of the timeline calendar (sidebar width), default is 72
    */
   timelineLeftInset?: number;
+  showSuggestion?: boolean;
+  suggestions?: Event[];
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -139,7 +141,9 @@ const Timeline = (props: TimelineProps) => {
     unavailableHoursColor,
     eventTapped,
     numberOfDays = 1,
-    timelineLeftInset = 0
+    timelineLeftInset = 0,
+    suggestions,
+    showSuggestion,
   } = props;
 
   const pageDates = useMemo(() => {
@@ -148,9 +152,15 @@ const Timeline = (props: TimelineProps) => {
   const groupedEvents = useMemo(() => {
     return groupBy(events, e => getCalendarDateString(e.start));
   }, [events]);
+  const groupedSuggestions = useMemo(() => {
+    return groupBy(suggestions, e => getCalendarDateString(e.start));
+  }, [suggestions]);
   const pageEvents = useMemo(() => {
     return map(pageDates, d => groupedEvents[d] || []);
   }, [pageDates, groupedEvents]);
+  const pageSuggestions = useMemo(() => {
+    return map(pageDates, d => groupedSuggestions[d] || []);
+  }, [pageDates, groupedSuggestions]);
   const scrollView = useRef<ScrollView>();
   const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
@@ -171,6 +181,17 @@ const Timeline = (props: TimelineProps) => {
       });
     });
   }, [pageEvents, start, numberOfDays]);
+
+  const packedSuggestions = useMemo(() => {
+    return map(pageSuggestions, (_e, i) => {
+      return populateEvents(pageSuggestions[i], {
+        screenWidth: width / numberOfDays,
+        dayStart: start,
+        overlapEventsSpacing: overlapEventsSpacing / numberOfDays,
+        rightEdgeSpacing: rightEdgeSpacing / numberOfDays
+      });
+    });
+  }, [pageSuggestions, start, numberOfDays]);
 
   useEffect(() => {
     let initialPosition = 0;
@@ -194,7 +215,22 @@ const Timeline = (props: TimelineProps) => {
 
   const _onEventPress = useCallback(
     (dateIndex: number, eventIndex: number) => {
+      console.log("packedEvents:"+JSON.stringify(packedEvents));
       const event = packedEvents[dateIndex][eventIndex];
+      if (eventTapped) {
+        //TODO: remove after deprecation
+        eventTapped(event);
+      } else {
+        onEventPress?.(event);
+      }
+    },
+    [onEventPress, eventTapped]
+  );
+
+  const _onSuggestionPress = useCallback(
+    (dateIndex: number, eventIndex: number) => {
+      console.log("packedEvents:"+JSON.stringify(packedSuggestions));
+      const event = packedSuggestions[dateIndex][eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
         eventTapped(event);
@@ -227,13 +263,36 @@ const Timeline = (props: TimelineProps) => {
       </View>
     );
   };
+  const renderSuggestions = (dayIndex: number) => {
+    const events = packedSuggestions[dayIndex].map((event: PackedEvent, eventIndex: number) => {
+      const onEventPress = () => _onSuggestionPress(dayIndex, eventIndex);
+      return (
+        <EventBlock
+          key={eventIndex}
+          index={eventIndex}
+          event={event}
+          styles={styles.current}
+          format24h={format24h}
+          onPress={onEventPress}
+          renderEvent={renderEvent}
+        />
+      );
+    });
+
+    return (
+      <View pointerEvents={'box-none'}  style={[{marginLeft: dayIndex === 0 ? timelineLeftInset : undefined}, styles.current.eventsContainer]}>
+        {events}
+      </View>
+    );
+  }
 
   const renderTimelineDay = (dayIndex: number) => {
     const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
     const left = timelineLeftInset + indexOfToday * width / numberOfDays;
     return (
       <React.Fragment key={dayIndex}>
-        {renderEvents(dayIndex)}
+        {showSuggestion && renderSuggestions(dayIndex)}
+        {!showSuggestion && renderEvents(dayIndex)}
         {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
       </React.Fragment>
     );

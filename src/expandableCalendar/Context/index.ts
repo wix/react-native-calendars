@@ -8,6 +8,8 @@ export interface CalendarContextProps {
   setDisabled: (disable: boolean) => void;
   numberOfDays?: number;
   timelineLeftInset?: number;
+  showSuggestion: boolean;
+  setShowSuggestion: (show: boolean) => void;
 }
 
 // @ts-expect-error

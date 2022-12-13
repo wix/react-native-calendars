@@ -37,6 +37,8 @@ export interface CalendarContextProviderProps extends ViewProps {
   numberOfDays?: number;
   /** The left inset of the timeline calendar (sidebar width), default is 72 */
   timelineLeftInset?: number;
+  showSuggestions?: boolean;
+  changeShowSuggestions?: (show: boolean) => void;
 }
 
 /**
@@ -56,6 +58,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     style: propsStyle,
     numberOfDays,
     timelineLeftInset = 72,
+    showSuggestions,
+    changeShowSuggestions,
     children
   } = props;
   const style = useRef(styleConstructor(theme));
@@ -63,6 +67,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const prevDate = useRef(date);
   const currDate = useRef(date); // for setDate only to keep prevDate up to date
   const [currentDate, setCurrentDate] = useState(date);
+  const [isSuggestion, setIsSuggestion] = useState(showSuggestions);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
 
   const wrapperStyle = useMemo(() => {
@@ -74,6 +79,11 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       _setDate(date, UpdateSources.PROP_UPDATE);
     }
   }, [date]);
+
+  const _setIsSuggestion = useCallback((show: boolean) => {
+    changeShowSuggestions?.(show);
+    setIsSuggestion(show);
+  }, [changeShowSuggestions])
 
   const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
     prevDate.current = currDate.current;
@@ -102,9 +112,11 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       setDate: _setDate,
       setDisabled: _setDisabled,
       numberOfDays,
-      timelineLeftInset
+      timelineLeftInset,
+      showSuggestion: isSuggestion,
+      setShowSuggestion: _setIsSuggestion
     };
-  }, [currentDate, updateSource, numberOfDays, _setDisabled]);
+  }, [currentDate, isSuggestion, updateSource, numberOfDays, _setDisabled]);
 
   const renderTodayButton = () => {
     return (

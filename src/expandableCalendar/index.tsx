@@ -31,6 +31,8 @@ import WeekCalendar from './WeekCalendar';
 import Context from './Context';
 import constants from '../commons/constants';
 import {UpdateSources} from './commons';
+import CalendarIcon from '../img/flat-color-icons_calendar.png';
+import IdeaIcon from '../img/flat-color-icons_idea.png';
 
 export enum Positions {
   CLOSED = 'closed',
@@ -95,7 +97,7 @@ const headerStyleOverride = {
  */
 
 const ExpandableCalendar = (props: ExpandableCalendarProps) => {
-  const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);
+  const {date, setDate, numberOfDays, timelineLeftInset, showSuggestion, setShowSuggestion} = useContext(Context);
   const {
     /** ExpandableCalendar props */
     initialPosition = Positions.CLOSED,
@@ -589,6 +591,17 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   return (
     <View testID={testID} style={containerStyle}>
+      <TouchableOpacity
+        style={{position: 'absolute', top: 66, right:55, zIndex: 50, height: 32, width: 32, borderRadius: 14, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center'}}
+        onPress={() => {
+          setShowSuggestion(!showSuggestion);
+        }}
+        >
+         {showSuggestion ? (<Image source={CalendarIcon}/>
+          ) : (
+            <Image source={IdeaIcon}/>
+          )}
+      </TouchableOpacity>
       {screenReaderEnabled ? (
         <Calendar
           testID={`${testID}.calendarAccessible`}
