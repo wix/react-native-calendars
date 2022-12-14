@@ -119,6 +119,8 @@ const TimelineList = (props: TimelineListProps) => {
       const weekSuggestions = [suggestions[item] || [], suggestions[generateDay(item, 1)] || [], suggestions[generateDay(item, 2)] || [], suggestions[generateDay(item, 3)] || [], suggestions[generateDay(item, 4)] || [], suggestions[generateDay(item, 5)] || [], suggestions[generateDay(item, 6)] || []];
       const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
       const numberOfDaysToDrop = (7 - numberOfDays);
+      //console.log("show??" + showSuggestion)
+      //console.log("item: " + date + "  "+weekDates)
       const _timelineProps = {
         ...timelineProps,
         key: item,

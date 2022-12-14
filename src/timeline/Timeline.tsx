@@ -215,7 +215,6 @@ const Timeline = (props: TimelineProps) => {
 
   const _onEventPress = useCallback(
     (dateIndex: number, eventIndex: number) => {
-      console.log("packedEvents:"+JSON.stringify(packedEvents));
       const event = packedEvents[dateIndex][eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
@@ -229,7 +228,6 @@ const Timeline = (props: TimelineProps) => {
 
   const _onSuggestionPress = useCallback(
     (dateIndex: number, eventIndex: number) => {
-      console.log("packedEvents:"+JSON.stringify(packedSuggestions));
       const event = packedSuggestions[dateIndex][eventIndex];
       if (eventTapped) {
         //TODO: remove after deprecation
