@@ -128,9 +128,9 @@ const PeriodDay = (props: PeriodDayProps) => {
     const end = markingStyle.endingDay;
 
     if (start && !end) {
-      rightFillerStyle.backgroundColor = markingStyle.startingDay?.backgroundColor;
+      rightFillerStyle.backgroundColor = marking?.fillerColor ?? markingStyle.startingDay?.backgroundColor;
     } else if (end && !start) {
-      leftFillerStyle.backgroundColor = markingStyle.endingDay?.backgroundColor;
+      leftFillerStyle.backgroundColor = marking?.fillerColor ?? markingStyle.endingDay?.backgroundColor;
     } else if (markingStyle.day) {
       leftFillerStyle.backgroundColor = markingStyle.day?.backgroundColor;
       rightFillerStyle.backgroundColor = markingStyle.day?.backgroundColor;
