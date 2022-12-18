@@ -37,6 +37,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+  /** Page height to set week calendar height or calendar list height */
+  pageHeight?: number;
 }
 
 export interface CalendarListImperativeMethods {

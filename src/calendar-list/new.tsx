@@ -37,7 +37,8 @@ const CalendarList = (props: CalendarListProps) => {
     staticHeader, 
     scrollViewProps,
     calendarProps,
-    testID
+    testID,
+    pageHeight = CALENDAR_HEIGHT
   } = props;
   const style = useRef(styleConstructor(calendarProps?.theme));
   const list = useRef<ScrollView>();
@@ -209,7 +210,7 @@ const CalendarList = (props: CalendarListProps) => {
         style={style.current.container}
         initialPageIndex={scrollRange}
         positionIndex={positionIndex}
-        pageHeight={CALENDAR_HEIGHT}
+        pageHeight={pageHeight}
         pageWidth={constants.screenWidth}
         onPageChange={onPageChange}
         scrollViewProps={scrollProps}
