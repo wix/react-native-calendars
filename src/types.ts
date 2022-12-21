@@ -1,8 +1,9 @@
 import {ViewStyle, TextStyle} from 'react-native';
 import {MarkingProps} from './calendar/day/marking';
+import {CalendarContextProps} from './expandableCalendar/Context';
 
 export type ContextProp = {
-  context?: any;
+  context?: CalendarContextProps;
 }
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type MarkedDates = {
