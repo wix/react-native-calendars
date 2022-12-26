@@ -96,7 +96,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return [{width: containerWidth}, propsStyle];
   }, [containerWidth, propsStyle]);
 
-  const renderItem = useCallback(({item}: {item: string}) => {
+  const renderItem = ({item}: {item: string}) => {
     const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
 
     return (
@@ -111,7 +111,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         timelineLeftInset={timelineLeftInset}
       />
     );
-  },[firstDay, _onDayPress, context, date]);
+  };
 
   const keyExtractor = useCallback((item) => item, []);
 

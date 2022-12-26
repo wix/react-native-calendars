@@ -74,28 +74,25 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     [items]
   );
 
-  const renderItem = useCallback(
-    (_type: any, item: string) => {
-      const {allowShadow, ...calendarListProps} = props;
-      const {/* style,  */ ...others} = extractCalendarProps(calendarListProps);
+  const renderItem = (_type: any, item: string) => {
+    const {allowShadow, ...calendarListProps} = props;
+    const {/* style,  */ ...others} = extractCalendarProps(calendarListProps);
 
-      const isSameWeek = sameWeek(item, date, firstDay);
+    const isSameWeek = sameWeek(item, date, firstDay);
 
-      return (
-        <Week
-          {...others}
-          key={item}
-          current={isSameWeek ? date : item}
-          firstDay={firstDay}
-          style={weekStyle}
-          markedDates={markedDates}
-          onDayPress={onDayPress}
-          context={context}
-        />
-      );
-    },
-    [date, markedDates]
-  );
+    return (
+      <Week
+        {...others}
+        key={item}
+        current={isSameWeek ? date : item}
+        firstDay={firstDay}
+        style={weekStyle}
+        markedDates={markedDates}
+        onDayPress={onDayPress}
+        context={context}
+      />
+    );
+  };
 
   return (
     <View
