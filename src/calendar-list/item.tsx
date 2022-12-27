@@ -1,12 +1,11 @@
 import XDate from 'xdate';
-import React, {useRef, useMemo, useContext, useCallback} from 'react';
+import React, {useRef, useMemo, useCallback} from 'react';
 import {Text} from 'react-native';
 import {Theme} from '../types';
 import {toMarkingFormat} from '../interface';
 import {extractCalendarProps} from '../componentUpdater';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
-import CalendarContext from '../expandableCalendar/Context';
 
 export type CalendarListItemProps = CalendarProps & {
   item: any;
@@ -32,7 +31,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     onPressArrowRight,
     visible
   } = props;
-  const context = useContext(CalendarContext);
 
   const style = useRef(styleConstructor(theme));
   
@@ -100,7 +98,6 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       disableMonthChange
       onPressArrowLeft={horizontal ? _onPressArrowLeft : onPressArrowLeft}
       onPressArrowRight={horizontal ? _onPressArrowRight : onPressArrowRight}
-      context={context} // ???
     />
   );
 });
