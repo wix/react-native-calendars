@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-
+import isEmpty from 'lodash/isEmpty';
 import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
@@ -11,7 +11,7 @@ import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-import {DateData, Theme, MarkedDates} from '../types';
+import {DateData, Theme, MarkedDates, ContextProp} from '../types';
 import {useDidUpdate} from '../hooks';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
@@ -70,7 +70,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
-const Calendar = (props: CalendarProps) => {
+const Calendar = (props: CalendarProps & ContextProp) => {
   const {
     initialDate,
     current,
@@ -198,6 +198,7 @@ const Calendar = (props: CalendarProps) => {
     }
 
     const dateString = toMarkingFormat(day);
+    const isControlled = isEmpty(props.context);
 
     return (
       <View style={style.current.dayContainer} key={id}>
@@ -205,7 +206,7 @@ const Calendar = (props: CalendarProps) => {
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
           date={dateString}
-          state={getState(day, currentMonth, props)}
+          state={getState(day, currentMonth, props, isControlled)}
           marking={markedDates?.[dateString]}
           onPress={_onDayPress}
           onLongPress={onLongPressDay}

@@ -10,6 +10,7 @@ import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
 import {useDidUpdate} from '../hooks';
+import {ContextProp} from '../types';
 import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
@@ -51,7 +52,7 @@ export interface CalendarListImperativeMethods {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif
  */
-const CalendarList = (props: CalendarListProps, ref: any) => {
+const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   useImperativeHandle(ref, () => ({
     scrollToDay: (date: XDate | string, offset: number, animated: boolean) => {
       scrollToDay(date, offset, animated);

@@ -1,4 +1,4 @@
-import {Platform} from "react-native";
+import {Platform} from 'react-native';
 
 export const themeColor = '#00AAAF';
 export const lightThemeColor = '#f2f7f7';
@@ -16,18 +16,18 @@ export function getTheme() {
     monthTextColor: 'black',
     textMonthFontSize: 16,
     textMonthFontFamily: 'HelveticaNeue',
-    textMonthFontWeight: 'bold' as 'bold',
+    textMonthFontWeight: 'bold' as const,
     // day names
     textSectionTitleColor: 'black',
     textDayHeaderFontSize: 12,
     textDayHeaderFontFamily: 'HelveticaNeue',
-    textDayHeaderFontWeight: 'normal' as 'normal',
+    textDayHeaderFontWeight: 'normal' as const,
     // dates
     dayTextColor: themeColor,
     todayTextColor: '#af0078',
     textDayFontSize: 18,
     textDayFontFamily: 'HelveticaNeue',
-    textDayFontWeight: '500' as '500',
+    textDayFontWeight: '500' as const,
     textDayStyle: {marginTop: Platform.OS === 'android' ? 2 : 4},
     // selected date
     selectedDayBackgroundColor: themeColor,
