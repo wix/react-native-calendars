@@ -23,7 +23,7 @@ export interface CalendarContextProviderProps extends ViewProps {
   onDateChanged?: (date: string, updateSource: UpdateSources) => void;
   /** Callback for month change event */
   onMonthChange?: (date: DateData, updateSource: UpdateSources) => void;
-  
+
   /** Whether to show the today button */
   showTodayButton?: boolean;
   /** Today button's top position */
@@ -32,7 +32,7 @@ export interface CalendarContextProviderProps extends ViewProps {
   todayButtonStyle?: ViewStyle;
   /** The opacity for the disabled today button (0-1) */
   disabledOpacity?: number;
-  
+
   /** The number of days to present in the timeline calendar */
   numberOfDays?: number;
   /** The left inset of the timeline calendar (sidebar width), default is 72 */
@@ -69,30 +69,36 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     return [style.current.contextWrapper, propsStyle];
   }, [style, propsStyle]);
 
+  const _setDate = useCallback(
+    (date: string, updateSource: UpdateSources) => {
+      prevDate.current = currDate.current;
+      currDate.current = date;
+      setCurrentDate(date);
+      setUpdateSource(updateSource);
+
+      onDateChanged?.(date, updateSource);
+
+      if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
+        onMonthChange?.(xdateToData(new XDate(date)), updateSource);
+      }
+    },
+    [onDateChanged, onMonthChange]
+  );
+
   useDidUpdate(() => {
     if (date) {
       _setDate(date, UpdateSources.PROP_UPDATE);
     }
-  }, [date]);
+  }, [_setDate, date]);
 
-  const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
-    prevDate.current = currDate.current;
-    currDate.current = date;
-    setCurrentDate(date);
-    setUpdateSource(updateSource);
-
-    onDateChanged?.(date, updateSource);
-
-    if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
-      onMonthChange?.(xdateToData(new XDate(date)), updateSource);
-    }
-  }, [onDateChanged, onMonthChange]);
-
-  const _setDisabled = useCallback((disabled: boolean) => {
-    if (showTodayButton) {
-      todayButton.current?.disable(disabled);
-    }
-  }, [showTodayButton]);
+  const _setDisabled = useCallback(
+    (disabled: boolean) => {
+      if (showTodayButton) {
+        todayButton.current?.disable(disabled);
+      }
+    },
+    [showTodayButton]
+  );
 
   const contextValue = useMemo(() => {
     return {
@@ -104,7 +110,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       numberOfDays,
       timelineLeftInset
     };
-  }, [currentDate, updateSource, numberOfDays, _setDisabled]);
+  }, [currentDate, updateSource, _setDate, _setDisabled, numberOfDays, timelineLeftInset]);
 
   const renderTodayButton = () => {
     return (
