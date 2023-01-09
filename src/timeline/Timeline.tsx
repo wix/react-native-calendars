@@ -170,7 +170,7 @@ const Timeline = (props: TimelineProps) => {
         rightEdgeSpacing: rightEdgeSpacing / numberOfDays
       });
     });
-  }, [pageEvents, start, numberOfDays]);
+  }, [pageEvents, width, numberOfDays, start, overlapEventsSpacing, rightEdgeSpacing]);
 
   useEffect(() => {
     let initialPosition = 0;
@@ -190,7 +190,7 @@ const Timeline = (props: TimelineProps) => {
         });
       }, 0);
     }
-  }, []);
+  }, [initialTime, packedEvents, scrollToFirst, scrollToNow]);
 
   const _onEventPress = useCallback(
     (dateIndex: number, eventIndex: number) => {
@@ -202,7 +202,7 @@ const Timeline = (props: TimelineProps) => {
         onEventPress?.(event);
       }
     },
-    [onEventPress, eventTapped]
+    [packedEvents, eventTapped, onEventPress]
   );
 
   const renderEvents = (dayIndex: number) => {
@@ -222,7 +222,10 @@ const Timeline = (props: TimelineProps) => {
     });
 
     return (
-      <View pointerEvents={'box-none'}  style={[{marginLeft: dayIndex === 0 ? timelineLeftInset : undefined}, styles.current.eventsContainer]}>
+      <View
+        pointerEvents={'box-none'}
+        style={[{marginLeft: dayIndex === 0 ? timelineLeftInset : undefined}, styles.current.eventsContainer]}
+      >
         {events}
       </View>
     );
@@ -230,11 +233,13 @@ const Timeline = (props: TimelineProps) => {
 
   const renderTimelineDay = (dayIndex: number) => {
     const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
-    const left = timelineLeftInset + indexOfToday * width / numberOfDays;
+    const left = timelineLeftInset + (indexOfToday * width) / numberOfDays;
     return (
       <React.Fragment key={dayIndex}>
         {renderEvents(dayIndex)}
-        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
+        {indexOfToday !== -1 && showNowIndicator && (
+          <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />
+        )}
       </React.Fragment>
     );
   };
