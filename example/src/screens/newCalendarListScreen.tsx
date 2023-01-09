@@ -8,10 +8,10 @@ const initialDate = '2020-05-16';
 const NewCalendarListScreen = () => {
   const [selected, setSelected] = useState(initialDate);
   const [isHorizontal, setIsHorizontal] = useState(false);
-  
-  const onValueChange = useCallback((value) => {
+
+  const onValueChange = useCallback(value => {
     setIsHorizontal(value);
-  }, [isHorizontal]);
+  }, []);
 
   const markedDates = useMemo(() => {
     return {
@@ -22,28 +22,31 @@ const NewCalendarListScreen = () => {
     };
   }, [selected]);
 
-  const onDayPress = useCallback(day => {
-    console.warn('dayPress: ', day);
-    setSelected(day.dateString);
-  }, [setSelected]);
+  const onDayPress = useCallback(
+    day => {
+      console.warn('dayPress: ', day);
+      setSelected(day.dateString);
+    },
+    [setSelected]
+  );
 
   const calendarProps = useMemo(() => {
     return {
       markedDates: markedDates,
       onDayPress: onDayPress
     };
-  }, [selected, markedDates, onDayPress]);
+  }, [markedDates, onDayPress]);
 
   return (
     <View style={styles.container}>
       <View style={styles.switchView}>
         <Text style={styles.switchText}>Horizontal</Text>
-        <Switch value={isHorizontal} onValueChange={onValueChange}/>
+        <Switch value={isHorizontal} onValueChange={onValueChange} />
       </View>
       <NewCalendarList
         key={Number(isHorizontal)} // only for this example - to force rerender
         horizontal={isHorizontal}
-        staticHeader  
+        staticHeader
         // initialDate={initialDate}
         // scrollRange={10}
         calendarProps={calendarProps}
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   switchView: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     height: 70,
     padding: 10,
     paddingBottom: 30,
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
     zIndex: 100
   },
   switchText: {
-    marginRight: 20, 
+    marginRight: 20,
     fontSize: 16
   }
 });
