@@ -73,7 +73,24 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
-  }, [data]);
+  }, [data, isHorizontal, listRef, pageHeight, pageWidth, positionIndex]);
+
+  const onMomentumScrollEnd = useCallback(
+    event => {
+      if (pageIndex.current) {
+        if (isOnEdge.current) {
+          onReachEdge?.(pageIndex.current!);
+          reloadPagesDebounce?.(pageIndex.current);
+        } else if (isNearEdge.current) {
+          reloadPagesDebounce?.(pageIndex.current);
+          onReachNearEdge?.(pageIndex.current!);
+        }
+
+        scrollViewProps?.onMomentumScrollEnd?.(event);
+      }
+    },
+    [scrollViewProps, onReachEdge, reloadPagesDebounce, onReachNearEdge]
+  );
 
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {
@@ -112,24 +129,17 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
       props.onScroll?.(event, offsetX, offsetY);
     },
-    [props.onScroll, onPageChange, data.length, reloadPagesDebounce]
-  );
-
-  const onMomentumScrollEnd = useCallback(
-    event => {
-      if (pageIndex.current) {
-        if (isOnEdge.current) {
-          onReachEdge?.(pageIndex.current!);
-          reloadPagesDebounce?.(pageIndex.current);
-        } else if (isNearEdge.current) {
-          reloadPagesDebounce?.(pageIndex.current);
-          onReachNearEdge?.(pageIndex.current!);
-        }
-
-        scrollViewProps?.onMomentumScrollEnd?.(event);
-      }
-    },
-    [scrollViewProps?.onMomentumScrollEnd, onReachEdge, onReachNearEdge, reloadPagesDebounce]
+    [
+      reloadPagesDebounce,
+      isHorizontal,
+      pageWidth,
+      pageHeight,
+      props,
+      onPageChange,
+      data.length,
+      onReachNearEdgeThreshold,
+      onMomentumScrollEnd
+    ]
   );
 
   const onScrollBeginDrag = useCallback(() => {
