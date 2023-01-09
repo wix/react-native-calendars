@@ -37,8 +37,8 @@ module.exports = {
     semi: ['error', 'always'],
     'react/jsx-uses-react': 2,
     'react/jsx-uses-vars': 2,
-    'react-hooks/rules-of-hooks': 'warn', // Checks rules of Hooks - should be 'error' going forward after all the warnings have been fixed...
-    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies - should be 'error' going forward after all the warnings have been fixed...
+    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'error', // Checks effect dependencies
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
