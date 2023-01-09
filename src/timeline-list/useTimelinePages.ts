@@ -33,7 +33,7 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
     });
     pagesRef.current = updatedDays;
     setPages(updatedDays);
-  }, [numberOfDays]);
+  }, [date, numberOfDays]);
 
   const isOutOfRange = useCallback((index: number) => {
     return !inRange(index, 0, PAGES_COUNT);
@@ -47,9 +47,12 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
     return !inRange(index, 1, PAGES_COUNT - 1);
   }, []);
 
-  const scrollToPage = (pageIndex: number) => {
-    listRef.current?.scrollToOffset(pageIndex * constants.screenWidth, 0, false);
-  };
+  const scrollToPage = useCallback(
+    (pageIndex: number) => {
+      listRef.current?.scrollToOffset(pageIndex * constants.screenWidth, 0, false);
+    },
+    [listRef]
+  );
 
   const resetPages = (date: string) => {
     pagesRef.current = times(PAGES_COUNT, i => {
@@ -64,10 +67,12 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
   };
 
   return {
-    resetPages: useCallback(resetPages, []),
+    resetPages: useCallback(resetPages, [numberOfDays, scrollToPage]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     resetPagesDebounce: useCallback(debounce(resetPages, 500, {leading: false, trailing: true}), []),
-    scrollToPage: useCallback(scrollToPage, []),
-    scrollToPageDebounce: useCallback(debounce(scrollToPage, 250, {leading: false, trailing: true}), []),
+    scrollToPage: useCallback(scrollToPage, [scrollToPage]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    scrollToPageDebounce: useCallback(debounce(scrollToPage, 250, {leading: false, trailing: true}), [scrollToPage]),
     pagesRef,
     pages,
     shouldResetPages,
