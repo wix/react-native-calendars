@@ -1,18 +1,21 @@
-import React, {useEffect, useRef, DependencyList} from 'react';
+import React, {useEffect, useRef, DependencyList, EffectCallback} from 'react';
 
 /**
  * This hook avoid calling useEffect on the initial value of his dependency array
  */
-export const useDidUpdate = (callback: () => void, dep: DependencyList) => {
+
+
+export const useDidUpdate = (effectCallback: EffectCallback, deps?: DependencyList): void => {
   const isMounted = useRef<boolean>(false);
 
   useEffect(() => {
     if (isMounted.current) {
-      callback();
+      effectCallback();
     } else {
       isMounted.current = true;
     }
-  }, dep);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 };
 
 export const useCombinedRefs = (...refs: React.Ref<any>[]) => {
