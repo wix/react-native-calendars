@@ -31,6 +31,7 @@ export interface WeekCalendarProps extends CalendarListProps {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const WeekCalendar = (props: WeekCalendarProps) => {
+  // eslint-disable-next-line react/prop-types
   const {calendarWidth, hideDayNames, current, theme, testID} = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;

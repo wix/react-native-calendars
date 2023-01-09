@@ -5,6 +5,7 @@ import {Calendar, CalendarUtils} from 'react-native-calendars';
 
 import testIDs from '../testIDs';
 import Marking from '../../../src/calendar/day/marking';
+import {DateData} from '../../../src/types';
 
 const INITIAL_DATE = '2022-07-06';
 const GREEN = '#13ba7d';
@@ -363,7 +364,10 @@ const NewCalendarScreen = () => {
   };
 
   /** Custom Day */
-  const CustomDay = ({date, state}) => {
+  // eslint-disable-next-line react/prop-types
+  type CustomDayProps = {date: DateData; state: string};
+
+  const CustomDay = ({date, state}: CustomDayProps) => {
     return (
       <View>
         <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
