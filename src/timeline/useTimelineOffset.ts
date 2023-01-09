@@ -21,24 +21,18 @@ export default (props: UseTimelineOffsetProps) => {
     }
   }, [scrollOffset, scrollViewRef]);
 
-  const onScrollEndDrag = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const offset = event.nativeEvent.contentOffset.y;
-      const velocity = event.nativeEvent.velocity?.y;
+  const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offset = event.nativeEvent.contentOffset.y;
+    const velocity = event.nativeEvent.velocity?.y;
 
-      if (velocity === 0) {
-        onChangeOffset?.(offset);
-      }
-    },
-    [onChangeOffset]
-  );
+    if (velocity === 0) {
+      onChangeOffset?.(offset);
+    }
+  }, [onChangeOffset]);
 
-  const onMomentumScrollEnd = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      onChangeOffset?.(event.nativeEvent.contentOffset.y);
-    },
-    [onChangeOffset]
-  );
+  const onMomentumScrollEnd = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    onChangeOffset?.(event.nativeEvent.contentOffset.y);
+  }, [onChangeOffset]);
 
   return {
     scrollEvents: {

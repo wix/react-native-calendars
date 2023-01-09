@@ -6,6 +6,7 @@ import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
 
+
 export interface BasicDayProps extends ViewProps {
   state?: DayState;
   /** The marking object */

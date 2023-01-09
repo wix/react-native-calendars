@@ -31,8 +31,18 @@ export interface WeekCalendarProps extends CalendarListProps {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const WeekCalendar = (props: WeekCalendarProps) => {
-  // eslint-disable-next-line react/prop-types
-  const {calendarWidth, hideDayNames, current, theme, testID} = props;
+  const {
+    // eslint-disable-next-line react/prop-types
+    calendarWidth,
+    // eslint-disable-next-line react/prop-types
+    hideDayNames,
+    // eslint-disable-next-line react/prop-types
+    current,
+    // eslint-disable-next-line react/prop-types
+    theme,
+    // eslint-disable-next-line react/prop-types
+    testID,
+  } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
   const {style: propsStyle, onDayPress, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
@@ -61,16 +71,15 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   useDidUpdate(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
-      const pageIndex = items.current.findIndex(item =>
-        isCustomNumberOfDays(numberOfDays)
-          ? onSameDateRange({
-              firstDay: item,
-              secondDay: date,
-              numberOfDays: numberOfDays as number,
-              firstDateInRange: item
-            })
-          : sameWeek(item, date, firstDay)
-      );
+      const pageIndex = items.current.findIndex(
+        item => isCustomNumberOfDays(numberOfDays) ?
+          onSameDateRange({
+            firstDay: item,
+            secondDay: date,
+            numberOfDays: numberOfDays as number,
+            firstDateInRange: item
+          }) :
+          sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
         if (pageIndex >= 0) {
           visibleWeek.current = items.current[pageIndex];
@@ -88,128 +97,129 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return calendarWidth ?? constants.screenWidth;
   }, [calendarWidth]);
 
-  const _onDayPress = useCallback(
-    (value: DateData) => {
-      if (onDayPress) {
-        onDayPress(value);
-      } else {
-        setDate?.(value.dateString, UpdateSources.DAY_PRESS);
-      }
-    },
-    [onDayPress, setDate]
-  );
+  const _onDayPress = useCallback((value: DateData) => {
+    if (onDayPress) {
+      onDayPress(value);
+    } else {
+      setDate?.(value.dateString, UpdateSources.DAY_PRESS);
+    }
+  }, [onDayPress, setDate]);
 
   const weekStyle = useMemo(() => {
     return [{width: containerWidth}, propsStyle];
   }, [containerWidth, propsStyle]);
 
-  const renderItem = useCallback(
-    ({item}: {item: string}) => {
-      const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
+  const renderItem = useCallback(({item}: {item: string}) => {
+    const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
 
-      return (
-        <Week
-          {...others}
-          current={item}
-          firstDay={firstDay}
-          style={weekStyle}
-          context={currentContext}
-          onDayPress={_onDayPress}
-          numberOfDays={numberOfDays}
-          timelineLeftInset={timelineLeftInset}
-        />
-      );
-    },
-    [date, firstDay, context, others, weekStyle, _onDayPress, numberOfDays, timelineLeftInset]
-  );
+    return (
+      <Week
+        {...others}
+        current={item}
+        firstDay={firstDay}
+        style={weekStyle}
+        context={currentContext}
+        onDayPress={_onDayPress}
+        numberOfDays={numberOfDays}
+        timelineLeftInset={timelineLeftInset}
+      />
+    );
+  }, [date, firstDay, context, others, weekStyle, _onDayPress, numberOfDays, timelineLeftInset]);
 
-  const keyExtractor = useCallback(item => item, []);
+  const keyExtractor = useCallback((item) => item, []);
 
   const renderWeekDaysNames = useMemo(() => {
-    return <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader} />;
-  }, [firstDay]);
+    return (
+      <WeekDaysNames
+        firstDay={firstDay}
+        style={style.current.dayHeader}
+      />
+    );
+  },[firstDay]);
 
   const weekCalendarStyle = useMemo(() => {
-    return [allowShadow && style.current.containerShadow, !hideDayNames && style.current.containerWrapper];
+    return [
+      allowShadow && style.current.containerShadow,
+      !hideDayNames && style.current.containerWrapper
+    ];
   }, [allowShadow, hideDayNames]);
 
   const containerStyle = useMemo(() => {
     return [style.current.week, style.current.weekCalendar];
   }, []);
 
-  const getItemLayout = useCallback(
-    (_, index: number) => {
-      return {
-        length: containerWidth,
-        offset: containerWidth * index,
-        index
-      };
-    },
-    [containerWidth]
-  );
+  const getItemLayout = useCallback((_, index: number) => {
+    return {
+      length: containerWidth,
+      offset: containerWidth * index,
+      index
+    };
+  }, [containerWidth]);
 
-  const onViewableItemsChanged = useCallback(
-    ({viewableItems}: {viewableItems: Array<ViewToken>}) => {
-      if (changedItems.current || viewableItems.length === 0) {
-        changedItems.current = false;
-        return;
-      }
-      const currItems = items.current;
-      const newDate = viewableItems[0]?.item;
-      if (newDate !== visibleWeek.current) {
-        if (APPLY_ANDROID_FIX) {
-          //in android RTL the item we see is the one in the opposite direction
-          const newDateOffset = -1 * (NUMBER_OF_PAGES - currItems.indexOf(newDate));
-          const adjustedNewDate = currItems[NUMBER_OF_PAGES - newDateOffset];
-          visibleWeek.current = adjustedNewDate;
-          currentIndex.current = currItems.indexOf(adjustedNewDate);
-          setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
-          if (visibleWeek.current === currItems[currItems.length - 1]) {
-            onEndReached();
-          }
-        } else {
-          currentIndex.current = currItems.indexOf(newDate);
-          visibleWeek.current = newDate;
-          setDate(newDate, UpdateSources.WEEK_SCROLL);
-          if (visibleWeek.current === currItems[0]) {
-            onEndReached();
-          }
+  const onViewableItemsChanged = useCallback(({viewableItems}: { viewableItems: Array<ViewToken>}) => {
+    if (changedItems.current || viewableItems.length === 0) {
+      changedItems.current = false;
+      return;
+    }
+    const currItems = items.current;
+    const newDate = viewableItems[0]?.item;
+    if (newDate !== visibleWeek.current) {
+      if (APPLY_ANDROID_FIX) {
+        //in android RTL the item we see is the one in the opposite direction
+        const newDateOffset = -1 * (NUMBER_OF_PAGES - currItems.indexOf(newDate));
+        const adjustedNewDate = currItems[NUMBER_OF_PAGES - newDateOffset];
+        visibleWeek.current = adjustedNewDate;
+        currentIndex.current = currItems.indexOf(adjustedNewDate);
+        setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
+        if (visibleWeek.current === currItems[currItems.length - 1]) {
+          onEndReached();
+        }
+      } else {
+        currentIndex.current = currItems.indexOf(newDate);
+        visibleWeek.current = newDate;
+        setDate(newDate, UpdateSources.WEEK_SCROLL);
+        if (visibleWeek.current === currItems[0]) {
+          onEndReached();
         }
       }
-    },
-    [onEndReached, setDate]
-  );
-
-  const viewabilityConfigCallbackPairs = useRef([
-    {
-      viewabilityConfig: {
-        itemVisiblePercentThreshold: 20
-      },
-      onViewableItemsChanged
     }
-  ]);
+  }, [onEndReached, setDate]);
+
+  const viewabilityConfigCallbackPairs = useRef([{
+      viewabilityConfig: {
+        itemVisiblePercentThreshold: 20,
+      },
+      onViewableItemsChanged,
+    }]);
 
   return (
-    <View testID={testID} style={weekCalendarStyle}>
-      {!hideDayNames && <View style={containerStyle}>{renderWeekDaysNames}</View>}
+    <View
+      testID={testID}
+      style={weekCalendarStyle}
+    >
+      {!hideDayNames && (
+        <View style={containerStyle}>
+          {renderWeekDaysNames}
+        </View>
+      )}
       <View style={style.current.container}>
-        <FlatList
-          testID={`${testID}.list`}
-          ref={list}
-          style={style.current.container}
-          data={listData}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          scrollEnabled
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          initialScrollIndex={NUMBER_OF_PAGES}
-          getItemLayout={getItemLayout}
-          viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-          onEndReached={onEndReached}
-          onEndReachedThreshold={1 / NUM_OF_ITEMS}
-        />
+          <FlatList
+            testID={`${testID}.list`}
+            ref={list}
+            style={style.current.container}
+            data={listData}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            scrollEnabled
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            initialScrollIndex={NUMBER_OF_PAGES}
+            getItemLayout={getItemLayout}
+            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={1/NUM_OF_ITEMS}
+          />
       </View>
     </View>
   );
@@ -241,8 +251,8 @@ function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays
 }
 
 function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
-  return [...Array(NUM_OF_ITEMS).keys()].map(index => {
-    if (isCustomNumberOfDays(numberOfDays)) {
+  return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
+    if(isCustomNumberOfDays(numberOfDays)) {
       return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays as number);
     }
     return getDate(date, firstDay, index - NUMBER_OF_PAGES);

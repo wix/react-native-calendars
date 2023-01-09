@@ -47,12 +47,9 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
     return !inRange(index, 1, PAGES_COUNT - 1);
   }, []);
 
-  const scrollToPage = useCallback(
-    (pageIndex: number) => {
-      listRef.current?.scrollToOffset(pageIndex * constants.screenWidth, 0, false);
-    },
-    [listRef]
-  );
+  const scrollToPage = useCallback((pageIndex: number) => {
+    listRef.current?.scrollToOffset(pageIndex * constants.screenWidth, 0, false);
+  }, [listRef]);
 
   const resetPages = (date: string) => {
     pagesRef.current = times(PAGES_COUNT, i => {

@@ -15,7 +15,7 @@ const CalendarScreen = () => {
     return CalendarUtils.getCalendarDateString(newDate);
   };
 
-  const onDayPress = useCallback(day => {
+  const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
   }, []);
 
@@ -34,7 +34,7 @@ const CalendarScreen = () => {
     };
   }, [selected]);
 
-  const renderCalendarWithSelectableDate = () => {
+  const RenderCalendarWithSelectableDate = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with selectable date</Text>
@@ -50,16 +50,16 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithWeekNumbers = () => {
+  const RenderCalendarWithWeekNumbers = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with week numbers</Text>
-        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers />
+        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers/>
       </Fragment>
     );
   };
 
-  const renderCalendarWithMinAndMaxDates = () => {
+  const RenderCalendarWithMinAndMaxDates = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with min and max dates</Text>
@@ -75,7 +75,7 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithMarkedDatesAndHiddenArrows = () => {
+  const RenderCalendarWithMarkedDatesAndHiddenArrows = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
@@ -98,7 +98,7 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithMultiDotMarking = () => {
+  const RenderCalendarWithMultiDotMarking = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with multi-dot marking</Text>
@@ -127,7 +127,7 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithPeriodMarkingAndSpinner = () => {
+  const RenderCalendarWithPeriodMarkingAndSpinner = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with period marking and spinner</Text>
@@ -178,7 +178,7 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithPeriodMarkingAndDotMarking = () => {
+  const RenderCalendarWithPeriodMarkingAndDotMarking = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with period marking and dot marking</Text>
@@ -217,13 +217,13 @@ const CalendarScreen = () => {
             textSectionTitleColor: '#319e8e',
             arrowColor: '#319e8e'
           }}
-          onDayPress={day => console.warn(`${day.dateString} pressed`)}
+          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
         />
       </Fragment>
     );
   };
 
-  const renderCalendarWithMultiPeriodMarking = () => {
+  const RenderCalendarWithMultiPeriodMarking = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with multi-period marking</Text>
@@ -258,7 +258,7 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithCustomMarkingType = () => {
+  const RenderCalendarWithCustomMarkingType = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Custom calendar with custom marking type</Text>
@@ -356,7 +356,7 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithCustomDay = () => {
+  const RenderCalendarWithCustomDay = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with custom day component</Text>
@@ -409,9 +409,7 @@ const CalendarScreen = () => {
 
     const CustomHeaderTitle = (
       <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
-        <Text style={styles.customTitle}>
-          {selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}
-        </Text>
+        <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
       </TouchableOpacity>
     );
 
@@ -444,7 +442,7 @@ const CalendarScreen = () => {
     setCustomHeaderNewMonth(false);
   };
 
-  const renderCalendarWithCustomHeader = () => {
+  const RenderCalendarWithCustomHeader = () => {
     const CustomHeader = React.forwardRef((props, ref) => {
       customHeaderProps.current = props;
 
@@ -477,7 +475,7 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderCalendarWithInactiveDays = () => {
+  const RenderCalendarWithInactiveDays = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with inactive days</Text>
@@ -498,29 +496,29 @@ const CalendarScreen = () => {
     );
   };
 
-  const renderExamples = () => {
+  const RenderExamples = () => {
     return (
       <Fragment>
-        {renderCalendarWithSelectableDate()}
-        {renderCalendarWithWeekNumbers()}
-        {renderCalendarWithMinAndMaxDates()}
-        {renderCalendarWithCustomDay()}
-        {renderCalendarWithInactiveDays()}
-        {RenderCalendarWithCustomHeaderTitle()}
-        {renderCalendarWithCustomHeader()}
-        {renderCalendarWithMarkedDatesAndHiddenArrows()}
-        {renderCalendarWithMultiDotMarking()}
-        {renderCalendarWithPeriodMarkingAndSpinner()}
-        {renderCalendarWithPeriodMarkingAndDotMarking()}
-        {renderCalendarWithMultiPeriodMarking()}
-        {renderCalendarWithCustomMarkingType()}
+        <RenderCalendarWithSelectableDate/>
+        <RenderCalendarWithWeekNumbers/>
+        <RenderCalendarWithMinAndMaxDates/>
+        <RenderCalendarWithCustomDay/>
+        <RenderCalendarWithInactiveDays/>
+        <RenderCalendarWithCustomHeaderTitle />
+        <RenderCalendarWithCustomHeader/>
+        <RenderCalendarWithMarkedDatesAndHiddenArrows/>
+        <RenderCalendarWithMultiDotMarking/>
+        <RenderCalendarWithPeriodMarkingAndSpinner/>
+        <RenderCalendarWithPeriodMarkingAndDotMarking/>
+        <RenderCalendarWithMultiPeriodMarking/>
+        <RenderCalendarWithCustomMarkingType/>
       </Fragment>
     );
   };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} testID={testIDs.calendars.CONTAINER}>
-      {renderExamples()}
+      <RenderExamples />
     </ScrollView>
   );
 };

@@ -5,7 +5,7 @@ import {Calendar, CalendarUtils} from 'react-native-calendars';
 
 import testIDs from '../testIDs';
 import Marking from '../../../src/calendar/day/marking';
-import {DateData} from '../../../src/types';
+import { DateData } from '../../../src/types';
 
 const INITIAL_DATE = '2022-07-06';
 const GREEN = '#13ba7d';
@@ -42,10 +42,7 @@ const NewCalendarScreen = () => {
   const [disableArrowRight, setDisableArrowRight] = useState(false);
 
   const toggleMinAndMax = useCallback(() => setMinAndMax(!minAndMax), [minAndMax]);
-  const toggleAllowSelectionOutOfRange = useCallback(
-    () => setAllowSelectionOutOfRange(!allowSelectionOutOfRange),
-    [allowSelectionOutOfRange]
-  );
+  const toggleAllowSelectionOutOfRange = useCallback(() => setAllowSelectionOutOfRange(!allowSelectionOutOfRange), [allowSelectionOutOfRange]);
   const toggleEnableSwipeMonths = useCallback(() => setEnableSwipeMonths(!enableSwipeMonths), [enableSwipeMonths]);
   const toggleDisableMonthChange = useCallback(() => setDisableMonthChange(!disableMonthChange), [disableMonthChange]);
   const toggleShowWeekNumbers = useCallback(() => setShowWeekNumbers(!showWeekNumbers), [showWeekNumbers]);
@@ -54,22 +51,10 @@ const NewCalendarScreen = () => {
   const toggleHideDayNames = useCallback(() => setHideDayNames(!hideDayNames), [hideDayNames]);
   const toggleHideArrows = useCallback(() => setHideArrows(!hideArrows), [hideArrows]);
   const toggleDisabledByDefault = useCallback(() => setDisabledByDefault(!disabledByDefault), [disabledByDefault]);
-  const toggleDisableAllTouchEventsForDisabledDays = useCallback(
-    () => setDisableAllTouchEventsForDisabledDays(!disableAllTouchEventsForDisabledDays),
-    [disableAllTouchEventsForDisabledDays]
-  );
-  const toggleDisableAllTouchEventsForInactiveDays = useCallback(
-    () => setDisableAllTouchEventsForInactiveDays(!disableAllTouchEventsForInactiveDays),
-    [disableAllTouchEventsForInactiveDays]
-  );
-  const toggleDisplayLoadingIndicator = useCallback(
-    () => setDisplayLoadingIndicator(!displayLoadingIndicator),
-    [displayLoadingIndicator]
-  );
-  const toggleDisabledDaysIndexes = useCallback(
-    () => setDisabledDaysIndexes(!disabledDaysIndexes),
-    [disabledDaysIndexes]
-  );
+  const toggleDisableAllTouchEventsForDisabledDays = useCallback(() => setDisableAllTouchEventsForDisabledDays(!disableAllTouchEventsForDisabledDays), [disableAllTouchEventsForDisabledDays]);
+  const toggleDisableAllTouchEventsForInactiveDays = useCallback(() => setDisableAllTouchEventsForInactiveDays(!disableAllTouchEventsForInactiveDays), [disableAllTouchEventsForInactiveDays]);
+  const toggleDisplayLoadingIndicator = useCallback(() => setDisplayLoadingIndicator(!displayLoadingIndicator), [displayLoadingIndicator]);
+  const toggleDisabledDaysIndexes = useCallback(() => setDisabledDaysIndexes(!disabledDaysIndexes), [disabledDaysIndexes]);
   const toggleDayComponent = useCallback(() => setDayComponent(!dayComponent), [dayComponent]);
   const toggleCustomHeader = useCallback(() => setCustomHeader(!customHeader), [customHeader]);
   const toggleCustomHeaderTitle = useCallback(() => setCustomHeaderTitle(!customHeaderTitle), [customHeaderTitle]);
@@ -77,17 +62,17 @@ const NewCalendarScreen = () => {
   const toggleDisableArrowLeft = useCallback(() => setDisableArrowLeft(!disableArrowLeft), [disableArrowLeft]);
   const toggleDisableArrowRight = useCallback(() => setDisableArrowRight(!disableArrowRight), [disableArrowRight]);
 
-  const getDate = count => {
+  const getDate = (count) => {
     const date = new Date(INITIAL_DATE);
     const newDate = date.setDate(date.getDate() + count);
     return CalendarUtils.getCalendarDateString(newDate);
   };
 
-  const onDayPress = useCallback(day => {
+  const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
   }, []);
 
-  const onDayLongPress = useCallback(day => {
+  const onDayLongPress = useCallback((day) => {
     Alert.alert(`Date: ${day.dateString}`);
   }, []);
 
@@ -155,14 +140,7 @@ const NewCalendarScreen = () => {
 
   const periodWithDotsMarks = useMemo(() => {
     return {
-      [getDate(-3)]: {
-        marked: true,
-        dotColor: 'white',
-        startingDay: true,
-        endingDay: true,
-        color: '#50cebb',
-        textColor: 'white'
-      },
+      [getDate(-3)]: {marked: true, dotColor: 'white', startingDay: true, endingDay: true, color: '#50cebb', textColor: 'white'},
       [INITIAL_DATE]: {marked: true, dotColor: '#50cebb'},
       [getDate(1)]: {disabled: true, marked: true, dotColor: '#50cebb'},
       [getDate(2)]: {startingDay: true, color: '#50cebb', textColor: 'white'},
@@ -364,9 +342,7 @@ const NewCalendarScreen = () => {
   };
 
   /** Custom Day */
-  // eslint-disable-next-line react/prop-types
   type CustomDayProps = {date: DateData; state: string};
-
   const CustomDay = ({date, state}: CustomDayProps) => {
     return (
       <View>
@@ -396,7 +372,7 @@ const NewCalendarScreen = () => {
 
   const CustomHeader = React.forwardRef((props, ref) => {
     customHeaderProps.current = props;
-
+    
     return (
       // @ts-expect-error
       <View ref={ref} {...props} style={styles.customHeader}>
@@ -447,23 +423,27 @@ const NewCalendarScreen = () => {
 
   const CustomHeaderTitle = (
     <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
-      <Text style={styles.customTitle}>
-        {selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}
-      </Text>
+      <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
     </TouchableOpacity>
   );
 
   /** Custom Arrow */
-  const _renderArrow = useCallback(direction => {
+  const _renderArrow = useCallback((direction) => {
     const text = direction === 'left' ? '<<' : '>>';
-    return <Text>{text}</Text>;
+    return (
+      <Text>{text}</Text>
+    );
   }, []);
 
   /** Props Switches */
   const renderSwitch = (label: string, state: any, toggleSwitch: any) => {
     return (
       <View style={styles.switchContainer}>
-        <Switch value={state} onValueChange={toggleSwitch} trackColor={{true: GREEN}} />
+        <Switch
+          value={state}
+          onValueChange={toggleSwitch}
+          trackColor={{true: GREEN}}
+        />
         <Text style={[styles.switchText, styles.text]}>{label}</Text>
       </View>
     );
@@ -474,8 +454,7 @@ const NewCalendarScreen = () => {
       <View>
         {renderSwitch('Min and Max Dates', minAndMax, toggleMinAndMax)}
         <View style={styles.subSwitchContainer}>
-          {minAndMax &&
-            renderSwitch('Allow Selection Out Of Range', allowSelectionOutOfRange, toggleAllowSelectionOutOfRange)}
+          {minAndMax && renderSwitch('Allow Selection Out Of Range', allowSelectionOutOfRange, toggleAllowSelectionOutOfRange)}
         </View>
         {renderSwitch('Enable Swipe Months', enableSwipeMonths, toggleEnableSwipeMonths)}
         {renderSwitch('Disable Month Change', disableMonthChange, toggleDisableMonthChange)}
@@ -484,16 +463,8 @@ const NewCalendarScreen = () => {
         {renderSwitch('Hide Extra Days', hideExtraDays, toggleHideExtraDays)}
         {renderSwitch('Hide Day Names', hideDayNames, toggleHideDayNames)}
         {renderSwitch('Disabled By Default', disabledByDefault, toggleDisabledByDefault)}
-        {renderSwitch(
-          'Disable All Touch Events For Disabled Days',
-          disableAllTouchEventsForDisabledDays,
-          toggleDisableAllTouchEventsForDisabledDays
-        )}
-        {renderSwitch(
-          'Disable All Touch Events For Inactive Days',
-          disableAllTouchEventsForInactiveDays,
-          toggleDisableAllTouchEventsForInactiveDays
-        )}
+        {renderSwitch('Disable All Touch Events For Disabled Days', disableAllTouchEventsForDisabledDays, toggleDisableAllTouchEventsForDisabledDays)}
+        {renderSwitch('Disable All Touch Events For Inactive Days', disableAllTouchEventsForInactiveDays, toggleDisableAllTouchEventsForInactiveDays)}
         {renderSwitch('Display Loading Indicator', displayLoadingIndicator, toggleDisplayLoadingIndicator)}
         {renderSwitch('Disabled Days Indexes', disabledDaysIndexes, toggleDisabledDaysIndexes)}
         {renderSwitch('Hide Arrows', hideArrows, toggleHideArrows)}
@@ -524,9 +495,11 @@ const NewCalendarScreen = () => {
     return (
       <TouchableOpacity onPress={() => setType(index)} key={index} style={styles.radioButtonContainer}>
         <View style={styles.radioButton}>
-          {selectedButtonIndex === index && <View style={styles.selectedRadioButton} />}
+        {selectedButtonIndex === index &&
+          <View style={styles.selectedRadioButton}/>
+        }
         </View>
-        <Text>{value}</Text>
+          <Text>{value}</Text>
       </TouchableOpacity>
     );
   };
@@ -593,8 +566,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    fontSize: 14,
-    fontWeight: 'bold'
+    fontSize: 14, 
+    fontWeight: 'bold', 
   },
   buttonText: {
     color: GREEN,
@@ -658,8 +631,8 @@ const styles = StyleSheet.create({
     padding: 8
   },
   customTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'row', 
+    alignItems: 'center', 
     padding: 10
   },
   customTitle: {

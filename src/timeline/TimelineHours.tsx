@@ -115,36 +115,25 @@ const TimelineHours = (props: TimelineHoursProps) => {
       {hours.map(({timeText, time}, index) => {
         return (
           <React.Fragment key={time}>
-            <Text
-              key={`timeLabel${time}`}
-              style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 16}]}
-            >
+            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 16}]}>
               {timeText}
             </Text>
             {time === start ? null : (
               <View
                 key={`line${time}`}
-                style={[
-                  styles.line,
-                  {top: offset * index, width: dimensionWidth - EVENT_DIFF, left: timelineLeftInset - 16}
-                ]}
+                style={[styles.line, {top: offset * index, width: dimensionWidth - EVENT_DIFF, left: timelineLeftInset - 16}]}
               />
             )}
             {
               <View
                 key={`lineHalf${time}`}
-                style={[
-                  styles.line,
-                  {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF, left: timelineLeftInset - 16}
-                ]}
+                style={[styles.line, {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF, left: timelineLeftInset - 16}]}
               />
             }
           </React.Fragment>
         );
       })}
-      {times(numberOfDays, index => (
-        <View key={index} style={[styles.verticalLine, {right: ((index + 1) * width) / numberOfDays}]} />
-      ))}
+      {times(numberOfDays, (index) => <View key={index} style={[styles.verticalLine, {right: (index + 1) * width / numberOfDays}]} />)}
     </>
   );
 };

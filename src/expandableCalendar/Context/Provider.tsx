@@ -69,21 +69,18 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     return [style.current.contextWrapper, propsStyle];
   }, [style, propsStyle]);
 
-  const _setDate = useCallback(
-    (date: string, updateSource: UpdateSources) => {
-      prevDate.current = currDate.current;
-      currDate.current = date;
-      setCurrentDate(date);
-      setUpdateSource(updateSource);
+  const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
+    prevDate.current = currDate.current;
+    currDate.current = date;
+    setCurrentDate(date);
+    setUpdateSource(updateSource);
 
-      onDateChanged?.(date, updateSource);
+    onDateChanged?.(date, updateSource);
 
-      if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
-        onMonthChange?.(xdateToData(new XDate(date)), updateSource);
-      }
-    },
-    [onDateChanged, onMonthChange]
-  );
+    if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
+      onMonthChange?.(xdateToData(new XDate(date)), updateSource);
+    }
+  }, [onDateChanged, onMonthChange]);
 
   useDidUpdate(() => {
     if (date) {
@@ -91,14 +88,11 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     }
   }, [_setDate, date]);
 
-  const _setDisabled = useCallback(
-    (disabled: boolean) => {
-      if (showTodayButton) {
-        todayButton.current?.disable(disabled);
-      }
-    },
-    [showTodayButton]
-  );
+  const _setDisabled = useCallback((disabled: boolean) => {
+    if (showTodayButton) {
+      todayButton.current?.disable(disabled);
+    }
+  }, [showTodayButton]);
 
   const contextValue = useMemo(() => {
     return {

@@ -37,7 +37,6 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   };
 
   const containerWidth = calendarWidth || constants.screenWidth;
-
   const weekStyle = useMemo(() => {
     return [{width: containerWidth}, props.style];
   }, [containerWidth, props.style]);
@@ -105,7 +104,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     >
       {!hideDayNames && (
         <View style={[style.current.week, style.current.weekCalendar]}>
-          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader} />
+          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader}/>
         </View>
       )}
       <View>
