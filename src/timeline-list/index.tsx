@@ -60,37 +60,41 @@ const TimelineList = (props: TimelineListProps) => {
   const {pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange} =
     useTimelinePages({date, listRef, numberOfDays});
 
-  const scrollToCurrentDate = useCallback((date: string) => {
-    const datePageIndex = pagesRef.current.indexOf(date);
+  const scrollToCurrentDate = useCallback(
+    (date: string) => {
+      const datePageIndex = pagesRef.current.indexOf(date);
 
-    if (updateSource !== UpdateSources.LIST_DRAG) {
-      if (isOutOfRange(datePageIndex)) {
-        updateSource === UpdateSources.DAY_PRESS ? resetPages(date) : resetPagesDebounce(date);
-      } else {
-        scrollToPageDebounce(datePageIndex);
+      if (updateSource !== UpdateSources.LIST_DRAG) {
+        if (isOutOfRange(datePageIndex)) {
+          updateSource === UpdateSources.DAY_PRESS ? resetPages(date) : resetPagesDebounce(date);
+        } else {
+          scrollToPageDebounce(datePageIndex);
+        }
       }
-    }
-    prevDate.current = date;
-  }, [updateSource]);
+      prevDate.current = date;
+    },
+    [isOutOfRange, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, updateSource]
+  );
 
   useEffect(() => {
     if (date !== prevDate.current) {
       scrollToCurrentDate(date);
     }
-  }, [date]);
+  }, [date, scrollToCurrentDate]);
 
   const onScroll = useCallback(() => {
     if (shouldResetPages.current) {
       resetPagesDebounce.cancel();
     }
-  }, []);
+  }, [resetPagesDebounce, shouldResetPages]);
 
   const onMomentumScrollEnd = useCallback(() => {
     if (shouldResetPages.current) {
       resetPagesDebounce(prevDate.current);
     }
-  }, []);
+  }, [resetPagesDebounce, shouldResetPages]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onPageChange = useCallback(
     throttle((pageIndex: number) => {
       const newDate = pages[pageIndex];
@@ -98,12 +102,12 @@ const TimelineList = (props: TimelineListProps) => {
         setDate(newDate, UpdateSources.LIST_DRAG);
       }
     }, 0),
-    [pages]
+    [pages, setDate]
   );
 
   const onReachNearEdge = useCallback(() => {
     shouldResetPages.current = true;
-  }, []);
+  }, [shouldResetPages]);
 
   const onTimelineOffsetChange = useCallback(offset => {
     setTimelineOffset(offset);
@@ -114,9 +118,25 @@ const TimelineList = (props: TimelineListProps) => {
       const isCurrent = prevDate.current === item;
       const isInitialPage = index === INITIAL_PAGE;
       const _isToday = isToday(item);
-      const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
-      const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
-      const numberOfDaysToDrop = (7 - numberOfDays);
+      const weekEvents = [
+        events[item] || [],
+        events[generateDay(item, 1)] || [],
+        events[generateDay(item, 2)] || [],
+        events[generateDay(item, 3)] || [],
+        events[generateDay(item, 4)] || [],
+        events[generateDay(item, 5)] || [],
+        events[generateDay(item, 6)] || []
+      ];
+      const weekDates = [
+        item,
+        generateDay(item, 1),
+        generateDay(item, 2),
+        generateDay(item, 3),
+        generateDay(item, 4),
+        generateDay(item, 5),
+        generateDay(item, 6)
+      ];
+      const numberOfDaysToDrop = 7 - numberOfDays;
       const _timelineProps = {
         ...timelineProps,
         key: item,
@@ -138,13 +158,25 @@ const TimelineList = (props: TimelineListProps) => {
 
       return (
         <>
-          <Timeline {..._timelineProps}/>
+          <Timeline {..._timelineProps} />
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text> */}
         </>
       );
     },
-    [events, timelineOffset, showNowIndicator, numberOfDays]
+    [
+      events,
+      numberOfDays,
+      timelineProps,
+      scrollToNow,
+      initialTime,
+      scrollToFirst,
+      timelineOffset,
+      onTimelineOffsetChange,
+      showNowIndicator,
+      timelineLeftInset,
+      renderItem
+    ]
   );
 
   return (
