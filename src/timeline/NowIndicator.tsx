@@ -16,12 +16,12 @@ const NowIndicator = (props: NowIndicatorProps) => {
 
   const nowIndicatorStyle = useMemo(() => {
     return [styles.nowIndicator, {top: indicatorPosition, left}];
-  }, [indicatorPosition, left]);
+  }, [indicatorPosition, left, styles.nowIndicator]);
 
   return (
     <View style={nowIndicatorStyle}>
-      <View style={[styles.nowIndicatorLine, {width}]}/>
-      <View style={styles.nowIndicatorKnob}/>
+      <View style={[styles.nowIndicatorLine, {width}]} />
+      <View style={styles.nowIndicatorKnob} />
     </View>
   );
 };
