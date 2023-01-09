@@ -36,17 +36,25 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
     }
   }));
 
-  const {
-    margin = 0,
-    disabledOpacity = 0.3,
-    theme,
-    style: propsStyle,
-  } = props;
+  const {margin = 0, disabledOpacity = 0.3, theme, style: propsStyle} = props;
   const {date, setDate} = useContext(Context);
   const [disabled, setDisabled] = useState(false);
   const style = useRef(styleConstructor(theme));
   const state = isToday(date) ? 0 : isPastDate(date) ? -1 : 1;
   const shouldShow = state !== 0;
+
+  /** Icon */
+
+  const getButtonIcon = useCallback(() => {
+    if (shouldShow) {
+      return state === 1 ? UP_ICON : DOWN_ICON;
+    }
+  }, [shouldShow, state]);
+
+  /** Animations */
+
+  const buttonY = useRef(new Animated.Value(margin ? -margin : -TOP_POSITION));
+  const opacity = useRef(new Animated.Value(1));
 
   /** Effects */
 
@@ -54,16 +62,47 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
     if (shouldShow) {
       setButtonIcon(getButtonIcon());
     }
+
+    function getPositionAnimation() {
+      const toValue = state === 0 ? TOP_POSITION : -margin || -TOP_POSITION;
+      return {
+        toValue,
+        tension: 30,
+        friction: 8,
+        useNativeDriver: true
+      };
+    }
+
+    function animatePosition() {
+      const animationData = getPositionAnimation();
+      Animated.spring(buttonY.current, {
+        ...animationData
+      }).start();
+    }
     animatePosition();
-  }, [state]);
+  }, [getButtonIcon, margin, shouldShow, state]);
 
   useEffect(() => {
     if (!shouldShow) {
       return;
     }
 
+    function getOpacityAnimation() {
+      return {
+        toValue: disabled ? disabledOpacity : 1,
+        duration: 500,
+        useNativeDriver: true
+      };
+    }
+
+    function animateOpacity() {
+      const animationData = getOpacityAnimation();
+      Animated.timing(opacity.current, {
+        ...animationData
+      }).start();
+    }
     animateOpacity();
-  }, [disabled]);
+  }, [disabled, disabledOpacity, shouldShow]);
 
   const disable = (shouldDisable: boolean) => {
     if (shouldDisable !== disabled) {
@@ -81,52 +120,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
 
   const today = useRef(getFormattedLabel());
 
-  /** Icon */
-
-  const getButtonIcon = () => {
-    if (shouldShow) {
-      return state === 1 ? UP_ICON : DOWN_ICON;
-    }
-  };
-
   const [buttonIcon, setButtonIcon] = useState(getButtonIcon());
-
-  /** Animations */
-
-  const buttonY = useRef(new Animated.Value(margin ? -margin : -TOP_POSITION));
-  const opacity = useRef(new Animated.Value(1));
-
-  const getPositionAnimation = () => {
-    const toValue = state === 0 ? TOP_POSITION : -margin || -TOP_POSITION;
-    return {
-      toValue,
-      tension: 30,
-      friction: 8,
-      useNativeDriver: true
-    };
-  };
-  
-  const getOpacityAnimation = () => {
-    return {
-      toValue: disabled ? disabledOpacity : 1,
-      duration: 500,
-      useNativeDriver: true
-    };
-  };
-
-  const animatePosition = () => {
-    const animationData = getPositionAnimation();
-    Animated.spring(buttonY.current, {
-      ...animationData
-    }).start();
-  };
-
-  const animateOpacity = () => {
-    const animationData = getOpacityAnimation();
-    Animated.timing(opacity.current, {
-      ...animationData
-    }).start();
-  };
 
   const getTodayDate = () => {
     return toMarkingFormat(new XDate());
@@ -138,12 +132,8 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
 
   return (
     <Animated.View style={[style.current.todayButtonContainer, {transform: [{translateY: buttonY.current}]}]}>
-      <TouchableOpacity
-        style={[style.current.todayButton, propsStyle]}
-        onPress={onPress}
-        disabled={disabled}
-      >
-        <Animated.Image style={[style.current.todayButtonImage, {opacity: opacity.current}]} source={buttonIcon}/>
+      <TouchableOpacity style={[style.current.todayButton, propsStyle]} onPress={onPress} disabled={disabled}>
+        <Animated.Image style={[style.current.todayButtonImage, {opacity: opacity.current}]} source={buttonIcon} />
         <Animated.Text allowFontScaling={false} style={[style.current.todayButtonText, {opacity: opacity.current}]}>
           {today.current}
         </Animated.Text>
