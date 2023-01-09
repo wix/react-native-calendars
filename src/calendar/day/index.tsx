@@ -29,7 +29,7 @@ export interface DayProps extends BasicDayProps {
 
 const Day = React.memo((props: DayProps) => {
   const {date, marking, dayComponent, markingType} = props;
-  const _date = date ? new XDate(date) : undefined;
+  const _date = useMemo(() => (date ? new XDate(date) : undefined), [date]);
   const _isToday = isToday(_date);
 
   const markingAccessibilityLabel = useMemo(() => {
@@ -66,7 +66,7 @@ const Day = React.memo((props: DayProps) => {
     const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
 
     return `${_isToday ? today : ''} ${_date?.toString(formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
-  }, [_date, marking, _isToday]);
+  }, [_isToday, _date, markingAccessibilityLabel]);
 
   const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
   const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate())} : undefined;
