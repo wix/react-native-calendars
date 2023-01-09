@@ -5,7 +5,7 @@ import {Calendar, CalendarUtils} from 'react-native-calendars';
 
 import testIDs from '../testIDs';
 import Marking from '../../../src/calendar/day/marking';
-import { DateData } from '../../../src/types';
+import {DateData} from '../../../src/types';
 
 const INITIAL_DATE = '2022-07-06';
 const GREEN = '#13ba7d';
