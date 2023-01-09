@@ -64,6 +64,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const isOnEdge = useRef(false);
   const isNearEdge = useRef(false);
   const scrolledByUser = useRef(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const reloadPagesDebounce = useCallback(debounce(reloadPages, 500, {leading: false, trailing: true}), [reloadPages]);
 
   useEffect(() => {
