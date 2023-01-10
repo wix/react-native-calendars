@@ -3,7 +3,6 @@ import {swipeDirections} from 'react-native-swipe-gestures';
 import Calendar from '.';
 import {BasicDayDriver} from './day/basic/driver';
 import {CalendarHeaderDriver} from './header/driver';
-import {SELECT_DATE_SLOT, WEEK_NUMBER} from '../testIDs';
 
 export class CalendarDriver extends ComponentDriver {
   constructor(testID = 'calendar') {
@@ -35,15 +34,16 @@ export class CalendarDriver extends ComponentDriver {
   }
 
   getHeader() {
-    const node = this.getByID(this.testID);
+    const node = this.getByID(`${this.testID}.header`);
     if (!node) {
       throw new Error('Header not found.');
     }
-    return new CalendarHeaderDriver(this.testID).attachTo(node);
+    return new CalendarHeaderDriver(`${this.testID}.header`).attachTo(node);
   }
 
   getDay(dateString, type = 'basic') {
-    const node = this.getByID(`${SELECT_DATE_SLOT}-${dateString}`);
+    const testID = `${this.testID}.day_${dateString}`;
+    const node = this.getByID(testID);
     if (!node) {
       throw new Error(`Date ${dateString} not found.`);
     }
@@ -61,10 +61,10 @@ export class CalendarDriver extends ComponentDriver {
   }
 
   getDays() {
-    return getTextNodes(this.filterByID(new RegExp(SELECT_DATE_SLOT)));
+    return getTextNodes(this.filterByID(new RegExp('day_')));
   }
 
   getWeekNumbers() {
-    return getTextNodes(this.filterByID(new RegExp(WEEK_NUMBER)));
+    return getTextNodes(this.filterByID(new RegExp('weekNumber_')));
   }
 }

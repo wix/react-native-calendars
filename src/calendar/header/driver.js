@@ -1,12 +1,5 @@
 import {ComponentDriver, getTextNodes} from 'react-component-driver';
 import CalendarHeader from '.';
-import {
-  HEADER_MONTH_NAME,
-  CHANGE_MONTH_LEFT_ARROW,
-  CHANGE_MONTH_RIGHT_ARROW,
-  HEADER_DAY_NAMES,
-  HEADER_LOADING_INDICATOR
-} from '../../testIDs';
 
 export class CalendarHeaderDriver extends ComponentDriver {
   constructor(testID) {
@@ -15,23 +8,23 @@ export class CalendarHeaderDriver extends ComponentDriver {
   }
 
   getTitle() {
-    return getTextNodes(this.getByID(this.getTestID(HEADER_MONTH_NAME))).join('');
+    return getTextNodes(this.getByID(`${this.testID}.title`)).join('');
   }
 
   getDayNames() {
-    return getTextNodes(this.getByID(this.getTestID(HEADER_DAY_NAMES)));
+    return getTextNodes(this.getByID(`${this.testID}.dayNames`));
   }
 
   getLoadingIndicator() {
-    return this.getByID(this.getTestID(HEADER_LOADING_INDICATOR));
+    return this.getByID(`${this.testID}.loader`);
   }
 
   getLeftArrow() {
-    return this.getByID(this.getTestID(CHANGE_MONTH_LEFT_ARROW));
+    return this.getByID(`${this.testID}.leftArrow`);
   }
 
   getRightArrow() {
-    return this.getByID(this.getTestID(CHANGE_MONTH_RIGHT_ARROW));
+    return this.getByID(`${this.testID}.rightArrow`);
   }
 
   tapLeftArrow() {
@@ -50,9 +43,5 @@ export class CalendarHeaderDriver extends ComponentDriver {
     }
     node.props.onClick();
     return this;
-  }
-
-  getTestID(testID) {
-    return this.testID ? `${testID}-${this.testID}` : testID;
   }
 }

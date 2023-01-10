@@ -1,5 +1,10 @@
-import {isUndefined, isDate, isString, isNumber} from 'lodash';
+import isUndefined from 'lodash/isUndefined';
+import isDate from 'lodash/isDate';
+import isString from 'lodash/isString';
+import isNumber from 'lodash/isNumber';
 import XDate from 'xdate';
+
+const {getLocale} = require('../dateutils');
 const {padNumber, toMarkingFormat} = require('../interface');
 
 export function getCalendarDateString(date?: Date | string | number) {
@@ -17,7 +22,7 @@ export function getCalendarDateString(date?: Date | string | number) {
 }
 
 export function getDefaultLocale(): any {
-  return XDate.locales[XDate.defaultLocale];
+  return getLocale();
 }
 
 export default {

@@ -1,7 +1,7 @@
 Calendar list component  
 [(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.tsx)
 :::info
-This component extends **[Calendar, FlatList](https://github.com/wix/react-native-calendars/blob/master/src/calendar/index.tsx,https://reactnative.dev/docs/flatlist)** props.
+This component extends **[Calendar](https://github.com/wix/react-native-calendars/blob/master/src/calendar/index.tsx), [FlatList](https://reactnative.dev/docs/flatlist)** props.
 :::
 
 <div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif?raw=true'}/>

@@ -9,7 +9,7 @@ This module includes various customizable **React-Native** calendar components.
 
 The package is both **Android** and **iOS** compatible.
 
-See our new [Docs site](https://wix.github.io/react-native-calendars/)
+**See our new [Docs site](https://wix.github.io/react-native-calendars/)**
 
 ## Try it out
 
@@ -29,8 +29,14 @@ This project is compatible with Expo/CRNA (without ejecting), and the examples h
 
 ## Installation
 
+Using NPM:
 ```
 $ npm install --save react-native-calendars
+```
+
+Using Yarn:
+```
+$ yarn add react-native-calendars
 ```
 
 The solution is implemented in JavaScript so no native module linking is required.
@@ -94,7 +100,7 @@ LocaleConfig.defaultLocale = 'fr';
 ```javascript
 <Calendar
   // Initially visible month. Default = now
-  current={'2012-03-01'}
+  initialDate={'2012-03-01'}
   // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
   minDate={'2012-05-10'}
   // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
@@ -556,6 +562,10 @@ An advanced `Agenda` component that can display interactive listings for calenda
   // Specify how agenda knob should look like
   renderKnob={() => {
     return <View />;
+  }}
+  // Override inner list with a custom implemented component
+  renderList={listProps => {
+    return <MyCustomList {...listProps} />;
   }}
   // Specify what should be rendered instead of ActivityIndicator
   renderEmptyData={() => {

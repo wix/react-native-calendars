@@ -1,6 +1,7 @@
 export {default as Calendar} from './calendar';
 export type {CalendarProps} from './calendar';
 export {default as CalendarList} from './calendar-list';
+export {default as NewCalendarList} from './calendar-list/new';
 export type {CalendarListProps} from './calendar-list';
 export {default as Agenda} from './agenda';
 export type {AgendaProps} from './agenda';
@@ -21,3 +22,4 @@ export type {TimelineListProps, TimelineListRenderItemInfo} from './timeline-lis
 export {default as CalendarUtils} from './services';
 export type {DateData, AgendaEntry, AgendaSchedule} from './types';
 export {default as LocaleConfig} from 'xdate';
+export {default as Profiler} from './Profiler';
