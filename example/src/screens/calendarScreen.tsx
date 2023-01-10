@@ -9,10 +9,10 @@ const CalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
   const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
 
-  const getDate = (count: number) => {
+  const getDate = (count: number): string => {
     const date = new Date(INITIAL_DATE);
     const newDate = date.setDate(date.getDate() + count);
-    return CalendarUtils.getCalendarDateString(newDate);
+    return CalendarUtils.getCalendarDateString(newDate) as string;
   };
 
   const onDayPress = useCallback((day) => {
@@ -380,7 +380,7 @@ const CalendarScreen = () => {
     const [selectedValue, setSelectedValue] = useState(new Date());
 
     const getNewSelectedDate = useCallback(
-      (date, shouldAdd) => {
+      (date, shouldAdd: boolean) => {
         const newMonth = new Date(date).getMonth();
         const month = shouldAdd ? newMonth + 1 : newMonth - 1;
         const newDate = new Date(selectedValue.setMonth(month));
@@ -390,7 +390,7 @@ const CalendarScreen = () => {
       [selectedValue]
     );
     const onPressArrowLeft = useCallback(
-      (subtract, month) => {
+      (subtract, month: XDate | undefined) => {
         const newDate = getNewSelectedDate(month, false);
         setSelectedValue(newDate);
         subtract();
@@ -399,7 +399,7 @@ const CalendarScreen = () => {
     );
 
     const onPressArrowRight = useCallback(
-      (add, month) => {
+      (add, month: XDate | undefined) => {
         const newDate = getNewSelectedDate(month, true);
         setSelectedValue(newDate);
         add();

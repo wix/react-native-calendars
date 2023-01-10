@@ -1,13 +1,13 @@
-const XDate = require('xdate');
-const {toMarkingFormat} = require('./interface');
+import XDate from 'xdate';
+import {toMarkingFormat} from './interface';
 
 const latinNumbersPattern = /[0-9]/g;
 
-function isValidXDate(date: any) {
-  return date && (date instanceof XDate);
+function isValidXDate(date: unknown): boolean {
+  return !!date && (date instanceof XDate);
 }
 
-export function sameMonth(a?: XDate, b?: XDate) {
+export function sameMonth(a?: XDate, b?: XDate): boolean {
   if (!isValidXDate(a) || !isValidXDate(b)) {
     return false;
   } else {
@@ -15,7 +15,7 @@ export function sameMonth(a?: XDate, b?: XDate) {
   }
 }
 
-export function sameDate(a?: XDate, b?: XDate) {
+export function sameDate(a?: XDate, b?: XDate): boolean {
   if (!isValidXDate(a) || !isValidXDate(b)) {
     return false;
   } else {
@@ -33,7 +33,7 @@ export function onSameDateRange({
   secondDay: string;
   numberOfDays: number;
   firstDateInRange: string;
-}){
+}): boolean {
   const aDate = new XDate(firstDay);
   const bDate = new XDate(secondDay);
   const firstDayDate = new XDate(firstDateInRange);
@@ -46,13 +46,12 @@ export function onSameDateRange({
   return aWeek === bWeek;
 }
 
-export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
-  const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
-  const element = weekDates instanceof XDate ? new XDate(b) : b;
-  return weekDates?.includes(element);
+export function sameWeek(a: string, b: string, firstDayOfWeek: number): boolean {
+  const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd') as string[];
+  return weekDates?.includes(b) ?? false;
 }
 
-export function isPastDate(date: string) {
+export function isPastDate(date: string): boolean {
   const today = new XDate();
   const d = new XDate(date);
 
@@ -72,22 +71,24 @@ export function isPastDate(date: string) {
   return false;
 }
 
-export function isToday(date?: XDate | string) {
+export function isToday(date?: XDate | string): boolean {
+  if (!date) return false;
   const d = date instanceof XDate ? date : new XDate(date);
   return sameDate(d, XDate.today());
 }
 
-export function isGTE(a: XDate, b: XDate) {
+export function isGTE(a: XDate, b: XDate): boolean {
   return b.diffDays(a) > -1;
 }
 
-export function isLTE(a: XDate, b: XDate) {
+export function isLTE(a: XDate, b: XDate): boolean {
   return a.diffDays(b) > -1;
 }
 
-export function formatNumbers(date: any) {
+export function formatNumbers(date: number | XDate | string | undefined): string {
+  if (!date) return '';
   const numbers = getLocale().numbers;
-  return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
+  return numbers ? date.toString().replace(latinNumbersPattern, (char: string) => numbers[+char]) : date.toString();
 }
 
 function fromTo(a: XDate, b: XDate): XDate[] {
@@ -101,27 +102,29 @@ function fromTo(a: XDate, b: XDate): XDate[] {
   return days;
 }
 
-export function month(date: XDate) { // exported for tests only
+export function month(date: XDate): XDate[] { // exported for tests only
   const year = date.getFullYear(),
     month = date.getMonth();
   const days = new XDate(year, month + 1, 0).getDate();
 
-  const firstDay: XDate = new XDate(year, month, 1, 0, 0, 0, true);
-  const lastDay: XDate = new XDate(year, month, days, 0, 0, 0, true);
+  const firstDay: XDate = new XDate(year, month, 1, 0, 0, 0, 0, /*utcmode*/true);
+  const lastDay: XDate = new XDate(year, month, days, 0, 0, 0, 0, /*utcmode*/true);
 
   return fromTo(firstDay, lastDay);
 }
 
-export function weekDayNames(firstDayOfWeek = 0) {
-  let weekDaysNames = getLocale().dayNamesShort;
+export function weekDayNames(firstDayOfWeek = 0): string[] {
+  let dayNamesShort = getLocale().dayNamesShort;
+  if (!dayNamesShort) return [];
+
   const dayShift = firstDayOfWeek % 7;
   if (dayShift) {
-    weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));
+    dayNamesShort = dayNamesShort.slice(dayShift).concat(dayNamesShort.slice(0, dayShift));
   }
-  return weekDaysNames;
+  return dayNamesShort;
 }
 
-export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
+export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false): XDate[] {
   const days = month(date);
   let before: XDate[] = [];
   let after: XDate[] = [];
@@ -161,11 +164,11 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   return before.concat(days.slice(1, days.length - 1), after);
 }
 
-export function isDateNotInRange(date: XDate, minDate: string, maxDate: string) {
-  return (minDate && !isGTE(date, new XDate(minDate))) || (maxDate && !isLTE(date, new XDate(maxDate)));
+export function isDateNotInRange(date: XDate, minDate: string, maxDate: string): boolean {
+  return (!!minDate && !isGTE(date, new XDate(minDate))) || (!!maxDate && !isLTE(date, new XDate(maxDate)));
 }
 
-export function getWeekDates(date: string, firstDay = 0, format?: string) {
+export function getWeekDates(date: string, firstDay = 0, format?: string): XDate[] | string[] | undefined {
   const d: XDate = new XDate(date);
   if (date && d.valid()) {
     const daysArray = [d];
@@ -199,7 +202,7 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
   }
 }
 
-export function getPartialWeekDates(date?: string, numberOfDays = 7) {
+export function getPartialWeekDates(date?: string, numberOfDays = 7): string[] {
   let index = 0;
   const partialWeek: string[] = [];
   while (index < numberOfDays) {
@@ -209,11 +212,30 @@ export function getPartialWeekDates(date?: string, numberOfDays = 7) {
   return partialWeek;
 }
 
-export function generateDay(originDate: string | XDate, daysOffset = 0) {
+export function generateDay(originDate: string | XDate, daysOffset = 0): string {
   const baseDate = originDate instanceof XDate ? originDate : new XDate(originDate);
   return toMarkingFormat(baseDate.clone().addDays(daysOffset));
 }
 
-export function getLocale() {
-  return XDate.locales[XDate.defaultLocale];
+/**
+ * Copied directly from XDate's locale_detail interface.
+ */
+interface xdate_locale_detail
+{
+    monthNames? : string [] | undefined;
+    monthNamesShort?: string [] | undefined;
+    dayNames?: string[] | undefined;
+    dayNamesShort?: string [] | undefined;
+    amDesignator?: string | undefined;
+    pmDesignator?: string | undefined;
+}
+
+export interface LocaleDetail extends xdate_locale_detail {
+  today?: string;
+  numbers?: string[];
+  formatAccessibilityLabel?: string;
+}
+
+export function getLocale(): LocaleDetail {
+  return XDate.locales[XDate.defaultLocale] as LocaleDetail;
 }

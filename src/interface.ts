@@ -1,13 +1,15 @@
+import {DateData} from "./types";
+
 const XDate = require('xdate');
 
-export function padNumber(n: number) {
+export function padNumber(n: number): string {
   if (n < 10) {
     return '0' + n;
   }
-  return n;
+  return n.toString();
 }
 
-export function xdateToData(date: XDate | string) {
+export function xdateToData(date: XDate | string): DateData {
   const d = date instanceof XDate ? date : new XDate(date);
   const dateString = toMarkingFormat(d);
   return {
@@ -19,7 +21,7 @@ export function xdateToData(date: XDate | string) {
   };
 }
 
-export function parseDate(d?: any) {
+export function parseDate(d?: any): XDate | undefined {
   if (!d) {
     return;
   } else if (d.timestamp) {
@@ -41,7 +43,7 @@ export function parseDate(d?: any) {
   }
 }
 
-export function toMarkingFormat(d: XDate) {
+export function toMarkingFormat(d: XDate): string {
   if (!isNaN(d.getTime())) {
     const year = `${d.getFullYear()}`;
     const month = d.getMonth() + 1;
