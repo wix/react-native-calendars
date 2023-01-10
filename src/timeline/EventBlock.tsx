@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 import React, {useCallback, useMemo} from 'react';
-import {View, Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
+import {View, Text, TextStyle, TouchableOpacity, ViewStyle, NativeModules} from 'react-native';
 
 export interface Event {
   id?: string;
@@ -26,13 +26,15 @@ export interface EventBlockProps {
   renderEvent?: (event: PackedEvent) => JSX.Element;
   format24h?: boolean;
   styles: {[key: string]: ViewStyle | TextStyle};
+  showSuggestion: boolean | undefined;
+  isSuggestion?: boolean;
 }
 
 const TEXT_LINE_HEIGHT = 17;
 const EVENT_DEFAULT_COLOR = '#add8e6';
 
 const EventBlock = (props: EventBlockProps) => {
-  const {index, event, renderEvent, onPress, format24h, styles} = props;
+  const {isSuggestion, showSuggestion, index, event, renderEvent, onPress, format24h, styles} = props;
 
   // Fixing the number of lines for the event title makes this calculation easier.
   // However it would make sense to overflow the title to a new line if needed
@@ -40,9 +42,9 @@ const EventBlock = (props: EventBlockProps) => {
   const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
   const eventStyle = useMemo(() => {
     return {
-      left: event.left + 10,
+      left: isSuggestion ? event.left-170 : event.left + 10,
       height: event.height,
-      width: event.width,
+      width: showSuggestion && !isSuggestion ? 10 : event.width-5,
       top: event.top,
       backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR
     };

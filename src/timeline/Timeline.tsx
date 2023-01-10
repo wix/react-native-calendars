@@ -4,7 +4,7 @@ import times from 'lodash/times';
 import groupBy from 'lodash/groupBy';
 
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, Animated, NativeModules, LayoutAnimation} from 'react-native';
 
 import constants from '../commons/constants';
 import {generateDay} from '../dateutils';
@@ -116,6 +116,11 @@ export interface TimelineProps {
   showSuggestion?: boolean;
   suggestions?: Event[];
 }
+
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 const Timeline = (props: TimelineProps) => {
   const {
@@ -242,8 +247,10 @@ const Timeline = (props: TimelineProps) => {
   const renderEvents = (dayIndex: number) => {
     const events = packedEvents[dayIndex].map((event: PackedEvent, eventIndex: number) => {
       const onEventPress = () => _onEventPress(dayIndex, eventIndex);
+      LayoutAnimation.spring();
       return (
         <EventBlock
+          showSuggestion={showSuggestion}
           key={eventIndex}
           index={eventIndex}
           event={event}
@@ -264,8 +271,11 @@ const Timeline = (props: TimelineProps) => {
   const renderSuggestions = (dayIndex: number) => {
     const events = packedSuggestions[dayIndex].map((event: PackedEvent, eventIndex: number) => {
       const onEventPress = () => _onSuggestionPress(dayIndex, eventIndex);
+      LayoutAnimation.spring();
       return (
         <EventBlock
+          isSuggestion={true}
+          showSuggestion={showSuggestion}
           key={eventIndex}
           index={eventIndex}
           event={event}
@@ -289,8 +299,10 @@ const Timeline = (props: TimelineProps) => {
     const left = timelineLeftInset + indexOfToday * width / numberOfDays;
     return (
       <React.Fragment key={dayIndex}>
+        {/*<Animated.View>*/}
+        {renderEvents(dayIndex)}
         {showSuggestion && renderSuggestions(dayIndex)}
-        {!showSuggestion && renderEvents(dayIndex)}
+        {/*</Animated.View>*/}
         {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
       </React.Fragment>
     );
