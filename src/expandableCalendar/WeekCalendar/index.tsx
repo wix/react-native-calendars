@@ -233,24 +233,24 @@ function getDateForDayRange(date: string, weekIndex: number, numberOfDays: numbe
   return toMarkingFormat(d);
 }
 
-function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays?: number) {
+function getDate(date: string, firstDay: number, weekIndex: number) {
   const d = new XDate(date);
   // get the first day of the week as date (for the on scroll mark)
   let dayOfTheWeek = d.getDay();
   if (dayOfTheWeek < firstDay && firstDay > 0) {
     dayOfTheWeek = 7 + dayOfTheWeek;
   }
-  if (weekIndex !== 0) {
-    d.addDays(firstDay - dayOfTheWeek);
-  }
-  const newDate = numberOfDays && numberOfDays > 1 ? d.addDays(weekIndex * numberOfDays) : d.addWeeks(weekIndex);
-  const today = new XDate();
-  const offsetFromNow = newDate.diffDays(today);
-  const isSameWeek = offsetFromNow > 0 && offsetFromNow < (numberOfDays ?? 7);
-  return toMarkingFormat(isSameWeek ? today : newDate);
+
+  // leave the current date in the visible week as is
+  const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
+  const newDate = dd.addWeeks(weekIndex);
+  return toMarkingFormat(newDate);
 }
 
-function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
+/**
+ * Exported only for testing.
+ */
+export function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
   return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
     if(isCustomNumberOfDays(numberOfDays)) {
       return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays as number);
