@@ -114,6 +114,9 @@ const AgendaList = (props: AgendaListProps) => {
       const prev = parseDate(sections[j - 1]?.title);
       const next = parseDate(sections[j]?.title);
       const cur = new XDate(date);
+      if (!prev || !next) {
+        continue;
+      }
       if (isGTE(cur, prev) && isGTE(next, cur)) {
         i = sameDate(prev, cur) ? j - 1 : j;
         break;

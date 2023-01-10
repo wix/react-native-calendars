@@ -185,12 +185,12 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     }
   }, [onEndReached, setDate]);
 
-  const viewabilityConfigCallbackPairs = useRef([{
+  const viewabilityConfigCallbackPairs = useMemo(() => [{
       viewabilityConfig: {
         itemVisiblePercentThreshold: 20,
       },
       onViewableItemsChanged,
-    }]);
+    }], [onViewableItemsChanged]);
 
   return (
     <View
@@ -216,7 +216,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
             getItemLayout={getItemLayout}
-            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
             onEndReached={onEndReached}
             onEndReachedThreshold={1/NUM_OF_ITEMS}
           />

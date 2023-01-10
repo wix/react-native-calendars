@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useRef} from 'react';
+import React, {Fragment, useCallback, useMemo, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
 import {xdateToData} from '../../../interface';
@@ -57,7 +57,7 @@ const BasicDay = (props: BasicDayProps) => {
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
-  const dateData = date ? xdateToData(date) : undefined;
+  const dateData = useMemo(() => date ? xdateToData(date) : undefined, [date]);
 
   const shouldDisableTouchEvent = () => {
     const {disableTouchEvent} = _marking;

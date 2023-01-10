@@ -8,7 +8,7 @@ import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 
 export type CalendarListItemProps = CalendarProps & {
-  item: any;
+  item: XDate;
   calendarWidth?: number;
   calendarHeight?: number;
   horizontal?: boolean;

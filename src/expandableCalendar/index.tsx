@@ -281,6 +281,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const scrollPage = useCallback((next: boolean) => {
     if (horizontal) {
       const d = parseDate(date);
+      if (!d) return;
 
       if (isOpen) {
         d.setDate(1);
