@@ -1,6 +1,6 @@
 import XDate from 'xdate';
-import React, {useCallback, useMemo} from 'react';
-import {View, Text, TextStyle, TouchableOpacity, ViewStyle, NativeModules} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {View, Text, TextStyle, TouchableOpacity, ViewStyle, NativeModules, Animated} from 'react-native';
 
 export interface Event {
   id?: string;
@@ -40,9 +40,28 @@ const EventBlock = (props: EventBlockProps) => {
   // However it would make sense to overflow the title to a new line if needed
   const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
   const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
+
+  const [left] = useState(new Animated.Value(event.left));
+
+  useEffect(() => {
+    // set up the animation move
+    Animated.spring(left,{
+      toValue:event.left-170,
+      friction:4,
+      tension:20,
+      useNativeDriver:true
+    }).start();
+  }, [])
+
+  const trans={
+    transform:[
+      {translateX:left}
+    ]
+  }
+
   const eventStyle = useMemo(() => {
     return {
-      left: isSuggestion ? event.left-170 : event.left + 10,
+      left: isSuggestion ? 0 : event.left + 180,
       height: event.height,
       width: showSuggestion && !isSuggestion ? 10 : event.width-5,
       top: event.top,
@@ -55,6 +74,7 @@ const EventBlock = (props: EventBlockProps) => {
   }, [index, onPress]);
 
   return (
+    <Animated.View style={trans}>
     <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[styles.event, eventStyle]}>
       {renderEvent ? (
         renderEvent(event)
@@ -76,6 +96,7 @@ const EventBlock = (props: EventBlockProps) => {
         </View>
       )}
     </TouchableOpacity>
+    </Animated.View>
   );
 };
 
