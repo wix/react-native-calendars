@@ -1,7 +1,7 @@
 import XDate from 'xdate';
 
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
-import {FlatList, View, ViewToken} from 'react-native';
+import {FlatList, View, ViewabilityConfig, ViewToken} from 'react-native';
 
 import {sameWeek, onSameDateRange} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
@@ -19,6 +19,7 @@ import {useDidUpdate} from '../../hooks';
 export const NUMBER_OF_PAGES = 6;
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
 const APPLY_ANDROID_FIX = constants.isAndroid && constants.isRTL;
+const VIEWABILITY_CONFIG: ViewabilityConfig = {itemVisiblePercentThreshold: 20}; // 50 means if 50% of the item is visible
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -63,6 +64,12 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     list?.current?.scrollToIndex({index: NUMBER_OF_PAGES, animated: false});
   }, [firstDay, numberOfDays]);
 
+  // Refs to provide indirect/stable dependencies to onViewableItemsChanged to satisfy FlatList immutability requirement.
+  const setDateRef = useRef(setDate);
+  setDateRef.current = setDate; // always set the current value
+  const onEndReachedRef = useRef(onEndReached);
+  onEndReachedRef.current = onEndReached; // always set the current value
+  
   useDidUpdate(() => {
     items.current = getDatesArray(date, firstDay, numberOfDays);
     setListData(items.current);
@@ -170,27 +177,20 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         const adjustedNewDate = currItems[NUMBER_OF_PAGES - newDateOffset];
         visibleWeek.current = adjustedNewDate;
         currentIndex.current = currItems.indexOf(adjustedNewDate);
-        setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
+        setDateRef.current(adjustedNewDate, UpdateSources.WEEK_SCROLL);
         if (visibleWeek.current === currItems[currItems.length - 1]) {
-          onEndReached();
+          onEndReachedRef.current();
         }
       } else {
         currentIndex.current = currItems.indexOf(newDate);
         visibleWeek.current = newDate;
-        setDate(newDate, UpdateSources.WEEK_SCROLL);
+        setDateRef.current(newDate, UpdateSources.WEEK_SCROLL);
         if (visibleWeek.current === currItems[0]) {
-          onEndReached();
+          onEndReachedRef.current();
         }
       }
     }
-  }, [onEndReached, setDate]);
-
-  const viewabilityConfigCallbackPairs = useMemo(() => [{
-      viewabilityConfig: {
-        itemVisiblePercentThreshold: 20,
-      },
-      onViewableItemsChanged,
-    }], [onViewableItemsChanged]);
+  }, []); // NOTE: There must be no dependencies and no NEED for a dependency here, as FlatList does not allow any changes to onViewableItemsChanged with the same key prop after mounting!
 
   return (
     <View
@@ -216,7 +216,8 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             keyExtractor={keyExtractor}
             initialScrollIndex={NUMBER_OF_PAGES}
             getItemLayout={getItemLayout}
-            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
+            onViewableItemsChanged={onViewableItemsChanged}
+            viewabilityConfig={VIEWABILITY_CONFIG}
             onEndReached={onEndReached}
             onEndReachedThreshold={1/NUM_OF_ITEMS}
           />

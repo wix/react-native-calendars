@@ -21,7 +21,8 @@ import {
   NativeScrollEvent,
   LayoutChangeEvent,
   ViewToken,
-  TextProps
+  TextProps,
+  ViewabilityConfig
 } from 'react-native';
 
 import {useDidUpdate} from '../hooks';
@@ -35,9 +36,7 @@ import constants from '../commons/constants';
 import styleConstructor from './style';
 import Context from './Context';
 
-const viewabilityConfig = {
-  itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
-};
+const VIEWABILITY_CONFIG: ViewabilityConfig = {itemVisiblePercentThreshold: 20}; // 50 means if 50% of the item is visible
 
 export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
   /** Specify theme properties to override specific styles for calendar parts */
@@ -96,6 +95,14 @@ const AgendaList = (props: AgendaListProps) => {
   const didScroll = useRef(false);
   const sectionScroll = useRef(false);
   const sectionHeight = useRef(0);
+  
+  // Refs to provide indirect/stable dependencies to _onViewableItemsChanged to satisfy FlatList immutability requirement.
+  const avoidDateUpdatesPropRef = useRef(avoidDateUpdates);
+  avoidDateUpdatesPropRef.current = avoidDateUpdates; // always set the current value
+  const onViewableItemsChangedPropRef = useRef(onViewableItemsChanged);
+  onViewableItemsChangedPropRef.current = onViewableItemsChanged; // always set the current value
+  const setDateRef = useRef(setDate);
+  setDateRef.current = setDate; // always set the current value
 
   const getSectionIndex = (date: string) => {
     let i;
@@ -193,14 +200,14 @@ const AgendaList = (props: AgendaListProps) => {
       const topSection = get(info?.viewableItems[0], 'section.title');
       if (topSection && topSection !== _topSection.current) {
         _topSection.current = topSection;
-        if (didScroll.current && !avoidDateUpdates) {
+        if (didScroll.current && !avoidDateUpdatesPropRef.current) {
           // to avoid setDate() on first load (while setting the initial context.date value)
-          setDate?.(_topSection.current, UpdateSources.LIST_DRAG);
+          setDateRef.current?.(_topSection.current, UpdateSources.LIST_DRAG);
         }
       }
     }
-    onViewableItemsChanged?.(info);
-  }, [avoidDateUpdates, setDate, onViewableItemsChanged]);
+    onViewableItemsChangedPropRef.current?.(info);
+  }, []); // NOTE: There must be no dependencies and no NEED for a dependency here, as FlatList does not allow any changes to onViewableItemsChanged with the same key prop after mounting!
 
   const _onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!didScroll.current) {
@@ -259,7 +266,7 @@ const AgendaList = (props: AgendaListProps) => {
       keyExtractor={_keyExtractor}
       showsVerticalScrollIndicator={false}
       onViewableItemsChanged={_onViewableItemsChanged}
-      viewabilityConfig={viewabilityConfig}
+      viewabilityConfig={VIEWABILITY_CONFIG}
       renderSectionHeader={_renderSectionHeader}
       onScroll={_onScroll}
       onMomentumScrollBegin={_onMomentumScrollBegin}
