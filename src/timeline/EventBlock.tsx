@@ -33,11 +33,7 @@ export interface EventBlockProps {
 const TEXT_LINE_HEIGHT = 17;
 const EVENT_DEFAULT_COLOR = '#add8e6';
 
-
-const { UIManager } = NativeModules;
-
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 const EventBlock = (props: EventBlockProps) => {
   const {isSuggestion, showSuggestion, index, event, renderEvent, onPress, format24h, styles} = props;
@@ -47,33 +43,66 @@ const EventBlock = (props: EventBlockProps) => {
   const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
   const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
 
-  const animatedValue = useRef(new Animated.Value(0)).current;
-  const [bounceIn] = useState(new Animated.Value(event.width));
+  const animatedValue = useRef(new Animated.Value(1)).current;
+  const animatedWidth = useRef(new Animated.Value(1)).current;
+  const animatedLeft = useRef(new Animated.Value(1)).current;
 
-  const startAnimation = (toValue: number) => {
+  const startAnimation = () => {
+    const toValue = showSuggestion ? 1 : 0;
     Animated.timing(animatedValue, {
         toValue,
         duration: 1000,
         easing: Easing.linear,
-        useNativeDriver: true
+        useNativeDriver: false
     }).start(() => {
     })
+  }
+  const startResizing = () => {
+    const toValue = showSuggestion ? 0 : 1;
+    Animated.timing(animatedWidth, {
+      toValue,
+      duration: 1100,
+      easing: Easing.linear,
+      useNativeDriver: false
+    }).start();
+  }
+
+  const startMoving = () =>{
+    const toValue = showSuggestion ? 0 : 1;
+    Animated.timing(animatedLeft, {
+      toValue,
+      duration: 1100,
+      easing: Easing.linear,
+      useNativeDriver: false
+    }).start();
   }
 
   useEffect(() => {
     // set up the animation move
-    startAnimation(showSuggestion ? 1 : 0);
+    startAnimation();
+    startResizing();
+    startMoving();
   }, [showSuggestion])
 
   const translateX = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [Dimensions.get('window').width + 20, event.left-170],
     extrapolate: 'clamp'
-})
+  })
+
+  const resizeWidth = animatedWidth.interpolate({
+    inputRange: [0, 1],
+    outputRange: [10, event.width],
+  })
+
+  const moveLeft = animatedLeft.interpolate({
+    inputRange: [0, 1],
+    outputRange: [10, event.left]
+  })
 
   const eventStyle = useMemo(() => {
     return {
-      left: isSuggestion ? 0 : event.left,
+      left: isSuggestion ? translateX : moveLeft,
       height: event.height,
       top: event.top,
       backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR
@@ -84,12 +113,10 @@ const EventBlock = (props: EventBlockProps) => {
     onPress(index);
   }, [index, onPress]);
 
-  const animatedStyle = isSuggestion ? { transform: [{ translateX }] } : null;
+  //const animatedStyle = isSuggestion ? { transform: [{ translateX }] } : null;
 
   return (
-    <Animated.View style={[animatedStyle, {
-      width: isSuggestion ? event.width : bounceIn, backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR}]}>
-    <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[eventStyle, styles.event]}>
+    <AnimatedTouchable activeOpacity={0.9} onPress={_onPress} style={[eventStyle, {width: isSuggestion ? event.width : resizeWidth}, styles.event]}>
       {renderEvent ? (
         renderEvent(event)
       ) : (
@@ -109,8 +136,7 @@ const EventBlock = (props: EventBlockProps) => {
           ) : null}
         </View>
       )}
-    </TouchableOpacity>
-    </Animated.View>
+    </AnimatedTouchable>
   );
 };
 
