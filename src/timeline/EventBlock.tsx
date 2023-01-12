@@ -97,7 +97,7 @@ const EventBlock = (props: EventBlockProps) => {
 
   const moveLeft = animatedLeft.interpolate({
     inputRange: [0, 1],
-    outputRange: [10, event.left]
+    outputRange: [10, event.left],
   })
 
   const eventStyle = useMemo(() => {

@@ -78,7 +78,6 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       paddingLeft: 4,
       paddingTop: 5,
       paddingBottom: 0,
-      backgroundColor: '#F0F4FF',
       borderColor: 'white',
       borderWidth: 1,
       ...appStyle.event,
