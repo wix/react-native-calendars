@@ -1,6 +1,6 @@
 import XDate from 'xdate';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {View, Text, TextStyle, TouchableOpacity, ViewStyle, NativeModules, Animated} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {View, Text, TextStyle, TouchableOpacity, ViewStyle, NativeModules, Animated, LayoutAnimation, Easing, Dimensions} from 'react-native';
 
 export interface Event {
   id?: string;
@@ -33,6 +33,12 @@ export interface EventBlockProps {
 const TEXT_LINE_HEIGHT = 17;
 const EVENT_DEFAULT_COLOR = '#add8e6';
 
+
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+
 const EventBlock = (props: EventBlockProps) => {
   const {isSuggestion, showSuggestion, index, event, renderEvent, onPress, format24h, styles} = props;
 
@@ -41,29 +47,34 @@ const EventBlock = (props: EventBlockProps) => {
   const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
   const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
 
-  const [left] = useState(new Animated.Value(event.left));
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const [bounceIn] = useState(new Animated.Value(event.width));
+
+  const startAnimation = (toValue: number) => {
+    Animated.timing(animatedValue, {
+        toValue,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true
+    }).start(() => {
+    })
+  }
 
   useEffect(() => {
     // set up the animation move
-    Animated.spring(left,{
-      toValue:event.left-170,
-      friction:4,
-      tension:20,
-      useNativeDriver:true
-    }).start();
-  }, [])
+    startAnimation(showSuggestion ? 1 : 0);
+  }, [showSuggestion])
 
-  const trans={
-    transform:[
-      {translateX:left}
-    ]
-  }
+  const translateX = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [Dimensions.get('window').width + 20, event.left-170],
+    extrapolate: 'clamp'
+})
 
   const eventStyle = useMemo(() => {
     return {
-      left: isSuggestion ? 0 : event.left + 180,
+      left: isSuggestion ? 0 : event.left,
       height: event.height,
-      width: showSuggestion && !isSuggestion ? 10 : event.width-5,
       top: event.top,
       backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR
     };
@@ -73,9 +84,12 @@ const EventBlock = (props: EventBlockProps) => {
     onPress(index);
   }, [index, onPress]);
 
+  const animatedStyle = isSuggestion ? { transform: [{ translateX }] } : null;
+
   return (
-    <Animated.View style={trans}>
-    <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[styles.event, eventStyle]}>
+    <Animated.View style={[animatedStyle, {
+      width: isSuggestion ? event.width : bounceIn, backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR}]}>
+    <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[eventStyle, styles.event]}>
       {renderEvent ? (
         renderEvent(event)
       ) : (

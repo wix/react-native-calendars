@@ -117,11 +117,6 @@ export interface TimelineProps {
   suggestions?: Event[];
 }
 
-const { UIManager } = NativeModules;
-
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-
 const Timeline = (props: TimelineProps) => {
   const {
     format24h = true,
@@ -247,7 +242,6 @@ const Timeline = (props: TimelineProps) => {
   const renderEvents = (dayIndex: number) => {
     const events = packedEvents[dayIndex].map((event: PackedEvent, eventIndex: number) => {
       const onEventPress = () => _onEventPress(dayIndex, eventIndex);
-      LayoutAnimation.spring();
       return (
         <EventBlock
           showSuggestion={showSuggestion}
@@ -271,7 +265,6 @@ const Timeline = (props: TimelineProps) => {
   const renderSuggestions = (dayIndex: number) => {
     const events = packedSuggestions[dayIndex].map((event: PackedEvent, eventIndex: number) => {
       const onEventPress = () => _onSuggestionPress(dayIndex, eventIndex);
-      LayoutAnimation.spring();
       return (
         <EventBlock
           isSuggestion={true}
@@ -301,7 +294,7 @@ const Timeline = (props: TimelineProps) => {
       <React.Fragment key={dayIndex}>
         {/*<Animated.View>*/}
         {renderEvents(dayIndex)}
-        {showSuggestion && renderSuggestions(dayIndex)}
+        {renderSuggestions(dayIndex)}
         {/*</Animated.View>*/}
         {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
       </React.Fragment>
