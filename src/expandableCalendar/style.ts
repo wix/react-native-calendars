@@ -18,8 +18,9 @@ export default function styleConstructor(theme: Theme = {}) {
         ios: {
           shadowColor: '#858F96',
           shadowOpacity: 0.25,
-          shadowRadius: 10,
-          shadowOffset: {height: 2, width: 0},
+          shadowRadius: 3,
+          shadowOffset: {height: 4, width: 4},
+          elevation: 5,
           zIndex: 99
         },
         android: {
@@ -54,7 +55,7 @@ export default function styleConstructor(theme: Theme = {}) {
       fontSize: 12,
       lineHeight: 16,
       color: '#7a92a5',
-      paddingTop: 24, // 8
+      paddingTop: 2, // 8
       paddingBottom: 8,
       paddingLeft: 20,
       paddingRight: 20,
@@ -70,7 +71,7 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     headerTitle: {
       alignSelf: 'center',
-      paddingTop: 13,
+      paddingTop: 2,
       paddingBottom: 18,
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,

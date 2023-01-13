@@ -61,7 +61,7 @@ const EventBlock = (props: EventBlockProps) => {
     const toValue = showSuggestion ? 0 : 1;
     Animated.timing(animatedWidth, {
       toValue,
-      duration: 1100,
+      duration: 1000,
       easing: Easing.linear,
       useNativeDriver: false
     }).start();
@@ -71,7 +71,7 @@ const EventBlock = (props: EventBlockProps) => {
     const toValue = showSuggestion ? 0 : 1;
     Animated.timing(animatedLeft, {
       toValue,
-      duration: 1100,
+      duration: 1000,
       easing: Easing.linear,
       useNativeDriver: false
     }).start();

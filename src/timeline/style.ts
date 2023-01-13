@@ -76,8 +76,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     event: {
       opacity: 1,
       paddingLeft: 4,
-      paddingTop: 5,
-      paddingBottom: 0,
+      paddingHorizontal: 5,
       borderColor: 'white',
       borderWidth: 1,
       ...appStyle.event,
