@@ -592,7 +592,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   return (
     <View testID={testID} style={containerStyle}>
       <TouchableOpacity
-        style={{position: 'absolute', top: 66, right:55, zIndex: 50, height: 32, width: 32, borderRadius: 14, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center'}}
+        style={{position: 'absolute', top: 5, right:90, zIndex: 50, height: 32, width: 32, borderRadius: 14, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center'}}
         onPress={() => {
           setShowSuggestion(!showSuggestion);
         }}
