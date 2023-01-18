@@ -16,15 +16,15 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.calendarBackground,
       ...Platform.select({
         ios: {
-          shadowColor: '#858F96',
-          shadowOpacity: 0.25,
+          shadowColor: '#000',
+          shadowOffset: { width: 2, height:0 },
+          shadowOpacity:  0.2,
           shadowRadius: 3,
-          shadowOffset: {height: 4, width: 4},
           elevation: 5,
           zIndex: 99
         },
         android: {
-          elevation: 3
+          elevation: 5
         }
       })
     },
@@ -55,7 +55,7 @@ export default function styleConstructor(theme: Theme = {}) {
       fontSize: 12,
       lineHeight: 16,
       color: '#7a92a5',
-      paddingTop: 2, // 8
+      paddingTop: 24, // 8
       paddingBottom: 8,
       paddingLeft: 20,
       paddingRight: 20,
@@ -71,7 +71,7 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     headerTitle: {
       alignSelf: 'center',
-      paddingTop: 2,
+      paddingTop: 13,
       paddingBottom: 18,
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
