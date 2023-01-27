@@ -86,7 +86,7 @@ const EventBlock = (props: EventBlockProps) => {
 
   const translateX = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [Dimensions.get('window').width + 20, event.left-170],
+    outputRange: [Dimensions.get('window').width + 20, event.left-Dimensions.get('window').width*0.43],
     extrapolate: 'clamp'
   })
 
