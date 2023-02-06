@@ -97,7 +97,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     style: propsStyle
   } = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
-  const style = useRef(styleConstructor(theme));
+  const style = useMemo(() => styleConstructor(theme), [theme]);
   const header = useRef();
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
 
@@ -176,7 +176,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const renderWeekNumber = (weekNumber: number) => {
     return (
-      <View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
+      <View style={style.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
           key={`week-${weekNumber}`}
           marking={weekNumberMarking.current}
@@ -194,14 +194,14 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     const dayProps = extractDayProps(props);
 
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer}/>;
+      return <View key={id} style={style.emptyDayContainer}/>;
     }
 
     const dateString = toMarkingFormat(day);
     const isControlled = isEmpty(props.context);
 
     return (
-      <View style={style.current.dayContainer} key={id}>
+      <View style={style.dayContainer} key={id}>
         <Day
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
@@ -227,7 +227,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     }
 
     return (
-      <View style={style.current.week} key={id}>
+      <View style={style.week} key={id}>
         {week}
       </View>
     );
@@ -242,7 +242,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
       weeks.push(renderWeek(days.splice(0, 7), weeks.length));
     }
 
-    return <View style={style.current.monthView}>{weeks}</View>;
+    return <View style={style.monthView}>{weeks}</View>;
   };
 
   const shouldDisplayIndicator = useMemo(() => {
@@ -283,7 +283,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   return (
     <GestureComponent {...gestureProps}>
       <View
-        style={[style.current.container, propsStyle]}
+        style={[style.container, propsStyle]}
         testID={testID}
         accessibilityElementsHidden={accessibilityElementsHidden} // iOS
         importantForAccessibility={importantForAccessibility} // Android

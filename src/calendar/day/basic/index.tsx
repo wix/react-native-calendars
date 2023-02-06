@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useRef} from 'react';
+import React, {Fragment, useCallback, useMemo} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
 import {xdateToData} from '../../../interface';
@@ -48,7 +48,7 @@ const BasicDay = (props: BasicDayProps) => {
     children,
     testID
   } = props;
-  const style = useRef(styleConstructor(theme));
+  const style = useMemo(() => styleConstructor(theme), [theme]);
   const _marking = marking || {};
   const isSelected = _marking.selected || state === 'selected';
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
@@ -75,15 +75,15 @@ const BasicDay = (props: BasicDayProps) => {
 
   const getContainerStyle = () => {
     const {customStyles, selectedColor} = _marking;
-    const styles = [style.current.base];
+    const styles = [style.base];
 
     if (isSelected) {
-      styles.push(style.current.selected);
+      styles.push(style.selected);
       if (selectedColor) {
         styles.push({backgroundColor: selectedColor});
       }
     } else if (isToday) {
-      styles.push(style.current.today);
+      styles.push(style.today);
     }
 
     //Custom marking type
@@ -99,19 +99,19 @@ const BasicDay = (props: BasicDayProps) => {
 
   const getTextStyle = () => {
     const {customStyles, selectedTextColor} = _marking;
-    const styles = [style.current.text];
+    const styles = [style.text];
 
     if (isSelected) {
-      styles.push(style.current.selectedText);
+      styles.push(style.selectedText);
       if (selectedTextColor) {
         styles.push({color: selectedTextColor});
       }
     } else if (isDisabled) {
-      styles.push(style.current.disabledText);
+      styles.push(style.disabledText);
     } else if (isToday) {
-      styles.push(style.current.todayText);
+      styles.push(style.todayText);
     } else if (isInactive) {
-      styles.push(style.current.inactiveText);
+      styles.push(style.inactiveText);
     }
 
     //Custom marking type
@@ -188,7 +188,7 @@ const BasicDay = (props: BasicDayProps) => {
 
   const renderPeriodsContainer = () => {
     return (
-      <View style={style.current.container}>
+      <View style={style.container}>
         {renderContainer()}
         {renderMarking()}
       </View>
