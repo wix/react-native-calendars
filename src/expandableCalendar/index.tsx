@@ -71,6 +71,7 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeThreshold?: number;
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
+  haveSuggestions?: boolean;
 }
 
 const headerStyleOverride = {
@@ -124,6 +125,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onPressArrowRight,
     renderArrow,
     testID,
+    haveSuggestions,
     ...others
   } = props;
 
@@ -592,7 +594,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   return (
     <View style={{overflow: 'hidden', paddingBottom: 5 }}>
     <View testID={testID} style={containerStyle}>
-      <TouchableOpacity
+      {haveSuggestions && <TouchableOpacity
         style={{position: 'absolute', top: "4%", right:"20%", zIndex: 50, height: 32, width: 32, borderRadius: 14, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center'}}
         onPress={() => {
           setShowSuggestion(!showSuggestion);
@@ -602,7 +604,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           ) : (
             <Image source={IdeaIcon}/>
           )}
-      </TouchableOpacity>
+      </TouchableOpacity>}
       {screenReaderEnabled ? (
         <Calendar
           testID={`${testID}.calendarAccessible`}

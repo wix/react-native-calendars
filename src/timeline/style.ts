@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import * as defaultStyle from '../style';
 import {Theme} from '../types';
 import constants from '../commons/constants';
@@ -117,11 +117,11 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       borderWidth: 3,
       borderColor: '#EBEBEB',
       borderRadius: 20,
+      position: 'absolute',
       ...appStyle.event,
     },
     lines: {
-      position: 'absolute' , height: 65, width: 1, marginLeft: 4
+      position: 'absolute' , height: Dimensions.get('window').height*0.1, width: 1, marginLeft: 4
     },
-    solidLine: {position: 'absolute' , height: 65, width: 1,marginLeft: 4, backgroundColor: '#B3B3B3'}
   });
 }

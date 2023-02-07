@@ -9,6 +9,7 @@ import {buildTimeString, calcTimeByPosition, calcDateByPosition} from './helpers
 import {buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 
 import line from '../img/line.png';
+import solidLine from '../img/solidLine.png';
 
 interface NewEventTime {
   hour: number;
@@ -123,11 +124,11 @@ const TimelineHours = (props: TimelineHoursProps) => {
         nextDay.setDate(today.getDate());
         return (
           <React.Fragment key={time}>
-            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 14}]}>
-            <View style={{flexDirection: 'column', width: 5}}>
-              {(toDate > nextDay || (toDate.toString().split(' ').slice(0, 4).join(' ') === today.toString().split(' ').slice(0, 4).join(' ')  && (time >= today.getHours()))) ? <Image source={line} style={styles.lines}/> : <View style={styles.solidLine}/>}
+            <View style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 14}, {flexDirection: 'column', width: 5}]}>
+              {(toDate > nextDay || (toDate.toString().split(' ').slice(0, 4).join(' ') === today.toString().split(' ').slice(0, 4).join(' ')  && (time >= today.getHours()))) ? <Image source={line} style={styles.lines}/> : <Image source={solidLine} style={styles.lines}/>}
               <View style={time%2 === 0 ? [styles.circle] : {height: 12, width: 12}} />
             </View>
+            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 14}]}>
               {time%2 === 0 && timeText}
             </Text>
             {time === start ? null : (
