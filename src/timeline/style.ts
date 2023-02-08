@@ -121,7 +121,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       ...appStyle.event,
     },
     lines: {
-      position: 'absolute' , height: Dimensions.get('window').height*0.08, width: 1, marginLeft: 4
+      position: 'absolute' , height: Dimensions.get('window').height*0.05, width: 1, marginLeft: 4
     },
   });
 }
