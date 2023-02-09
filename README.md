@@ -84,7 +84,6 @@ import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)
 <Calendar
   onDayPress={(day) => {console.log('selected day', day)}}
 />
-
 ```
 
 
