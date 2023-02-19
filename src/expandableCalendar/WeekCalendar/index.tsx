@@ -105,9 +105,9 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       ...(
         markings[dateString] && {[dateString]: markings[dateString]}
       ),
-      }
-    }, {})
-  }, [])
+      };
+    }, {});
+  }, []);
 
   const weekStyle = useMemo(() => {
     return [{width: containerWidth}, propsStyle];
