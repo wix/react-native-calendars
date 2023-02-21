@@ -24,6 +24,8 @@ export interface CalendarListProps {
   calendarProps?: CalendarProps;
   /** Identifier for testing */
   testID?: string;
+  /** Page height to set week calendar height or calendar list height */
+  pageHeight?: number;
 }
 
 const NUMBER_OF_PAGES = 50;
