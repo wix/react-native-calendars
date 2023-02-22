@@ -113,7 +113,6 @@ const TimelineHours = (props: TimelineHoursProps) => {
             {left: timelineLeftInset}
           ]}
         >
-          <View style={[styles.circle, {left: -60}]} />
         </View>
       ))}
 
