@@ -208,9 +208,11 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   loadReservations(props: AgendaProps) {
     if ((!props.items || !Object.keys(props.items).length) && !this.state.firstReservationLoad) {
-      this.setState({firstReservationLoad: true}, () => {
-        this.props.loadItemsForMonth?.(xdateToData(this.state.selectedDay));
-      });
+      this.setState({firstReservationLoad: true},
+        () => {
+          this.props.loadItemsForMonth?.(xdateToData(this.state.selectedDay));
+        }
+      );
     }
   }
 
@@ -381,23 +383,27 @@ export default class Agenda extends Component<AgendaProps, State> {
     let knob: JSX.Element | null = <View style={this.style.knobContainer} />;
 
     if (!hideKnob) {
-      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
-      knob =
-        !this.state.calendarScrollable || showClosingKnob ? (
-          <View style={this.style.knobContainer}>
-            <View ref={this.knob}>{knobView}</View>
-          </View>
-        ) : null;
+      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
+      knob = !this.state.calendarScrollable || showClosingKnob ? (
+        <View style={this.style.knobContainer}>
+          <View ref={this.knob}>{knobView}</View>
+        </View>
+      ) : null;
     }
     return knob;
   }
 
   renderWeekDaysNames = () => {
-    return <WeekDaysNames firstDay={this.props.firstDay} style={this.style.dayHeader} />;
+    return (
+      <WeekDaysNames
+        firstDay={this.props.firstDay}
+        style={this.style.dayHeader}
+      />
+    );
   };
 
   renderWeekNumbersSpace = () => {
-    return this.props.showWeekNumbers && <View style={this.style.dayHeader} />;
+    return this.props.showWeekNumbers && <View style={this.style.dayHeader}/>;
   };
 
   render() {
@@ -459,11 +465,13 @@ export default class Agenda extends Component<AgendaProps, State> {
     if (hideCalendar) {
       return (
         <View onLayout={this.onLayout} style={[style, this.style.container]}>
-          <View style={[this.style.reservations, {marginTop: 0}]}>{this.renderReservations()}</View>
+          <View style={[this.style.reservations, { marginTop: 0 }]}>
+            {this.renderReservations()}
+          </View>
         </View>
       );
     }
-
+    
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
         <View style={this.style.reservations}>{this.renderReservations()}</View>
