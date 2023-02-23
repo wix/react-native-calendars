@@ -25,38 +25,37 @@ import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';
 import CalendarList, {CalendarListProps, CalendarListImperativeMethods} from '../calendar-list';
-import ReservationList, {ReservationListProps} from './reservation-list';
+import ReservationList, {ReservationListProps}  from './reservation-list';
 
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
-export type AgendaProps = CalendarListProps &
-  ReservationListProps & {
+export type AgendaProps = CalendarListProps & ReservationListProps & {
     /** the list of items that have to be displayed in agenda. If you want to render item as empty date
   the value of date key kas to be an empty array []. If there exists no value for date key it is
   considered that the date in question is not yet loaded */
-    items?: AgendaSchedule;
-    /** callback that gets called when items for a certain month should be loaded (month became visible) */
-    loadItemsForMonth?: (data: DateData) => void;
-    /** callback that fires when the calendar is opened or closed */
-    onCalendarToggled?: (enabled: boolean) => void;
-    /** callback that gets called when day changes while scrolling agenda list */
-    onDayChange?: (data: DateData) => void;
-    /** specify how agenda knob should look like */
-    renderKnob?: () => JSX.Element;
-    /** override inner list with a custom implemented component */
-    renderList?: (listProps: ReservationListProps) => JSX.Element;
-    /** initially selected day */
-    selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
-    /** Hide knob button. Default = false */
-    hideKnob?: boolean;
-    /** Whether the knob should always be visible (when hideKnob = false) */
-    showClosingKnob?: boolean;
-    /** Hide the calendar and consequently disable the ability to see day changes while scrolling agenda list 
+  items?: AgendaSchedule;
+  /** callback that gets called when items for a certain month should be loaded (month became visible) */
+  loadItemsForMonth?: (data: DateData) => void;
+  /** callback that fires when the calendar is opened or closed */
+  onCalendarToggled?: (enabled: boolean) => void;
+  /** callback that gets called when day changes while scrolling agenda list */
+  onDayChange?: (data: DateData) => void;
+  /** specify how agenda knob should look like */
+  renderKnob?: () => JSX.Element;
+  /** override inner list with a custom implemented component */
+  renderList?: (listProps: ReservationListProps) => JSX.Element;
+  /** initially selected day */
+  selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
+  /** Hide knob button. Default = false */
+  hideKnob?: boolean;
+  /** Whether the knob should always be visible (when hideKnob = false) */
+  showClosingKnob?: boolean;
+  /** Hide the calendar and consequently disable the ability to see day changes while scrolling agenda list 
   and to select a day from the calendar component. Default = false */
-    hideCalendar?: boolean;
-  };
-
+  hideCalendar?: boolean;
+}
+    
 type State = {
   scrollY: Animated.Value;
   calendarIsReady: boolean;
@@ -471,7 +470,7 @@ export default class Agenda extends Component<AgendaProps, State> {
         </View>
       );
     }
-    
+
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
         <View style={this.style.reservations}>{this.renderReservations()}</View>
