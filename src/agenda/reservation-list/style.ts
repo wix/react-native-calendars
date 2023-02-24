@@ -38,6 +38,6 @@ export default function styleConstructor(theme: Theme = {}) {
       marginTop: 80
     },
     // @ts-expect-error
-    ...(theme['stylesheet.agenda.list'] || {})
+    ...(theme.stylesheet.agenda.list || {})
   });
 }
