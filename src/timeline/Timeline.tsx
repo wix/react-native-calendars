@@ -296,7 +296,7 @@ const Timeline = (props: TimelineProps) => {
         {renderEvents(dayIndex)}
         {renderSuggestions(dayIndex)}
         {/*</Animated.View>*/}
-        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
+        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} start={start}/>}
       </React.Fragment>
     );
   };
