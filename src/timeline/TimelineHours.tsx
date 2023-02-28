@@ -119,12 +119,10 @@ const TimelineHours = (props: TimelineHoursProps) => {
       {hours.map(({timeText, time}, index) => {
         const today = new Date();
         const toDate = new Date(date ? date : '');
-        const nextDay = (new Date())
-        nextDay.setDate(today.getDate()+1);
         return (
           <React.Fragment key={time}>
             <View style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 14}, {flexDirection: 'column', width: 5}]}>
-              {(toDate > nextDay || (toDate.toString().split(' ').slice(0, 4).join(' ') === today.toString().split(' ').slice(0, 4).join(' ')  && (time >= today.getHours()))) ? <Image source={line} style={styles.lines}/> : <Image source={solidLine} style={styles.lines}/>}
+              {((toDate >= today) || (toDate.toString().split(' ').slice(0, 4).join(' ') === today.toString().split(' ').slice(0, 4).join(' ')  && (time >= today.getHours()))) ? <Image source={line} style={styles.lines}/> : <Image source={solidLine} style={styles.lines}/>}
               <View style={time%2 === 0 ? [styles.circle] : {height: 12, width: 12}} />
             </View>
             <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 14}]}>
