@@ -1,5 +1,5 @@
 Timeline component  
-[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/timelineCalendar.tsx)
+[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/timelineCalendarScreen.tsx)
 :::info
 This component extends **[ScrollView](https://reactnative.dev/docs/scrollview)** props.
 :::

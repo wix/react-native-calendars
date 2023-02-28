@@ -1,5 +1,5 @@
 Agenda list component for the `ExpandableCalendar` component.  
-[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.tsx)
+[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendarScreen.tsx)
 :::info
 This component extends **[FlatList](https://reactnative.dev/docs/flatlist)** props.
 :::
