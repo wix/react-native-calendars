@@ -1,5 +1,5 @@
 Calendar list component  
-[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarsList.tsx)
+[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarListScreen.tsx)
 :::info
 This component extends **[Calendar](https://github.com/wix/react-native-calendars/blob/master/src/calendar/index.tsx), [FlatList](https://reactnative.dev/docs/flatlist)** props.
 :::
