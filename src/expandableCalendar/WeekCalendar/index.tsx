@@ -3,9 +3,9 @@ import XDate from 'xdate';
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
 
-import {sameWeek, onSameDateRange} from '../../dateutils';
+import {sameWeek, onSameDateRange, getWeekDates} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
-import {DateData} from '../../types';
+import {DateData, MarkedDates} from '../../types';
 import styleConstructor from '../style';
 import {CalendarListProps} from '../../calendar-list';
 import WeekDaysNames from '../../commons/WeekDaysNames';
@@ -37,6 +37,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     current,
     theme,
     testID,
+    markedDates,
   } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
@@ -92,16 +93,34 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     }
   }, [onDayPress]);
 
+  const getCurrentWeekMarkings = useCallback((date: string, markings?: MarkedDates): MarkedDates | undefined => {
+    if (!markings) {
+      return;
+    }
+    const dates = getWeekDates(date, firstDay) as XDate[] | undefined;
+    return dates?.reduce((acc, date) => {
+      const dateString = toMarkingFormat(date);
+      return {
+        ...acc,
+      ...(
+        markings[dateString] && {[dateString]: markings[dateString]}
+      ),
+      };
+    }, {});
+  }, []);
+
   const weekStyle = useMemo(() => {
     return [{width: containerWidth}, propsStyle];
   }, [containerWidth, propsStyle]);
 
   const renderItem = useCallback(({item}: {item: string}) => {
     const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
+    const markings = getCurrentWeekMarkings(item, markedDates);
 
     return (
       <Week
         {...others}
+        markedDates={markings}
         current={item}
         firstDay={firstDay}
         style={weekStyle}
@@ -111,7 +130,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         timelineLeftInset={timelineLeftInset}
       />
     );
-  },[firstDay, _onDayPress, context, date]);
+  },[firstDay, _onDayPress, context, date, markedDates]);
 
   const keyExtractor = useCallback((item) => item, []);
 

@@ -1,7 +1,7 @@
 Calendar component  
-[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.tsx)
+[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendarScreen.tsx)
 :::info
-This component extends **[CalendarHeader, BasicDay](https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/index.tsx,https://github.com/wix/react-native-calendars/blob/master/src/calendar/day/basic/index.tsx)** props.
+This component extends **[CalendarHeader](https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/index.tsx), [BasicDay](https://github.com/wix/react-native-calendars/blob/master/src/calendar/day/basic/index.tsx)** props.
 :::
 
 <div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif?raw=true'}/>

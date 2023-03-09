@@ -1,7 +1,7 @@
 Agenda component  
-[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.tsx)
+[(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agendaScreen.tsx)
 :::info
-This component extends **[CalendarList, FlatList](https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx,https://reactnative.dev/docs/flatlist)** props.
+This component extends **[CalendarList](https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx), [FlatList](https://reactnative.dev/docs/flatlist)** props.
 :::
 
 <div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/agenda.gif?raw=true'}/>
