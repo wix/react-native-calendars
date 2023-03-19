@@ -70,3 +70,69 @@ $ yarn add react-native-calendars
 
 **RN Calendars is implemented in JavaScript, so no native module linking is required.**
 
+<br>
+
+## Usage Example
+
+<br>
+
+`import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)`} from 'react-native-calendars';`
+
+All parameters for components are optional. By default the month of current local date will be displayed.
+
+Event handler callbacks are called with `calendar objects` like this:
+
+```javascript
+{
+  day: 1,      // day of month (1-31)
+  month: 1,    // month of year (1-12)
+  year: 2017,  // year
+  timestamp,   // UTC timestamp representing 00:00 AM of this date
+  dateString: '2016-05-13' // date formatted as 'YYYY-MM-DD' string
+}
+```
+
+Parameters that require date types accept `YYYY-MM-DD` formatted `date-strings`, JavaScript date objects, `calendar objects` and `UTC timestamps`.
+
+Calendars can be localized by adding custom locales to `LocaleConfig` object:
+
+```javascript
+import {LocaleConfig} from 'react-native-calendars';
+
+LocaleConfig.locales['fr'] = {
+  monthNames: [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ],
+  monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+  dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+  dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+  today: "Aujourd'hui"
+};
+LocaleConfig.defaultLocale = 'fr';
+```
+
+## Authors
+
+- [Tautvilas Mecinskas](https://github.com/tautvilas/) - Initial code - [@tautvilas](https://twitter.com/Tautvilas)
+- Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
+
+See also the list of [contributors](https://github.com/wix/react-native-calendar-components/contributors) who participated in this project.
+
+## Contributing
+
+Pull requests are most welcome!
+Please `npm run test` and `npm run lint` before push.
+Don't forget to add a **title** and a **description** that explain the issue you're trying to solve and your suggested solution.
+Screenshots and gifs are VERY helpful.
+Please do NOT format the files as we are trying to keep a unified syntax and the reviewing process fast and simple.
