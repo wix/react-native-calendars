@@ -17,7 +17,7 @@ The package is compatible with both **Android** and **iOS**
 
 
 > ### **Official documentation**  
-> This README provides basic examples of how to get started with `react-native-calendars`. For detailed information, refer to the [official documentation](https://wix.github.io/react-native-calendars/docs/intro).
+> This README provides basic examples of how to get started with `react-native-calendars`. For detailed information, refer to the [official documentation site](https://wix.github.io/react-native-calendars/docs/intro).
 
 
 ## Features ✨
@@ -73,6 +73,7 @@ $ yarn add react-native-calendars
 ## Usage 🚀
 Basic usage examples of the library
 
+##### **For detailed information on using this component, see the [official documentation site](https://wix.github.io/react-native-calendars/docs/intro)**
 ### Importing the `Calendar` component
 
 ```javascript
@@ -139,14 +140,30 @@ export default App;
 
 ### Configuring the locale:
 ```javascript
+import {LocaleConfig} from 'react-native-calendars';
 import React, { useState } from 'react';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 LocaleConfig.locales['fr'] = {
+  monthNames: [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ],
   monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
   monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
   dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
   dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+  today: "Aujourd'hui"
 };
 
 LocaleConfig.defaultLocale = 'fr';
