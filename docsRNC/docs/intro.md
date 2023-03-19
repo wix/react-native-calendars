@@ -13,7 +13,7 @@ sidebar_position: 1
 
 <br>
 
-This module includes information on how to use this customizable **React-Native** calendar component.
+This module includes information on how to use this customizable **React Native** calendar component.
 
 The package is compatible with both **Android** and **iOS**
 
@@ -22,6 +22,7 @@ The package is compatible with both **Android** and **iOS**
 
 ## Features ✨
 * Pure JS. No Native code required
+* Date marking - dot, multi-dot, period, multi-period and custom marking
 * Customization of style, content (days, months, etc) and dates
 * Detailed documentation and examples
 * Swipeable calendar with flexible custom rendering

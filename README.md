@@ -9,7 +9,7 @@
 
 <br>
 
-This module includes information on how to use this customizable **React-Native** calendar component.
+This module includes information on how to use this customizable **React Native** calendar component.
 
 The package is compatible with both **Android** and **iOS**
 
@@ -22,6 +22,7 @@ The package is compatible with both **Android** and **iOS**
 
 ## Features ✨
 * Pure JS. No Native code required
+* Date marking - dot, multi-dot, period, multi-period and custom marking
 * Customization of style, content (days, months, etc) and dates
 * Detailed documentation and examples
 * Swipeable calendar with flexible custom rendering
@@ -93,28 +94,6 @@ import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)
 Here are a few code snippets that demonstrate how to use some of the key features of react-native-calendars:  
 
 
-### Customize the appearance of the calendar:
-```javascript
-<Calendar
-  // Customize the appearance of the calendar
-  style={{
-    borderWidth: 1,
-    borderColor: 'gray',
-    height: 350
-  }}
-  // Specify the current date
-  current={'2012-03-01'}
-  // Callback that gets called when the user selects a day
-  onDayPress={(day) => {console.log('selected day', day)}}
-  // Mark specific dates as marked
-  markedDates={{
-    '2012-03-01': {selected: true, marked: true, selectedColor: 'blue'},
-    '2012-03-02': {marked: true},
-    '2012-03-03': {selected: true, marked: true, selectedColor: 'blue'},
-  }}
-/>
-```
-
 ### Creating a basic calendar with default settings:
 ```javascript
 import React, { useState } from 'react';
@@ -136,6 +115,28 @@ const App = () => {
 };
 
 export default App;
+```
+
+### Customize the appearance of the calendar:
+```javascript
+<Calendar
+  // Customize the appearance of the calendar
+  style={{
+    borderWidth: 1,
+    borderColor: 'gray',
+    height: 350
+  }}
+  // Specify the current date
+  current={'2012-03-01'}
+  // Callback that gets called when the user selects a day
+  onDayPress={(day) => {console.log('selected day', day)}}
+  // Mark specific dates as marked
+  markedDates={{
+    '2012-03-01': {selected: true, marked: true, selectedColor: 'blue'},
+    '2012-03-02': {marked: true},
+    '2012-03-03': {selected: true, marked: true, selectedColor: 'blue'},
+  }}
+/>
 ```
 
 ### Configuring the locale:
@@ -186,7 +187,7 @@ const App = () => {
 export default App;
 ```
 
-### Displaying the calendar in a custom style:
+### Adding a global theme to the calendar:
 ```javascript
 import React, { useState } from 'react';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -280,6 +281,8 @@ const App = () => {
 <kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/agenda.gif?raw=true">
 </kbd>
+
+<br>
 
 ## Authors
 
