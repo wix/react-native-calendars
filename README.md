@@ -215,72 +215,50 @@ const App = () => {
 ## Customized Calendar Examples
 
 ### Calendar
-<kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/calendar.gif?raw=true">
-</kbd>
+
 
 
 ### Dot marking
 
-<kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking1.png?raw=true">
-</kbd>
 
 ### Multi-Dot marking
 
-<kbd>
  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking4.png?raw=true">
-</kbd>
 
 ### Period Marking
 
-<kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking2.png?raw=true">
-</kbd>
 
-<kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking3.png?raw=true">
-</kbd>
 
 ### Multi-Period marking
 
-<kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking6.png?raw=true">
-</kbd>
 
 ### Custom marking
 
-<kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking5.png?raw=true">
-</kbd>
 
-<kbd>
   <img height=350 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/multi-marking.png?raw=true">
-</kbd>
 
 ### Date loading indicator
 
-<kbd>
   <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/loader.png?raw=true">
-</kbd>
 
 ### Scrollable semi-infinite calendar
 
-<kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/calendar-list.gif?raw=true">
-</kbd>
 
 ### Horizontal calendar
 
-<kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/horizontal-calendar-list.gif?raw=true">
-</kbd>
 
 ### Agenda
 
-<kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/agenda.gif?raw=true">
-</kbd>
+
 
 <br>
 

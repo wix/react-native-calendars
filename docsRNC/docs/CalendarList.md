@@ -71,10 +71,8 @@ Whether to enable or disable vertical / horizontal scroll indicator
 
 #### Horizontal CalendarList
 
-<kbd>
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/horizontal-calendar-list.gif?raw=true">
-</kbd>
-<p></p>
+
 
 You can also make the `CalendarList` scroll horizontally. To do that you need to pass specific props to the `CalendarList`:
 
