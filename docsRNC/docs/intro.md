@@ -11,26 +11,25 @@ sidebar_position: 1
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
 [![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
 
-<br>
+<br/>
 
 This module includes information on how to use this customizable **React Native** calendar component.
 
 The package is compatible with both **Android** and **iOS**
 
-<br>
-
+<br/>
 
 ## Features ✨
-* Pure JS. No Native code required
-* Date marking - dot, multi-dot, period, multi-period and custom marking
-* Customization of style, content (days, months, etc) and dates
-* Detailed documentation and examples
-* Swipeable calendar with flexible custom rendering
-* Scrolling to today, selecting dates, and more
-* Allowing or blocking certain dates
-* Accessibility support
-* Automatic date formatting for different locales
 
+- Pure JS. No Native code required
+- Date marking - dot, multi-dot, period, multi-period and custom marking
+- Customization of style, content (days, months, etc) and dates
+- Detailed documentation and examples
+- Swipeable calendar with flexible custom rendering
+- Scrolling to today, selecting dates, and more
+- Allowing or blocking certain dates
+- Accessibility support
+- Automatic date formatting for different locales
 
 ## Try it out ⚡
 
@@ -52,7 +51,6 @@ You can check example screens source code in [example module screens](https://gi
 
 This project is compatible with Expo/CRNA (without ejecting), and the examples have been [published on Expo](https://expo.io/@community/react-native-calendars-example)
 
-
 ## Getting Started 🔧
 
 Here's how to get started with react-native-calendars in your React Native project:
@@ -60,22 +58,24 @@ Here's how to get started with react-native-calendars in your React Native proje
 ### Install the package:
 
 Using `npm`:
+
 ```
 $ npm install --save react-native-calendars
 ```
 
 Using `Yarn`:
+
 ```
 $ yarn add react-native-calendars
 ```
 
 **RN Calendars is implemented in JavaScript, so no native module linking is required.**
 
-<br>
+<br/>
 
 ## Usage Example
 
-<br>
+<br/>
 
 `import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)`} from 'react-native-calendars';`
 

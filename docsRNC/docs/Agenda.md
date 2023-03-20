@@ -4,8 +4,8 @@ Agenda component
 This component extends **[CalendarList](https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx), [FlatList](https://reactnative.dev/docs/flatlist)** props.
 :::
 
-<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/agenda.gif?raw=true'}/>
-
+<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}>
+  <img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/agenda.gif?raw=true'}/>
 </div>
 
 ## API
@@ -60,11 +60,11 @@ Whether to show items only for the selected date
 Replace default ActivityIndicator with a custom one  
 <span style={{color: 'grey'}}>() => JSX.Element</span>
 
-<br>
+<br/>
 
 ## Agenda Examples
 
-<br>
+<br/>
 
 ```javascript
 <Agenda

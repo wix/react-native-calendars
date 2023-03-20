@@ -15,22 +15,21 @@ The package is compatible with both **Android** and **iOS**
 
 <br>
 
-
-> ### **Official documentation**  
+> ### **Official documentation**
+>
 > This README provides basic examples of how to get started with `react-native-calendars`. For detailed information, refer to the [official documentation site](https://wix.github.io/react-native-calendars/docs/intro).
 
-
 ## Features ✨
-* Pure JS. No Native code required
-* Date marking - dot, multi-dot, period, multi-period and custom marking
-* Customization of style, content (days, months, etc) and dates
-* Detailed documentation and examples
-* Swipeable calendar with flexible custom rendering
-* Scrolling to today, selecting dates, and more
-* Allowing or blocking certain dates
-* Accessibility support
-* Automatic date formatting for different locales
 
+- Pure JS. No Native code required
+- Date marking - dot, multi-dot, period, multi-period and custom marking
+- Customization of style, content (days, months, etc) and dates
+- Detailed documentation and examples
+- Swipeable calendar with flexible custom rendering
+- Scrolling to today, selecting dates, and more
+- Allowing or blocking certain dates
+- Accessibility support
+- Automatic date formatting for different locales
 
 ## Try it out ⚡
 
@@ -52,7 +51,6 @@ You can check example screens source code in [example module screens](https://gi
 
 This project is compatible with Expo/CRNA (without ejecting), and the examples have been [published on Expo](https://expo.io/@community/react-native-calendars-example)
 
-
 ## Getting Started 🔧
 
 Here's how to get started with react-native-calendars in your React Native project:
@@ -60,11 +58,13 @@ Here's how to get started with react-native-calendars in your React Native proje
 ### Install the package:
 
 Using `npm`:
+
 ```
 $ npm install --save react-native-calendars
 ```
 
 Using `Yarn`:
+
 ```
 $ yarn add react-native-calendars
 ```
@@ -72,43 +72,47 @@ $ yarn add react-native-calendars
 **RN Calendars is implemented in JavaScript, so no native module linking is required.**
 
 ## Usage 🚀
+
 Basic usage examples of the library
 
 ##### **For detailed information on using this component, see the [official documentation site](https://wix.github.io/react-native-calendars/docs/intro)**
+
 ### Importing the `Calendar` component
 
 ```javascript
 import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)`} from 'react-native-calendars';
 ```
+
 ### Use the `Calendar` component in your app:
 
 ```javascript
 <Calendar
-  onDayPress={(day) => {console.log('selected day', day)}}
+  onDayPress={day => {
+    console.log('selected day', day);
+  }}
 />
 ```
 
-
 ## Some Code Examples
 
-Here are a few code snippets that demonstrate how to use some of the key features of react-native-calendars:  
-
+Here are a few code snippets that demonstrate how to use some of the key features of react-native-calendars:
 
 ### Creating a basic calendar with default settings:
+
 ```javascript
-import React, { useState } from 'react';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+import React, {useState} from 'react';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 const App = () => {
   const [selected, setSelected] = useState('');
 
   return (
     <Calendar
-      onDayPress={(day) => {
+      onDayPress={day => {
         setSelected(day.dateString);
       }}
       markedDates={{
-        [selected]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
+        [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
       }}
     />
   );
@@ -118,6 +122,7 @@ export default App;
 ```
 
 ### Customize the appearance of the calendar:
+
 ```javascript
 <Calendar
   // Customize the appearance of the calendar
@@ -129,21 +134,24 @@ export default App;
   // Specify the current date
   current={'2012-03-01'}
   // Callback that gets called when the user selects a day
-  onDayPress={(day) => {console.log('selected day', day)}}
+  onDayPress={day => {
+    console.log('selected day', day);
+  }}
   // Mark specific dates as marked
   markedDates={{
     '2012-03-01': {selected: true, marked: true, selectedColor: 'blue'},
     '2012-03-02': {marked: true},
-    '2012-03-03': {selected: true, marked: true, selectedColor: 'blue'},
+    '2012-03-03': {selected: true, marked: true, selectedColor: 'blue'}
   }}
 />
 ```
 
 ### Configuring the locale:
+
 ```javascript
 import {LocaleConfig} from 'react-native-calendars';
-import React, { useState } from 'react';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+import React, {useState} from 'react';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 LocaleConfig.locales['fr'] = {
   monthNames: [
@@ -160,7 +168,20 @@ LocaleConfig.locales['fr'] = {
     'Novembre',
     'Décembre'
   ],
-  monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+  monthNames: [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ],
   monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
   dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
   dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
@@ -174,11 +195,11 @@ const App = () => {
 
   return (
     <Calendar
-      onDayPress={(day) => {
+      onDayPress={day => {
         setSelected(day.dateString);
       }}
       markedDates={{
-        [selected]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' },
+        [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
       }}
     />
   );
@@ -188,6 +209,7 @@ export default App;
 ```
 
 ### Adding a global theme to the calendar:
+
 ```javascript
 import React, { useState } from 'react';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -212,16 +234,16 @@ const App = () => {
         dayTextColor: '#2d4150',
         textDisabledColor: '#d9e
 ```
+
 ## Customized Calendar Examples
 
 ### Calendar
+
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/calendar.gif?raw=true">
-
-
 
 ### Dot marking
 
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking1.png?raw=true">
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking1.png?raw=true">
 
 ### Multi-Dot marking
 
@@ -259,7 +281,6 @@ const App = () => {
 
   <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/agenda.gif?raw=true">
 
-
 <br>
 
 ## Authors
@@ -271,15 +292,15 @@ See also the list of [contributors](https://github.com/wix/react-native-calendar
 
 ## Contributing
 
-We welcome contributions to react-native-calendars.  
+We welcome contributions to react-native-calendars.
 
-If you have an idea for a new feature or have discovered a bug, please open an issue.  
+If you have an idea for a new feature or have discovered a bug, please open an issue.
 
-Please `npm run test` and `npm run lint` before pushing changes.  
+Please `npm run test` and `npm run lint` before pushing changes.
 
-Don't forget to add a **title** and a **description** explaining the issue you're trying to solve and your proposed solution.  
+Don't forget to add a **title** and a **description** explaining the issue you're trying to solve and your proposed solution.
 
-Screenshots and Gifs are VERY helpful to add to the PR for reviews.  
+Screenshots and Gifs are VERY helpful to add to the PR for reviews.
 
 Please DO NOT format the files - we're trying to keep a unified syntax and keep the reviewing process fast and simple.
 

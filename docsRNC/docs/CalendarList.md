@@ -4,8 +4,8 @@ Calendar list component
 This component extends **[Calendar](https://github.com/wix/react-native-calendars/blob/master/src/calendar/index.tsx), [FlatList](https://reactnative.dev/docs/flatlist)** props.
 :::
 
-<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif?raw=true'}/>
-
+<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}>
+  <img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif?raw=true'}/>
 </div>
 
 ## API
@@ -45,11 +45,11 @@ Whether to use a fixed header that doesn't scroll (when horizontal = true)
 Whether to enable or disable vertical / horizontal scroll indicator  
 <span style={{color: 'grey'}}>boolean</span>
 
-<br>
+<br/>
 
 ## Calendar List Examples
 
-<br>
+<br/>
 
 `<CalendarList/>` is scrollable semi-infinite calendar composed of `<Calendar/>` components. Currently it is possible to scroll 4 years back and 4 years to the future. All parameters that are available for `<Calendar/>` are also available for this component. There are also some additional params that can be used:
 
@@ -71,8 +71,7 @@ Whether to enable or disable vertical / horizontal scroll indicator
 
 #### Horizontal CalendarList
 
-  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/horizontal-calendar-list.gif?raw=true">
-
+  <img src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/horizontal-calendar-list.gif?raw=true"/>
 
 You can also make the `CalendarList` scroll horizontally. To do that you need to pass specific props to the `CalendarList`:
 

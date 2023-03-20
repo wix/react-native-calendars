@@ -4,8 +4,8 @@ Calendar component
 This component extends **[CalendarHeader](https://github.com/wix/react-native-calendars/blob/master/src/calendar/header/index.tsx), [BasicDay](https://github.com/wix/react-native-calendars/blob/master/src/calendar/day/basic/index.tsx)** props.
 :::
 
-<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}><img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif?raw=true'}/>
-
+<div style={{display: 'flex', flexDirection: 'row', overflowX: 'auto', maxHeight: '500px', alignItems: 'center'}}>
+  <img style={{maxHeight: '420px'}} src={'https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif?raw=true'}/>
 </div>
 
 ## API
@@ -190,11 +190,11 @@ Whether to disable all touch events for disabled days (can be override with 'dis
 Whether to disable all touch events for inactive days (can be override with 'disableTouchEvent' in 'markedDates')  
 <span style={{color: 'grey'}}>boolean</span>
 
-<br>
+<br/>
 
 ## Calendar Examples
 
-<br>
+<br/>
 
 #### Basic parameters
 
@@ -260,8 +260,7 @@ Whether to disable all touch events for inactive days (can be override with 'dis
 
 Dot marking
 
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking1.png?raw=true">
-
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking1.png?raw=true"/>
 
 ```javascript
 <Calendar
@@ -279,8 +278,7 @@ You can customize a dot color for each day independently.
 
 Multi-Dot marking
 
- <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking4.png?raw=true">
-
+ <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking4.png?raw=true"/>
 
 Use `markingType={'multi-dot'}` if you want to display more than one dot. Both the `<Calendar/>` and `<CalendarList/>` support multiple dots by using `dots` array in `markedDates` prop.
 The property `color` is mandatory while `key` and `selectedColor` are optional. If key is omitted then the array index is used as key. If `selectedColor` is omitted then `color` will be used for selected dates.
@@ -301,11 +299,9 @@ const workout = {key: 'workout', color: 'green'};
 
 Period marking
 
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking2.png?raw=true">
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking2.png?raw=true"/>
 
-
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking3.png?raw=true">
-
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking3.png?raw=true"/>
 
 ```javascript
 <Calendar
@@ -321,8 +317,7 @@ Period marking
 
 Multi-period marking
 
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking6.png?raw=true">
-
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking6.png?raw=true"/>
 
 **CAUTION**: This marking is only fully supported by the `<Calendar/>` component because it expands its height. Usage with `<CalendarList/>` might lead to overflow issues.
 
@@ -350,8 +345,7 @@ Multi-period marking
 
 Custom marking allows you to customize each marker with custom styles.
 
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking5.png?raw=true">
-
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking5.png?raw=true"/>
 
 ```javascript
 <Calendar
@@ -400,14 +394,13 @@ Custom marking allows you to customize each marker with custom styles.
 />
 ```
 
-  <img height=350 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/multi-marking.png?raw=true">
+  <img height={350} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/multi-marking.png?raw=true"/>
 
 Keep in mind that different marking types are not compatible. You can use just one marking style for a calendar.
 
 #### Displaying data loading indicator
 
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/loader.png?raw=true">
-
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/loader.png?raw=true"/>
 
 The loading indicator next to the month name will be displayed if `<Calendar/>` has `displayLoadingIndicator` prop and the `markedDates` collection does not have a value for every day of the month in question. When you load data for days, just set `[]` or special marking value to all days in `markedDates` collection.
 
@@ -505,8 +498,7 @@ theme={{
 }}
 ```
 
-  <img height=50 src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/day-header-style.png?raw=true">
-
+  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/day-header-style.png?raw=true"/>
 
 **Disclaimer**: Issues that arise because something breaks after using stylesheet override will not be supported. Use this option at your own risk.
 
@@ -536,4 +528,3 @@ The `dayComponent` prop has to receive a RN component or a function that receive
 **Tip**: Don't forget to implement `shouldComponentUpdate()` for your custom day component to make the calendar perform better
 
 If you implement an awesome day component please make a PR so that other people could use it :)
-
