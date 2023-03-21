@@ -17,7 +17,7 @@ The package is compatible with both **Android** and **iOS**
 
 > ### **Official documentation**
 >
-> This README provides basic examples of how to get started with `react-native-calendars`. For detailed information, refer to the [official documentation site](https://wix.github.io/react-native-calendars/docs/intro).
+> This README provides basic examples of how to get started with `react-native-calendars`. For detailed information, refer to the [official documentation site](https://wix.github.io/react-native-calendars/docs/Intro).
 
 ## Features ✨
 
@@ -75,7 +75,7 @@ $ yarn add react-native-calendars
 
 Basic usage examples of the library
 
-##### **For detailed information on using this component, see the [official documentation site](https://wix.github.io/react-native-calendars/docs/intro)**
+##### **For detailed information on using this component, see the [official documentation site](https://wix.github.io/react-native-calendars/docs/Intro)**
 
 ### Importing the `Calendar` component
 
