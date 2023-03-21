@@ -258,7 +258,7 @@ Whether to disable all touch events for inactive days (can be override with 'dis
 
 **Disclaimer**: Make sure that `markedDates` param is immutable. If you change `markedDates` object content but the reference to it does not change calendar update will not be triggered.
 
-Dot marking
+- Dot marking
 
   <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking1.png?raw=true"/>
 
@@ -276,7 +276,7 @@ Dot marking
 
 You can customize a dot color for each day independently.
 
-Multi-Dot marking
+- Multi-Dot marking
 
  <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking4.png?raw=true"/>
 
@@ -297,7 +297,7 @@ const workout = {key: 'workout', color: 'green'};
 />;
 ```
 
-Period marking
+- Period marking
 
   <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking2.png?raw=true"/>
 
@@ -315,7 +315,7 @@ Period marking
 />
 ```
 
-Multi-period marking
+- Multi-period marking
 
   <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking6.png?raw=true"/>
 
@@ -343,7 +343,7 @@ Multi-period marking
 />
 ```
 
-Custom marking allows you to customize each marker with custom styles.
+- Custom marking (allows you to customize each marker with custom styles)
 
   <img height={50} src="https://github.com/wix-private/wix-react-native-calendar/blob/master/demo/assets/marking5.png?raw=true"/>
 
@@ -377,7 +377,7 @@ Custom marking allows you to customize each marker with custom styles.
 />
 ```
 
-**NEW!** While we still don't support multi marking type, we add the possibility to combine between `period` and `simple`.
+**NEW!** While we still don't support multi marking type, we add the possibility to combine between `period` and `dot`.
 
 ```javascript
 <Calendar

@@ -77,7 +77,7 @@ $ yarn add react-native-calendars
 
 <br/>
 
-`import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)`} from 'react-native-calendars';`
+`import {[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)} from 'react-native-calendars';`
 
 All parameters for components are optional. By default the month of current local date will be displayed.
 
@@ -127,6 +127,8 @@ LocaleConfig.defaultLocale = 'fr';
 
 - [Tautvilas Mecinskas](https://github.com/tautvilas/) - Initial code - [@tautvilas](https://twitter.com/Tautvilas)
 - Katrin Zotchev - Initial design - [@katrin_zot](https://twitter.com/katrin_zot)
+
+- [Inbal Tish](https://github.com/Inbal-Tish) - Main maintainer
 
 See also the list of [contributors](https://github.com/wix/react-native-calendar-components/contributors) who participated in this project.
 
