@@ -59,7 +59,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
         onPressArrowLeft(method, monthClone);
       } else if (scrollToMonth) {
         const currentMonth = monthClone.getMonth();
-        monthClone.addMonths(-1);
+        monthClone.addMonths(-1, true);
         // Make sure we actually get the previous month, not just 30 days before currentMonth.
         while (monthClone.getMonth() === currentMonth) {
           monthClone.setDate(monthClone.getDate() - 1);
@@ -75,7 +75,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       if (onPressArrowRight) {
         onPressArrowRight(method, monthClone);
       } else if (scrollToMonth) {
-        monthClone.addMonths(1);
+        monthClone.addMonths(1, true);
         scrollToMonth(monthClone);
       }
     }
