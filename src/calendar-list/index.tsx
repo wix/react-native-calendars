@@ -232,7 +232,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     if(index === 0) {
       const daysInCurrentMonth = new Date(Number(year), Number(month), 0).getDate();
       const latestDays = daysInCurrentMonth - initialDate.current.getDate();
-      dynamicHeight = latestDays / 7 * CALENDAR_LINE_HEIGHT;
+      dynamicHeight = Math.round(latestDays / 7) * CALENDAR_LINE_HEIGHT
     };
     return (
       <CalendarListItem
