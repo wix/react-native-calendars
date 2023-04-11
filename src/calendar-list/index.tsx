@@ -20,6 +20,7 @@ const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
+const CALENDAR_LINE_HEIGHT = 70;
 
 export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
@@ -223,10 +224,16 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     return false;
   }, [currentMonth]);
 
-  const renderItem = useCallback(({item}: {item: XDate}) => {
+  const renderItem = useCallback(({item, index}: {item: XDate, index: number}) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
+    let dynamicHeight;
+    if(index === 0) {
+      const daysInCurrentMonth = new Date(Number(year), Number(month), 0).getDate();
+      const latestDays = daysInCurrentMonth - initialDate.current.getDate();
+      dynamicHeight = latestDays / 7 * CALENDAR_LINE_HEIGHT;
+    };
     return (
       <CalendarListItem
         {...calendarProps}
@@ -237,7 +244,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal}
         calendarWidth={calendarWidth}
-        calendarHeight={calendarHeight}
+        calendarHeight={dynamicHeight || calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
       />
