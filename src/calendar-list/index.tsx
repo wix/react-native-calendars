@@ -38,6 +38,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+  /** Placeholder rendered when the month is loading. */
+  renderPlaceholder?: (year?: number, month?: number) => JSX.Element;
 }
 
 export interface CalendarListImperativeMethods {
@@ -80,6 +82,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     animateScroll = false,
     showScrollIndicator = false,
     staticHeader,
+    renderPlaceholder,
     /** View props */
     testID,
     style: propsStyle,
@@ -240,6 +243,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
+        renderPlaceholder={renderPlaceholder}
       />
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);

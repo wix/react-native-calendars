@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {Theme} from '../types';
 import {toMarkingFormat} from '../interface';
 import {extractCalendarProps} from '../componentUpdater';
@@ -15,6 +15,7 @@ export type CalendarListItemProps = CalendarProps & {
   theme?: Theme;
   scrollToMonth?: (date: XDate) => void;
   visible?: boolean;
+  renderPlaceholder?: (year?: number, month?: number) => JSX.Element;
 };
 
 const CalendarListItem = React.memo((props: CalendarListItemProps) => {  
@@ -29,7 +30,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     headerStyle,
     onPressArrowLeft,
     onPressArrowRight,
-    visible
+    visible,
+    renderPlaceholder
   } = props;
 
   const style = useRef(styleConstructor(theme));
@@ -82,6 +84,11 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   }, [onPressArrowRight, scrollToMonth]);
 
   if (!visible) {
+    if (renderPlaceholder) {
+      const year = item.getFullYear();
+      const month = item.getMonth();
+      return <View style={calendarStyle}>{renderPlaceholder(year, month)}</View>;
+    }
     return (
       <Text style={textStyle}>{dateString}</Text>
     );
