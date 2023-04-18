@@ -163,8 +163,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const numberOfWeeks = useRef(getNumberOfWeeksInMonth(date));
 
   /** Position */
-
-  const [position, setPosition] = useState(initialPosition);
+  const isPartialWeekView = useMemo(() => numberOfDays && numberOfDays >= 1, [numberOfDays]);
+  const [position, setPosition] = useState(isPartialWeekView ? Positions.CLOSED : initialPosition);
   const isOpen = position === Positions.OPEN;
 
   const getOpenHeight = () => {
@@ -186,6 +186,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [startHeight]);
 
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
+
+  useEffect(() => {
+    if (isPartialWeekView) {
+        setPosition(Positions.CLOSED);
+    }
+}, [isPartialWeekView]);
 
   /** Components' refs */
 
