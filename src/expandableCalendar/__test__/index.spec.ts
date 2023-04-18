@@ -139,7 +139,7 @@ describe('ExpandableCalendar', () => {
       driver.render();
     });
 
-    it('should be closed when numberOfDays is defined', () => {
+    it('should be closed when numberOfDays is defined (> 0) ', () => {
       const driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({calendarContextProps: {numberOfDays: 3}, expandableCalendarProps: {initialPosition: Positions.OPEN}}));
       jest.runAllTimers();
       expect(driver.isCalendarExpanded()).toBe(false);
