@@ -163,8 +163,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const numberOfWeeks = useRef(getNumberOfWeeksInMonth(date));
 
   /** Position */
-
-  const [position, setPosition] = useState(initialPosition);
+  const [position, setPosition] = useState(numberOfDays ? Positions.CLOSED : initialPosition);
   const isOpen = position === Positions.OPEN;
 
   const getOpenHeight = () => {
@@ -186,6 +185,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [startHeight]);
 
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
+
+  useEffect(() => {
+    if (numberOfDays) {
+        setPosition(Positions.CLOSED);
+    }
+}, [numberOfDays]);
 
   /** Components' refs */
 

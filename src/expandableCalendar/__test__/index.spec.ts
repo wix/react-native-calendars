@@ -80,7 +80,6 @@ describe('ExpandableCalendar', () => {
   });
 
   describe('Init', () => {
-
     beforeEach(() => {
       driver.render();
     });
@@ -126,14 +125,37 @@ describe('ExpandableCalendar', () => {
     });
 
     it('should not close expandable header on day press when closeOnDayPress is false', () => {
-      const aDriver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({expandableCalendarProps: {closeOnDayPress: false}}));
-      aDriver.toggleKnob();
+      const driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({expandableCalendarProps: {closeOnDayPress: false}}));
+      driver.toggleKnob();
       jest.runAllTimers();
-      aDriver.selectDay(dashedToday);
+      driver.selectDay(dashedToday);
       jest.runAllTimers();
-      expect(aDriver.isCalendarExpanded()).toBe(true);
+      expect(driver.isCalendarExpanded()).toBe(true);
     });
   });
+
+  describe('numberOfDays', () => {
+    beforeEach(() => {
+      driver.render();
+    });
+
+    it('should be closed when numberOfDays is defined (> 0) ', () => {
+      const driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({calendarContextProps: {numberOfDays: 3}, expandableCalendarProps: {initialPosition: Positions.OPEN}}));
+      jest.runAllTimers();
+      expect(driver.isCalendarExpanded()).toBe(false);
+    });
+
+    it('should hide Knob when numberOfDays > 1', () => {
+      const driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({calendarContextProps: {numberOfDays: 3}}));
+      expect(driver.getKnob()).toBeNull();
+    });
+
+    it('should hide Knob when numberOfDays === 1', () => {
+      const driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({calendarContextProps: {numberOfDays: 1}}));
+      expect(driver.getKnob()).not.toBeNull();
+    });
+  });
+
 
   describe('CalendarList updates', () => {
     describe('Day Press', () => {
