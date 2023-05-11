@@ -55,6 +55,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     items.current = getDatesArray(date, firstDay, numberOfDays);
     setListData(items.current);
     visibleWeek.current = date;
+    list?.current?.scrollToIndex({index: NUMBER_OF_PAGES, animated: false});
   }, [numberOfDays]);
 
   useDidUpdate(() => {

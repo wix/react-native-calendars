@@ -23,7 +23,7 @@ export interface CalendarContextProviderProps extends ViewProps {
   onDateChanged?: (date: string, updateSource: UpdateSources) => void;
   /** Callback for month change event */
   onMonthChange?: (date: DateData, updateSource: UpdateSources) => void;
-  
+
   /** Whether to show the today button */
   showTodayButton?: boolean;
   /** Today button's top position */
@@ -32,7 +32,7 @@ export interface CalendarContextProviderProps extends ViewProps {
   todayButtonStyle?: ViewStyle;
   /** The opacity for the disabled today button (0-1) */
   disabledOpacity?: number;
-  
+
   /** The number of days to present in the timeline calendar */
   numberOfDays?: number;
   /** The left inset of the timeline calendar (sidebar width), default is 72 */
@@ -70,7 +70,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   }, [style, propsStyle]);
 
   useDidUpdate(() => {
-    if (date) {
+    if (date && date !== currentDate) {
       _setDate(date, UpdateSources.PROP_UPDATE);
     }
   }, [date]);
