@@ -13,8 +13,7 @@ export default function styleConstructor(theme: Theme = {}) {
     base: {
       width: 32,
       height: 32,
-      alignItems: 'center',
-      justifyContent: 'center'
+      alignItems: 'center'
     },
     text: {
       marginTop: constants.isAndroid ? 4 : 6,
