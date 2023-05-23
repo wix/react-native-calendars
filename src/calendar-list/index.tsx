@@ -39,6 +39,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+    /** Used to makes the calendar height dynamic based on how much days are showing */
+    calendarHeightDynamic?: boolean
 }
 
 export interface CalendarListImperativeMethods {
@@ -77,6 +79,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     futureScrollRange = FUTURE_SCROLL_RANGE,
     calendarHeight = CALENDAR_HEIGHT,
     calendarWidth = CALENDAR_WIDTH,
+    calendarHeightDynamic = false,
     calendarStyle,
     animateScroll = false,
     showScrollIndicator = false,
@@ -224,16 +227,20 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     return false;
   }, [currentMonth]);
 
+  const getCalendarHeight = useCallback(({index, month, year}: {index: number, month: string, year: string}) => {
+    if(calendarHeightDynamic && index === 0) {
+        const daysInCurrentMonth = new Date(Number(year), Number(month), 0).getDate();
+        const latestDays = daysInCurrentMonth - initialDate.current.getDate()
+        return Math.round(latestDays / 7) * CALENDAR_LINE_HEIGHT
+    }
+    return calendarHeight
+  }, [])
+
   const renderItem = useCallback(({item, index}: {item: XDate, index: number}) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
-    let dynamicHeight;
-    if(index === 0) {
-      const daysInCurrentMonth = new Date(Number(year), Number(month), 0).getDate();
-      const latestDays = daysInCurrentMonth - initialDate.current.getDate();
-      dynamicHeight = Math.round(latestDays / 7) * CALENDAR_LINE_HEIGHT
-    };
+
     return (
       <CalendarListItem
         {...calendarProps}
@@ -244,7 +251,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal}
         calendarWidth={calendarWidth}
-        calendarHeight={dynamicHeight || calendarHeight}
+        calendarHeight={getCalendarHeight(index, month, year)}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
       />
