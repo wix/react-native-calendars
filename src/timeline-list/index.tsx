@@ -162,6 +162,7 @@ const TimelineList = (props: TimelineListProps) => {
       scrollViewProps={{
         onMomentumScrollEnd
       }}
+      key={numberOfDays}
     />
   );
 };
