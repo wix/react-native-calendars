@@ -60,11 +60,13 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   const onPageChange = useCallback(
     (pageIndex: number, _prevPage, {scrolledByUser}) => {
+      const dateData = items[pageIndex];
       if (scrolledByUser) {
-        context?.setDate(items[pageIndex], UpdateSources.WEEK_SCROLL);
+        context?.setDate(dateData, UpdateSources.WEEK_SCROLL);
       }
+      props.onDayPress?.(dateData);
     },
-    [items]
+      [items, props.onDayPress]
   );
 
   const reloadPages = useCallback(
