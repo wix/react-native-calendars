@@ -8,7 +8,7 @@ import WeekDaysNames from '../../commons/WeekDaysNames';
 import {CalendarListProps} from '../../calendar-list';
 import CalendarContext from '../../expandableCalendar/Context';
 import styleConstructor from '../style';
-import {toMarkingFormat} from '../../interface';
+import {toMarkingFormat, xdateToData} from '../../interface';
 import {extractCalendarProps} from '../../componentUpdater';
 import constants from '../../commons/constants';
 import {UpdateSources} from '../commons';
@@ -64,7 +64,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       if (scrolledByUser) {
         context?.setDate(dateData, UpdateSources.WEEK_SCROLL);
       }
-      props.onDayPress?.(dateData);
+      props.onDayPress?.(xdateToData(dateData));
     },
       [items, props.onDayPress]
   );
