@@ -44,8 +44,8 @@ const CalendarListScreen = (props: Props) => {
     <CalendarList
       testID={testIDs.calendarList.CONTAINER}
       current={initialDate}
-      pastScrollRange={0}
-      futureScrollRange={12}
+      pastScrollRange={RANGE}
+      futureScrollRange={RANGE}
       onDayPress={onDayPress}
       markedDates={marked}
       renderHeader={!horizontalView ? renderCustomHeader : undefined}
@@ -54,7 +54,6 @@ const CalendarListScreen = (props: Props) => {
       horizontal={horizontalView}
       pagingEnabled={horizontalView}
       staticHeader={horizontalView}
-      minDate={initialDate}
     />
   );
 };
