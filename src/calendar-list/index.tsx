@@ -137,6 +137,12 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     });
   }, [items]);
 
+  const getDateIndex = useCallback((date: string) => {
+    return findIndex(items, function(item) {
+      return item.toString() === date.toString();
+    });
+  }, [items]);
+
   useEffect(() => {
     if (current) {
       scrollToMonth(new XDate(current));
@@ -188,7 +194,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const addMonth = useCallback((count: number) => {
     const day = currentMonth?.clone().addMonths(count, true);
-    if (sameMonth(day, currentMonth)) {
+    if (sameMonth(day, currentMonth) || getDateIndex(day) === -1) {
       return;
     }
     scrollToMonth(day);
@@ -280,7 +286,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       onViewableItemsChanged
     },
   ]);
-
+ 
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList
