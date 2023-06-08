@@ -1,3 +1,5 @@
+import isEqual from 'lodash/isEqual'
+
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {View} from 'react-native';
 import XDate from 'xdate';
@@ -24,12 +26,12 @@ const NUMBER_OF_PAGES = 50;
 const DEFAULT_PAGE_HEIGHT = 48;
 
 const WeekCalendar = (props: WeekCalendarProps) => {
-  const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, calendarHeight = DEFAULT_PAGE_HEIGHT, testID} = props;
+  const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, calendarHeight = DEFAULT_PAGE_HEIGHT, testID, minDate, maxDate} = props;
   const context = useContext(CalendarContext);
   const {date, updateSource} = context;
   const style = useRef(styleConstructor(theme));
   const list = useRef();
-  const [items, setItems] = useState(getDatesArray(current || date, firstDay, NUMBER_OF_PAGES));
+  const [items, setItems] = useState(getDatesArray(current || date, firstDay, NUMBER_OF_PAGES, minDate, maxDate));
 
   const extraData = {
     current,
@@ -70,7 +72,11 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const reloadPages = useCallback(
     pageIndex => {
       const date = items[pageIndex];
-      setItems(getDatesArray(date, firstDay, NUMBER_OF_PAGES));
+      const newDatesArray = getDatesArray(date, firstDay, NUMBER_OF_PAGES, minDate, maxDate);
+      //setItems(getDatesArray(date, firstDay, NUMBER_OF_PAGES, minDate, maxDate));
+      if (!isEqual(items ,newDatesArray)){
+        setItems(newDatesArray);
+      }
     },
     [items]
   );
@@ -116,10 +122,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           data={items}
           renderItem={renderItem}
           reloadPages={reloadPages}
-          onReachNearEdgeThreshold={Math.round(NUMBER_OF_PAGES * 0.4)}
+          onReachNearEdgeThreshold={getNearEdgeThreshold(items.length)}
           extendedState={extraData}
           style={style.current.container}
-          initialPageIndex={NUMBER_OF_PAGES}
+          initialPageIndex={getInitialIndex(date, items, firstDay, minDate, maxDate)}
           pageHeight={calendarHeight}
           pageWidth={containerWidth}
           onPageChange={onPageChange}
@@ -133,6 +139,32 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 };
 
 export default WeekCalendar;
+
+function getNearEdgeThreshold(elements: number){
+  const threshold = Math.round((elements / 2) * 0.5)
+  return threshold > 1 ? threshold : 2
+}
+
+function getInitialIndex(date: string, elements: string[], firstDay: number, minDate: string | null = null, maxDate: string | null = null){
+  if (elements.length === 2) {
+      const firstDays = minDate ?  countWeekDaysBetween(firstDay, date, minDate) : null;
+      const lastDays = maxDate ? countWeekDaysBetween(firstDay + 6, date, maxDate) : null;
+      return (firstDays === lastDays) ? 0 :
+             (firstDays === null) ? 1 :
+             (lastDays === null) ? 0 :
+             (firstDays > lastDays) ? 1 :
+             0;
+  }
+  return Math.round((elements.length - 1) / 2)
+}
+
+function countWeekDaysBetween(weekDay: number, startDate: string, endDate: string){
+  const start = XDate(startDate);
+  const end = XDate(endDate);
+  const diff = 1 +  Math.abs(end.diffDays(start));
+  let weekDaysBetween =  Math.abs(Math.floor( (diff+(start.getDay()+6-weekDay) % 7 ) / 7 ));
+  return weekDaysBetween;
+}
 
 // function getDate({current, context, firstDay = 0}: WeekCalendarProps, weekIndex: number) {
 function getDate(date: string, firstDay: number, weekIndex: number) {
@@ -151,11 +183,43 @@ function getDate(date: string, firstDay: number, weekIndex: number) {
 }
 
 // function getDatesArray(args: WeekCalendarProps, numberOfPages = NUMBER_OF_PAGES) => {
-function getDatesArray(date: string, firstDay: number, numberOfPages = NUMBER_OF_PAGES) {
+function getDatesArray(date: string, firstDay: number, numberOfPages = NUMBER_OF_PAGES,  minDate: string | null = null, maxDate: string | null = null) {
+  let pages = numberOfPages
+  const countFirstDays = minDate ?  countWeekDaysBetween(firstDay, date, minDate) : null;
+  const countLastDays = maxDate ? countWeekDaysBetween(firstDay + 6, date, maxDate) : null;
+
+  const pageFilters = [countFirstDays, countLastDays].filter(c => c !== null)
+
+  if (pageFilters.length > 0) {
+      if (numberOfPages > Math.min(...pageFilters)){
+          pages = Math.min(...pageFilters);
+      }
+  }
+
   const array = [];
-  for (let index = -numberOfPages; index <= numberOfPages; index++) {
-    const d = getDate(date, firstDay, index);
-    array.push(d);
+  for (let index = -pages; index <= pages; index++) {
+      let d = getDate(date, firstDay, index);
+      const reachMinValue = pages === countFirstDays && index === -pages;
+      if (reachMinValue){
+          d = toMarkingFormat(new XDate(minDate));
+      }
+
+      array.push(d);
+  }
+
+  // add an aditional page if the smallest value between countFirstDays and countLastDays is 0
+  if (pages === 0 && countFirstDays !== countLastDays) {
+      if (countLastDays === null || countFirstDays < countLastDays){
+          const d = getDate(date, firstDay, 1);
+          const d2 = getDate(date, firstDay, 2);
+          array.push(d);
+          array.push(d2);
+      } else {
+          const d = getDate(date, firstDay, -1);
+          const d2 = getDate(date, firstDay, -2);
+          array.unshift(d)
+          array.unshift(d2)
+      }
   }
   return array;
 }

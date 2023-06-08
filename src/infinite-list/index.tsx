@@ -117,7 +117,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
   const onMomentumScrollEnd = useCallback(
     event => {
-      if (pageIndex.current) {
+      if (pageIndex.current !== undefined) {
         if (isOnEdge.current) {
           onReachEdge?.(pageIndex.current!);
           reloadPagesDebounce?.(pageIndex.current);

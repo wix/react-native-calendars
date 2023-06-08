@@ -30,6 +30,8 @@ const Week = React.memo((props: WeekProps) => {
     firstDay,
     hideExtraDays,
     markedDates,
+    minDate,
+    maxDate,
     onDayPress,
     onDayLongPress,
     style: propsStyle,
@@ -56,7 +58,7 @@ const Week = React.memo((props: WeekProps) => {
   const dayProps = extractDayProps(props);
   const currXdate = useMemo(() => parseDate(current), [current]);
 
-  const renderDay = (day: XDate, id: number) => {
+  const renderDay = (day: XDate, id: number, disabled: boolean) => {
     // hide extra days
     if (current && hideExtraDays) {
       if (!sameMonth(day, currXdate)) {
@@ -68,6 +70,7 @@ const Week = React.memo((props: WeekProps) => {
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
+          disabled={disabled}
           testID={`${testID}.day_${dayString}`}
           date={dayString}
           state={getState(day, currXdate, props, disableDaySelection)}
@@ -81,6 +84,8 @@ const Week = React.memo((props: WeekProps) => {
 
   const renderWeek = () => {
     const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
+    const minD = minDate && new XDate(minDate)
+    const maxD = maxDate && new XDate(maxDate)
     const week: JSX.Element[] = [];
 
     if (dates) {
@@ -89,7 +94,8 @@ const Week = React.memo((props: WeekProps) => {
       const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
       datesToRender.forEach((day: XDate | string, id: number) => {
         const d = day instanceof XDate ? day : new XDate(day);
-        week.push(renderDay(d, id));
+        const disabled = minD && d.diffDays(minD) > 0 || maxD && d.diffDays(maxD) < 0
+        week.push(renderDay(d, id, disabled));
       }, this);
     }
 
