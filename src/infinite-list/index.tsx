@@ -4,7 +4,7 @@ import noop from 'lodash/noop';
 
 import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
 import {ScrollViewProps} from 'react-native';
-import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
+import {AutoScroll, DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 
 import constants from '../commons/constants';
 import {useCombinedRefs} from '../hooks';
@@ -25,6 +25,7 @@ export interface InfiniteListProps
   scrollViewProps?: ScrollViewProps;
   reloadPages?: (pageIndex: number) => void;
   positionIndex?: number;
+  autoScroll?: boolean;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -42,7 +43,8 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     initialPageIndex = 0,
     extendedState,
     scrollViewProps,
-    positionIndex = 0
+    positionIndex = 0,
+    autoScroll = true
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -67,13 +69,15 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const reloadPagesDebounce = useCallback(debounce(reloadPages, 500, {leading: false, trailing: true}), [reloadPages]);
 
   useEffect(() => {
-    setTimeout(() => {
-      const x = isHorizontal ? Math.floor(data.length / 2) * pageWidth : 0;
-      const y = isHorizontal ? 0 : positionIndex * pageHeight;
-      // @ts-expect-error
-      listRef.current?.scrollToOffset?.(x, y, false);
-    }, 0);
-  }, [data]);
+    if (autoScroll) {
+      setTimeout(() => {
+        const x = isHorizontal ? Math.floor(data.length / 2) * pageWidth : 0;
+        const y = isHorizontal ? 0 : positionIndex * pageHeight;
+        // @ts-expect-error
+        listRef.current?.scrollToOffset?.(x, y, false);
+      }, 0);
+    }
+  }, [data, autoScroll]);
 
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {

@@ -125,13 +125,14 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           onReachNearEdgeThreshold={getNearEdgeThreshold(items.length)}
           extendedState={extraData}
           style={style.current.container}
-          initialPageIndex={getInitialIndex(date, items, firstDay, minDate, maxDate)}
+          initialPageIndex={getInitialIndex(date, items, firstDay)}
           pageHeight={calendarHeight}
           pageWidth={containerWidth}
           onPageChange={onPageChange}
           scrollViewProps={{
             showsHorizontalScrollIndicator: false
           }}
+          autoScroll={items.length > 2}
         />
       </View>
     </View>
@@ -142,20 +143,20 @@ export default WeekCalendar;
 
 function getNearEdgeThreshold(elements: number){
   const threshold = Math.round((elements / 2) * 0.5)
-  return threshold > 1 ? threshold : 2
+  return threshold;
 }
 
-function getInitialIndex(date: string, elements: string[], firstDay: number, minDate: string | null = null, maxDate: string | null = null){
-  if (elements.length === 2) {
-      const firstDays = minDate ?  countWeekDaysBetween(firstDay, date, minDate) : null;
-      const lastDays = maxDate ? countWeekDaysBetween(firstDay + 6, date, maxDate) : null;
-      return (firstDays === lastDays) ? 0 :
-             (firstDays === null) ? 1 :
-             (lastDays === null) ? 0 :
-             (firstDays > lastDays) ? 1 :
-             0;
+function getInitialIndex(date: string, elements: string[], firstDay: number){
+  let index;
+  if (elements.length < 3) {
+      elements.forEach((element, i) => {
+        if (sameWeek(date, element, firstDay))
+        {
+          index = i;
+        }
+      })
   }
-  return Math.round((elements.length - 1) / 2)
+  return index !== undefined ? index : Math.round((elements.length - 1) / 2)
 }
 
 function countWeekDaysBetween(weekDay: number, startDate: string, endDate: string){
@@ -185,8 +186,12 @@ function getDate(date: string, firstDay: number, weekIndex: number) {
 // function getDatesArray(args: WeekCalendarProps, numberOfPages = NUMBER_OF_PAGES) => {
 function getDatesArray(date: string, firstDay: number, numberOfPages = NUMBER_OF_PAGES,  minDate: string | null = null, maxDate: string | null = null) {
   let pages = numberOfPages
-  const countFirstDays = minDate ?  countWeekDaysBetween(firstDay, date, minDate) : null;
-  const countLastDays = maxDate ? countWeekDaysBetween(firstDay + 6, date, maxDate) : null;
+
+  let countFirstDays = minDate ?  countWeekDaysBetween(firstDay, date, minDate) : null;
+  let countLastDays = maxDate ? countWeekDaysBetween(firstDay === 0 ? firstDay + 6 : 0, date, maxDate) : null;
+
+  countFirstDays = minDate && countFirstDays === 1 && sameWeek(minDate, date, firstDay) ? 0 : countFirstDays
+  countLastDays = maxDate && countLastDays === 1 && sameWeek(maxDate, date, firstDay) ? 0 : countLastDays
 
   const pageFilters = [countFirstDays, countLastDays].filter(c => c !== null)
 
@@ -211,14 +216,10 @@ function getDatesArray(date: string, firstDay: number, numberOfPages = NUMBER_OF
   if (pages === 0 && countFirstDays !== countLastDays) {
       if (countLastDays === null || countFirstDays < countLastDays){
           const d = getDate(date, firstDay, 1);
-          const d2 = getDate(date, firstDay, 2);
           array.push(d);
-          array.push(d2);
       } else {
           const d = getDate(date, firstDay, -1);
-          const d2 = getDate(date, firstDay, -2);
           array.unshift(d)
-          array.unshift(d2)
       }
   }
   return array;
