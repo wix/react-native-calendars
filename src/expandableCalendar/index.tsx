@@ -154,6 +154,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return false;
   };
 
+  useEffect(() => {
+    // date was changed from AgendaList, arrows or scroll
+    scrollToDate(date);
+  }, [date]);
+
   /** Number of weeks */
 
   const getNumberOfWeeksInMonth = (month: string) => {
@@ -163,9 +168,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const numberOfWeeks = useRef(getNumberOfWeeksInMonth(date));
 
   /** Position */
+
   const [position, setPosition] = useState(numberOfDays ? Positions.CLOSED : initialPosition);
   const isOpen = position === Positions.OPEN;
-
   const getOpenHeight = () => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
@@ -174,17 +179,16 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
   const openHeight = useRef(getOpenHeight());
   const closedHeight = useMemo(() => CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob]);
-
   const startHeight = useMemo(() => isOpen ? openHeight.current : closedHeight, [closedHeight, isOpen]);
   const _height = useRef(startHeight);
   const deltaY = useMemo(() => new Animated.Value(startHeight), [startHeight]);
+  const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
 
   useEffect(() => {
     _height.current = startHeight;
     deltaY.setValue(startHeight);
   }, [startHeight]);
 
-  const headerDeltaY = useRef(new Animated.Value(isOpen ? -HEADER_HEIGHT : 0));
 
   useEffect(() => {
     if (numberOfDays) {
@@ -249,7 +253,17 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return {height: deltaY};
   }, [deltaY]);
 
-  /** Effects */
+  const numberOfDaysHeaderStyle = useMemo(() => {
+    if (numberOfDays && numberOfDays > 1) {
+      return {paddingHorizontal: 0};
+    }
+  }, [numberOfDays]);
+
+  const _headerStyle = useMemo(() => {
+    return [numberOfDaysHeaderStyle, props.headerStyle];
+  }, [props.headerStyle, numberOfDaysHeaderStyle]);
+
+  /** AccessibilityInfo */
 
   useEffect(() => {
     if (AccessibilityInfo) {
@@ -261,11 +275,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       }
     }
   }, []);
-
-  useEffect(() => {
-    // date was changed from AgendaList, arrows or scroll
-    scrollToDate(date);
-  }, [date]);
 
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
@@ -303,7 +312,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
           d.addDays(firstDayOfWeek);
         }
-
       }
 
       setDate?.(toMarkingFormat(d), UpdateSources.PAGE_SCROLL);
@@ -338,6 +346,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       // horizontal Week view
       if (!isOpen) {
         _weekCalendarStyles.style.opacity = Math.min(1, Math.max(1 - gestureState.dy / 100, 0));
+      } else if (gestureState.dy < 0) {
+        _weekCalendarStyles.style.opacity = Math.max(0, Math.min(Math.abs(gestureState.dy / 200), 1));
       }
     }
 
@@ -358,7 +368,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
     onPanResponderTerminate: handlePanResponderEnd
-  }) : PanResponder.create({}), [numberOfDays]);
+  }) : PanResponder.create({}), [numberOfDays, position]);
 
   /** Animated */
 
@@ -553,16 +563,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       </Animated.View>
     );
   };
-
-  const numberOfDaysHeaderStyle = useMemo(() => {
-    if (numberOfDays && numberOfDays > 1) {
-      return {paddingHorizontal: 0};
-    }
-  }, [numberOfDays]);
-
-  const _headerStyle = useMemo(() => {
-    return [numberOfDaysHeaderStyle, props.headerStyle];
-  }, [props.headerStyle, numberOfDaysHeaderStyle]);
 
   const renderCalendarList = () => {
     return (
