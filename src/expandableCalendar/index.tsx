@@ -345,7 +345,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     } else {
       // horizontal Week view
       if (!isOpen) {
-          _weekCalendarStyles.style.opacity = Math.min(1, Math.max(1 - gestureState.dy / 100, 0));
+        _weekCalendarStyles.style.opacity = Math.min(1, Math.max(1 - gestureState.dy / 100, 0));
       } else if (gestureState.dy < 0) {
         _weekCalendarStyles.style.opacity = Math.max(0, Math.min(Math.abs(gestureState.dy / 200), 1));
       }
