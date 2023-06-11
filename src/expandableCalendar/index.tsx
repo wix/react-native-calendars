@@ -336,6 +336,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
 
   const handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+    // limit min height to closed height
     _wrapperStyles.current.style.height = Math.max(closedHeight, _height.current + gestureState.dy);
 
     if (!horizontal) {
