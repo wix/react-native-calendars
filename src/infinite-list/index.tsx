@@ -4,7 +4,7 @@ import noop from 'lodash/noop';
 
 import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
 import {ScrollViewProps} from 'react-native';
-import {AutoScroll, DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
+import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 
 import constants from '../commons/constants';
 import {useCombinedRefs} from '../hooks';

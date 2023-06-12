@@ -84,8 +84,8 @@ const Week = React.memo((props: WeekProps) => {
 
   const renderWeek = () => {
     const dates = numberOfDays > 1 ? getPartialWeekDates(current, numberOfDays) : getWeek(current);
-    const minD = minDate && new XDate(minDate)
-    const maxD = maxDate && new XDate(maxDate)
+    const minD = minDate && new XDate(minDate);
+    const maxD = maxDate && new XDate(maxDate);
     const week: JSX.Element[] = [];
 
     if (dates) {
@@ -94,7 +94,7 @@ const Week = React.memo((props: WeekProps) => {
       const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
       datesToRender.forEach((day: XDate | string, id: number) => {
         const d = day instanceof XDate ? day : new XDate(day);
-        const disabled = minD && d.diffDays(minD) > 0 || maxD && d.diffDays(maxD) < 0
+        const disabled = minD && d.diffDays(minD) > 0 || maxD && d.diffDays(maxD) < 0;
         week.push(renderDay(d, id, disabled));
       }, this);
     }
