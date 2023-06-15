@@ -120,7 +120,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
 
   return (
     <CalendarContext.Provider value={contextValue}>
-      <View style={wrapperStyle}>{children}</View>
+      <View style={wrapperStyle} key={numberOfDays}>{children}</View>
       {showTodayButton && renderTodayButton()}
     </CalendarContext.Provider>
   );
