@@ -176,7 +176,7 @@ const AgendaList = (props: AgendaListProps) => {
       list?.current.scrollToLocation({
         animated: true,
         sectionIndex: sectionIndex,
-        itemIndex: 0,
+        itemIndex: 1,
         viewPosition: 0, // position at the top
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
