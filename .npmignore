@@ -259,7 +259,7 @@ scripts/
 
 # Typescript
 # ignore the .ts files
-*.ts
-*.tsx
+# *.ts
+# *.tsx
 # include the .d.ts files
 !*.d.ts 
