@@ -49,15 +49,17 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     return dataProviderMaker(data);
   }, [data]);
 
-  const layoutProvider = useRef(
-    new LayoutProvider(
-      () => 'page',
-      (_type, dim) => {
+  const layoutProvider = useMemo(
+    () => new LayoutProvider(
+      (index) => data[index]?.isTitle ? 'title': 'page',
+      (type, dim) => {
         dim.width = pageWidth;
-        dim.height = pageHeight;
+        dim.height = type === 'title' ? 60 : 120;
       }
-    )
+    ),
+    [data]
   );
+
 
   const listRef = useCombinedRefs(ref);
   const pageIndex = useRef<number>();
@@ -157,7 +159,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       isHorizontal={isHorizontal}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
-      layoutProvider={layoutProvider.current}
+      layoutProvider={layoutProvider}
       extendedState={extendedState}
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
