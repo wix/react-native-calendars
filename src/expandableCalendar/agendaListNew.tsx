@@ -170,11 +170,9 @@ const AgendaList = (props: AgendaListProps) => {
   }, [onScroll]);
 
   const _onVisibleIndicesChanged = useCallback((_: number[], now: number[]) => {
-    console.log('onVisibleIndicesChanged', now, 'sectionScroll.current', sectionScroll.current);
     if (now && now.length && !sectionScroll.current) {
       const topItemIndex = now[0];
       const topSection = findItemTitleIndex(topItemIndex);
-      console.log('topSection', topSection, 'val', data[topSection]);
       if (topSection && topSection !== _topSection.current) {
         _topSection.current = topSection;
         if (didScroll.current && !avoidDateUpdates) {
