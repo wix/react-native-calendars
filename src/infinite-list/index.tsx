@@ -25,6 +25,7 @@ export interface InfiniteListProps
   scrollViewProps?: ScrollViewProps;
   reloadPages?: (pageIndex: number) => void;
   positionIndex?: number;
+  layoutProvider?: LayoutProvider;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -49,15 +50,14 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     return dataProviderMaker(data);
   }, [data]);
 
-  const layoutProvider = useMemo(
-    () => new LayoutProvider(
-      (index) => data[index]?.isTitle ? 'title': 'page',
-      (type, dim) => {
+  const layoutProvider = useRef(
+    new LayoutProvider(
+      () => 'page',
+      (_type, dim) => {
         dim.width = pageWidth;
-        dim.height = type === 'title' ? 60 : 120;
+        dim.height = pageHeight;
       }
-    ),
-    [data]
+    )
   );
 
 
@@ -159,13 +159,15 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       isHorizontal={isHorizontal}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
-      layoutProvider={layoutProvider}
+      layoutProvider={props.layoutProvider ?? layoutProvider.current}
       extendedState={extendedState}
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
       onScroll={onScroll}
       style={style}
       scrollViewProps={scrollViewPropsMemo}
+      onMomentumScrollEnd={onMomentumScrollEnd}
+      onVisibleIndicesChanged={props.onVisibleIndicesChanged}
     />
   );
 };
