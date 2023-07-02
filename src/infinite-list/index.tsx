@@ -166,7 +166,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       onScroll={onScroll}
       style={style}
       scrollViewProps={scrollViewPropsMemo}
-      onMomentumScrollEnd={onMomentumScrollEnd}
+      onMomentumScrollEnd={scrollViewProps?.onMomentumScrollEnd}
       onVisibleIndicesChanged={props.onVisibleIndicesChanged}
     />
   );

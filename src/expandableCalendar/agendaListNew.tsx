@@ -24,7 +24,6 @@ import constants from "../commons/constants";
 import {parseDate} from "../interface";
 import {LayoutProvider} from "recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider";
 import {AgendaListProps, AgendaSectionHeader} from "./agendaList";
-import {ScrollEvent} from "recyclerlistview/src/core/scrollcomponent/BaseScrollView";
 
 /**
  * @description: AgendaList component that use InfiniteList to improve performance
@@ -37,7 +36,6 @@ const AgendaList = (props: AgendaListProps) => {
     theme,
     sections,
     scrollToNextEvent,
-    viewOffset = 0,
     avoidDateUpdates,
     onScroll,
     renderSectionHeader,
@@ -139,7 +137,7 @@ const AgendaList = (props: AgendaListProps) => {
 
       list.current?.scrollToIndex(sectionIndex, true);
     }
-  }, 1000, {leading: false, trailing: true}), [viewOffset, sections, data]);
+  }, 1000, {leading: false, trailing: true}), [ sections]);
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
@@ -152,7 +150,7 @@ const AgendaList = (props: AgendaListProps) => {
     [data]
   );
 
-  const _onScroll = useCallback((rawEvent: ScrollEvent) => {
+  const _onScroll = useCallback((rawEvent: any) => {
     if (!didScroll.current) {
       didScroll.current = true;
       scrollToSection.cancel();
@@ -169,19 +167,19 @@ const AgendaList = (props: AgendaListProps) => {
     onScroll?.(event as any);
   }, [onScroll]);
 
-  const _onVisibleIndicesChanged = useCallback((_: number[], now: number[]) => {
-    if (now && now.length && !sectionScroll.current) {
-      const topItemIndex = now[0];
-      const topSection = findItemTitleIndex(topItemIndex);
+  const _onVisibleIndicesChanged = useCallback((all: number[]) => {
+    if (all && all.length && !sectionScroll.current) {
+      const topItemIndex = all[0];
+      const topSection = data[findItemTitleIndex(topItemIndex)];
       if (topSection && topSection !== _topSection.current) {
-        _topSection.current = topSection;
+        _topSection.current = topSection.title;
         if (didScroll.current && !avoidDateUpdates) {
           // to avoid setDate() on first load (while setting the initial context.date value)
-          setDate?.(_topSection.current, UpdateSources.LIST_DRAG);
+          setDate?.(topSection.title, UpdateSources.LIST_DRAG);
         }
       }
     }
-  }, [avoidDateUpdates, setDate]);
+  }, [avoidDateUpdates, setDate, data]);
 
   const findItemTitleIndex = useCallback((itemIndex: number) => {
     let titleIndex = itemIndex;
@@ -190,9 +188,11 @@ const AgendaList = (props: AgendaListProps) => {
     }
 
     return titleIndex;
-  }, [date]);
+  }, [data]);
 
-
+  const _onMomentumScrollEnd = useCallback(() => {
+    sectionScroll.current = false;
+  }, []);
 
   const headerTextStyle = useMemo(() => [style.current.sectionText, sectionStyle], [sectionStyle]);
 
@@ -232,6 +232,7 @@ const AgendaList = (props: AgendaListProps) => {
       layoutProvider={layoutProvider}
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
+      scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd}}
     />
   );
 };
