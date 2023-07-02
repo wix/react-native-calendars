@@ -167,7 +167,7 @@ const AgendaList = (props: AgendaListProps) => {
     onScroll?.(event as any);
   }, [onScroll]);
 
-  const _onVisibleIndicesChanged = useCallback((all: number[]) => {
+  const _onVisibleIndicesChanged = useCallback(debounce((all: number[]) => {
     if (all && all.length && !sectionScroll.current) {
       const topItemIndex = all[0];
       const topSection = data[findItemTitleIndex(topItemIndex)];
@@ -179,7 +179,7 @@ const AgendaList = (props: AgendaListProps) => {
         }
       }
     }
-  }, [avoidDateUpdates, setDate, data]);
+  }, 1000, {leading: false, trailing: true},), [avoidDateUpdates, setDate, data]);
 
   const findItemTitleIndex = useCallback((itemIndex: number) => {
     let titleIndex = itemIndex;
@@ -223,6 +223,12 @@ const AgendaList = (props: AgendaListProps) => {
     return <></>;
   }, [props.renderItem]);
 
+  const _onEndReached = useCallback(() => {
+    if (props.onEndReached) {
+      props.onEndReached({distanceFromEnd: 0});
+    }
+  }, [props.onEndReached]);
+
   return (
     <InfiniteList
       ref={list}
@@ -233,6 +239,7 @@ const AgendaList = (props: AgendaListProps) => {
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
       scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd}}
+      onEndReached={_onEndReached}
     />
   );
 };

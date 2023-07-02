@@ -69,13 +69,17 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const reloadPagesDebounce = useCallback(debounce(reloadPages, 500, {leading: false, trailing: true}), [reloadPages]);
 
   useEffect(() => {
+    if (props.onEndReached) {
+      return;
+    }
+
     setTimeout(() => {
       const x = isHorizontal ? Math.floor(data.length / 2) * pageWidth : 0;
       const y = isHorizontal ? 0 : positionIndex * pageHeight;
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
-  }, [data]);
+  }, [data, props.onEndReached]);
 
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {
@@ -167,6 +171,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       style={style}
       scrollViewProps={scrollViewPropsMemo}
       onMomentumScrollEnd={scrollViewProps?.onMomentumScrollEnd}
+      onEndReached={props?.onEndReached}
       onVisibleIndicesChanged={props.onVisibleIndicesChanged}
     />
   );
