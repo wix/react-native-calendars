@@ -60,7 +60,6 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     )
   );
 
-
   const listRef = useCombinedRefs(ref);
   const pageIndex = useRef<number>();
   const isOnEdge = useRef(false);
