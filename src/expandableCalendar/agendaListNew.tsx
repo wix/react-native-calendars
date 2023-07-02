@@ -240,6 +240,7 @@ const AgendaList = (props: AgendaListProps) => {
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
       scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd}}
       onEndReached={_onEndReached}
+      onEndReachedThreshold={props.onEndReachedThreshold as number | undefined}
     />
   );
 };
