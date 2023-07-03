@@ -26,6 +26,7 @@ export interface InfiniteListProps
   reloadPages?: (pageIndex: number) => void;
   positionIndex?: number;
   layoutProvider?: LayoutProvider;
+  disableScrollOnDataChange?: boolean;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -68,7 +69,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const reloadPagesDebounce = useCallback(debounce(reloadPages, 500, {leading: false, trailing: true}), [reloadPages]);
 
   useEffect(() => {
-    if (props.onEndReached) {
+    if (props.disableScrollOnDataChange) {
       return;
     }
 
@@ -78,7 +79,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
-  }, [data, props.onEndReached]);
+  }, [data, props.disableScrollOnDataChange]);
 
   const onScroll = useCallback(
     (event, offsetX, offsetY) => {

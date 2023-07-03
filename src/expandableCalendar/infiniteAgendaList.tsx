@@ -236,6 +236,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd}}
       onEndReached={_onEndReached}
       onEndReachedThreshold={props.onEndReachedThreshold as number | undefined}
+      disableScrollOnDataChange
     />
   );
 };
