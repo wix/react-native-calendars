@@ -220,7 +220,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
 
   const _onEndReached = useCallback(() => {
     if (props.onEndReached) {
-      props.onEndReached({distanceFromEnd: 0});
+      props.onEndReached({distanceFromEnd: 0}); // The RecyclerListView doesn't provide the distanceFromEnd, so we just pass 0
     }
   }, [props.onEndReached]);
 
