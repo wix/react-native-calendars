@@ -34,7 +34,7 @@ import {UpdateSources, todayString} from './commons';
 import constants from '../commons/constants';
 import styleConstructor from './style';
 import Context from './Context';
-import InfiniteAgendaList from './agendaListNew';
+import InfiniteAgendaList from './infiniteAgendaList';
 
 const viewabilityConfig = {
   itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
@@ -62,9 +62,12 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   scrollToNextEvent?: boolean;
   /**
    * @experimental
-   * If true, uses InfiniteList instead of SectionList. This feature is experimental and subject to change.
+   * If defined, uses InfiniteList instead of SectionList. This feature is experimental and subject to change.
    */
-  useInfiniteList?: boolean;
+  infiniteListProps?: {
+    itemHeight?: number;
+    titleHeight?: number;
+  };
 }
 
 /**
@@ -74,7 +77,7 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const AgendaList = (props: AgendaListProps) => {
-  if (props.useInfiniteList) {
+  if (props.infiniteListProps) {
     return <InfiniteAgendaList {...props} />;
   }
 
@@ -281,7 +284,7 @@ const AgendaList = (props: AgendaListProps) => {
 
 interface AgendaSectionHeaderProps {
   title?: string;
-  onLayout: TextProps['onLayout'];
+  onLayout?: TextProps['onLayout'];
   style: TextProps['style'];
 }
 

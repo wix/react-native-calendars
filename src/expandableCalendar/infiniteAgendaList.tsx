@@ -10,7 +10,6 @@ import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} fr
 import {
   DefaultSectionT,
   SectionListData,
-  LayoutChangeEvent,
 } from 'react-native';
 
 import {useDidUpdate} from '../hooks';
@@ -28,10 +27,10 @@ import {AgendaListProps, AgendaSectionHeader} from "./agendaList";
 /**
  * @description: AgendaList component that use InfiniteList to improve performance
  * @note: Should be wrapped with 'CalendarProvider'
- * @extends: SectionList
+ * @extends: InfiniteList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const AgendaList = (props: AgendaListProps) => {
+const InfiniteAgendaList = (props: AgendaListProps) => {
   const {
     theme,
     sections,
@@ -44,6 +43,7 @@ const AgendaList = (props: AgendaListProps) => {
     dayFormat = 'dddd, MMM d',
     useMoment,
     markToday = true,
+    infiniteListProps,
   } = props;
 
   const {date, updateSource, setDate} = useContext(Context);
@@ -53,7 +53,6 @@ const AgendaList = (props: AgendaListProps) => {
   const _topSection = useRef(sections[0]?.title);
   const didScroll = useRef(false);
   const sectionScroll = useRef(false);
-  const sectionHeight = useRef(0);
   const [data, setData] = useState([] as any[]);
 
   useEffect(() => {
@@ -132,7 +131,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
 
     if (list?.current && sectionIndex !== undefined) {
-      sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
+      sectionScroll.current = true; // to avoid setDate() in _onVisibleIndicesChanged
       _topSection.current = sections[findItemTitleIndex(sectionIndex)]?.title;
 
       list.current?.scrollToIndex(sectionIndex, true);
@@ -144,7 +143,7 @@ const AgendaList = (props: AgendaListProps) => {
       (index) => data[index]?.isTitle ? 'title': 'page',
       (type, dim) => {
         dim.width = constants.screenWidth;
-        dim.height = type === 'title' ? 60 : 120;
+        dim.height = type === 'title' ? infiniteListProps?.titleHeight ?? 60 : infiniteListProps?.itemHeight ?? 80;
       }
     ),
     [data]
@@ -196,10 +195,6 @@ const AgendaList = (props: AgendaListProps) => {
 
   const headerTextStyle = useMemo(() => [style.current.sectionText, sectionStyle], [sectionStyle]);
 
-  const onHeaderLayout = useCallback((event: LayoutChangeEvent) => {
-    sectionHeight.current = event.nativeEvent.layout.height;
-  }, []);
-
   const _renderSectionHeader = useCallback((info: {section: SectionListData<any, DefaultSectionT>}) => {
     const title = info?.section?.title;
 
@@ -208,7 +203,7 @@ const AgendaList = (props: AgendaListProps) => {
     }
 
     const headerTitle = getSectionTitle(title);
-    return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
+    return <AgendaSectionHeader title={headerTitle} style={headerTextStyle}/>;
   }, [headerTextStyle]);
 
   const _renderItem = useCallback((_type: any, item: any) => {
@@ -246,10 +241,10 @@ const AgendaList = (props: AgendaListProps) => {
 };
 
 
-export default AgendaList;
+export default InfiniteAgendaList;
 
-AgendaList.displayName = 'AgendaList';
-AgendaList.propTypes = {
+InfiniteAgendaList.displayName = 'InfiniteAgendaList';
+InfiniteAgendaList.propTypes = {
   dayFormat: PropTypes.string,
   dayFormatter: PropTypes.func,
   useMoment: PropTypes.bool,

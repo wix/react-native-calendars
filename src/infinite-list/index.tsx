@@ -169,7 +169,6 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       onScroll={onScroll}
       style={style}
       scrollViewProps={scrollViewPropsMemo}
-      onMomentumScrollEnd={scrollViewProps?.onMomentumScrollEnd}
       onEndReached={props?.onEndReached}
       onEndReachedThreshold={props?.onEndReachedThreshold}
       onVisibleIndicesChanged={props.onVisibleIndicesChanged}
