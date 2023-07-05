@@ -45,14 +45,19 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     extendedState,
     scrollViewProps,
     positionIndex = 0,
-    disableScrollOnDataChange
+    disableScrollOnDataChange,
+    onEndReachedThreshold,
+    onVisibleIndicesChanged,
+    layoutProvider,
+    onScroll,
+    onEndReached,
   } = props;
 
   const dataProvider = useMemo(() => {
     return dataProviderMaker(data);
   }, [data]);
 
-  const layoutProvider = useRef(
+  const _layoutProvider = useRef(
     new LayoutProvider(
       () => 'page',
       (_type, dim) => {
@@ -80,9 +85,9 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
-  }, [data, props.disableScrollOnDataChange]);
+  }, [data, disableScrollOnDataChange]);
 
-  const onScroll = useCallback(
+  const _onScroll = useCallback(
     (event, offsetX, offsetY) => {
       reloadPagesDebounce?.cancel();
 
@@ -117,9 +122,9 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
         pageIndex.current = newPageIndex;
       }
 
-      props.onScroll?.(event, offsetX, offsetY);
+      onScroll?.(event, offsetX, offsetY);
     },
-    [props.onScroll, onPageChange, data.length, reloadPagesDebounce]
+    [onScroll, onPageChange, data.length, reloadPagesDebounce]
   );
 
   const onMomentumScrollEnd = useCallback(
@@ -164,16 +169,16 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       isHorizontal={isHorizontal}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
-      layoutProvider={props.layoutProvider ?? layoutProvider.current}
+      layoutProvider={layoutProvider ?? _layoutProvider.current}
       extendedState={extendedState}
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
-      onScroll={onScroll}
+      onScroll={_onScroll}
       style={style}
       scrollViewProps={scrollViewPropsMemo}
-      onEndReached={props?.onEndReached}
-      onEndReachedThreshold={props?.onEndReachedThreshold}
-      onVisibleIndicesChanged={props.onVisibleIndicesChanged}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
+      onVisibleIndicesChanged={onVisibleIndicesChanged}
     />
   );
 };

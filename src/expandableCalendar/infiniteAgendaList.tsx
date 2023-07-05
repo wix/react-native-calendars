@@ -44,6 +44,9 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
     useMoment,
     markToday = true,
     infiniteListProps,
+    renderItem,
+    onEndReached,
+    onEndReachedThreshold
   } = props;
 
   const {date, updateSource, setDate} = useContext(Context);
@@ -211,18 +214,18 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       return _renderSectionHeader({section: item});
     }
 
-    if (props.renderItem) {
-      return props.renderItem({item} as any);
+    if (renderItem) {
+      return renderItem({item} as any);
     }
 
     return <></>;
-  }, [props.renderItem]);
+  }, [renderItem]);
 
   const _onEndReached = useCallback(() => {
-    if (props.onEndReached) {
-      props.onEndReached({distanceFromEnd: 0}); // The RecyclerListView doesn't provide the distanceFromEnd, so we just pass 0
+    if (onEndReached) {
+      onEndReached({distanceFromEnd: 0}); // The RecyclerListView doesn't provide the distanceFromEnd, so we just pass 0
     }
-  }, [props.onEndReached]);
+  }, [onEndReached]);
 
   return (
     <InfiniteList
@@ -235,7 +238,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
       scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd}}
       onEndReached={_onEndReached}
-      onEndReachedThreshold={props.onEndReachedThreshold as number | undefined}
+      onEndReachedThreshold={onEndReachedThreshold as number | undefined}
       disableScrollOnDataChange
     />
   );
