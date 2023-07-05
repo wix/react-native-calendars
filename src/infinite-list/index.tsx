@@ -44,7 +44,8 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     initialPageIndex = 0,
     extendedState,
     scrollViewProps,
-    positionIndex = 0
+    positionIndex = 0,
+    disableScrollOnDataChange
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -69,7 +70,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const reloadPagesDebounce = useCallback(debounce(reloadPages, 500, {leading: false, trailing: true}), [reloadPages]);
 
   useEffect(() => {
-    if (props.disableScrollOnDataChange) {
+    if (disableScrollOnDataChange) {
       return;
     }
 
