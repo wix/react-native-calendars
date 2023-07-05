@@ -25,6 +25,8 @@ export interface InfiniteListProps
   scrollViewProps?: ScrollViewProps;
   reloadPages?: (pageIndex: number) => void;
   positionIndex?: number;
+  layoutProvider?: LayoutProvider;
+  disableScrollOnDataChange?: boolean;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -42,14 +44,20 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     initialPageIndex = 0,
     extendedState,
     scrollViewProps,
-    positionIndex = 0
+    positionIndex = 0,
+    disableScrollOnDataChange,
+    onEndReachedThreshold,
+    onVisibleIndicesChanged,
+    layoutProvider,
+    onScroll,
+    onEndReached,
   } = props;
 
   const dataProvider = useMemo(() => {
     return dataProviderMaker(data);
   }, [data]);
 
-  const layoutProvider = useRef(
+  const _layoutProvider = useRef(
     new LayoutProvider(
       () => 'page',
       (_type, dim) => {
@@ -67,15 +75,19 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const reloadPagesDebounce = useCallback(debounce(reloadPages, 500, {leading: false, trailing: true}), [reloadPages]);
 
   useEffect(() => {
+    if (disableScrollOnDataChange) {
+      return;
+    }
+
     setTimeout(() => {
       const x = isHorizontal ? Math.floor(data.length / 2) * pageWidth : 0;
       const y = isHorizontal ? 0 : positionIndex * pageHeight;
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
-  }, [data]);
+  }, [data, disableScrollOnDataChange]);
 
-  const onScroll = useCallback(
+  const _onScroll = useCallback(
     (event, offsetX, offsetY) => {
       reloadPagesDebounce?.cancel();
 
@@ -110,9 +122,9 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
         pageIndex.current = newPageIndex;
       }
 
-      props.onScroll?.(event, offsetX, offsetY);
+      onScroll?.(event, offsetX, offsetY);
     },
-    [props.onScroll, onPageChange, data.length, reloadPagesDebounce]
+    [onScroll, onPageChange, data.length, reloadPagesDebounce]
   );
 
   const onMomentumScrollEnd = useCallback(
@@ -157,13 +169,16 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       isHorizontal={isHorizontal}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
-      layoutProvider={layoutProvider.current}
+      layoutProvider={layoutProvider ?? _layoutProvider.current}
       extendedState={extendedState}
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
-      onScroll={onScroll}
+      onScroll={_onScroll}
       style={style}
       scrollViewProps={scrollViewPropsMemo}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
+      onVisibleIndicesChanged={onVisibleIndicesChanged}
     />
   );
 };
