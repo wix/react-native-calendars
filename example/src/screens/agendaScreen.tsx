@@ -77,7 +77,7 @@ export default class AgendaScreen extends Component<State> {
         items: newItems
       });
     }, 1000);
-  }
+  };
 
   renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
     const fontSize = isFirst ? 16 : 14;
@@ -92,7 +92,7 @@ export default class AgendaScreen extends Component<State> {
         <Text style={{fontSize, color}}>{reservation.name}</Text>
       </TouchableOpacity>
     );
-  }
+  };
 
   renderEmptyDate = () => {
     return (
@@ -100,11 +100,11 @@ export default class AgendaScreen extends Component<State> {
         <Text>This is empty date!</Text>
       </View>
     );
-  }
+  };
 
   rowHasChanged = (r1: AgendaEntry, r2: AgendaEntry) => {
     return r1.name !== r2.name;
-  }
+  };
 
   timeToString(time: number) {
     const date = new Date(time);
