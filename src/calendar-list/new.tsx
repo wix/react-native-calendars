@@ -233,7 +233,7 @@ function getDate(date: string, index: number) {
 
 function getDatesArray(date?: string, numberOfPages = NUMBER_OF_PAGES) {
   const d = date || new XDate().toString();
-  const array = [];
+  const array: string[] = [];
   for (let index = -numberOfPages; index <= numberOfPages; index++) {
     const newDate = getDate(d, index);
     array.push(newDate);

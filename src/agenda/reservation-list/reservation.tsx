@@ -20,7 +20,7 @@ export interface ReservationProps {
   /** specify your item comparison function for increased performance */
   rowHasChanged?: (a: AgendaEntry, b: AgendaEntry) => boolean;
   /** specify how each date should be rendered. date can be undefined if the item is not first in that day */
-  renderDay?: (date?: XDate, item?: AgendaEntry) => React.Component | JSX.Element;
+  renderDay?: (date?: XDate, item?: AgendaEntry) => JSX.Element;
   /** specify how each item should be rendered in agenda */
   renderItem?: (reservation: AgendaEntry, isFirst: boolean) => React.Component | JSX.Element;
   /** specify how empty date content with no items should be rendered */

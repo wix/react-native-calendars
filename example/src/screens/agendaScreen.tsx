@@ -39,7 +39,7 @@ export default class AgendaScreen extends Component<State> {
         //    '2017-05-26': {endingDay: true, color: 'gray'}}}
         // monthFormat={'yyyy'}
         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+        // renderDay={this.renderDay}
         // hideExtraDays={false}
         // showOnlySelectedDayItems
         // reservationsKeyExtractor={this.reservationsKeyExtractor}
@@ -77,6 +77,13 @@ export default class AgendaScreen extends Component<State> {
         items: newItems
       });
     }, 1000);
+  };
+
+  renderDay = (day, item) => {
+    if (day) {
+      return <Text style={styles.customDay}>{day.getDay()}</Text>;
+    }
+    return <View style={styles.dayItem}/>;
   };
 
   renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
@@ -125,5 +132,13 @@ const styles = StyleSheet.create({
     height: 15,
     flex: 1,
     paddingTop: 30
+  },
+  customDay: {
+    margin: 10,
+    fontSize: 24,
+    color: 'green'
+  },
+  dayItem: {
+    marginLeft: 34
   }
 });
