@@ -3,8 +3,8 @@ package com.calendarsexample;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.config.ReactFeatureFlags;
-import com.calendarsexample.newarchitecture.MainApplicationReactNativeHost;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
 
@@ -29,15 +29,19 @@ public class MainApplication extends NavigationApplication {
         }
     };
 
-    private final ReactNativeHost mNewArchitectureNativeHost =
-      new MainApplicationReactNativeHost(this);
-
     @Override
     public ReactNativeHost getReactNativeHost() {
-        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-            return mNewArchitectureNativeHost;
-          } else {
-            return mReactNativeHost;
-          }
+        return mReactNativeHost;
+    }
+
+    @Override
+    public void onCreate() {
+      super.onCreate();
+
+      if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+        // If you opted-in for the New Architecture, we load the native entry point for this app.
+        DefaultNewArchitectureEntryPoint.load();
+      }
+      ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     }
 }

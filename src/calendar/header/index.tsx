@@ -49,7 +49,7 @@ export interface CalendarHeaderProps {
   disableArrowLeft?: boolean;
   /** Disable right arrow */
   disableArrowRight?: boolean;
-  /** Apply custom disable color to selected day indexes */
+  /** Apply custom disable color to selected day names indexes */
   disabledDaysIndexes?: number[];
   /** Replace default title with custom one. the function receive a date as parameter */
   renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
