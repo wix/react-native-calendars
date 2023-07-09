@@ -1,5 +1,6 @@
 import React from 'react';
 import {fireEvent, render} from '@testing-library/react-native';
+import {ReactTestInstance} from 'react-test-renderer';
 
 export class ExpandableCalendarDriver {
   testID: string;
@@ -51,7 +52,7 @@ export class ExpandableCalendarDriver {
   }
 
   toggleKnob() {
-    fireEvent(this.getKnob(), 'onPress');
+    fireEvent(this.getKnob() as ReactTestInstance, 'onPress');
   }
 
   /** CalendarList */

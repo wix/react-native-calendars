@@ -7,7 +7,7 @@ const futureDates = getFutureDates(12);
 const dates = [fastDate, today].concat(futureDates);
 
 function getFutureDates(numberOfDays: number) {
-  const array = [];
+  const array: string[] = [];
   for (let index = 1; index <= numberOfDays; index++) {
     let d = Date.now();
     if (index > 8) {

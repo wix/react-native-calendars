@@ -162,7 +162,7 @@ Handler which gets executed when press right arrow. It receive a callback to go 
 
 ### disabledDaysIndexes
 
-Whether to apply custom disable color to selected day indexes  
+Whether to apply custom disable color to selected day names indexes  
 <span style={{color: 'grey'}}>number[]</span>
 
 ### renderHeader

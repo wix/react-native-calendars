@@ -73,9 +73,11 @@ class Reservation extends Component<ReservationProps> {
     return changed;
   }
 
-  renderDate(date?: XDate, item?: AgendaEntry) {
-    if (isFunction(this.props.renderDay)) {
-      return this.props.renderDay(date, item);
+  renderDate() {
+    const {item, date, renderDay} = this.props;
+
+    if (isFunction(renderDay)) {
+      return renderDay(date, item);
     }
 
     const today = date && isToday(date) ? this.style.today : undefined;
@@ -92,27 +94,26 @@ class Reservation extends Component<ReservationProps> {
           </Text>
         </View>
       );
-    } else {
-      return <View style={this.style.day}/>;
     }
+    return <View style={this.style.day}/>;
   }
 
   render() {
-    const {item, date} = this.props;
+    const {item, date, renderItem, renderEmptyDate} = this.props;
     
     let content;
     if (item) {
       const firstItem = date ? true : false;
-      if (isFunction(this.props.renderItem)) {
-        content = this.props.renderItem(item, firstItem);
+      if (isFunction(renderItem)) {
+        content = renderItem(item, firstItem);
       }
-    } else if (isFunction(this.props.renderEmptyDate)) {
-      content = this.props.renderEmptyDate(date);
+    } else if (isFunction(renderEmptyDate)) {
+      content = renderEmptyDate(date);
     }
 
     return (
       <View style={this.style.container}>
-        {this.renderDate(date, item)}
+        {this.renderDate()}
         <View style={this.style.innerContainer}>{content}</View>
       </View>
     );

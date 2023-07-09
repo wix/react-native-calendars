@@ -216,7 +216,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   };
 
   const renderWeek = (days: XDate[], id: number) => {
-    const week = [];
+    const week: JSX.Element[] = [];
 
     days.forEach((day: XDate, id2: number) => {
       week.push(renderDay(day, id2));
@@ -236,7 +236,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   const renderMonth = () => {
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
     const days = page(currentMonth, firstDay, shouldShowSixWeeks);
-    const weeks = [];
+    const weeks: JSX.Element[] = [];
 
     while (days.length) {
       weeks.push(renderWeek(days.splice(0, 7), weeks.length));
