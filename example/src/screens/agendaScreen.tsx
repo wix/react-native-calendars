@@ -79,7 +79,7 @@ export default class AgendaScreen extends Component<State> {
     }, 1000);
   };
 
-  renderDay = (day, item) => {
+  renderDay = (day) => {
     if (day) {
       return <Text style={styles.customDay}>{day.getDay()}</Text>;
     }
