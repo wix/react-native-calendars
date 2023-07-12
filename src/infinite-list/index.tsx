@@ -27,6 +27,7 @@ export interface InfiniteListProps
   positionIndex?: number;
   layoutProvider?: LayoutProvider;
   disableScrollOnDataChange?: boolean;
+  renderFooter?: () => React.ReactElement | null;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -51,6 +52,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     layoutProvider,
     onScroll,
     onEndReached,
+    renderFooter,
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -179,6 +181,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
       onVisibleIndicesChanged={onVisibleIndicesChanged}
+      renderFooter={renderFooter}
     />
   );
 };

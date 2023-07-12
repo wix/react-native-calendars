@@ -181,7 +181,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
         }
       }
     }
-  }, 1000, {leading: false, trailing: true},), [avoidDateUpdates, setDate, data]);
+  }, infiniteListProps?.visibleIndicesChangedDebounce ?? 1000, {leading: false, trailing: true},), [avoidDateUpdates, setDate, data]);
 
   const findItemTitleIndex = useCallback((itemIndex: number) => {
     let titleIndex = itemIndex;
@@ -236,10 +236,11 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       layoutProvider={layoutProvider}
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
-      scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd}}
+      scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd, nestedScrollEnabled: true}}
       onEndReached={_onEndReached}
       onEndReachedThreshold={onEndReachedThreshold as number | undefined}
       disableScrollOnDataChange
+      renderFooter={infiniteListProps?.renderFooter}
     />
   );
 };

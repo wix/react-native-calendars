@@ -67,6 +67,8 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   infiniteListProps?: {
     itemHeight?: number;
     titleHeight?: number;
+    visibleIndicesChangedDebounce?: number;
+    renderFooter?: () => React.ReactElement | null;
   };
 }
 
