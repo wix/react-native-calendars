@@ -3,6 +3,8 @@ import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
 import constants from '../../commons/constants';
 
+export const HEADER_HEIGHT = 40
+
 export default function (theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   const rtlStyle = constants.isRTL ? {transform: [{scaleX: -1}]} : undefined;
@@ -15,6 +17,7 @@ export default function (theme: Theme = {}) {
       paddingRight: 10,
       marginTop: 6,
       alignItems: 'center',
+      height: HEADER_HEIGHT,
     },
     partialHeader: {
       paddingHorizontal: 15
