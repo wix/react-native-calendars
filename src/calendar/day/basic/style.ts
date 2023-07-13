@@ -3,12 +3,15 @@ import * as defaultStyle from '../../../style';
 import {Theme} from '../../../types';
 import constants from '../../../commons/constants';
 
+export const BASIC_DAY_HEIGHT = 32
+
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     container: {
       alignSelf: 'stretch',
-      alignItems: 'center'
+      alignItems: 'center',
+      height: BASIC_DAY_HEIGHT,
     },
     base: {
       width: 32,
