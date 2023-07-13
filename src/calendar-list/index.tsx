@@ -15,12 +15,13 @@ import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import { BASIC_DAY_HEIGHT } from 'src/calendar/day/basic/style';
+import { HEADER_HEIGHT } from 'src/expandableCalendar/style';
 
 const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
-const CALENDAR_LINE_HEIGHT = 70;
 
 export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
@@ -39,8 +40,12 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
-    /** Used to makes the calendar height dynamic based on how much days are showing */
-    calendarHeightDynamic?: boolean
+  /** Used to makes the calendar height dynamic based on how much days are showing */
+  calendarHeightDynamic?: boolean
+  /** Used to have the height of the day compoent for calculate the dynamic height */
+  dayHeight?: number;
+  /** Used to have the height of the custom header for calculate the dynamic height */
+  headerHeight?: number;
 }
 
 export interface CalendarListImperativeMethods {
@@ -80,6 +85,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     calendarHeight = CALENDAR_HEIGHT,
     calendarWidth = CALENDAR_WIDTH,
     calendarHeightDynamic = false,
+    dayHeight = BASIC_DAY_HEIGHT,
+    headerHeight = HEADER_HEIGHT,
     calendarStyle,
     animateScroll = false,
     showScrollIndicator = false,
@@ -229,9 +236,11 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const getCalendarHeight = useCallback(({index, month, year}: {index: number, month: string, year: string}) => {
     if(calendarHeightDynamic && index === 0) {
-        const daysInCurrentMonth = new Date(Number(year), Number(month), 0).getDate();
-        const latestDays = daysInCurrentMonth - initialDate.current.getDate()
-        return Math.round(latestDays / 7) * CALENDAR_LINE_HEIGHT
+      const daysInCurrentMonth = new Date(Number(year), Number(month), 0).getDate();
+      const latestDays = daysInCurrentMonth - initialDate.current.getDate() + 1
+      const numWeeks = Math.round(latestDays / 7)
+
+      return (dayHeight * numWeeks) + headerHeight
     }
     return calendarHeight
   }, [])
