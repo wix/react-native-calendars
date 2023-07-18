@@ -28,6 +28,7 @@ export interface InfiniteListProps
   layoutProvider?: LayoutProvider;
   disableScrollOnDataChange?: boolean;
   renderFooter?: () => React.ReactElement | null;
+  listStyle?: object;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -53,6 +54,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     onScroll,
     onEndReached,
     renderFooter,
+    listStyle
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -161,7 +163,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   }, [onScrollBeginDrag, onMomentumScrollEnd, scrollViewProps, isHorizontal]);
 
   const style = useMemo(() => {
-    return {height: pageHeight};
+    return {height: pageHeight, ...(listStyle ?? {})};
   }, [pageHeight]);
 
   return (

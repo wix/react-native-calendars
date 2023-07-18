@@ -242,6 +242,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       onEndReachedThreshold={onEndReachedThreshold as number | undefined}
       disableScrollOnDataChange
       renderFooter={infiniteListProps?.renderFooter}
+      listStyle={infiniteListProps?.listStyle}
     />
   );
 };
