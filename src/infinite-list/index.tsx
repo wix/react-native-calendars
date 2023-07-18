@@ -164,7 +164,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
   const style = useMemo(() => {
     return {height: pageHeight, ...(listStyle ?? {})};
-  }, [pageHeight]);
+  }, [pageHeight, listStyle]);
 
   return (
     <RecyclerListView
