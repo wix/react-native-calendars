@@ -41,7 +41,7 @@ const CalendarList = (props: CalendarListProps) => {
   } = props;
   const style = useRef(styleConstructor(calendarProps?.theme));
   const list = useRef<ScrollView>();
-  const [items, setItems] = useState(getDatesArray(initialDate, scrollRange));
+  const [items, setItems] = useState<string[]>(getDatesArray(initialDate, scrollRange));
   const [positionIndex, setPositionIndex] = useState(scrollRange);
 
   /** Static Header */
@@ -140,7 +140,7 @@ const CalendarList = (props: CalendarListProps) => {
   };
 
   const addItems = (index: number) => {
-    const array = [...items];
+    const array: string[] = [...items];
     const startingDate = items[index];
     const shouldAppend = index > scrollRange;
     
@@ -233,7 +233,7 @@ function getDate(date: string, index: number) {
 
 function getDatesArray(date?: string, numberOfPages = NUMBER_OF_PAGES) {
   const d = date || new XDate().toString();
-  const array = [];
+  const array: string[] = [];
   for (let index = -numberOfPages; index <= numberOfPages; index++) {
     const newDate = getDate(d, index);
     array.push(newDate);

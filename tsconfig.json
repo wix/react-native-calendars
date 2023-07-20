@@ -15,7 +15,7 @@
     "checkJs": false,
     "allowJs": false,
     // "emitDeclarationOnly": true,
-    // "noImplicitAny": false
+    "noImplicitAny": false,
     "declaration": true,
     "baseUrl": ".",
     "paths": {
