@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
-import InfiniteList from '../infinite-list';
+import InfiniteList, {InfiniteListProps} from '../infinite-list';
 
 import XDate from 'xdate';
 
@@ -233,7 +233,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       ref={list}
       renderItem={_renderItem}
       data={data}
-      style={style.current.container}
+      style={infiniteListProps?.style as InfiniteListProps['style']}
       layoutProvider={layoutProvider}
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}

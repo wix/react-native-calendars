@@ -53,6 +53,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     onScroll,
     onEndReached,
     renderFooter,
+    style,
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -160,9 +161,9 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     };
   }, [onScrollBeginDrag, onMomentumScrollEnd, scrollViewProps, isHorizontal]);
 
-  const style = useMemo(() => {
-    return {height: pageHeight};
-  }, [pageHeight]);
+  const _style = useMemo(() => {
+    return [{height: pageHeight}, style];
+  }, [pageHeight, style]);
 
   return (
     <RecyclerListView
@@ -176,7 +177,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
       onScroll={_onScroll}
-      style={style}
+      style={_style}
       scrollViewProps={scrollViewPropsMemo}
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
