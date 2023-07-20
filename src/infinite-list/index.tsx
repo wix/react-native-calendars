@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import noop from 'lodash/noop';
 
 import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
-import {ScrollViewProps, StyleProp, ViewStyle} from 'react-native';
+import {ScrollViewProps} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
 
 import constants from '../commons/constants';
@@ -28,7 +28,6 @@ export interface InfiniteListProps
   layoutProvider?: LayoutProvider;
   disableScrollOnDataChange?: boolean;
   renderFooter?: () => React.ReactElement | null;
-  listStyle?: StyleProp<ViewStyle>;
 }
 
 const InfiniteList = (props: InfiniteListProps, ref: any) => {
@@ -54,7 +53,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     onScroll,
     onEndReached,
     renderFooter,
-    listStyle
+    style,
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -162,9 +161,9 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     };
   }, [onScrollBeginDrag, onMomentumScrollEnd, scrollViewProps, isHorizontal]);
 
-  const style = useMemo(() => {
-    return [{height: pageHeight}, listStyle];
-  }, [pageHeight, listStyle]);
+  const _style = useMemo(() => {
+    return [{height: pageHeight}, style];
+  }, [pageHeight, style]);
 
   return (
     <RecyclerListView
@@ -178,7 +177,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       initialRenderIndex={initialPageIndex}
       renderAheadOffset={5 * pageWidth}
       onScroll={_onScroll}
-      style={style}
+      style={_style}
       scrollViewProps={scrollViewPropsMemo}
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}

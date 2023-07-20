@@ -70,7 +70,7 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
     titleHeight?: number;
     visibleIndicesChangedDebounce?: number;
     renderFooter?: () => React.ReactElement | null;
-    listStyle?: StyleProp<ViewStyle>;
+    style?: StyleProp<ViewStyle>;
   };
 }
 
