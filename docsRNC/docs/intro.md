@@ -77,7 +77,7 @@ $ yarn add react-native-calendars
 
 <br/>
 
-`import {[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)} from 'react-native-calendars';`
+`import { Calendar, CalendarList, Agenda } from 'react-native-calendars';`
 
 All parameters for components are optional. By default the month of current local date will be displayed.
 
