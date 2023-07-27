@@ -389,11 +389,12 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         speed: SPEED,
         bounciness: BOUNCINESS,
         useNativeDriver: false
-      }).start();
+      }).start(() => {
+        setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
+      });
 
       onCalendarToggled?.(_isOpen);
 
-      setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
       closeHeader(_isOpen);
       resetWeekCalendarOpacity(_isOpen);
     }
