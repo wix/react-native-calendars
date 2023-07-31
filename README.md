@@ -60,13 +60,13 @@ Here's how to get started with react-native-calendars in your React Native proje
 Using `npm`:
 
 ```
-$ npm install --save react-native-calendars
+npm install --save react-native-calendars
 ```
 
 Using `Yarn`:
 
 ```
-$ yarn add react-native-calendars
+yarn add react-native-calendars
 ```
 
 **RN Calendars is implemented in JavaScript, so no native module linking is required.**
