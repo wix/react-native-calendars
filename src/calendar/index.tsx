@@ -228,7 +228,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
     return (
       <View style={style.current.week} key={id}>
-        {week}
+        {props.showWeekNumbers ? `WK${week}` : week}
       </View>
     );
   };
