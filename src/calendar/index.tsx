@@ -99,7 +99,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
-  const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
+  const weekNumberMarking = useRef({disabled: false, disableTouchEvent: true});
 
   useEffect(() => {
     if (initialDate) {
@@ -175,6 +175,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   }, [onSwipeLeft, onSwipeRight]);
 
   const renderWeekNumber = (weekNumber: number) => {
+    theme = {{textDayFontSize: 12, textDayStyle: {color: 'darkgrey', textAlign: 'center', lineHeight: 21}}};
     return (
       <View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
@@ -184,7 +185,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
           theme={theme}
           testID={`${testID}.weekNumber_${weekNumber}`}
         >
-          {weekNumber}
+          {'WK' + WeekNumber}
         </BasicDay>
       </View>
     );
