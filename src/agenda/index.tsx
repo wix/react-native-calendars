@@ -90,7 +90,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   private style: {[key: string]: ViewStyle};
   private viewHeight: number;
   private viewWidth: number;
-  private opacity: number;
+  private knobOpacity: number;
   private scrollTimeout?: ReturnType<typeof setTimeout>;
   private headerState: string;
   private currentMonth: XDate;
@@ -109,7 +109,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     const windowSize = Dimensions.get('window');
     this.viewHeight = windowSize.height;
     this.viewWidth = windowSize.width;
-    this.opacity = 1;
+    this.knobOpacity = 1;
 
     this.scrollTimeout = undefined;
     this.headerState = 'idle';
@@ -275,11 +275,11 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   onTouchStart = () => {
     this.headerState = 'touched';
-    this.opacity = 0.5;
+    this.knobOpacity = 0.5;
   };
 
   onTouchEnd = () => {
-    this.opacity = 1;
+    this.knobOpacity = 1;
 
     if (this.headerState === 'touched') {
       const isOpen = this.state.calendarScrollable;
@@ -383,7 +383,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
       knob = !this.state.calendarScrollable || showClosingKnob ? (
         <View style={this.style.knobContainer}>
-          <View ref={this.knob} style={{opacity: this.opacity}}>{knobView}</View>
+          <View ref={this.knob} style={{opacity: this.knobOpacity}}>{knobView}</View>
         </View>
       ) : null;
     }
