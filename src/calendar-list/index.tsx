@@ -15,9 +15,11 @@ import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import {weekVerticalMargin} from "../style";
 
 const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
+const DAY_HEIGHT = 32;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
 
@@ -30,6 +32,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   calendarWidth?: number;
   /** Dynamic calendar height */
   calendarHeight?: number;
+  /** Height for days of Month calendar */
+  dayHeight?: number;
   /** Style for the List item (the calendar) */
   calendarStyle?: ViewStyle;
   /** Whether to use static header that will not scroll with the list (horizontal only) */
@@ -99,7 +103,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     onMomentumScrollEnd,
     /** FlatList props */
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
+    dayHeight = DAY_HEIGHT,
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -169,7 +174,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       for (let i = 0; i < days.length; i++) {
         week = Math.floor(i / 7);
         if (sameDate(days[i], scrollTo)) {
-          scrollAmount += 46 * week;
+          scrollAmount += (dayHeight + weekVerticalMargin) * week;
           break;
         }
       }
@@ -286,7 +291,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       onViewableItemsChanged
     },
   ]);
- 
+
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList

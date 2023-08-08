@@ -28,6 +28,7 @@ import ReservationList, {ReservationListProps}  from './reservation-list';
 
 
 const HEADER_HEIGHT = 104;
+const HEADER_OFFSET = 96;
 const KNOB_HEIGHT = 24;
 
 export type AgendaProps = CalendarListProps & ReservationListProps & {
@@ -51,6 +52,10 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   hideKnob?: boolean;
   /** Whether the knob should always be visible (when hideKnob = false) */
   showClosingKnob?: boolean;
+  /** Height of the header */
+  headerHeight?: number;
+  /** Scroll offset of the header */
+  headerOffset?: number;
 }
 
 type State = {
@@ -84,7 +89,8 @@ export default class Agenda extends Component<AgendaProps, State> {
     renderList: PropTypes.func,
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
-    showClosingKnob: PropTypes.bool
+    showClosingKnob: PropTypes.bool,
+    headerHeight: PropTypes.number
   };
 
   private style: {[key: string]: ViewStyle};
@@ -99,6 +105,8 @@ export default class Agenda extends Component<AgendaProps, State> {
   private calendar: React.RefObject<CalendarListImperativeMethods> = React.createRef();
   private knob: React.RefObject<View> = React.createRef();
   public list: React.RefObject<ReservationList> = React.createRef();
+  private headerHeight: number;
+  private headerOffset: number;
 
   constructor(props: AgendaProps) {
     super(props);
@@ -111,6 +119,8 @@ export default class Agenda extends Component<AgendaProps, State> {
 
     this.scrollTimeout = undefined;
     this.headerState = 'idle';
+    this.headerHeight = props.headerHeight || HEADER_HEIGHT
+    this.headerOffset = props.headerOffset || HEADER_OFFSET
 
     this.state = {
       scrollY: new Animated.Value(0),
@@ -163,11 +173,11 @@ export default class Agenda extends Component<AgendaProps, State> {
   }
 
   calendarOffset() {
-    return 96 - this.viewHeight / 2;
+    return this.headerOffset - this.viewHeight / 2;
   }
 
   initialScrollPadPosition = () => {
-    return Math.max(0, this.viewHeight - HEADER_HEIGHT);
+    return Math.max(0, this.viewHeight - this.headerHeight);
   };
 
   setScrollPadPosition = (y: number, animated: boolean) => {
@@ -408,15 +418,15 @@ export default class Agenda extends Component<AgendaProps, State> {
       this.style.weekdays,
       {
         opacity: this.state.scrollY.interpolate({
-          inputRange: [agendaHeight - HEADER_HEIGHT, agendaHeight],
+          inputRange: [agendaHeight - this.headerHeight, agendaHeight],
           outputRange: [0, 1],
           extrapolate: 'clamp'
         }),
         transform: [
           {
             translateY: this.state.scrollY.interpolate({
-              inputRange: [Math.max(0, agendaHeight - HEADER_HEIGHT), agendaHeight],
-              outputRange: [-HEADER_HEIGHT, 0],
+              inputRange: [Math.max(0, agendaHeight - this.headerHeight), agendaHeight],
+              outputRange: [-this.headerHeight, 0],
               extrapolate: 'clamp'
             })
           }
@@ -445,13 +455,13 @@ export default class Agenda extends Component<AgendaProps, State> {
       // limit header height until everything is setup for calendar dragging
       headerStyle.push({height: 0});
       // fill header with appStyle.calendarBackground background to reduce flickering
-      weekdaysStyle.push({height: HEADER_HEIGHT});
+      weekdaysStyle.push({height: this.headerHeight});
     }
 
     const openCalendarScrollPadPosition =
-      !hideKnob && this.state.calendarScrollable && this.props.showClosingKnob ? agendaHeight + HEADER_HEIGHT : 0;
+      !hideKnob && this.state.calendarScrollable && this.props.showClosingKnob ? agendaHeight + this.headerHeight : 0;
     const shouldAllowDragging = !hideKnob && !this.state.calendarScrollable;
-    const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT : openCalendarScrollPadPosition) - KNOB_HEIGHT;
+    const scrollPadPosition = (shouldAllowDragging ? this.headerHeight : openCalendarScrollPadPosition) - KNOB_HEIGHT;
     const scrollPadStyle = {
       height: KNOB_HEIGHT,
       top: scrollPadPosition,
