@@ -119,8 +119,8 @@ export default class Agenda extends Component<AgendaProps, State> {
 
     this.scrollTimeout = undefined;
     this.headerState = 'idle';
-    this.headerHeight = props.headerHeight || HEADER_HEIGHT
-    this.headerOffset = props.headerOffset || HEADER_OFFSET
+    this.headerHeight = props.headerHeight || HEADER_HEIGHT;
+    this.headerOffset = props.headerOffset || HEADER_OFFSET;
 
     this.state = {
       scrollY: new Animated.Value(0),
