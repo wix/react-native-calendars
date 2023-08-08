@@ -203,7 +203,6 @@ export function extractCalendarListProps(props: AgendaProps) {
     // renderDay,
     renderItem,
     renderEmptyDate,
-    dayHeight,
     ...others
   } = props;
 

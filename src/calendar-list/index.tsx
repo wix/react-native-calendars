@@ -174,7 +174,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       for (let i = 0; i < days.length; i++) {
         week = Math.floor(i / 7);
         if (sameDate(days[i], scrollTo)) {
-          scrollAmount += (dayHeight + weekVerticalMargin) * week;
+          scrollAmount += (dayHeight + (weekVerticalMargin * 2)) * week;
           break;
         }
       }

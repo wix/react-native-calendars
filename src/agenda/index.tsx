@@ -90,7 +90,9 @@ export default class Agenda extends Component<AgendaProps, State> {
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
     showClosingKnob: PropTypes.bool,
-    headerHeight: PropTypes.number
+    headerHeight: PropTypes.number,
+    headerOffset: PropTypes.number,
+    dayHeight: PropTypes.number,
   };
 
   private style: {[key: string]: ViewStyle};
