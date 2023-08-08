@@ -11,7 +11,8 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
+  TouchableOpacity
 } from 'react-native';
 
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
@@ -289,6 +290,11 @@ export default class Agenda extends Component<AgendaProps, State> {
     this.headerState = 'idle';
   };
 
+  onPressKnob = () => {
+    const isOpen = this.state.calendarScrollable;
+    this.toggleCalendarPosition(!isOpen);
+  };
+
   onStartDrag = () => {
     this.headerState = 'dragged';
     this.knobTracker.reset();
@@ -383,7 +389,9 @@ export default class Agenda extends Component<AgendaProps, State> {
       const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
       knob = !this.state.calendarScrollable || showClosingKnob ? (
         <View style={this.style.knobContainer}>
-          <View ref={this.knob} style={{opacity: this.knobOpacity}}>{knobView}</View>
+          <TouchableOpacity onPress={this.onPressKnob}>
+            <View ref={this.knob} style={{opacity: this.knobOpacity}}>{knobView}</View>
+          </TouchableOpacity>
         </View>
       ) : null;
     }
