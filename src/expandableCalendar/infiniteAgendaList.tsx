@@ -137,10 +137,14 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
     if (list?.current && sectionIndex !== undefined) {
       sectionScroll.current = true; // to avoid setDate() in _onVisibleIndicesChanged
       _topSection.current = sections[findItemTitleIndex(sectionIndex)]?.title;
-
-      list.current?.scrollToIndex(sectionIndex, true);
+      const newDate = sections[findItemTitleIndex(sectionIndex)]?.title;
+      if (newDate !== _topSection.current) {
+        _topSection.current = newDate;
+        list.current?.scrollToIndex(sectionIndex, true);
+      }
+      _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
     }
-  }, 1000, {leading: false, trailing: true}), [ sections]);
+  }, 1000, {leading: false, trailing: true}), [sections]);
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
