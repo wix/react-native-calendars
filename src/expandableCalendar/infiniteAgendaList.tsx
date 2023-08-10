@@ -136,7 +136,6 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
 
     if (list?.current && sectionIndex !== undefined) {
       sectionScroll.current = true; // to avoid setDate() in _onVisibleIndicesChanged
-      _topSection.current = sections[findItemTitleIndex(sectionIndex)]?.title;
       const newDate = sections[findItemTitleIndex(sectionIndex)]?.title;
       if (newDate !== _topSection.current) {
         _topSection.current = newDate;
