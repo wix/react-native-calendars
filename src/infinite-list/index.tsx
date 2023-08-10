@@ -162,7 +162,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   }, [onScrollBeginDrag, onMomentumScrollEnd, scrollViewProps, isHorizontal]);
 
   const _style = useMemo(() => {
-    return [{height: pageHeight}, style];
+    return {...style, height: pageHeight};
   }, [pageHeight, style]);
 
   return (
