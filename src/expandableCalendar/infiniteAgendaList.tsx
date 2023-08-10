@@ -128,20 +128,22 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
     return sectionTitle;
   }, []);
 
-  const scrollToSection = useCallback(debounce((d) => {
-    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
+  const scrollToSection = useCallback(debounce((requestedDate) => {
+    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(requestedDate) : getSectionIndex(requestedDate);
     if (isUndefined(sectionIndex)) {
       return;
     }
 
     if (list?.current && sectionIndex !== undefined) {
       sectionScroll.current = true; // to avoid setDate() in _onVisibleIndicesChanged
-      const newDate = sections[findItemTitleIndex(sectionIndex)]?.title;
-      if (newDate !== _topSection.current) {
-        _topSection.current = newDate;
+      if (requestedDate !== _topSection.current) {
+        _topSection.current = sections[findItemTitleIndex(sectionIndex)]?.title;
         list.current?.scrollToIndex(sectionIndex, true);
       }
-      _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
+
+      setTimeout(() => {
+        _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
+      }, 500);
     }
   }, 1000, {leading: false, trailing: true}), [sections]);
 
