@@ -21,7 +21,8 @@ import {
   NativeScrollEvent,
   LayoutChangeEvent,
   ViewToken,
-  TextProps
+  TextProps,
+  StyleProp
 } from 'react-native';
 
 import {useDidUpdate} from '../hooks';
@@ -34,6 +35,7 @@ import {UpdateSources, todayString} from './commons';
 import constants from '../commons/constants';
 import styleConstructor from './style';
 import Context from './Context';
+import InfiniteAgendaList from './infiniteAgendaList';
 
 const viewabilityConfig = {
   itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
@@ -59,6 +61,17 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   viewOffset?: number;
   /** enable scrolling the agenda list to the next date with content when pressing a day without content */
   scrollToNextEvent?: boolean;
+  /**
+   * @experimental
+   * If defined, uses InfiniteList instead of SectionList. This feature is experimental and subject to change.
+   */
+  infiniteListProps?: {
+    itemHeight?: number;
+    titleHeight?: number;
+    visibleIndicesChangedDebounce?: number;
+    renderFooter?: () => React.ReactElement | null;
+    style?: StyleProp<ViewStyle>;
+  };
 }
 
 /**
@@ -68,6 +81,10 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const AgendaList = (props: AgendaListProps) => {
+  if (props.infiniteListProps) {
+    return <InfiniteAgendaList {...props} />;
+  }
+
   const {
     theme,
     sections,
@@ -89,7 +106,7 @@ const AgendaList = (props: AgendaListProps) => {
   } = props;
 
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
-  
+
   const style = useRef(styleConstructor(theme));
   const list = useRef<any>();
   const _topSection = useRef(sections[0]?.title);
@@ -271,7 +288,7 @@ const AgendaList = (props: AgendaListProps) => {
 
 interface AgendaSectionHeaderProps {
   title?: string;
-  onLayout: TextProps['onLayout'];
+  onLayout?: TextProps['onLayout'];
   style: TextProps['style'];
 }
 
@@ -279,7 +296,7 @@ function areTextPropsEqual(prev: AgendaSectionHeaderProps, next: AgendaSectionHe
   return isEqual(prev.style, next.style) && prev.title === next.title;
 }
 
-const AgendaSectionHeader = React.memo((props: AgendaSectionHeaderProps) => {
+export const AgendaSectionHeader = React.memo((props: AgendaSectionHeaderProps) => {
   return (
     <Text allowFontScaling={false} style={props.style} onLayout={props.onLayout}>
       {props.title}

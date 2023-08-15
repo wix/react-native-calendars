@@ -2,7 +2,6 @@ import {ExpandableCalendarProps, Positions} from '../index';
 import {toMarkingFormat, xdateToData} from '../../interface';
 import {ExpandableCalendarDriver} from '../driver';
 import {generateExpandableCalendarWithContext, testIdExpandableCalendar} from './expandableCalendarTestKit';
-//@ts-expect-error
 import {getMonthTitle} from '../../testUtils';
 import {UpdateSources} from '../commons';
 import times from 'lodash/times';

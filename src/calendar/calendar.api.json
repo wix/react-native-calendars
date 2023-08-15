@@ -165,7 +165,7 @@
     {
       "name": "disabledDaysIndexes",
       "type": "number[]",
-      "description": "Whether to apply custom disable color to selected day indexes"
+      "description": "Whether to apply custom disable color to selected day names indexes"
     },
     {
       "name": "renderHeader",
