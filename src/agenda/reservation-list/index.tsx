@@ -11,7 +11,7 @@ import {toMarkingFormat} from '../../interface';
 import styleConstructor from './style';
 import Reservation, {ReservationProps} from './reservation';
 import {AgendaEntry, AgendaSchedule, DayAgenda} from '../../types';
-
+import {FlashList} from "@shopify/flash-list";
 
 export type ReservationListProps = ReservationProps & {
   /** the list of items that have to be displayed in agenda. If you want to render item as empty date
@@ -237,8 +237,16 @@ class ReservationList extends Component<ReservationListProps, State> {
     this.scrollOver = true;
   }
 
-  onRowLayoutChange(index: number, event: LayoutChangeEvent) {
-    this.heights[index] = event.nativeEvent.layout.height;
+  onRowLayoutChange(_index: number, event: LayoutChangeEvent) {
+    const rowHeight = event.nativeEvent.layout.height;
+    if (this.heights.length === 0) {
+        const reservationsLength = this.props.items && Object.keys(this.props.items).length;
+        if (reservationsLength) {
+            this.heights = Array(reservationsLength).fill(rowHeight);
+        } else {
+          this.heights = Array(2000).fill(rowHeight); //fallback
+        }
+    }
   }
 
   onMoveShouldSetResponderCapture = () => {
@@ -271,7 +279,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     }
 
     return (
-      <FlatList
+      <FlashList
         ref={this.list}
         style={style}
         contentContainerStyle={this.style.content}
@@ -289,6 +297,9 @@ class ReservationList extends Component<ReservationListProps, State> {
         onScrollEndDrag={this.props.onScrollEndDrag}
         onMomentumScrollBegin={this.props.onMomentumScrollBegin}
         onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+        /* FlashList props */
+        estimatedItemSize={96} // fixed height in EventList.styles
+        estimatedFirstItemOffset={6}
       />
     );
   }

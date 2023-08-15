@@ -38,6 +38,7 @@
     "prop-types": "^15.5.10",
     "react-native-swipe-gestures": "^1.0.5",
     "recyclerlistview": "^4.0.0",
+    "@shopify/flash-list": "^1.5.0",
     "xdate": "^0.8.0"
   },
   "devDependencies": {
