@@ -21,7 +21,8 @@ export default function styleConstructor(theme = {}) {
       fontFamily: appStyle.textDayFontFamily,
       color: appStyle.agendaDayTextColor,
       backgroundColor: 'rgba(0,0,0,0)',
-      marginTop: -5
+      marginTop: -5,
+      textTransform: 'uppercase'
     },
     day: {
       width: 63,
