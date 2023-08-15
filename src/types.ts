@@ -47,9 +47,11 @@ export interface Theme {
   selectedDotColor?: string;
   disabledArrowColor?: string;
   textDayFontFamily?: TextStyle['fontFamily'];
+  textDayNumFontFamily?: TextStyle['fontFamily'];
   textMonthFontFamily?: TextStyle['fontFamily'];
   textDayHeaderFontFamily?: TextStyle['fontFamily'];
   textDayFontWeight?: TextStyle['fontWeight'];
+  textDayNumFontWeight?: TextStyle['fontWeight'];
   textMonthFontWeight?: TextStyle['fontWeight'];
   textDayHeaderFontWeight?: TextStyle['fontWeight'];
   textDayFontSize?: number;
