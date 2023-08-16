@@ -70,7 +70,7 @@ export default class Agenda extends Component<AgendaProps, State> {
         reservationsKeyExtractor: PropTypes.Requireable<(...args: any[]) => any>;
         date: PropTypes.Requireable<any>;
         item: PropTypes.Requireable<any>;
-        theme: PropTypes.Requireable<object>; /** callback that gets called when items for a certain month should be loaded (month became visible) */
+        theme: PropTypes.Requireable<object>;
         rowHasChanged: PropTypes.Requireable<(...args: any[]) => any>;
         renderDay: PropTypes.Requireable<(...args: any[]) => any>;
         renderItem: PropTypes.Requireable<(...args: any[]) => any>;

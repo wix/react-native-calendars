@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
 import React, {Component} from 'react';
-import {View, Dimensions, Animated} from 'react-native';
+import {View, Dimensions, Animated, Platform} from 'react-native';
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
 import {xdateToData, toMarkingFormat} from '../interface';
 import {sameDate, sameMonth} from '../dateutils';
@@ -208,7 +208,8 @@ export default class Agenda extends Component {
     this.onTouchEnd();
     const currentY = e.nativeEvent.contentOffset.y;
     this.knobTracker.add(currentY);
-    const projectedY = currentY - this.knobTracker.estimateSpeed() * 250; /*ms*/
+    const multi = Platform.OS === 'ios' ? -250 : 250;
+    const projectedY = currentY + this.knobTracker.estimateSpeed() * multi; /*ms*/
     const maxY = this.initialScrollPadPosition();
     const snapY = projectedY > maxY / 2 ? maxY : 0;
     this.setScrollPadPosition(snapY, true);

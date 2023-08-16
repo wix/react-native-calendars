@@ -11,7 +11,8 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
+  Platform
 } from 'react-native';
 
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
@@ -297,7 +298,8 @@ export default class Agenda extends Component<AgendaProps, State> {
     this.onTouchEnd();
     const currentY = e.nativeEvent.contentOffset.y;
     this.knobTracker.add(currentY);
-    const projectedY = currentY - this.knobTracker.estimateSpeed() * 250; /*ms*/
+    const multi = Platform.OS === 'ios' ? -250 : 250;
+    const projectedY = currentY + this.knobTracker.estimateSpeed() * multi; /*ms*/
     const maxY = this.initialScrollPadPosition();
     const snapY = projectedY > maxY / 2 ? maxY : 0;
     this.setScrollPadPosition(snapY, true);
