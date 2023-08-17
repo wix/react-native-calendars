@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
-import InfiniteList, {InfiniteListProps} from '../infinite-list';
+import InfiniteList from '../infinite-list';
 
 import XDate from 'xdate';
 
@@ -58,12 +58,14 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
   const didScroll = useRef(false);
   const sectionScroll = useRef(false);
   const [data, setData] = useState([] as any[]);
+  const dataRef = useRef(data);
 
   useEffect(() => {
     const items = sections.reduce((acc: any, cur: any) => {
       return [...acc, {title: cur.title, isTitle: true}, ...cur.data];
     }, []);
     setData(items);
+    dataRef.current = items;
 
     if (date !== _topSection.current) {
       setTimeout(() => {
@@ -128,29 +130,34 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
     return sectionTitle;
   }, []);
 
-  const scrollToSection = useCallback(debounce((d) => {
-    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
+  const scrollToSection = useCallback(debounce((requestedDate) => {
+    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(requestedDate) : getSectionIndex(requestedDate);
     if (isUndefined(sectionIndex)) {
       return;
     }
 
     if (list?.current && sectionIndex !== undefined) {
       sectionScroll.current = true; // to avoid setDate() in _onVisibleIndicesChanged
-      _topSection.current = sections[findItemTitleIndex(sectionIndex)]?.title;
+      if (requestedDate !== _topSection.current) {
+        _topSection.current = sections[findItemTitleIndex(sectionIndex)]?.title;
+        list.current?.scrollToIndex(sectionIndex, true);
+      }
 
-      list.current?.scrollToIndex(sectionIndex, true);
+      setTimeout(() => {
+        _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
+      }, 500);
     }
-  }, 1000, {leading: false, trailing: true}), [ sections]);
+  }, 1000, {leading: false, trailing: true}), [sections]);
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
-      (index) => data[index]?.isTitle ? 'title': 'page',
+      (index) => dataRef.current[index]?.isTitle ? 'title': 'page',
       (type, dim) => {
         dim.width = constants.screenWidth;
         dim.height = type === 'title' ? infiniteListProps?.titleHeight ?? 60 : infiniteListProps?.itemHeight ?? 80;
       }
     ),
-    [data]
+    []
   );
 
   const _onScroll = useCallback((rawEvent: any) => {
@@ -233,7 +240,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       ref={list}
       renderItem={_renderItem}
       data={data}
-      style={infiniteListProps?.style as InfiniteListProps['style']}
+      style={style.current.container}
       layoutProvider={layoutProvider}
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
