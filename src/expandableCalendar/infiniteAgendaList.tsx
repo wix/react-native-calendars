@@ -58,12 +58,14 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
   const didScroll = useRef(false);
   const sectionScroll = useRef(false);
   const [data, setData] = useState([] as any[]);
+  const dataRef = useRef(data);
 
   useEffect(() => {
     const items = sections.reduce((acc: any, cur: any) => {
       return [...acc, {title: cur.title, isTitle: true}, ...cur.data];
     }, []);
     setData(items);
+    dataRef.current = items;
 
     if (date !== _topSection.current) {
       setTimeout(() => {
@@ -149,13 +151,13 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
-      (index) => data[index]?.isTitle ? 'title': 'page',
+      (index) => dataRef.current[index]?.isTitle ? 'title': 'page',
       (type, dim) => {
         dim.width = constants.screenWidth;
         dim.height = type === 'title' ? infiniteListProps?.titleHeight ?? 60 : infiniteListProps?.itemHeight ?? 80;
       }
     ),
-    [data]
+    []
   );
 
   const _onScroll = useCallback((rawEvent: any) => {
