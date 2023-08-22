@@ -10,7 +10,7 @@ export type {ExpandableCalendarProps} from './expandableCalendar';
 export {default as WeekCalendar} from './expandableCalendar/WeekCalendar/new';
 export type {WeekCalendarProps} from './expandableCalendar/WeekCalendar';
 export {default as AgendaList} from './expandableCalendar/agendaList';
-export type {AgendaListProps} from './expandableCalendar/agendaList';
+export type {AgendaListProps} from './expandableCalendar/AgendaListsCommon';
 export {default as CalendarContext} from './expandableCalendar/Context';
 export {default as CalendarProvider} from './expandableCalendar/Context/Provider';
 export type {CalendarContextProviderProps} from './expandableCalendar/Context/Provider';

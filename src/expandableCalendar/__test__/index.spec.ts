@@ -269,7 +269,6 @@ describe('ExpandableCalendar', () => {
         const endOfMonth = new XDate(today.getFullYear(), today.getMonth() + 1, 0, 0, 0 ,0 , 0, true);
         const diff = Math.ceil(((endOfMonth.getUTCDate() + 1) - today.getUTCDate()) / 7) + ((today.getUTCDay() > endOfMonth.getUTCDay()) ? 1 : 0);
         const expectedDate = today.clone().setDate(today.getDate() + 7 * diff - today.getDay());
-        console.log(diff, endOfMonth, expectedDate);
         times(diff, () => driver.pressOnHeaderArrow({left: false}));
         expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });

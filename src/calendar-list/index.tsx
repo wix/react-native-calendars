@@ -15,6 +15,7 @@ import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import isEqual from 'lodash/isEqual';
 
 const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
@@ -99,7 +100,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     onMomentumScrollEnd,
     /** FlatList props */
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -108,13 +109,17 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
+  const isAndroidRTL = useMemo(() =>constants.isRTL && constants.isAndroid && horizontal, [horizontal]);
+
   const style = useRef(styleConstructor(theme));
   const list = useRef();
   const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current) || new XDate());
   const visibleMonth = useRef(currentMonth);
+  const isPageScrolling = useRef(false);
+  const isArrowPress = useRef(false);
 
-  const items = useMemo(() => {
+  const items: XDate[] = useMemo(() => {
     const months: any[] = [];
     for (let i = 0; i <= pastScrollRange + futureScrollRange; i++) {
       const rangeDate = initialDate.current?.clone().addMonths(i - pastScrollRange, true);
@@ -184,13 +189,13 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const scrollToMonth = useCallback((date: XDate | string) => {
     const scrollTo = parseDate(date);
     const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
-    const scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize;
+    const scrollAmount = calendarSize * (isAndroidRTL ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
 
     if (scrollAmount !== 0) {
       // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
-  }, [calendarSize]);
+  }, [calendarSize, isAndroidRTL, pastScrollRange, animateScroll]);
 
   const addMonth = useCallback((count: number) => {
     const day = currentMonth?.clone().addMonths(count, true);
@@ -250,11 +255,23 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
+  const onPressArrowLeft = useCallback((method, month) => {
+    isArrowPress.current = true;
+    headerProps.onPressArrowLeft?.(method, month);
+  }, [headerProps.onPressArrowLeft]);
+
+  const onPressArrowRight = useCallback((method, month) => {
+    isArrowPress.current = true;
+    headerProps.onPressArrowRight?.(method, month);
+  }, [headerProps.onPressArrowRight]);
+
   const renderStaticHeader = () => {
     if (staticHeader && horizontal) {
       return (
         <CalendarHeader
           {...headerProps}
+          onPressArrowLeft={onPressArrowLeft}
+          onPressArrowRight={onPressArrowRight}
           testID={`${testID}.staticHeader`}
           style={staticHeaderStyle}
           month={currentMonth}
@@ -274,11 +291,27 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
     const newVisibleMonth = parseDate(viewableItems[0]?.item);
-    if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
-      visibleMonth.current = newVisibleMonth;
-      setCurrentMonth(visibleMonth.current);
+    if (isAndroidRTL && !isArrowPress.current) {
+      if (isPageScrolling.current) {
+        isPageScrolling.current = false;
+        return;
+      }
+      const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
+      const adjustedOffset = centerIndex - items.findIndex((item) => isEqual(newVisibleMonth, item));
+      const newAdjustedMonth = items[centerIndex + adjustedOffset];
+      if (adjustedOffset && centerIndex && viewableItems.length === 1) {
+        isPageScrolling.current = true;
+        visibleMonth.current = newAdjustedMonth;
+        setCurrentMonth(visibleMonth.current);
+      }
+    } else {
+      isArrowPress.current = false;
+      if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
+        visibleMonth.current = newVisibleMonth;
+        setCurrentMonth(visibleMonth.current);
+      }
     }
-  }, []);
+  }, [items, isAndroidRTL, current]);
 
   const viewabilityConfigCallbackPairs = useRef([
     {
@@ -286,7 +319,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       onViewableItemsChanged
     },
   ]);
- 
+
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList

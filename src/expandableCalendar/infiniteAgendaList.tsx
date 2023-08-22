@@ -22,7 +22,7 @@ import Context from './Context';
 import constants from "../commons/constants";
 import {parseDate} from "../interface";
 import {LayoutProvider} from "recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider";
-import {AgendaListProps, AgendaSectionHeader} from "./agendaList";
+import {AgendaSectionHeader, AgendaListProps} from "./AgendaListsCommon";
 
 /**
  * @description: AgendaList component that use InfiniteList to improve performance

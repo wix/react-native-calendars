@@ -1,4 +1,4 @@
-import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
+import {RefObject, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import inRange from 'lodash/inRange';
 import times from 'lodash/times';
@@ -26,6 +26,9 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
 
   const [pages, setPages] = useState<string[]>(pagesRef.current);
   const shouldResetPages = useRef(false);
+  const shouldUseAndroidRTLFix = useMemo(() => {
+    return constants.isAndroid && constants.isRTL;
+  }, []);
 
   useEffect(() => {
     const updatedDays = times(PAGES_COUNT, i => {
@@ -48,7 +51,7 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
   }, []);
 
   const scrollToPage = (pageIndex: number) => {
-    listRef.current?.scrollToOffset(pageIndex * constants.screenWidth, 0, false);
+    listRef.current?.scrollToOffset(shouldUseAndroidRTLFix ? ((PAGES_COUNT - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
   };
 
   const resetPages = (date: string) => {
