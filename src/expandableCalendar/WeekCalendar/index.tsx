@@ -77,7 +77,8 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           visibleWeek.current = date;
           currentIndex.current = NUMBER_OF_PAGES;
         }
-        pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: pageIndex, animated: false});
+        const adjustedIndexFrScroll = APPLY_ANDROID_FIX ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex
+        pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: adjustedIndexFrScroll, animated: false}); // here lies the issue
       }
     }
   }, [date, updateSource]);
