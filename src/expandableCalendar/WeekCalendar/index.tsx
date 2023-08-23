@@ -70,15 +70,15 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           }) :
           sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
+        const adjustedIndexFrScroll = APPLY_ANDROID_FIX ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex
         if (pageIndex >= 0) {
-          visibleWeek.current = items.current[pageIndex];
-          currentIndex.current = pageIndex;
+          visibleWeek.current = items.current[adjustedIndexFrScroll];
+          currentIndex.current = adjustedIndexFrScroll;
         } else {
           visibleWeek.current = date;
           currentIndex.current = NUMBER_OF_PAGES;
         }
-        const adjustedIndexFrScroll = APPLY_ANDROID_FIX ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex
-        pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: adjustedIndexFrScroll, animated: false}); // here lies the issue
+        pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: adjustedIndexFrScroll, animated: false});
       }
     }
   }, [date, updateSource]);

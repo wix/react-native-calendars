@@ -117,7 +117,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const initialDate = useRef(parseDate(current) || new XDate());
   const visibleMonth = useRef(currentMonth);
   const isPageScrolling = useRef(false);
-  const isArrowPress = useRef(false);
 
   const items: XDate[] = useMemo(() => {
     const months: any[] = [];
@@ -256,12 +255,10 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
   const onPressArrowLeft = useCallback((method, month) => {
-    isArrowPress.current = true;
     headerProps.onPressArrowLeft?.(method, month);
   }, [headerProps.onPressArrowLeft]);
 
   const onPressArrowRight = useCallback((method, month) => {
-    isArrowPress.current = true;
     headerProps.onPressArrowRight?.(method, month);
   }, [headerProps.onPressArrowRight]);
 
@@ -291,26 +288,21 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
     const newVisibleMonth = parseDate(viewableItems[0]?.item);
-    if (isAndroidRTL && !isArrowPress.current) {
-      if (isPageScrolling.current) {
-        isPageScrolling.current = false;
-        return;
-      }
+    console.log('before', viewableItems, visibleMonth.current, currentMonth);
+    if (isAndroidRTL) {
       const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
       const adjustedOffset = centerIndex - items.findIndex((item) => isEqual(newVisibleMonth, item));
       const newAdjustedMonth = items[centerIndex + adjustedOffset];
-      if (adjustedOffset && centerIndex && viewableItems.length === 1) {
-        isPageScrolling.current = true;
-        visibleMonth.current = newAdjustedMonth;
-        setCurrentMonth(visibleMonth.current);
-      }
+      visibleMonth.current = newAdjustedMonth;
+      isPageScrolling.current = true;
+      setCurrentMonth(visibleMonth.current);
     } else {
-      isArrowPress.current = false;
       if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
         visibleMonth.current = newVisibleMonth;
         setCurrentMonth(visibleMonth.current);
       }
     }
+    console.log('after', viewableItems, visibleMonth.current, currentMonth);
   }, [items, isAndroidRTL, current]);
 
   const viewabilityConfigCallbackPairs = useRef([
