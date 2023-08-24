@@ -70,7 +70,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           }) :
           sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
-        const adjustedIndexFrScroll = APPLY_ANDROID_FIX ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex
+        const adjustedIndexFrScroll = APPLY_ANDROID_FIX ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex;
         if (pageIndex >= 0) {
           visibleWeek.current = items.current[adjustedIndexFrScroll];
           currentIndex.current = adjustedIndexFrScroll;

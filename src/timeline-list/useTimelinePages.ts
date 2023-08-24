@@ -51,7 +51,7 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
   }, []);
 
   const scrollToPage = (pageIndex: number) => {
-    listRef.current?.scrollToOffset(shouldUseAndroidRTLFix ? ((PAGES_COUNT - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
+    listRef.current?.scrollToOffset(shouldUseAndroidRTLFix ? ((PAGES_COUNT - 1 - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
   };
 
   const resetPages = (date: string) => {

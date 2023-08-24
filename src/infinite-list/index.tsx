@@ -22,6 +22,7 @@ export interface InfiniteListProps
   onReachNearEdge?: (pageIndex: number) => void;
   onReachNearEdgeThreshold?: number;
   initialPageIndex?: number;
+  initialOffset?: number;
   scrollViewProps?: ScrollViewProps;
   reloadPages?: (pageIndex: number) => void;
   positionIndex?: number;
@@ -43,6 +44,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     onReachNearEdge,
     onReachNearEdgeThreshold,
     initialPageIndex = 0,
+    initialOffset,
     extendedState,
     scrollViewProps,
     positionIndex = 0,
@@ -71,6 +73,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const shouldUseAndroidRTLFix = useMemo(() => {
     return constants.isAndroid && constants.isRTL && isHorizontal;
   }, []);
+
   const listRef = useCombinedRefs(ref);
   const pageIndex = useRef<number>();
   const isOnEdge = useRef(false);
@@ -172,11 +175,13 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       // @ts-expect-error
       ref={listRef}
       isHorizontal={isHorizontal}
+      disableRecycling={shouldUseAndroidRTLFix}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
       layoutProvider={layoutProvider ?? _layoutProvider.current}
       extendedState={extendedState}
-      initialRenderIndex={initialPageIndex}
+      initialRenderIndex={initialOffset ? undefined : initialPageIndex}
+      initialOffset={initialOffset}
       renderAheadOffset={5 * pageWidth}
       onScroll={_onScroll}
       style={style}

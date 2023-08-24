@@ -2,14 +2,16 @@ import throttle from 'lodash/throttle';
 import flatten from 'lodash/flatten';
 import dropRight from 'lodash/dropRight';
 
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import {Text} from 'react-native';
 
 import {isToday, generateDay} from '../dateutils';
 import InfiniteList from '../infinite-list';
 import Context from '../expandableCalendar/Context';
 import {UpdateSources} from '../expandableCalendar/commons';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
-import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD} from './useTimelinePages';
+import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD, PAGES_COUNT} from './useTimelinePages';
+import constants from '../commons/constants';
 
 export interface TimelineListRenderItemInfo {
   item: string;
@@ -73,6 +75,12 @@ const TimelineList = (props: TimelineListProps) => {
     prevDate.current = date;
   }, [updateSource]);
 
+  const shouldApplyRTL = useMemo(() => constants.isRTL && constants.isAndroid, []);
+
+  const initialOffset = useMemo(() =>
+  shouldApplyRTL ?  constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE, [shouldApplyRTL]
+  );
+
   useEffect(() => {
     if (date !== prevDate.current) {
       scrollToCurrentDate(date);
@@ -93,7 +101,7 @@ const TimelineList = (props: TimelineListProps) => {
 
   const onPageChange = useCallback(
     throttle((pageIndex: number) => {
-      const newDate = pages[pageIndex];
+      const newDate = pages[shouldApplyRTL ? pageIndex - 1 : pageIndex];
       if (newDate !== prevDate.current) {
         setDate(newDate, UpdateSources.LIST_DRAG);
       }
@@ -140,7 +148,7 @@ const TimelineList = (props: TimelineListProps) => {
         <>
           <Timeline {..._timelineProps}/>
           {/* NOTE: Keeping this for easy debugging */}
-          {/* <Text style={{position: 'absolute'}}>{item}</Text> */}
+          {/* <Text style={{position: 'absolute'}}>{item}</Text>*/}
         </>
       );
     },
@@ -158,7 +166,7 @@ const TimelineList = (props: TimelineListProps) => {
       onReachNearEdgeThreshold={NEAR_EDGE_THRESHOLD}
       onScroll={onScroll}
       extendedState={{todayEvents: events[date], pages}}
-      initialPageIndex={INITIAL_PAGE}
+      initialOffset={initialOffset}
       scrollViewProps={{
         onMomentumScrollEnd
       }}
