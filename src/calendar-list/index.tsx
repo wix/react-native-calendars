@@ -2,11 +2,11 @@ import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import React, {forwardRef, useImperativeHandle, useRef, useEffect, useState, useCallback, useMemo} from 'react';
-import {FlatList, View, ViewStyle, FlatListProps} from 'react-native';
+import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
+import {FlatList, FlatListProps, View, ViewStyle} from 'react-native';
 
-import {extractHeaderProps, extractCalendarProps} from '../componentUpdater';
-import {xdateToData, parseDate, toMarkingFormat} from '../interface';
+import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
+import {parseDate, toMarkingFormat, xdateToData} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
 import {useDidUpdate} from '../hooks';
@@ -288,12 +288,10 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
     const newVisibleMonth = parseDate(viewableItems[0]?.item);
-    console.log('before', viewableItems, visibleMonth.current, currentMonth);
     if (isAndroidRTL) {
       const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
       const adjustedOffset = centerIndex - items.findIndex((item) => isEqual(newVisibleMonth, item));
-      const newAdjustedMonth = items[centerIndex + adjustedOffset];
-      visibleMonth.current = newAdjustedMonth;
+      visibleMonth.current = items[centerIndex + adjustedOffset];
       isPageScrolling.current = true;
       setCurrentMonth(visibleMonth.current);
     } else {
@@ -302,7 +300,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         setCurrentMonth(visibleMonth.current);
       }
     }
-    console.log('after', viewableItems, visibleMonth.current, currentMonth);
   }, [items, isAndroidRTL, current]);
 
   const viewabilityConfigCallbackPairs = useRef([
