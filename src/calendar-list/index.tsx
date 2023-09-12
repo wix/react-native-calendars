@@ -254,21 +254,11 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
-  const onPressArrowLeft = useCallback((method, month) => {
-    headerProps.onPressArrowLeft?.(method, month);
-  }, [headerProps.onPressArrowLeft]);
-
-  const onPressArrowRight = useCallback((method, month) => {
-    headerProps.onPressArrowRight?.(method, month);
-  }, [headerProps.onPressArrowRight]);
-
   const renderStaticHeader = () => {
     if (staticHeader && horizontal) {
       return (
         <CalendarHeader
           {...headerProps}
-          onPressArrowLeft={headerProps.onPressArrowLeft ? onPressArrowLeft : undefined}
-          onPressArrowRight={headerProps.onPressArrowRight ? onPressArrowRight : undefined}
           testID={`${testID}.staticHeader`}
           style={staticHeaderStyle}
           month={currentMonth}

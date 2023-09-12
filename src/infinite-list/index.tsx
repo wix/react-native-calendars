@@ -87,7 +87,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     }
 
     setTimeout(() => {
-      const x = isHorizontal ? constants.isRTL && constants.isAndroid ? Math.floor(data.length / 2) + 1 : Math.floor(data.length / 2) * pageWidth : 0;
+      const x = isHorizontal ? constants.isAndroidRTL ? Math.floor(data.length / 2) + 1 : Math.floor(data.length / 2) * pageWidth : 0;
       const y = isHorizontal ? 0 : positionIndex * pageHeight;
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
