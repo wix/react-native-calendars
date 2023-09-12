@@ -267,8 +267,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       return (
         <CalendarHeader
           {...headerProps}
-          onPressArrowLeft={onPressArrowLeft}
-          onPressArrowRight={onPressArrowRight}
+          onPressArrowLeft={headerProps.onPressArrowLeft ? onPressArrowLeft : undefined}
+          onPressArrowRight={headerProps.onPressArrowRight ? onPressArrowRight : undefined}
           testID={`${testID}.staticHeader`}
           style={staticHeaderStyle}
           month={currentMonth}
