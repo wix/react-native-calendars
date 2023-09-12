@@ -100,7 +100,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     onMomentumScrollEnd,
     /** FlatList props */
     onEndReachedThreshold,
-    onEndReached,
+    onEndReached
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -109,7 +109,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
-  const isAndroidRTL = useMemo(() =>constants.isRTL && constants.isAndroid && horizontal, [horizontal]);
+  const shouldUseAndroidRTLFix = useMemo(() => constants.isAndroidRTL && horizontal, [horizontal]);
 
   const style = useRef(styleConstructor(theme));
   const list = useRef();
@@ -188,13 +188,13 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const scrollToMonth = useCallback((date: XDate | string) => {
     const scrollTo = parseDate(date);
     const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
-    const scrollAmount = calendarSize * (isAndroidRTL ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
+    const scrollAmount = calendarSize * (shouldUseAndroidRTLFix ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
 
     if (scrollAmount !== 0) {
       // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
-  }, [calendarSize, isAndroidRTL, pastScrollRange, animateScroll]);
+  }, [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]);
 
   const addMonth = useCallback((count: number) => {
     const day = currentMonth?.clone().addMonths(count, true);
@@ -288,7 +288,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
     const newVisibleMonth = parseDate(viewableItems[0]?.item);
-    if (isAndroidRTL) {
+    if (shouldUseAndroidRTLFix) {
       const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
       const adjustedOffset = centerIndex - items.findIndex((item) => isEqual(newVisibleMonth, item));
       visibleMonth.current = items[centerIndex + adjustedOffset];
@@ -300,7 +300,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         setCurrentMonth(visibleMonth.current);
       }
     }
-  }, [items, isAndroidRTL, current]);
+  }, [items, shouldUseAndroidRTLFix, current]);
 
   const viewabilityConfigCallbackPairs = useRef([
     {

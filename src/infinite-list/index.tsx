@@ -71,7 +71,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     )
   );
   const shouldUseAndroidRTLFix = useMemo(() => {
-    return constants.isAndroid && constants.isRTL && isHorizontal;
+    return constants.isAndroidRTL && isHorizontal;
   }, []);
 
   const listRef = useCombinedRefs(ref);

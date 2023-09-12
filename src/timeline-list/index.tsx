@@ -3,7 +3,6 @@ import flatten from 'lodash/flatten';
 import dropRight from 'lodash/dropRight';
 
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
-import {Text} from 'react-native';
 
 import {isToday, generateDay} from '../dateutils';
 import InfiniteList from '../infinite-list';
@@ -75,11 +74,8 @@ const TimelineList = (props: TimelineListProps) => {
     prevDate.current = date;
   }, [updateSource]);
 
-  const shouldApplyRTL = useMemo(() => constants.isRTL && constants.isAndroid, []);
-
   const initialOffset = useMemo(() =>
-  shouldApplyRTL ?  constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE, [shouldApplyRTL]
-  );
+  constants.isAndroidRTL ? constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE, []);
 
   useEffect(() => {
     if (date !== prevDate.current) {
@@ -101,7 +97,7 @@ const TimelineList = (props: TimelineListProps) => {
 
   const onPageChange = useCallback(
     throttle((pageIndex: number) => {
-      const newDate = pages[shouldApplyRTL ? pageIndex - 1 : pageIndex];
+      const newDate = pages[constants.isAndroidRTL ? pageIndex - 1 : pageIndex];
       if (newDate !== prevDate.current) {
         setDate(newDate, UpdateSources.LIST_DRAG);
       }
