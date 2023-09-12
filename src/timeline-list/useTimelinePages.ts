@@ -1,4 +1,4 @@
-import {RefObject, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
 
 import inRange from 'lodash/inRange';
 import times from 'lodash/times';
