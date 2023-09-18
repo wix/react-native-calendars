@@ -302,7 +302,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       <FlatList
         // @ts-expect-error
         ref={list}
-        windowSize={constants.isAndroidRTL && horizontal ? pastScrollRange + futureScrollRange + 1 : undefined}
+        windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}
         showsVerticalScrollIndicator={showScrollIndicator}
         showsHorizontalScrollIndicator={showScrollIndicator}
