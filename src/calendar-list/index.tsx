@@ -116,7 +116,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current) || new XDate());
   const visibleMonth = useRef(currentMonth);
-  const isPageScrolling = useRef(false);
 
   const items: XDate[] = useMemo(() => {
     const months: any[] = [];
@@ -282,7 +281,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
       const adjustedOffset = centerIndex - items.findIndex((item) => isEqual(newVisibleMonth, item));
       visibleMonth.current = items[centerIndex + adjustedOffset];
-      isPageScrolling.current = true;
       setCurrentMonth(visibleMonth.current);
     } else {
       if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
@@ -304,6 +302,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       <FlatList
         // @ts-expect-error
         ref={list}
+        windowSize={constants.isAndroidRTL && horizontal ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}
         showsVerticalScrollIndicator={showScrollIndicator}
         showsHorizontalScrollIndicator={showScrollIndicator}
