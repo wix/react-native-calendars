@@ -12,8 +12,10 @@ import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 
 function areEqual(prevProps: DayProps, nextProps: DayProps) {
-  const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
-  const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
+  const toOmit = prevProps.dayComponent ? ['marking', 'onPress', 'dayComponent'] : ['marking'];
+
+  const prevPropsWithoutMarkDates = omit(prevProps, toOmit);
+  const nextPropsWithoutMarkDates = omit(nextProps, toOmit);
   const didPropsChange = some(prevPropsWithoutMarkDates, function (value, key) {
     return value !== nextPropsWithoutMarkDates[key];
   });
