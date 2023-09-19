@@ -208,7 +208,7 @@ export default class Agenda extends Component {
     this.onTouchEnd();
     const currentY = e.nativeEvent.contentOffset.y;
     this.knobTracker.add(currentY);
-    const multi = Platform.OS === 'ios' ? -250 : 250;
+    const multi = Platform.OS === 'ios' && this.viewHeight < 500 ? -250 : 250;
     const projectedY = currentY + this.knobTracker.estimateSpeed() * multi; /*ms*/
     const maxY = this.initialScrollPadPosition();
     const snapY = projectedY > maxY / 2 ? maxY : 0;
