@@ -1,40 +1,39 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useRef} from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
 import {Theme} from '../../../types';
 
 export interface DotProps {
   theme?: Theme;
-  color?: String;
-  marked?: Boolean;
-  selected?: Boolean;
-  disabled?: Boolean;
-  inactive?: Boolean;
-  today?: Boolean;
+  color?: string;
+  marked?: boolean;
+  selected?: boolean;
+  disabled?: boolean;
+  inactive?: boolean;
+  today?: boolean;
 }
 
 const Dot = ({theme, marked, disabled, inactive, color, today, selected}: DotProps) => {
-  const style = styleConstructor(theme);
-  const dotStyle = [style.dot] as object[];
+  const style = useRef(styleConstructor(theme));
+  const dotStyle = [style.current.dot] as object[];
 
   if (marked) {
-    dotStyle.push(style.visibleDot);
+    dotStyle.push(style.current.visibleDot);
 
     if (today) {
-      dotStyle.push(style.todayDot);
+      dotStyle.push(style.current.todayDot);
     }
 
     if (disabled) {
-      dotStyle.push(style.disabledDot);
+      dotStyle.push(style.current.disabledDot);
     }
 
     if (inactive) {
-      dotStyle.push(style.inactiveDot);
+      dotStyle.push(style.current.inactiveDot);
     }
 
     if (selected) {
-      dotStyle.push(style.selectedDot);
+      dotStyle.push(style.current.selectedDot);
     }
 
     if (color) {
@@ -46,13 +45,3 @@ const Dot = ({theme, marked, disabled, inactive, color, today, selected}: DotPro
 };
 
 export default Dot;
-
-Dot.propTypes = {
-  theme: PropTypes.object,
-  color: PropTypes.string,
-  marked: PropTypes.bool,
-  selected: PropTypes.bool,
-  disabled: PropTypes.bool,
-  inactive: PropTypes.bool,
-  today: PropTypes.bool
-};

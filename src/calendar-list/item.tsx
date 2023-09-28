@@ -1,15 +1,11 @@
-import PropTypes from 'prop-types';
-import memoize from 'memoize-one';
 import XDate from 'xdate';
-
-import React, {Component} from 'react';
-import {Text, View} from 'react-native';
-
+import React, {useRef, useMemo, useCallback} from 'react';
+import {Text} from 'react-native';
 import {Theme} from '../types';
-import {extractComponentProps} from '../componentUpdater';
-import {formatNumbers} from '../dateutils';
-import Calendar, {CalendarProps} from '../calendar';
+import {toMarkingFormat} from '../interface';
+import {extractCalendarProps} from '../componentUpdater';
 import styleConstructor from './style';
+import Calendar, {CalendarProps} from '../calendar';
 
 export type CalendarListItemProps = CalendarProps & {
   item: any;
@@ -18,125 +14,93 @@ export type CalendarListItemProps = CalendarProps & {
   horizontal?: boolean;
   theme?: Theme;
   scrollToMonth?: (date: XDate) => void;
+  visible?: boolean;
 };
 
-type CalendarListItemState = {
-  hideArrows: boolean;
-  hideExtraDays: boolean;
-};
+const CalendarListItem = React.memo((props: CalendarListItemProps) => {
+  const {
+    item,
+    theme,
+    scrollToMonth,
+    horizontal,
+    calendarHeight,
+    calendarWidth,
+    style: propsStyle,
+    headerStyle,
+    onPressArrowLeft,
+    onPressArrowRight,
+    visible
+  } = props;
 
-class CalendarListItem extends Component<CalendarListItemProps, CalendarListItemState> {
-  static displayName = 'IGNORE';
+  const style = useRef(styleConstructor(theme));
 
-  static propTypes = {
-    ...Calendar.propTypes,
-    item: PropTypes.any,
-    calendarWidth: PropTypes.number,
-    calendarHeight: PropTypes.number,
-    horizontal: PropTypes.bool
-  };
+  const calendarProps = extractCalendarProps(props);
+  const dateString = toMarkingFormat(item);
 
-  static defaultProps = {
-    hideArrows: true,
-    hideExtraDays: true
-  };
+  const calendarStyle = useMemo(() => {
+    return [
+      {
+        width: calendarWidth,
+        minHeight: calendarHeight
+      },
+      style.current.calendar,
+      propsStyle
+    ];
+  }, [calendarWidth, calendarHeight, propsStyle]);
 
-  style: any;
+  const textStyle = useMemo(() => {
+    return [calendarStyle, style.current.placeholderText];
+  }, [calendarStyle]);
 
-  constructor(props: CalendarListItemProps) {
-    super(props);
-
-    this.style = styleConstructor(props.theme);
-  }
-
-  shouldComponentUpdate(nextProps: CalendarListItemProps) {
-    const r1 = this.props.item;
-    const r2 = nextProps.item;
-
-    return r1.toString('yyyy MM') !== r2.toString('yyyy MM') || !!(r2.propBump && r2.propBump !== r1.propBump);
-  }
-
-  onPressArrowLeft = (_: any, month: any) => {
-    const {onPressArrowLeft, scrollToMonth} = this.props;
-    const monthClone = month.clone();
-
-    if (onPressArrowLeft) {
-      onPressArrowLeft(_, monthClone);
-    } else if (scrollToMonth) {
-      const currentMonth = monthClone.getMonth();
-      monthClone.addMonths(-1);
-
-      // Make sure we actually get the previous month, not just 30 days before currentMonth.
-      while (monthClone.getMonth() === currentMonth) {
-        monthClone.setDate(monthClone.getDate() - 1);
+  const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
+    const monthClone = month?.clone();
+    if (monthClone) {
+      if (onPressArrowLeft) {
+        onPressArrowLeft(method, monthClone);
+      } else if (scrollToMonth) {
+        const currentMonth = monthClone.getMonth();
+        monthClone.addMonths(-1);
+        // Make sure we actually get the previous month, not just 30 days before currentMonth.
+        while (monthClone.getMonth() === currentMonth) {
+          monthClone.setDate(monthClone.getDate() - 1);
+        }
+        scrollToMonth(monthClone);
       }
-
-      scrollToMonth(monthClone);
     }
-  };
+  }, [onPressArrowLeft, scrollToMonth]);
 
-  onPressArrowRight = (_: any, month: any) => {
-    const {onPressArrowRight, scrollToMonth} = this.props;
-    const monthClone = month.clone();
-
-    if (onPressArrowRight) {
-      onPressArrowRight(_, monthClone);
-    } else if (scrollToMonth) {
-      monthClone.addMonths(1);
-      scrollToMonth(monthClone);
+  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
+    const monthClone = month?.clone();
+    if (monthClone) {
+      if (onPressArrowRight) {
+        onPressArrowRight(method, monthClone);
+      } else if (scrollToMonth) {
+        monthClone.addMonths(1);
+        scrollToMonth(monthClone);
+      }
     }
-  };
+  }, [onPressArrowRight, scrollToMonth]);
 
-  getCalendarStyle = memoize((width, height, style) => {
-    return [{width, minHeight: height}, this.style.calendar, style];
-  });
-
-  render() {
-    const {
-      item,
-      horizontal,
-      calendarHeight,
-      calendarWidth,
-      testID,
-      style,
-      headerStyle,
-      onPressArrowLeft,
-      onPressArrowRight,
-      // @ts-expect-error
-      context
-    } = this.props;
-    const calendarProps = extractComponentProps(Calendar, this.props);
-    const calStyle = this.getCalendarStyle(calendarWidth, calendarHeight, style);
-
-    if (item.getTime) {
-      return (
-        <Calendar
-          {...calendarProps}
-          testID={testID}
-          current={item}
-          style={calStyle}
-          headerStyle={horizontal ? headerStyle : undefined}
-          disableMonthChange
-          onPressArrowLeft={horizontal ? this.onPressArrowLeft : onPressArrowLeft}
-          onPressArrowRight={horizontal ? this.onPressArrowRight : onPressArrowRight}
-          context={context}
-        />
-      );
-    } else {
-      const text = formatNumbers(item.toString());
-
-      return (
-        <View style={[{height: calendarHeight, width: calendarWidth}, this.style.placeholder]}>
-          <Text
-            allowFontScaling={false}
-            style={[this.style.placeholderText, {fontFamily: calendarProps.theme.textMonthFontFamily}]}
-          >
-            {text}
-          </Text>
-        </View>
-      );
-    }
+  if (!visible) {
+    return (
+      <Text style={textStyle}>{dateString}</Text>
+    );
   }
-}
+
+  return (
+    <Calendar
+      hideArrows={true}
+      hideExtraDays={true}
+      {...calendarProps}
+      current={dateString}
+      style={calendarStyle}
+      headerStyle={horizontal ? headerStyle : undefined}
+      disableMonthChange
+      onPressArrowLeft={horizontal ? _onPressArrowLeft : onPressArrowLeft}
+      onPressArrowRight={horizontal ? _onPressArrowRight : onPressArrowRight}
+    />
+  );
+});
 
 export default CalendarListItem;
+CalendarListItem.displayName = 'CalendarListItem';

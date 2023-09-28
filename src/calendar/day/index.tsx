@@ -1,59 +1,43 @@
-import get from 'lodash/get';
 import omit from 'lodash/omit';
-import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
+import some from 'lodash/some';
 import XDate from 'xdate';
-import memoize from 'memoize-one';
+import React, {useMemo} from 'react';
 
-import React, {Component} from 'react';
-
-import {shouldUpdate} from '../../componentUpdater';
 import {formatNumbers, isToday} from '../../dateutils';
+import {getDefaultLocale} from '../../services';
 import {xdateToData} from '../../interface';
-import {SELECT_DATE_SLOT} from '../../testIDs';
+import {DateData} from '../../types';
 import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
-import {MarkingProps} from './marking';
 
-const basicDayPropsTypes = omit(BasicDay.propTypes, 'date');
-
-export interface DayProps extends Omit<BasicDayProps, 'date'> {
-  /** The day to render */
-  day?: Date;
-  /** Provide custom day rendering component */
-  dayComponent?: any;
+function areEqual(prevProps: DayProps, nextProps: DayProps) {
+  const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
+  const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
+  const didPropsChange = some(prevPropsWithoutMarkDates, function (value, key) {
+    return value !== nextPropsWithoutMarkDates[key];
+  });
+  const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
+  return !didPropsChange && isMarkingEqual;
 }
 
-export default class Day extends Component<DayProps> {
-  static displayName = 'IGNORE';
+export interface DayProps extends BasicDayProps {
+  /** Provide custom day rendering component */
+  dayComponent?: React.ComponentType<DayProps & {date?: DateData}>; // TODO: change 'date' prop type to string by removing it from overriding BasicDay's 'date' prop (breaking change for V2)
+}
 
-  static propTypes = {
-    ...basicDayPropsTypes,
-    /** The day to render */
-    day: PropTypes.object,
-    /** Provide custom day rendering component */
-    dayComponent: PropTypes.any
-  };
+const Day = React.memo((props: DayProps) => {
+  const {date, marking, dayComponent, markingType} = props;
+  const _date = date ? new XDate(date) : undefined;
+  const _isToday = isToday(_date);
 
-  shouldComponentUpdate(nextProps: DayProps) {
-    return shouldUpdate(this.props, nextProps, [
-      'day',
-      'dayComponent',
-      'state',
-      'markingType',
-      'marking',
-      'onPress',
-      'onLongPress'
-    ]);
-  }
-
-  getMarkingLabel(marking: MarkingProps) {
+  const markingAccessibilityLabel = useMemo(() => {
     let label = '';
 
     if (marking) {
       if (marking.accessibilityLabel) {
         return marking.accessibilityLabel;
       }
-
       if (marking.selected) {
         label += 'selected ';
         if (!marking.marked) {
@@ -74,46 +58,26 @@ export default class Day extends Component<DayProps> {
       }
     }
     return label;
-  }
+  }, [marking]);
 
-  getAccessibilityLabel = memoize((day, marking, isToday) => {
-    const today = get(XDate, 'locales[XDate.defaultLocale].today');
-    const formatAccessibilityLabel = get(XDate, 'locales[XDate.defaultLocale].formatAccessibilityLabel');
-    const markingLabel = this.getMarkingLabel(marking);
+  const getAccessibilityLabel = useMemo(() => {
+    const today = getDefaultLocale().today || 'today';
+    const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
 
-    if (formatAccessibilityLabel) {
-      return `${isToday ? today : ''} ${day.toString(formatAccessibilityLabel)} ${markingLabel}`;
-    }
+    return `${_isToday ? today : ''} ${_date?.toString(formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
+  }, [_date, marking, _isToday]);
 
-    return `${isToday ? 'today' : ''} ${day.toString('dddd d MMMM yyyy')} ${markingLabel}`;
-  });
+  const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
+  const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate())} : undefined;
 
-  getDayComponent() {
-    const {dayComponent, markingType} = this.props;
+  return (
+    //@ts-expect-error
+    <Component {...props} accessibilityLabel={getAccessibilityLabel} {...dayComponentProps}>
+      {formatNumbers(_date?.getDate())}
+    </Component>
+  );
+}, areEqual) as any;
 
-    if (dayComponent) {
-      return dayComponent;
-    }
-    return markingType === 'period' ? PeriodDay : BasicDay;
-  }
+export default Day;
 
-  render() {
-    const {day, marking} = this.props;
-    const date = day && xdateToData(new XDate(day));
-    const _isToday = day ? isToday(new XDate(day)) : undefined;
-    const Component = this.getDayComponent();
-    const dayProps = omit(this.props, 'day');
-    const accessibilityLabel = this.getAccessibilityLabel(day, marking, _isToday);
-
-    return (
-      <Component
-        {...dayProps}
-        date={date}
-        testID={`${SELECT_DATE_SLOT}-${date?.dateString}`}
-        accessibilityLabel={accessibilityLabel}
-      >
-        {formatNumbers(date ? day?.getDate() : day)}
-      </Component>
-    );
-  }
-}
+Day.displayName = 'Day';

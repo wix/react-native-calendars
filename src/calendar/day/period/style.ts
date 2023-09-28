@@ -15,7 +15,8 @@ export default function styleConstructor(theme: Theme = {}) {
     base: {
       width: 38,
       height: FILLER_HEIGHT,
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'center'
     },
 
     fillers: {
@@ -26,21 +27,26 @@ export default function styleConstructor(theme: Theme = {}) {
       right: 0
     },
     leftFiller: {
+      backgroundColor: appStyle.calendarBackground,
       height: FILLER_HEIGHT,
       flex: 1
     },
     rightFiller: {
+      backgroundColor: appStyle.calendarBackground,
       height: FILLER_HEIGHT,
       flex: 1
     },
 
     text: {
-      marginTop: 7,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)'
+    },
+    dotContainer: {
+      position: 'absolute',
+      bottom: 3
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor
@@ -58,26 +64,6 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
-
-    // quickAction: {
-    //   backgroundColor: 'white',
-    //   borderWidth: 1,
-    //   borderColor: '#c1e4fe'
-    // },
-    // quickActionText: {
-    //   marginTop: 6,
-    //   color: appStyle.textColor
-    // },
-    // firstQuickAction: {
-    //   backgroundColor: appStyle.textLinkColor
-    // },
-    // firstQuickActionText: {
-    //   color: 'white'
-    // },
-    // naText: {
-    //   color: '#b6c1cd'
-    // },
-    // @ts-ignore
     ...(theme['stylesheet.day.period'] || {})
   });
 }

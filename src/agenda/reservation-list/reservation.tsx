@@ -6,40 +6,37 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 import {isToday} from '../../dateutils';
+import {getDefaultLocale} from '../../services';
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
-import {Theme} from '../../types';
-import {DayReservations} from './index';
+import {Theme, AgendaEntry} from '../../types';
 
 
 export interface ReservationProps {
-  item: DayReservations;
-  /** Specify theme properties to override specific styles for reservation parts. Default = {} */
-  theme: Theme;
+  date?: XDate;
+  item?: AgendaEntry;
+  /** Specify theme properties to override specific styles for item's parts. Default = {} */
+  theme?: Theme;
   /** specify your item comparison function for increased performance */
-  rowHasChanged?: (a: any, b: any) => boolean;
-  /** specify how each date should be rendered. day can be undefined if the item is not first in that day */
-  renderDay?: (date: XDate, item?: DayReservations) => React.Component;
+  rowHasChanged?: (a: AgendaEntry, b: AgendaEntry) => boolean;
+  /** specify how each date should be rendered. date can be undefined if the item is not first in that day */
+  renderDay?: (date?: XDate, item?: AgendaEntry) => JSX.Element;
   /** specify how each item should be rendered in agenda */
-  renderItem?: (reservation: any, isFirst: boolean) => React.Component;
+  renderItem?: (reservation: AgendaEntry, isFirst: boolean) => React.Component | JSX.Element;
   /** specify how empty date content with no items should be rendered */
-  renderEmptyDate?: (date?: XDate) => React.Component;
+  renderEmptyDate?: (date?: XDate) => React.Component | JSX.Element;
 }
 
 class Reservation extends Component<ReservationProps> {
-  static displayName = 'IGNORE';
+  static displayName = 'Reservation';
 
   static propTypes = {
+    date: PropTypes.any,
     item: PropTypes.any,
-    /** Specify theme properties to override specific styles for reservation parts. Default = {} */
     theme: PropTypes.object,
-    /** specify your item comparison function for increased performance */
     rowHasChanged: PropTypes.func,
-    /** specify how each date should be rendered. day can be undefined if the item is not first in that day */
     renderDay: PropTypes.func,
-    /** specify how each item should be rendered in agenda */
     renderItem: PropTypes.func,
-    /** specify how empty date content with no items should be rendered */
     renderEmptyDate: PropTypes.func
   };
 
@@ -47,25 +44,28 @@ class Reservation extends Component<ReservationProps> {
 
   constructor(props: ReservationProps) {
     super(props);
+
     this.style = styleConstructor(props.theme);
   }
 
   shouldComponentUpdate(nextProps: ReservationProps) {
+    const d1 = this.props.date;
+    const d2 = nextProps.date;
     const r1 = this.props.item;
     const r2 = nextProps.item;
+    
     let changed = true;
-
-    if (!r1 && !r2) {
+    if (!d1 && !d2) {
       changed = false;
-    } else if (r1 && r2) {
-      if (r1.day.getTime() !== r2.day.getTime()) {
+    } else if (d1 && d2) {
+      if (d1.getTime() !== d2.getTime()) {
         changed = true;
-      } else if (!r1.reservation && !r2.reservation) {
+      } else if (!r1 && !r2) {
         changed = false;
-      } else if (r1.reservation && r2.reservation) {
-        if ((!r1.date && !r2.date) || (r1.date && r2.date)) {
+      } else if (r1 && r2) {
+        if ((!d1 && !d2) || (d1 && d2)) {
           if (isFunction(this.props.rowHasChanged)) {
-            changed = this.props.rowHasChanged(r1.reservation, r2.reservation);
+            changed = this.props.rowHasChanged(r1, r2);
           }
         }
       }
@@ -73,13 +73,15 @@ class Reservation extends Component<ReservationProps> {
     return changed;
   }
 
-  renderDate(date?: XDate, item?: DayReservations) {
-    if (isFunction(this.props.renderDay) && date) {
-      return this.props.renderDay(date, item);
+  renderDate() {
+    const {item, date, renderDay} = this.props;
+
+    if (isFunction(renderDay)) {
+      return renderDay(date, item);
     }
 
     const today = date && isToday(date) ? this.style.today : undefined;
-    const dayNames = XDate.locales[XDate.defaultLocale].dayNamesShort;
+    const dayNames = getDefaultLocale().dayNamesShort;
 
     if (date) {
       return (
@@ -92,27 +94,26 @@ class Reservation extends Component<ReservationProps> {
           </Text>
         </View>
       );
-    } else {
-      return <View style={this.style.day} />;
     }
+    return <View style={this.style.day}/>;
   }
 
   render() {
-    const {reservation, date} = this.props.item;
+    const {item, date, renderItem, renderEmptyDate} = this.props;
+    
     let content;
-
-    if (reservation) {
+    if (item) {
       const firstItem = date ? true : false;
-      if (isFunction(this.props.renderItem)) {
-        content = this.props.renderItem(reservation, firstItem);
+      if (isFunction(renderItem)) {
+        content = renderItem(item, firstItem);
       }
-    } else if (isFunction(this.props.renderEmptyDate)) {
-      content = this.props.renderEmptyDate(date);
+    } else if (isFunction(renderEmptyDate)) {
+      content = renderEmptyDate(date);
     }
 
     return (
       <View style={this.style.container}>
-        {this.renderDate(date, reservation)}
+        {this.renderDate()}
         <View style={this.style.innerContainer}>{content}</View>
       </View>
     );

@@ -1,0 +1,20 @@
+{
+  "name": "WeekCalendar",
+  "description": "Week calendar component",
+  "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/week-calendar.gif?raw=true"
+  ],
+  "extends": ["CalendarList"],
+  "extendsLink": [
+    "https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx"
+  ],
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.tsx",
+  "props": [
+    {
+      "name": "allowShadow",
+      "type": "boolean",
+      "description": "Whether to have shadow/elevation for the calendar",
+      "default": "true"
+    }
+  ]
+}

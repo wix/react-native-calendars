@@ -1,0 +1,61 @@
+{
+  "name": "AgendaList",
+  "description": "Agenda list component for the `ExpandableCalendar` component.",
+  "note": "This component should be wrapped with `CalendarProvider` component.",
+  "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/expandable-calendar.gif?raw=true"
+  ],
+  "extends": ["FlatList"],
+  "extendsLink": [
+    "https://reactnative.dev/docs/flatlist"
+  ],
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.tsx",
+  "props": [
+    {
+      "name": "theme",
+      "type": "Theme",
+      "description": "Specify theme properties to override specific styles for calendar parts"
+    },
+    {
+      "name": "dayFormat",
+      "type": "string",
+      "description": "Day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting"
+    },
+    {
+      "name": "dayFormatter",
+      "type": "(arg0: string) => string",
+      "description": "A function to custom format the section header's title"
+    },
+    {
+      "name": "useMoment",
+      "type": "boolean",
+      "description": "Whether to use moment.js for date string formatting"
+    },
+    {
+      "name": "markToday",
+      "type": "boolean",
+      "description": "Whether to mark today's title with the 'Today, ...' string",
+      "default": true
+    },
+    {
+      "name": "avoidDateUpdates",
+      "type": "boolean",
+      "description": "Whether to block the date change in calendar (and calendar context provider) when agenda scrolls"
+    },
+    {
+      "name": "scrollToNextEvent",
+      "type": "boolean",
+      "description": "Whether to enable scrolling the agenda list to the next date with content when pressing a day without content"
+    },
+    {
+      "name": "viewOffset",
+      "type": "number",
+      "description": "Offset scroll to the section"
+    },
+    {
+      "name": "sectionStyle",
+      "type": "ViewStyle",
+      "description": "The style passed to the section view"
+    }
+  ]
+}

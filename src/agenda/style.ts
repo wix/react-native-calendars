@@ -12,7 +12,7 @@ export default function styleConstructor(theme: Theme = {}) {
       flex: 1,
       overflow: 'hidden'
     },
-    animatedContiner: {
+    animatedContainer: {
       flex: 1
     },
     knob,
@@ -34,24 +34,24 @@ export default function styleConstructor(theme: Theme = {}) {
       alignItems: 'center',
       backgroundColor: appStyle.calendarBackground
     },
-    weekday: {
+    dayHeader: {
       width: 32,
       textAlign: 'center',
-      color: appStyle.textSectionTitleColor,
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
-      fontWeight: appStyle.textDayHeaderFontWeight
+      fontWeight: appStyle.textDayHeaderFontWeight,
+      color: appStyle.textSectionTitleColor
     },
     reservations: {
       flex: 1,
       marginTop: 104,
-      backgroundColor: appStyle.backgroundColor
+      backgroundColor: appStyle.reservationsBackgroundColor || appStyle.backgroundColor //TODO: remove 2nd in V2
     },
     scrollPadStyle: {
       position: 'absolute',
-      width: 80
+      width: '100%',
+      alignSelf: 'center'
     },
-    // @ts-ignore
     ...(theme['stylesheet.agenda.main'] || {})
   });
 }

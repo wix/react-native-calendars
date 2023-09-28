@@ -1,10 +1,9 @@
 import React, {Component, Ref} from 'react';
-// @ts-expect-error
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import CalendarContext from './Context';
 
 
-function asCalendarConsumer(WrappedComponent: React.ComponentType<any>): React.ComponentClass {
+function asCalendarConsumer<PROPS>(WrappedComponent: React.ComponentType<any>): React.ComponentClass<PROPS> {
 
   class CalendarConsumer extends Component {
     contentRef: any;
@@ -16,7 +15,7 @@ function asCalendarConsumer(WrappedComponent: React.ComponentType<any>): React.C
     render() {
       return (
         <CalendarContext.Consumer>
-          {context => <WrappedComponent ref={this.contentRef} context={context} {...this.props} />}
+          {context => <WrappedComponent ref={this.saveRef} context={context} {...this.props} />}
         </CalendarContext.Consumer>
       );
     }
@@ -24,7 +23,7 @@ function asCalendarConsumer(WrappedComponent: React.ComponentType<any>): React.C
 
   hoistNonReactStatic(CalendarConsumer, WrappedComponent);
 
-  return CalendarConsumer;
+  return CalendarConsumer as any;
 }
 
 export default asCalendarConsumer;

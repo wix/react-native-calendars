@@ -1,0 +1,75 @@
+{
+  "name": "ExpandableCalendar",
+  "description": "Expandable calendar component",
+  "note": "This component should be wrapped with `CalendarProvider` component.",
+  "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/expandable-calendar.gif?raw=true"
+  ],
+  "extends": ["CalendarList"],
+  "extendsLink": [
+    "https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx"
+  ],
+  "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.tsx",
+  "props": [
+    {
+      "name": "initialPosition",
+      "type": "Positions",
+      "description": "The initial position of the calendar ('open' | 'closed')",
+      "default": "Positions.CLOSED"
+    },
+    {
+      "name": "onCalendarToggled",
+      "type": "(isOpen: boolean) => void",
+      "description": "Handler which gets executed when the calendar is opened or closed"
+    },
+    {
+      "name": "disablePan",
+      "type": "boolean",
+      "description": "Whether to disable the pan gesture and disable the opening and closing of the calendar (initialPosition will persist)"
+    },
+    {
+      "name": "hideKnob",
+      "type": "boolean",
+      "description": "Whether to hide the knob"
+    },
+    {
+      "name": "leftArrowImageSource",
+      "type": "ImageSourcePropType",
+      "description": "The source for the left arrow image"
+    },
+    {
+      "name": "rightArrowImageSource",
+      "type": "ImageSourcePropType",
+      "description": "The source for the right arrow image"
+    },
+    {
+      "name": "allowShadow",
+      "type": "boolean",
+      "description": "Whether to have shadow/elevation for the calendar",
+      "default": "true"
+    },
+    {
+      "name": "disableWeekScroll",
+      "type": "boolean",
+      "description": "Whether to disable the week scroll in closed position"
+    },
+    {
+      "name": "openThreshold",
+      "type": "number",
+      "description": "The threshold for opening the calendar with the pan gesture",
+      "default": "30"
+    },
+    {
+      "name": "closeThreshold",
+      "type": "number",
+      "description": "The threshold for closing the calendar with the pan gesture",
+      "default": "30"
+    },
+    {
+      "name": "closeOnDayPress",
+      "type": "boolean",
+      "description": "Whether to close the calendar on day press",
+      "default": "true"
+    }
+  ]
+}
