@@ -14,7 +14,7 @@ import styleConstructor from './style';
 import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
-import EventBlock, {Event, PackedEvent} from './EventBlock';
+import EventBlock, {Event as TimelineEventProps, PackedEvent as TimelinePackedEventProps} from './EventBlock';
 import NowIndicator from './NowIndicator';
 import useTimelineOffset from './useTimelineOffset';
 
@@ -26,7 +26,7 @@ export interface TimelineProps {
   /**
    * List of events to display in this timeline
    */
-  events: Event[];
+  events: TimelineEventProps[];
   /**
    * The timeline day start time
    */
@@ -39,11 +39,11 @@ export interface TimelineProps {
    * @deprecated
    * Use onEventPress instead
    */
-  eventTapped?: (event: Event) => void;
+  eventTapped?: (event: TimelineEventProps) => void;
   /**
    * Handle event press
    */
-  onEventPress?: (event: Event) => void;
+  onEventPress?: (event: TimelineEventProps) => void;
   /**
    * Pass to handle creation of a new event by long press on the timeline background
    * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
@@ -76,7 +76,7 @@ export interface TimelineProps {
   /**
    * Render a custom event block
    */
-  renderEvent?: (event: PackedEvent) => JSX.Element;
+  renderEvent?: (event: TimelinePackedEventProps) => JSX.Element;
   /**
    * Whether to show now indicator
    */
@@ -206,7 +206,7 @@ const Timeline = (props: TimelineProps) => {
   );
 
   const renderEvents = (dayIndex: number) => {
-    const events = packedEvents[dayIndex].map((event: PackedEvent, eventIndex: number) => {
+    const events = packedEvents[dayIndex].map((event: TimelinePackedEventProps, eventIndex: number) => {
       const onEventPress = () => _onEventPress(dayIndex, eventIndex);
       return (
         <EventBlock
@@ -267,5 +267,5 @@ const Timeline = (props: TimelineProps) => {
   );
 };
 
-export {Event as TimelineEventProps, PackedEvent as TimelinePackedEventProps};
+export {TimelineEventProps, TimelinePackedEventProps};
 export default React.memo(Timeline);
