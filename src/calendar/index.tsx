@@ -3,7 +3,7 @@ import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
 import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
-// @ts-expect-error
+// @ts-ignore
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import constants from '../commons/constants';
@@ -149,12 +149,12 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   }, [handleDayInteraction, onDayLongPress]);
 
   const onSwipeLeft = useCallback(() => {
-    // @ts-expect-error
+    // @ts-ignore
     header.current?.onPressRight();
   }, [header]);
 
   const onSwipeRight = useCallback(() => {
-    // @ts-expect-error
+    // @ts-ignore
     header.current?.onPressLeft();
   }, [header]);
 

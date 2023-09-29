@@ -10,6 +10,6 @@ export interface CalendarContextProps {
   timelineLeftInset?: number;
 }
 
-// @ts-expect-error
+// @ts-ignore
 const CalendarContext = React.createContext<CalendarContextProps>({});
 export default CalendarContext;

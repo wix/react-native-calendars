@@ -180,7 +180,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     }
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
+      // @ts-ignore
       list?.current?.scrollToOffset({offset: scrollAmount, animated});
     }
   };
@@ -191,7 +191,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const scrollAmount = calendarSize * (shouldUseAndroidRTLFix ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
+      // @ts-ignore
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
   }, [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]);
@@ -244,7 +244,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         markedDates={getMarkedDatesForItem(item)}
         item={item}
         style={calendarStyle}
-        // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
+        // @ts-ignore - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal}
         calendarWidth={calendarWidth}
         calendarHeight={calendarHeight}
@@ -301,7 +301,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList
-        // @ts-expect-error
+        // @ts-ignore
         ref={list}
         windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}

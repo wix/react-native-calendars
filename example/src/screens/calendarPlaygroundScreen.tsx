@@ -372,7 +372,7 @@ const NewCalendarScreen = () => {
     customHeaderProps.current = props;
     
     return (
-      // @ts-expect-error
+      // @ts-ignore
       <View ref={ref} {...props} style={styles.customHeader}>
         <TouchableOpacity onPress={movePrevious}>
           <Text>Previous</Text>
