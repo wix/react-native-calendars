@@ -70,7 +70,7 @@ export default function styleConstructor(theme = {}) {
             width: '100%',
             alignSelf: 'center'
         },
-        // @ts-expect-error
+        // @ts-ignore
         ...(theme['stylesheet.agenda.main'] || {})
     });
 }

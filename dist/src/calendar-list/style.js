@@ -31,7 +31,7 @@ export default function getStyle(theme = {}) {
             backgroundColor: appStyle.calendarBackground,
             paddingHorizontal: 15
         },
-        // @ts-expect-error
+        // @ts-ignore
         ...(theme['stylesheet.calendar-list.main'] || {})
     });
 }

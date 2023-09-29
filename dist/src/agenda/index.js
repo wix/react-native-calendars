@@ -7,7 +7,7 @@ import { View, Dimensions, Animated, Text } from 'react-native';
 import { extractCalendarListProps, extractReservationListProps } from '../componentUpdater';
 import { xdateToData, toMarkingFormat, parseDate } from '../interface';
 import { sameDate, sameMonth } from '../dateutils';
-// @ts-expect-error
+// @ts-ignore
 import { AGENDA_CALENDAR_KNOB } from '../testIDs';
 import { VelocityTracker } from '../velocityTracker';
 import { getCalendarDateString } from '../services';

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-// @ts-expect-error
+// @ts-ignore
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
 import { page, isGTE, isLTE, sameMonth } from '../dateutils';
@@ -65,11 +65,11 @@ const Calendar = (props) => {
             handleDayInteraction(date, onDayLongPress);
     }, [handleDayInteraction, onDayLongPress]);
     const onSwipeLeft = useCallback(() => {
-        // @ts-expect-error
+        // @ts-ignore
         header.current?.onPressRight();
     }, [header]);
     const onSwipeRight = useCallback(() => {
-        // @ts-expect-error
+        // @ts-ignore
         header.current?.onPressLeft();
     }, [header]);
     const onSwipe = useCallback((gestureName) => {

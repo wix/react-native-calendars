@@ -24,7 +24,7 @@ export const useCombinedRefs = (...refs) => {
                 ref(targetRef.current);
             }
             else {
-                // @ts-expect-error
+                // @ts-ignore
                 ref.current = targetRef.current;
             }
         });

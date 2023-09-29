@@ -90,7 +90,7 @@ const Timeline = (props) => {
       </React.Fragment>);
     };
     return (<ScrollView 
-    // @ts-expect-error
+    // @ts-ignore
     ref={scrollView} style={styles.current.container} contentContainerStyle={[styles.current.contentStyle, { width: constants.screenWidth }]} showsVerticalScrollIndicator={false} {...scrollEvents}>
       <TimelineHours start={start} end={end} date={pageDates[0]} format24h={format24h} styles={styles.current} unavailableHours={unavailableHours} unavailableHoursColor={unavailableHoursColor} onBackgroundLongPress={onBackgroundLongPress} onBackgroundLongPressOut={onBackgroundLongPressOut} width={width} numberOfDays={numberOfDays} timelineLeftInset={timelineLeftInset}/>
       {times(numberOfDays, renderTimelineDay)}

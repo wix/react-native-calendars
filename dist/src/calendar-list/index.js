@@ -101,7 +101,7 @@ const CalendarList = (props, ref) => {
             }
         }
         if (scrollAmount !== 0) {
-            // @ts-expect-error
+            // @ts-ignore
             list?.current?.scrollToOffset({ offset: scrollAmount, animated });
         }
     };
@@ -110,7 +110,7 @@ const CalendarList = (props, ref) => {
         const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
         const scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize;
         if (scrollAmount !== 0) {
-            // @ts-expect-error
+            // @ts-ignore
             list?.current?.scrollToOffset({ offset: scrollAmount, animated: animateScroll });
         }
     }, [calendarSize]);
@@ -152,7 +152,7 @@ const CalendarList = (props, ref) => {
         const [year, month] = dateString.split('-');
         const testId = `${testID}.item_${year}-${month}`;
         return (<CalendarListItem {...calendarProps} testID={testId} markedDates={getMarkedDatesForItem(item)} item={item} style={calendarStyle} 
-        // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
+        // @ts-ignore - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal} calendarWidth={calendarWidth} calendarHeight={calendarHeight} scrollToMonth={scrollToMonth} visible={isDateInRange(item)}/>);
     }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
     const renderStaticHeader = () => {
@@ -181,7 +181,7 @@ const CalendarList = (props, ref) => {
     ]);
     return (<View style={style.current.flatListContainer} testID={testID}>
       <FlatList 
-    // @ts-expect-error
+    // @ts-ignore
     ref={list} style={listStyle} showsVerticalScrollIndicator={showScrollIndicator} showsHorizontalScrollIndicator={showScrollIndicator} data={items} renderItem={renderItem} getItemLayout={getItemLayout} initialNumToRender={range.current} initialScrollIndex={initialDateIndex} viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current} testID={`${testID}.list`} onLayout={onLayout} removeClippedSubviews={removeClippedSubviews} pagingEnabled={pagingEnabled} scrollEnabled={scrollEnabled} scrollsToTop={scrollsToTop} horizontal={horizontal} keyboardShouldPersistTaps={keyboardShouldPersistTaps} keyExtractor={keyExtractor} onEndReachedThreshold={onEndReachedThreshold} onEndReached={onEndReached} nestedScrollEnabled={nestedScrollEnabled} onMomentumScrollBegin={onMomentumScrollBegin} onMomentumScrollEnd={onMomentumScrollEnd} onScrollBeginDrag={onScrollBeginDrag} onScrollEndDrag={onScrollEndDrag}/>
       {renderStaticHeader()}
     </View>);

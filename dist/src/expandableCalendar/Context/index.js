@@ -1,4 +1,4 @@
 import React from 'react';
-// @ts-expect-error
+// @ts-ignore
 const CalendarContext = React.createContext({});
 export default CalendarContext;

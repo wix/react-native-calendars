@@ -31,7 +31,7 @@ const WeekCalendar = (props) => {
     useEffect(() => {
         if (updateSource !== UpdateSources.WEEK_SCROLL) {
             const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
-            // @ts-expect-error
+            // @ts-ignore
             list.current?.scrollToOffset?.(pageIndex * containerWidth, 0, false);
         }
     }, [date]);
