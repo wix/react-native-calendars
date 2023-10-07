@@ -63,6 +63,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   customHeader?: any;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
+  /** Selected date string */
+  selectedDate?: string;
 }
 
 /**
@@ -72,6 +74,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
  */
 const Calendar = (props: CalendarProps & ContextProp) => {
   const {
+    selectedDate,
     initialDate,
     current,
     theme,
@@ -206,6 +209,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
           date={dateString}
+          selected={selectedDate === dateString}
           state={getState(day, currentMonth, props, isControlled)}
           marking={markedDates?.[dateString]}
           onPress={_onDayPress}
