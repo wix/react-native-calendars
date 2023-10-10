@@ -57,7 +57,7 @@
     "@types/xdate": "^0.8.32",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
-    "@welldone-software/why-did-you-render": "^6.0.3",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^29.2.1",
     "detox": "^18.0.0",
