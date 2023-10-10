@@ -3,7 +3,6 @@ npm-debug.log
 .idea
 yarn.lock
 .vscode
-package-lock.json
 
 # OSX
 #
@@ -66,7 +65,7 @@ ios/Podfile.lock
 /vendor/bundle/
 
 .eslintcache
-.reassure 
+.reassure
 
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
