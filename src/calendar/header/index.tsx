@@ -68,6 +68,8 @@ export interface CalendarHeaderProps {
   current?: string;
   /** Left inset for the timeline calendar header, default is 72 */
   timelineLeftInset?: number;
+  /** Custom content for input dates blocks */
+  renderCustomContent?: () => ReactNode;
 }
 
 const accessibilityActions = [
@@ -78,6 +80,7 @@ const accessibilityActions = [
 const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const {
     theme,
+    renderCustomContent,
     style: propsStyle,
     addMonth: propsAddMonth,
     month,
@@ -104,7 +107,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     current = '',
     timelineLeftInset
   } = props;
-  
+
   const numberOfDaysCondition = useMemo(() => {
     return numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
@@ -125,7 +128,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         : arrowsHitSlop,
     [arrowsHitSlop]
   );
-  
+
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -226,8 +229,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-    const renderArrowDirection = isLeft ? 'left' : 'right';   
-      
+    const renderArrowDirection = isLeft ? 'left' : 'right';
+
     return (
       <TouchableOpacity
         onPress={onPress}
@@ -293,6 +296,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         </View>
         {_renderArrow('right')}
       </View>
+      {renderCustomContent && renderCustomContent()}
       {renderDayNames()}
     </View>
   );
