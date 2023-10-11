@@ -117,8 +117,6 @@ class ReservationList extends Component<ReservationListProps, State> {
   updateReservations(props: ReservationListProps) {
     const { selectedDay, showOnlySelectedDayItems } = props;
     const reservations = this.getReservations(props);
-    console.log('selectedDay', toMarkingFormat(selectedDay));
-    console.log('reservations.reservations', reservations.reservations);
     if (!showOnlySelectedDayItems && this.list) {
       this.state.reservations.forEach((reservation, index) => {
         const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
