@@ -43,6 +43,8 @@ export type ReservationListProps = ReservationProps & {
   onScrollEndDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** Called when the momentum scroll starts for the agenda list **/
   onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  /** Rendered at the top of all the items. Can be a React Component (e.g. SomeComponent), or a React element (e.g. <SomeComponent />)**/
+  ListHeaderComponent?: () => JSX.Element;
   /** Called when the momentum scroll stops for the agenda list **/
   onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView */
@@ -73,6 +75,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     onScrollBeginDrag: PropTypes.func,
     onScrollEndDrag: PropTypes.func,
     onMomentumScrollBegin: PropTypes.func,
+    ListHeaderComponent: PropTypes.func,
     onMomentumScrollEnd: PropTypes.func,
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
@@ -271,7 +274,28 @@ class ReservationList extends Component<ReservationListProps, State> {
       return <ActivityIndicator color={theme?.indicatorColor} style={this.style.indicator} />;
     }
 
-    return (<FlatList contentContainerStyle={this.style.content} data={this.state.reservations} keyExtractor={this.keyExtractor} onMomentumScrollBegin={this.props.onMomentumScrollBegin} onMomentumScrollEnd={this.props.onMomentumScrollEnd} onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture} onRefresh={this.props.onRefresh} onScroll={this.onScroll} onScrollBeginDrag={this.props.onScrollBeginDrag} onScrollEndDrag={this.props.onScrollEndDrag} ref={this.list} refreshControl={this.props.refreshControl} refreshing={this.props.refreshing} renderItem={this.renderRow} scrollEventThrottle={200} showsVerticalScrollIndicator={false} style={style} />);
+    return (
+      <FlatList
+          contentContainerStyle={this.style.content}
+          data={this.state.reservations}
+          keyExtractor={this.keyExtractor}
+          ListHeaderComponent={this.props.ListHeaderComponent}
+          onMomentumScrollBegin={this.props.onMomentumScrollBegin}
+          onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+          onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture}
+          onRefresh={this.props.onRefresh}
+          onScroll={this.onScroll}
+          onScrollBeginDrag={this.props.onScrollBeginDrag}
+          onScrollEndDrag={this.props.onScrollEndDrag}
+          ref={this.list}
+          refreshControl={this.props.refreshControl}
+          refreshing={this.props.refreshing}
+          renderItem={this.renderRow}
+          scrollEventThrottle={200}
+          showsVerticalScrollIndicator={false}
+          style={style} 
+        />
+    );
   }
 }
 export default ReservationList;
