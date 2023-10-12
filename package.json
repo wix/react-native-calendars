@@ -4,7 +4,6 @@
   "main": "src/index.ts",
   "types": "src/index.d.ts",
   "description": "React Native Calendar Components",
-  "files": ["src"],
   "scripts": {
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
     "build:ts": "tsc",
