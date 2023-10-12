@@ -76,6 +76,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     onScrollEndDrag: PropTypes.func,
     onMomentumScrollBegin: PropTypes.func,
     ListHeaderComponent: PropTypes.func,
+    renderStickyHeader: PropTypes.object,
     onMomentumScrollEnd: PropTypes.func,
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
@@ -275,7 +276,9 @@ class ReservationList extends Component<ReservationListProps, State> {
     }
 
     return (
-      <FlatList
+      <>
+        {this.props.renderStickyHeader}
+        <FlatList
           contentContainerStyle={this.style.content}
           data={this.state.reservations}
           keyExtractor={this.keyExtractor}
@@ -295,6 +298,7 @@ class ReservationList extends Component<ReservationListProps, State> {
           showsVerticalScrollIndicator={false}
           style={style} 
         />
+      </>
     );
   }
 }
