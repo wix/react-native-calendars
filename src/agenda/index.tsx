@@ -49,6 +49,8 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
   /** Rendered at the top of all the items. Can be a React Component (e.g. SomeComponent), or a React element (e.g. <SomeComponent />) **/
   ListHeaderComponent?: () => JSX.Element;
+
+  renderStickyHeader?: () => JSX.Element;
   /** Hide knob button. Default = false */
   hideKnob?: boolean;
   /** Whether the knob should always be visible (when hideKnob = false) */
@@ -81,6 +83,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     loadItemsForMonth: PropTypes.func,
     ListHeaderComponent: PropTypes.func,
+    renderStickyHeader: PropTypes.object,
     onCalendarToggled: PropTypes.func,
     onDayChange: PropTypes.func,
     renderKnob: PropTypes.func,
@@ -348,6 +351,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       <ReservationList
         {...reservationListProps}
         ListHeaderComponent={this.props.ListHeaderComponent}
+        renderStickyHeader={this.props.renderStickyHeader}
         ref={this.list}
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
