@@ -45,6 +45,8 @@ export type ReservationListProps = ReservationProps & {
   onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** Rendered at the top of all the items. Can be a React Component (e.g. SomeComponent), or a React element (e.g. <SomeComponent />)**/
   ListHeaderComponent?: () => JSX.Element;
+
+  renderStickyHeader?: () => JSX.Element;
   /** Called when the momentum scroll stops for the agenda list **/
   onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView */
