@@ -2,7 +2,8 @@ import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
 import {Theme} from '../../../types';
 
-const FILLER_HEIGHT = 34;
+const FILLER_HEIGHT = 36;
+const SELECTED_BASE_SIZE = 45;
 
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -13,8 +14,8 @@ export default function styleConstructor(theme: Theme = {}) {
       marginLeft: -1
     },
     base: {
-      width: 38,
-      height: FILLER_HEIGHT,
+      width: SELECTED_BASE_SIZE,
+      height: SELECTED_BASE_SIZE,
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -23,13 +24,15 @@ export default function styleConstructor(theme: Theme = {}) {
       position: 'absolute',
       height: FILLER_HEIGHT,
       flexDirection: 'row',
+      top: 4.5,
       left: 0,
-      right: 0
+      right: 0,
+      overflow: 'hidden'
     },
     leftFiller: {
       backgroundColor: appStyle.calendarBackground,
       height: FILLER_HEIGHT,
-      flex: 1
+      flex: 1,
     },
     rightFiller: {
       backgroundColor: appStyle.calendarBackground,

@@ -56,6 +56,8 @@ export interface MarkingProps extends DotProps {
   endingDay?: boolean;
   accessibilityLabel?: string;
   customStyles?: CustomStyle;
+  // custom color for fillers in the start/end date
+  rangeColor?: string;
 }
 
 const Marking = (props: MarkingProps) => {

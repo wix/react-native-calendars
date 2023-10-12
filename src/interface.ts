@@ -14,6 +14,7 @@ export function xdateToData(date: XDate | string) {
     year: d.getFullYear(),
     month: d.getMonth() + 1,
     day: d.getDate(),
+    dayWeek: d.getDay(),
     timestamp: new XDate(dateString, true).getTime(),
     dateString: dateString
   };

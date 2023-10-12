@@ -57,4 +57,4 @@ export const reservationsBackgroundColor = AGENDA_BG_COLOR;
 export const todayButtonTextColor = SECONDARY_TEXT_COLOR;
 export const todayButtonPosition = undefined; // right' / 'left'(default)
 
-export const weekVerticalMargin = 7;
+export const weekVerticalMargin = 3;

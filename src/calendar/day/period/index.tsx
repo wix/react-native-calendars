@@ -23,8 +23,8 @@ export interface PeriodDayProps extends ViewProps {
 type MarkingStyle = {
   containerStyle: StyleProp<ViewStyle>;
   textStyle: StyleProp<TextStyle>;
-  startingDay?: ViewStyle;
-  endingDay?: ViewStyle;
+  startingDay?: ViewStyle & { rangeBackgroundColor?: string };
+  endingDay?: ViewStyle & { rangeBackgroundColor?: string };
   day?: ViewStyle;
 }
 
@@ -46,17 +46,17 @@ const PeriodDay = (props: PeriodDayProps) => {
       } else if (marking.selected) {
         defaultStyle.textStyle = {color: style.current.selectedText.color};
       }
-  
+
       if (marking.startingDay) {
-        defaultStyle.startingDay = {backgroundColor: marking.color};
+        defaultStyle.startingDay = {backgroundColor: marking.color, rangeBackgroundColor: marking.rangeColor || '#E5F4EC'};
       }
       if (marking.endingDay) {
-        defaultStyle.endingDay = {backgroundColor: marking.color};
+        defaultStyle.endingDay = {backgroundColor: marking.color, rangeBackgroundColor: marking.rangeColor || '#E5F4EC'};
       }
       if (!marking.startingDay && !marking.endingDay) {
         defaultStyle.day = {backgroundColor: marking.color};
       }
-      
+
       if (marking.textColor) {
         defaultStyle.textStyle = {color: marking.textColor};
       }
@@ -66,7 +66,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       if (marking.customContainerStyle) {
         defaultStyle.containerStyle = marking.customContainerStyle;
       }
-  
+
       return defaultStyle;
     }
   }, [marking]);
@@ -80,10 +80,10 @@ const PeriodDay = (props: PeriodDayProps) => {
 
     if (marking) {
       containerStyle.push({
-        borderRadius: 17,
-        overflow: 'hidden'
+        borderRadius: 100,
+        overflow: 'hidden',
       });
-      
+
       if (markingStyle.containerStyle) {
         containerStyle.push(markingStyle.containerStyle);
       }
@@ -114,6 +114,9 @@ const PeriodDay = (props: PeriodDayProps) => {
       if (markingStyle.textStyle) {
         textStyle.push(markingStyle.textStyle);
       }
+      if (markingStyle.startingDay || markingStyle.endingDay) {
+        textStyle.push({fontWeight: 700});
+      }
     }
 
     return textStyle;
@@ -122,23 +125,33 @@ const PeriodDay = (props: PeriodDayProps) => {
   const fillerStyles = useMemo(() => {
     const leftFillerStyle: ViewStyle = {backgroundColor: undefined};
     const rightFillerStyle: ViewStyle = {backgroundColor: undefined};
-    let fillerStyle = {};
+    let fillerStyle: ViewStyle = {};
 
     const start = markingStyle.startingDay;
     const end = markingStyle.endingDay;
-
     if (start && !end) {
-      rightFillerStyle.backgroundColor = markingStyle.startingDay?.backgroundColor;
+      rightFillerStyle.backgroundColor = markingStyle.startingDay?.rangeBackgroundColor;
     } else if (end && !start) {
-      leftFillerStyle.backgroundColor = markingStyle.endingDay?.backgroundColor;
-    } else if (markingStyle.day) {
+      leftFillerStyle.backgroundColor = markingStyle.endingDay?.rangeBackgroundColor;
+    }
+    if (markingStyle.day) {
       leftFillerStyle.backgroundColor = markingStyle.day?.backgroundColor;
       rightFillerStyle.backgroundColor = markingStyle.day?.backgroundColor;
       fillerStyle = {backgroundColor: markingStyle.day?.backgroundColor};
+      // Add border for range selected values (start and end of the week)
+      if (!isNaN(dateData?.dayWeek)) {
+        if (dateData?.dayWeek === 0) {
+          fillerStyle.borderTopLeftRadius = 60;
+          fillerStyle.borderBottomLeftRadius = 60;
+        } else if (dateData?.dayWeek === 6) {
+          fillerStyle.borderTopRightRadius = 60;
+          fillerStyle.borderBottomRightRadius = 60;
+        }
+      }
     }
 
     return {leftFillerStyle, rightFillerStyle, fillerStyle};
-  }, [marking]);
+  }, [dateData?.dayWeek, marking]);
 
   const renderFillers = () => {
     if (marking) {
@@ -158,9 +171,9 @@ const PeriodDay = (props: PeriodDayProps) => {
   const _onLongPress = useCallback(() => {
     onLongPress?.(dateData);
   }, [onLongPress]);
-    
+
   const Component = marking ? TouchableWithoutFeedback : TouchableOpacity;
-  
+
   return (
     <Component
       testID={testID}
