@@ -79,7 +79,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     onScrollBeginDrag: PropTypes.func,
     onScrollEndDrag: PropTypes.func,
     onMomentumScrollBegin: PropTypes.func,
-    ListHeaderComponent: PropTypes.object,
+    ListHeaderComponent: PropTypes.func,
     renderStickyHeader: PropTypes.object,
     containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     onMomentumScrollEnd: PropTypes.func,
