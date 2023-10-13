@@ -123,7 +123,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   updateReservations(props: ReservationListProps) {
     const { selectedDay, showOnlySelectedDayItems } = props;
     const reservations = this.getReservations(props);
-    if (!showOnlySelectedDayItems && this.list) {
+    if (!showOnlySelectedDayItems && this.list && !sameDate(selectedDay, this.selectedDay)) {
       this.state.reservations.forEach((reservation, index) => {
         const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
         if (reservationDate === toMarkingFormat(selectedDay)) {
@@ -225,16 +225,6 @@ class ReservationList extends Component<ReservationListProps, State> {
       }
 
       topRowOffset += this.heights[topRow];
-    }
-
-    const row = this.state.reservations[topRow];
-    if (!row)
-      return;
-    const day = row.date;
-    if (day) {
-      if (!sameDate(day, this.selectedDay) && this.scrollOver) {
-        this.selectedDay = day.clone();
-      }
     }
   };
   onListTouch() {
