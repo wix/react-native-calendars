@@ -51,6 +51,8 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   ListHeaderComponent?: () => JSX.Element;
 
   renderStickyHeader?: () => JSX.Element;
+
+  containerStyle?: StyleProp<ViewStyle>;
   /** Hide knob button. Default = false */
   hideKnob?: boolean;
   /** Whether the knob should always be visible (when hideKnob = false) */
@@ -84,6 +86,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     loadItemsForMonth: PropTypes.func,
     ListHeaderComponent: PropTypes.object,
     renderStickyHeader: PropTypes.object,
+    containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     onCalendarToggled: PropTypes.func,
     onDayChange: PropTypes.func,
     renderKnob: PropTypes.func,
@@ -352,6 +355,7 @@ export default class Agenda extends Component<AgendaProps, State> {
         {...reservationListProps}
         ListHeaderComponent={this.props.ListHeaderComponent}
         renderStickyHeader={this.props.renderStickyHeader}
+        containerStyle={this.props.containerStyle}
         ref={this.list}
         selectedDay={this.state.selectedDay}
         topDay={this.state.topDay}
