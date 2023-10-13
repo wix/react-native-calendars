@@ -84,7 +84,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     items: PropTypes.object,
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     loadItemsForMonth: PropTypes.func,
-    ListHeaderComponent: PropTypes.object,
+    ListHeaderComponent: PropTypes.func,
     renderStickyHeader: PropTypes.object,
     containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     onCalendarToggled: PropTypes.func,
