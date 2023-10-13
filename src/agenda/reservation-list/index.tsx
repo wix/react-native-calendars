@@ -47,6 +47,8 @@ export type ReservationListProps = ReservationProps & {
   ListHeaderComponent?: () => JSX.Element;
 
   renderStickyHeader?: () => JSX.Element;
+
+  containerStyle?: StyleProp<ViewStyle>;
   /** Called when the momentum scroll stops for the agenda list **/
   onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView */
@@ -79,6 +81,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     onMomentumScrollBegin: PropTypes.func,
     ListHeaderComponent: PropTypes.object,
     renderStickyHeader: PropTypes.object,
+    containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     onMomentumScrollEnd: PropTypes.func,
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
@@ -92,7 +95,6 @@ class ReservationList extends Component<ReservationListProps, State> {
   private style: {[key: string]: ViewStyle | TextStyle};
   private heights: number[];
   private selectedDay?: XDate;
-  private scrollOver: boolean;
   private list: React.RefObject<FlatList> = React.createRef();
   constructor(props: ReservationListProps) {
     super(props);
@@ -102,7 +104,6 @@ class ReservationList extends Component<ReservationListProps, State> {
     };
     this.heights = [];
     this.selectedDay = props.selectedDay;
-    this.scrollOver = true;
   }
   componentDidMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
@@ -227,9 +228,6 @@ class ReservationList extends Component<ReservationListProps, State> {
       topRowOffset += this.heights[topRow];
     }
   };
-  onListTouch() {
-    this.scrollOver = true;
-  }
   onRowLayoutChange(index: number, event: LayoutChangeEvent) {
     this.state.reservations.forEach((reservation: ReservationProps, index: number) => {
       const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
@@ -242,11 +240,6 @@ class ReservationList extends Component<ReservationListProps, State> {
     });
     this.heights[index] = event.nativeEvent.layout.height;
   }
-  onMoveShouldSetResponderCapture = () => {
-    this.onListTouch();
-
-    return false;
-  };
   renderRow = ({ item, index }) => {
     const reservationProps = extractReservationProps(this.props);
 
@@ -268,7 +261,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     }
 
     return (
-      <>
+      <View style={this.props.containerStyle}>
         {this.props.renderStickyHeader}
         <FlatList
           contentContainerStyle={this.style.content}
@@ -277,7 +270,6 @@ class ReservationList extends Component<ReservationListProps, State> {
           ListHeaderComponent={this.props.ListHeaderComponent}
           onMomentumScrollBegin={this.props.onMomentumScrollBegin}
           onMomentumScrollEnd={this.props.onMomentumScrollEnd}
-          onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture}
           onRefresh={this.props.onRefresh}
           onScroll={this.onScroll}
           onScrollBeginDrag={this.props.onScrollBeginDrag}
@@ -290,7 +282,7 @@ class ReservationList extends Component<ReservationListProps, State> {
           showsVerticalScrollIndicator={false}
           style={style} 
         />
-      </>
+      </View>
     );
   }
 }
