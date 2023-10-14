@@ -11,6 +11,9 @@ export default function styleConstructor(theme: Theme = {}) {
     innerContainer: {
       flex: 1
     },
+    content: {
+      paddingBottom: 16,
+    },
     dayNum: {
       fontSize: 28,
       fontWeight: '200',
