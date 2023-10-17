@@ -75,6 +75,22 @@ const CalendarScreen = () => {
     );
   };
 
+  const renderCalendarWithDaysOutsideIntervalHidden = () => {
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with days outside min/max date hidden</Text>
+        <Calendar
+          style={styles.calendar}
+          hideDaysOutOfInterval
+          current={INITIAL_DATE}
+          minDate={getDate(-6)}
+          maxDate={getDate(6)}
+          disableAllTouchEventsForDisabledDays
+        />
+      </Fragment>
+    );
+  };
+
   const renderCalendarWithMarkedDatesAndHiddenArrows = () => {
     return (
       <Fragment>
@@ -501,6 +517,7 @@ const CalendarScreen = () => {
         {renderCalendarWithSelectableDate()}
         {renderCalendarWithWeekNumbers()}
         {renderCalendarWithMinAndMaxDates()}
+        {renderCalendarWithDaysOutsideIntervalHidden()}
         {renderCalendarWithCustomDay()}
         {renderCalendarWithInactiveDays()}
         {renderCalendarWithCustomHeaderTitle()}

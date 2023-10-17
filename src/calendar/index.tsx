@@ -7,7 +7,7 @@ import {View, ViewStyle, StyleProp} from 'react-native';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import constants from '../commons/constants';
-import {page, isGTE, isLTE, sameMonth} from '../dateutils';
+import {page, isGTE, isLTE, sameMonth, isDateNotInRange} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractHeaderProps, extractDayProps} from '../componentUpdater';
@@ -42,6 +42,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Do not show days of other months in month page */
   hideExtraDays?: boolean;
   /** Always show six weeks on each month (only when hideExtraDays = false) */
+  hideDaysOutOfInterval?: boolean;
+  /** Always hide days when outside of the min/max date interval (only when min/max date !== undefined) */
   showSixWeeks?: boolean;
   /** Handler which gets executed on day press */
   onDayPress?: (date: DateData) => void;
@@ -86,6 +88,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     disableMonthChange,
     enableSwipeMonths,
     hideExtraDays,
+    hideDaysOutOfInterval,
     firstDay,
     showSixWeeks,
     displayLoadingIndicator,
@@ -196,7 +199,9 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
       return <View key={id} style={style.current.emptyDayContainer}/>;
     }
-
+    if (minDate && maxDate && isDateNotInRange(day, minDate, maxDate) && hideDaysOutOfInterval) {
+      return <View key={id} style={style.current.emptyDayContainer}/>;
+    }
     const dateString = toMarkingFormat(day);
     const isControlled = isEmpty(props.context);
 
@@ -311,6 +316,7 @@ Calendar.propTypes = {
   maxDate: PropTypes.string,
   markedDates: PropTypes.object,
   hideExtraDays: PropTypes.bool,
+  hideDaysOutOfInterval: PropTypes.bool,
   showSixWeeks: PropTypes.bool,
   onDayPress: PropTypes.func,
   onDayLongPress: PropTypes.func,
