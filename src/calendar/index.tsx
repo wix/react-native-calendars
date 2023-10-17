@@ -41,9 +41,9 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   markedDates?: MarkedDates;
   /** Do not show days of other months in month page */
   hideExtraDays?: boolean;
-  /** Always show six weeks on each month (only when hideExtraDays = false) */
-  hideDaysOutOfInterval?: boolean;
   /** Always hide days when outside of the min/max date interval (only when min/max date !== undefined) */
+  hideDaysOutOfInterval?: boolean;
+  /** Always show six weeks on each month (only when hideExtraDays = false) */
   showSixWeeks?: boolean;
   /** Handler which gets executed on day press */
   onDayPress?: (date: DateData) => void;
