@@ -17,10 +17,6 @@ export default function getStyle(theme: Theme = {}) {
     emptyDayContainer: {
       flex: 1
     },
-    hiddenDayContainer: {
-      width: 0,
-      height: 0,
-    },
     monthView: {
       backgroundColor: appStyle.calendarBackground
     },
