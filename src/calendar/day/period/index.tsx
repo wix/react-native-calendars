@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React, {useCallback, useRef, useMemo} from 'react';
-import {TouchableWithoutFeedback, TouchableOpacity, Text, View, ViewStyle, ViewProps, TextStyle, StyleProp} from 'react-native';
+import React, { useCallback, useRef, useMemo } from 'react';
+import { TouchableWithoutFeedback, TouchableOpacity, Text, View, ViewStyle, ViewProps, TextStyle, StyleProp } from 'react-native';
 
-import {xdateToData} from '../../../interface';
-import {Theme, DayState, DateData} from '../../../types';
+import { xdateToData } from '../../../interface';
+import { Theme, DayState, DateData } from '../../../types';
 import styleConstructor from './style';
 import Dot from '../dot';
-import {MarkingProps} from '../marking';
+import { MarkingProps } from '../marking';
 
 
 export interface PeriodDayProps extends ViewProps {
@@ -29,36 +29,36 @@ type MarkingStyle = {
 }
 
 const PeriodDay = (props: PeriodDayProps) => {
-  const {theme, marking, date, onPress, onLongPress, state, accessibilityLabel, testID, children} = props;
+  const { theme, marking, date, onPress, onLongPress, state, accessibilityLabel, testID, children } = props;
   const dateData = date ? xdateToData(date) : undefined;
   const style = useRef(styleConstructor(theme));
 
   const markingStyle = useMemo(() => {
-    const defaultStyle: MarkingStyle = {textStyle: {}, containerStyle: {}};
+    const defaultStyle: MarkingStyle = { textStyle: {}, containerStyle: {} };
 
     if (!marking) {
       return defaultStyle;
     } else {
       if (marking.disabled) {
-        defaultStyle.textStyle = {color: style.current.disabledText.color};
+        defaultStyle.textStyle = { color: style.current.disabledText.color };
       } else if (marking.inactive) {
-        defaultStyle.textStyle = {color: style.current.inactiveText.color};
+        defaultStyle.textStyle = { color: style.current.inactiveText.color };
       } else if (marking.selected) {
-        defaultStyle.textStyle = {color: style.current.selectedText.color};
+        defaultStyle.textStyle = { color: style.current.selectedText.color };
       }
-  
+
       if (marking.startingDay) {
-        defaultStyle.startingDay = {backgroundColor: marking.color};
+        defaultStyle.startingDay = { backgroundColor: marking.color };
       }
       if (marking.endingDay) {
-        defaultStyle.endingDay = {backgroundColor: marking.color};
+        defaultStyle.endingDay = { backgroundColor: marking.color };
       }
       if (!marking.startingDay && !marking.endingDay) {
-        defaultStyle.day = {backgroundColor: marking.color};
+        defaultStyle.day = { backgroundColor: marking.color };
       }
-      
+
       if (marking.textColor) {
-        defaultStyle.textStyle = {color: marking.textColor};
+        defaultStyle.textStyle = { color: marking.textColor };
       }
       if (marking.customTextStyle) {
         defaultStyle.textStyle = marking.customTextStyle;
@@ -66,7 +66,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       if (marking.customContainerStyle) {
         defaultStyle.containerStyle = marking.customContainerStyle;
       }
-  
+
       return defaultStyle;
     }
   }, [marking]);
@@ -83,7 +83,7 @@ const PeriodDay = (props: PeriodDayProps) => {
         borderRadius: 17,
         overflow: 'hidden'
       });
-      
+
       if (markingStyle.containerStyle) {
         containerStyle.push(markingStyle.containerStyle);
       }
@@ -91,9 +91,9 @@ const PeriodDay = (props: PeriodDayProps) => {
       const start = markingStyle.startingDay;
       const end = markingStyle.endingDay;
       if (start && !end) {
-        containerStyle.push({backgroundColor: markingStyle.startingDay?.backgroundColor});
+        containerStyle.push({ backgroundColor: markingStyle.startingDay?.backgroundColor });
       } else if (end && !start || end && start) {
-        containerStyle.push({backgroundColor: markingStyle.endingDay?.backgroundColor});
+        containerStyle.push({ backgroundColor: markingStyle.endingDay?.backgroundColor });
       }
     }
     return containerStyle;
@@ -120,8 +120,8 @@ const PeriodDay = (props: PeriodDayProps) => {
   }, [marking, state]);
 
   const fillerStyles = useMemo(() => {
-    const leftFillerStyle: ViewStyle = {backgroundColor: undefined};
-    const rightFillerStyle: ViewStyle = {backgroundColor: undefined};
+    const leftFillerStyle: ViewStyle = { backgroundColor: undefined };
+    const rightFillerStyle: ViewStyle = { backgroundColor: undefined };
     let fillerStyle = {};
 
     const start = markingStyle.startingDay;
@@ -134,18 +134,18 @@ const PeriodDay = (props: PeriodDayProps) => {
     } else if (markingStyle.day) {
       leftFillerStyle.backgroundColor = markingStyle.day?.backgroundColor;
       rightFillerStyle.backgroundColor = markingStyle.day?.backgroundColor;
-      fillerStyle = {backgroundColor: markingStyle.day?.backgroundColor};
+      fillerStyle = { backgroundColor: markingStyle.day?.backgroundColor };
     }
 
-    return {leftFillerStyle, rightFillerStyle, fillerStyle};
+    return { leftFillerStyle, rightFillerStyle, fillerStyle };
   }, [marking]);
 
   const renderFillers = () => {
     if (marking) {
       return (
         <View style={[style.current.fillers, fillerStyles.fillerStyle]}>
-          <View style={[style.current.leftFiller, fillerStyles.leftFillerStyle]}/>
-          <View style={[style.current.rightFiller, fillerStyles.rightFillerStyle]}/>
+          <View style={[style.current.leftFiller, fillerStyles.leftFillerStyle]} />
+          <View style={[style.current.rightFiller, fillerStyles.rightFillerStyle]} />
         </View>
       );
     }
@@ -158,9 +158,20 @@ const PeriodDay = (props: PeriodDayProps) => {
   const _onLongPress = useCallback(() => {
     onLongPress?.(dateData);
   }, [onLongPress]);
-    
+
   const Component = marking ? TouchableWithoutFeedback : TouchableOpacity;
-  
+
+
+  const isBefore2023 = (dateString: string) => {
+    const givenDate = new Date(dateString);
+    const referenceDate = new Date('2023-01-01');
+    return givenDate < referenceDate;
+  };
+
+  if (isBefore2023(date || '')) {
+    return null;  // <View />;
+  }
+
   return (
     <Component
       testID={testID}
@@ -178,7 +189,7 @@ const PeriodDay = (props: PeriodDayProps) => {
             {String(children)}
           </Text>
           <View style={style.current.dotContainer}>
-            <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked}/>
+            <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked} />
           </View>
         </View>
       </View>
