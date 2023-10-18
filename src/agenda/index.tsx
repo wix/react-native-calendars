@@ -175,6 +175,10 @@ export default class Agenda extends Component<AgendaProps, State> {
     return 96 - this.viewHeight / 2;
   }
 
+  scrollToSelectedDay() {
+    this.list?.current?.scrollToSelectedDay();
+  }
+
   initialScrollPadPosition = () => {
     return Math.max(0, this.viewHeight - HEADER_HEIGHT);
   };
