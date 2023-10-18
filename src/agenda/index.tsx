@@ -11,7 +11,8 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
+  StyleProp
 } from 'react-native';
 
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
@@ -35,7 +36,7 @@ export type AgendaProps = CalendarListProps & ReservationListProps & {
   the value of date key kas to be an empty array []. If there exists no value for date key it is
   considered that the date in question is not yet loaded */
   items?: AgendaSchedule;
-  /** callback that gets called when items for a certain month should be loaded (month became visible) */
+  /** callback that gets call`ed when items for a certain month should be loaded (month became visible) */
   loadItemsForMonth?: (data: DateData) => void;
   /** callback that fires when the calendar is opened or closed */
   onCalendarToggled?: (enabled: boolean) => void;
@@ -169,6 +170,10 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   getSelectedDate(date?: string) {
     return date ? new XDate(date) : new XDate(true);
+  }
+
+  scrollToSelectedDay() {
+    this.list?.current?.scrollToSelectedDay();
   }
 
   calendarOffset() {
