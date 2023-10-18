@@ -2,16 +2,13 @@ import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
 import some from 'lodash/some';
 import XDate from 'xdate';
-import React, { useMemo } from 'react';
-
-import { formatNumbers, isToday } from '../../dateutils';
-import { getDefaultLocale } from '../../services';
-import { xdateToData } from '../../interface';
-import { DateData } from '../../types';
-import BasicDay, { BasicDayProps } from './basic';
+import React, {useMemo} from 'react';
+import {formatNumbers, isToday} from '../../dateutils';
+import {getDefaultLocale} from '../../services';
+import {xdateToData} from '../../interface';
+import BasicDay from './basic';
 import PeriodDay from './period';
-
-function areEqual(prevProps: DayProps, nextProps: DayProps) {
+function areEqual(prevProps, nextProps) {
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
   const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
   const didPropsChange = some(prevPropsWithoutMarkDates, function (value, key) {
@@ -20,31 +17,17 @@ function areEqual(prevProps: DayProps, nextProps: DayProps) {
   const isMarkingEqual = isEqual(prevProps.marking, nextProps.marking);
   return !didPropsChange && isMarkingEqual;
 }
-
-export interface DayProps extends BasicDayProps {
-  /** Provide custom day rendering component */
-  dayComponent?: React.ComponentType<DayProps & { date?: DateData, limiteDate?: string; }>; // TODO: change 'date' prop type to string by removing it from overriding BasicDay's 'date' prop (breaking change for V2)
-
-}
-
-const Day = React.memo((props: DayProps) => {
-  const { date, marking, dayComponent, markingType, limiteDate } = props;
+const Day = React.memo(props => {
+  const {date, marking, dayComponent, markingType, limiteDate} = props;
   const _date = date ? new XDate(date) : undefined;
   const _isToday = isToday(_date);
-
   // const isBeforeLimitDate = useMemo(() => {
   //   if (!_date || !limiteDate) return false;
-
   //   const limitDate = new XDate(limiteDate);
   //   return _date.diffDays(limitDate) < 0;
   // }, [_date, limiteDate]);
-
-
-
-
   const markingAccessibilityLabel = useMemo(() => {
     let label = '';
-
     if (marking) {
       if (marking.accessibilityLabel) {
         return marking.accessibilityLabel;
@@ -70,27 +53,19 @@ const Day = React.memo((props: DayProps) => {
     }
     return label;
   }, [marking]);
-
   const getAccessibilityLabel = useMemo(() => {
     const today = getDefaultLocale().today || 'today';
     const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
-
     return `${_isToday ? today : ''} ${_date?.toString(formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
   }, [_date, marking, _isToday]);
-
   const Component = dayComponent || (markingType === 'period' ? PeriodDay : BasicDay);
-  const dayComponentProps = dayComponent ? { date: xdateToData(date || new XDate()), limiteDate } : undefined; // <-- Ajoutez limiteDate ici
-
-
-
+  const dayComponentProps = dayComponent ? {date: xdateToData(date || new XDate()), limiteDate} : undefined; // <-- Ajoutez limiteDate ici
   return (
     //@ts-expect-error
     <Component {...props} accessibilityLabel={getAccessibilityLabel} {...dayComponentProps}>
       {formatNumbers(_date?.getDate())}
     </Component>
   );
-}, areEqual) as any;
-
+}, areEqual);
 export default Day;
-
 Day.displayName = 'Day';
