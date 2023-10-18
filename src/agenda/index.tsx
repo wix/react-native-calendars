@@ -11,7 +11,8 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
+  StyleProp
 } from 'react-native';
 
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
