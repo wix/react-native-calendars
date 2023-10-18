@@ -96,6 +96,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   private heights: number[];
   private selectedDay?: XDate;
   private list: React.RefObject<FlatList> = React.createRef();
+  private count: number;
   constructor(props: ReservationListProps) {
     super(props);
     this.style = styleConstructor(props.theme);
@@ -104,6 +105,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     };
     this.heights = [];
     this.selectedDay = props.selectedDay;
+    this.count = 0;
   }
   componentDidMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
@@ -167,10 +169,21 @@ class ReservationList extends Component<ReservationListProps, State> {
       const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
       if (selectedDay && reservationDate === toMarkingFormat(selectedDay)) {
         setTimeout(() => {
+          this.count = 0;
           this.list?.current?.scrollToIndex({index, animated: true});
         }, 100);
       }
     });
+  }
+
+  onScrollToIndexFailed({index}) {
+    if(this.count++<3){
+      return setTimeout(() => {
+        index && this.list?.current?.scrollToIndex({index, animated: true});
+      }, 500);
+    }else{
+      this.count = 0;
+    }
   }
   
   getReservations(props: ReservationListProps) {
@@ -280,6 +293,7 @@ class ReservationList extends Component<ReservationListProps, State> {
           onScrollEndDrag={this.props.onScrollEndDrag}
           ref={this.list}
           refreshControl={this.props.refreshControl}
+          onScrollToIndexFailed={this.onScrollToIndexFailed.bind(this)}
           refreshing={this.props.refreshing}
           renderItem={this.renderRow}
           scrollEventThrottle={200}
