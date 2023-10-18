@@ -160,6 +160,19 @@ class ReservationList extends Component<ReservationListProps, State> {
       return false;
     }
   }
+
+  scrollToSelectedDay() {
+    const selectedDay =  this.selectedDay;
+    this.state.reservations.forEach((reservation, index) => {
+      const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
+      if (reservationDate === toMarkingFormat(selectedDay)) {
+        setTimeout(() => {
+          this.list?.current?.scrollToIndex({ index, animated: true });
+        }, 100);
+      }
+    });
+  }
+  
   getReservations(props: ReservationListProps) {
     const { selectedDay, showOnlySelectedDayItems } = props;
     if (!props.items || !selectedDay) {
@@ -184,18 +197,6 @@ class ReservationList extends Component<ReservationListProps, State> {
         }
       }
     }
-
-  scrollToSelectedDay() {
-    const selectedDay =  this.selectedDay;
-    this.state.reservations.forEach((reservation, index) => {
-      const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
-      if (reservationDate === toMarkingFormat(selectedDay)) {
-        setTimeout(() => {
-          this.list?.current?.scrollToIndex({ index, animated: true });
-        }, 100);
-      }
-    });
-  }
 
     const firstDateOfTheWeek = Object.entries(this.props.items as AgendaSchedule).sort((a, b) => {
       const dateA = new Date(a[0]) as any;
