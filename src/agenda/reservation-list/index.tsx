@@ -95,6 +95,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   private style: {[key: string]: ViewStyle | TextStyle};
   private heights: number[];
   private selectedDay?: XDate;
+  private scrollOver: boolean;
   private list: React.RefObject<FlatList> = React.createRef();
   private count: number;
   constructor(props: ReservationListProps) {
@@ -106,6 +107,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     this.heights = [];
     this.selectedDay = props.selectedDay;
     this.count = 0;
+    this.scrollOver = true;
   }
   componentDidMount() {
     this.updateDataSource(this.getReservations(this.props).reservations);
@@ -130,6 +132,7 @@ class ReservationList extends Component<ReservationListProps, State> {
       this.state.reservations.forEach((reservation, index) => {
         const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
         if (selectedDay && (reservationDate === toMarkingFormat(selectedDay))) {
+          this.scrollOver = false;
           setTimeout(() => {
             this.list?.current?.scrollToIndex({index, animated: true});
           }, 100);
@@ -168,6 +171,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     this.state.reservations.forEach((reservation, index) => {
       const reservationDate = reservation.date ? toMarkingFormat(reservation.date) : undefined;
       if (selectedDay && reservationDate === toMarkingFormat(selectedDay)) {
+        this.scrollOver = true;
         setTimeout(() => {
           this.count = 0;
           this.list?.current?.scrollToIndex({index, animated: true});
@@ -250,13 +254,31 @@ class ReservationList extends Component<ReservationListProps, State> {
       if (topRowOffset + this.heights[topRow] / 2 >= yOffset) {
         break;
       }
-
+      
       topRowOffset += this.heights[topRow];
     }
+
+    const row = this.state.reservations[topRow];
+    if (!row) return;
+
+    const day = row.date;
+    if (day) {
+      if (!sameDate(day, this.selectedDay) && this.scrollOver) {
+        this.selectedDay = day.clone();
+        this.props.onDayChange?.(day.clone());
+      }
+    }
   };
+  onListTouch() {
+    this.scrollOver = true;
+  }
   onRowLayoutChange(index: number, event: LayoutChangeEvent) {
     this.heights[index] = event.nativeEvent.layout.height;
   }
+  onMoveShouldSetResponderCapture = () => {
+    this.onListTouch();
+    return false;
+  };
   renderRow = ({item, index}) => {
     const reservationProps = extractReservationProps(this.props);
 
@@ -294,6 +316,7 @@ class ReservationList extends Component<ReservationListProps, State> {
           ref={this.list}
           refreshControl={this.props.refreshControl}
           onScrollToIndexFailed={this.onScrollToIndexFailed.bind(this)}
+          onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture}
           refreshing={this.props.refreshing}
           renderItem={this.renderRow}
           scrollEventThrottle={200}
