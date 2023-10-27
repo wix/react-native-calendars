@@ -2,17 +2,17 @@ import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
-import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
-import {FlatList, FlatListProps, View, ViewStyle} from 'react-native';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { FlatList, FlatListProps, View, ViewStyle } from 'react-native';
 
-import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
-import {parseDate, toMarkingFormat, xdateToData} from '../interface';
-import {page, sameDate, sameMonth} from '../dateutils';
+import { extractCalendarProps, extractHeaderProps } from '../componentUpdater';
+import { parseDate, toMarkingFormat, xdateToData } from '../interface';
+import { page, sameDate, sameMonth } from '../dateutils';
 import constants from '../commons/constants';
-import {useDidUpdate} from '../hooks';
-import {ContextProp} from '../types';
+import { useDidUpdate } from '../hooks';
+import { ContextProp } from '../types';
 import styleConstructor from './style';
-import Calendar, {CalendarProps} from '../calendar';
+import Calendar, { CalendarProps } from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
 import isEqual from 'lodash/isEqual';
@@ -40,7 +40,7 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
   /** Use a custom list component */
-  customComponent?: React.ReactNode;
+  customComponent?: React.FC<any>;
 }
 
 export interface CalendarListImperativeMethods {
@@ -138,13 +138,13 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, [propsStyle]);
 
   const initialDateIndex = useMemo(() => {
-    return findIndex(items, function(item) {
+    return findIndex(items, function (item) {
       return item.toString() === initialDate.current?.toString();
     });
   }, [items]);
 
   const getDateIndex = useCallback((date: string) => {
-    return findIndex(items, function(item) {
+    return findIndex(items, function (item) {
       return item.toString() === date.toString();
     });
   }, [items]);
@@ -183,7 +183,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
     if (scrollAmount !== 0) {
       // @ts-expect-error
-      list?.current?.scrollToOffset({offset: scrollAmount, animated});
+      list?.current?.scrollToOffset({ offset: scrollAmount, animated });
     }
   };
 
@@ -194,7 +194,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
     if (scrollAmount !== 0) {
       // @ts-expect-error
-      list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
+      list?.current?.scrollToOffset({ offset: scrollAmount, animated: animateScroll });
     }
   }, [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]);
 
@@ -226,7 +226,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, []);
 
   const isDateInRange = useCallback((date) => {
-    for(let i = -range.current; i <= range.current; i++) {
+    for (let i = -range.current; i <= range.current; i++) {
       const newMonth = currentMonth?.clone().addMonths(i, true);
       if (sameMonth(date, newMonth)) {
         return true;
@@ -235,7 +235,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     return false;
   }, [currentMonth]);
 
-  const renderItem = useCallback(({item}: {item: XDate}) => {
+  const renderItem = useCallback(({ item }: { item: XDate }) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
@@ -278,7 +278,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     viewAreaCoveragePercentThreshold: 20
   });
 
-  const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
+  const onViewableItemsChanged = useCallback(({ viewableItems }: any) => {
     const newVisibleMonth = parseDate(viewableItems[0]?.item);
     if (shouldUseAndroidRTLFix) {
       const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
@@ -304,7 +304,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <ListComponent
-        // @ts-expect-error
         ref={list}
         windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}
