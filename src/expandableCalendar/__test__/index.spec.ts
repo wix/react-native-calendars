@@ -243,8 +243,8 @@ describe('ExpandableCalendar', () => {
       beforeEach(() => {
         driver.render();
       });
-      it.each([[Direction.LEFT], [Direction.RIGHT]])(`should call onDateChanged to next week first day when pressing %s arrow`, (direction) => {
-        const currentDay = today.getUTCDay();
+      it.each([['last', Direction.LEFT], ['next', Direction.RIGHT]])(`should call onDateChanged to %s week first day when pressing %s arrow`, (direction) => {
+        const currentDay = today.getDay();
         const expectedDate = today.clone().addDays(direction === Direction.LEFT ? - (currentDay + 7) : (7 - currentDay));
         driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
         expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
@@ -259,7 +259,7 @@ describe('ExpandableCalendar', () => {
 
       it('should fetch next weeks when in last week of the list', () => {
         times(NUMBER_OF_PAGES + 1, () => driver.pressOnHeaderArrow({left: false}));
-        const currentDay = today.getUTCDay();
+        const currentDay = today.getDay();
         const expectedDate = today.clone().addDays(7 * (NUMBER_OF_PAGES + 1) - currentDay);
         const day = driver.getWeekDay(toMarkingFormat(expectedDate));
         expect(day).toBeDefined();
@@ -269,7 +269,6 @@ describe('ExpandableCalendar', () => {
         const endOfMonth = new XDate(today.getFullYear(), today.getMonth() + 1, 0, 0, 0 ,0 , 0, true);
         const diff = Math.ceil(((endOfMonth.getUTCDate() + 1) - today.getUTCDate()) / 7) + ((today.getUTCDay() > endOfMonth.getUTCDay()) ? 1 : 0);
         const expectedDate = today.clone().setDate(today.getDate() + 7 * diff - today.getDay());
-        console.log(diff, endOfMonth, expectedDate);
         times(diff, () => driver.pressOnHeaderArrow({left: false}));
         expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
