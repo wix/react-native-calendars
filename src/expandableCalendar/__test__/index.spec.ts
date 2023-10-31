@@ -183,7 +183,7 @@ describe('ExpandableCalendar', () => {
       it.each([[Direction.LEFT],[Direction.RIGHT]])(`should call onDateChanged and onMonthChanged to next month first day when pressing the %s arrow`, (direction: Direction) => {
         driver.toggleKnob();
         jest.runAllTimers();
-        const expectedDate = today.clone().addMonths(direction === Direction.RIGHT ? 1 : -1).setDate(1);
+        const expectedDate = today.clone().setDate(1).addMonths(direction === Direction.RIGHT ? 1 : -1);
         driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
         expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
         expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
@@ -208,7 +208,7 @@ describe('ExpandableCalendar', () => {
           driver.pressOnHeaderArrow({left: false});
         });
         jest.runAllTimers();
-        const expectedFutureDate = today.clone().addMonths(6).setDate(1);
+        const expectedFutureDate = today.clone().setDate(1).addMonths(6);
         expect(onDateChanged).toHaveBeenNthCalledWith(6, toMarkingFormat(expectedFutureDate), UpdateSources.PAGE_SCROLL);
         expect(onMonthChange).toHaveBeenNthCalledWith(6, xdateToData(expectedFutureDate), UpdateSources.PAGE_SCROLL);
         times(6, () => driver.pressOnHeaderArrow({left: true}));
