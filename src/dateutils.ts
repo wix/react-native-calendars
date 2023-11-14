@@ -4,7 +4,7 @@ const {toMarkingFormat} = require('./interface');
 const latinNumbersPattern = /[0-9]/g;
 
 function isValidXDate(date: any) {
-  return date && (date instanceof XDate);
+  return date && date instanceof XDate;
 }
 
 export function sameMonth(a?: XDate, b?: XDate) {
@@ -27,13 +27,13 @@ export function onSameDateRange({
   firstDay,
   secondDay,
   numberOfDays,
-  firstDateInRange,
+  firstDateInRange
 }: {
   firstDay: string;
   secondDay: string;
   numberOfDays: number;
   firstDateInRange: string;
-}){
+}) {
   const aDate = new XDate(firstDay);
   const bDate = new XDate(secondDay);
   const firstDayDate = new XDate(firstDateInRange);
@@ -101,7 +101,8 @@ function fromTo(a: XDate, b: XDate): XDate[] {
   return days;
 }
 
-export function month(date: XDate) { // exported for tests only
+export function month(date: XDate) {
+  // exported for tests only
   const year = date.getFullYear(),
     month = date.getMonth();
   const days = new XDate(year, month + 1, 0).getDate();
@@ -123,6 +124,9 @@ export function weekDayNames(firstDayOfWeek = 0) {
 
 export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   const days = month(date);
+  if (!Array.isArray(days) || days.length === 0) {
+    return [];
+  }
   let before: XDate[] = [];
   let after: XDate[] = [];
 
