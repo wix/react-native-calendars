@@ -19,11 +19,23 @@ export interface PackedEvent extends Event {
   height: number;
 }
 
+interface EventStyle {
+  left: number;
+  height: number;
+  width: number;
+  top: number;
+  backgroundColor: string;
+}
+
 export interface EventBlockProps {
   index: number;
   event: PackedEvent;
   onPress: (eventIndex: number) => void;
-  renderEvent?: (event: PackedEvent) => JSX.Element;
+  renderEvent?: (
+    event: PackedEvent,
+    onPress: () => void,
+    styles: [baseStyle: ViewStyle | TextStyle, computedStyle: EventStyle]
+  ) => JSX.Element;
   format24h?: boolean;
   styles: {[key: string]: ViewStyle | TextStyle};
 }
@@ -38,7 +50,7 @@ const EventBlock = (props: EventBlockProps) => {
   // However it would make sense to overflow the title to a new line if needed
   const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
   const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
-  const eventStyle = useMemo(() => {
+  const eventStyle = useMemo<EventStyle>(() => {
     return {
       left: event.left,
       height: event.height,
@@ -52,27 +64,25 @@ const EventBlock = (props: EventBlockProps) => {
     onPress(index);
   }, [index, onPress]);
 
-  return (
+  return renderEvent ? (
+    renderEvent(event, _onPress, [styles.event, eventStyle])
+  ) : (
     <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[styles.event, eventStyle]}>
-      {renderEvent ? (
-        renderEvent(event)
-      ) : (
-        <View>
-          <Text numberOfLines={1} style={styles.eventTitle}>
-            {event.title || 'Event'}
+      <View>
+        <Text numberOfLines={1} style={styles.eventTitle}>
+          {event.title || 'Event'}
+        </Text>
+        {numberOfLines > 1 ? (
+          <Text numberOfLines={numberOfLines - 1} style={[styles.eventSummary]}>
+            {event.summary || ' '}
           </Text>
-          {numberOfLines > 1 ? (
-            <Text numberOfLines={numberOfLines - 1} style={[styles.eventSummary]}>
-              {event.summary || ' '}
-            </Text>
-          ) : null}
-          {numberOfLines > 2 ? (
-            <Text style={styles.eventTimes} numberOfLines={1}>
-              {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
-            </Text>
-          ) : null}
-        </View>
-      )}
+        ) : null}
+        {numberOfLines > 2 ? (
+          <Text style={styles.eventTimes} numberOfLines={1}>
+            {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
+          </Text>
+        ) : null}
+      </View>
     </TouchableOpacity>
   );
 };

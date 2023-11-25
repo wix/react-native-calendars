@@ -14,7 +14,7 @@ import styleConstructor from './style';
 import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours, {TimelineHoursProps} from './TimelineHours';
-import EventBlock, {Event, PackedEvent} from './EventBlock';
+import EventBlock, {Event, EventBlockProps, PackedEvent} from './EventBlock';
 import NowIndicator from './NowIndicator';
 import useTimelineOffset from './useTimelineOffset';
 
@@ -76,7 +76,7 @@ export interface TimelineProps {
   /**
    * Render a custom event block
    */
-  renderEvent?: (event: PackedEvent) => JSX.Element;
+  renderEvent?: EventBlockProps['renderEvent'];
   /**
    * Whether to show now indicator
    */
