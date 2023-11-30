@@ -153,6 +153,11 @@ function getDate(date: string, firstDay: number, weekIndex: number) {
 // function getDatesArray(args: WeekCalendarProps, numberOfPages = NUMBER_OF_PAGES) => {
 function getDatesArray(date: string, firstDay: number, numberOfPages = NUMBER_OF_PAGES) {
   const array: string[] = [];
+  
+  //if there is no date selected, use current date as starting point
+  if (!date)
+    date =  new XDate().toString('yyyy-MM-dd');
+  
   for (let index = -numberOfPages; index <= numberOfPages; index++) {
     const d = getDate(date, firstDay, index);
     array.push(d);
