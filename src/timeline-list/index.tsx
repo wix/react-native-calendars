@@ -49,12 +49,10 @@ export interface TimelineListProps {
    * Should initially scroll to a specific time (relevant only for NOT "today" timelines)
    */
   initialTime?: TimelineProps['initialTime'];
-  /** Identifier for testing */
-  testID?: string;
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime, testID} = props;
+  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
   const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
@@ -144,7 +142,7 @@ const TimelineList = (props: TimelineListProps) => {
 
       return (
         <>
-          <Timeline {..._timelineProps} testID={testID}/>
+          <Timeline {..._timelineProps}/>
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text>*/}
         </>
