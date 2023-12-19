@@ -178,22 +178,21 @@ const Timeline = (props: TimelineProps) => {
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+        initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
     } else if (scrollToFirst && packedEvents[0].length > 0) {
-      initialPosition = min(map(packedEvents[0], 'top')) ?? 0;
+        initialPosition = min(map(packedEvents[0], 'top')) ?? 0;
     } else if (initialTime) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+        initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
     }
-
     if (initialPosition) {
-      setTimeout(() => {
-        scrollView?.current?.scrollTo({
-          y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
-          animated: true
-        });
-      }, 0);
+        setTimeout(() => {
+            scrollView?.current?.scrollTo({
+                y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
+                animated: true
+            });
+        }, 1000); // fix event undefined
     }
-  }, []);
+}, []);
 
   const _onEventPress = useCallback(
     (dateIndex: number, eventIndex: number) => {
