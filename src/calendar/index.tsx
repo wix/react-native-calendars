@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
-import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
-import {View, ViewStyle, StyleProp} from 'react-native';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import { View, ViewStyle, StyleProp } from 'react-native';
 // @ts-expect-error
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 
 import constants from '../commons/constants';
-import {page, isGTE, isLTE, sameMonth} from '../dateutils';
-import {xdateToData, parseDate, toMarkingFormat} from '../interface';
-import {getState} from '../day-state-manager';
-import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-import {DateData, Theme, MarkedDates, ContextProp} from '../types';
-import {useDidUpdate} from '../hooks';
+import { page, isGTE, isLTE, sameMonth } from '../dateutils';
+import { xdateToData, parseDate, toMarkingFormat } from '../interface';
+import { getState } from '../day-state-manager';
+import { extractHeaderProps, extractDayProps } from '../componentUpdater';
+import { DateData, Theme, MarkedDates, ContextProp } from '../types';
+import { useDidUpdate } from '../hooks';
 import styleConstructor from './style';
-import CalendarHeader, {CalendarHeaderProps} from './header';
-import Day, {DayProps} from './day/index';
+import CalendarHeader, { CalendarHeaderProps } from './header';
+import Day, { DayProps } from './day/index';
 import BasicDay from './day/basic';
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
@@ -27,6 +27,10 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   displayLoadingIndicator?: boolean;
   /** Show week numbers */
   showWeekNumbers?: boolean;
+  /** Component to render week header */
+  weekHeader?: any
+  /** Week numbers on the year on which to render the week header*/
+  weekNumbers?: number[];
   /** Specify style for calendar container element */
   style?: StyleProp<ViewStyle>;
   /** Initially visible month */
@@ -78,6 +82,8 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     markedDates,
     minDate,
     maxDate,
+    weekHeader,
+    weekNumbers,
     allowSelectionOutOfRange,
     onDayPress,
     onDayLongPress,
@@ -99,7 +105,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
-  const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
+  const weekNumberMarking = useRef({ disabled: true, disableTouchEvent: true });
 
   useEffect(() => {
     if (initialDate) {
@@ -140,12 +146,12 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const _onDayPress = useCallback((date?: DateData) => {
     if (date)
-    handleDayInteraction(date, onDayPress);
+      handleDayInteraction(date, onDayPress);
   }, [handleDayInteraction, onDayPress]);
 
   const onLongPressDay = useCallback((date?: DateData) => {
     if (date)
-    handleDayInteraction(date, onDayLongPress);
+      handleDayInteraction(date, onDayLongPress);
   }, [handleDayInteraction, onDayLongPress]);
 
   const onSwipeLeft = useCallback(() => {
@@ -159,7 +165,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   }, [header]);
 
   const onSwipe = useCallback((gestureName: string) => {
-    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+    const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
 
     switch (gestureName) {
       case SWIPE_UP:
@@ -194,7 +200,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     const dayProps = extractDayProps(props);
 
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer}/>;
+      return <View key={id} style={style.current.emptyDayContainer} />;
     }
 
     const dateString = toMarkingFormat(day);
@@ -226,11 +232,32 @@ const Calendar = (props: CalendarProps & ContextProp) => {
       week.unshift(renderWeekNumber(days[days.length - 1].getWeek()));
     }
 
-    return (
-      <View style={style.current.week} key={id}>
+    const showWeekHeader = () => {
+      if (weekHeader) {
+        if (!weekNumbers) {
+          return true
+        }
+        if (weekNumbers.find(n => n === days[days.length - 1].getWeek())) {
+          return true
+        }
+      }
+      return false
+    }
+
+    return !showWeekHeader() ?
+      (<View style={style.current.week} key={id}>
         {week}
-      </View>
-    );
+      </View>) : (
+        <View key={id}>
+          {weekHeader && typeof weekHeader === 'function' && weekHeader(days[days.length - 1].getWeek())}
+          {weekHeader}
+          <View style={style.current.week} >
+            {week}
+          </View>
+        </View>
+      );
+
+
   };
 
   const renderMonth = () => {

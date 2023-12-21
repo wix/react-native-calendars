@@ -1,6 +1,7 @@
-import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
-import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
-import {Calendar, CalendarUtils} from 'react-native-calendars';
+import { parseInt } from 'lodash';
+import React, { useState, Fragment, useCallback, useMemo, useRef } from 'react';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { Calendar, CalendarUtils } from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const INITIAL_DATE = '2022-07-06';
@@ -54,7 +55,7 @@ const CalendarScreen = () => {
     return (
       <Fragment>
         <Text style={styles.text}>Calendar with week numbers</Text>
-        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers/>
+        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers />
       </Fragment>
     );
   };
@@ -85,14 +86,14 @@ const CalendarScreen = () => {
           hideExtraDays
           firstDay={1}
           markedDates={{
-            [getDate(6)]: {selected: true, marked: true, disableTouchEvent: true},
-            [getDate(7)]: {selected: true, marked: true, dotColor: 'red'},
-            [getDate(8)]: {marked: true, dotColor: 'red', disableTouchEvent: true},
-            [getDate(9)]: {marked: true},
-            [getDate(10)]: {disabled: true, activeOpacity: 0, disableTouchEvent: false}
+            [getDate(6)]: { selected: true, marked: true, disableTouchEvent: true },
+            [getDate(7)]: { selected: true, marked: true, dotColor: 'red' },
+            [getDate(8)]: { marked: true, dotColor: 'red', disableTouchEvent: true },
+            [getDate(9)]: { marked: true },
+            [getDate(10)]: { disabled: true, activeOpacity: 0, disableTouchEvent: false }
           }}
           hideArrows={true}
-          // disabledByDefault={true}
+        // disabledByDefault={true}
         />
       </Fragment>
     );
@@ -110,15 +111,15 @@ const CalendarScreen = () => {
             [getDate(2)]: {
               selected: true,
               dots: [
-                {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'white'}
+                { key: 'vacation', color: 'blue', selectedDotColor: 'red' },
+                { key: 'massage', color: 'red', selectedDotColor: 'white' }
               ]
             },
             [getDate(3)]: {
               disabled: true,
               dots: [
-                {key: 'vacation', color: 'green', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'green'}
+                { key: 'vacation', color: 'green', selectedDotColor: 'red' },
+                { key: 'massage', color: 'red', selectedDotColor: 'green' }
               ]
             }
           }}
@@ -163,15 +164,15 @@ const CalendarScreen = () => {
             }
           }}
           markedDates={{
-            [getDate(-2)]: {disabled: true},
-            [getDate(1)]: {textColor: 'pink'},
-            [getDate(2)]: {textColor: 'pink'},
-            [getDate(12)]: {startingDay: true, color: 'green', endingDay: true},
-            [getDate(22)]: {startingDay: true, color: 'green'},
-            [getDate(23)]: {endingDay: true, color: 'gray'},
-            [getDate(25)]: {startingDay: true, color: 'gray'},
-            [getDate(26)]: {color: 'gray'},
-            [getDate(27)]: {endingDay: true, color: 'gray'}
+            [getDate(-2)]: { disabled: true },
+            [getDate(1)]: { textColor: 'pink' },
+            [getDate(2)]: { textColor: 'pink' },
+            [getDate(12)]: { startingDay: true, color: 'green', endingDay: true },
+            [getDate(22)]: { startingDay: true, color: 'green' },
+            [getDate(23)]: { endingDay: true, color: 'gray' },
+            [getDate(25)]: { startingDay: true, color: 'gray' },
+            [getDate(26)]: { color: 'gray' },
+            [getDate(27)]: { endingDay: true, color: 'gray' }
           }}
         />
       </Fragment>
@@ -187,9 +188,9 @@ const CalendarScreen = () => {
           minDate={getDate(-14)}
           markingType={'period'}
           markedDates={{
-            [INITIAL_DATE]: {marked: true, dotColor: '#50cebb'},
-            [getDate(4)]: {marked: true, dotColor: '#50cebb'},
-            [getDate(9)]: {startingDay: true, color: '#50cebb', textColor: 'white'},
+            [INITIAL_DATE]: { marked: true, dotColor: '#50cebb' },
+            [getDate(4)]: { marked: true, dotColor: '#50cebb' },
+            [getDate(9)]: { startingDay: true, color: '#50cebb', textColor: 'white' },
             [getDate(10)]: {
               color: '#70d7c7',
               customTextStyle: {
@@ -197,8 +198,8 @@ const CalendarScreen = () => {
                 fontWeight: '700'
               }
             },
-            [getDate(11)]: {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
-            [getDate(12)]: {color: '#70d7c7', inactive: true},
+            [getDate(11)]: { color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white' },
+            [getDate(12)]: { color: '#70d7c7', inactive: true },
             [getDate(13)]: {
               endingDay: true,
               color: '#50cebb',
@@ -208,7 +209,7 @@ const CalendarScreen = () => {
                 borderBottomRightRadius: 5
               }
             },
-            [getDate(25)]: {inactive: true, disableTouchEvent: true}
+            [getDate(25)]: { inactive: true, disableTouchEvent: true }
           }}
           disabledDaysIndexes={[0, 6]}
           theme={{
@@ -234,22 +235,22 @@ const CalendarScreen = () => {
           markedDates={{
             [INITIAL_DATE]: {
               periods: [
-                {startingDay: true, endingDay: false, color: 'green'},
-                {startingDay: true, endingDay: false, color: 'orange'}
+                { startingDay: true, endingDay: false, color: 'green' },
+                { startingDay: true, endingDay: false, color: 'orange' }
               ]
             },
             [getDate(1)]: {
               periods: [
-                {startingDay: false, endingDay: true, color: 'green'},
-                {startingDay: false, endingDay: true, color: 'orange'},
-                {startingDay: true, endingDay: false, color: 'pink'}
+                { startingDay: false, endingDay: true, color: 'green' },
+                { startingDay: false, endingDay: true, color: 'orange' },
+                { startingDay: true, endingDay: false, color: 'pink' }
               ]
             },
             [getDate(3)]: {
               periods: [
-                {startingDay: true, endingDay: true, color: 'orange'},
-                {color: 'transparent'},
-                {startingDay: false, endingDay: false, color: 'pink'}
+                { startingDay: true, endingDay: true, color: 'orange' },
+                { color: 'transparent' },
+                { startingDay: false, endingDay: false, color: 'pink' }
               ]
             }
           }}
@@ -362,7 +363,7 @@ const CalendarScreen = () => {
         <Text style={styles.text}>Calendar with custom day component</Text>
         <Calendar
           style={[styles.calendar, styles.customCalendar]}
-          dayComponent={({date, state}) => {
+          dayComponent={({ date, state }) => {
             return (
               <View>
                 <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
@@ -494,6 +495,77 @@ const CalendarScreen = () => {
       </Fragment>
     );
   };
+  const renderCalendarWithWeekHeader = () => {
+    const weekHeader = (<View style={styles.weekHeader} />)
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with week header</Text>
+        <Calendar
+          current={INITIAL_DATE}
+          markingType='custom'
+          style={styles.calendar}
+          markedDates={{
+            [getDate(1)]: {
+              customStyles: {
+                container: {
+                  backgroundColor: 'orange',
+                  borderRadius: 2,
+                },
+                text: {
+                  color: 'white',
+                  marginTop: 0
+                }
+              }
+            },
+            [getDate(6)]: {
+              inactive: true
+            }
+          }}
+          weekHeader={weekHeader}
+        />
+      </Fragment>
+    );
+  };
+
+  const renderCalendarWithWeekHeaderExample2 = () => {
+    const weeks = {
+      "27": "week of meetings abroad",
+      "29": "VACATIONS!",
+      "30": "VACATIONS! WEEEE!"
+    }
+    const weekHeader = (n: number) => (<View style={styles.weekHeaderExample2}><Text>{weeks[n.toString()]}</Text></View>)
+    //const weekHeader = (<View style={styles.weekHeaderExample2}><Text>this week is special</Text></View>)
+    return (
+      <Fragment>
+        <Text style={styles.text}>Calendar with week header passing weekNumbers</Text>
+        <Calendar
+          current={INITIAL_DATE}
+          markingType='custom'
+          style={styles.calendar}
+          weekNumbers={Object.keys(weeks).map(el => parseInt(el))}
+          markedDates={{
+            [getDate(1)]: {
+              customStyles: {
+                container: {
+                  backgroundColor: 'blue',
+                  borderRadius: 2,
+                },
+                text: {
+                  color: 'white',
+                  marginTop: 0
+                }
+              }
+            },
+            [getDate(8)]: {
+              inactive: true
+            }
+          }}
+          weekHeader={weekHeader}
+        />
+      </Fragment>
+    );
+  };
+
 
   const renderExamples = () => {
     return (
@@ -511,6 +583,8 @@ const CalendarScreen = () => {
         {renderCalendarWithPeriodMarkingAndDotMarking()}
         {renderCalendarWithMultiPeriodMarking()}
         {renderCalendarWithCustomMarkingType()}
+        {renderCalendarWithWeekHeader()}
+        {renderCalendarWithWeekHeaderExample2()}
       </Fragment>
     );
   };
@@ -527,6 +601,19 @@ export default CalendarScreen;
 const styles = StyleSheet.create({
   calendar: {
     marginBottom: 10
+  },
+  weekHeaderExample2: {
+    backgroundColor: '#96EFFF',
+    width: '90%',
+    borderRadius: 4,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  weekHeader: {
+    width: '90%',
+    alignSelf: 'center',
+    borderColor: 'lightgrey',
+    borderBottomWidth: 1,
   },
   switchContainer: {
     flexDirection: 'row',
