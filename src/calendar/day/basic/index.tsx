@@ -98,7 +98,7 @@ const BasicDay = (props: BasicDayProps) => {
   };
 
   const getTextStyle = () => {
-    const {customStyles, selectedTextColor} = _marking;
+    const {customStyles, selectedTextColor, textColor} = _marking;
     const styles = [style.current.text];
 
     if (isSelected) {
@@ -112,6 +112,8 @@ const BasicDay = (props: BasicDayProps) => {
       styles.push(style.current.todayText);
     } else if (isInactive) {
       styles.push(style.current.inactiveText);
+    } else if (textColor) {
+      styles.push({color: textColor});
     }
 
     //Custom marking type
