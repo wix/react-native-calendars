@@ -74,7 +74,7 @@ const BasicDay = (props: BasicDayProps) => {
   };
 
   const getContainerStyle = () => {
-    const {customStyles, selectedColor} = _marking;
+    const {customStyles, selectedColor, containerOpacity} = _marking;
     const styles = [style.current.base];
 
     if (isSelected) {
@@ -84,6 +84,8 @@ const BasicDay = (props: BasicDayProps) => {
       }
     } else if (isToday) {
       styles.push(style.current.today);
+    } else if (containerOpacity) {
+      styles.push({ opacity: containerOpacity ?? 1 });
     }
 
     //Custom marking type
