@@ -56,6 +56,7 @@ export interface MarkingProps extends DotProps {
   endingDay?: boolean;
   accessibilityLabel?: string;
   customStyles?: CustomStyle;
+  moon?: boolean;
 }
 
 const Marking = (props: MarkingProps) => {
@@ -104,7 +105,7 @@ const Marking = (props: MarkingProps) => {
     if (endingDay) {
       styles.push(style.current.endingDay);
     }
-    return <View key={index} style={styles}/>;
+    return <View key={index} style={styles} />;
   };
 
   const renderDot = (index?: number, item?: any) => {
