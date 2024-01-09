@@ -46,7 +46,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       } else if (marking.selected) {
         defaultStyle.textStyle = {color: style.current.selectedText.color};
       }
-  
+
       if (marking.startingDay) {
         defaultStyle.startingDay = {backgroundColor: marking.color};
       }
@@ -56,7 +56,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       if (!marking.startingDay && !marking.endingDay) {
         defaultStyle.day = {backgroundColor: marking.color};
       }
-      
+
       if (marking.textColor) {
         defaultStyle.textStyle = {color: marking.textColor};
       }
@@ -66,7 +66,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       if (marking.customContainerStyle) {
         defaultStyle.containerStyle = marking.customContainerStyle;
       }
-  
+
       return defaultStyle;
     }
   }, [marking]);
@@ -83,10 +83,6 @@ const PeriodDay = (props: PeriodDayProps) => {
         borderRadius: 17,
         overflow: 'hidden'
       });
-      
-      if (markingStyle.containerStyle) {
-        containerStyle.push(markingStyle.containerStyle);
-      }
 
       const start = markingStyle.startingDay;
       const end = markingStyle.endingDay;
@@ -95,6 +91,11 @@ const PeriodDay = (props: PeriodDayProps) => {
       } else if (end && !start || end && start) {
         containerStyle.push({backgroundColor: markingStyle.endingDay?.backgroundColor});
       }
+
+      if (markingStyle.containerStyle) {
+        containerStyle.push(markingStyle.containerStyle);
+      }
+
     }
     return containerStyle;
   }, [marking, state]);
@@ -158,9 +159,9 @@ const PeriodDay = (props: PeriodDayProps) => {
   const _onLongPress = useCallback(() => {
     onLongPress?.(dateData);
   }, [onLongPress]);
-    
+
   const Component = marking ? TouchableWithoutFeedback : TouchableOpacity;
-  
+
   return (
     <Component
       testID={testID}
