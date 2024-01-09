@@ -34,7 +34,8 @@ export default class TimelineCalendarScreen extends Component {
     [`${getDate(4)}`]: {marked: true}
   };
 
-  onDateChanged = (date: string) => {
+  onDateChanged = (date: string, source: string) => {
+    console.log('TimelineCalendarScreen onDateChanged: ', date, source);
     this.setState({currentDate: date});
   };
 
