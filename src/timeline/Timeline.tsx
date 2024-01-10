@@ -247,7 +247,7 @@ const Timeline = (props: TimelineProps) => {
       // @ts-expect-error
       ref={scrollView}
       style={styles.current.container}
-      contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      contentContainerStyle={[{width: constants.screenWidth}, styles.current.contentStyle]}
       showsVerticalScrollIndicator={false}
       {...scrollEvents}
       testID={testID}
