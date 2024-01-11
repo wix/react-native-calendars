@@ -137,17 +137,14 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
   const onMomentumScrollEnd = useCallback(
     event => {
-      if (pageIndex.current) {
-        if (isOnEdge.current) {
-          onReachEdge?.(pageIndex.current!);
-          reloadPagesDebounce?.(pageIndex.current);
-        } else if (isNearEdge.current) {
-          reloadPagesDebounce?.(pageIndex.current);
-          onReachNearEdge?.(pageIndex.current!);
-        }
-
-        scrollViewProps?.onMomentumScrollEnd?.(event);
+      if (isOnEdge.current) {
+        onReachEdge?.(pageIndex.current!);
+        reloadPagesDebounce?.(pageIndex.current);
+      } else if (isNearEdge.current) {
+        reloadPagesDebounce?.(pageIndex.current);
+        onReachNearEdge?.(pageIndex.current!);
       }
+      scrollViewProps?.onMomentumScrollEnd?.(event);
     },
     [scrollViewProps?.onMomentumScrollEnd, onReachEdge, onReachNearEdge, reloadPagesDebounce]
   );
