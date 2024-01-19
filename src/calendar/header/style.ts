@@ -68,6 +68,10 @@ export default function (theme: Theme = {}) {
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
     },
+    loadingIndicator: {
+      position: 'absolute',
+      right: -30,
+    },
     ...(theme['stylesheet.calendar.header'] || {})
   });
 }
