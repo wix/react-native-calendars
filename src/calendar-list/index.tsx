@@ -223,11 +223,10 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, []);
 
   const isDateInRange = useCallback((date) => {
-    for(let i = -range.current; i <= range.current; i++) {
-      const newMonth = currentMonth?.clone().addMonths(i, true);
-      if (sameMonth(date, newMonth)) {
-        return true;
-      }
+    const diffInMonths = currentMonth?.diffMonths(date);
+    const integerDiff = diffInMonths ? Math.floor(diffInMonths) : undefined;
+    if (integerDiff !== undefined) {
+      return integerDiff >= -range.current && integerDiff <= range.current;
     }
     return false;
   }, [currentMonth]);
