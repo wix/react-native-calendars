@@ -180,7 +180,7 @@ class ReservationList extends Component {
     const reservationProps = extractReservationProps(this.props);
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
-        <Reservation {...reservationProps} item={item.reservation} date={item.date} />
+        <Reservation {...reservationProps} key={index} item={item.reservation} date={item.date} />
       </View>
     );
   };
