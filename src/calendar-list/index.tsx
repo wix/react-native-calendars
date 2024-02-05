@@ -224,11 +224,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const isDateInRange = useCallback((date) => {
     const diffInMonths = currentMonth?.diffMonths(date);
-    const integerDiff = diffInMonths ? Math.floor(diffInMonths) : undefined;
-    if (integerDiff !== undefined) {
-      return integerDiff >= -range.current && integerDiff <= range.current;
-    }
-    return false;
+    const integerDiff = diffInMonths !== undefined ? Math.floor(diffInMonths) : range.current+1;
+    return integerDiff >= -range.current && integerDiff <= range.current;
   }, [currentMonth]);
 
   const renderItem = useCallback(({item}: {item: XDate}) => {
