@@ -265,6 +265,7 @@ const Timeline = (props: TimelineProps) => {
         width={width}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
+        testID={`${testID}.hours`}
       />
       {times(numberOfDays, renderTimelineDay)}
     </ScrollView>
