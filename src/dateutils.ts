@@ -78,11 +78,15 @@ export function isToday(date?: XDate | string) {
 }
 
 export function isGTE(a: XDate, b: XDate) {
-  return b.diffDays(a) > -1;
+  if (a && b) {
+    return b.diffDays(a) > -1;
+  }
 }
 
 export function isLTE(a: XDate, b: XDate) {
-  return a.diffDays(b) > -1;
+  if (a && b) {
+    return a.diffDays(b) > -1;
+  }
 }
 
 export function formatNumbers(date: any) {
