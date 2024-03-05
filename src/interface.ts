@@ -20,7 +20,7 @@ export function xdateToData(date: XDate | string) {
 }
 
 export function parseDate(d?: any) {
-  if (d === undefined) {
+  if (!d) {
     return;
   } else if (d.timestamp) {
     // conventional data timestamp
