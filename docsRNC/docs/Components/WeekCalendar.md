@@ -1,4 +1,4 @@
-Week calendar component  
+Week calendar component. You MUST wrap it inside a CalendarProvider component.  
 [(code example)](https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendarScreen.tsx)
 :::info
 This component extends **[CalendarList](https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx)** props.
