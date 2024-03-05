@@ -171,14 +171,22 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const [position, setPosition] = useState(numberOfDays ? Positions.CLOSED : initialPosition);
   const isOpen = position === Positions.OPEN;
+  const getTotalClosedHeight = () => {
+    if(theme) {
+      if(theme.textMonthFontSize) {
+        return KNOB_CONTAINER_HEIGHT + (theme.textMonthFontSize! > 16 ? (theme.textMonthFontSize! - 16) : 0)
+      }
+    }
+    return KNOB_CONTAINER_HEIGHT
+  }
   const getOpenHeight = () => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
     }
-    return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
+    return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 + getTotalClosedHeight() : 0);
   };
   const openHeight = useRef(getOpenHeight());
-  const closedHeight = useMemo(() => CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob]);
+  const closedHeight = useMemo(() => CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : constants.isAndroid ? getTotalClosedHeight() : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob]);
   const startHeight = useMemo(() => isOpen ? openHeight.current : closedHeight, [closedHeight, isOpen]);
   const _height = useRef(startHeight);
   const deltaY = useMemo(() => new Animated.Value(startHeight), [startHeight]);
@@ -281,6 +289,16 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const handleScreenReaderStatus = (screenReaderEnabled: any) => {
     setScreenReaderEnabled(screenReaderEnabled);
   };
+
+  /** top calculation as per header height, total height & font size  */
+  const getTopPosition = () => {
+    if(theme) {
+      if(theme.textMonthFontSize) {
+        return theme.textMonthFontSize! > 16 ? closedHeight - HEADER_HEIGHT + 4 : HEADER_HEIGHT + 8
+      }
+    }
+    return HEADER_HEIGHT + 8
+  }
 
   /** Scroll */
 
@@ -546,7 +564,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={weekCalendarWrapper}
-        style={weekCalendarStyle}
+        style={[weekCalendarStyle, {top: constants.isAndroid ? getTopPosition() : HEADER_HEIGHT + 9}]}
         pointerEvents={isOpen ? 'none' : 'auto'}
       >
         <WeekComponent
