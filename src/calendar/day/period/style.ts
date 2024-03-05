@@ -12,6 +12,16 @@ export default function styleConstructor(theme: Theme = {}) {
       alignSelf: 'stretch',
       marginLeft: -1
     },
+    moonWrapper: {
+      position: 'absolute',
+      width: 6,
+      height: 6,
+      top: 0
+    },
+    moon: {
+      width: 10,
+      height: 10
+    },
     base: {
       width: 38,
       height: FILLER_HEIGHT,

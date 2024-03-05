@@ -1,6 +1,16 @@
 import PropTypes from 'prop-types';
 import React, {useCallback, useRef, useMemo} from 'react';
-import {TouchableWithoutFeedback, TouchableOpacity, Text, View, ViewStyle, ViewProps, TextStyle, StyleProp} from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Text,
+  View,
+  ViewStyle,
+  ViewProps,
+  TextStyle,
+  StyleProp,
+  Image
+} from 'react-native';
 
 import {xdateToData} from '../../../interface';
 import {Theme, DayState, DateData} from '../../../types';
@@ -8,6 +18,7 @@ import styleConstructor from './style';
 import Dot from '../dot';
 import {MarkingProps} from '../marking';
 
+const Moon = require('../../img/moon.png');
 
 export interface PeriodDayProps extends ViewProps {
   theme?: Theme;
@@ -26,7 +37,7 @@ type MarkingStyle = {
   startingDay?: ViewStyle;
   endingDay?: ViewStyle;
   day?: ViewStyle;
-}
+};
 
 const PeriodDay = (props: PeriodDayProps) => {
   const {theme, marking, date, onPress, onLongPress, state, accessibilityLabel, testID, children} = props;
@@ -46,7 +57,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       } else if (marking.selected) {
         defaultStyle.textStyle = {color: style.current.selectedText.color};
       }
-  
+
       if (marking.startingDay) {
         defaultStyle.startingDay = {backgroundColor: marking.color};
       }
@@ -56,7 +67,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       if (!marking.startingDay && !marking.endingDay) {
         defaultStyle.day = {backgroundColor: marking.color};
       }
-      
+
       if (marking.textColor) {
         defaultStyle.textStyle = {color: marking.textColor};
       }
@@ -66,7 +77,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       if (marking.customContainerStyle) {
         defaultStyle.containerStyle = marking.customContainerStyle;
       }
-  
+
       return defaultStyle;
     }
   }, [marking]);
@@ -83,7 +94,7 @@ const PeriodDay = (props: PeriodDayProps) => {
         borderRadius: 17,
         overflow: 'hidden'
       });
-      
+
       if (markingStyle.containerStyle) {
         containerStyle.push(markingStyle.containerStyle);
       }
@@ -92,7 +103,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       const end = markingStyle.endingDay;
       if (start && !end) {
         containerStyle.push({backgroundColor: markingStyle.startingDay?.backgroundColor});
-      } else if (end && !start || end && start) {
+      } else if ((end && !start) || (end && start)) {
         containerStyle.push({backgroundColor: markingStyle.endingDay?.backgroundColor});
       }
     }
@@ -144,8 +155,8 @@ const PeriodDay = (props: PeriodDayProps) => {
     if (marking) {
       return (
         <View style={[style.current.fillers, fillerStyles.fillerStyle]}>
-          <View style={[style.current.leftFiller, fillerStyles.leftFillerStyle]}/>
-          <View style={[style.current.rightFiller, fillerStyles.rightFillerStyle]}/>
+          <View style={[style.current.leftFiller, fillerStyles.leftFillerStyle]} />
+          <View style={[style.current.rightFiller, fillerStyles.rightFillerStyle]} />
         </View>
       );
     }
@@ -158,9 +169,9 @@ const PeriodDay = (props: PeriodDayProps) => {
   const _onLongPress = useCallback(() => {
     onLongPress?.(dateData);
   }, [onLongPress]);
-    
+
   const Component = marking ? TouchableWithoutFeedback : TouchableOpacity;
-  
+
   return (
     <Component
       testID={testID}
@@ -174,11 +185,16 @@ const PeriodDay = (props: PeriodDayProps) => {
       <View style={style.current.wrapper}>
         {renderFillers()}
         <View style={containerStyle}>
+          {marking?.moon ? (
+            <View style={style.current.moonWrapper}>
+              <Image source={Moon} style={style.current.moon} />
+            </View>
+          ) : null}
           <Text allowFontScaling={false} style={textStyle}>
             {String(children)}
           </Text>
           <View style={style.current.dotContainer}>
-            <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked}/>
+            <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked} />
           </View>
         </View>
       </View>
