@@ -80,7 +80,7 @@ Basic usage examples of the library
 ### Importing the `Calendar` component
 
 ```javascript
-import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)`} from 'react-native-calendars';
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 ```
 
 ### Use the `Calendar` component in your app:
