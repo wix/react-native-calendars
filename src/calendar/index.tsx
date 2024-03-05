@@ -184,7 +184,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
           theme={theme}
           testID={`${testID}.weekNumber_${weekNumber}`}
         >
-          {weekNumber}
+          {`WK${weekNumber}`}
         </BasicDay>
       </View>
     );
