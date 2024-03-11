@@ -24,11 +24,13 @@ export interface Theme {
   event?: object;
   eventTitle?: object;
   eventSummary?: object;
+  verticalLine?: ViewStyle;
   eventTimes?: object;
   line?: object;
-  verticalLine?: object;
+  nowIndicator?: ViewStyle;
   nowIndicatorLine?: object;
   nowIndicatorKnob?: object;
+  unavailableHoursBlock?: ViewStyle;
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
@@ -76,11 +78,11 @@ export interface Theme {
   weekVerticalMargin?: number;
   stylesheet?: {
     calendar?: {
-      main?: object; 
+      main?: object;
       header?: object;
     };
     day?: {
-      basic?: object; 
+      basic?: object;
       period?: object;
     };
     dot?: object;
@@ -89,7 +91,7 @@ export interface Theme {
       main?: object;
     };
     agenda?: {
-      main?: object; 
+      main?: object;
       list?: object;
     };
     expandable?: {

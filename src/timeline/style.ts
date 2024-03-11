@@ -34,11 +34,13 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       backgroundColor: LINE_COLOR,
       ...appStyle.verticalLine,
       position: 'absolute',
-      height: '105%'
+      height: '105%',
+      ...theme.verticalLine
     },
     nowIndicator: {
       position: 'absolute',
-      right: 0
+      right: 0,
+      ...theme.nowIndicator
     },
     nowIndicatorLine: {
       height: 1,
@@ -71,7 +73,8 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     unavailableHoursBlock: {
       position: 'absolute',
       right: 0,
-      backgroundColor: UNAVAILABLE_HOURS_BLOCK_COLOR
+      backgroundColor: UNAVAILABLE_HOURS_BLOCK_COLOR,
+      ...theme.unavailableHoursBlock
     },
     event: {
       opacity: 1,
