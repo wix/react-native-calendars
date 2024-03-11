@@ -186,7 +186,7 @@ const CalendarList = (props: CalendarListProps) => {
         hideArrows={!horizontal}
         onPressArrowRight={scrollToNextMonth}
         onPressArrowLeft={scrollToPreviousMonth} 
-        hideExtraDays={calendarProps?.hideExtraDays || true}
+        hideExtraDays={calendarProps?.hideExtraDays ?? true}
         style={[style.current.calendar, calendarProps?.style]}
         headerStyle={horizontal ? calendarProps?.headerStyle : undefined}
         testID={`${testID}_${item}`}
