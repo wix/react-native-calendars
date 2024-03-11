@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import get from 'lodash/get';
 import * as defaultStyle from '../../../style';
 import {Theme} from '../../../types';
 import constants from '../../../commons/constants';
@@ -68,6 +69,6 @@ export default function styleConstructor(theme: Theme = {}) {
     todayDot: {
       backgroundColor: appStyle.todayDotColor || appStyle.dotColor
     },
-    ...(theme['stylesheet.day.basic'] || {})
+    ...get(theme, 'stylesheet.day.basic', {})
   });
 }

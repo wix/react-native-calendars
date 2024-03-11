@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import get from 'lodash/get';
 import * as defaultStyle from '../../../style';
 import {Theme} from '../../../types';
 
@@ -64,6 +65,6 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
-    ...(theme['stylesheet.day.period'] || {})
+    ...get(theme, 'stylesheet.day.period', {})
   });
 }

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import get from 'lodash/get';
 import * as defaultStyle from '../style';
 import platformStyles from './platform-style';
 import {Theme} from '../types';
@@ -52,6 +53,6 @@ export default function styleConstructor(theme: Theme = {}) {
       width: '100%',
       alignSelf: 'center'
     },
-    ...(theme['stylesheet.agenda.main'] || {})
+    ...get(theme, 'stylesheet.agenda.main', {})
   });
 }
