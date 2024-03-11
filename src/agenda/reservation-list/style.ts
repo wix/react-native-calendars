@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import get from 'lodash/get';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
 
@@ -37,6 +38,6 @@ export default function styleConstructor(theme: Theme = {}) {
     indicator: {
       marginTop: 80
     },
-    ...(theme['stylesheet.agenda.list'] || {})
+    ...get(theme, 'stylesheet.agenda.list', {})
   });
 }

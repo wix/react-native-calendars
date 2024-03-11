@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import get from 'lodash/get';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../../types';
 
@@ -26,6 +27,6 @@ export default function styleConstructor(theme: Theme = {}) {
       borderBottomRightRadius: 2,
       marginRight: 4
     },
-    ...(theme['stylesheet.marking'] || {})
+    ...get(theme, 'stylesheet.marking', {})
   });
 }

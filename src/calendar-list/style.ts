@@ -1,4 +1,5 @@
 import {Platform, StyleSheet} from 'react-native';
+import get from 'lodash/get';
 import * as defaultStyle from '../style';
 import {Theme} from '../types';
 
@@ -33,6 +34,6 @@ export default function getStyle(theme: Theme = {}) {
       backgroundColor: appStyle.calendarBackground,
       paddingHorizontal: 15
     },
-    ...(theme['stylesheet.calendar-list.main'] || {})
+    ...get(theme, 'stylesheet.calendar-list.main', {})
   });
 }
