@@ -74,6 +74,7 @@ export interface Theme {
   arrowHeight?: number;
   arrowWidth?: number;
   weekVerticalMargin?: number;
+  expandableKnobColor?: string;
   stylesheet?: {
     calendar?: {
       main?: object; 
