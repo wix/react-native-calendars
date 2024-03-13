@@ -149,25 +149,10 @@ export default App;
 ### Configuring the locale:
 
 ```javascript
-import {LocaleConfig} from 'react-native-calendars';
 import React, {useState} from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 LocaleConfig.locales['fr'] = {
-  monthNames: [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre'
-  ],
   monthNames: [
     'Janvier',
     'Février',
