@@ -39,6 +39,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+    /** Use a custom list component */
+    customComponent?: React.ReactNode;
 }
 
 export interface CalendarListImperativeMethods {
@@ -100,7 +102,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     onMomentumScrollEnd,
     /** FlatList props */
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
+    customComponent
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -297,9 +300,10 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     },
   ]);
 
+  const ListComponent = customComponent ?? FlatList;
   return (
     <View style={style.current.flatListContainer} testID={testID}>
-      <FlatList
+      <ListComponent
         // @ts-expect-error
         ref={list}
         windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined}
