@@ -80,7 +80,7 @@ const PeriodDay = (props: PeriodDayProps) => {
 
     if (marking) {
       containerStyle.push({
-        borderRadius: 17,
+        borderRadius: style.current.base?.borderRadius ?? 17,
         overflow: 'hidden'
       });
       
