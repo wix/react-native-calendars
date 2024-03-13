@@ -235,6 +235,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         style={style.current.arrow}
         hitSlop={hitSlop}
         testID={`${testID}.${arrowId}`}
+        accessibilityLabel={`Arrow ${renderArrowDirection}`}
       >
         {renderArrow ? (
           renderArrow(renderArrowDirection)
