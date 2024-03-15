@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
-import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
+import React, {useRef, useState, useEffect, useCallback, useMemo, forwardRef, useImperativeHandle} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -65,12 +65,16 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   allowSelectionOutOfRange?: boolean;
 }
 
+export interface CalendarRef {
+  setCurrentMonth: (date: string) => void;
+}
+
 /**
  * @description: Calendar component
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
-const Calendar = (props: CalendarProps & ContextProp) => {
+const Calendar = forwardRef<CalendarRef, CalendarProps & ContextProp>((props, ref) => {
   const {
     initialDate,
     current,
@@ -100,6 +104,10 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   const style = useRef(styleConstructor(theme));
   const header = useRef();
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
+
+  useImperativeHandle(ref, () => ({
+    setCurrentMonth: dateString => setCurrentMonth(parseDate(dateString))
+  }), []);
 
   useEffect(() => {
     if (initialDate) {
@@ -293,7 +301,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
       </View>
     </GestureComponent>
   );
-};
+});
 
 export default Calendar;
 Calendar.displayName = 'Calendar';
