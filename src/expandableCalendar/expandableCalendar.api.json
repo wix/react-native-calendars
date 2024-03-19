@@ -5,7 +5,9 @@
   "images": [
     "https://github.com/wix/react-native-calendars/blob/master/demo/assets/expandable-calendar.gif?raw=true"
   ],
-  "extends": ["CalendarList"],
+  "extends": [
+    "CalendarList"
+  ],
   "extendsLink": [
     "https://github.com/wix/react-native-calendars/blob/master/src/calendar-list/index.tsx"
   ],
@@ -70,6 +72,12 @@
       "type": "boolean",
       "description": "Whether to close the calendar on day press",
       "default": "true"
+    },
+    {
+      "name": "weekHeight",
+      "type": "number",
+      "description": "Overrides the default value for a week's row height",
+      "default": "46"
     }
   ]
 }
