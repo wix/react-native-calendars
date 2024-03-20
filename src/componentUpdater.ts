@@ -71,7 +71,9 @@ export function extractDayProps(props: CalendarProps) {
     disableAllTouchEventsForDisabledDays,
     disableAllTouchEventsForInactiveDays,
     dayComponent,
-    testID
+    testID,
+    dayComponentMemoEqualityFn,
+    extraData,
   } = props;
 
   const dayProps = {
@@ -85,7 +87,9 @@ export function extractDayProps(props: CalendarProps) {
     disableAllTouchEventsForDisabledDays,
     disableAllTouchEventsForInactiveDays,
     dayComponent,
-    testID
+    testID,
+    dayComponentMemoEqualityFn,
+    extraData
   };
 
   return dayProps;
