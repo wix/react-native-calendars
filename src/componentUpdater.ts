@@ -89,7 +89,7 @@ export function extractDayProps(props: CalendarProps) {
     dayComponent,
     testID,
     dayComponentMemoEqualityFn,
-    extraData
+    extraData,
   };
 
   return dayProps;
