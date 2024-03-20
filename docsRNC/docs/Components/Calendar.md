@@ -180,6 +180,16 @@ Replace default title with custom element
 Replace default day with custom day rendering component  
 <span style={{color: 'grey'}}>JSX.Element</span>
 
+### dayComponentMemoEqualityFn
+
+Optional `memo` equality function provides fine control over Day component's memoization. Refer to [React.memo Docs](https://react.dev/reference/react/memo) for guidance on equality functions.
+<span style={{color: 'grey'}}>(prevProps: DayProps, nextProps: DayProps) => boolean</span>
+
+### extraData
+
+Custom data object to be passed as a prop to the Day component. May be used for memo equality check or passing additional data to your custom Day component via props. Consider memoizing unless being used along with custom equality function for a check.
+<span style={{color: 'grey'}}>Record<string, unknown></span>
+
 ### disableAllTouchEventsForDisabledDays
 
 Whether to disable all touch events for disabled days (can be override with 'disableTouchEvent' in 'markedDates')  
