@@ -8,6 +8,11 @@ describe('interface', () => {
       expect(date).toBe(undefined);
     });
 
+    it('should return undefined if date is null', () => {
+      const date = parseDate(null);
+      expect(date).toBe(undefined);
+    });
+
     it('should accept UTC timestamp as argument', () => {
       const date = parseDate(1479832134398);
       expect(date.getTime()).toEqual(1479832134398);
