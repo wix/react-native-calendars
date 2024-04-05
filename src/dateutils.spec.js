@@ -181,6 +181,13 @@ describe('dateutils', function () {
       expect(days[days.length - 1].toString()).toBe(XDate(2014, 3, 5, 0, 0, 0, true).toString());
     });
 
+    it('2023 November - week starts on monday', function () {
+      const days = page(XDate(2023, 9, 1, true), 1, true);
+      expect(days.length).toBe(42);
+      expect(days[0].toString()).toBe(XDate(2023, 8, 25, 0, 0, 0, true).toString());
+      expect(days[days.length - 1].toString()).toBe(XDate(2023, 10, 5, 0, 0, 0, true).toString());
+    });
+
     it('2014 May', function () {
       const days = page(XDate(2014, 4, 23));
       expect(days.length).toBe(35);

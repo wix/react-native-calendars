@@ -131,25 +131,25 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   let after: XDate[] = [];
 
   const fdow = (7 + firstDayOfWeek) % 7 || 7;
-  const ldow = (fdow + 6) % 7;
-
+    const ldow = (fdow + 6) % 7;
+  
   firstDayOfWeek = firstDayOfWeek || 0;
-
+  
   const from = days[0].clone();
-  const daysBefore = from.getDay();
+  const daysBefore = (from.getDay() + 7 - fdow) % 7;
 
-  if (from.getDay() !== fdow) {
+    if (from.getDay() !== fdow) {
     from.addDays(-(from.getDay() + 7 - fdow) % 7);
   }
 
   const to = days[days.length - 1].clone();
-  const day = to.getDay();
-  if (day !== ldow) {
+    const day = to.getDay();
+    if (day !== ldow) {
     to.addDays((ldow + 7 - day) % 7);
   }
 
   const daysForSixWeeks = (daysBefore + days.length) / 6 >= 6;
-
+    
   if (showSixWeeks && !daysForSixWeeks) {
     to.addDays(7);
   }
