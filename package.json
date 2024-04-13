@@ -1,5 +1,5 @@
 {
-  "name": "react-native-calendars",
+  "name": "@bumper/react-native-calendars",
   "version": "1.22.0",
   "main": "src/index.ts",
   "types": "src/index.d.ts",
