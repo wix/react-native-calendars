@@ -5,7 +5,7 @@ import throttle from 'lodash/throttle';
 
 import XDate from 'xdate';
 
-import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
+import React, { useContext, useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import {
   AccessibilityInfo,
   PanResponder,
@@ -19,18 +19,18 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import {page} from '../dateutils';
-import {parseDate, toMarkingFormat} from '../interface';
-import {DateData, Direction} from '../types';
-import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
+import { page } from '../dateutils';
+import { parseDate, toMarkingFormat } from '../interface';
+import { DateData, Direction } from '../types';
+import styleConstructor, { HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT } from './style';
 import WeekDaysNames from '../commons/WeekDaysNames';
 import Calendar from '../calendar';
-import CalendarList, {CalendarListProps} from '../calendar-list';
+import CalendarList, { CalendarListProps } from '../calendar-list';
 import Week from './week';
 import WeekCalendar from './WeekCalendar';
 import Context from './Context';
 import constants from '../commons/constants';
-import {UpdateSources} from './commons';
+import { UpdateSources } from './commons';
 
 export enum Positions {
   CLOSED = 'closed',
@@ -212,17 +212,22 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const _headerStyles = {style: {top: isOpen ? -HEADER_HEIGHT : 0}};
   const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
 
+  /** Style State */
+  const [wrapperHeight, setWrapperHeight] = useState(_wrapperStyles.current.style.height)
+  const [headerTop, setHeadertop] = useState(_headerStyles.style.top)
+  const [weekCalendarOpacity, setWeekCalendarOpacity] = useState(_weekCalendarStyles.style.opacity)
+
   const shouldHideArrows = !horizontal ? true : hideArrows || false;
 
   const updateNativeStyles = () => {
-    wrapper?.current?.setNativeProps(_wrapperStyles.current);
-
+    setWrapperHeight(_wrapperStyles.current.style.height)
     if (!horizontal) {
-      header?.current?.setNativeProps(_headerStyles);
-    } else {
-      weekCalendarWrapper?.current?.setNativeProps(_weekCalendarStyles);
+        setHeadertop(_headerStyles.style.top)
     }
-  };
+    else {
+        setWeekCalendarOpacity(_weekCalendarStyles.style.opacity)
+    }
+};
 
   const weekDaysStyle = useMemo(() => {
     const leftPaddings = calendarStyle?.paddingLeft;
@@ -521,7 +526,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={header}
-        style={animatedHeaderStyle}
+        style={[animatedHeaderStyle, {top: headerTop}]}
         pointerEvents={'none'}
       >
         <Text allowFontScaling={false} style={style.current.headerTitle}>
@@ -546,7 +551,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return (
       <Animated.View
         ref={weekCalendarWrapper}
-        style={weekCalendarStyle}
+        style={[weekCalendarStyle, {opacity: weekCalendarOpacity}]}
         pointerEvents={isOpen ? 'none' : 'auto'}
       >
         <WeekComponent
@@ -607,7 +612,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           renderArrow={_renderArrow}
         />
       ) : (
-        <Animated.View testID={`${testID}.expandableContainer`} ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
+        <Animated.View testID={`${testID}.expandableContainer`} ref={wrapper} style={[wrapperStyle, {height: wrapperHeight}]} {...panResponder.panHandlers}>
           {renderCalendarList()}
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}
