@@ -37,6 +37,7 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
 
 interface AgendaSectionHeaderProps {
   title?: string;
+  subTitle?: string;
   onLayout?: TextProps['onLayout'];
   style: TextProps['style'];
 }
@@ -48,7 +49,7 @@ function areTextPropsEqual(prev: AgendaSectionHeaderProps, next: AgendaSectionHe
 export const AgendaSectionHeader = React.memo((props: AgendaSectionHeaderProps) => {
   return (
     <Text allowFontScaling={false} style={props.style} onLayout={props.onLayout}>
-      {props.title}
+      {props.title}<Text style={[...props.style, {fontSize:16, fontWeight:300}]} >{`  ${props.subTitle}`}</Text>
     </Text>
   );
 }, areTextPropsEqual);
