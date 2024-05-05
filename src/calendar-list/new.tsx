@@ -41,14 +41,14 @@ const CalendarList = (props: CalendarListProps) => {
   } = props;
   const style = useRef(styleConstructor(calendarProps?.theme));
   const list = useRef<ScrollView>();
-  const [items, setItems] = useState<string[]>(getDatesArray(initialDate, scrollRange));
+  const [items, setItems] = useState<string[]>(() => getDatesArray(initialDate, scrollRange));
   const [positionIndex, setPositionIndex] = useState(scrollRange);
 
   /** Static Header */
 
   const [currentMonth, setCurrentMonth] = useState(initialDate || items[scrollRange]);
   const shouldRenderStaticHeader = staticHeader && horizontal;
-  const headerProps = extractHeaderProps(props);
+  const headerProps = extractHeaderProps(props?.calendarProps ?? {});
   const staticHeaderStyle = useMemo(() => {
     return [style.current.staticHeader, calendarProps?.headerStyle];
   }, [calendarProps?.headerStyle]);
@@ -176,7 +176,7 @@ const CalendarList = (props: CalendarListProps) => {
     };
   }, [scrollViewProps]);
 
-  const renderItem = useCallback((_type: any, item: string) => {
+  const renderItem = useCallback((_type: string | number, item: string) => {
     return (
       <Calendar
         {...calendarProps}
@@ -189,7 +189,7 @@ const CalendarList = (props: CalendarListProps) => {
         hideExtraDays={calendarProps?.hideExtraDays || true}
         style={[style.current.calendar, calendarProps?.style]}
         headerStyle={horizontal ? calendarProps?.headerStyle : undefined}
-        testID={`${testID}_${item}`}
+        testID={testID ? `${testID}_${item}` : undefined}
         // context={context}
       />
     );
