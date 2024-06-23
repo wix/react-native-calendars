@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import * as defaultStyle from '../../../style';
 import {Theme} from '../../../types';
 
-const FILLER_HEIGHT = 34;
+const FILLER_HEIGHT = 32;
 
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
