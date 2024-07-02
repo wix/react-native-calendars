@@ -167,7 +167,7 @@ const Timeline = (props: TimelineProps) => {
 
   const width = useMemo(() => {
     return (availableWidth ?? constants.screenWidth) - timelineLeftInset;
-  }, [timelineLeftInset]);
+  }, [availableWidth, timelineLeftInset]);
 
   const packedEvents = useMemo(() => {
     return map(pageEvents, (_e, i) => {
