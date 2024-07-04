@@ -126,7 +126,6 @@ export default class TimelineCalendarScreen extends Component {
         onMonthChange={this.onMonthChange}
         showTodayButton
         disabledOpacity={0.6}
-        // numberOfDays={3}
       >
         <ExpandableCalendar
           firstDay={1}

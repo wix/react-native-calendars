@@ -134,17 +134,18 @@ export default class ThreeDayTimelineCalendarScreen extends Component {
         onMonthChange={this.onMonthChange}
         showTodayButton
         disabledOpacity={0.6}
+        numberOfDays={3}
       >
         <ExpandableCalendar
           firstDay={1}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
           markedDates={this.marked}
-          showDaysNumber={3}
-          disableWeekScroll
-          allowShadow={false}
-          hideArrows={true}
-          style={containerCalenderStyle}
+          // showDaysNumber={3}
+          // disableWeekScroll
+          // allowShadow={false}
+          // hideArrows={true}
+          // style={containerCalenderStyle}
         />
 
         <TimelineList
@@ -153,7 +154,6 @@ export default class ThreeDayTimelineCalendarScreen extends Component {
           showNowIndicator
           scrollToFirst
           initialTime={INITIAL_TIME}
-          daysToShow={3}
         />
       </CalendarProvider>
     );
