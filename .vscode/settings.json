@@ -1,0 +1,61 @@
+{
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "markdown.preview.typographer": true,
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
+    "html.completion.attributeDefaultValue": "singlequotes",
+    "prettier.trailingComma": "es5",
+    "prettier.semi": true,
+    "reactSnippets.settings.prettierEnabled": true,
+    "prettier.bracketSameLine": true,
+    "prettier.enableDebugLogs": true,
+    "prettier.printWidth": 150,
+    "vs-code-prettier-eslint.prettierLast": true,
+    "notebook.formatOnSave.enabled": true,
+    "eslint.format.enable": true,
+    "accessibility.signals.lineHasError": {
+        "sound": "on"
+    },
+    "accessibility.signals.terminalQuickFix": {
+        "sound": "on"
+    },
+    "accessibility.signals.taskCompleted": {
+        "sound": "on"
+    },
+    "accessibility.signals.taskFailed": {
+        "sound": "on"
+    },
+    "accessibility.signals.terminalCommandFailed": {
+        "sound": "on"
+    },
+    "accessibility.signals.chatRequestSent": {
+        "sound": "on"
+    },
+    "accessibility.signals.chatResponseReceived": {
+        "sound": "on"
+    },
+    "accessibility.signals.clear": {
+        "sound": "on"
+    },
+    "accessibility.signals.format": {
+        "sound": "always"
+    },
+    "accessibility.signals.progress": {
+        "sound": "on"
+    },
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "accessibility.signalOptions.volume": 100,
+    "cSpell.words": [
+        "recyclerlistview",
+        "welldone",
+        "xcodebuild",
+        "xcodeproj",
+        "xcworkspace",
+        "xdate"
+    ]
+}
