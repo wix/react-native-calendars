@@ -8,6 +8,7 @@ export default {
     EXPANDABLE_CALENDAR: 'expandable_calendar_btn',
     WEEK_CALENDAR: 'week_calendar_btn',
     TIMELINE_CALENDAR: 'timeline_calendar_btn',
+    THREE_DAY_TIMELINE_CALENDAR: 'three_day_timeline_calendar_btn',
     PLAYGROUND: 'playground_btn'
   },
   calendars: {

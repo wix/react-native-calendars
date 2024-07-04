@@ -69,6 +69,7 @@ const MenuScreen = (props: Props) => {
         {renderEntry(testIDs.menu.AGENDA, 'Agenda', 'AgendaScreen')}
         {renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
         {renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
+        {renderEntry(testIDs.menu.THREE_DAY_TIMELINE_CALENDAR, 'Three Day Timeline Calendar', 'ThreeDayTimelineCalendarScreen')}
         {renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
         {renderEntry(testIDs.menu.PLAYGROUND, 'Playground', 'Playground')}
         <View style={styles.switchContainer}>
