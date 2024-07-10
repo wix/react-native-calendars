@@ -47,7 +47,6 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
     renderItem,
     onEndReached,
     onEndReachedThreshold,
-    refreshControl
   } = props;
 
   const {date, updateSource, setDate} = useContext(Context);
@@ -244,7 +243,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       layoutProvider={layoutProvider}
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
-      scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd, nestedScrollEnabled: true, refreshControl}}
+      scrollViewProps={{nestedScrollEnabled: true, ...props, onMomentumScrollEnd: _onMomentumScrollEnd}}
       onEndReached={_onEndReached}
       onEndReachedThreshold={onEndReachedThreshold as number | undefined}
       disableScrollOnDataChange
