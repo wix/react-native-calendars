@@ -47,7 +47,7 @@ const InfiniteAgendaList = ({
   onEndReached,
   onEndReachedThreshold,
   ...others
-}: AgendaListProps) => {
+}: Omit<AgendaListProps, 'viewOffset'>) => {
   const {date, updateSource, setDate} = useContext(Context);
 
   const style = useRef(styleConstructor(theme));
