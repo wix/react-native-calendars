@@ -30,25 +30,24 @@ import {AgendaSectionHeader, AgendaListProps} from "./AgendaListsCommon";
  * @extends: InfiniteList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const InfiniteAgendaList = (props: AgendaListProps) => {
-  const {
-    theme,
-    sections,
-    scrollToNextEvent,
-    avoidDateUpdates,
-    onScroll,
-    renderSectionHeader,
-    sectionStyle,
-    dayFormatter,
-    dayFormat = 'dddd, MMM d',
-    useMoment,
-    markToday = true,
-    infiniteListProps,
-    renderItem,
-    onEndReached,
-    onEndReachedThreshold,
-  } = props;
-
+const InfiniteAgendaList = ({
+  theme,
+  sections,
+  scrollToNextEvent,
+  avoidDateUpdates,
+  onScroll,
+  renderSectionHeader,
+  sectionStyle,
+  dayFormatter,
+  dayFormat = 'dddd, MMM d',
+  useMoment,
+  markToday = true,
+  infiniteListProps,
+  renderItem,
+  onEndReached,
+  onEndReachedThreshold,
+  ...others
+}: AgendaListProps) => {
   const {date, updateSource, setDate} = useContext(Context);
 
   const style = useRef(styleConstructor(theme));
@@ -243,7 +242,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       layoutProvider={layoutProvider}
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
-      scrollViewProps={{nestedScrollEnabled: true, ...props, onMomentumScrollEnd: _onMomentumScrollEnd}}
+      scrollViewProps={{nestedScrollEnabled: true, ...others, onMomentumScrollEnd: _onMomentumScrollEnd}}
       onEndReached={_onEndReached}
       onEndReachedThreshold={onEndReachedThreshold as number | undefined}
       disableScrollOnDataChange
