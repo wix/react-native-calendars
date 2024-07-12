@@ -147,9 +147,11 @@ export default class ThreeDayTimelineCalendarScreen extends Component {
       >
         <ExpandableCalendar
           firstDay={1}
-          leftArrowImageSource={require('../img/previous.png')}
-          rightArrowImageSource={require('../img/next.png')}
           markedDates={this.marked}
+          hideArrows={true}
+          hideKnob={true}
+          disableMonthChange={true}
+          enableSwipeMonths={false}
           theme={{
             todayTextColor: '#27AE60',
             textSectionTitleColor: '#000000',
@@ -157,12 +159,12 @@ export default class ThreeDayTimelineCalendarScreen extends Component {
             selectedDayTextColor: '#FFFFFF',
             selectedDayBackgroundColor: '#27AE60',
             textDisabledColor: '#C5C5C5',
-            dotColor: '#27AE60',
           }}
         />
 
         <TimelineList
-          events={eventsByDate}
+           events={eventsByDate}
+          // events={{}}
           timelineProps={this.timelineProps}
           showNowIndicator
           scrollToFirst

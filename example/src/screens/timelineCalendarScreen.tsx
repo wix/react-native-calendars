@@ -143,7 +143,17 @@ export default class TimelineCalendarScreen extends Component {
           firstDay={1}
           markedDates={this.marked}
           hideArrows={true}
+          hideKnob={true}
+          disableMonthChange={true}
+          enableSwipeMonths={false}
           theme={{
+            todayTextColor: '#27AE60',
+            textSectionTitleColor: '#000000',
+            dayTextColor: '#4D4D4D',
+            selectedDayTextColor: '#FFFFFF',
+            selectedDayBackgroundColor: '#27AE60',
+            textDisabledColor: '#C5C5C5',
+
             // event: {
             //   borderColor: '#FAFAFA',
             //   borderWidth: 3,
@@ -184,28 +194,12 @@ export default class TimelineCalendarScreen extends Component {
             //   backgroundColor: 'green',
             //   color: 'green'
             // },
-            // nowIndicatorLine: {
-            //   height: 2,
-            //   backgroundColor: 'green',
-            //   color: 'green'
-            // },
-            // nowIndicatorKnob: {
-            //   backgroundColor: 'green',
-            //   color: 'green'
-            // },
-            todayTextColor: '#27AE60',
             // calendarBackground: 'yellow'
-            textSectionTitleColor: '#000000',
             // textSectionTitleDisabledColor: 'yellow',
-            dayTextColor: '#4D4D4D',
-            selectedDayTextColor: '#FFFFFF',
             // monthTextColor: 'yellow',
-            selectedDayBackgroundColor: '#27AE60',
             // arrowColor: 'yellow',
-            textDisabledColor: '#C5C5C5',
             // textInactiveColor: 'yellow'
             // backgroundColor: 'yellow'
-            dotColor: '#27AE60',
             // selectedDotColor: 'yellow',
             // disabledArrowColor: 'yellow'
             // // textDayFontFamily?: TextStyle['fontFamily'];
@@ -269,19 +263,6 @@ export default class TimelineCalendarScreen extends Component {
           showNowIndicator
           scrollToFirst
           initialTime={INITIAL_TIME}
-          // timelineProps={{
-          //   theme: {
-          //     nowIndicatorLine: {
-          //       height: 2,
-          //       backgroundColor: 'green',
-          //       color: 'green'
-          //     },
-          //     nowIndicatorKnob: {
-          //       backgroundColor: 'green',
-          //       color: 'green'
-          //     }
-          //   }
-          // }}
         />
       </CalendarProvider>
     );
