@@ -33,7 +33,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
   useImperativeHandle(ref, () => ({
     disable: (shouldDisable: boolean) => {
       disable(shouldDisable);
-    }
+    },
   }));
 
   const {
@@ -102,7 +102,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
       toValue,
       tension: 30,
       friction: 8,
-      useNativeDriver: true
+      useNativeDriver: true,
     };
   };
   
@@ -110,21 +110,21 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
     return {
       toValue: disabled ? disabledOpacity : 1,
       duration: 500,
-      useNativeDriver: true
+      useNativeDriver: true,
     };
   };
 
   const animatePosition = () => {
     const animationData = getPositionAnimation();
     Animated.spring(buttonY.current, {
-      ...animationData
+      ...animationData,
     }).start();
   };
 
   const animateOpacity = () => {
     const animationData = getOpacityAnimation();
     Animated.timing(opacity.current, {
-      ...animationData
+      ...animationData,
     }).start();
   };
 

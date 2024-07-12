@@ -37,7 +37,7 @@ const CalendarList = (props: CalendarListProps) => {
     staticHeader, 
     scrollViewProps,
     calendarProps,
-    testID
+    testID,
   } = props;
   const style = useRef(styleConstructor(calendarProps?.theme));
   const list = useRef<ScrollView>();
@@ -172,7 +172,7 @@ const CalendarList = (props: CalendarListProps) => {
     return {
       ...scrollViewProps,
       showsHorizontalScrollIndicator: false,
-      showsVerticalScrollIndicator: false
+      showsVerticalScrollIndicator: false,
     };
   }, [scrollViewProps]);
 

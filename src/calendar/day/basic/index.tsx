@@ -46,7 +46,7 @@ const BasicDay = (props: BasicDayProps) => {
     disableAllTouchEventsForInactiveDays,
     accessibilityLabel,
     children,
-    testID
+    testID,
   } = props;
   const style = useRef(styleConstructor(theme));
   const _marking = marking || {};

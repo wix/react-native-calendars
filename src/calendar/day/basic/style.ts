@@ -8,12 +8,12 @@ export default function styleConstructor(theme: Theme = {}) {
   return StyleSheet.create({
     container: {
       alignSelf: 'stretch',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     base: {
       width: 32,
       height: 32,
-      alignItems: 'center'
+      alignItems: 'center',
     },
     text: {
       marginTop: constants.isAndroid ? 4 : 6,
@@ -22,30 +22,30 @@ export default function styleConstructor(theme: Theme = {}) {
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)',
-      ...appStyle.textDayStyle
+      ...appStyle.textDayStyle,
     },
     alignedText: {
-      marginTop: constants.isAndroid ? 4 : 6
+      marginTop: constants.isAndroid ? 4 : 6,
     },
     selected: {
       backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
+      borderRadius: 16,
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
-      borderRadius: 16
+      borderRadius: 16,
     },
     todayText: {
-      color: appStyle.todayTextColor
+      color: appStyle.todayTextColor,
     },
     selectedText: {
-      color: appStyle.selectedDayTextColor
+      color: appStyle.selectedDayTextColor,
     },
     disabledText: {
-      color: appStyle.textDisabledColor
+      color: appStyle.textDisabledColor,
     },
     inactiveText: {
-      color: appStyle.textInactiveColor
+      color: appStyle.textInactiveColor,
     },
     dot: {
       width: 4,
@@ -53,21 +53,21 @@ export default function styleConstructor(theme: Theme = {}) {
       marginTop: 1,
       borderRadius: 2,
       opacity: 0,
-      ...appStyle.dotStyle
+      ...appStyle.dotStyle,
     },
     visibleDot: {
       opacity: 1,
-      backgroundColor: appStyle.dotColor
+      backgroundColor: appStyle.dotColor,
     },
     selectedDot: {
-      backgroundColor: appStyle.selectedDotColor
+      backgroundColor: appStyle.selectedDotColor,
     },
     disabledDot: {
-      backgroundColor: appStyle.disabledDotColor || appStyle.dotColor
+      backgroundColor: appStyle.disabledDotColor || appStyle.dotColor,
     },
     todayDot: {
-      backgroundColor: appStyle.todayDotColor || appStyle.dotColor
+      backgroundColor: appStyle.todayDotColor || appStyle.dotColor,
     },
-    ...(theme['stylesheet.day.basic'] || {})
+    ...(theme['stylesheet.day.basic'] || {}),
   });
 }

@@ -20,19 +20,19 @@ const CalendarListScreen = (props: Props) => {
       [nextWeekDate]: {
         selected: selected === nextWeekDate,
         selectedTextColor: '#5E60CE',
-        marked: true
+        marked: true,
       },
       [nextMonthDate]: {
         selected: selected === nextMonthDate,
         selectedTextColor: '#5E60CE',
-        marked: true
+        marked: true,
       },
       [selected]: {
         selected: true,
         disableTouchEvent: true,
         selectedColor: '#5E60CE',
-        selectedTextColor: 'white'
-      }
+        selectedTextColor: 'white',
+      },
     };
   }, [selected]);
 
@@ -64,21 +64,21 @@ const theme = {
       header: {
         dayHeader: {
           fontWeight: '600',
-          color: '#48BFE3'
-        }
-      }
-    }
+          color: '#48BFE3',
+        },
+      },
+    },
   },
   'stylesheet.day.basic': {
     today: {
       borderColor: '#48BFE3',
-      borderWidth: 0.8
+      borderWidth: 0.8,
     },
     todayText: {
       color: '#5390D9',
-      fontWeight: '800'
-    }
-  }
+      fontWeight: '800',
+    },
+  },
 };
 
 function renderCustomHeader(date: any) {
@@ -90,7 +90,7 @@ function renderCustomHeader(date: any) {
     paddingTop: 10,
     paddingBottom: 10,
     color: '#5E60CE',
-    paddingRight: 5
+    paddingRight: 5,
   };
 
   return (
@@ -109,12 +109,12 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   month: {
-    marginLeft: 5
+    marginLeft: 5,
   },
   year: {
-    marginRight: 5
-  }
+    marginRight: 5,
+  },
 });

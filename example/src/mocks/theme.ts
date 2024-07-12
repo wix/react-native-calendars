@@ -38,6 +38,6 @@ export function getTheme() {
     dotColor: themeColor,
     selectedDotColor: 'white',
     disabledDotColor: disabledColor,
-    dotStyle: {marginTop: -2}
+    dotStyle: {marginTop: -2},
   };
 }

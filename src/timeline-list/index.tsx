@@ -61,21 +61,29 @@ const TimelineList = (props: TimelineListProps) => {
   const {pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange} =
     useTimelinePages({date, listRef, numberOfDays});
 
-  const scrollToCurrentDate = useCallback((date: string) => {
-    const datePageIndex = pagesRef.current.indexOf(date);
+  const scrollToCurrentDate = useCallback(
+    (date: string) => {
+      const datePageIndex = pagesRef.current.indexOf(date);
 
-    if (updateSource !== UpdateSources.LIST_DRAG) {
-      if (isOutOfRange(datePageIndex)) {
-        updateSource === UpdateSources.DAY_PRESS ? resetPages(date) : resetPagesDebounce(date);
-      } else {
-        scrollToPageDebounce(datePageIndex);
+      if (updateSource !== UpdateSources.LIST_DRAG) {
+        if (isOutOfRange(datePageIndex)) {
+          updateSource === UpdateSources.DAY_PRESS ? resetPages(date) : resetPagesDebounce(date);
+        } else {
+          scrollToPageDebounce(datePageIndex);
+        }
       }
-    }
-    prevDate.current = date;
-  }, [updateSource]);
+      prevDate.current = date;
+    },
+    [updateSource]
+  );
 
-  const initialOffset = useMemo(() =>
-  constants.isAndroidRTL ? constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE, []);
+  const initialOffset = useMemo(
+    () =>
+      constants.isAndroidRTL
+        ? constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1)
+        : constants.screenWidth * INITIAL_PAGE,
+    []
+  );
 
   useEffect(() => {
     if (date !== prevDate.current) {
@@ -118,9 +126,25 @@ const TimelineList = (props: TimelineListProps) => {
       const isCurrent = prevDate.current === item;
       const isInitialPage = index === INITIAL_PAGE;
       const _isToday = isToday(item);
-      const weekEvents = [events[item] || [], events[generateDay(item, 1)] || [], events[generateDay(item, 2)] || [], events[generateDay(item, 3)] || [], events[generateDay(item, 4)] || [], events[generateDay(item, 5)] || [], events[generateDay(item, 6)] || []];
-      const weekDates = [item, generateDay(item, 1), generateDay(item, 2), generateDay(item, 3), generateDay(item, 4), generateDay(item, 5), generateDay(item, 6)];
-      const numberOfDaysToDrop = (7 - numberOfDays);
+      const weekEvents = [
+        events[item] || [],
+        events[generateDay(item, 1)] || [],
+        events[generateDay(item, 2)] || [],
+        events[generateDay(item, 3)] || [],
+        events[generateDay(item, 4)] || [],
+        events[generateDay(item, 5)] || [],
+        events[generateDay(item, 6)] || [],
+      ];
+      const weekDates = [
+        item,
+        generateDay(item, 1),
+        generateDay(item, 2),
+        generateDay(item, 3),
+        generateDay(item, 4),
+        generateDay(item, 5),
+        generateDay(item, 6),
+      ];
+      const numberOfDaysToDrop = 7 - numberOfDays;
       const _timelineProps = {
         ...timelineProps,
         key: item,
@@ -133,7 +157,7 @@ const TimelineList = (props: TimelineListProps) => {
         onChangeOffset: onTimelineOffsetChange,
         showNowIndicator: _isToday && showNowIndicator,
         numberOfDays,
-        timelineLeftInset
+        timelineLeftInset,
       };
 
       if (renderItem) {
@@ -142,7 +166,7 @@ const TimelineList = (props: TimelineListProps) => {
 
       return (
         <>
-          <Timeline {..._timelineProps}/>
+          <Timeline {..._timelineProps} />
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text>*/}
         </>
@@ -164,7 +188,7 @@ const TimelineList = (props: TimelineListProps) => {
       extendedState={{todayEvents: events[date], pages}}
       initialOffset={initialOffset}
       scrollViewProps={{
-        onMomentumScrollEnd
+        onMomentumScrollEnd,
       }}
     />
   );

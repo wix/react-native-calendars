@@ -37,7 +37,7 @@ class Reservation extends Component<ReservationProps> {
     rowHasChanged: PropTypes.func,
     renderDay: PropTypes.func,
     renderItem: PropTypes.func,
-    renderEmptyDate: PropTypes.func
+    renderEmptyDate: PropTypes.func,
   };
 
   style;

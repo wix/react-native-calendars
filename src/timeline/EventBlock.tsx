@@ -44,7 +44,7 @@ const EventBlock = (props: EventBlockProps) => {
       height: event.height,
       width: event.width,
       top: event.top,
-      backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR
+      backgroundColor: event.color ? event.color : EVENT_DEFAULT_COLOR,
     };
   }, [event]);
 

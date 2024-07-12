@@ -8,23 +8,23 @@ export default function getStyle(theme: Theme = {}) {
     container: {
       paddingLeft: 5,
       paddingRight: 5,
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: appStyle.calendarBackground,
     },
     dayContainer: {
       flex: 1,
-      alignItems: 'center'
+      alignItems: 'center',
     },
     emptyDayContainer: {
-      flex: 1
+      flex: 1,
     },
     monthView: {
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: appStyle.calendarBackground,
     },
     week: {
       marginVertical: appStyle.weekVerticalMargin,
       flexDirection: 'row',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
     },
-    ...(theme['stylesheet.calendar.main'] || {})
+    ...(theme['stylesheet.calendar.main'] || {}),
   });
 }

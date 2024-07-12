@@ -10,13 +10,13 @@ export default function styleConstructor(theme: Theme = {}) {
     wrapper: {
       alignItems: 'center',
       alignSelf: 'stretch',
-      marginLeft: -1
+      marginLeft: -1,
     },
     base: {
       width: 38,
       height: FILLER_HEIGHT,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
 
     fillers: {
@@ -24,17 +24,17 @@ export default function styleConstructor(theme: Theme = {}) {
       height: FILLER_HEIGHT,
       flexDirection: 'row',
       left: 0,
-      right: 0
+      right: 0,
     },
     leftFiller: {
       backgroundColor: appStyle.calendarBackground,
       height: FILLER_HEIGHT,
-      flex: 1
+      flex: 1,
     },
     rightFiller: {
       backgroundColor: appStyle.calendarBackground,
       height: FILLER_HEIGHT,
-      flex: 1
+      flex: 1,
     },
 
     text: {
@@ -42,28 +42,28 @@ export default function styleConstructor(theme: Theme = {}) {
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
-      backgroundColor: 'rgba(255, 255, 255, 0)'
+      backgroundColor: 'rgba(255, 255, 255, 0)',
     },
     dotContainer: {
       position: 'absolute',
-      bottom: 3
+      bottom: 3,
     },
     today: {
-      backgroundColor: appStyle.todayBackgroundColor
+      backgroundColor: appStyle.todayBackgroundColor,
     },
     todayText: {
       fontWeight: '500',
-      color: theme.todayTextColor || appStyle.dayTextColor
+      color: theme.todayTextColor || appStyle.dayTextColor,
     },
     selectedText: {
-      color: appStyle.selectedDayTextColor
+      color: appStyle.selectedDayTextColor,
     },
     disabledText: {
-      color: appStyle.textDisabledColor
+      color: appStyle.textDisabledColor,
     },
     inactiveText: {
-      color: appStyle.textInactiveColor
+      color: appStyle.textInactiveColor,
     },
-    ...(theme['stylesheet.day.period'] || {})
+    ...(theme['stylesheet.day.period'] || {}),
   });
 }

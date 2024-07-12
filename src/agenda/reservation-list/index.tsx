@@ -73,12 +73,12 @@ class ReservationList extends Component<ReservationListProps, State> {
     refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func,
-    reservationsKeyExtractor: PropTypes.func
+    reservationsKeyExtractor: PropTypes.func,
   };
   
   static defaultProps = {
     refreshing: false,
-    selectedDay: new XDate(true)
+    selectedDay: new XDate(true),
   };
 
   private style: {[key: string]: ViewStyle | TextStyle};
@@ -94,7 +94,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     this.style = styleConstructor(props.theme);
 
     this.state = {
-      reservations: []
+      reservations: [],
     };
 
     this.heights = [];
@@ -147,14 +147,14 @@ class ReservationList extends Component<ReservationListProps, State> {
       return res.map((reservation: AgendaEntry, i: number) => {
         return {
           reservation,
-          date: i ? undefined : day
+          date: i ? undefined : day,
         };
       });
     } else if (res) {
       return [
         {
-          date: iterator.clone()
-        }
+          date: iterator.clone(),
+        },
       ];
     } else {
       return false;

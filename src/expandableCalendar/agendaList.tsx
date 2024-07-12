@@ -32,7 +32,7 @@ import InfiniteAgendaList from './infiniteAgendaList';
 import {AgendaListProps, AgendaSectionHeader} from './AgendaListsCommon';
 
 const viewabilityConfig = {
-  itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
+  itemVisiblePercentThreshold: 20, // 50 means if 50% of the item is visible
 };
 
 /**
@@ -156,7 +156,7 @@ const AgendaList = (props: AgendaListProps) => {
         sectionIndex: sectionIndex,
         itemIndex: 1,
         viewPosition: 0, // position at the top
-        viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
+        viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset,
       });
     }
   }, 1000, {leading: false, trailing: true}), [viewOffset, sections]);
@@ -256,5 +256,5 @@ AgendaList.propTypes = {
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  avoidDateUpdates: PropTypes.bool
+  avoidDateUpdates: PropTypes.bool,
 };

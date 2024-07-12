@@ -17,7 +17,7 @@ export type CalendarListItemProps = CalendarProps & {
   visible?: boolean;
 };
 
-const CalendarListItem = React.memo((props: CalendarListItemProps) => {  
+const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   const {
     item,
     theme,
@@ -29,62 +29,66 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
     headerStyle,
     onPressArrowLeft,
     onPressArrowRight,
-    visible
+    visible,
   } = props;
 
   const style = useRef(styleConstructor(theme));
-  
+
   const calendarProps = extractCalendarProps(props);
   const dateString = toMarkingFormat(item);
-  
+
   const calendarStyle = useMemo(() => {
     return [
       {
         width: calendarWidth,
-        minHeight: calendarHeight
-      }, 
+        minHeight: calendarHeight,
+      },
       style.current.calendar,
-      propsStyle
+      propsStyle,
     ];
   }, [calendarWidth, calendarHeight, propsStyle]);
-  
+
   const textStyle = useMemo(() => {
     return [calendarStyle, style.current.placeholderText];
   }, [calendarStyle]);
-  
-  const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
-    const monthClone = month?.clone();
-    if (monthClone) {
-      if (onPressArrowLeft) {
-        onPressArrowLeft(method, monthClone);
-      } else if (scrollToMonth) {
-        const currentMonth = monthClone.getMonth();
-        monthClone.addMonths(-1);
-        // Make sure we actually get the previous month, not just 30 days before currentMonth.
-        while (monthClone.getMonth() === currentMonth) {
-          monthClone.setDate(monthClone.getDate() - 1);
-        }
-        scrollToMonth(monthClone);
-      }
-    }
-  }, [onPressArrowLeft, scrollToMonth]);
 
-  const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
-    const monthClone = month?.clone();
-    if (monthClone) {
-      if (onPressArrowRight) {
-        onPressArrowRight(method, monthClone);
-      } else if (scrollToMonth) {
-        monthClone.addMonths(1);
-        scrollToMonth(monthClone);
+  const _onPressArrowLeft = useCallback(
+    (method: () => void, month?: XDate) => {
+      const monthClone = month?.clone();
+      if (monthClone) {
+        if (onPressArrowLeft) {
+          onPressArrowLeft(method, monthClone);
+        } else if (scrollToMonth) {
+          const currentMonth = monthClone.getMonth();
+          monthClone.addMonths(-1);
+          // Make sure we actually get the previous month, not just 30 days before currentMonth.
+          while (monthClone.getMonth() === currentMonth) {
+            monthClone.setDate(monthClone.getDate() - 1);
+          }
+          scrollToMonth(monthClone);
+        }
       }
-    }
-  }, [onPressArrowRight, scrollToMonth]);
+    },
+    [onPressArrowLeft, scrollToMonth]
+  );
+
+  const _onPressArrowRight = useCallback(
+    (method: () => void, month?: XDate) => {
+      const monthClone = month?.clone();
+      if (monthClone) {
+        if (onPressArrowRight) {
+          onPressArrowRight(method, monthClone);
+        } else if (scrollToMonth) {
+          monthClone.addMonths(1);
+          scrollToMonth(monthClone);
+        }
+      }
+    },
+    [onPressArrowRight, scrollToMonth]
+  );
 
   if (!visible) {
-    return (
-      <Text style={textStyle}>{dateString}</Text>
-    );
+    return <Text style={textStyle}>AA{dateString}</Text>;
   }
 
   return (

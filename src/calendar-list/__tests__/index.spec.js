@@ -50,7 +50,7 @@ const defaultProps = {
   testID: testIdCalendarList,
   current: CURRENT,
   onMonthChange: onMonthChangeMock,
-  onVisibleMonthsChange: onVisibleMonthsChangeMock
+  onVisibleMonthsChange: onVisibleMonthsChangeMock,
 };
 
 const TestCase = props => {

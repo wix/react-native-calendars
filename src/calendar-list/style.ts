@@ -6,24 +6,24 @@ export default function getStyle(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     flatListContainer: {
-      flex: Platform.OS === 'web' ? 1 : undefined
+      flex: Platform.OS === 'web' ? 1 : undefined,
     },
     container: {
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: appStyle.calendarBackground,
     },
     placeholder: {
       backgroundColor: appStyle.calendarBackground,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     placeholderText: {
       fontSize: 20,
       fontWeight: '200',
-      color: appStyle.dayTextColor
+      color: appStyle.dayTextColor,
     },
     calendar: {
       paddingLeft: 15,
-      paddingRight: 15
+      paddingRight: 15,
     },
     staticHeader: {
       position: 'absolute',
@@ -31,8 +31,8 @@ export default function getStyle(theme: Theme = {}) {
       right: 0,
       top: 0,
       backgroundColor: appStyle.calendarBackground,
-      paddingHorizontal: 15
+      paddingHorizontal: 15,
     },
-    ...(theme['stylesheet.calendar-list.main'] || {})
+    ...(theme['stylesheet.calendar-list.main'] || {}),
   });
 }

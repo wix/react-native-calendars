@@ -24,7 +24,7 @@ LocaleConfig.locales['en'] = {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ],
   monthNamesShort: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
   dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -55,14 +55,14 @@ Navigation.events().registerAppLaunchedListener(() => {
               options: {
                 topBar: {
                   title: {
-                    text: 'Wix RN Calendars'
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
+                    text: 'Wix RN Calendars',
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
   });
 });

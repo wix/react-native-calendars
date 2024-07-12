@@ -12,24 +12,24 @@ export default function styleConstructor(theme: Theme = {}) {
       marginHorizontal: 1,
       borderRadius: 2,
       opacity: 0,
-      ...appStyle.dotStyle
+      ...appStyle.dotStyle,
     },
     visibleDot: {
       opacity: 1,
-      backgroundColor: appStyle.dotColor
+      backgroundColor: appStyle.dotColor,
     },
     selectedDot: {
-      backgroundColor: appStyle.selectedDotColor
+      backgroundColor: appStyle.selectedDotColor,
     },
     disabledDot: {
-      backgroundColor: appStyle.disabledDotColor || appStyle.dotColor
+      backgroundColor: appStyle.disabledDotColor || appStyle.dotColor,
     },
     inactiveDot: {
-      backgroundColor: appStyle.inactiveDotColor || appStyle.dotColor
+      backgroundColor: appStyle.inactiveDotColor || appStyle.dotColor,
     },
     todayDot: {
-      backgroundColor: appStyle.todayDotColor || appStyle.dotColor
+      backgroundColor: appStyle.todayDotColor || appStyle.dotColor,
     },
-    ...(theme['stylesheet.dot'] || {})
+    ...(theme['stylesheet.dot'] || {}),
   });
 }

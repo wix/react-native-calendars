@@ -73,7 +73,7 @@ describe('Calendar', () => {
         .withDefaultProps({
           onDayPress,
           markedDates: {[date]: {disabled: true}},
-          disableAllTouchEventsForDisabledDays: true
+          disableAllTouchEventsForDisabledDays: true,
         })
         .render()
         .getDay(date)
@@ -91,7 +91,7 @@ describe('Calendar', () => {
           day: 10,
           month: 4,
           timestamp: 1586476800000,
-          year: 2020
+          year: 2020,
         });
       });
 

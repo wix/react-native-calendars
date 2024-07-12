@@ -11,7 +11,7 @@ import {
   ViewStyle,
   LayoutChangeEvent,
   NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
 } from 'react-native';
 
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
@@ -84,7 +84,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     renderList: PropTypes.func,
     selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
     hideKnob: PropTypes.bool,
-    showClosingKnob: PropTypes.bool
+    showClosingKnob: PropTypes.bool,
   };
 
   private style: {[key: string]: ViewStyle};
@@ -118,7 +118,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       calendarScrollable: false,
       firstReservationLoad: false,
       selectedDay: this.getSelectedDate(props.selected),
-      topDay: this.getSelectedDate(props.selected)
+      topDay: this.getSelectedDate(props.selected),
     };
 
     this.currentMonth = this.state.selectedDay.clone();
@@ -220,7 +220,7 @@ export default class Agenda extends Component<AgendaProps, State> {
 
     this.setState({
       calendarScrollable: false,
-      selectedDay: day.clone()
+      selectedDay: day.clone(),
     });
 
     this.props.onCalendarToggled?.(false);
@@ -410,35 +410,35 @@ export default class Agenda extends Component<AgendaProps, State> {
         opacity: this.state.scrollY.interpolate({
           inputRange: [agendaHeight - HEADER_HEIGHT, agendaHeight],
           outputRange: [0, 1],
-          extrapolate: 'clamp'
+          extrapolate: 'clamp',
         }),
         transform: [
           {
             translateY: this.state.scrollY.interpolate({
               inputRange: [Math.max(0, agendaHeight - HEADER_HEIGHT), agendaHeight],
               outputRange: [-HEADER_HEIGHT, 0],
-              extrapolate: 'clamp'
-            })
-          }
-        ]
-      }
+              extrapolate: 'clamp',
+            }),
+          },
+        ],
+      },
     ];
     const headerTranslate = this.state.scrollY.interpolate({
       inputRange: [0, agendaHeight],
       outputRange: [agendaHeight, 0],
-      extrapolate: 'clamp'
+      extrapolate: 'clamp',
     });
     const contentTranslate = this.state.scrollY.interpolate({
       inputRange: [0, agendaHeight],
       outputRange: [0, agendaHeight / 2],
-      extrapolate: 'clamp'
+      extrapolate: 'clamp',
     });
     const headerStyle = [
       this.style.header,
       {
         bottom: agendaHeight,
-        transform: [{translateY: headerTranslate}]
-      }
+        transform: [{translateY: headerTranslate}],
+      },
     ];
 
     if (!this.state.calendarIsReady) {

@@ -95,8 +95,8 @@ const Marking = (props: MarkingProps) => {
     const styles = [
       style.current.period,
       {
-        backgroundColor: color
-      }
+        backgroundColor: color,
+      },
     ];
     if (startingDay) {
       styles.push(style.current.startingDay);

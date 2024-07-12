@@ -17,21 +17,21 @@ export default function (theme: Theme = {}) {
       alignItems: 'center',
     },
     partialHeader: {
-      paddingHorizontal: 15
+      paddingHorizontal: 15,
     },
     headerContainer: {
-      flexDirection: 'row'
+      flexDirection: 'row',
     },
     monthText: {
       fontSize: appStyle.textMonthFontSize,
       fontFamily: appStyle.textMonthFontFamily,
       fontWeight: appStyle.textMonthFontWeight,
       color: appStyle.monthTextColor,
-      margin: 10
+      margin: 10,
     },
     arrow: {
       padding: 10,
-      ...appStyle.arrowStyle
+      ...appStyle.arrowStyle,
     },
     arrowImage: {
       ...rtlStyle,
@@ -39,13 +39,13 @@ export default function (theme: Theme = {}) {
       ...Platform.select({
         web: {
           width: appStyle.arrowWidth,
-          height: appStyle.arrowHeight
-        }
-      })
+          height: appStyle.arrowHeight,
+        },
+      }),
     },
     disabledArrowImage: {
       ...rtlStyle,
-      tintColor: appStyle.disabledArrowColor
+      tintColor: appStyle.disabledArrowColor,
     },
     week: {
       marginTop: 7,
@@ -53,7 +53,7 @@ export default function (theme: Theme = {}) {
       justifyContent: 'space-around',
     },
     partialWeek: {
-      paddingRight: 0
+      paddingRight: 0,
     },
     dayHeader: {
       marginTop: 2,
@@ -63,11 +63,11 @@ export default function (theme: Theme = {}) {
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
+      color: appStyle.textSectionTitleColor,
     },
     disabledDayHeader: {
-      color: appStyle.textSectionTitleDisabledColor
+      color: appStyle.textSectionTitleDisabledColor,
     },
-    ...(theme['stylesheet.calendar.header'] || {})
+    ...(theme['stylesheet.calendar.header'] || {}),
   });
 }

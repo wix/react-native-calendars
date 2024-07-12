@@ -94,7 +94,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     accessibilityElementsHidden,
     importantForAccessibility,
     testID,
-    style: propsStyle
+    style: propsStyle,
   } = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
@@ -276,7 +276,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
   const swipeProps = {
-    onSwipe: (direction: string) => onSwipe(direction)
+    onSwipe: (direction: string) => onSwipe(direction),
   };
   const gestureProps = enableSwipeMonths ? swipeProps : undefined;
 
@@ -321,5 +321,5 @@ Calendar.propTypes = {
   disabledByDefault: PropTypes.bool,
   headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   customHeader: PropTypes.any,
-  allowSelectionOutOfRange: PropTypes.bool
+  allowSelectionOutOfRange: PropTypes.bool,
 };

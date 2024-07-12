@@ -21,32 +21,32 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       backgroundColor: appStyle.calendarBackground,
       ...appStyle.contentStyle,
       flexDirection: 'row',
-      height: calendarHeight + 10
+      height: calendarHeight + 10,
     },
     line: {
       height: 1,
       backgroundColor: LINE_COLOR,
       ...theme.line,
-      position: 'absolute'
+      position: 'absolute',
     },
     verticalLine: {
       width: 1,
       backgroundColor: LINE_COLOR,
       ...appStyle.verticalLine,
       position: 'absolute',
-      height: '105%'
+      height: '105%',
     },
     nowIndicator: {
       position: 'absolute',
-      right: 0
+      right: 0,
     },
     nowIndicatorLine: {
       height: 1,
-      backgroundColor: NOW_INDICATOR_COLOR, 
+      backgroundColor: NOW_INDICATOR_COLOR,
       ...appStyle.nowIndicatorLine,
       position: 'absolute',
       left: 0,
-      right: 0
+      right: 0,
     },
     nowIndicatorKnob: {
       width: 7,
@@ -56,7 +56,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       ...appStyle.nowIndicatorKnob,
       position: 'absolute',
       left: -3,
-      top: -3
+      top: -3,
     },
     timeLabel: {
       color: TIME_LABEL_COLOR,
@@ -66,12 +66,12 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       paddingLeft: 12,
       textAlign: 'center',
       ...appStyle.timeLabel,
-      position: 'absolute'
+      position: 'absolute',
     },
     unavailableHoursBlock: {
       position: 'absolute',
       right: 0,
-      backgroundColor: UNAVAILABLE_HOURS_BLOCK_COLOR
+      backgroundColor: UNAVAILABLE_HOURS_BLOCK_COLOR,
     },
     event: {
       opacity: 1,
@@ -93,13 +93,13 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       color: EVENT_TEXT_COLOR,
       fontWeight: '600',
       ...appStyle.eventTitle,
-      minHeight: 15
+      minHeight: 15,
     },
     eventSummary: {
       color: EVENT_TEXT_COLOR,
       fontSize: 12,
       ...appStyle.eventSummary,
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
     },
     eventTimes: {
       marginTop: 3,
@@ -107,10 +107,10 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       fontSize: 10,
       fontWeight: 'bold',
       ...appStyle.eventTimes,
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
     },
     eventsContainer: {
-      flex: 1
-    }
+      flex: 1,
+    },
   });
 }

@@ -6,18 +6,18 @@ const FeatureList = [
   {
     title: 'Calendar',
     img: require('../../static/img/calendar.png').default,
-    description: <>Calendar component</>
+    description: <>Calendar component</>,
   },
   {
     title: 'Calendar Markings',
     img: require('../../static/img/calendar-markings.png').default,
-    description: <>Marked dates on Calendar's components</>
+    description: <>Marked dates on Calendar's components</>,
   },
   {
     title: 'Expandable Calendar',
     img: require('../../static/img/expandableCalendar.png').default,
-    description: <>Expandable calendar component</>
-  }
+    description: <>Expandable calendar component</>,
+  },
   // {
   //   title: 'Timeline Calendar',
   //   img: require('../../static/img/timeline-calendar.png').default,

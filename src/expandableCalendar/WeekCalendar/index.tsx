@@ -65,7 +65,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             firstDay: item,
             secondDay: date,
             numberOfDays: numberOfDays as number,
-            firstDateInRange: item
+            firstDateInRange: item,
           }) :
           sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
@@ -147,7 +147,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const weekCalendarStyle = useMemo(() => {
     return [
       allowShadow && style.current.containerShadow,
-      !hideDayNames && style.current.containerWrapper
+      !hideDayNames && style.current.containerWrapper,
     ];
   }, [allowShadow, hideDayNames]);
 
@@ -159,7 +159,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     return {
       length: containerWidth,
       offset: containerWidth * index,
-      index
+      index,
     };
   }, [containerWidth]);
 

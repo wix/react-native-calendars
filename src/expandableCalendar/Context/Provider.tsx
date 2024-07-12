@@ -56,7 +56,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     style: propsStyle,
     numberOfDays,
     timelineLeftInset = 72,
-    children
+    children,
   } = props;
   const style = useRef(styleConstructor(theme));
   const todayButton = useRef<TodayButtonImperativeMethods>();
@@ -75,24 +75,30 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     }
   }, [date]);
 
-  const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
-    prevDate.current = currDate.current;
-    currDate.current = date;
-    setCurrentDate(date);
-    setUpdateSource(updateSource);
+  const _setDate = useCallback(
+    (date: string, updateSource: UpdateSources) => {
+      prevDate.current = currDate.current;
+      currDate.current = date;
+      setCurrentDate(date);
+      setUpdateSource(updateSource);
 
-    onDateChanged?.(date, updateSource);
+      onDateChanged?.(date, updateSource);
 
-    if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
-      onMonthChange?.(xdateToData(new XDate(date)), updateSource);
-    }
-  }, [onDateChanged, onMonthChange]);
+      if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
+        onMonthChange?.(xdateToData(new XDate(date)), updateSource);
+      }
+    },
+    [onDateChanged, onMonthChange]
+  );
 
-  const _setDisabled = useCallback((disabled: boolean) => {
-    if (showTodayButton) {
-      todayButton.current?.disable(disabled);
-    }
-  }, [showTodayButton]);
+  const _setDisabled = useCallback(
+    (disabled: boolean) => {
+      if (showTodayButton) {
+        todayButton.current?.disable(disabled);
+      }
+    },
+    [showTodayButton]
+  );
 
   const contextValue = useMemo(() => {
     return {
@@ -102,7 +108,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       setDate: _setDate,
       setDisabled: _setDisabled,
       numberOfDays,
-      timelineLeftInset
+      timelineLeftInset,
     };
   }, [currentDate, updateSource, numberOfDays, _setDisabled]);
 
@@ -120,7 +126,9 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
 
   return (
     <CalendarContext.Provider value={contextValue}>
-      <View style={wrapperStyle} key={numberOfDays}>{children}</View>
+      <View style={wrapperStyle} key={numberOfDays}>
+        {children}
+      </View>
       {showTodayButton && renderTodayButton()}
     </CalendarContext.Provider>
   );

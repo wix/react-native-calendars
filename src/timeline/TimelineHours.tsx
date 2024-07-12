@@ -109,7 +109,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
             styles.unavailableHoursBlock,
             block,
             unavailableHoursColor ? {backgroundColor: unavailableHoursColor} : undefined,
-            {left: timelineLeftInset}
+            {left: timelineLeftInset},
           ]}
         ></View>
       ))}

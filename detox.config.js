@@ -6,8 +6,8 @@ module.exports = {
       type: "ios.simulator",
       device: {
         type: "iPhone 11",
-        os: "iOS 13.7"
-      }
+        os: "iOS 13.7",
+      },
     },
     "ios.sim.release": {
       binaryPath: "ios/build/Build/Products/Release-iphonesimulator/CalendarsExample.app",
@@ -15,14 +15,14 @@ module.exports = {
       type: "ios.simulator",
       device: {
         type: "iPhone 11",
-        os: "iOS 13.7"
-      }
-    }
+        os: "iOS 13.7",
+      },
+    },
   },
   artifacts: {
     plugins: {
       uiHierarchy: process.env.JENKINS_CI ? "enabled" : undefined,
-    }
+    },
   },
-  testRunner: "mocha"
+  testRunner: "mocha",
 };

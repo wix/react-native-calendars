@@ -43,7 +43,7 @@ function buildEvent(
     top: (dayStartTime.diffHours(startTime) - dayStart) * hourBlockHeight,
     height: startTime.diffHours(endTime) * hourBlockHeight,
     width,
-    left
+    left,
   };
 }
 
@@ -76,7 +76,7 @@ function packOverlappingEventGroup(
   const {
     screenWidth = constants.screenWidth,
     rightEdgeSpacing = RIGHT_EDGE_SPACING,
-    overlapEventsSpacing = OVERLAP_EVENTS_SPACINGS
+    overlapEventsSpacing = OVERLAP_EVENTS_SPACINGS,
   } = populateOptions;
   columns.forEach((column, columnIndex) => {
     column.forEach(event => {
@@ -170,7 +170,7 @@ export function buildUnavailableHoursBlocks(
 
         return {
           top: ((startFixed - dayStart) / totalDayHours) * totalDayHeight,
-          height: (endFixed - startFixed) * hourBlockHeight
+          height: (endFixed - startFixed) * hourBlockHeight,
         };
       })
       // Note: this filter falsy values (undefined blocks)

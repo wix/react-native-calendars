@@ -43,7 +43,7 @@ export function extractDotProps(props: MarkingProps) {
     selected,
     disabled,
     inactive,
-    today
+    today,
   } = props;
 
   const dotProps = {
@@ -53,7 +53,7 @@ export function extractDotProps(props: MarkingProps) {
     selected,
     disabled,
     inactive,
-    today
+    today,
   };
 
   return dotProps;
@@ -71,7 +71,7 @@ export function extractDayProps(props: CalendarProps) {
     disableAllTouchEventsForDisabledDays,
     disableAllTouchEventsForInactiveDays,
     dayComponent,
-    testID
+    testID,
   } = props;
 
   const dayProps = {
@@ -85,7 +85,7 @@ export function extractDayProps(props: CalendarProps) {
     disableAllTouchEventsForDisabledDays,
     disableAllTouchEventsForInactiveDays,
     dayComponent,
-    testID
+    testID,
   };
 
   return dayProps;
@@ -114,7 +114,7 @@ export function extractHeaderProps(props: CalendarProps) {
     numberOfDays,
     current,
     timelineLeftInset,
-    testID
+    testID,
   } = props;
 
   const headerProps = {
@@ -139,7 +139,7 @@ export function extractHeaderProps(props: CalendarProps) {
     numberOfDays,
     current,
     timelineLeftInset,
-    testID
+    testID,
   };
 
   return headerProps;
@@ -275,7 +275,7 @@ export function extractReservationProps(props: ReservationListProps) {
     rowHasChanged,
     renderDay,
     renderItem,
-    renderEmptyDate
+    renderEmptyDate,
   } = props;
 
   const reservationProps = {
@@ -285,7 +285,7 @@ export function extractReservationProps(props: ReservationListProps) {
     rowHasChanged,
     renderDay,
     renderItem,
-    renderEmptyDate
+    renderEmptyDate,
   };
 
   return reservationProps;

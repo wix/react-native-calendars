@@ -7,7 +7,7 @@ export default function platformStyles(appStyle: Theme) {
       height: 7,
       marginTop: 10,
       borderRadius: 3,
-      backgroundColor: appStyle.agendaKnobColor
+      backgroundColor: appStyle.agendaKnobColor,
     },
     weekdays: {
       position: 'absolute',
@@ -20,7 +20,7 @@ export default function platformStyles(appStyle: Theme) {
       marginRight: 15,
       paddingTop: 15,
       paddingBottom: 7,
-      backgroundColor: appStyle.calendarBackground
-    }
+      backgroundColor: appStyle.calendarBackground,
+    },
   };
 }

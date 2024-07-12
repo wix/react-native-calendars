@@ -8,7 +8,7 @@ const testIdWeekCalendar = 'myWeekCalendar';
 
 const defaultProps = {
   testID: testIdWeekCalendar,
-  current: CURRENT
+  current: CURRENT,
 };
 
 const TestCase = props => {

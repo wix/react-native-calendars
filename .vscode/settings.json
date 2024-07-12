@@ -51,6 +51,7 @@
     "files.trimFinalNewlines": true,
     "accessibility.signalOptions.volume": 100,
     "cSpell.words": [
+        "linebreak",
         "recyclerlistview",
         "welldone",
         "xcodebuild",

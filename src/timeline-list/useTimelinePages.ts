@@ -73,7 +73,7 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
     shouldResetPages,
     isOutOfRange,
     isNearEdges,
-    isOnEdgePages
+    isOnEdgePages,
   };
 };
 

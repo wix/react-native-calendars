@@ -6,26 +6,26 @@ export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     dots: {
-      flexDirection: 'row'
+      flexDirection: 'row',
     },
     periods: {
-      alignSelf: 'stretch'
+      alignSelf: 'stretch',
     },
     period: {
       height: 4,
       marginVertical: 1,
-      backgroundColor: appStyle.dotColor
+      backgroundColor: appStyle.dotColor,
     },
     startingDay: {
       borderTopLeftRadius: 2,
       borderBottomLeftRadius: 2,
-      marginLeft: 4
+      marginLeft: 4,
     },
     endingDay: {
       borderTopRightRadius: 2,
       borderBottomRightRadius: 2,
-      marginRight: 4
+      marginRight: 4,
     },
-    ...(theme['stylesheet.marking'] || {})
+    ...(theme['stylesheet.marking'] || {}),
   });
 }

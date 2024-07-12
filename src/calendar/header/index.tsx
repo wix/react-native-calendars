@@ -13,7 +13,7 @@ import {
   ViewStyle,
   AccessibilityActionEvent,
   ColorValue,
-  Insets
+  Insets,
 } from 'react-native';
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import styleConstructor from './style';
@@ -72,7 +72,7 @@ export interface CalendarHeaderProps {
 
 const accessibilityActions = [
   {name: 'increment', label: 'increment'},
-  {name: 'decrement', label: 'decrement'}
+  {name: 'decrement', label: 'decrement'},
 ];
 
 const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
@@ -102,7 +102,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     importantForAccessibility,
     numberOfDays,
     current = '',
-    timelineLeftInset
+    timelineLeftInset,
   } = props;
   
   const numberOfDaysCondition = useMemo(() => {
@@ -128,7 +128,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   
   useImperativeHandle(ref, () => ({
     onPressLeft,
-    onPressRight
+    onPressRight,
   }));
 
   const addMonth = useCallback(() => {
@@ -303,5 +303,5 @@ CalendarHeader.displayName = 'CalendarHeader';
 CalendarHeader.defaultProps = {
   monthFormat: 'MMMM yyyy',
   webAriaLevel: 1,
-  arrowsHitSlop: 20
+  arrowsHitSlop: 20,
 };

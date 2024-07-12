@@ -25,18 +25,18 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/wix/react-native-calendars/tree/master/docsRNC'
+          editUrl: 'https://github.com/wix/react-native-calendars/tree/master/docsRNC',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/'
+          editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css')
-        }
-      })
-    ]
+          customCss: require.resolve('./src/css/custom.css'),
+        },
+      }),
+    ],
   ],
 
   themeConfig:
@@ -46,21 +46,21 @@ const config = {
         title: 'RNC',
         logo: {
           alt: 'RNC Logo',
-          src: 'img/logo.png'
+          src: 'img/logo.png',
         },
         items: [
           {
             type: 'doc',
             docId: 'Intro',
             position: 'right',
-            label: 'Docs'
+            label: 'Docs',
           },
           {
             href: 'https://github.com/wix/react-native-calendars',
             label: 'GitHub',
-            position: 'right'
-          }
-        ]
+            position: 'right',
+          },
+        ],
       },
       footer: {
         style: 'dark',
@@ -70,18 +70,18 @@ const config = {
             items: [
               {
                 label: 'Docs',
-                to: '/docs/Intro'
+                to: '/docs/Intro',
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/wix/react-native-calendars'
+                href: 'https://github.com/wix/react-native-calendars',
               },
               {
                 label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/react-native-calendars'
-              }
-            ]
-          }
+                href: 'https://stackoverflow.com/questions/tagged/react-native-calendars',
+              },
+            ],
+          },
           // {
           //   title: 'Community',
           //   items: [
@@ -113,13 +113,13 @@ const config = {
           //   ]
           // }
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Wix.com, Inc.`
+        copyright: `Copyright © ${new Date().getFullYear()} Wix.com, Inc.`,
       },
       prism: {
         theme: lightCodeTheme,
-        darkTheme: darkCodeTheme
-      }
-    })
+        darkTheme: darkCodeTheme,
+      },
+    }),
 };
 
 module.exports = config;

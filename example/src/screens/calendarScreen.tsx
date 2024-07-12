@@ -23,14 +23,14 @@ const CalendarScreen = () => {
     return {
       [getDate(-1)]: {
         dotColor: 'red',
-        marked: true
+        marked: true,
       },
       [selected]: {
         selected: true,
         disableTouchEvent: true,
         selectedColor: 'orange',
-        selectedTextColor: 'red'
-      }
+        selectedTextColor: 'red',
+      },
     };
   }, [selected]);
 
@@ -89,7 +89,7 @@ const CalendarScreen = () => {
             [getDate(7)]: {selected: true, marked: true, dotColor: 'red'},
             [getDate(8)]: {marked: true, dotColor: 'red', disableTouchEvent: true},
             [getDate(9)]: {marked: true},
-            [getDate(10)]: {disabled: true, activeOpacity: 0, disableTouchEvent: false}
+            [getDate(10)]: {disabled: true, activeOpacity: 0, disableTouchEvent: false},
           }}
           hideArrows={true}
           // disabledByDefault={true}
@@ -111,16 +111,16 @@ const CalendarScreen = () => {
               selected: true,
               dots: [
                 {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'white'}
-              ]
+                {key: 'massage', color: 'red', selectedDotColor: 'white'},
+              ],
             },
             [getDate(3)]: {
               disabled: true,
               dots: [
                 {key: 'vacation', color: 'green', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'green'}
-              ]
-            }
+                {key: 'massage', color: 'red', selectedDotColor: 'green'},
+              ],
+            },
           }}
         />
       </Fragment>
@@ -156,11 +156,11 @@ const CalendarScreen = () => {
                     marginTop: 30,
                     marginHorizontal: 12,
                     flexDirection: 'row',
-                    justifyContent: 'space-between'
-                  }
-                }
-              }
-            }
+                    justifyContent: 'space-between',
+                  },
+                },
+              },
+            },
           }}
           markedDates={{
             [getDate(-2)]: {disabled: true},
@@ -171,7 +171,7 @@ const CalendarScreen = () => {
             [getDate(23)]: {endingDay: true, color: 'gray'},
             [getDate(25)]: {startingDay: true, color: 'gray'},
             [getDate(26)]: {color: 'gray'},
-            [getDate(27)]: {endingDay: true, color: 'gray'}
+            [getDate(27)]: {endingDay: true, color: 'gray'},
           }}
         />
       </Fragment>
@@ -194,8 +194,8 @@ const CalendarScreen = () => {
               color: '#70d7c7',
               customTextStyle: {
                 color: '#FFFAAA',
-                fontWeight: '700'
-              }
+                fontWeight: '700',
+              },
             },
             [getDate(11)]: {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
             [getDate(12)]: {color: '#70d7c7', inactive: true},
@@ -205,17 +205,17 @@ const CalendarScreen = () => {
               textColor: 'white',
               customContainerStyle: {
                 borderTopRightRadius: 5,
-                borderBottomRightRadius: 5
-              }
+                borderBottomRightRadius: 5,
+              },
             },
-            [getDate(25)]: {inactive: true, disableTouchEvent: true}
+            [getDate(25)]: {inactive: true, disableTouchEvent: true},
           }}
           disabledDaysIndexes={[0, 6]}
           theme={{
             textInactiveColor: '#a68a9f',
             textSectionTitleDisabledColor: 'grey',
             textSectionTitleColor: '#319e8e',
-            arrowColor: '#319e8e'
+            arrowColor: '#319e8e',
           }}
           onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
         />
@@ -235,23 +235,23 @@ const CalendarScreen = () => {
             [INITIAL_DATE]: {
               periods: [
                 {startingDay: true, endingDay: false, color: 'green'},
-                {startingDay: true, endingDay: false, color: 'orange'}
-              ]
+                {startingDay: true, endingDay: false, color: 'orange'},
+              ],
             },
             [getDate(1)]: {
               periods: [
                 {startingDay: false, endingDay: true, color: 'green'},
                 {startingDay: false, endingDay: true, color: 'orange'},
-                {startingDay: true, endingDay: false, color: 'pink'}
-              ]
+                {startingDay: true, endingDay: false, color: 'pink'},
+              ],
             },
             [getDate(3)]: {
               periods: [
                 {startingDay: true, endingDay: true, color: 'orange'},
                 {color: 'transparent'},
-                {startingDay: false, endingDay: false, color: 'pink'}
-              ]
-            }
+                {startingDay: false, endingDay: false, color: 'pink'},
+              ],
+            },
           }}
         />
       </Fragment>
@@ -273,59 +273,59 @@ const CalendarScreen = () => {
               customStyles: {
                 container: {
                   backgroundColor: 'white',
-                  elevation: 2
+                  elevation: 2,
                 },
                 text: {
                   color: 'red',
-                  marginTop: 0
-                }
-              }
+                  marginTop: 0,
+                },
+              },
             },
             [getDate(8)]: {
-              selected: true
+              selected: true,
             },
             [getDate(9)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'red',
-                  elevation: 4
+                  elevation: 4,
                 },
                 text: {
-                  color: 'white'
-                }
-              }
+                  color: 'white',
+                },
+              },
             },
             [getDate(14)]: {
               customStyles: {
                 container: {
-                  backgroundColor: 'green'
+                  backgroundColor: 'green',
                 },
                 text: {
-                  color: 'white'
-                }
-              }
+                  color: 'white',
+                },
+              },
             },
             [getDate(15)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'black',
-                  elevation: 2
+                  elevation: 2,
                 },
                 text: {
-                  color: 'yellow'
-                }
-              }
+                  color: 'yellow',
+                },
+              },
             },
             [getDate(21)]: {
-              disabled: true
+              disabled: true,
             },
             [getDate(28)]: {
               customStyles: {
                 text: {
                   color: 'black',
-                  fontWeight: 'bold'
-                }
-              }
+                  fontWeight: 'bold',
+                },
+              },
             },
             [getDate(30)]: {
               customStyles: {
@@ -333,23 +333,23 @@ const CalendarScreen = () => {
                   backgroundColor: 'pink',
                   elevation: 4,
                   borderColor: 'purple',
-                  borderWidth: 5
+                  borderWidth: 5,
                 },
                 text: {
                   marginTop: 3,
                   fontSize: 11,
-                  color: 'black'
-                }
-              }
+                  color: 'black',
+                },
+              },
             },
             [getDate(31)]: {
               customStyles: {
                 container: {
                   backgroundColor: 'orange',
-                  borderRadius: 0
-                }
-              }
-            }
+                  borderRadius: 0,
+                },
+              },
+            },
           }}
         />
       </Fragment>
@@ -484,11 +484,11 @@ const CalendarScreen = () => {
           current={INITIAL_DATE}
           markedDates={{
             [getDate(3)]: {
-              inactive: true
+              inactive: true,
             },
             [getDate(4)]: {
-              inactive: true
-            }
+              inactive: true,
+            },
           }}
         />
       </Fragment>
@@ -526,52 +526,52 @@ export default CalendarScreen;
 
 const styles = StyleSheet.create({
   calendar: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   switchContainer: {
     flexDirection: 'row',
     margin: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   switchText: {
     margin: 10,
-    fontSize: 16
+    fontSize: 16,
   },
   text: {
     textAlign: 'center',
     padding: 10,
     backgroundColor: 'lightgrey',
-    fontSize: 16
+    fontSize: 16,
   },
   disabledText: {
-    color: 'grey'
+    color: 'grey',
   },
   defaultText: {
-    color: 'purple'
+    color: 'purple',
   },
   customCalendar: {
     height: 250,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey'
+    borderBottomColor: 'lightgrey',
   },
   customDay: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   customHeader: {
     backgroundColor: '#FCC',
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginHorizontal: -4,
-    padding: 8
+    padding: 8,
   },
   customTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10
+    padding: 10,
   },
   customTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#00BBF2'
-  }
+    color: '#00BBF2',
+  },
 });

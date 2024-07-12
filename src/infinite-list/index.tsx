@@ -162,7 +162,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       bounces: false,
       ...scrollViewProps,
       onScrollBeginDrag,
-      onMomentumScrollEnd
+      onMomentumScrollEnd,
     };
   }, [onScrollBeginDrag, onMomentumScrollEnd, scrollViewProps, isHorizontal]);
 

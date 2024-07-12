@@ -40,16 +40,16 @@ const MenuScreen = (props: Props) => {
         options: {
           topBar: {
             title: {
-              text: props?.weekView ? 'WeekCalendar' : screen
+              text: props?.weekView ? 'WeekCalendar' : screen,
             },
             backButton: {
               testID: 'back',
               showTitle: false, // iOS only
-              color: Platform.OS === 'ios' ? '#2d4150' : undefined
-            }
-          }
-        }
-      }
+              color: Platform.OS === 'ios' ? '#2d4150' : undefined,
+            },
+          },
+        },
+      },
     });
   };
 
@@ -86,12 +86,12 @@ export default MenuScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     margin: 30,
     width: 90,
-    height: 90
+    height: 90,
   },
   menu: {
     width: 300,
@@ -100,13 +100,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#7a92a5'
+    borderColor: '#7a92a5',
   },
   menuText: {
     fontSize: 18,
-    color: '#2d4150'
+    color: '#2d4150',
   },
   switchContainer: {
-    margin: 20
-  }
+    margin: 20,
+  },
 });

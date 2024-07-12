@@ -34,7 +34,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const extraData = {
     current,
     date: context.date,
-    firstDay
+    firstDay,
   };
 
   const containerWidth = calendarWidth || constants.screenWidth;
@@ -124,7 +124,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           pageWidth={containerWidth}
           onPageChange={onPageChange}
           scrollViewProps={{
-            showsHorizontalScrollIndicator: false
+            showsHorizontalScrollIndicator: false,
           }}
         />
       </View>

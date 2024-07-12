@@ -36,7 +36,7 @@ export const getProfileData = ([
   baseDuration, // estimated time to render the entire subtree without memoization
   startTime, // when React began rendering this update
   commitTime, // when React committed this update
-  interactions // the Set of interactions belonging to this update
+  interactions, // the Set of interactions belonging to this update
 ]) => {
   cumulativeDuration[id] = Number(((cumulativeDuration[id] ?? 0) + actualDuration).toFixed(2));
   return {
@@ -47,7 +47,7 @@ export const getProfileData = ([
     baseDuration: Number(baseDuration.toFixed(2)),
     commitTime: Number(commitTime.toFixed(2)),
     cumulativeDuration: cumulativeDuration[id],
-    startTime: Number(startTime.toFixed(2))
+    startTime: Number(startTime.toFixed(2)),
   };
 };
 

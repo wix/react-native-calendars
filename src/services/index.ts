@@ -27,5 +27,5 @@ export function getDefaultLocale(): any {
 
 export default {
   getCalendarDateString,
-  getDefaultLocale
+  getDefaultLocale,
 };

@@ -20,8 +20,8 @@ const NowIndicator = (props: NowIndicatorProps) => {
 
   return (
     <View style={nowIndicatorStyle}>
-      <View style={[styles.nowIndicatorLine, {width}]}/>
-      <View style={styles.nowIndicatorKnob}/>
+      <View style={[styles.nowIndicatorLine, {width}]} />
+      <View style={styles.nowIndicatorKnob} />
     </View>
   );
 };

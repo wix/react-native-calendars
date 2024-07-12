@@ -9,7 +9,7 @@ interface State {
 
 export default class AgendaScreen extends Component<State> {
   state: State = {
-    items: undefined
+    items: undefined,
   };
 
   // reservationsKeyExtractor = (item, index) => {
@@ -63,7 +63,7 @@ export default class AgendaScreen extends Component<State> {
             items[strTime].push({
               name: 'Item for ' + strTime + ' #' + j,
               height: Math.max(50, Math.floor(Math.random() * 150)),
-              day: strTime
+              day: strTime,
             });
           }
         }
@@ -74,7 +74,7 @@ export default class AgendaScreen extends Component<State> {
         newItems[key] = items[key];
       });
       this.setState({
-        items: newItems
+        items: newItems,
       });
     }, 1000);
   };
@@ -126,19 +126,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 17
+    marginTop: 17,
   },
   emptyDate: {
     height: 15,
     flex: 1,
-    paddingTop: 30
+    paddingTop: 30,
   },
   customDay: {
     margin: 10,
     fontSize: 24,
-    color: 'green'
+    color: 'green',
   },
   dayItem: {
-    marginLeft: 34
-  }
+    marginLeft: 34,
+  },
 });

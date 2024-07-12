@@ -23,7 +23,7 @@ let onMonthChange = jest.fn();
 
 const TestCase = ({
   expandableCalendarProps,
-  calendarContextProps
+  calendarContextProps,
 }: {
   expandableCalendarProps?: Partial<ExpandableCalendarProps>;
   calendarContextProps?: Partial<CalendarContextProviderProps>;
@@ -35,7 +35,7 @@ const TestCase = ({
       onMonthChange,
       onDateChanged,
       ...calendarContextProps,
-    }
+    },
   });
 };
 

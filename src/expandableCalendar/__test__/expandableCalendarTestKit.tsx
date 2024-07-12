@@ -3,7 +3,7 @@ import {
   CalendarContextProviderProps,
   CalendarProvider,
   ExpandableCalendar,
-  ExpandableCalendarProps
+  ExpandableCalendarProps,
 } from 'react-native-calendars';
 import {toMarkingFormat} from '../../interface';
 

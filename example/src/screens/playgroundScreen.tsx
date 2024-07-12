@@ -20,8 +20,8 @@ export default function PlaygroundScreen() {
         selected: true,
         disableTouchEvent: true,
         selectedColor: '#5E60CE',
-        selectedTextColor: 'white'
-      }
+        selectedTextColor: 'white',
+      },
     };
   }, [selectedDate]);
 
@@ -101,15 +101,15 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     padding: 5,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   calendar: {
     borderWidth: 1,
-    borderColor: '#b6c1cd'
+    borderColor: '#b6c1cd',
   },
   text : {
     alignSelf: 'center',
     padding : 20,
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });

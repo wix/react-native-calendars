@@ -16,5 +16,5 @@ export default {
   isAndroid,
   isIOS,
   isTablet,
-  isAndroidRTL
+  isAndroidRTL,
 };

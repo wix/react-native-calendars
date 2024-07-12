@@ -10,10 +10,10 @@ export default function styleConstructor(theme: Theme = {}) {
   return StyleSheet.create({
     container: {
       flex: 1,
-      overflow: 'hidden'
+      overflow: 'hidden',
     },
     animatedContainer: {
-      flex: 1
+      flex: 1,
     },
     knob,
     weekdays,
@@ -22,7 +22,7 @@ export default function styleConstructor(theme: Theme = {}) {
       justifyContent: 'flex-end',
       position: 'absolute',
       height: '100%',
-      width: '100%'
+      width: '100%',
     },
     knobContainer: {
       flex: 1,
@@ -32,7 +32,7 @@ export default function styleConstructor(theme: Theme = {}) {
       height: 24,
       bottom: 0,
       alignItems: 'center',
-      backgroundColor: appStyle.calendarBackground
+      backgroundColor: appStyle.calendarBackground,
     },
     dayHeader: {
       width: 32,
@@ -40,18 +40,18 @@ export default function styleConstructor(theme: Theme = {}) {
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
+      color: appStyle.textSectionTitleColor,
     },
     reservations: {
       flex: 1,
       marginTop: 104,
-      backgroundColor: appStyle.reservationsBackgroundColor || appStyle.backgroundColor //TODO: remove 2nd in V2
+      backgroundColor: appStyle.reservationsBackgroundColor || appStyle.backgroundColor, //TODO: remove 2nd in V2
     },
     scrollPadStyle: {
       position: 'absolute',
       width: '100%',
-      alignSelf: 'center'
+      alignSelf: 'center',
     },
-    ...(theme['stylesheet.agenda.main'] || {})
+    ...(theme['stylesheet.agenda.main'] || {}),
   });
 }

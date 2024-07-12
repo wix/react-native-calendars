@@ -48,7 +48,7 @@ describe('interface', () => {
       const testDate = {
         year: 2015,
         month: 5,
-        day: 6
+        day: 6,
       };
       const date = parseDate(testDate);
       expect(date.toString('yyyy-MM-dd')).toEqual('2015-05-06');
@@ -66,7 +66,7 @@ describe('interface', () => {
         month: 11,
         day: 22,
         timestamp: 1479772800000,
-        dateString: '2016-11-22'
+        dateString: '2016-11-22',
       });
     });
   });

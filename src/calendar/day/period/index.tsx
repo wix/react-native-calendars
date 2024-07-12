@@ -81,7 +81,7 @@ const PeriodDay = (props: PeriodDayProps) => {
     if (marking) {
       containerStyle.push({
         borderRadius: 17,
-        overflow: 'hidden'
+        overflow: 'hidden',
       });
       
       if (markingStyle.containerStyle) {
@@ -194,5 +194,5 @@ PeriodDay.propTypes = {
   theme: PropTypes.object,
   onPress: PropTypes.func,
   onLongPress: PropTypes.func,
-  date: PropTypes.string
+  date: PropTypes.string,
 };

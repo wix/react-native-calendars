@@ -47,7 +47,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
     renderItem,
     onEndReached,
     onEndReachedThreshold,
-    refreshControl
+    refreshControl,
   } = props;
 
   const {date, updateSource, setDate} = useContext(Context);
@@ -263,5 +263,5 @@ InfiniteAgendaList.propTypes = {
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  avoidDateUpdates: PropTypes.bool
+  avoidDateUpdates: PropTypes.bool,
 };

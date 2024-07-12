@@ -17,8 +17,8 @@ const NewCalendarListScreen = () => {
     return {
       [selected]: {
         selected: true,
-        selectedColor: '#DFA460'
-      }
+        selectedColor: '#DFA460',
+      },
     };
   }, [selected]);
 
@@ -30,7 +30,7 @@ const NewCalendarListScreen = () => {
   const calendarProps = useMemo(() => {
     return {
       markedDates: markedDates,
-      onDayPress: onDayPress
+      onDayPress: onDayPress,
     };
   }, [selected, markedDates, onDayPress]);
 
@@ -57,7 +57,7 @@ export default NewCalendarListScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   switchView: {
     flexDirection: 'row', 
@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
-    zIndex: 100
+    zIndex: 100,
   },
   switchText: {
     marginRight: 20, 
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });

@@ -60,7 +60,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     },
     scrollToMonth: (date: XDate | string) => {
       scrollToMonth(date);
-    }
+    },
   }));
 
   const {
@@ -100,7 +100,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     onMomentumScrollEnd,
     /** FlatList props */
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -218,7 +218,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     return {
       length: calendarSize,
       offset: calendarSize * index,
-      index
+      index,
     };
   }, []);
 
@@ -272,7 +272,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   /** Viewable month */
 
   const viewabilityConfig = useRef({
-    viewAreaCoveragePercentThreshold: 20
+    viewAreaCoveragePercentThreshold: 20,
   });
 
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
@@ -293,7 +293,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const viewabilityConfigCallbackPairs = useRef([
     {
       viewabilityConfig: viewabilityConfig.current,
-      onViewableItemsChanged
+      onViewableItemsChanged,
     },
   ]);
 
@@ -354,5 +354,5 @@ CalendarList.propTypes = {
   keyExtractor: PropTypes.func,
   onEndReachedThreshold: PropTypes.number,
   onEndReached: PropTypes.func,
-  nestedScrollEnabled: PropTypes.bool
+  nestedScrollEnabled: PropTypes.bool,
 };

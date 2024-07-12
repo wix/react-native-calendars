@@ -2,21 +2,21 @@ module.exports = {
   env: {
     es6: true,
     node: true,
-    'jest/globals': true
+    'jest/globals': true,
   },
   globals: {
     expect: true,
     it: true,
-    describe: true
+    describe: true,
   },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       experimentalObjectRestSpread: true,
-      jsx: true
+      jsx: true,
     },
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: ['react', 'react-native', 'jest', '@typescript-eslint'],
   rules: {
@@ -31,6 +31,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/ban-types': 0,
-    '@typescript-eslint/ban-ts-comment': 1
-  }
+    '@typescript-eslint/ban-ts-comment': 1,
+    'comma-dangle': ['error', 'always-multiline'],
+  },
 };

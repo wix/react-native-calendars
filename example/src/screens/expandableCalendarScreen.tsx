@@ -19,7 +19,7 @@ const ExpandableCalendarScreen = (props: Props) => {
   const marked = useRef(getMarkedDates());
   const theme = useRef(getTheme());
   const todayBtnTheme = useRef({
-    todayButtonTextColor: themeColor
+    todayButtonTextColor: themeColor,
   });
 
   // const onDateChanged = useCallback((date, updateSource) => {
@@ -83,14 +83,14 @@ export default ExpandableCalendarScreen;
 const styles = StyleSheet.create({
   calendar: {
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   header: {
-    backgroundColor: 'lightgrey'
+    backgroundColor: 'lightgrey',
   },
   section: {
     backgroundColor: lightThemeColor,
     color: 'grey',
-    textTransform: 'capitalize'
-  }
+    textTransform: 'capitalize',
+  },
 });

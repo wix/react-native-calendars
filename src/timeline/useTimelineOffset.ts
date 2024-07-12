@@ -16,7 +16,7 @@ export default (props: UseTimelineOffsetProps) => {
     if (scrollOffset !== undefined) {
       scrollViewRef?.current?.scrollTo({
         y: scrollOffset,
-        animated: false
+        animated: false,
       });
     }
   }, [scrollOffset]);
@@ -37,7 +37,7 @@ export default (props: UseTimelineOffsetProps) => {
   return {
     scrollEvents: {
       onScrollEndDrag,
-      onMomentumScrollEnd
-    }
+      onMomentumScrollEnd,
+    },
   };
 };
