@@ -10,14 +10,20 @@ import {
   TimelineList,
   CalendarProvider,
   TimelineProps,
-  CalendarUtils
+  CalendarUtils,
 } from 'react-native-calendars';
 
 import {timelineEvents, getDate} from '../mocks/timelineEvents';
 
 const INITIAL_TIME = {hour: 9, minutes: 0};
 const EVENTS: TimelineEventProps[] = timelineEvents;
-export default class TimelineCalendarScreen extends Component {
+
+const containerCalenderStyle = {
+  backgroundColor:'#DCF2B0',
+  height:100
+};
+
+export default class ThreeDayTimelineCalendarScreen extends Component {
   state = {
     currentDate: getDate(),
     events: EVENTS,
@@ -116,6 +122,8 @@ export default class TimelineCalendarScreen extends Component {
     rightEdgeSpacing: 24,
   };
 
+
+
   render() {
     const {currentDate, eventsByDate} = this.state;
 
@@ -126,18 +134,24 @@ export default class TimelineCalendarScreen extends Component {
         onMonthChange={this.onMonthChange}
         showTodayButton
         disabledOpacity={0.6}
+        numberOfDays={3}
       >
         <ExpandableCalendar
           firstDay={1}
           leftArrowImageSource={require('../img/previous.png')}
           rightArrowImageSource={require('../img/next.png')}
           markedDates={this.marked}
+          // showDaysNumber={3}
+          // disableWeekScroll
+          // allowShadow={false}
+          // hideArrows={true}
+          // style={containerCalenderStyle}
         />
+
         <TimelineList
           events={eventsByDate}
           timelineProps={this.timelineProps}
           showNowIndicator
-          // scrollToNow
           scrollToFirst
           initialTime={INITIAL_TIME}
         />

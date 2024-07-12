@@ -4,12 +4,8 @@ import {Navigation} from 'react-native-navigation';
 import testIDs from '../testIDs';
 
 
-<<<<<<< HEAD:example/src/screens/menu.tsx
-const appIcon = require('../img/app-icon-120x120.png');
-=======
 import appIcon from '../img/app-icon-120x120.png';
 import testIDs from '../testIDs';
->>>>>>> a656b787cf740168d6349239734125aff0bc3325:example/src/screens/menu.js
 
 interface Props {
   componentId?: string;
