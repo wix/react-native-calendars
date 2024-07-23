@@ -114,10 +114,10 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   }, [currentMonth]);
 
   const updateMonth = useCallback((newMonth: XDate) => {
+    setCurrentMonth(newMonth);
     if (sameMonth(newMonth, currentMonth)) {
       return;
     }
-    setCurrentMonth(newMonth);
   }, [currentMonth]);
 
   const addMonth = useCallback((count: number) => {
@@ -206,7 +206,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
           date={dateString}
-          state={getState(day, currentMonth, props, isControlled)}
+          state={getState(day, currentMonth, props, !isControlled)}
           marking={markedDates?.[dateString]}
           onPress={_onDayPress}
           onLongPress={onLongPressDay}
