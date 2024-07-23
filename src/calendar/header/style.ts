@@ -1,5 +1,4 @@
 import {StyleSheet, Platform} from 'react-native';
-import get from 'lodash/get';
 import * as defaultStyle from '../../style';
 import {Theme} from '../../types';
 import constants from '../../commons/constants';
@@ -69,6 +68,6 @@ export default function (theme: Theme = {}) {
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
     },
-    ...get(theme, 'stylesheet.calendar.header', {})
+    ...theme?.stylesheet?.calendar?.header
   });
 }

@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import get from 'lodash/get';
 import * as defaultStyle from '../style';
 import {Theme} from '../types';
 
@@ -26,6 +25,6 @@ export default function getStyle(theme: Theme = {}) {
       flexDirection: 'row',
       justifyContent: 'space-around'
     },
-    ...get(theme, 'stylesheet.calendar.main', {})
+    ...theme?.stylesheet?.calendar?.main
   });
 }
