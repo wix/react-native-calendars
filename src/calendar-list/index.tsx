@@ -39,6 +39,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+  /** Whether to load the calendar list items in descending order (most recent month at the top) */
+  descendingOrder?: boolean;
 }
 
 export interface CalendarListImperativeMethods {
@@ -79,6 +81,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     calendarWidth = CALENDAR_WIDTH,
     calendarStyle,
     animateScroll = false,
+    descendingOrder = false,
     showScrollIndicator = false,
     staticHeader,
     /** View props */
@@ -123,7 +126,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const rangeDate = initialDate.current?.clone().addMonths(i - pastScrollRange, true);
       months.push(rangeDate);
     }
-    return months;
+    return descendingOrder ? months.reverse() : months;
   }, [pastScrollRange, futureScrollRange]);
 
   const staticHeaderStyle = useMemo(() => {
