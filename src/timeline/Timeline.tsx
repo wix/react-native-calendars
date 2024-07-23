@@ -115,6 +115,10 @@ export interface TimelineProps {
   timelineLeftInset?: number;
   /** Identifier for testing */
   testID?: string;
+  /**
+   * Width for the timeline component
+   */
+  availableWidth?: number;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -143,6 +147,7 @@ const Timeline = (props: TimelineProps) => {
     numberOfDays = 1,
     timelineLeftInset = 0,
     testID,
+    availableWidth,
   } = props;
 
   const pageDates = useMemo(() => {
@@ -161,8 +166,8 @@ const Timeline = (props: TimelineProps) => {
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
   const width = useMemo(() => {
-    return constants.screenWidth - timelineLeftInset;
-  }, [timelineLeftInset]);
+    return (availableWidth ?? constants.screenWidth) - timelineLeftInset;
+  }, [availableWidth, timelineLeftInset]);
 
   const packedEvents = useMemo(() => {
     return map(pageEvents, (_e, i) => {
@@ -247,7 +252,7 @@ const Timeline = (props: TimelineProps) => {
       // @ts-expect-error
       ref={scrollView}
       style={styles.current.container}
-      contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
+      contentContainerStyle={[styles.current.contentStyle, {width: (availableWidth ?? constants.screenWidth)}]}
       showsVerticalScrollIndicator={false}
       {...scrollEvents}
       testID={testID}
