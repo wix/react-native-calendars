@@ -47,6 +47,9 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
+    weekNumberText: {
+      color: appStyle.textDisabledColor
+    },
     dot: {
       width: 4,
       height: 4,

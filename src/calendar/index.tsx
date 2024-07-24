@@ -180,7 +180,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         <BasicDay
           key={`week-${weekNumber}`}
           marking={weekNumberMarking.current}
-          // state='disabled'
+          state='weekNumber'
           theme={theme}
           testID={`${testID}.weekNumber_${weekNumber}`}
         >

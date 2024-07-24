@@ -9,7 +9,7 @@ export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'cu
 export type MarkedDates = {
   [key: string]: MarkingProps;
 };
-export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
+export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | 'weekNumber' | '';
 export type Direction = 'left' | 'right';
 export type DateData = {
   year: number;

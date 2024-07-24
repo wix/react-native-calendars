@@ -54,6 +54,7 @@ const BasicDay = (props: BasicDayProps) => {
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
   const isInactive = _marking?.inactive;
   const isToday = state === 'today';
+  const isWeekNumber = state === 'weekNumber';
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
@@ -84,6 +85,8 @@ const BasicDay = (props: BasicDayProps) => {
       }
     } else if (isToday) {
       styles.push(style.current.today);
+    } else if (isWeekNumber) {
+      styles.push(style.current.weekNumberContainer);
     }
 
     //Custom marking type
@@ -112,6 +115,10 @@ const BasicDay = (props: BasicDayProps) => {
       styles.push(style.current.todayText);
     } else if (isInactive) {
       styles.push(style.current.inactiveText);
+    } 
+    
+    if (isWeekNumber) {
+      styles.push(style.current.weekNumberText);
     }
 
     //Custom marking type
