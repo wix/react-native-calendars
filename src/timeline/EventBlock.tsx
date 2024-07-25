@@ -37,7 +37,7 @@ const EventBlock = (props: EventBlockProps) => {
   // Fixing the number of lines for the event title makes this calculation easier.
   // However it would make sense to overflow the title to a new line if needed
   const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
-  const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
+  const formatTime = format24h ? 'HH:mm' : 'hh:mm TT';
   const eventStyle = useMemo(() => {
     return {
       left: event.left,
