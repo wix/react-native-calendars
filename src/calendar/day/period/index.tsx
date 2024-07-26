@@ -18,6 +18,8 @@ export interface PeriodDayProps extends ViewProps {
   onLongPress?: (date?: DateData) => void;
   accessibilityLabel?: string;
   testID?: string;
+  disableAllTouchEventsForDisabledDays?: boolean;
+  disableAllTouchEventsForInactiveDays?: boolean;
 }
 
 type MarkingStyle = {
@@ -29,9 +31,25 @@ type MarkingStyle = {
 }
 
 const PeriodDay = (props: PeriodDayProps) => {
-  const {theme, marking, date, onPress, onLongPress, state, accessibilityLabel, testID, children} = props;
+  const {theme, marking, date, onPress, onLongPress, state, disableAllTouchEventsForDisabledDays, disableAllTouchEventsForInactiveDays, accessibilityLabel, testID, children} = props;
+  const _marking = marking || {};
+  const {disableTouchEvent, disabled, inactive} = _marking;
   const dateData = date ? xdateToData(date) : undefined;
   const style = useRef(styleConstructor(theme));
+
+  const touchEventIsDisabled = useMemo(() => {
+    let disableTouch = false;
+     const isDisabled = typeof disabled !== 'undefined' ? disabled : state === 'disabled';
+     const isInactive = inactive;
+     if (typeof disableAllTouchEventsForDisabledDays === 'boolean' && isDisabled) {
+         disableTouch = disableAllTouchEventsForDisabledDays;
+     } else if (typeof disableAllTouchEventsForInactiveDays === 'boolean' && isInactive) {
+         disableTouch = disableAllTouchEventsForInactiveDays;
+     } else if(typeof disableTouchEvent === 'boolean') {
+         disableTouch = disableTouchEvent;
+     }
+     return disableTouch;
+  }, [inactive, disabled, disableTouchEvent, disableAllTouchEventsForDisabledDays, disableAllTouchEventsForInactiveDays ]);
 
   const markingStyle = useMemo(() => {
     const defaultStyle: MarkingStyle = {textStyle: {}, containerStyle: {}};
@@ -166,9 +184,9 @@ const PeriodDay = (props: PeriodDayProps) => {
       testID={testID}
       onPress={_onPress}
       onLongPress={_onLongPress}
-      disabled={marking?.disableTouchEvent}
+      disabled={touchEventIsDisabled}
       accessible
-      accessibilityRole={marking?.disableTouchEvent ? undefined : 'button'}
+      accessibilityRole={touchEventIsDisabled ? undefined : 'button'}
       accessibilityLabel={accessibilityLabel}
     >
       <View style={style.current.wrapper}>
