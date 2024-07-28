@@ -621,15 +621,4 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 export default ExpandableCalendar;
 
 ExpandableCalendar.displayName = 'ExpandableCalendar';
-ExpandableCalendar.defaultProps = {
-  horizontal: true,
-  initialPosition: Positions.CLOSED,
-  firstDay: 0,
-  leftArrowImageSource: LEFT_ARROW,
-  rightArrowImageSource: RIGHT_ARROW,
-  allowShadow: true,
-  openThreshold: PAN_GESTURE_THRESHOLD,
-  closeThreshold: PAN_GESTURE_THRESHOLD,
-  closeOnDayPress: true
-};
 ExpandableCalendar.positions = Positions;
