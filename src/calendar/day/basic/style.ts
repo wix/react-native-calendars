@@ -28,9 +28,10 @@ export default function styleConstructor(theme: Theme = {}) {
       marginTop: constants.isAndroid ? 4 : 6
     },
     selected: {
-      backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
-    },
+      borderRadius: 16,
+      borderWidth:1,
+      borderColor:appStyle.selectedDayBackgroundColor,
+  },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
       borderRadius: 16
