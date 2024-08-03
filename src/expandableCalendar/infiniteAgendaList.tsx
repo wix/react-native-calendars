@@ -208,7 +208,7 @@ const InfiniteAgendaList = ({
     const title = info?.section?.title;
 
     if (renderSectionHeader) {
-      return renderSectionHeader(title);
+      return renderSectionHeader(info);
     }
 
     const headerTitle = getSectionTitle(title);
