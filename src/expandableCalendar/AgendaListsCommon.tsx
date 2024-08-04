@@ -23,6 +23,8 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   viewOffset?: number;
   /** enable scrolling the agenda list to the next date with content when pressing a day without content */
   scrollToNextEvent?: boolean;
+  /** delay in scroll to section. Default = 0 */
+  scrollToSectionDelay: number;
   /**
    * @experimental
    * If defined, uses InfiniteList instead of SectionList. This feature is experimental and subject to change.
