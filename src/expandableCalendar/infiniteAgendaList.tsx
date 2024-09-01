@@ -160,7 +160,7 @@ const InfiniteAgendaList = ({
             dim.height = infiniteListProps?.itemHeight ?? 80;
             break;
           default:
-            dim.height = infiniteListProps?.itemHeightByType?.[type] ?? 80;
+            dim.height = infiniteListProps?.itemHeightByType?.[type] ?? infiniteListProps?.itemHeight ?? 80;
         }
       }
     ),
