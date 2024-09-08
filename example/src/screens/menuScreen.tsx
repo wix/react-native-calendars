@@ -14,7 +14,7 @@ interface Props {
 const MenuScreen = (props: Props) => {
   const {componentId} = props;
   const [forceRTL, setForceRTL] = useState(false);
-  
+
   const toggleRTL = (value) => {
     I18nManager.forceRTL(value);
     setForceRTL(value);
@@ -67,6 +67,7 @@ const MenuScreen = (props: Props) => {
         {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'CalendarListScreen', {horizontalView: true})}
         {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarListScreen')}
         {renderEntry(testIDs.menu.AGENDA, 'Agenda', 'AgendaScreen')}
+        {renderEntry(testIDs.menu.AGENDA_INFINITE, 'Agenda Infinite List', 'AgendaInfiniteListScreen')}
         {renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
         {renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
         {renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
