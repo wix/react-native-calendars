@@ -63,6 +63,8 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   allowShadow?: boolean;
   /** whether to disable the week scroll in closed position */
   disableWeekScroll?: boolean;
+  /** whether to disable the month scroll in opened position */
+  disableMonthScroll?: boolean;
   /** a threshold for opening the calendar with the pan gesture */
   openThreshold?: number;
   /** a threshold for closing the calendar with the pan gesture */
@@ -106,6 +108,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     rightArrowImageSource = RIGHT_ARROW,
     allowShadow = true,
     disableWeekScroll,
+    disableMonthScroll,
     openThreshold = PAN_GESTURE_THRESHOLD,
     closeThreshold = PAN_GESTURE_THRESHOLD,
     closeOnDayPress = true,
@@ -580,7 +583,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         onDayPress={_onDayPress}
         onVisibleMonthsChange={onVisibleMonthsChange}
         pagingEnabled
-        scrollEnabled={isOpen}
+        scrollEnabled={isOpen && !disableMonthScroll}
         hideArrows={shouldHideArrows}
         onPressArrowLeft={_onPressArrowLeft}
         onPressArrowRight={_onPressArrowRight}
