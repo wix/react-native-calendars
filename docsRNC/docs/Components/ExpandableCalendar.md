@@ -51,6 +51,11 @@ Whether to have shadow/elevation for the calendar
 Whether to disable the week scroll in closed position  
 <span style={{color: 'grey'}}>boolean</span>
 
+### disablMonthScroll
+
+Whether to disable the month scroll in opened position  
+<span style={{color: 'grey'}}>boolean</span>
+
 ### openThreshold
 
 The threshold for opening the calendar with the pan gesture  
