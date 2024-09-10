@@ -149,7 +149,7 @@ const InfiniteAgendaList = ({
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
-      (index) => dataRef.current[index]?.isTitle ? 'title': dataRef.current[index]?.itemType ?? 'page',
+      (index) => dataRef.current[index]?.isTitle ? 'title': dataRef.current[index]?.itemCustomHeightType ?? 'page',
       (type, dim) => {
         dim.width = constants.screenWidth;
         switch (type) {

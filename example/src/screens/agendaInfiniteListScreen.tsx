@@ -23,7 +23,7 @@ const AgendaInfiniteListScreen = (props: Props) => {
   });
 
   const renderItem = useCallback(({item}: any) => {
-    const isLongItem = item.itemType === 'LongEvent';
+    const isLongItem = item.itemCustomHeightType === 'LongEvent';
     return <View style={{paddingTop: isLongItem ? 40 : 0}}><AgendaItem item={item}/></View>;
   }, []);
 
