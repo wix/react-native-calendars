@@ -102,7 +102,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     importantForAccessibility,
     numberOfDays,
     current = '',
-    timelineLeftInset
+    timelineLeftInset,
+    accessibilityRole
   } = props;
   
   const numberOfDaysCondition = useMemo(() => {
@@ -279,7 +280,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       testID={testID}
       style={propsStyle}
       accessible
-      accessibilityRole={'adjustable'}
+      accessibilityRole={accessibilityRole}
       accessibilityActions={accessibilityActions}
       onAccessibilityAction={onAccessibilityAction}
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
