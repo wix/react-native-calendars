@@ -11,6 +11,7 @@
     "build:docs": "node ./scripts/build-docs.js",
     "e2e": "node ./scripts/test-e2e.js --release",
     "test": "npm run lint && npm run unit",
+    "test:watch": "jest --watch",
     "test:perf": "TEST_RUNNER_ARGS='--testMatch **/*.perf.js' reassure measure",
     "unit": "jest",
     "lint": "eslint src/ example/src --ext .tsx,.ts,.js",

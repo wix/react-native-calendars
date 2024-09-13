@@ -205,7 +205,8 @@ const CalendarScreen = () => {
               textColor: 'white',
               customContainerStyle: {
                 borderTopRightRadius: 5,
-                borderBottomRightRadius: 5
+                borderBottomRightRadius: 5,
+                backgroundColor: "green"
               }
             },
             [getDate(25)]: {inactive: true, disableTouchEvent: true}

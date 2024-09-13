@@ -80,7 +80,7 @@ Basic usage examples of the library
 ### Importing the `Calendar` component
 
 ```javascript
-import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)`} from 'react-native-calendars';
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 ```
 
 ### Use the `Calendar` component in your app:
@@ -154,20 +154,6 @@ import React, {useState} from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 LocaleConfig.locales['fr'] = {
-  monthNames: [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre'
-  ],
   monthNames: [
     'Janvier',
     'Février',

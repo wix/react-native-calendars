@@ -113,6 +113,8 @@ export interface TimelineProps {
    * The left inset of the timeline calendar (sidebar width), default is 72
    */
   timelineLeftInset?: number;
+  /** Identifier for testing */
+  testID?: string;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -139,7 +141,8 @@ const Timeline = (props: TimelineProps) => {
     unavailableHoursColor,
     eventTapped,
     numberOfDays = 1,
-    timelineLeftInset = 0
+    timelineLeftInset = 0,
+    testID,
   } = props;
 
   const pageDates = useMemo(() => {
@@ -217,6 +220,7 @@ const Timeline = (props: TimelineProps) => {
           format24h={format24h}
           onPress={onEventPress}
           renderEvent={renderEvent}
+          testID={`${testID}.event.${event.id}`}
         />
       );
     });
@@ -247,6 +251,7 @@ const Timeline = (props: TimelineProps) => {
       contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
       showsVerticalScrollIndicator={false}
       {...scrollEvents}
+      testID={testID}
     >
       <TimelineHours
         start={start}
@@ -261,6 +266,7 @@ const Timeline = (props: TimelineProps) => {
         width={width}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
+        testID={`${testID}.hours`}
       />
       {times(numberOfDays, renderTimelineDay)}
     </ScrollView>
