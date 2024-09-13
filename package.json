@@ -1,9 +1,9 @@
 {
-  "name": "@erickcrus/react-native-calendars",
+  "name": "@brbtcoficial/react-native-calendars",
   "version": "1.22.1",
   "main": "src/index.ts",
   "types": "src/index.d.ts",
-  "description": "Fork from React Native Calendar Components that resolve compatibility issue with react-native-bottom-sheet and other.",
+  "description": "Fork from React Native Calendar Components for solve compatibility issue with react-native-bottom-sheet and other libs.",
   "scripts": {
     "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
     "build:ts": "tsc",
@@ -30,7 +30,7 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "author": "Wix.com [Erick Crus]",
+  "author": "Brasil Bitcoin [Erick Crus]",
   "license": "MIT",
   "dependencies": {
     "hoist-non-react-statics": "^3.3.1",
