@@ -30,26 +30,24 @@ import {AgendaSectionHeader, AgendaListProps} from "./AgendaListsCommon";
  * @extends: InfiniteList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const InfiniteAgendaList = (props: AgendaListProps) => {
-  const {
-    theme,
-    sections,
-    scrollToNextEvent,
-    avoidDateUpdates,
-    onScroll,
-    renderSectionHeader,
-    sectionStyle,
-    dayFormatter,
-    dayFormat = 'dddd, MMM d',
-    useMoment,
-    markToday = true,
-    infiniteListProps,
-    renderItem,
-    onEndReached,
-    onEndReachedThreshold,
-    refreshControl
-  } = props;
-
+const InfiniteAgendaList = ({
+  theme,
+  sections,
+  scrollToNextEvent,
+  avoidDateUpdates,
+  onScroll,
+  renderSectionHeader,
+  sectionStyle,
+  dayFormatter,
+  dayFormat = 'dddd, MMM d',
+  useMoment,
+  markToday = true,
+  infiniteListProps,
+  renderItem,
+  onEndReached,
+  onEndReachedThreshold,
+  ...others
+}: Omit<AgendaListProps, 'viewOffset'>) => {
   const {date, updateSource, setDate} = useContext(Context);
 
   const style = useRef(styleConstructor(theme));
@@ -151,10 +149,19 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
-      (index) => dataRef.current[index]?.isTitle ? 'title': 'page',
+      (index) => dataRef.current[index]?.isTitle ? 'title': dataRef.current[index]?.itemCustomHeightType ?? 'page',
       (type, dim) => {
         dim.width = constants.screenWidth;
-        dim.height = type === 'title' ? infiniteListProps?.titleHeight ?? 60 : infiniteListProps?.itemHeight ?? 80;
+        switch (type) {
+          case 'title':
+            dim.height = infiniteListProps?.titleHeight ?? 60;
+            break;
+          case 'page':
+            dim.height = infiniteListProps?.itemHeight ?? 80;
+            break;
+          default:
+            dim.height = infiniteListProps?.itemHeightByType?.[type] ?? infiniteListProps?.itemHeight ?? 80;
+        }
       }
     ),
     []
@@ -244,7 +251,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
       layoutProvider={layoutProvider}
       onScroll={_onScroll}
       onVisibleIndicesChanged={_onVisibleIndicesChanged}
-      scrollViewProps={{onMomentumScrollEnd: _onMomentumScrollEnd, nestedScrollEnabled: true, refreshControl}}
+      scrollViewProps={{nestedScrollEnabled: true, ...others, onMomentumScrollEnd: _onMomentumScrollEnd}}
       onEndReached={_onEndReached}
       onEndReachedThreshold={onEndReachedThreshold as number | undefined}
       disableScrollOnDataChange

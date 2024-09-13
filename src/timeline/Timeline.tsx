@@ -220,6 +220,7 @@ const Timeline = (props: TimelineProps) => {
           format24h={format24h}
           onPress={onEventPress}
           renderEvent={renderEvent}
+          testID={`${testID}.event.${event.id}`}
         />
       );
     });
