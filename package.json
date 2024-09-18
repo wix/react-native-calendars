@@ -10,7 +10,7 @@
     "build:dev": "tsc --noEmit",
     "build:docs": "node ./scripts/build-docs.js",
     "e2e": "node ./scripts/test-e2e.js --release",
-    "test": "npm run lint && npm run unit",
+    "test": "yarn lint && yarn unit",
     "test:watch": "jest --watch",
     "test:perf": "TEST_RUNNER_ARGS='--testMatch **/*.perf.js' reassure measure",
     "unit": "jest",
@@ -20,7 +20,7 @@
     "ios": "react-native run-ios",
     "android": "react-native run-android",
     "xcode": "open ios/CalendarsExample.xcworkspace/",
-    "clean": "rm package-lock.json && rm -rf ./node_modules && npm i",
+    "clean": "rm yarn-lock && rm -rf ./node_modules && yarn",
     "pod-install": "pod install --project-directory=ios"
   },
   "repository": {
