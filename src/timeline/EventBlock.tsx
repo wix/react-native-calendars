@@ -26,6 +26,7 @@ export interface EventBlockProps {
   renderEvent?: (event: PackedEvent) => JSX.Element;
   format24h?: boolean;
   styles: {[key: string]: ViewStyle | TextStyle};
+  testID?: string;
 }
 
 const TEXT_LINE_HEIGHT = 17;
@@ -53,7 +54,7 @@ const EventBlock = (props: EventBlockProps) => {
   }, [index, onPress]);
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={_onPress} style={[styles.event, eventStyle]}>
+    <TouchableOpacity testID={props.testID} activeOpacity={0.9} onPress={_onPress} style={[styles.event, eventStyle]}>
       {renderEvent ? (
         renderEvent(event)
       ) : (

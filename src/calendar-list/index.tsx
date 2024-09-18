@@ -99,6 +99,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     onMomentumScrollBegin,
     onMomentumScrollEnd,
     /** FlatList props */
+    contentContainerStyle,
     onEndReachedThreshold,
     onEndReached
   } = props;
@@ -328,6 +329,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         onMomentumScrollEnd={onMomentumScrollEnd}
         onScrollBeginDrag={onScrollBeginDrag}
         onScrollEndDrag={onScrollEndDrag}
+        contentContainerStyle={contentContainerStyle}
       />
       {renderStaticHeader()}
     </View>
