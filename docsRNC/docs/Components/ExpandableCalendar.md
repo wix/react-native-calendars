@@ -51,7 +51,7 @@ Whether to have shadow/elevation for the calendar
 Whether to disable the week scroll in closed position  
 <span style={{color: 'grey'}}>boolean</span>
 
-### disablMonthScroll
+### disableMonthScroll
 
 Whether to disable the month scroll in opened position  
 <span style={{color: 'grey'}}>boolean</span>
