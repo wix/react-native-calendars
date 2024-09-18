@@ -1,7 +1,6 @@
 node_modules
 npm-debug.log
 .idea
-yarn.lock
 .vscode
 package-lock.json
 

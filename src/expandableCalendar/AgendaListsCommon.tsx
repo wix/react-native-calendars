@@ -30,6 +30,8 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   infiniteListProps?: {
     itemHeight?: number;
     titleHeight?: number;
+    /** item height by type, require passing itemCustomHeightType in the elements you want to set custom height */
+    itemHeightByType?: Record<string, number>;
     visibleIndicesChangedDebounce?: number;
     renderFooter?: () => React.ReactElement | null;
   };
