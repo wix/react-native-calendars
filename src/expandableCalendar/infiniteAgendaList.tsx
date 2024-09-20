@@ -46,6 +46,7 @@ const InfiniteAgendaList = ({
   renderItem,
   onEndReached,
   onEndReachedThreshold,
+  scrollToSectionDebounce = 1000,
   ...others
 }: Omit<AgendaListProps, 'viewOffset'>) => {
   const {date, updateSource, setDate} = useContext(Context);
@@ -145,7 +146,7 @@ const InfiniteAgendaList = ({
         _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
       }, 500);
     }
-  }, 1000, {leading: false, trailing: true}), [sections]);
+  }, scrollToSectionDebounce, {leading: false, trailing: true}), [sections]);
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
@@ -261,5 +262,6 @@ InfiniteAgendaList.propTypes = {
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  avoidDateUpdates: PropTypes.bool
+  avoidDateUpdates: PropTypes.bool,
+  scrollToSectionDebounce: PropTypes.number
 };
