@@ -48,6 +48,11 @@
       "description": "Whether to enable scrolling the agenda list to the next date with content when pressing a day without content"
     },
     {
+      "name": "scrollToSectionDebounce",
+      "type": "number",
+      "description": "Delay applied when scrolling to the next date in the agenda after selecting a day, ensuring smooth navigation."
+    },
+    {
       "name": "viewOffset",
       "type": "number",
       "description": "Offset scroll to the section"
