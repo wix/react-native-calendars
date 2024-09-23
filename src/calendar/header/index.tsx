@@ -13,7 +13,8 @@ import {
   ViewStyle,
   AccessibilityActionEvent,
   ColorValue,
-  Insets
+  Insets,
+  AccessibilityRole
 } from 'react-native';
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import styleConstructor from './style';
@@ -68,6 +69,8 @@ export interface CalendarHeaderProps {
   current?: string;
   /** Left inset for the timeline calendar header, default is 72 */
   timelineLeftInset?: number;
+  /** Accessibility role of the header component */
+  accessibilityRole?: AccessibilityRole;
 }
 
 const accessibilityActions = [
@@ -280,7 +283,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       testID={testID}
       style={propsStyle}
       accessible
-      accessibilityRole={accessibilityRole}
+      accessibilityRole={accessibilityRole ?? "adjustable"}
       accessibilityActions={accessibilityActions}
       onAccessibilityAction={onAccessibilityAction}
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
