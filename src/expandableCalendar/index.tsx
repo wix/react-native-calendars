@@ -514,7 +514,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  const renderAnimatedHeader = () => {
+  const RenderAnimatedHeader = () => {
     const monthYear = new XDate(date)?.toString('MMMM yyyy');
 
     return (
@@ -531,7 +531,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  const renderKnob = () => {
+  const RenderKnob = () => {
     return (
       <View style={style.current.knobContainer} pointerEvents={'box-none'}>
         <TouchableOpacity style={style.current.knob} testID={`${testID}.knob`} onPress={toggleCalendarPosition} hitSlop={knobHitSlop} /* activeOpacity={isOpen ? undefined : 1} *//>
@@ -539,7 +539,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  const renderWeekCalendar = () => {
+  const RenderWeekCalendar = () => {
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
 
     return (
@@ -565,7 +565,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  const renderCalendarList = () => {
+  const RenderCalendarList = () => {
     return (
       <CalendarList
         testID={`${testID}.calendarList`}
@@ -607,10 +607,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         />
       ) : (
         <Animated.View testID={`${testID}.expandableContainer`} ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
-          {renderCalendarList()}
-          {renderWeekCalendar()}
-          {!hideKnob && renderKnob()}
-          {!horizontal && renderAnimatedHeader()}
+          <RenderCalendarList />
+          <RenderWeekCalendar />
+          {!hideKnob && <RenderKnob />}
+          {!horizontal && <RenderAnimatedHeader />}
         </Animated.View>
       )}
     </View>
