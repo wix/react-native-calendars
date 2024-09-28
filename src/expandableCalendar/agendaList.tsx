@@ -116,31 +116,37 @@ const AgendaList = (props: AgendaListProps) => {
     }
     return i;
   };
-
-  const getSectionTitle = useCallback((title: string) => {
-    if (!title) return;
-
-    let sectionTitle = title;
-
-    if (dayFormatter) {
-      sectionTitle = dayFormatter(title);
-    } else if (dayFormat) {
-      if (useMoment) {
-        const moment = getMoment();
-        sectionTitle = moment(title).format(dayFormat);
-      } else {
-        sectionTitle = new XDate(title).toString(dayFormat);
+  const getSectionTitle = useCallback((title) => {
+      if (!title)
+          return;
+      let sectionTitle = title;
+      if (dayFormatter) {
+          sectionTitle = dayFormatter(title);
       }
-    }
-
-    if (markToday) {
-      const string = getDefaultLocale().today || todayString;
-      const today = isToday(title);
-      sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
-    }
-
-    return sectionTitle;
+      else if (dayFormat) {
+          if (useMoment) {
+              const moment = getMoment();
+              sectionTitle = moment(title).format(dayFormat);
+          }
+          else {
+              sectionTitle = new XDate(title).toString(dayFormat);
+          }
+      }
+      return sectionTitle;
   }, []);
+  const getSectionSubTitle = (title) => {
+      if (!title)
+          return;
+      let sectionTitle = title;
+      const moment = getMoment();
+      sectionTitle = moment(title).format("dddd");
+      if (markToday) {
+          const string = getDefaultLocale().today || todayString;
+          const today = isToday(title);
+          sectionTitle = today ? `${string}` : sectionTitle;
+      }
+      return sectionTitle;
+  };
 
   const scrollToSection = useCallback(debounce((d) => {
     const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
@@ -217,7 +223,8 @@ const AgendaList = (props: AgendaListProps) => {
     }
 
     const headerTitle = getSectionTitle(title);
-    return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
+    const headerSubTitle = getSectionSubTitle(title);
+    return <AgendaSectionHeader title={headerTitle} subTitle={headerSubTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
   }, [headerTextStyle]);
 
   const _keyExtractor = useCallback((item: any, index: number) => {
