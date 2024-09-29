@@ -70,6 +70,12 @@
       "type": "boolean",
       "description": "Whether to close the calendar on day press",
       "default": "true"
+    },
+    {
+      "name": "weekHeight",
+      "type": "number",
+      "description": "Overrides the default height of weeks' row",
+      "default": "46"
     }
   ]
 }

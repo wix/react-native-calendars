@@ -69,6 +69,8 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeThreshold?: number;
   /** Whether to close the calendar on day press. Default = true */
   closeOnDayPress?: boolean;
+  /** Overrides the default height of weeks' row */
+  weekHeight?: number;
 }
 
 const headerStyleOverride = {
@@ -109,6 +111,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     openThreshold = PAN_GESTURE_THRESHOLD,
     closeThreshold = PAN_GESTURE_THRESHOLD,
     closeOnDayPress = true,
+    weekHeight = WEEK_HEIGHT,
 
     /** CalendarList props */
     horizontal = true,
@@ -175,7 +178,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
     }
-    return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
+    return CLOSED_HEIGHT + (weekHeight * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
   };
   const openHeight = useRef(getOpenHeight());
   const closedHeight = useMemo(() => CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob]);
