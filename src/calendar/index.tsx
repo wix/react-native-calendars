@@ -60,7 +60,7 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Style passed to the header */
   headerStyle?: StyleProp<ViewStyle>;
   /** Allow rendering a totally custom header */
-  customHeader?: any;
+  customHeader?: (props: CalendarHeaderProps) => React.ReactNode;
   /** Allow selection of dates before minDate or after maxDate */
   allowSelectionOutOfRange?: boolean;
 }
@@ -258,8 +258,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   const renderHeader = () => {
     const headerProps = extractHeaderProps(props);
     const ref = customHeader ? undefined : header;
-    const CustomHeader = customHeader;
-    const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
+    const HeaderComponent = customHeader ? customHeader : CalendarHeader;
 
     return (
       <HeaderComponent
@@ -320,6 +319,6 @@ Calendar.propTypes = {
   enableSwipeMonths: PropTypes.bool,
   disabledByDefault: PropTypes.bool,
   headerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  customHeader: PropTypes.any,
+  customHeader: PropTypes.func,
   allowSelectionOutOfRange: PropTypes.bool
 };
