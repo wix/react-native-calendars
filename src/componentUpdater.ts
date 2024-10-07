@@ -4,6 +4,7 @@ import {AgendaProps} from './agenda';
 import {ReservationListProps} from './agenda/reservation-list';
 
 import {MarkingProps} from './calendar/day/marking';
+import {CalendarHeaderProps} from './calendar/header';
 
 const get = require('lodash/get');
 const omit = require('lodash/omit');
@@ -117,7 +118,7 @@ export function extractHeaderProps(props: CalendarProps) {
     testID
   } = props;
 
-  const headerProps = {
+  const headerProps: CalendarHeaderProps = {
     month,
     addMonth,
     theme,
