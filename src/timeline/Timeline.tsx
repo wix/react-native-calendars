@@ -158,6 +158,10 @@ const Timeline = (props: TimelineProps) => {
   const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
 
+  useEffect(() => {
+    styles.current = styleConstructor(theme || props.styles, calendarHeight.current);
+  }, [theme, props.styles]);
+
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
 
   const width = useMemo(() => {

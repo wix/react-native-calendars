@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 
-import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
 
 import {sameWeek, onSameDateRange, getWeekDates} from '../../dateutils';
@@ -49,6 +49,11 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const changedItems = useRef(constants.isRTL);
   const list = useRef<FlatList>(null);
   const currentIndex = useRef(NUMBER_OF_PAGES);
+
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   useDidUpdate(() => {
     items.current = getDatesArray(date, firstDay, numberOfDays);

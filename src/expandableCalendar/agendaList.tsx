@@ -83,6 +83,10 @@ const AgendaList = (props: AgendaListProps) => {
     }
   }, []);
 
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
+
   useDidUpdate(() => {
     // NOTE: on first init data should set first section to the current date!!!
     if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {

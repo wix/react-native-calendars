@@ -1,5 +1,5 @@
 import XDate from 'xdate';
-import React, {useRef, useMemo, useCallback} from 'react';
+import React, {useRef, useMemo, useCallback, useEffect} from 'react';
 import {Text} from 'react-native';
 import {Theme} from '../types';
 import {toMarkingFormat} from '../interface';
@@ -80,6 +80,11 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
       }
     }
   }, [onPressArrowRight, scrollToMonth]);
+
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   if (!visible) {
     return (
