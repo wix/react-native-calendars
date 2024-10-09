@@ -1,5 +1,5 @@
 import filter from 'lodash/filter';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {View, ViewStyle, TextStyle, StyleProp} from 'react-native';
 
 import {Theme, MarkingTypes} from '../../../types';
@@ -121,6 +121,10 @@ const Marking = (props: MarkingProps) => {
 
     return <Dot {...dotProps} key={key} color={color} />;
   };
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   return renderMarkingByType();
 };

@@ -43,6 +43,10 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   }, [containerWidth, props.style]);
 
   useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
+
+  useEffect(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
       const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
       // @ts-expect-error

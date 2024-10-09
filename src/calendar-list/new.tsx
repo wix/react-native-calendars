@@ -57,6 +57,10 @@ const CalendarList = (props: CalendarListProps) => {
     scrollToMonth(currentMonth);
   }, [currentMonth]);
 
+  useEffect(() => {
+    style.current = styleConstructor(calendarProps?.theme);
+  }, [calendarProps?.theme]);
+
   const getMonthIndex = useCallback((month?: XDate) => {
     if (!month) {
       return -1;

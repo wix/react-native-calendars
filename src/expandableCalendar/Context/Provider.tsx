@@ -1,6 +1,6 @@
 import XDate from 'xdate';
 
-import React, {useRef, useState, useCallback, useMemo} from 'react';
+import React, {useRef, useState, useCallback, useMemo, useEffect} from 'react';
 import {View, ViewStyle, ViewProps, StyleProp} from 'react-native';
 
 import {sameMonth} from '../../dateutils';
@@ -64,6 +64,11 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const currDate = useRef(date); // for setDate only to keep prevDate up to date
   const [currentDate, setCurrentDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
+
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   const wrapperStyle = useMemo(() => {
     return [style.current.contextWrapper, propsStyle];

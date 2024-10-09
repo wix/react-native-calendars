@@ -59,6 +59,10 @@ const InfiniteAgendaList = ({
   const dataRef = useRef(data);
 
   useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
+
+  useEffect(() => {
     const items = sections.reduce((acc: any, cur: any) => {
       return [...acc, {title: cur.title, isTitle: true}, ...cur.data];
     }, []);

@@ -65,6 +65,10 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
     animateOpacity();
   }, [disabled]);
 
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
+
   const disable = (shouldDisable: boolean) => {
     if (shouldDisable !== disabled) {
       setDisabled(shouldDisable);

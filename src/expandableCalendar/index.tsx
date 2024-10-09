@@ -214,6 +214,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const shouldHideArrows = !horizontal ? true : hideArrows || false;
 
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
+
   const updateNativeStyles = () => {
     wrapper?.current?.setNativeProps(_wrapperStyles.current);
 

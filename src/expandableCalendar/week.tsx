@@ -1,5 +1,5 @@
 import XDate from 'xdate';
-import React, {useRef, useMemo, useCallback} from 'react';
+import React, {useRef, useMemo, useCallback, useEffect} from 'react';
 import {View} from 'react-native';
 import isEqual from 'lodash/isEqual';
 
@@ -38,6 +38,10 @@ const Week = React.memo((props: WeekProps) => {
     testID,
   } = props;
   const style = useRef(styleConstructor(theme));
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   const disableDaySelection = useMemo(() => {
     return !!numberOfDays && numberOfDays > 1;

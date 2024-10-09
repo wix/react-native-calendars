@@ -1,7 +1,7 @@
 import includes from 'lodash/includes';
 import XDate from 'xdate';
 
-import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle, useRef, useEffect} from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -273,6 +273,10 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       );
     }
   };
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   return (
     <View

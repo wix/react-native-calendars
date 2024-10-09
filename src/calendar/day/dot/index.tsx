@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {View} from 'react-native';
 import styleConstructor from './style';
 import {Theme} from '../../../types';
@@ -40,6 +40,10 @@ const Dot = ({theme, marked, disabled, inactive, color, today, selected}: DotPro
       dotStyle.push({backgroundColor: color});
     }
   }
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   return <View style={dotStyle} />;
 };

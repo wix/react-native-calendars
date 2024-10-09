@@ -107,6 +107,10 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     }
   }, [initialDate]);
 
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
+
   useDidUpdate(() => {
     const _currentMonth = currentMonth.clone();
     onMonthChange?.(xdateToData(_currentMonth));

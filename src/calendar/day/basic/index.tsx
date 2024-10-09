@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useRef} from 'react';
+import React, {Fragment, useCallback, useEffect, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
 import {xdateToData} from '../../../interface';
@@ -194,6 +194,10 @@ const BasicDay = (props: BasicDayProps) => {
       </View>
     );
   };
+
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   return isMultiPeriod ? renderPeriodsContainer() : renderContainer();
 };
