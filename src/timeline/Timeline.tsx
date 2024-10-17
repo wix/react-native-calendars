@@ -49,6 +49,9 @@ export interface TimelineProps {
    * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
    */
   onBackgroundLongPress?: TimelineHoursProps['onBackgroundLongPress'];
+
+  onPress?: TimelineHoursProps['onPress'];
+
   /**
    * Pass to handle creation of a new event by long press out on the timeline background
    * NOTE: If passed, the date prop will be included in the returned time string (e.g. 2017-09-06 01:30:00)
@@ -143,6 +146,7 @@ const Timeline = (props: TimelineProps) => {
     numberOfDays = 1,
     timelineLeftInset = 0,
     testID,
+    onPress,
   } = props;
 
   const pageDates = useMemo(() => {
@@ -267,6 +271,7 @@ const Timeline = (props: TimelineProps) => {
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
         testID={`${testID}.hours`}
+        onPress={onPress}
       />
       {times(numberOfDays, renderTimelineDay)}
     </ScrollView>

@@ -21,6 +21,7 @@ export interface TimelineHoursProps {
   format24h?: boolean;
   onBackgroundLongPress?: (timeString: string, time: NewEventTime) => void;
   onBackgroundLongPressOut?: (timeString: string, time: NewEventTime) => void;
+  onPress?: (timeString: string, time: NewEventTime) => void;
   unavailableHours?: UnavailableHours[];
   unavailableHoursColor?: string;
   styles: {[key: string]: ViewStyle | TextStyle};
@@ -44,6 +45,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
     styles,
     onBackgroundLongPress,
     onBackgroundLongPressOut,
+    onPress,
     width,
     numberOfDays = 1,
     timelineLeftInset = 0,
@@ -74,6 +76,21 @@ const TimelineHours = (props: TimelineHoursProps) => {
     });
   }, [start, end, format24h]);
 
+  
+  const handleOnPress = useCallback(
+    event => {
+      const yPosition = event.nativeEvent.locationY;
+      const xPosition = event.nativeEvent.locationX;
+      const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
+      const dateByPosition = calcDateByPosition(xPosition, timelineLeftInset, numberOfDays, date);
+      lastLongPressEventTime.current = {hour, minutes, date: dateByPosition};
+
+      const timeString = buildTimeString(hour, minutes, dateByPosition);
+      onPress?.(timeString, lastLongPressEventTime.current);
+    },
+    [onPress, date]
+  );
+
   const handleBackgroundPress = useCallback(
     event => {
       const yPosition = event.nativeEvent.locationY;
@@ -99,7 +116,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
 
   return (
     <>
-      <TouchableWithoutFeedback onLongPress={handleBackgroundPress} onPressOut={handlePressOut}>
+      <TouchableWithoutFeedback onLongPress={handleBackgroundPress} onPressOut={handlePressOut} onPress={handleOnPress}>
         <View style={StyleSheet.absoluteFillObject} />
       </TouchableWithoutFeedback>
       {unavailableHoursBlocks.map((block, index) => (
