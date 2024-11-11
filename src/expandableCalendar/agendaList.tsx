@@ -143,22 +143,27 @@ const AgendaList = (props: AgendaListProps) => {
   }, []);
 
   const scrollToSection = useCallback(debounce((d) => {
-    const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
-    if (isUndefined(sectionIndex)) {
-      return;
-    }
-    if (list?.current && sectionIndex !== undefined) {
-      sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
-      _topSection.current = sections[sectionIndex]?.title;
+    try {
+      const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
+      if (isUndefined(sectionIndex)) {
+        return;
+      }
+      if (list?.current && sectionIndex !== undefined) {
+        sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
+        _topSection.current = sections[sectionIndex]?.title;
 
-      list?.current.scrollToLocation({
-        animated: true,
-        sectionIndex: sectionIndex,
-        itemIndex: 1,
-        viewPosition: 0, // position at the top
-        viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
-      });
+        list?.current.scrollToLocation({
+          animated: true,
+          sectionIndex: sectionIndex,
+          itemIndex: 1,
+          viewPosition: 0, // position at the top
+          viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
+        });
+      }
+    } catch (err) {
+      return
     }
+    
   }, 1000, {leading: false, trailing: true}), [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
