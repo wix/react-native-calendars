@@ -213,7 +213,7 @@ const AgendaList = (props: AgendaListProps) => {
     const title = info?.section?.title;
 
     if (renderSectionHeader) {
-      return renderSectionHeader(title);
+      return renderSectionHeader(title, info);
     }
 
     const headerTitle = getSectionTitle(title);
