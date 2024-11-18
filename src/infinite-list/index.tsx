@@ -5,6 +5,7 @@ import noop from 'lodash/noop';
 import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
 import {ScrollViewProps} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
+import StickyContainer from 'recyclerlistview/sticky';
 
 import constants from '../commons/constants';
 import {useCombinedRefs} from '../hooks';
@@ -55,6 +56,8 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     onScroll,
     onEndReached,
     renderFooter,
+    stickySectionHeadersEnabled,
+    stickyHeaderIndices
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -169,6 +172,32 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   const style = useMemo(() => {
     return {height: pageHeight};
   }, [pageHeight]);
+
+  if (stickySectionHeadersEnabled)
+  {
+    return (
+      <StickyContainer stickyHeaderIndices={stickyHeaderIndices}>
+          <RecyclerListView 
+          ref={(r: any) => {listRef.current = r}} 
+          isHorizontal={isHorizontal}
+          disableRecycling={shouldUseAndroidRTLFix}
+          rowRenderer={renderItem}
+          dataProvider={dataProvider}
+          layoutProvider={layoutProvider ?? _layoutProvider.current}
+          extendedState={extendedState}
+          initialRenderIndex={initialOffset ? undefined : initialPageIndex}
+          initialOffset={initialOffset}
+          renderAheadOffset={5 * pageWidth}
+          onScroll={_onScroll}
+          style={style}
+          scrollViewProps={scrollViewPropsMemo}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={onEndReachedThreshold}
+          onVisibleIndicesChanged={onVisibleIndicesChanged}
+          renderFooter={renderFooter} />
+      </StickyContainer>
+  );
+  }
 
   return (
     <RecyclerListView
