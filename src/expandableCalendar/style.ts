@@ -47,6 +47,7 @@ export default function styleConstructor(theme: Theme = {}) {
       width: 40,
       height: 4,
       borderRadius: 3,
+      // @ts-ignore
       backgroundColor: appStyle.expandableKnobColor
     },
     sectionText: {

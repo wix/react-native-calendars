@@ -27,7 +27,7 @@ export const useCombinedRefs = (...refs: React.Ref<any>[]) => {
       if (typeof ref === 'function') {
         ref(targetRef.current);
       } else {
-        // @ts-expect-error
+        // @ts-ignore
         ref.current = targetRef.current;
       }
     });

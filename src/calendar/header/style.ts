@@ -68,6 +68,7 @@ export default function (theme: Theme = {}) {
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
     },
+    // @ts-ignore
     ...(theme['stylesheet.calendar.header'] || {})
   });
 }

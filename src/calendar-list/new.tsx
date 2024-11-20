@@ -69,7 +69,7 @@ const CalendarList = (props: CalendarListProps) => {
       const index = getMonthIndex(new XDate(month));
       if (index !== -1) {
         const shouldAnimate = constants.isAndroid && !horizontal ? false : true;
-        // @ts-expect-error
+        // @ts-ignore
         list.current?.scrollToOffset?.(index * constants.screenWidth, 0, shouldAnimate);
       }
     }

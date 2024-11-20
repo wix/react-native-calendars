@@ -18,9 +18,10 @@ import CalendarHeader from '../calendar/header/index';
 import isEqual from 'lodash/isEqual';
 
 const CALENDAR_WIDTH = constants.screenWidth;
-const CALENDAR_HEIGHT = 360;
+const CALENDAR_HEIGHT = 405;
 const PAST_SCROLL_RANGE = 50;
 const FUTURE_SCROLL_RANGE = 50;
+const CELL_HEIGHT = 55;
 
 export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any>, 'data' | 'renderItem'> {
   /** Max amount of months allowed to scroll to the past. Default = 50 */
@@ -173,14 +174,14 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       for (let i = 0; i < days.length; i++) {
         week = Math.floor(i / 7);
         if (sameDate(days[i], scrollTo)) {
-          scrollAmount += 46 * week;
+          scrollAmount += CELL_HEIGHT * week;
           break;
         }
       }
     }
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
+      // @ts-ignore
       list?.current?.scrollToOffset({offset: scrollAmount, animated});
     }
   };
@@ -191,7 +192,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const scrollAmount = calendarSize * (shouldUseAndroidRTLFix ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
+      // @ts-ignore
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
   }, [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]);
@@ -244,7 +245,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         markedDates={getMarkedDatesForItem(item)}
         item={item}
         style={calendarStyle}
-        // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
+        // @ts-ignore - type mismatch - ScrollView's 'horizontal' is nullable
         horizontal={horizontal}
         calendarWidth={calendarWidth}
         calendarHeight={calendarHeight}
@@ -301,7 +302,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList
-        // @ts-expect-error
+        // @ts-ignore
         ref={list}
         windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}

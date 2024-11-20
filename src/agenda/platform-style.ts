@@ -1,5 +1,4 @@
-import {ViewStyle} from 'react-native';
-import {Theme} from '../types';
+import { Theme } from '../types';
 
 export default function platformStyles(appStyle: Theme) {
   return {
@@ -11,17 +10,17 @@ export default function platformStyles(appStyle: Theme) {
       backgroundColor: appStyle.agendaKnobColor
     },
     weekdays: {
-      position: 'absolute',
+      position: "absolute",
       left: 0,
       right: 0,
-      top: 0,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingLeft: 24,
-      paddingRight: 24,
-      paddingTop: 15,
-      paddingBottom: 7,
+      top: -18,
+      flexDirection: "row",
+      justifyContent: "space-around",
+      marginLeft: 0,
+      marginRight: 0,
+      paddingTop: 26, // controls the space on top of the month/year in the agenda view
+      paddingBottom: 8, // controls the space below of the month/year in the agenda view
       backgroundColor: appStyle.calendarBackground
     }
-  } as {[key: string]: ViewStyle};
+  };
 }

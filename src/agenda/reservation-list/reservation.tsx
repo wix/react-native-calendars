@@ -7,6 +7,7 @@ import {View, Text} from 'react-native';
 
 import {isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
+// @ts-ignore
 import {RESERVATION_DATE} from '../../testIDs';
 import styleConstructor from './style';
 import {Theme, AgendaEntry} from '../../types';
@@ -82,6 +83,8 @@ class Reservation extends Component<ReservationProps> {
 
     const today = date && isToday(date) ? this.style.today : undefined;
     const dayNames = getDefaultLocale().dayNamesShort;
+    const dayNamesShort = XDate.locales[XDate.defaultLocale].dayNamesShort
+
 
     if (date) {
       return (
@@ -90,7 +93,7 @@ class Reservation extends Component<ReservationProps> {
             {date.getDate()}
           </Text>
           <Text allowFontScaling={false} style={[this.style.dayText, today]}>
-            {dayNames ? dayNames[date.getDay()] : undefined}
+            {dayNamesShort ? dayNamesShort[date.getDay()] : dayNames[date.getDay()]}
           </Text>
         </View>
       );
