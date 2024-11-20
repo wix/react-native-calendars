@@ -2,6 +2,11 @@
 
 # React Native Calendars 🗓️ 📆
 
+## Distribution of Phorest fork
+
+Run the command `yarn dist` to create a distribution. Make sure the img folders are copied over from the src to the dist.
+This has to happen manually as no automation is in place given we do this every year or less.
+
 ## A declarative cross-platform React Native calendar component for iOS and Android.
 
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
