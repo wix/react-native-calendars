@@ -100,6 +100,10 @@ export interface Theme {
 }
 
 export type AgendaEntry = {
+  // height: number
+  // name: string
+  // day: string
+
   date: string
   availabilities: object[]
 }
