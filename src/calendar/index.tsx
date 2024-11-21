@@ -5,7 +5,6 @@ import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
 import {View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-
 import constants from '../commons/constants';
 import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
@@ -21,12 +20,6 @@ import BasicDay from './day/basic';
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
-  /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday */
-  firstDay?: number;
-  /** Display loading indicator */
-  displayLoadingIndicator?: boolean;
-  /** Show week numbers */
-  showWeekNumbers?: boolean;
   /** Specify style for calendar container element */
   style?: StyleProp<ViewStyle>;
   /** Initially visible month */
@@ -37,6 +30,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   minDate?: string;
   /** Maximum date that can be selected, dates after maxDate will be grayed out */
   maxDate?: string;
+  /** Allow selection of dates before minDate or after maxDate */
+  allowSelectionOutOfRange?: boolean;
   /** Collection of dates that have to be marked */
   markedDates?: MarkedDates;
   /** Do not show days of other months in month page */
@@ -51,18 +46,20 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   onMonthChange?: (date: DateData) => void;
   /** Handler which gets executed when visible month changes in calendar */
   onVisibleMonthsChange?: (months: DateData[]) => void;
-  /** Disables changing month when click on days of other months (when hideExtraDays is false) */
+  /** Disables changing month when click on days of other months (when hideExtraDays = false) */
   disableMonthChange?: boolean;
   /** Enable the option to swipe between months */
   enableSwipeMonths?: boolean;
-  /** Disable days by default */
-  disabledByDefault?: boolean;
   /** Style passed to the header */
   headerStyle?: StyleProp<ViewStyle>;
   /** Allow rendering a totally custom header */
   customHeader?: any;
-  /** Allow selection of dates before minDate or after maxDate */
-  allowSelectionOutOfRange?: boolean;
+  /** Disable days by default */
+  disabledByDefault?: boolean;
+  /** Disable dates by days of the week (Sunday=0) */
+  disabledByWeekDays?: number[]
+  /** Test ID */
+  testID?: string;
 }
 
 /**
@@ -301,9 +298,6 @@ Calendar.propTypes = {
   ...CalendarHeader.propTypes,
   ...Day.propTypes,
   theme: PropTypes.object,
-  firstDay: PropTypes.number,
-  displayLoadingIndicator: PropTypes.bool,
-  showWeekNumbers: PropTypes.bool,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
   current: PropTypes.string,
   initialDate: PropTypes.string,
