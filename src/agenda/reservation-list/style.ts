@@ -13,7 +13,7 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     dayNum: {
       fontSize: 28,
-      fontWeight: '200',
+      fontWeight: appStyle.textDayFontWeight,
       fontFamily: appStyle.textDayFontFamily,
       color: appStyle.agendaDayNumColor
     },
