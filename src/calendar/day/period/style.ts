@@ -9,8 +9,7 @@ export default function styleConstructor(theme: Theme = {}) {
   return StyleSheet.create({
     wrapper: {
       alignSelf: 'stretch',
-      alignItems: 'center',
-      marginLeft: -1
+      alignItems: 'center'
     },
     base: {
       width: 38,
@@ -19,7 +18,8 @@ export default function styleConstructor(theme: Theme = {}) {
       justifyContent: 'center'
     },
     today: {
-      backgroundColor: appStyle.todayBackgroundColor
+      backgroundColor: appStyle.todayBackgroundColor,
+      borderRadius: 17
     },
 
     fillers: {

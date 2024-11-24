@@ -112,7 +112,8 @@ const PeriodDay = (props: PeriodDayProps) => {
     if (marking) {
       containerStyle.push({
         borderRadius: 17,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        paddingTop: 5
       });
       
       const start = markingStyle.startingDay;
