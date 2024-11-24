@@ -1,10 +1,9 @@
 import React, {Fragment, useCallback, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
-
 import {xdateToData} from '../../../interface';
 import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
-import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
+import styleConstructor from './style';
 
 
 export interface BasicDayProps extends ViewProps {
@@ -26,10 +25,10 @@ export interface BasicDayProps extends ViewProps {
   disableAllTouchEventsForDisabledDays?: boolean;
   /** Disable all touch events for inactive days (can be override with disableTouchEvent in markedDates) */
   disableAllTouchEventsForInactiveDays?: boolean;
-  /** Test ID */
-  testID?: string;
   /** Accessibility label */
   accessibilityLabel?: string;
+  /** Test ID */
+  testID?: string;
 }
 
 const BasicDay = (props: BasicDayProps) => {
@@ -47,16 +46,17 @@ const BasicDay = (props: BasicDayProps) => {
     children,
     testID
   } = props;
+  const dateData = date ? xdateToData(date) : undefined;
   const style = useRef(styleConstructor(theme));
+
   const _marking = marking || {};
   const isSelected = _marking.selected || state === 'selected';
   const isDisabled = typeof _marking.disabled !== 'undefined' ? _marking.disabled : state === 'disabled';
-  const isInactive = _marking?.inactive;
-  const isToday = state === 'today';
+  const isInactive = typeof marking?.inactive !== 'undefined' ? marking.inactive : state === 'inactive';
+  const isToday = typeof marking?.today !== 'undefined' ? marking.today : state === 'today';
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
-  const dateData = date ? xdateToData(date) : undefined;
 
   const shouldDisableTouchEvent = () => {
     const {disableTouchEvent} = _marking;
@@ -113,7 +113,7 @@ const BasicDay = (props: BasicDayProps) => {
       styles.push(style.current.inactiveText);
     }
 
-    //Custom marking type
+    // Custom marking type
     if (isCustom && customStyles && customStyles.text) {
       styles.push(customStyles.text);
     }
@@ -172,8 +172,8 @@ const BasicDay = (props: BasicDayProps) => {
       <TouchableOpacity
         testID={testID}
         style={getContainerStyle()}
-        disabled={shouldDisableTouchEvent()}
         activeOpacity={activeOpacity}
+        disabled={shouldDisableTouchEvent()}
         onPress={!shouldDisableTouchEvent() ? _onPress : undefined}
         onLongPress={!shouldDisableTouchEvent() ? _onLongPress : undefined}
         accessible

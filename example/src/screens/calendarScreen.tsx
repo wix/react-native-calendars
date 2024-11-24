@@ -3,7 +3,7 @@ import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native
 import {Calendar, CalendarUtils} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
-const INITIAL_DATE = '2022-07-06';
+const INITIAL_DATE = '2024-11-06';
 
 const CalendarScreen = () => {
   const [selected, setSelected] = useState(INITIAL_DATE);
@@ -135,11 +135,10 @@ const CalendarScreen = () => {
           current={INITIAL_DATE}
           minDate={getDate(-5)}
           displayLoadingIndicator
-          markingType={'period'}
           theme={{
             calendarBackground: '#333248',
             textSectionTitleColor: 'white',
-            textSectionTitleDisabledColor: 'gray',
+            textSectionTitleDisabledColor: 'pink',
             dayTextColor: 'red',
             todayTextColor: 'white',
             selectedDayTextColor: 'white',
@@ -161,6 +160,7 @@ const CalendarScreen = () => {
               }
             }
           }}
+          markingType={'period'}
           markedDates={{
             [getDate(-2)]: {disabled: true},
             [getDate(1)]: {textColor: 'pink'},
@@ -172,9 +172,11 @@ const CalendarScreen = () => {
             [getDate(26)]: {color: 'gray'},
             [getDate(27)]: {endingDay: true, color: 'gray'}
           }}
-          disabledDaysIndexes={[3]}
-          disabledByWeekDays={[3]}
+          firstDay={1}
+          disabledDaysIndexes={[1]}
+          disabledByWeekDays={[1]}
           disableAllTouchEventsForDisabledDays
+          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
         />
       </Fragment>
     );
@@ -200,7 +202,7 @@ const CalendarScreen = () => {
               }
             },
             [getDate(11)]: {color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white'},
-            [getDate(12)]: {color: '#70d7c7', inactive: true},
+            [getDate(12)]: {color: '#70d7c7', inactive: true, marked: true},
             [getDate(13)]: {
               endingDay: true,
               color: '#50cebb',
@@ -215,7 +217,8 @@ const CalendarScreen = () => {
           }}
           theme={{
             textInactiveColor: '#a68a9f',
-            textSectionTitleDisabledColor: 'grey',
+            inactiveDotColor: '#a68a9f'
+,           textSectionTitleDisabledColor: 'grey',
             textSectionTitleColor: '#319e8e',
             arrowColor: '#319e8e'
           }}
