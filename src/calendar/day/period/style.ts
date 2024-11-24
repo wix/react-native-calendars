@@ -8,8 +8,8 @@ export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
   return StyleSheet.create({
     wrapper: {
-      alignItems: 'center',
       alignSelf: 'stretch',
+      alignItems: 'center',
       marginLeft: -1
     },
     base: {
@@ -17,6 +17,9 @@ export default function styleConstructor(theme: Theme = {}) {
       height: FILLER_HEIGHT,
       alignItems: 'center',
       justifyContent: 'center'
+    },
+    today: {
+      backgroundColor: appStyle.todayBackgroundColor
     },
 
     fillers: {
@@ -43,13 +46,6 @@ export default function styleConstructor(theme: Theme = {}) {
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
       backgroundColor: 'rgba(255, 255, 255, 0)'
-    },
-    dotContainer: {
-      position: 'absolute',
-      bottom: 3
-    },
-    today: {
-      backgroundColor: appStyle.todayBackgroundColor
     },
     todayText: {
       fontWeight: '500',
