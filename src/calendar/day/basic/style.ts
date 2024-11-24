@@ -68,6 +68,6 @@ export default function styleConstructor(theme: Theme = {}) {
     todayDot: {
       backgroundColor: appStyle.todayDotColor || appStyle.dotColor
     },
-    ...(theme['stylesheet.day.basic'] || {})
+    ...theme?.stylesheet?.day?.basic
   });
 }
