@@ -20,9 +20,13 @@ import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
 
 export interface CalendarHeaderProps {
+  /** The current month presented in the calendar */
   month?: XDate;
+  /** A callback for when a month is changed from the headers arrows */
   addMonth?: (num: number) => void;
-
+  
+  /** The current date presented */
+  current?: string;
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
   /** If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday */
@@ -37,13 +41,13 @@ export interface CalendarHeaderProps {
   hideDayNames?: boolean;
   /** Hide month navigation arrows */
   hideArrows?: boolean;
-  /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
+  /** Replace default arrows with custom ones (direction = 'left' | 'right') */
   renderArrow?: (direction: Direction) => ReactNode;
   /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
   onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
-  /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20 */
+  /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected. Default = 20 */
   arrowsHitSlop?: Insets | number;
   /** Disable left arrow */
   disableArrowLeft?: boolean;
@@ -55,18 +59,19 @@ export interface CalendarHeaderProps {
   renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
-
+  /** Test ID */
+  testID?: string;
+  /** Specify style for header container element */
+  style?: StyleProp<ViewStyle>;
   /** Provide aria-level for calendar heading for proper accessibility when used with web (react-native-web) */
   webAriaLevel?: number;
-  testID?: string;
-  style?: StyleProp<ViewStyle>;
+  /** whether the accessibility elements contained within this accessibility element are hidden (iOS only) */
   accessibilityElementsHidden?: boolean;
+  /** controlling if a view fires accessibility events and if it is reported to accessibility services (Android only) */
   importantForAccessibility?: 'auto' | 'yes' | 'no' | 'no-hide-descendants';
-  /** The number of days to present in the header */
+  /** The number of days to present in the header (for example for Timeline display) */
   numberOfDays?: number;
-  /** The current date presented */
-  current?: string;
-  /** Left inset for the timeline calendar header, default is 72 */
+  /** Left inset for the timeline calendar header. Default = 72 */
   timelineLeftInset?: number;
 }
 
