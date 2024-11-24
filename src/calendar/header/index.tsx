@@ -41,7 +41,7 @@ export interface CalendarHeaderProps {
   hideDayNames?: boolean;
   /** Hide month navigation arrows */
   hideArrows?: boolean;
-  /** Replace default arrows with custom ones (direction = 'left' || 'right') */
+  /** Replace default arrows with custom ones (direction = 'left' | 'right') */
   renderArrow?: (direction: Direction) => ReactNode;
   /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
   onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
