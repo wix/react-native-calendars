@@ -1,9 +1,9 @@
 import isEqual from 'lodash/isEqual';
 import React from 'react';
-import {DefaultSectionT, SectionListProps, Text, TextProps, ViewStyle} from 'react-native';
+import {DefaultSectionT, SectionListData, SectionListProps, Text, TextProps, ViewStyle} from 'react-native';
 import {Theme} from '../types';
 
-export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
+export interface AgendaListProps extends Omit<SectionListProps<any, DefaultSectionT>, 'renderSectionHeader'> {
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
   /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
@@ -23,6 +23,8 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   viewOffset?: number;
   /** enable scrolling the agenda list to the next date with content when pressing a day without content */
   scrollToNextEvent?: boolean;
+  /** Rendered at the top of each section. Sticky headers are not yet supported. **/
+  renderSectionHeader?: (title: string, info: { section: SectionListData<any, DefaultSectionT> }) => React.ReactElement | null;
   /**
    * @experimental
    * If defined, uses InfiniteList instead of SectionList. This feature is experimental and subject to change.
