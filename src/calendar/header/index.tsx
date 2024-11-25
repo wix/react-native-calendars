@@ -254,6 +254,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     if (displayLoadingIndicator) {
       return (
         <ActivityIndicator
+          style={style.current.loadingIndicator}
           color={theme?.indicatorColor as ColorValue}
           testID={`${testID}.loader`}
         />
