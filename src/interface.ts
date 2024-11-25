@@ -52,3 +52,15 @@ export function toMarkingFormat(d: XDate) {
   }
   return 'Invalid Date';
 }
+
+export function getWeekDayNumber(date: XDate | string) {
+  let parsedDate;
+  if (typeof date === 'string') {
+      parsedDate = new XDate(date);
+  } else if (date instanceof XDate) {
+      parsedDate = date;
+  } else {
+      return 'Invalid Date';
+  }
+  return parsedDate.getDay();
+}

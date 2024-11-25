@@ -41,6 +41,20 @@ export default function styleConstructor(theme: Theme = {}) {
     selectedText: {
       color: appStyle.selectedDayTextColor
     },
+    sunday: {},
+    sundayText: {},
+    monday: {},
+    mondayText: {},
+    tuesday: {},
+    tuesdayText: {},
+    wednesday: {},
+    wednesdayText: {},
+    thursday: {},
+    thursdayText: {},
+    friday: {},
+    fridayText: {},
+    saturday: {},
+    saturdayText: {},
     disabledText: {
       color: appStyle.textDisabledColor
     },
