@@ -13,7 +13,8 @@ export default function styleConstructor(theme: Theme = {}) {
     base: {
       width: 32,
       height: 32,
-      alignItems: 'center'
+      alignItems: 'center',
+      ...appStyle.dayBaseStyle
     },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
