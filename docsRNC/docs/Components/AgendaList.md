@@ -46,6 +46,11 @@ Whether to block the date change in calendar (and calendar context provider) whe
 Whether to enable scrolling the agenda list to the next date with content when pressing a day without content  
 <span style={{color: 'grey'}}>boolean</span>
 
+### scrollToSectionDebounce
+
+Delay applied when scrolling to the next date in the agenda after selecting a day, ensuring smooth navigation
+<span style={{color: 'grey'}}>number</span>
+
 ### viewOffset
 
 Offset scroll to the section  

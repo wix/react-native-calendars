@@ -64,6 +64,7 @@ const AgendaList = (props: AgendaListProps) => {
     useMoment,
     markToday = true,
     onViewableItemsChanged,
+    scrollToSectionDebounce = 1000
   } = props;
 
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
@@ -159,7 +160,7 @@ const AgendaList = (props: AgendaListProps) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  }, 1000, {leading: false, trailing: true}), [viewOffset, sections]);
+  }, scrollToSectionDebounce, {leading: false, trailing: true}), [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
@@ -256,5 +257,6 @@ AgendaList.propTypes = {
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  avoidDateUpdates: PropTypes.bool
+  avoidDateUpdates: PropTypes.bool,
+  scrollToSectionDebounce: PropTypes.number
 };
