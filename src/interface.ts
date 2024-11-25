@@ -15,7 +15,8 @@ export function xdateToData(date: XDate | string) {
     month: d.getMonth() + 1,
     day: d.getDate(),
     timestamp: new XDate(dateString, true).getTime(),
-    dateString: dateString
+    dateString: dateString,
+    weekDay: d.getDay(),
   };
 }
 
@@ -51,16 +52,4 @@ export function toMarkingFormat(d: XDate) {
     return year + '-' + doubleDigitMonth + '-' + doubleDigitDay;
   }
   return 'Invalid Date';
-}
-
-export function getWeekDayNumber(date: XDate | string) {
-  let parsedDate;
-  if (typeof date === 'string') {
-      parsedDate = new XDate(date);
-  } else if (date instanceof XDate) {
-      parsedDate = date;
-  } else {
-      return 'Invalid Date';
-  }
-  return parsedDate.getDay();
 }

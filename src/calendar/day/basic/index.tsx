@@ -1,7 +1,7 @@
 import React, {Fragment, useCallback, useRef} from 'react';
 import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
 
-import {getWeekDayNumber, xdateToData} from '../../../interface';
+import {xdateToData} from '../../../interface';
 import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
 import styleConstructor from './style';
 import Marking, {MarkingProps} from '../marking';
@@ -58,7 +58,6 @@ const BasicDay = (props: BasicDayProps) => {
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
   const dateData = date ? xdateToData(date) : undefined;
-  const weekDayNumber = date ? getWeekDayNumber(date) : undefined;
   const weekDayStyles = {
     0: 'sunday',
     1: 'monday',
@@ -93,8 +92,8 @@ const BasicDay = (props: BasicDayProps) => {
       }
     } else if (isToday) {
       styles.push(style.current.today);
-    } else if (typeof weekDayNumber === 'number' && weekDayStyles[weekDayNumber]) {
-      styles.push(style.current[weekDayStyles[weekDayNumber]]);
+    } else if (typeof dateData?.weekDay === 'number' && weekDayStyles[dateData?.weekDay]) {
+      styles.push(style.current[weekDayStyles[dateData?.weekDay]]);
     }
 
     //Custom marking type
@@ -123,8 +122,8 @@ const BasicDay = (props: BasicDayProps) => {
       styles.push(style.current.todayText);
     } else if (isInactive) {
       styles.push(style.current.inactiveText);
-    } else if (typeof weekDayNumber === 'number' && weekDayStyles[weekDayNumber]) {
-      const weekDayNumberTextStyle = `${weekDayStyles[weekDayNumber]}Text`;
+    } else if (typeof dateData?.weekDay === 'number' && weekDayStyles[dateData?.weekDay]) {
+      const weekDayNumberTextStyle = `${weekDayStyles[dateData?.weekDay]}Text`;
       if (style.current[weekDayNumberTextStyle]) {
         styles.push(style.current[weekDayNumberTextStyle]);
       }
