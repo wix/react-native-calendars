@@ -229,7 +229,7 @@ const PeriodDay = (props: PeriodDayProps) => {
       accessibilityRole={isDisabled ? undefined : 'button'}
       accessibilityLabel={accessibilityLabel}
     >
-      <View style={style.current.wrapper}>
+      <View style={style.current.container}>
         {renderFillers()}
         <View style={containerStyle}>
           {renderText()}

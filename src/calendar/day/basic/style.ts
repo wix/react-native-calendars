@@ -15,22 +15,22 @@ export default function styleConstructor(theme: Theme = {}) {
       height: 32,
       alignItems: 'center'
     },
-    selected: {
-      backgroundColor: appStyle.selectedDayBackgroundColor,
-      borderRadius: 16
-    },
     today: {
       backgroundColor: appStyle.todayBackgroundColor,
       borderRadius: 16
     },
+    selected: {
+      backgroundColor: appStyle.selectedDayBackgroundColor,
+      borderRadius: 16
+    },
     
     text: {
-      marginTop: constants.isAndroid ? 4 : 6,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,
       color: appStyle.dayTextColor,
-      backgroundColor: 'rgba(255, 255, 255, 0)',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      marginTop: constants.isAndroid ? 4 : 6,
       ...appStyle.textDayStyle
     },
     todayText: {
@@ -45,6 +45,7 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
+    
     ...(theme['stylesheet.day.basic'] || {})
   });
 }
