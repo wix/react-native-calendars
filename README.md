@@ -188,23 +188,23 @@ export default App;
 ### Adding a global theme to the calendar:
 
 ```javascript
-    <Calendar
-      style={{
-        borderWidth: 1,
-        borderColor: 'gray',
-        height: 350,
-      }}
-      theme={{
-        backgroundColor: '#ffffff',
-        calendarBackground: '#ffffff',
-        textSectionTitleColor: '#b6c1cd',
-        selectedDayBackgroundColor: '#00adf5',
-        selectedDayTextColor: '#ffffff',
-        todayTextColor: '#00adf5',
-        dayTextColor: '#2d4150',
-        textDisabledColor: '#dd99ee'
-      }}
-    </Calendar>
+<Calendar
+  style={{
+    borderWidth: 1,
+    borderColor: 'gray',
+    height: 350,
+  }}
+  theme={{
+    backgroundColor: '#ffffff',
+    calendarBackground: '#ffffff',
+    textSectionTitleColor: '#b6c1cd',
+    selectedDayBackgroundColor: '#00adf5',
+    selectedDayTextColor: '#ffffff',
+    todayTextColor: '#00adf5',
+    dayTextColor: '#2d4150',
+    textDisabledColor: '#dd99ee'
+  }}
+/>
 ```
 
 ## Customized Calendar Examples
