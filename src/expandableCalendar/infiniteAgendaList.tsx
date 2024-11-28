@@ -46,6 +46,8 @@ const InfiniteAgendaList = ({
   renderItem,
   onEndReached,
   onEndReachedThreshold,
+  stickySectionHeadersEnabled,
+  stickyHeaderIndices,
   ...others
 }: Omit<AgendaListProps, 'viewOffset'>) => {
   const {date, updateSource, setDate} = useContext(Context);
@@ -256,6 +258,8 @@ const InfiniteAgendaList = ({
       onEndReachedThreshold={onEndReachedThreshold as number | undefined}
       disableScrollOnDataChange
       renderFooter={infiniteListProps?.renderFooter}
+      stickySectionHeadersEnabled={stickySectionHeadersEnabled} 
+      stickyHeaderIndices={stickyHeaderIndices}
     />
   );
 };
