@@ -10,8 +10,8 @@ import {
   Animated,
   ViewStyle,
   LayoutChangeEvent,
-  NativeSyntheticEvent,
-  NativeScrollEvent
+  NativeScrollEvent,
+  TouchableOpacity
 } from 'react-native';
 
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
@@ -90,6 +90,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   private style: {[key: string]: ViewStyle};
   private viewHeight: number;
   private viewWidth: number;
+  private knobOpacity: number;
   private scrollTimeout?: ReturnType<typeof setTimeout>;
   private headerState: string;
   private currentMonth: XDate;
@@ -108,6 +109,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     const windowSize = Dimensions.get('window');
     this.viewHeight = windowSize.height;
     this.viewWidth = windowSize.width;
+	this.knobOpacity = 1;
 
     this.scrollTimeout = undefined;
     this.headerState = 'idle';
@@ -273,11 +275,11 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   onTouchStart = () => {
     this.headerState = 'touched';
-    this.knob?.current?.setNativeProps({style: {opacity: 0.5}});
+    this.knobOpacity = 0.5;
   };
 
   onTouchEnd = () => {
-    this.knob?.current?.setNativeProps({style: {opacity: 1}});
+    this.knobOpacity = 1;
 
     if (this.headerState === 'touched') {
       const isOpen = this.state.calendarScrollable;
@@ -285,6 +287,11 @@ export default class Agenda extends Component<AgendaProps, State> {
     }
 
     this.headerState = 'idle';
+  };
+
+  onPressKnob = () => {
+    const isOpen = this.state.calendarScrollable;
+    this.toggleCalendarPosition(!isOpen);
   };
 
   onStartDrag = () => {
@@ -381,7 +388,9 @@ export default class Agenda extends Component<AgendaProps, State> {
       const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
       knob = !this.state.calendarScrollable || showClosingKnob ? (
         <View style={this.style.knobContainer}>
-          <View ref={this.knob}>{knobView}</View>
+          <TouchableOpacity onPress={this.onPressKnob}>
+            <View ref={this.knob} style={{opacity: this.knobOpacity}}>{knobView}</View>
+          </TouchableOpacity>
         </View>
       ) : null;
     }
