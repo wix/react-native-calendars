@@ -28,7 +28,7 @@ steps:
     command: |
       nvm install
       yarn
-      yarn test
+      yarn test --inspect-brk
       yarn build:ts
       if [[ $BUILDKITE_PULL_REQUEST == 'false' ]];then
         yarn release
