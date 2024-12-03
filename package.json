@@ -10,7 +10,7 @@
     "build:dev": "tsc --noEmit",
     "build:docs": "node ./scripts/build-docs.js",
     "e2e": "node ./scripts/test-e2e.js --release",
-    "test": "yarn lint && yarn unit",
+    "test": "yarn lint && yarn unit --inspect-brk",
     "test:watch": "jest --watch",
     "test:perf": "TEST_RUNNER_ARGS='--testMatch **/*.perf.js' reassure measure",
     "unit": "jest",
