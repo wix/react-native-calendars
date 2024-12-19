@@ -5,7 +5,7 @@ import throttle from 'lodash/throttle';
 
 import XDate from 'xdate';
 
-import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
+import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   PanResponder,
@@ -94,7 +94,7 @@ const headerStyleOverride = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 
-const ExpandableCalendar = (props: ExpandableCalendarProps) => {
+const ExpandableCalendar = forwardRef((props: ExpandableCalendarProps, ref: React.Ref<ExpandableCalendarProps>) => {
   const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);
   const {
     /** ExpandableCalendar props */
@@ -487,6 +487,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     }, 100, {trailing: true, leading: false}
   ), [date, scrollPage]);
 
+  /** Expose functions */
+  useImperativeHandle(ref, () => ({
+    toggleCalendarPosition,
+  }));
+
   /** Renders */
 
   const _renderArrow = useCallback((direction: Direction) => {
@@ -615,7 +620,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       )}
     </View>
   );
-};
+});
 
 export default ExpandableCalendar;
 
