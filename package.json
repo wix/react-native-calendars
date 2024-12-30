@@ -1,5 +1,5 @@
 {
-  "name": "react-native-calendars",
+  "name": "react-native-calendars-with-new-event-placeholder",
   "version": "1.22.0",
   "main": "src/index.ts",
   "types": "src/index.d.ts",
@@ -25,12 +25,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wix/react-native-calendars"
+    "url": "git+https://github.com/ctruchi/react-native-calendars-with-new-event-placeholder"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "author": "Wix.com",
+  "author": "ctruchi",
   "license": "MIT",
   "dependencies": {
     "hoist-non-react-statics": "^3.3.1",
