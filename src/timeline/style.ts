@@ -111,6 +111,22 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     },
     eventsContainer: {
       flex: 1
+    },
+    eventPlaceholderStyle: {
+      opacity: 1,
+      paddingLeft: 4,
+      paddingTop: 5,
+      paddingBottom: 0,
+      backgroundColor: '#F0F4FF',
+      borderColor: '#DDE5FD',
+      borderWidth: 1,
+      ...appStyle.eventPlaceholderStyle,
+      position: 'absolute',
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      overflow: 'hidden',
+      minHeight: 25,
     }
   });
 }
