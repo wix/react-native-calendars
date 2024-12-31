@@ -37,6 +37,8 @@ export interface CalendarContextProviderProps extends ViewProps {
   numberOfDays?: number;
   /** The left inset of the timeline calendar (sidebar width), default is 72 */
   timelineLeftInset?: number;
+  /** Should disable the auto date selection when scrolling month/week */
+  disableAutoDaySelection?: boolean;
 }
 
 /**
@@ -56,6 +58,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     style: propsStyle,
     numberOfDays,
     timelineLeftInset = 72,
+    disableAutoDaySelection = false,
     children
   } = props;
   const style = useRef(styleConstructor(theme));
@@ -64,6 +67,8 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const currDate = useRef(date); // for setDate only to keep prevDate up to date
   const [currentDate, setCurrentDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
+  const [disableAutoSelection, setDisableAutoSelection] = useState<boolean>();
+
 
   const wrapperStyle = useMemo(() => {
     return [style.current.contextWrapper, propsStyle];
@@ -80,13 +85,16 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     currDate.current = date;
     setCurrentDate(date);
     setUpdateSource(updateSource);
-
-    onDateChanged?.(date, updateSource);
+    const shouldDisableAutoSelection = disableAutoDaySelection && (updateSource === UpdateSources.PAGE_SCROLL || updateSource === UpdateSources.WEEK_SCROLL);
+    setDisableAutoSelection(shouldDisableAutoSelection);
+    if (!shouldDisableAutoSelection) {
+      onDateChanged?.(date, updateSource);
+    }
 
     if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
       onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
-  }, [onDateChanged, onMonthChange]);
+  }, [onDateChanged, onMonthChange, disableAutoDaySelection]);
 
   const _setDisabled = useCallback((disabled: boolean) => {
     if (showTodayButton) {
@@ -102,9 +110,10 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       setDate: _setDate,
       setDisabled: _setDisabled,
       numberOfDays,
-      timelineLeftInset
+      timelineLeftInset,
+      disableAutoSelection
     };
-  }, [currentDate, updateSource, numberOfDays, _setDisabled]);
+  }, [currentDate, updateSource, numberOfDays, _setDisabled, disableAutoSelection]);
 
   const renderTodayButton = () => {
     return (

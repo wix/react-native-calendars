@@ -196,6 +196,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
     const dateString = toMarkingFormat(day);
     const isControlled = isEmpty(props.context);
+    const disableDaySelection = isControlled || props.context?.disableAutoSelection;
 
     return (
       <View style={style.current.dayContainer} key={id}>
@@ -203,7 +204,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
           date={dateString}
-          state={getState(day, currentMonth, props, isControlled)}
+          state={getState(day, currentMonth, props, disableDaySelection)}
           marking={markedDates?.[dateString]}
           onPress={_onDayPress}
           onLongPress={onLongPressDay}

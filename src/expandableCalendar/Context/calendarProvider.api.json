@@ -66,6 +66,11 @@
       "type": "number",
       "description": "The left inset of the timeline calendar (sidebar width)",
       "default": "72"
+    },
+    {
+      "name": "disableAutoDaySelection",
+      "type": "boolean",
+      "description": "Should disable the auto date selection when scrolling month/week"
     }
   ]
 }

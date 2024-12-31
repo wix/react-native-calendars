@@ -103,9 +103,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       const dateString = toMarkingFormat(date);
       return {
         ...acc,
-      ...(
-        markings[dateString] && {[dateString]: markings[dateString]}
-      ),
+      ...(markings[dateString] && {[dateString]: markings[dateString]})
       };
     }, {});
   }, []);
@@ -115,7 +113,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   }, [containerWidth, propsStyle]);
 
   const renderItem = useCallback(({item}: {item: string}) => {
-    const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
+    // const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
     const markings = getCurrentWeekMarkings(item, markedDates);
 
     return (
@@ -125,7 +123,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         current={item}
         firstDay={firstDay}
         style={weekStyle}
-        context={currentContext}
+        context={context}
         onDayPress={_onDayPress}
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}

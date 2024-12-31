@@ -36,10 +36,11 @@ const Week = React.memo((props: WeekProps) => {
     numberOfDays = 1,
     timelineLeftInset,
     testID,
+    context
   } = props;
   const style = useRef(styleConstructor(theme));
 
-  const disableDaySelection = useMemo(() => {
+  const isCustomNumberOfDays = useMemo(() => {
     return !!numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
 
@@ -63,7 +64,10 @@ const Week = React.memo((props: WeekProps) => {
         return <View key={id} style={style.current.emptyDayContainer}/>;
       }
     }
+
     const dayString = toMarkingFormat(day);
+    const disableDaySelection = isCustomNumberOfDays || context?.disableAutoSelection;
+
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
@@ -71,7 +75,7 @@ const Week = React.memo((props: WeekProps) => {
           testID={`${testID}.day_${dayString}`}
           date={dayString}
           state={getState(day, currXdate, props, disableDaySelection)}
-          marking={disableDaySelection ? {...markedDates?.[dayString], disableTouchEvent: true} : markedDates?.[dayString]}
+          marking={/* disableDaySelection ? {...markedDates?.[dayString], disableTouchEvent: true} :  */markedDates?.[dayString]}
           onPress={onDayPress}
           onLongPress={onDayLongPress}
         />
