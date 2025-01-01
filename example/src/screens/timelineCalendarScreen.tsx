@@ -1,9 +1,6 @@
-import groupBy from 'lodash/groupBy';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-
-import React, {Component} from 'react';
-import {Alert} from 'react-native';
+import _ from 'lodash';
+import React, {useState} from 'react';
+import {StyleSheet, Alert, View, Text, Button} from 'react-native';
 import {
   ExpandableCalendar,
   TimelineEventProps,
@@ -17,16 +14,14 @@ import {timelineEvents, getDate} from '../mocks/timelineEvents';
 
 const INITIAL_TIME = {hour: 9, minutes: 0};
 const EVENTS: TimelineEventProps[] = timelineEvents;
-export default class TimelineCalendarScreen extends Component {
-  state = {
-    currentDate: getDate(),
-    events: EVENTS,
-    eventsByDate: groupBy(EVENTS, e => CalendarUtils.getCalendarDateString(e.start)) as {
-      [key: string]: TimelineEventProps[];
-    }
-  };
+const TimelineCalendarScreen = () => {
+  const [currentDate, setCurrentDate] = useState(getDate());
+  const [eventsByDate, setEventsByDate] = useState(_.groupBy(EVENTS, e => CalendarUtils.getCalendarDateString(e.start)) as {
+    [key: string]: TimelineEventProps[];
+  });
+  const [numberOfDays, setNumberOfDays] = useState<number | undefined>(undefined);
 
-  marked = {
+  const marked = {
     [`${getDate(-1)}`]: {marked: true},
     [`${getDate()}`]: {marked: true},
     [`${getDate(1)}`]: {marked: true},
@@ -34,17 +29,17 @@ export default class TimelineCalendarScreen extends Component {
     [`${getDate(4)}`]: {marked: true}
   };
 
-  onDateChanged = (date: string, source: string) => {
+  const onDateChanged = (date: string, source: string) => {
     console.log('TimelineCalendarScreen onDateChanged: ', date, source);
-    this.setState({currentDate: date});
+    setCurrentDate(date);
   };
 
-  onMonthChange = (month: any, updateSource: any) => {
+  const onMonthChange = (month: any, updateSource: any) => {
     console.log('TimelineCalendarScreen onMonthChange: ', month, updateSource);
   };
 
-  createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
-    const {eventsByDate} = this.state;
+  const createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
+    console.log('new event: ', timeString, timeObject);
     const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
     const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
 
@@ -59,27 +54,22 @@ export default class TimelineCalendarScreen extends Component {
     if (timeObject.date) {
       if (eventsByDate[timeObject.date]) {
         eventsByDate[timeObject.date] = [...eventsByDate[timeObject.date], newEvent];
-        this.setState({eventsByDate});
+        setEventsByDate(eventsByDate);
       } else {
         eventsByDate[timeObject.date] = [newEvent];
-        this.setState({eventsByDate: {...eventsByDate}});
+        setEventsByDate({...eventsByDate});
       }
     }
   };
 
-  approveNewEvent: TimelineProps['onBackgroundLongPressOut'] = (_timeString, timeObject) => {
-    const {eventsByDate} = this.state;
-
+  const approveNewEvent: TimelineProps['onBackgroundLongPressOut'] = (_timeString, timeObject) => {
     Alert.prompt('New Event', 'Enter event title', [
       {
         text: 'Cancel',
         onPress: () => {
           if (timeObject.date) {
-            eventsByDate[timeObject.date] = filter(eventsByDate[timeObject.date], e => e.id !== 'draft');
-
-            this.setState({
-              eventsByDate
-            });
+            eventsByDate[timeObject.date] = _.filter(eventsByDate[timeObject.date], e => e.id !== 'draft');
+            setEventsByDate(eventsByDate);
           }
         }
       },
@@ -87,16 +77,13 @@ export default class TimelineCalendarScreen extends Component {
         text: 'Create',
         onPress: eventTitle => {
           if (timeObject.date) {
-            const draftEvent = find(eventsByDate[timeObject.date], {id: 'draft'});
+            const draftEvent = _.find(eventsByDate[timeObject.date], {id: 'draft'});
             if (draftEvent) {
               draftEvent.id = undefined;
               draftEvent.title = eventTitle ?? 'New Event';
               draftEvent.color = 'lightgreen';
               eventsByDate[timeObject.date] = [...eventsByDate[timeObject.date]];
-
-              this.setState({
-                eventsByDate
-              });
+              setEventsByDate(eventsByDate);
             }
           }
         }
@@ -104,10 +91,10 @@ export default class TimelineCalendarScreen extends Component {
     ]);
   };
 
-  private timelineProps: Partial<TimelineProps> = {
+  const timelineProps: Partial<TimelineProps> = {
     format24h: true,
-    onBackgroundLongPress: this.createNewEvent,
-    onBackgroundLongPressOut: this.approveNewEvent,
+    onBackgroundLongPress: createNewEvent,
+    onBackgroundLongPressOut: approveNewEvent,
     // scrollToFirst: true,
     // start: 0,
     // end: 24,
@@ -116,33 +103,53 @@ export default class TimelineCalendarScreen extends Component {
     rightEdgeSpacing: 24,
   };
 
-  render() {
-    const {currentDate, eventsByDate} = this.state;
+  const onHeaderButtonPress = () => {
+    setNumberOfDays(!numberOfDays ? 3 : undefined);
+  };
 
+  const _renderHeader = (month) => {
+    const title = month?.toString('MMMM yyyy');
     return (
-      <CalendarProvider
-        date={currentDate}
-        onDateChanged={this.onDateChanged}
-        onMonthChange={this.onMonthChange}
-        showTodayButton
-        disabledOpacity={0.6}
-        // numberOfDays={3}
-      >
-        <ExpandableCalendar
-          firstDay={1}
-          leftArrowImageSource={require('../img/previous.png')}
-          rightArrowImageSource={require('../img/next.png')}
-          markedDates={this.marked}
-        />
-        <TimelineList
-          events={eventsByDate}
-          timelineProps={this.timelineProps}
-          showNowIndicator
-          // scrollToNow
-          scrollToFirst
-          initialTime={INITIAL_TIME}
-        />
-      </CalendarProvider>
+      <View style={styles.header}>
+        <Text>{title}</Text>
+        <Button title='#' onPress={onHeaderButtonPress}/>
+      </View>
     );
+  };
+
+  return (
+    <CalendarProvider
+      date={currentDate}
+      onDateChanged={onDateChanged}
+      onMonthChange={onMonthChange}
+      showTodayButton
+      disabledOpacity={0.6}
+      numberOfDays={numberOfDays}
+    >
+      <ExpandableCalendar
+        firstDay={1}
+        leftArrowImageSource={require('../img/previous.png')}
+        rightArrowImageSource={require('../img/next.png')}
+        markedDates={marked}
+        renderHeader={_renderHeader}
+      />
+      <TimelineList
+        events={eventsByDate}
+        timelineProps={timelineProps}
+        showNowIndicator
+        // scrollToNow
+        scrollToFirst
+        initialTime={INITIAL_TIME}
+      />
+    </CalendarProvider>
+  );
+};
+
+export default TimelineCalendarScreen;
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center'
   }
-}
+});
