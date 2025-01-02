@@ -1,28 +1,24 @@
 import PropTypes from 'prop-types';
-
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
 import InfiniteList from '../infinite-list';
-
 import XDate from 'xdate';
-
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {
   DefaultSectionT,
   SectionListData,
 } from 'react-native';
-
 import {useDidUpdate} from '../hooks';
 import {getMoment} from '../momentResolver';
 import {isGTE, isToday} from '../dateutils';
 import {getDefaultLocale} from '../services';
-import {UpdateSources, todayString} from './commons';
+import {parseDate} from '../interface';
+import {UpdateSources, todayString} from '../types';
+import constants from '../commons/constants';
 import styleConstructor from './style';
 import Context from './Context';
-import constants from "../commons/constants";
-import {parseDate} from "../interface";
+import {AgendaSectionHeader, AgendaListProps} from './AgendaListsCommon';
 import {LayoutProvider} from "recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider";
-import {AgendaSectionHeader, AgendaListProps} from "./AgendaListsCommon";
 
 /**
  * @description: AgendaList component that use InfiniteList to improve performance

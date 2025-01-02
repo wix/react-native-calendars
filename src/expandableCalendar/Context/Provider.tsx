@@ -1,13 +1,11 @@
+import isEmpty from 'lodash/isEmpty';
 import XDate from 'xdate';
-
 import React, {useRef, useState, useCallback, useMemo} from 'react';
 import {View, ViewStyle, ViewProps, StyleProp} from 'react-native';
-
 import {sameMonth} from '../../dateutils';
 import {xdateToData} from '../../interface';
 import {useDidUpdate} from '../../hooks';
-import {Theme, DateData} from '../../types';
-import {UpdateSources} from '../commons';
+import {Theme, DateData, UpdateSources, ScrollSources} from '../../types';
 import styleConstructor from '../style';
 import CalendarContext from './index';
 import TodayButton, {TodayButtonImperativeMethods} from './todayButton';
@@ -37,8 +35,8 @@ export interface CalendarContextProviderProps extends ViewProps {
   numberOfDays?: number;
   /** The left inset of the timeline calendar (sidebar width), default is 72 */
   timelineLeftInset?: number;
-  /** Should disable the auto date selection when scrolling month/week */
-  disableAutoDaySelection?: boolean;
+  /** Should disable the auto date selection when scrolling month/week/agenda */
+  disableAutoDaySelection?: ScrollSources[];
 }
 
 /**
@@ -58,7 +56,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     style: propsStyle,
     numberOfDays,
     timelineLeftInset = 72,
-    disableAutoDaySelection = false,
+    disableAutoDaySelection,
     children
   } = props;
   const style = useRef(styleConstructor(theme));
@@ -67,8 +65,6 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const currDate = useRef(date); // for setDate only to keep prevDate up to date
   const [currentDate, setCurrentDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
-  const [disableAutoSelection, setDisableAutoSelection] = useState<boolean>();
-
 
   const wrapperStyle = useMemo(() => {
     return [style.current.contextWrapper, propsStyle];
@@ -80,21 +76,24 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     }
   }, [date]);
 
+  const shouldDisableAutoSelection = (updateSource: UpdateSources) => {
+    return !isEmpty(disableAutoDaySelection) && disableAutoDaySelection?.indexOf(updateSource as unknown as ScrollSources) !== -1;
+  };
+
   const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
     prevDate.current = currDate.current;
     currDate.current = date;
     setCurrentDate(date);
     setUpdateSource(updateSource);
-    const shouldDisableAutoSelection = disableAutoDaySelection && (updateSource === UpdateSources.PAGE_SCROLL || updateSource === UpdateSources.WEEK_SCROLL);
-    setDisableAutoSelection(shouldDisableAutoSelection);
-    if (!shouldDisableAutoSelection) {
+
+    if (!shouldDisableAutoSelection(updateSource)) {
       onDateChanged?.(date, updateSource);
     }
 
     if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
       onMonthChange?.(xdateToData(new XDate(date)), updateSource);
     }
-  }, [onDateChanged, onMonthChange, disableAutoDaySelection]);
+  }, [onDateChanged, onMonthChange]);
 
   const _setDisabled = useCallback((disabled: boolean) => {
     if (showTodayButton) {
@@ -111,9 +110,9 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
       setDisabled: _setDisabled,
       numberOfDays,
       timelineLeftInset,
-      disableAutoSelection
+      disableAutoSelection: disableAutoDaySelection
     };
-  }, [currentDate, updateSource, numberOfDays, _setDisabled, disableAutoSelection]);
+  }, [currentDate, updateSource, numberOfDays, _setDisabled, disableAutoDaySelection]);
 
   const renderTodayButton = () => {
     return (

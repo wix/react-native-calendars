@@ -6,7 +6,7 @@ import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractDayProps} from '../componentUpdater';
-import {ContextProp} from '../types';
+import {ContextProp, ScrollSources, UpdateSources} from '../types';
 import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 import styleConstructor from './style';
@@ -63,7 +63,8 @@ const Week = React.memo((props: WeekProps) => {
     }
 
     const dayString = toMarkingFormat(day);
-    const disableDaySelection = isCustomNumberOfDays || context?.disableAutoSelection;
+    const updateSourceWeekMatch = context?.updateSource === UpdateSources.WEEK_SCROLL && context?.disableAutoSelection?.indexOf(ScrollSources.WEEK) !== -1;
+    const disableDaySelection = isCustomNumberOfDays || updateSourceWeekMatch;
 
     return (
       <View style={style.current.dayContainer} key={id}>

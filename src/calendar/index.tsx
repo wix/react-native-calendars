@@ -10,7 +10,7 @@ import {page, isGTE, isLTE, sameMonth} from '../dateutils';
 import {xdateToData, parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-import {DateData, Theme, MarkedDates, ContextProp} from '../types';
+import {DateData, Theme, MarkedDates, ContextProp, UpdateSources, ScrollSources} from '../types';
 import {useDidUpdate} from '../hooks';
 import styleConstructor from './style';
 import CalendarHeader, {CalendarHeaderProps} from './header';
@@ -197,7 +197,8 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
     const dateString = toMarkingFormat(day);
     const isControlled = isEmpty(context);
-    const disableDaySelection = isControlled || context?.disableAutoSelection;
+    const updateSourceMonthMatch = context?.updateSource === UpdateSources.PAGE_SCROLL && context?.disableAutoSelection?.indexOf(ScrollSources.MONTH) !== -1;
+    const disableDaySelection = isControlled || updateSourceMonthMatch;
 
     return (
       <View style={style.current.dayContainer} key={id}>

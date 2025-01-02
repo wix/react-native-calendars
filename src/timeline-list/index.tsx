@@ -1,16 +1,14 @@
 import throttle from 'lodash/throttle';
 import flatten from 'lodash/flatten';
 import dropRight from 'lodash/dropRight';
-
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
-
 import {isToday, generateDay} from '../dateutils';
+import {UpdateSources} from '../types';
+import constants from '../commons/constants';
 import InfiniteList from '../infinite-list';
 import Context from '../expandableCalendar/Context';
-import {UpdateSources} from '../expandableCalendar/commons';
 import Timeline, {TimelineProps} from '../timeline/Timeline';
 import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD, PAGES_COUNT} from './useTimelinePages';
-import constants from '../commons/constants';
 
 export interface TimelineListRenderItemInfo {
   item: string;

@@ -2,9 +2,7 @@ import first from 'lodash/first';
 import isFunction from 'lodash/isFunction';
 import isNumber from 'lodash/isNumber';
 import throttle from 'lodash/throttle';
-
 import XDate from 'xdate';
-
 import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
 import {
   AccessibilityInfo,
@@ -18,19 +16,17 @@ import {
   PanResponderGestureState,
   TouchableOpacity
 } from 'react-native';
-
 import {page} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
-import {DateData, Direction} from '../types';
-import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
+import {DateData, Direction, UpdateSources, ScrollSources} from '../types';
 import WeekDaysNames from '../commons/WeekDaysNames';
+import constants from '../commons/constants';
 import Calendar from '../calendar';
 import CalendarList, {CalendarListProps} from '../calendar-list';
-import Week from './week';
-import WeekCalendar from './WeekCalendar';
+import styleConstructor, {HEADER_HEIGHT, KNOB_CONTAINER_HEIGHT} from './style';
 import Context from './Context';
-import constants from '../commons/constants';
-import {UpdateSources} from './commons';
+import WeekCalendar from './WeekCalendar';
+import Week from './week';
 
 export enum Positions {
   CLOSED = 'closed',
@@ -316,7 +312,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         }
       }
 
-      setDate?.(toMarkingFormat(d), UpdateSources.PAGE_SCROLL);
+      setDate?.(toMarkingFormat(d), isOpen ? UpdateSources.PAGE_SCROLL : UpdateSources.WEEK_SCROLL);
     }
   }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
@@ -632,3 +628,4 @@ ExpandableCalendar.defaultProps = {
   closeOnDayPress: true
 };
 ExpandableCalendar.positions = Positions;
+ExpandableCalendar.scrollSources = ScrollSources;

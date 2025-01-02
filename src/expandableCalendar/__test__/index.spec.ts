@@ -1,12 +1,12 @@
-import {ExpandableCalendarProps, Positions} from '../index';
-import {toMarkingFormat, xdateToData} from '../../interface';
-import {ExpandableCalendarDriver} from '../driver';
-import {generateExpandableCalendarWithContext, testIdExpandableCalendar} from './expandableCalendarTestKit';
-import {getMonthTitle} from '../../testUtils';
-import {UpdateSources} from '../commons';
 import times from 'lodash/times';
-import {NUMBER_OF_PAGES} from '../WeekCalendar';
 import {CalendarContextProviderProps} from 'react-native-calendars';
+import {toMarkingFormat, xdateToData} from '../../interface';
+import {UpdateSources} from '../../types';
+import {getMonthTitle} from '../../testUtils';
+import {ExpandableCalendarDriver} from '../driver';
+import {NUMBER_OF_PAGES} from '../WeekCalendar';
+import {ExpandableCalendarProps, Positions} from '../index';
+import {generateExpandableCalendarWithContext, testIdExpandableCalendar} from './expandableCalendarTestKit';
 
 const XDate = require('xdate');
 

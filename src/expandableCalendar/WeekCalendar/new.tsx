@@ -1,19 +1,17 @@
+import XDate from 'xdate';
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {View} from 'react-native';
-import XDate from 'xdate';
-
-import InfiniteList from '../../infinite-list';
-import Week from '../week';
-import WeekDaysNames from '../../commons/WeekDaysNames';
-import {CalendarListProps} from '../../calendar-list';
-import CalendarContext from '../../expandableCalendar/Context';
-import styleConstructor from '../style';
 import {toMarkingFormat} from '../../interface';
-import {extractCalendarProps} from '../../componentUpdater';
-import constants from '../../commons/constants';
-import {UpdateSources} from '../commons';
 import {sameWeek} from '../../dateutils';
-import {DateData} from '../../types';
+import WeekDaysNames from '../../commons/WeekDaysNames';
+import constants from '../../commons/constants';
+import {DateData, UpdateSources} from '../../types';
+import {extractCalendarProps} from '../../componentUpdater';
+import CalendarContext from '../../expandableCalendar/Context';
+import {CalendarListProps} from '../../calendar-list';
+import InfiniteList from '../../infinite-list';
+import styleConstructor from '../style';
+import Week from '../week';
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -26,10 +24,11 @@ const DEFAULT_PAGE_HEIGHT = 48;
 const WeekCalendar = (props: WeekCalendarProps) => {
   const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, calendarHeight = DEFAULT_PAGE_HEIGHT, testID} = props;
   const context = useContext(CalendarContext);
-  const {date, updateSource} = context;
+  const {date/* , updateSource */} = context;
   const style = useRef(styleConstructor(theme));
   const list = useRef();
   const [items, setItems] = useState(getDatesArray(current || date, firstDay, NUMBER_OF_PAGES));
+  const selfScroll = useRef(false);
 
   const extraData = {
     current,
@@ -43,11 +42,12 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   }, [containerWidth, props.style]);
 
   useEffect(() => {
-    if (updateSource !== UpdateSources.WEEK_SCROLL) {
+    if (!selfScroll.current) { // updateSource !== UpdateSources.WEEK_SCROLL
       const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
       // @ts-expect-error
       list.current?.scrollToOffset?.(pageIndex * containerWidth, 0, false);
     }
+    selfScroll.current = false;
   }, [date]);
 
   const onDayPress = useCallback(
@@ -61,6 +61,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const onPageChange = useCallback(
     (pageIndex: number, _prevPage, {scrolledByUser}) => {
       if (scrolledByUser) {
+        selfScroll.current = true;
         context?.setDate(items[pageIndex], UpdateSources.WEEK_SCROLL);
       }
     },

@@ -1,20 +1,17 @@
 import XDate from 'xdate';
-
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
-
 import {sameWeek, onSameDateRange, getWeekDates} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
-import {DateData, MarkedDates} from '../../types';
-import styleConstructor from '../style';
-import {CalendarListProps} from '../../calendar-list';
+import {DateData, MarkedDates, UpdateSources} from '../../types';
 import WeekDaysNames from '../../commons/WeekDaysNames';
-import Week from '../week';
-import {UpdateSources} from '../commons';
 import constants from '../../commons/constants';
-import {extractCalendarProps} from '../../componentUpdater';
-import CalendarContext from '../Context';
 import {useDidUpdate} from '../../hooks';
+import {extractCalendarProps} from '../../componentUpdater';
+import {CalendarListProps} from '../../calendar-list';
+import styleConstructor from '../style';
+import CalendarContext from '../Context';
+import Week from '../week';
 
 export const NUMBER_OF_PAGES = 6;
 const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER_OF_PAGES after + current
@@ -49,6 +46,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const changedItems = useRef(constants.isRTL);
   const list = useRef<FlatList>(null);
   const currentIndex = useRef(NUMBER_OF_PAGES);
+  const selfScroll = useRef(false);
 
   useDidUpdate(() => {
     items.current = getDatesArray(date, firstDay, numberOfDays);
@@ -58,7 +56,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   }, [numberOfDays]);
 
   useDidUpdate(() => {
-    if (updateSource !== UpdateSources.WEEK_SCROLL) {
+    if (!selfScroll.current) { // updateSource !== UpdateSources.WEEK_SCROLL
       const pageIndex = items.current.findIndex(
         item => isCustomNumberOfDays(numberOfDays) ?
           onSameDateRange({
@@ -80,7 +78,8 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: adjustedIndexFrScroll, animated: false});
       }
     }
-  }, [date, updateSource]);
+    selfScroll.current = false;
+  }, [date/* , updateSource */]);
 
   const containerWidth = useMemo(() => {
     return calendarWidth ?? constants.screenWidth;
@@ -183,6 +182,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         const adjustedNewDate = currItems[NUMBER_OF_PAGES - newDateOffset];
         visibleWeek.current = adjustedNewDate;
         currentIndex.current = currItems.indexOf(adjustedNewDate);
+        selfScroll.current = true;
         setDate(adjustedNewDate, UpdateSources.WEEK_SCROLL);
         if (visibleWeek.current === currItems[currItems.length - 1]) {
           onEndReached();
@@ -190,6 +190,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       } else {
         currentIndex.current = currItems.indexOf(newDate);
         visibleWeek.current = newDate;
+        selfScroll.current = true;
         setDate(newDate, UpdateSources.WEEK_SCROLL);
         if (visibleWeek.current === currItems[0]) {
           onEndReached();

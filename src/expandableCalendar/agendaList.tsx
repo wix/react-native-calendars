@@ -5,9 +5,7 @@ import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
-
 import XDate from 'xdate';
-
 import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   SectionList,
@@ -18,13 +16,12 @@ import {
   LayoutChangeEvent,
   ViewToken,
 } from 'react-native';
-
 import {useDidUpdate} from '../hooks';
 import {getMoment} from '../momentResolver';
 import {isToday, isGTE, sameDate} from '../dateutils';
 import {parseDate} from '../interface';
 import {getDefaultLocale} from '../services';
-import {UpdateSources, todayString} from './commons';
+import {UpdateSources, todayString} from '../types';
 import constants from '../commons/constants';
 import styleConstructor from './style';
 import Context from './Context';

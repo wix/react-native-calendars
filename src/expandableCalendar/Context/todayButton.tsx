@@ -1,13 +1,10 @@
 import XDate from 'xdate';
-
 import React, {forwardRef, useImperativeHandle, useEffect, useRef, useState, useContext, useCallback} from 'react';
 import {Animated, TouchableOpacity, ViewStyle, ViewProps, StyleProp} from 'react-native';
-
-import {Theme} from '../../types';
+import {Theme, UpdateSources, todayString} from '../../types';
 import {getDefaultLocale} from '../../services';
 import {toMarkingFormat} from '../../interface';
 import {isToday, isPastDate} from '../../dateutils';
-import {UpdateSources, todayString} from '../commons';
 import styleConstructor from '../style';
 import Context from './index';
 

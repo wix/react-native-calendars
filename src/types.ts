@@ -113,3 +113,20 @@ export interface DayAgenda {
   reservation?: AgendaEntry;
   date?: XDate;
 }
+
+export const todayString = 'today';
+
+export enum UpdateSources {
+  CALENDAR_INIT = 'calendarInit',
+  TODAY_PRESS = 'todayPress',
+  LIST_DRAG = 'listDrag',
+  DAY_PRESS = 'dayPress',
+  PAGE_SCROLL = 'pageScroll',
+  WEEK_SCROLL = 'weekScroll',
+  PROP_UPDATE = 'propUpdate'
+}
+
+export enum ScrollSources {
+  MONTH = UpdateSources.PAGE_SCROLL,
+  WEEK = UpdateSources.WEEK_SCROLL
+}

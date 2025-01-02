@@ -1,5 +1,5 @@
 import React from 'react';
-import {UpdateSources} from '../commons';
+import {UpdateSources, ScrollSources} from '../../types';
 
 export interface CalendarContextProps {
   date: string;
@@ -9,7 +9,7 @@ export interface CalendarContextProps {
   setDisabled: (disable: boolean) => void;
   numberOfDays?: number;
   timelineLeftInset?: number;
-  disableAutoSelection?: boolean;
+  disableAutoSelection?: ScrollSources[];
 }
 
 // @ts-expect-error - empty object doesn't match type
