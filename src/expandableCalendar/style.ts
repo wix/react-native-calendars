@@ -68,6 +68,10 @@ export default function styleConstructor(theme: Theme = {}) {
       right: 0,
       backgroundColor: appStyle.calendarBackground
     },
+    customHeader: {
+      justifyContent: 'center',
+      height: 40
+    },
     headerTitle: {
       alignSelf: 'center',
       paddingTop: 13,

@@ -1,6 +1,6 @@
 import React, {useRef, useCallback} from 'react';
-import {StyleSheet} from 'react-native';
-import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
+import {StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
+import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar, ExpandableCalendarImperativeMethods} from 'react-native-calendars';
 import testIDs from '../testIDs';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import AgendaItem from '../mocks/AgendaItem';
@@ -16,6 +16,7 @@ interface Props {
 
 const ExpandableCalendarScreen = (props: Props) => {
   const {weekView} = props;
+  const calendarRef = useRef<ExpandableCalendarImperativeMethods>();
   const marked = useRef(getMarkedDates());
   const theme = useRef(getTheme());
   const todayBtnTheme = useRef({
@@ -28,6 +29,22 @@ const ExpandableCalendarScreen = (props: Props) => {
 
   const onMonthChange = useCallback(({dateString}) => {
     console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
+  }, []);
+
+  const onPressHeader = useCallback(() => {
+    calendarRef.current?.togglePosition();
+  }, []);
+
+  const renderHeader = useCallback((month) => {
+    const title = month?.toString('MMMM yyyy');
+    const imageSource = calendarRef.current?.isOpen() ? require('../img/previous.png') : require('../img/next.png');
+    
+    return (
+      <TouchableOpacity style={styles.customHeader} onPress={onPressHeader} activeOpacity={1}>
+        <Text style={{color: theme.current.expandableKnobColor, fontSize: 18, marginRight: 8}}>{title}</Text>
+        <Image source={imageSource} style={{transform: [{rotate: '90deg'}]}}/>
+      </TouchableOpacity>
+    );
   }, []);
 
   const renderItem = useCallback(({item}: any) => {
@@ -49,12 +66,14 @@ const ExpandableCalendarScreen = (props: Props) => {
         <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
       ) : (
         <ExpandableCalendar
+          ref={calendarRef}
           testID={testIDs.expandableCalendar.CONTAINER}
           // horizontal={false}
           // hideArrows
           // disablePan
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
+          renderHeader={renderHeader}
           // calendarStyle={styles.calendar}
           // headerStyle={styles.header} // for horizontal only
           // disableWeekScroll
@@ -93,5 +112,9 @@ const styles = StyleSheet.create({
     backgroundColor: lightThemeColor,
     color: 'grey',
     textTransform: 'capitalize'
+  },
+  customHeader: {
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });

@@ -29,7 +29,7 @@ export interface TodayButtonImperativeMethods {
   disable: (shouldDisable: boolean) => void;
 }
 
-const TodayButton = (props: TodayButtonProps, ref: any) => {
+const TodayButton = (props: TodayButtonProps, ref: React.Ref<TodayButtonImperativeMethods | undefined>) => {
   useImperativeHandle(ref, () => ({
     disable: (shouldDisable: boolean) => {
       disable(shouldDisable);

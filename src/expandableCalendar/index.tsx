@@ -2,10 +2,8 @@ import first from 'lodash/first';
 import isFunction from 'lodash/isFunction';
 import isNumber from 'lodash/isNumber';
 import throttle from 'lodash/throttle';
-
 import XDate from 'xdate';
-
-import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
+import React, {useContext, useRef, useState, useEffect, useCallback, useMemo, useImperativeHandle, forwardRef} from 'react';
 import {
   AccessibilityInfo,
   PanResponder,
@@ -18,7 +16,6 @@ import {
   PanResponderGestureState,
   TouchableOpacity
 } from 'react-native';
-
 import {page} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {DateData, Direction} from '../types';
@@ -71,6 +68,11 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeOnDayPress?: boolean;
 }
 
+export interface ExpandableCalendarImperativeMethods {
+  togglePosition: () => void;
+  isOpen: () => boolean;
+}
+
 const headerStyleOverride = {
   stylesheet: {
     calendar: {
@@ -94,14 +96,24 @@ const headerStyleOverride = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 
-const ExpandableCalendar = (props: ExpandableCalendarProps) => {
+const ExpandableCalendar = (props: ExpandableCalendarProps, ref: React.Ref<ExpandableCalendarImperativeMethods | undefined>) => {
+  useImperativeHandle(ref, () => ({
+    togglePosition: () => {
+      toggleCalendarPosition();
+    },
+    isOpen: () => {
+      return position === Positions.OPEN;
+    }
+  }));
+
   const {date, setDate, numberOfDays, timelineLeftInset} = useContext(Context);
+  const isCustomNumberOfDays = useMemo(() => numberOfDays && numberOfDays > 1, [numberOfDays]);
   const {
     /** ExpandableCalendar props */
     initialPosition = Positions.CLOSED,
     onCalendarToggled,
     disablePan,
-    hideKnob = numberOfDays && numberOfDays > 1,
+    hideKnob = isCustomNumberOfDays,
     leftArrowImageSource = LEFT_ARROW,
     rightArrowImageSource = RIGHT_ARROW,
     allowShadow = true,
@@ -122,6 +134,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onPressArrowRight,
     renderArrow,
     testID,
+
+    /** CalendarHeader props */
+    renderHeader,
     ...others
   } = props;
 
@@ -194,7 +209,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (numberOfDays) {
         setPosition(Positions.CLOSED);
     }
-}, [numberOfDays]);
+  }, [numberOfDays]);
 
   /** Components' refs */
 
@@ -254,10 +269,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [deltaY]);
 
   const numberOfDaysHeaderStyle = useMemo(() => {
-    if (numberOfDays && numberOfDays > 1) {
+    if (isCustomNumberOfDays) {
       return {paddingHorizontal: 0};
     }
-  }, [numberOfDays]);
+  }, [numberOfDays, isCustomNumberOfDays]);
 
   const _headerStyle = useMemo(() => {
     return [numberOfDaysHeaderStyle, props.headerStyle];
@@ -362,8 +377,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   };
 
   const numberOfDaysCondition = useMemo(() => {
-    return !numberOfDays || numberOfDays && numberOfDays <= 1;
-  }, [numberOfDays]);
+    return !numberOfDays || isCustomNumberOfDays;
+  }, [numberOfDays, isCustomNumberOfDays]);
 
   const panResponder = useMemo(() => numberOfDaysCondition ? PanResponder.create({
     onMoveShouldSetPanResponder: handleMoveShouldSetPanResponder,
@@ -514,20 +529,40 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     );
   };
 
-  const renderAnimatedHeader = () => {
+  const renderHeaderTitle = () => {
     const monthYear = new XDate(date)?.toString('MMMM yyyy');
 
+    if (renderHeader) {
+      return renderHeader?.(new XDate(date));
+    }
+    return (
+      <Text allowFontScaling={false} style={style.current.headerTitle}>
+          {monthYear}
+      </Text>
+    );
+  };
+
+  const renderAnimatedHeader = () => {    
     return (
       <Animated.View
         ref={header}
         style={animatedHeaderStyle}
         pointerEvents={'none'}
       >
-        <Text allowFontScaling={false} style={style.current.headerTitle}>
-          {monthYear}
-        </Text>
+        {renderHeaderTitle()}
         {renderWeekDaysNames()}
       </Animated.View>
+    );
+  };
+
+  const renderCustomHeader = () => {
+    return (
+      <View
+        ref={header}
+        style={style.current.customHeader}
+      >
+        {renderHeaderTitle()}
+      </View>
     );
   };
 
@@ -585,6 +620,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         onPressArrowRight={_onPressArrowRight}
         hideExtraDays={!horizontal && isOpen}
         renderArrow={_renderArrow}
+        renderHeader={renderCustomHeader}
         staticHeader
         numberOfDays={numberOfDays}
         headerStyle={_headerStyle}
@@ -604,6 +640,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
           onDayPress={_onDayPress}
           hideExtraDays
           renderArrow={_renderArrow}
+          renderHeader={renderHeader}
         />
       ) : (
         <Animated.View testID={`${testID}.expandableContainer`} ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
@@ -617,18 +654,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   );
 };
 
-export default ExpandableCalendar;
+export default forwardRef(ExpandableCalendar);
 
 ExpandableCalendar.displayName = 'ExpandableCalendar';
-ExpandableCalendar.defaultProps = {
-  horizontal: true,
-  initialPosition: Positions.CLOSED,
-  firstDay: 0,
-  leftArrowImageSource: LEFT_ARROW,
-  rightArrowImageSource: RIGHT_ARROW,
-  allowShadow: true,
-  openThreshold: PAN_GESTURE_THRESHOLD,
-  closeThreshold: PAN_GESTURE_THRESHOLD,
-  closeOnDayPress: true
-};
 ExpandableCalendar.positions = Positions;
