@@ -91,7 +91,8 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     accessibilityElementsHidden,
     importantForAccessibility,
     testID,
-    style: propsStyle
+    style: propsStyle,
+    context
   } = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
@@ -195,8 +196,8 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     }
 
     const dateString = toMarkingFormat(day);
-    const isControlled = isEmpty(props.context);
-    const disableDaySelection = isControlled || props.context?.disableAutoSelection;
+    const isControlled = isEmpty(context);
+    const disableDaySelection = isControlled || context?.disableAutoSelection;
 
     return (
       <View style={style.current.dayContainer} key={id}>

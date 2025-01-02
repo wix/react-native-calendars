@@ -1,20 +1,17 @@
+import isEqual from 'lodash/isEqual';
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
 import {View} from 'react-native';
-import isEqual from 'lodash/isEqual';
-
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
 import {getState} from '../day-state-manager';
 import {extractDayProps} from '../componentUpdater';
-import styleConstructor from './style';
+import {ContextProp} from '../types';
 import {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
-import {CalendarContextProps} from './Context';
+import styleConstructor from './style';
 
-export type WeekProps = CalendarProps & {
-  context?: CalendarContextProps;
-};
+export type WeekProps = CalendarProps & ContextProp;
 
 function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {
   const {context: prevContext, markedDates: prevMarkings, ...prevOthers} = prevProps;
