@@ -178,11 +178,11 @@ const Timeline = (props: TimelineProps) => {
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, start);
     } else if (scrollToFirst && packedEvents[0].length > 0) {
       initialPosition = min(map(packedEvents[0], 'top')) ?? 0;
     } else if (initialTime) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, start, initialTime.hour, initialTime.minutes);
     }
 
     if (initialPosition) {
@@ -238,7 +238,7 @@ const Timeline = (props: TimelineProps) => {
     return (
       <React.Fragment key={dayIndex}>
         {renderEvents(dayIndex)}
-        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
+        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} start={start}/>}
       </React.Fragment>
     );
   };

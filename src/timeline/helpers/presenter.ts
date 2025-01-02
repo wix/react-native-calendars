@@ -22,9 +22,10 @@ export function buildTimeString(hour = 0, minutes = 0, date = '') {
   return `${date} ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`.trimStart();
 }
 
-export function calcTimeOffset(hourBlockHeight: number, hour?: number, minutes?: number) {
+export function calcTimeOffset(hourBlockHeight: number, start = 0, hour?: number, minutes?: number) {
   const now = new Date();
   const h = hour ?? now.getHours();
   const m = minutes ?? now.getMinutes();
-  return (h + m / 60) * hourBlockHeight;
+  const offset = h < start ? 0 : start;
+  return ((h + m / 60) - offset) * hourBlockHeight;
 }

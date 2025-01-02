@@ -102,8 +102,13 @@ describe('timeline presenter', () => {
     });
 
     it('should give offset based on given time', () => {
-      expect(uut.calcTimeOffset(100, 15, 30)).toBe(1550);
-      expect(uut.calcTimeOffset(100, 12, 10)).toBeCloseTo(1216.66, 1);
+      expect(uut.calcTimeOffset(100, 0, 15, 30)).toBe(1550);
+      expect(uut.calcTimeOffset(100, 0, 12, 10)).toBeCloseTo(1216.66, 1);
+    });
+
+    it('should give offset based on given time and start offset', () => {
+      expect(uut.calcTimeOffset(100, 2, 15, 30)).toBe(1350);
+      expect(uut.calcTimeOffset(100, 2, 12, 10)).toBeCloseTo(1016.66, 1);
     });
   });
 });
