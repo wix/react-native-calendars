@@ -8,7 +8,7 @@ import constants from '../commons/constants';
 import {generateDay} from '../dateutils';
 import {getCalendarDateString} from '../services';
 import styleConstructor from './style';
-import {populateEvents, HOUR_BLOCK_HEIGHT} from './Packer';
+import {calcHourBlockHeight, populateEvents} from './Packer';
 import {calcTimeOffset} from './helpers/presenter';
 import TimelineHours from './TimelineHours';
 import EventBlock from './EventBlock';
@@ -17,8 +17,8 @@ import useTimelineOffset from './useTimelineOffset';
 const Timeline = props => {
   const {
     format24h = true,
-    start = 0,
-    end = 24,
+    start,
+    end,
     date = '',
     events,
     onEventPress,
@@ -39,19 +39,34 @@ const Timeline = props => {
     eventTapped,
     numberOfDays = 1,
     timelineLeftInset = 0,
-    testID
+    testID,
+    cellDuration,
+    cellHeight
   } = props;
+
   const pageDates = useMemo(() => {
     return typeof date === 'string' ? [date] : date;
   }, [date]);
   const groupedEvents = useMemo(() => {
     return groupBy(events, e => getCalendarDateString(e.start));
   }, [events]);
+
   const pageEvents = useMemo(() => {
     return map(pageDates, d => groupedEvents[d] || []);
   }, [pageDates, groupedEvents]);
   const scrollView = useRef();
-  const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
+
+  const startInMinutes = useMemo(() => {
+    return (start.hour * 60 + start.minutes) / 60;
+  }, [start]);
+  const endInMinutes = useMemo(() => {
+    return (end.hour * 60 + end.minutes) / 60;
+  }, [end]);
+  const hourBlockHeight = useMemo(() => {
+    return calcHourBlockHeight(cellDuration, cellHeight);
+  }, [cellDuration, cellHeight]);
+  const calendarHeight = useRef((endInMinutes - startInMinutes) * hourBlockHeight);
+
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
   const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
   const width = useMemo(() => {
@@ -63,28 +78,31 @@ const Timeline = props => {
         screenWidth: width / numberOfDays,
         dayStart: start,
         overlapEventsSpacing: overlapEventsSpacing / numberOfDays,
-        rightEdgeSpacing: rightEdgeSpacing / numberOfDays
+        rightEdgeSpacing: rightEdgeSpacing / numberOfDays,
+        cellDuration: cellDuration,
+        cellHeight: cellHeight
       });
     });
   }, [pageEvents, start, numberOfDays]);
+
   useEffect(() => {
     let initialPosition = 0;
     if (scrollToNow) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+      initialPosition = calcTimeOffset(hourBlockHeight, undefined, undefined, start);
     } else if (scrollToFirst && packedEvents[0].length > 0) {
       initialPosition = min(map(packedEvents[0], 'top')) ?? 0;
     } else if (initialTime) {
-      initialPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT, initialTime.hour, initialTime.minutes);
+      initialPosition = calcTimeOffset(hourBlockHeight, initialTime.hour, initialTime.minutes);
     }
     if (initialPosition) {
       setTimeout(() => {
         scrollView?.current?.scrollTo({
-          y: Math.max(0, initialPosition - HOUR_BLOCK_HEIGHT),
+          y: Math.max(0, initialPosition - hourBlockHeight / 2),
           animated: true
         });
       }, 0);
     }
-  }, []);
+  }, [scrollToNow, scrollView, initialTime, hourBlockHeight]);
   const _onEventPress = useCallback(
     (dateIndex, eventIndex) => {
       const event = packedEvents[dateIndex][eventIndex];
@@ -125,11 +143,19 @@ const Timeline = props => {
   const renderTimelineDay = dayIndex => {
     const indexOfToday = pageDates.indexOf(generateDay(new Date().toString()));
     const left = timelineLeftInset + (indexOfToday * width) / numberOfDays;
+    const hourBlockHeight = calcHourBlockHeight(cellDuration, cellHeight);
     return (
       <React.Fragment key={dayIndex}>
         {renderEvents(dayIndex)}
         {indexOfToday !== -1 && showNowIndicator && (
-          <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />
+          <NowIndicator
+            width={width / numberOfDays}
+            left={left}
+            styles={styles.current}
+            hour={start.hour}
+            minutes={start.minutes}
+            hourBlockHeight={hourBlockHeight}
+          />
         )}
       </React.Fragment>
     );
@@ -158,6 +184,8 @@ const Timeline = props => {
         numberOfDays={numberOfDays}
         timelineLeftInset={timelineLeftInset}
         testID={`${testID}.hours`}
+        cellDuration={cellDuration}
+        cellHeight={cellHeight}
       />
       {times(numberOfDays, renderTimelineDay)}
     </ScrollView>

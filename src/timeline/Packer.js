@@ -1,17 +1,24 @@
 import inRange from 'lodash/inRange';
 import XDate from 'xdate';
 import constants from '../commons/constants';
-export const HOUR_BLOCK_HEIGHT = 100;
 const OVERLAP_EVENTS_SPACINGS = 10;
 const RIGHT_EDGE_SPACING = 10;
-function buildEvent(event, left, width, {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}) {
+
+function buildEvent(event, left, width, {dayStart = 0, cellDuration, cellHeight}) {
   const startTime = new XDate(event.start);
   const endTime = event.end ? new XDate(event.end) : new XDate(startTime).addHours(1);
-  const dayStartTime = new XDate(startTime).clearTime();
+
+  const cellCount = startTime.diffMinutes(endTime) / cellDuration;
+  const eventHeight = cellHeight * cellCount;
+  const hourBlockHeight = calcHourBlockHeight(cellDuration, cellHeight);
+
+  const dayStartTimeInMinutes = startTime.getHours() * 60 + startTime.getMinutes();
+  const workingDayStartTimeInMinutes = dayStart.hour * 60 + dayStart.minutes;
+
   return {
     ...event,
-    top: (dayStartTime.diffHours(startTime) - dayStart) * hourBlockHeight,
-    height: startTime.diffHours(endTime) * hourBlockHeight,
+    top: ((dayStartTimeInMinutes - workingDayStartTimeInMinutes) / 60) * hourBlockHeight,
+    height: eventHeight,
     width,
     left
   };
@@ -49,6 +56,9 @@ function packOverlappingEventGroup(columns, calculatedEvents, populateOptions) {
       calculatedEvents.push(buildEvent(event, eventLeft, eventWidth, populateOptions));
     });
   });
+}
+export function calcHourBlockHeight(cellDuration, cellHeight) {
+  return (60 / cellDuration) * cellHeight;
 }
 export function populateEvents(_events, populateOptions) {
   let lastEnd = null;
@@ -93,8 +103,8 @@ export function populateEvents(_events, populateOptions) {
   }
   return calculatedEvents;
 }
-export function buildUnavailableHoursBlocks(unavailableHours = [], options) {
-  const {hourBlockHeight = HOUR_BLOCK_HEIGHT, dayStart = 0, dayEnd = 24} = options || {};
+export function buildUnavailableHoursBlocks(cellDuration, cellHeight, unavailableHours = [], options) {
+  const {hourBlockHeight = calcHourBlockHeight(cellDuration, cellHeight), dayStart = 0, dayEnd = 24} = options || {};
   const totalDayHours = dayEnd - dayStart;
   const totalDayHeight = (dayEnd - dayStart) * hourBlockHeight;
   return (
