@@ -53,7 +53,7 @@ export interface CalendarHeaderProps {
   disableArrowLeft?: boolean;
   /** Disable right arrow */
   disableArrowRight?: boolean;
-  /** Apply custom disable color to selected day names indexes */
+  /** Apply custom disable color to selected day names by their index */
   disabledDaysIndexes?: number[];
   /** Replace default title with custom one. the function receive a date as parameter */
   renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
@@ -110,19 +110,19 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     timelineLeftInset
   } = props;
   
-  const numberOfDaysCondition = useMemo(() => {
+  const isCustomNumberOfDays = useMemo(() => {
     return numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
   const style = useRef(styleConstructor(theme));
   const headerStyle = useMemo(() => {
-    return [style.current.header, numberOfDaysCondition ? style.current.partialHeader : undefined];
-  }, [numberOfDaysCondition]);
+    return [style.current.header, isCustomNumberOfDays ? style.current.partialHeader : undefined];
+  }, [isCustomNumberOfDays]);
   const partialWeekStyle = useMemo(() => {
     return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
   }, [timelineLeftInset]);
   const dayNamesStyle = useMemo(() => {
-    return [style.current.week, numberOfDaysCondition ? partialWeekStyle : undefined];
-  }, [numberOfDaysCondition, partialWeekStyle]);
+    return [style.current.week, isCustomNumberOfDays ? partialWeekStyle : undefined];
+  }, [isCustomNumberOfDays, partialWeekStyle]);
   const hitSlop: Insets | undefined = useMemo(
     () =>
       typeof arrowsHitSlop === 'number'
@@ -173,8 +173,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
   const renderWeekDays = useMemo(() => {
     const dayOfTheWeek = new XDate(current).getDay();
-    const weekDaysNames = numberOfDaysCondition ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
-    const dayNames = numberOfDaysCondition ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
+    const weekDaysNames = isCustomNumberOfDays ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
+    const dayNames = isCustomNumberOfDays ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
 
     return dayNames.map((day: string, index: number) => {
       const dayStyle = [style.current.dayHeader];
@@ -194,7 +194,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         </Text>
       );
     });
-  }, [firstDay, current, numberOfDaysCondition, numberOfDays, disabledDaysIndexes]);
+  }, [firstDay, current, isCustomNumberOfDays, numberOfDays, disabledDaysIndexes]);
 
   const _renderHeader = () => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
@@ -256,6 +256,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         <ActivityIndicator
           color={theme?.indicatorColor as ColorValue}
           testID={`${testID}.loader`}
+          style={style.current.spinner}
         />
       );
     }

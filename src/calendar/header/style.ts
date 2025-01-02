@@ -58,7 +58,7 @@ export default function (theme: Theme = {}) {
     dayHeader: {
       marginTop: 2,
       marginBottom: 7,
-      width: 32,
+      width: appStyle.dayHeaderWidth,
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
@@ -67,6 +67,11 @@ export default function (theme: Theme = {}) {
     },
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
+    },
+    spinner: {
+      position: 'absolute',
+      right: -30,
+      alignSelf: 'center'
     },
     ...(theme['stylesheet.calendar.header'] || {})
   });

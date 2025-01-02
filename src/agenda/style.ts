@@ -35,7 +35,7 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.calendarBackground
     },
     dayHeader: {
-      width: 32,
+      width: appStyle.dayHeaderWidth,
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,

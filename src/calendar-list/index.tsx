@@ -1,21 +1,20 @@
+import isEqual from 'lodash/isEqual';
 import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-
 import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
 import {FlatList, FlatListProps, View, ViewStyle} from 'react-native';
-
 import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
 import {parseDate, toMarkingFormat, xdateToData} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
 import constants from '../commons/constants';
 import {useDidUpdate} from '../hooks';
 import {ContextProp} from '../types';
-import styleConstructor from './style';
+import {basicDayHeight, weekVerticalMargin} from '../style';
 import Calendar, {CalendarProps} from '../calendar';
-import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
-import isEqual from 'lodash/isEqual';
+import styleConstructor from './style';
+import CalendarListItem from './item';
 
 const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
@@ -173,7 +172,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       for (let i = 0; i < days.length; i++) {
         week = Math.floor(i / 7);
         if (sameDate(days[i], scrollTo)) {
-          scrollAmount += 46 * week;
+          scrollAmount += (basicDayHeight + weekVerticalMargin * 2) * week;
           break;
         }
       }

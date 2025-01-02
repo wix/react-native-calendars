@@ -86,7 +86,7 @@ export default function styleConstructor(theme: Theme = {}) {
       justifyContent: 'space-between' 
     },
     dayHeader: {
-      width: 32,
+      width: appStyle.dayHeaderWidth,
       textAlign: 'center',
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
