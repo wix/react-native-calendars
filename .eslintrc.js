@@ -24,6 +24,7 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     'no-unused-vars': 1,
     'object-curly-spacing': ['error', 'never'],
+    'comma-dangle': [0, 'never'],
     'react/jsx-uses-react': 2,
     'react/jsx-uses-vars': 2,
     'react-native/no-inline-styles': 1,
