@@ -6,6 +6,9 @@ export interface NowIndicatorProps {
     };
     width: number;
     left: number;
+    hour: number;
+    minutes: number;
+    hourBlockHeight: number;
 }
 declare const NowIndicator: (props: NowIndicatorProps) => React.JSX.Element;
 export default NowIndicator;

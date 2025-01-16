@@ -7,8 +7,14 @@ interface NewEventTime {
     date?: string;
 }
 export interface TimelineHoursProps {
-    start?: number;
-    end?: number;
+    start?:  {
+        hour: number;
+        minutes: number;
+    };
+    end?:  {
+        hour: number;
+        minutes: number;
+    };
     date?: string;
     format24h?: boolean;
     onBackgroundLongPress?: (timeString: string, time: NewEventTime) => void;
@@ -22,6 +28,8 @@ export interface TimelineHoursProps {
     numberOfDays: number;
     timelineLeftInset?: number;
     testID?: string;
+    cellDuration?: number;
+    cellHeight?: number;
 }
 declare const _default: React.MemoExoticComponent<(props: TimelineHoursProps) => React.JSX.Element>;
 export default _default;

@@ -1,10 +1,9 @@
 import React, {useMemo} from 'react';
 import {View} from 'react-native';
 import {calcTimeOffset} from './helpers/presenter';
-import {HOUR_BLOCK_HEIGHT} from './Packer';
 const NowIndicator = props => {
-  const {styles, width, left} = props;
-  const indicatorPosition = calcTimeOffset(HOUR_BLOCK_HEIGHT);
+  const {styles, width, left, hour, minutes, hourBlockHeight} = props;
+  const indicatorPosition = calcTimeOffset(hourBlockHeight, hour, minutes, {hour: 0, minutes: 0});
   const nowIndicatorStyle = useMemo(() => {
     return [styles.nowIndicator, {top: indicatorPosition, left}];
   }, [indicatorPosition, left]);
