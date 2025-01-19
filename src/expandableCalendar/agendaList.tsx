@@ -8,7 +8,7 @@ import debounce from 'lodash/debounce';
 
 import XDate from 'xdate';
 
-import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
+import React, {forwardRef, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   SectionList,
   DefaultSectionT,
@@ -41,7 +41,7 @@ const viewabilityConfig = {
  * @extends: SectionList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const AgendaList = (props: AgendaListProps) => {
+const AgendaList = forwardRef((props: AgendaListProps) => {
   if (props.infiniteListProps) {
     return <InfiniteAgendaList {...props} />;
   }
@@ -245,7 +245,7 @@ const AgendaList = (props: AgendaListProps) => {
   // _getItemLayout = (data, index) => {
   //   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
   // }
-};
+});
 
 export default AgendaList;
 
@@ -255,6 +255,6 @@ AgendaList.propTypes = {
   dayFormatter: PropTypes.func,
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
-  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   avoidDateUpdates: PropTypes.bool
 };
