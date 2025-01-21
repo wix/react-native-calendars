@@ -139,7 +139,7 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   const daysBefore = (from.getDay() + 7 - fdow) % 7;
 
     if (from.getDay() !== fdow) {
-    from.addDays(-(from.getDay() + 7 - fdow) % 7);
+    from.addDays(-daysBefore);
   }
 
   const to = days[days.length - 1].clone();
