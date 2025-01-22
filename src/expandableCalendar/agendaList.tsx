@@ -257,6 +257,7 @@ AgendaList.propTypes = {
   dayFormatter: PropTypes.func,
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
-  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  // @ts-expect-error TODO Figure out why forwardRef causes error about the number type
+  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   avoidDateUpdates: PropTypes.bool
 };
