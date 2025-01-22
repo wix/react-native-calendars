@@ -8,7 +8,7 @@ import debounce from 'lodash/debounce';
 
 import XDate from 'xdate';
 
-import React, {useCallback, useContext, useEffect, useMemo, useRef} from 'react';
+import React, {forwardRef, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   SectionList,
   DefaultSectionT,
@@ -19,7 +19,7 @@ import {
   ViewToken,
 } from 'react-native';
 
-import {useDidUpdate} from '../hooks';
+import {useDidUpdate, useCombinedRefs} from '../hooks';
 import {getMoment} from '../momentResolver';
 import {isToday, isGTE, sameDate} from '../dateutils';
 import {parseDate} from '../interface';
@@ -41,7 +41,7 @@ const viewabilityConfig = {
  * @extends: SectionList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const AgendaList = (props: AgendaListProps) => {
+const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
   if (props.infiniteListProps) {
     return <InfiniteAgendaList {...props} />;
   }
@@ -69,7 +69,7 @@ const AgendaList = (props: AgendaListProps) => {
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
 
   const style = useRef(styleConstructor(theme));
-  const list = useRef<any>();
+  const list = useCombinedRefs(ref);
   const _topSection = useRef(sections[0]?.title);
   const didScroll = useRef(false);
   const sectionScroll = useRef(false);
@@ -151,6 +151,7 @@ const AgendaList = (props: AgendaListProps) => {
       sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
       _topSection.current = sections[sectionIndex]?.title;
 
+      // @ts-expect-error should be fixed when we fix the typings of the ref.
       list?.current.scrollToLocation({
         animated: true,
         sectionIndex: sectionIndex,
@@ -228,6 +229,7 @@ const AgendaList = (props: AgendaListProps) => {
     <SectionList
       stickySectionHeadersEnabled
       {...props}
+      // @ts-expect-error
       ref={list}
       keyExtractor={_keyExtractor}
       showsVerticalScrollIndicator={false}
@@ -245,7 +247,7 @@ const AgendaList = (props: AgendaListProps) => {
   // _getItemLayout = (data, index) => {
   //   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
   // }
-};
+});
 
 export default AgendaList;
 
@@ -255,6 +257,7 @@ AgendaList.propTypes = {
   dayFormatter: PropTypes.func,
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
+  // @ts-expect-error TODO Figure out why forwardRef causes error about the number type
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   avoidDateUpdates: PropTypes.bool
 };
