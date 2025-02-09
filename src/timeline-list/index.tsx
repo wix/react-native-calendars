@@ -49,10 +49,18 @@ export interface TimelineListProps {
    * Should initially scroll to a specific time (relevant only for NOT "today" timelines)
    */
   initialTime?: TimelineProps['initialTime'];
+  /** 
+   * Props to pass the InfinitList
+   */
+  infiniteListProps?: {
+    disableRecycling?: boolean;
+  }
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
+  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime, infiniteListProps} = props;
+  const disableRecycling = infiniteListProps?.disableRecycling;
+  const shouldFixRTL = disableRecycling || constants.isAndroidRTL; // isHorizontal = true
   const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
@@ -74,8 +82,7 @@ const TimelineList = (props: TimelineListProps) => {
     prevDate.current = date;
   }, [updateSource]);
 
-  const initialOffset = useMemo(() =>
-  constants.isAndroidRTL ? constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE, []);
+  const initialOffset = useMemo(() => shouldFixRTL ? constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE, []);
 
   useEffect(() => {
     if (date !== prevDate.current) {
@@ -97,7 +104,7 @@ const TimelineList = (props: TimelineListProps) => {
 
   const onPageChange = useCallback(
     throttle((pageIndex: number) => {
-      const newDate = pages[constants.isAndroidRTL ? pageIndex - 1 : pageIndex];
+      const newDate = pages[shouldFixRTL ? pageIndex - 1 : pageIndex];
       if (newDate !== prevDate.current) {
         setDate(newDate, UpdateSources.LIST_DRAG);
       }
@@ -166,6 +173,7 @@ const TimelineList = (props: TimelineListProps) => {
       scrollViewProps={{
         onMomentumScrollEnd
       }}
+      disableRecycling={disableRecycling}
     />
   );
 };
