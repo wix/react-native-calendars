@@ -67,7 +67,7 @@ const TimelineList = (props: TimelineListProps) => {
   const [timelineOffset, setTimelineOffset] = useState();
 
   const {pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange} =
-    useTimelinePages({date, listRef, numberOfDays});
+    useTimelinePages({date, listRef, numberOfDays, shouldFixRTL});
 
   const scrollToCurrentDate = useCallback((date: string) => {
     const datePageIndex = pagesRef.current.indexOf(date);
