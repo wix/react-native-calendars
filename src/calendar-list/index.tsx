@@ -101,12 +101,14 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     /** FlatList props */
     contentContainerStyle,
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
+    onHeaderLayout
   } = props;
 
   const calendarProps = extractCalendarProps(props);
   const headerProps = extractHeaderProps(props);
   const calendarSize = horizontal ? calendarWidth : calendarHeight;
+  const shouldUseStaticHeader = staticHeader && horizontal;
 
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
@@ -250,12 +252,13 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
+        onHeaderLayout={!shouldUseStaticHeader ? onHeaderLayout : undefined}
       />
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
   const renderStaticHeader = () => {
-    if (staticHeader && horizontal) {
+    if (shouldUseStaticHeader) {
       return (
         <CalendarHeader
           {...headerProps}
@@ -265,6 +268,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           addMonth={addMonth}
           accessibilityElementsHidden={true} // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
+          onHeaderLayout={onHeaderLayout}
         />
       );
     }
