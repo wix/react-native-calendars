@@ -1,6 +1,5 @@
 import {useCallback, useState} from 'react';
 import type {LayoutChangeEvent} from 'react-native';
-import _ from 'lodash';
 
 const useHeaderHeight = () => {
     const [headerHeight, setHeaderHeight] = useState<number>(0);
