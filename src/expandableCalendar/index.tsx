@@ -127,7 +127,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   } = props;
 
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-  const {headerHeight, onHeaderLayout} = useHeaderHeight({horizontal});
+  const {headerHeight, onHeaderLayout} = useHeaderHeight();
 
   /** Date */
 
