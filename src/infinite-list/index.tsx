@@ -51,7 +51,6 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     disableScrollOnDataChange,
     onEndReachedThreshold,
     onVisibleIndicesChanged,
-    disableRecycling,
     layoutProvider,
     onScroll,
     onEndReached,
@@ -73,7 +72,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   );
 
   const shouldFixRTL = useMemo(() => {
-    return isHorizontal && (disableRecycling || constants.isAndroidRTL);
+    return isHorizontal && (constants.isRN73() || constants.isAndroidRTL);
   }, []);
 
   const listRef = useCombinedRefs(ref);
@@ -177,7 +176,6 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       // @ts-expect-error
       ref={listRef}
       isHorizontal={isHorizontal}
-      disableRecycling={shouldFixRTL || disableRecycling}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
       layoutProvider={layoutProvider ?? _layoutProvider.current}

@@ -49,18 +49,11 @@ export interface TimelineListProps {
    * Should initially scroll to a specific time (relevant only for NOT "today" timelines)
    */
   initialTime?: TimelineProps['initialTime'];
-  /** 
-   * Props to pass the InfinitList
-   */
-  infiniteListProps?: {
-    disableRecycling?: boolean;
-  }
 }
 
 const TimelineList = (props: TimelineListProps) => {
-  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime, infiniteListProps} = props;
-  const disableRecycling = infiniteListProps?.disableRecycling;
-  const shouldFixRTL = disableRecycling || constants.isAndroidRTL; // isHorizontal = true
+  const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
+  const shouldFixRTL = constants.isRN73() || constants.isAndroidRTL; // isHorizontal = true
   const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
@@ -173,7 +166,6 @@ const TimelineList = (props: TimelineListProps) => {
       scrollViewProps={{
         onMomentumScrollEnd
       }}
-      disableRecycling={disableRecycling}
     />
   );
 };
