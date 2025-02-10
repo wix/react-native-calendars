@@ -7,12 +7,10 @@ import constants from '../commons/constants';
 export const HEADER_HEIGHT = 68;
 export const KNOB_CONTAINER_HEIGHT = 24;
 
-type StyleConstructorOptions = Partial<{
-  headerHeight: number
-}>;
 
-export default function styleConstructor(theme: Theme = {}, {headerHeight = HEADER_HEIGHT}: StyleConstructorOptions = {}) {
+export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
+
   return StyleSheet.create({
     containerShadow: {
       backgroundColor: appStyle.calendarBackground,
@@ -98,7 +96,7 @@ export default function styleConstructor(theme: Theme = {}, {headerHeight = HEAD
       position: 'absolute',
       left: 0,
       right: 0,
-      top: headerHeight
+      top: HEADER_HEIGHT + (constants.isAndroid ? 8 : 9), // align row on top of calendar's first row
     },
     hidden: {
       opacity: 0
