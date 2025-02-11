@@ -72,7 +72,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
   );
 
   const shouldFixRTL = useMemo(() => {
-    return isHorizontal && (constants.isRN73() || constants.isAndroidRTL);
+    return isHorizontal && constants.isRTL && (constants.isRN73() || constants.isAndroid);
   }, []);
 
   const listRef = useCombinedRefs(ref);

@@ -53,7 +53,7 @@ export interface TimelineListProps {
 
 const TimelineList = (props: TimelineListProps) => {
   const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
-  const shouldFixRTL = constants.isRN73() || constants.isAndroidRTL; // isHorizontal = true
+  const shouldFixRTL = constants.isRTL && (constants.isRN73() || constants.isAndroid); // isHorizontal = true
   const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
