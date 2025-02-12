@@ -103,7 +103,7 @@ const App = () => {
         setSelected(day.dateString);
       }}
       markedDates={{
-        [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
+        [selected]: {selected: true, disableTouchEvent: true, selectedColor: 'orange'}
       }}
     />
   );
@@ -176,7 +176,7 @@ const App = () => {
         setSelected(day.dateString);
       }}
       markedDates={{
-        [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
+        [selected]: {selected: true, disableTouchEvent: true, selectedColor: 'orange'}
       }}
     />
   );
