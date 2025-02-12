@@ -16,7 +16,8 @@ import {
   ImageSourcePropType,
   GestureResponderEvent,
   PanResponderGestureState,
-  TouchableOpacity
+  TouchableOpacity,
+  type LayoutChangeEvent
 } from 'react-native';
 
 import {page} from '../dateutils';
@@ -31,7 +32,6 @@ import WeekCalendar from './WeekCalendar';
 import Context from './Context';
 import constants from '../commons/constants';
 import {UpdateSources} from './commons';
-import useHeaderHeight from './useHeaderHeight';
 
 export enum Positions {
   CLOSED = 'closed',
@@ -127,7 +127,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   } = props;
 
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-  const {headerHeight, onHeaderLayout} = useHeaderHeight();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const onHeaderLayout = useCallback(({nativeEvent: {layout: {height}}}: LayoutChangeEvent) => {
+      setHeaderHeight(height);
+  }, []);
 
   /** Date */
 
