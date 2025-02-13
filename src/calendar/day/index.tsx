@@ -12,6 +12,10 @@ import BasicDay, {BasicDayProps} from './basic';
 import PeriodDay from './period';
 
 function areEqual(prevProps: DayProps, nextProps: DayProps) {
+  // if we have a user provided equality function then we run that instead
+  if (typeof nextProps.dayComponentMemoEqualityFn === 'function') {
+    return nextProps.dayComponentMemoEqualityFn(prevProps, nextProps);
+  }
   const prevPropsWithoutMarkDates = omit(prevProps, 'marking');
   const nextPropsWithoutMarkDates = omit(nextProps, 'marking');
   const didPropsChange = some(prevPropsWithoutMarkDates, function (value, key) {
@@ -24,6 +28,15 @@ function areEqual(prevProps: DayProps, nextProps: DayProps) {
 export interface DayProps extends BasicDayProps {
   /** Provide custom day rendering component */
   dayComponent?: React.ComponentType<DayProps & {date?: DateData}>; // TODO: change 'date' prop type to string by removing it from overriding BasicDay's 'date' prop (breaking change for V2)
+  /**
+   * Provide your own custom equality function for memoizing the day component
+   */
+  dayComponentMemoEqualityFn?: (prevProps: DayProps, nextProps: DayProps) => boolean;
+  /**
+   * Custom data object to be passed as a prop to the Day component.
+   * May be used for memo equality check or additional data to your custom Day component
+   */
+  extraData?: Record<string, unknown>;
 }
 
 const Day = React.memo((props: DayProps) => {
