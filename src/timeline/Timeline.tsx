@@ -115,6 +115,10 @@ export interface TimelineProps {
   timelineLeftInset?: number;
   /** Identifier for testing */
   testID?: string;
+  /**
+   * Enables nested scrolling for Android API level 21+
+   */
+  nestedScrollEnabled?: boolean;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -143,6 +147,7 @@ const Timeline = (props: TimelineProps) => {
     numberOfDays = 1,
     timelineLeftInset = 0,
     testID,
+    nestedScrollEnabled = false,
   } = props;
 
   const pageDates = useMemo(() => {
@@ -250,6 +255,7 @@ const Timeline = (props: TimelineProps) => {
       style={styles.current.container}
       contentContainerStyle={[styles.current.contentStyle, {width: constants.screenWidth}]}
       showsVerticalScrollIndicator={false}
+      nestedScrollEnabled={nestedScrollEnabled}
       {...scrollEvents}
       testID={testID}
     >
