@@ -34,6 +34,7 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
     itemHeightByType?: Record<string, number>;
     visibleIndicesChangedDebounce?: number;
     renderFooter?: () => React.ReactElement | null;
+    forceNonDeterministicRendering?: boolean;
   };
 }
 
