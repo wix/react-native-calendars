@@ -15,9 +15,10 @@ interface UseTimelinePagesProps {
   date: string;
   listRef: RefObject<any>;
   numberOfDays: number;
+  shouldFixRTL: boolean;
 }
 
-const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) => {
+const UseTimelinePages = ({date, listRef, numberOfDays, shouldFixRTL}: UseTimelinePagesProps) => {
   const pagesRef = useRef(
     times(PAGES_COUNT, i => {
       return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
@@ -48,7 +49,7 @@ const UseTimelinePages = ({date, listRef, numberOfDays}: UseTimelinePagesProps) 
   }, []);
 
   const scrollToPage = (pageIndex: number) => {
-    listRef.current?.scrollToOffset(constants.isAndroidRTL ? ((PAGES_COUNT - 1 - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
+    listRef.current?.scrollToOffset(shouldFixRTL ? ((PAGES_COUNT - 1 - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
   };
 
   const resetPages = (date: string) => {
