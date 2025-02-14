@@ -8,7 +8,7 @@ import constants from '../commons/constants';
 import {buildTimeString, calcTimeByPosition, calcDateByPosition} from './helpers/presenter';
 import {buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
 
-interface NewEventTime {
+export interface NewEventTime {
   hour: number;
   minutes: number;
   date?: string;

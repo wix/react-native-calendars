@@ -75,6 +75,7 @@ export interface Theme {
   arrowWidth?: number;
   weekVerticalMargin?: number;
   reservationsBackgroundColor?: string;
+  eventPlaceholderStyle?: object;
   stylesheet?: {
     calendar?: {
       main?: object; 
