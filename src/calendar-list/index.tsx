@@ -39,6 +39,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+  /** Whether to invert the calendar */
+  inverted?: boolean;
 }
 
 export interface CalendarListImperativeMethods {
@@ -79,6 +81,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     calendarWidth = CALENDAR_WIDTH,
     calendarStyle,
     animateScroll = false,
+    inverted = false,
     showScrollIndicator = false,
     staticHeader,
     /** View props */
@@ -124,8 +127,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const rangeDate = initialDate.current?.clone().addMonths(i - pastScrollRange, true);
       months.push(rangeDate);
     }
-    return months;
-  }, [pastScrollRange, futureScrollRange]);
+    return  inverted ? months.reverse() : months;
+  }, [pastScrollRange, futureScrollRange, inverted]);
 
   const staticHeaderStyle = useMemo(() => {
     return [style.current.staticHeader, headerStyle];
