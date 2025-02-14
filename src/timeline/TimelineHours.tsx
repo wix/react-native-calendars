@@ -1,12 +1,12 @@
 import range from 'lodash/range';
 import times from 'lodash/times';
 
-import React, {useCallback, useMemo, useRef} from 'react';
-import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet} from 'react-native';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 
 import constants from '../commons/constants';
-import {buildTimeString, calcTimeByPosition, calcDateByPosition} from './helpers/presenter';
-import {buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
+import { buildTimeString, calcTimeByPosition, calcDateByPosition } from './helpers/presenter';
+import { buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT, UnavailableHours } from './Packer';
 
 interface NewEventTime {
   hour: number;
@@ -23,7 +23,7 @@ export interface TimelineHoursProps {
   onBackgroundLongPressOut?: (timeString: string, time: NewEventTime) => void;
   unavailableHours?: UnavailableHours[];
   unavailableHoursColor?: string;
-  styles: {[key: string]: ViewStyle | TextStyle};
+  styles: { [key: string]: ViewStyle | TextStyle };
   width: number;
   numberOfDays: number;
   timelineLeftInset?: number;
@@ -51,26 +51,19 @@ const TimelineHours = (props: TimelineHoursProps) => {
   } = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();
-  // const offset = this.calendarHeight / (end - start);
-  const offset = HOUR_BLOCK_HEIGHT;
-  const unavailableHoursBlocks = buildUnavailableHoursBlocks(unavailableHours, {dayStart: start, dayEnd: end});
+  const offset = HOUR_BLOCK_HEIGHT / 3; // Adjust height for 10-minute intervals
+  const unavailableHoursBlocks = buildUnavailableHoursBlocks(unavailableHours, { dayStart: start, dayEnd: end });
 
   const hours = useMemo(() => {
-    return range(start, end + 1).map(i => {
-      let timeText;
+    const minutesInDay = (end - start) * 60;
+    const intervals = range(0, minutesInDay + 10, 10); // 10-minute steps
 
-      if (i === start) {
-        timeText = '';
-      } else if (i < 12) {
-        timeText = !format24h ? `${i} AM` : `${i}:00`;
-      } else if (i === 12) {
-        timeText = !format24h ? `${i} PM` : `${i}:00`;
-      } else if (i === 24) {
-        timeText = !format24h ? '12 AM' : '23:59';
-      } else {
-        timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
-      }
-      return {timeText, time: i};
+    return intervals.map(minuteOfDay => {
+      const hour = Math.floor(minuteOfDay / 60);
+      const minutes = minuteOfDay % 60;
+      const timeText = buildTimeString(hour, minutes, format24h ? "true" : "false");
+
+      return { timeText, time: minuteOfDay };
     });
   }, [start, end, format24h]);
 
@@ -78,9 +71,9 @@ const TimelineHours = (props: TimelineHoursProps) => {
     event => {
       const yPosition = event.nativeEvent.locationY;
       const xPosition = event.nativeEvent.locationX;
-      const {hour, minutes} = calcTimeByPosition(yPosition, HOUR_BLOCK_HEIGHT);
+      const { hour, minutes } = calcTimeByPosition(yPosition, offset);
       const dateByPosition = calcDateByPosition(xPosition, timelineLeftInset, numberOfDays, date);
-      lastLongPressEventTime.current = {hour, minutes, date: dateByPosition};
+      lastLongPressEventTime.current = { hour, minutes, date: dateByPosition };
 
       const timeString = buildTimeString(hour, minutes, dateByPosition);
       onBackgroundLongPress?.(timeString, lastLongPressEventTime.current);
@@ -90,7 +83,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
 
   const handlePressOut = useCallback(() => {
     if (lastLongPressEventTime.current) {
-      const {hour, minutes, date} = lastLongPressEventTime.current;
+      const { hour, minutes, date } = lastLongPressEventTime.current;
       const timeString = buildTimeString(hour, minutes, date);
       onBackgroundLongPressOut?.(timeString, lastLongPressEventTime.current);
       lastLongPressEventTime.current = undefined;
@@ -108,36 +101,33 @@ const TimelineHours = (props: TimelineHoursProps) => {
           style={[
             styles.unavailableHoursBlock,
             block,
-            unavailableHoursColor ? {backgroundColor: unavailableHoursColor} : undefined,
-            {left: timelineLeftInset}
+            unavailableHoursColor ? { backgroundColor: unavailableHoursColor } : undefined,
+            { left: timelineLeftInset }
           ]}
         ></View>
       ))}
 
-      {hours.map(({timeText, time}, index) => {
+      {hours.map(({ timeText, time }, index) => {
+        const topPosition = offset * index;
         return (
           <React.Fragment key={time}>
-            <Text key={`timeLabel${time}`} style={[styles.timeLabel, {top: offset * index - 6, width: timelineLeftInset - 16}]}>
+            <Text
+              key={`timeLabel${time}`}
+              style={[styles.timeLabel, { top: topPosition - 6, width: timelineLeftInset - 16 }]}
+            >
               {timeText}
             </Text>
-            {time === start ? null : (
-              <View
-                key={`line${time}`}
-                testID={`${testID}.${time}.line`}
-                style={[styles.line, {top: offset * index, width: dimensionWidth - EVENT_DIFF, left: timelineLeftInset - 16}]}
-              />
-            )}
-            {
-              <View
-                key={`lineHalf${time}`}
-                testID={`${testID}.${time}.lineHalf`}
-                style={[styles.line, {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF, left: timelineLeftInset - 16}]}
-              />
-            }
+            <View
+              key={`line${time}`}
+              testID={`${testID}.${time}.line`}
+              style={[styles.line, { top: topPosition, width: dimensionWidth - EVENT_DIFF, left: timelineLeftInset - 16 }]}
+            />
           </React.Fragment>
         );
       })}
-      {times(numberOfDays, (index) => <View key={index} style={[styles.verticalLine, {right: (index + 1) * width / numberOfDays}]} />)}
+      {times(numberOfDays, (index) => (
+        <View key={index} style={[styles.verticalLine, { right: (index + 1) * width / numberOfDays }]} />
+      ))}
     </>
   );
 };
