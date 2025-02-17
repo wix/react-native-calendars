@@ -214,7 +214,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   const themeObject = Object.assign(headerStyleOverride, theme);
 
   const _wrapperStyles = useRef({style: {height: startHeight}});
-  const _headerStyles = useMemo(() => ({style: {top: isOpen ? -headerHeight : 0}}), [headerHeight]);
+  const _headerStyles = {style: {top: isOpen ? -headerHeight : 0}};
   const _weekCalendarStyles = {style: {opacity: isOpen ? 0 : 1}};
 
   const shouldHideArrows = !horizontal ? true : hideArrows || false;
