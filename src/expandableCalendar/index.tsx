@@ -127,7 +127,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   } = props;
 
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-  const [headerHeight, setHeaderHeight] = useState(constants.isAndroid ? 80 : 75);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const onHeaderLayout = useCallback(({nativeEvent: {layout: {height}}}: LayoutChangeEvent) => {
       setHeaderHeight(height);
   }, []);
