@@ -113,6 +113,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
   const shouldUseAndroidRTLFix = useMemo(() => constants.isAndroidRTL && horizontal, [horizontal]);
+  const shouldMeasureHeader = useRef(true);
 
   const style = useRef(styleConstructor(theme));
   const list = useRef();
@@ -239,6 +240,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
+    const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+    shouldMeasureHeader.current = false;
     return (
       <CalendarListItem
         {...calendarProps}
@@ -252,7 +255,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
-        onHeaderLayout={!shouldUseStaticHeader ? onHeaderLayout : undefined}
+        onHeaderLayout={onHeaderLayoutToPass}
       />
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
