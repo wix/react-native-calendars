@@ -22,6 +22,7 @@ const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
+  onWeekScroll?: (newDate: string) => {};
 }
 
 /**
@@ -37,6 +38,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     theme,
     testID,
     markedDates,
+    onWeekScroll = () => {}
   } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
@@ -80,6 +82,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: adjustedIndexFrScroll, animated: false});
       }
     }
+    onWeekScroll(date)
   }, [date, updateSource]);
 
   const containerWidth = useMemo(() => {
