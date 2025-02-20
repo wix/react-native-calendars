@@ -39,7 +39,6 @@ export enum Positions {
 }
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 120; // header + 1 week
 const WEEK_HEIGHT = 46;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
@@ -180,11 +179,11 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
     }
-    return CLOSED_HEIGHT + (WEEK_HEIGHT * (numberOfWeeks.current - 1)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
+    return headerHeight + (WEEK_HEIGHT * (numberOfWeeks.current)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
   };
   const openHeight = useRef(getOpenHeight());
-  const closedHeight = useMemo(() => CLOSED_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob]);
-  const startHeight = useMemo(() => isOpen ? openHeight.current : closedHeight, [closedHeight, isOpen]);
+  const closedHeightWithKnob = useMemo(() => headerHeight + WEEK_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob, headerHeight]);
+  const startHeight = useMemo(() => isOpen ? openHeight.current : closedHeightWithKnob, [closedHeightWithKnob, isOpen]);
   const _height = useRef(startHeight);
   const deltaY = useMemo(() => new Animated.Value(startHeight), [startHeight]);
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -headerHeight : 0));
@@ -193,6 +192,10 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     _height.current = startHeight;
     deltaY.setValue(startHeight);
   }, [startHeight]);
+
+  useEffect(() => {
+    openHeight.current = getOpenHeight();
+  } ,[headerHeight]);
 
 
   useEffect(() => {
@@ -344,7 +347,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
     // limit min height to closed height and max to open height
-    _wrapperStyles.current.style.height = Math.min(Math.max(closedHeight, _height.current + gestureState.dy), openHeight.current);
+    _wrapperStyles.current.style.height = Math.min(Math.max(closedHeightWithKnob, _height.current + gestureState.dy), openHeight.current);
 
     if (!horizontal) {
       // vertical CalenderList header
@@ -375,15 +378,15 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
     onPanResponderTerminate: handlePanResponderEnd
-  }) : PanResponder.create({}), [numberOfDays, position]);
+  }) : PanResponder.create({}), [numberOfDays, position, headerHeight]);
 
   /** Animated */
 
   const bounceToPosition = (toValue = 0) => {
     if (!disablePan) {
-      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
+      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeightWithKnob + openThreshold;
       let _isOpen = _height.current >= threshold;
-      const newValue = _isOpen ? openHeight.current : closedHeight;
+      const newValue = _isOpen ? openHeight.current : closedHeightWithKnob;
 
       deltaY.setValue(_height.current); // set the start position for the animated value
       _height.current = toValue || newValue;
@@ -397,7 +400,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         useNativeDriver: false
       }).start(() => {
         onCalendarToggled?.(_isOpen);
-        setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
+        setPosition(() => _height.current === closedHeightWithKnob ? Positions.CLOSED : Positions.OPEN);
       });
       closeHeader(_isOpen);
     }
@@ -425,14 +428,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     setTimeout(() => {
       // to allows setDate to be completed
       if (isOpen) {
-        bounceToPosition(closedHeight);
+        bounceToPosition(closedHeightWithKnob);
       }
     }, 0);
-  }, [isOpen, closedHeight]);
+  }, [isOpen, closedHeightWithKnob]);
 
   const toggleCalendarPosition = useCallback(() => {
-    bounceToPosition(isOpen ? closedHeight : openHeight.current);
-  }, [isOpen, bounceToPosition, closedHeight]);
+    bounceToPosition(isOpen ? closedHeightWithKnob : openHeight.current);
+  }, [isOpen, bounceToPosition, closedHeightWithKnob]);
 
   /** Events */
 
