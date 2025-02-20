@@ -262,6 +262,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const renderStaticHeader = () => {
     if (shouldUseStaticHeader) {
+      const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+      shouldMeasureHeader.current = false;
       return (
         <CalendarHeader
           {...headerProps}
@@ -271,7 +273,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           addMonth={addMonth}
           accessibilityElementsHidden={true} // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
-          onHeaderLayout={onHeaderLayout}
+          onHeaderLayout={onHeaderLayoutToPass}
         />
       );
     }
