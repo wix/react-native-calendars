@@ -182,8 +182,8 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     return headerHeight + (WEEK_HEIGHT * (numberOfWeeks.current)) + (hideKnob ? 12 : KNOB_CONTAINER_HEIGHT) + (constants.isAndroid ? 3 : 0);
   };
   const openHeight = useRef(getOpenHeight());
-  const closedHeightWithKnob = useMemo(() => headerHeight + WEEK_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob, headerHeight]);
-  const startHeight = useMemo(() => isOpen ? openHeight.current : closedHeightWithKnob, [closedHeightWithKnob, isOpen]);
+  const closedHeight = useMemo(() => headerHeight + WEEK_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob, headerHeight]);
+  const startHeight = useMemo(() => isOpen ? openHeight.current : closedHeight, [closedHeight, isOpen]);
   const _height = useRef(startHeight);
   const deltaY = useMemo(() => new Animated.Value(startHeight), [startHeight]);
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -headerHeight : 0));
@@ -347,7 +347,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const handlePanResponderMove = (_: GestureResponderEvent, gestureState: PanResponderGestureState) => {
     // limit min height to closed height and max to open height
-    _wrapperStyles.current.style.height = Math.min(Math.max(closedHeightWithKnob, _height.current + gestureState.dy), openHeight.current);
+    _wrapperStyles.current.style.height = Math.min(Math.max(closedHeight, _height.current + gestureState.dy), openHeight.current);
 
     if (!horizontal) {
       // vertical CalenderList header
@@ -384,9 +384,9 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const bounceToPosition = (toValue = 0) => {
     if (!disablePan) {
-      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeightWithKnob + openThreshold;
+      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
       let _isOpen = _height.current >= threshold;
-      const newValue = _isOpen ? openHeight.current : closedHeightWithKnob;
+      const newValue = _isOpen ? openHeight.current : closedHeight;
 
       deltaY.setValue(_height.current); // set the start position for the animated value
       _height.current = toValue || newValue;
@@ -400,7 +400,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
         useNativeDriver: false
       }).start(() => {
         onCalendarToggled?.(_isOpen);
-        setPosition(() => _height.current === closedHeightWithKnob ? Positions.CLOSED : Positions.OPEN);
+        setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
       });
       closeHeader(_isOpen);
     }
@@ -428,14 +428,14 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     setTimeout(() => {
       // to allows setDate to be completed
       if (isOpen) {
-        bounceToPosition(closedHeightWithKnob);
+        bounceToPosition(closedHeight);
       }
     }, 0);
-  }, [isOpen, closedHeightWithKnob]);
+  }, [isOpen, closedHeight]);
 
   const toggleCalendarPosition = useCallback(() => {
-    bounceToPosition(isOpen ? closedHeightWithKnob : openHeight.current);
-  }, [isOpen, bounceToPosition, closedHeightWithKnob]);
+    bounceToPosition(isOpen ? closedHeight : openHeight.current);
+  }, [isOpen, bounceToPosition, closedHeight]);
 
   /** Events */
 
