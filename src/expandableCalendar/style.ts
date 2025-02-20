@@ -4,7 +4,6 @@ import {Theme} from '../types';
 import constants from '../commons/constants';
 
 
-export const HEADER_HEIGHT = 68;
 export const KNOB_CONTAINER_HEIGHT = 24;
 
 
