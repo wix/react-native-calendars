@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
 import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
-import {FlatList, FlatListProps, View, ViewStyle} from 'react-native';
+import {AccessibilityInfo, FlatList, FlatListProps, View, ViewStyle} from 'react-native';
 
 import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
 import {parseDate, toMarkingFormat, xdateToData} from '../interface';
@@ -101,7 +101,9 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     /** FlatList props */
     contentContainerStyle,
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
+    accessibilityElementsHidden,
+    importantForAccessibility
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -159,6 +161,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const data = xdateToData(currMont);
       onMonthChange?.(data);
       onVisibleMonthsChange?.([data]);
+      console.log('calendar-list updated: ', currentMonth.toString('MMMM yyyy'));
+      AccessibilityInfo.announceForAccessibility(currMont.toString('MMMM yyyy'));
     }
   }, [currentMonth]);
 
@@ -237,6 +241,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
+    
     return (
       <CalendarListItem
         {...calendarProps}
@@ -263,8 +268,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}
-          accessibilityElementsHidden={true} // iOS
-          importantForAccessibility={'no-hide-descendants'} // Android
+          accessibilityElementsHidden={accessibilityElementsHidden} // iOS
+          importantForAccessibility={importantForAccessibility} // Android
         />
       );
     }
