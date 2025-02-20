@@ -161,7 +161,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const data = xdateToData(currMont);
       onMonthChange?.(data);
       onVisibleMonthsChange?.([data]);
-      console.log('calendar-list updated: ', currentMonth.toString('MMMM yyyy'));
       AccessibilityInfo.announceForAccessibility(currMont.toString('MMMM yyyy'));
     }
   }, [currentMonth]);

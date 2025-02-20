@@ -108,7 +108,6 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     const _currentMonth = currentMonth.clone();
     onMonthChange?.(xdateToData(_currentMonth));
     onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
-    console.log('calendar updated: ', currentMonth.toString('MMMM yyyy'));
     AccessibilityInfo.announceForAccessibility(_currentMonth.toString('MMMM yyyy'));
   }, [currentMonth]);
 
