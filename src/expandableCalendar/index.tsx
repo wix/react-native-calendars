@@ -378,7 +378,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     onPanResponderMove: handlePanResponderMove,
     onPanResponderRelease: handlePanResponderEnd,
     onPanResponderTerminate: handlePanResponderEnd
-  }) : PanResponder.create({}), [numberOfDays, position, headerHeight]);
+  }) : PanResponder.create({}), [numberOfDays, position, headerHeight]); // All the functions here rely on headerHeight directly or indirectly through refs that are updated in useEffect
 
   /** Animated */
 

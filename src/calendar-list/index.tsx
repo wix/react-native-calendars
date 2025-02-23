@@ -113,6 +113,10 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
   const shouldUseAndroidRTLFix = useMemo(() => constants.isAndroidRTL && horizontal, [horizontal]);
+  /**
+   * we render a lot of months in the calendar list and we need to measure the header only once
+   * so we use this ref to limit the header measurement to the first render
+   */
   const shouldMeasureHeader = useRef(true);
 
   const style = useRef(styleConstructor(theme));
