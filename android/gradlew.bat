@@ -5,7 +5,7 @@
 @rem you may not use this file except in compliance with the License.
 @rem You may obtain a copy of the License at
 @rem
-@rem      http://www.apache.org/licenses/LICENSE-2.0
+@rem      https://www.apache.org/licenses/LICENSE-2.0
 @rem
 @rem Unless required by applicable law or agreed to in writing, software
 @rem distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
 @rem limitations under the License.
 @rem
 
-@if "%DEBUG%" == "" @echo off
+@if "%DEBUG%"=="" @echo off
 @rem ##########################################################################
 @rem
 @rem  Gradle startup script for Windows
@@ -24,11 +24,9 @@
 @rem Set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" setlocal
 
-@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
-set DEFAULT_JVM_OPTS=
-
 set DIRNAME=%~dp0
-if "%DIRNAME%" == "" set DIRNAME=.
+if "%DIRNAME%"=="" set DIRNAME=.
+@rem This is normally unused
 set APP_BASE_NAME=%~n0
 set APP_HOME=%DIRNAME%
 
@@ -43,7 +41,7 @@ if defined JAVA_HOME goto findJavaFromJavaHome
 
 set JAVA_EXE=java.exe
 %JAVA_EXE% -version >NUL 2>&1
-if "%ERRORLEVEL%" == "0" goto execute
+if %ERRORLEVEL% equ 0 goto execute
 
 echo.
 echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
@@ -67,15 +65,6 @@ echo location of your Java installation.
 
 goto fail
 
-
-if "%@eval[2+2]" == "4" goto 4NT_args
-
-goto execute
-
-:4NT_args
-@rem Get arguments from the 4NT Shell from JP Software
-set CMD_LINE_ARGS=%$
-
 :execute
 @rem Setup the command line
 
@@ -87,13 +76,15 @@ set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
 
 :end
 @rem End local scope for the variables with windows NT shell
-if "%ERRORLEVEL%"=="0" goto mainEnd
+if %ERRORLEVEL% equ 0 goto mainEnd
 
 :fail
 rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
 rem the _cmd.exe /c_ return code!
-if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
-exit /b 1
+set EXIT_CODE=%ERRORLEVEL%
+if %EXIT_CODE% equ 0 set EXIT_CODE=1
+if not ""=="%GRADLE_EXIT_CONSOLE%" exit %EXIT_CODE%
+exit /b %EXIT_CODE%
 
 :mainEnd
 if "%OS%"=="Windows_NT" endlocal

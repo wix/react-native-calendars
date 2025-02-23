@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, I18nManager, Switch} from 'react-native';
-import {Navigation} from 'react-native-navigation';
+import {StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, I18nManager, Switch} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import testIDs from '../testIDs';
 
 const appIcon = require('../img/logo.png');
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const MenuScreen = (props: Props) => {
+  const navigation = useNavigation();
   const {componentId} = props;
   const [forceRTL, setForceRTL] = useState(false);
 
@@ -20,7 +21,7 @@ const MenuScreen = (props: Props) => {
     setForceRTL(value);
   };
 
-  const renderEntry = (testID: string, title: string, screen: string, options?: any) => {
+  const renderEntry = (testID: string, title: string, screen: string, options?: Props) => {
     return (
       <TouchableOpacity
         testID={testID}
@@ -32,45 +33,25 @@ const MenuScreen = (props: Props) => {
     );
   };
 
-  const pushScreen = (screen: string, props?: Props) => {
-    Navigation.push(componentId, {
-      component: {
-        name: screen,
-        passProps: props,
-        options: {
-          topBar: {
-            title: {
-              text: props?.weekView ? 'WeekCalendar' : screen
-            },
-            backButton: {
-              testID: 'back',
-              showTitle: false, // iOS only
-              color: Platform.OS === 'ios' ? '#2d4150' : undefined
-            }
-          }
-        }
-      }
-    });
-  };
-
-  const openScreen = (screen: string, options: any) => {
-    pushScreen(screen, options);
+  const openScreen = (screen: string, options?: Props) => {
+    //@ts-expect-error
+    navigation.navigate(screen, options);
   };
 
   return (
     <ScrollView>
       <View style={styles.container} testID={testIDs.menu.CONTAINER}>
         <Image source={appIcon} style={styles.image}/>
-        {renderEntry(testIDs.menu.CALENDARS, 'Calendar', 'CalendarScreen')}
-        {renderEntry(testIDs.menu.CALENDARS, 'Calendar Playground', 'CalendarPlaygroundScreen')}
-        {renderEntry(testIDs.menu.CALENDAR_LIST, 'Calendar List', 'CalendarListScreen')}
-        {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'CalendarListScreen', {horizontalView: true})}
-        {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarListScreen')}
-        {renderEntry(testIDs.menu.AGENDA, 'Agenda', 'AgendaScreen')}
-        {renderEntry(testIDs.menu.AGENDA_INFINITE, 'Agenda Infinite List', 'AgendaInfiniteListScreen')}
-        {renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
-        {renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
-        {renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
+        {renderEntry(testIDs.menu.CALENDARS, 'Calendar', 'Calendar')}
+        {renderEntry(testIDs.menu.CALENDARS, 'Calendar Playground', 'CalendarPlayground')}
+        {renderEntry(testIDs.menu.CALENDAR_LIST, 'Calendar List', 'CalendarList')}
+        {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'CalendarList', {horizontalView: true})}
+        {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarList')}
+        {renderEntry(testIDs.menu.AGENDA, 'Agenda', 'Agenda')}
+        {renderEntry(testIDs.menu.AGENDA_INFINITE, 'Agenda Infinite List', 'AgendaInfiniteList')}
+        {renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendar')}
+        {renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendar')}
+        {renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendar', {weekView: true})}
         {renderEntry(testIDs.menu.PLAYGROUND, 'Playground', 'Playground')}
         <View style={styles.switchContainer}>
           <Text>Force RTL</Text>

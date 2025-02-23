@@ -9,7 +9,8 @@ module.exports = {
     it: true,
     describe: true
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  root: true,
+  extends: '@react-native',
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
