@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, I18nManager, Switch} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import testIDs from '../testIDs';
 
 const appIcon = require('../img/logo.png');
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const MenuScreen = (props: Props) => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const {componentId} = props;
   const [forceRTL, setForceRTL] = useState(false);
 
@@ -35,7 +35,7 @@ const MenuScreen = (props: Props) => {
 
   const openScreen = (screen: string, options?: Props) => {
     //@ts-expect-error
-    navigation.navigate(screen, options);
+    // navigation.navigate(screen, options);
   };
 
   return (

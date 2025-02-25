@@ -1,22 +1,23 @@
 import './wdyr'; // <--- must be first import
 import React from 'react';
 import {AppRegistry} from 'react-native';
-import {createStaticNavigation} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+// import {createStaticNavigation} from '@react-navigation/native';
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
+// import {enableScreens} from 'react-native-screens';
 // import {I18nManager} from 'react-native'; // <--- In order to test RTL
 //@ts-expect-error
 import {LocaleConfig} from 'react-native-calendars';
 import {name as appName} from '../app.json';
 import MenuScreen from './screens/menuScreen';
-import CalendarScreen from './screens/calendarScreen';
-import CalendarPlaygroundScreen from './screens/calendarPlaygroundScreen';
-import AgendaScreen from './screens/agendaScreen';
-import AgendaInfiniteListScreen from './screens/agendaInfiniteListScreen';
-import CalendarsListScreen from './screens/calendarListScreen';
-import NewCalendarsListScreen from './screens/newCalendarListScreen';
-import ExpandableCalendarScreen from './screens/expandableCalendarScreen';
-import TimelineCalendarScreen from './screens/timelineCalendarScreen';
-import PlaygroundScreen from './screens/playgroundScreen';
+// import CalendarScreen from './screens/calendarScreen';
+// import CalendarPlaygroundScreen from './screens/calendarPlaygroundScreen';
+// import AgendaScreen from './screens/agendaScreen';
+// import AgendaInfiniteListScreen from './screens/agendaInfiniteListScreen';
+// import CalendarsListScreen from './screens/calendarListScreen';
+// import NewCalendarsListScreen from './screens/newCalendarListScreen';
+// import ExpandableCalendarScreen from './screens/expandableCalendarScreen';
+// import TimelineCalendarScreen from './screens/timelineCalendarScreen';
+// import PlaygroundScreen from './screens/playgroundScreen';
 
 AppRegistry.registerComponent(appName, () => App);
 
@@ -78,24 +79,26 @@ LocaleConfig.locales['he'] = {
 LocaleConfig.defaultLocale = 'en';
 
 /** React Navigation */
+// enableScreens();
 
-const RootStack = createNativeStackNavigator({
-  screens: {
-    Home: {
-      screen: MenuScreen
-    },
-    Calendar: CalendarScreen,
-    CalendarPlayground: CalendarPlaygroundScreen,
-    Agenda: AgendaScreen,
-    AgendaInfiniteList: AgendaInfiniteListScreen,
-    CalendarList: CalendarsListScreen,
-    NewCalendarList: NewCalendarsListScreen,
-    ExpandableCalendar: ExpandableCalendarScreen,
-    TimelineCalendar: TimelineCalendarScreen,
-    Playground: PlaygroundScreen
-  },
-});
-const Navigation = createStaticNavigation(RootStack);
+// const RootStack = createNativeStackNavigator({
+//   screens: {
+//     Home: {
+//       screen: MenuScreen
+//     },
+//     Calendar: CalendarScreen,
+//     CalendarPlayground: CalendarPlaygroundScreen,
+//     Agenda: AgendaScreen,
+//     AgendaInfiniteList: AgendaInfiniteListScreen,
+//     CalendarList: CalendarsListScreen,
+//     NewCalendarList: NewCalendarsListScreen,
+//     ExpandableCalendar: ExpandableCalendarScreen,
+//     TimelineCalendar: TimelineCalendarScreen,
+//     Playground: PlaygroundScreen
+//   },
+// });
+// const Navigation = createStaticNavigation(RootStack);
 export default function App() {
-  return <Navigation/>;
+  // return <Navigation/>;
+  return <MenuScreen/>
 }
