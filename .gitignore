@@ -45,7 +45,12 @@ local.properties
 #
 node_modules/
 npm-debug.log
+
+# yarn
 yarn-error.log
+**/.yarn/cache
+**/.yarn/install-state.gz
+**/.yarn/yarn.build.json
 
 # fastlane
 #
