@@ -101,16 +101,23 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     /** FlatList props */
     contentContainerStyle,
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
+    onHeaderLayout
   } = props;
 
   const calendarProps = extractCalendarProps(props);
   const headerProps = extractHeaderProps(props);
   const calendarSize = horizontal ? calendarWidth : calendarHeight;
+  const shouldUseStaticHeader = staticHeader && horizontal;
 
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
   const shouldUseAndroidRTLFix = useMemo(() => constants.isAndroidRTL && horizontal, [horizontal]);
+  /**
+   * we render a lot of months in the calendar list and we need to measure the header only once
+   * so we use this ref to limit the header measurement to the first render
+   */
+  const shouldMeasureHeader = useRef(true);
 
   const style = useRef(styleConstructor(theme));
   const list = useRef();
@@ -237,6 +244,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
+    const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+    shouldMeasureHeader.current = false;
     return (
       <CalendarListItem
         {...calendarProps}
@@ -250,12 +259,15 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
+        onHeaderLayout={onHeaderLayoutToPass}
       />
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
   const renderStaticHeader = () => {
-    if (staticHeader && horizontal) {
+    if (shouldUseStaticHeader) {
+      const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+      shouldMeasureHeader.current = false;
       return (
         <CalendarHeader
           {...headerProps}
@@ -265,6 +277,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           addMonth={addMonth}
           accessibilityElementsHidden={true} // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
+          onHeaderLayout={onHeaderLayoutToPass}
         />
       );
     }
