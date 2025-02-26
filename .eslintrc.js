@@ -10,7 +10,7 @@ module.exports = {
     describe: true
   },
   root: true,
-  extends: '@react-native',
+  extends: ['@react-native', 'plugin:react-hooks/recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -23,6 +23,8 @@ module.exports = {
   rules: {
     'arrow-parens': 'off',
     'comma-dangle': ['error', 'never'],
+    'curly': 'off',
+    'eol-last': 'error',
     'no-unused-expressions': 'off',
     'max-len': ['warn', {code: 120, ignoreComments: true, ignoreStrings: true}],
     'new-cap': 'off',
@@ -30,10 +32,21 @@ module.exports = {
     'no-trailing-spaces': 'off',
     'no-undef': 'off',
     'operator-linebreak': 'off',
+    '@typescript-eslint/ban-ts-comment': 1,
     '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/no-shadow': 0,
     '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-var-requires': 0,
+    'react/jsx-tag-spacing': [
+      'error',
+      {
+        closingSlash: 'never',
+        beforeSelfClosing: 'never',
+        afterOpening: 'never',
+        beforeClosing: 'never'
+      }
+    ],
     'react/jsx-no-bind': [
       'off',
       {
