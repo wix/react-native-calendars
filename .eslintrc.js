@@ -21,7 +21,7 @@ module.exports = {
   },
   plugins: ['react', 'react-native', 'jest', '@typescript-eslint'],
   rules: {
-    'arrow-parens': 'off',
+  'prettier/prettier': ['warn'],
     'comma-dangle': ['error', 'never'],
     'curly': 'off',
     'eol-last': 'error',
@@ -32,6 +32,7 @@ module.exports = {
     'no-trailing-spaces': 'off',
     'no-undef': 'off',
     'operator-linebreak': 'off',
+    'semi': ['error', 'always'],
     '@typescript-eslint/ban-ts-comment': 1,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/no-shadow': 0,

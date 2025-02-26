@@ -94,7 +94,7 @@ const MenuScreen = () => {
         <TouchableOpacity onPress={toggleSettings}><Image source={settingsIcon} style={styles.settingsButton}/></TouchableOpacity>
       </View>
     );
-  }
+  };
 
   return (
     <SafeAreaView>
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   menu: {
     margin: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth
   },
   menuText: {
     fontSize: 18,
