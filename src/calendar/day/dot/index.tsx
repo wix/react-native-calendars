@@ -41,7 +41,7 @@ const Dot = ({theme, marked, disabled, inactive, color, today, selected}: DotPro
     }
   }
 
-  return <View style={dotStyle} />;
+  return <View style={dotStyle}/>;
 };
 
 export default Dot;

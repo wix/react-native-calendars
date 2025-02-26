@@ -16,7 +16,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   LayoutChangeEvent,
-  ViewToken,
+  ViewToken
 } from 'react-native';
 
 import {useDidUpdate, useCombinedRefs} from '../hooks';
@@ -42,10 +42,6 @@ const viewabilityConfig = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
-  if (props.infiniteListProps) {
-    return <InfiniteAgendaList {...props} />;
-  }
-
   const {
     theme,
     sections,
@@ -63,7 +59,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     dayFormat = 'dddd, MMM d',
     useMoment,
     markToday = true,
-    onViewableItemsChanged,
+    onViewableItemsChanged
   } = props;
 
   const {date, updateSource, setDate, setDisabled} = useContext(Context);
@@ -225,6 +221,10 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
   }, [keyExtractor]);
 
+  if (props.infiniteListProps) {
+    return <InfiniteAgendaList {...props}/>;
+  }
+  
   return (
     <SectionList
       stickySectionHeadersEnabled
