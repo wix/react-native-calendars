@@ -21,25 +21,19 @@ module.exports = {
   },
   plugins: ['react', 'react-native', 'jest', '@typescript-eslint'],
   rules: {
-    semi: ['error', 'always'],
-    'no-unused-expressions': 'off',
-    'no-undef': 'off',
     'arrow-parens': 'off',
     'comma-dangle': ['error', 'never'],
-    'no-mixed-operators': ['off'],
-    'no-trailing-spaces': 'off',
-    'operator-linebreak': 'off',
+    'no-unused-expressions': 'off',
     'max-len': ['warn', {code: 120, ignoreComments: true, ignoreStrings: true}],
     'new-cap': 'off',
+    'no-mixed-operators': ['off'],
+    'no-trailing-spaces': 'off',
+    'no-undef': 'off',
+    'operator-linebreak': 'off',
+    '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
     '@typescript-eslint/no-use-before-define': 0,
     '@typescript-eslint/no-var-requires': 0,
-    '@typescript-eslint/explicit-function-return-type': 0,
-    '@typescript-eslint/ban-ts-comment': 1,
-    '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
-    "@typescript-eslint/non-nullable-type-assertion-style": "error",
-    'react/jsx-uses-react': 2,
-    'react/jsx-uses-vars': 2,
-    'react-native/no-inline-styles': 1,
     'react/jsx-no-bind': [
       'off',
       {
@@ -47,6 +41,9 @@ module.exports = {
         allowArrowFunctions: false,
         allowBind: false
       }
-    ]
+    ],
+    'react/jsx-uses-react': 2,
+    'react/jsx-uses-vars': 2,
+    'react-native/no-inline-styles': 1
   }
 };
