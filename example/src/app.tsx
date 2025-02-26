@@ -54,11 +54,11 @@ LocaleConfig.locales['he'] = {
   ],
   monthNamesShort: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ', 'יול', 'אוג', 'ספט', 'אוק', 'נוב', 'דצמ'],
   dayNames: ['ראון', 'שני', 'שלישי', 'קביעי', 'חמישי', 'שישי', 'שבת'],
-  dayNamesShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'],
+  dayNamesShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
 };
 LocaleConfig.defaultLocale = 'en';
 
 export default function App() {
-  return <MenuScreen/>
+  return <MenuScreen/>;
 }
 AppRegistry.registerComponent(appName, () => App);
