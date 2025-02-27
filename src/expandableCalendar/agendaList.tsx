@@ -42,6 +42,7 @@ const viewabilityConfig = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
+  //@ts-ignore
   if (props.infiniteListProps) {
     return <InfiniteAgendaList {...props}/>;
   }
