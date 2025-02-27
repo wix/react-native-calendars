@@ -210,7 +210,7 @@ const CalendarScreen = () => {
               customContainerStyle: {
                 borderTopRightRadius: 5,
                 borderBottomRightRadius: 5,
-                backgroundColor: "green"
+                backgroundColor: 'green'
               }
             },
             [getDate(25)]: {inactive: true, disableTouchEvent: true}
@@ -381,37 +381,37 @@ const CalendarScreen = () => {
     );
   };
 
+  const [selectedValue, setSelectedValue] = useState(new Date());
+
+  const getNewSelectedDate = useCallback(
+    (date, shouldAdd) => {
+      const newMonth = new Date(date).getMonth();
+      const month = shouldAdd ? newMonth + 1 : newMonth - 1;
+      const newDate = new Date(selectedValue.setMonth(month));
+      const newSelected = new Date(newDate.setDate(1));
+      return newSelected;
+    },
+    [selectedValue]
+  );
+  const onPressArrowLeft = useCallback(
+    (subtract, month) => {
+      const newDate = getNewSelectedDate(month, false);
+      setSelectedValue(newDate);
+      subtract();
+    },
+    [getNewSelectedDate]
+  );
+
+  const onPressArrowRight = useCallback(
+    (add, month) => {
+      const newDate = getNewSelectedDate(month, true);
+      setSelectedValue(newDate);
+      add();
+    },
+    [getNewSelectedDate]
+  );
+
   const renderCalendarWithCustomHeaderTitle = () => {
-    const [selectedValue, setSelectedValue] = useState(new Date());
-
-    const getNewSelectedDate = useCallback(
-      (date, shouldAdd) => {
-        const newMonth = new Date(date).getMonth();
-        const month = shouldAdd ? newMonth + 1 : newMonth - 1;
-        const newDate = new Date(selectedValue.setMonth(month));
-        const newSelected = new Date(newDate.setDate(1));
-        return newSelected;
-      },
-      [selectedValue]
-    );
-    const onPressArrowLeft = useCallback(
-      (subtract, month) => {
-        const newDate = getNewSelectedDate(month, false);
-        setSelectedValue(newDate);
-        subtract();
-      },
-      [getNewSelectedDate]
-    );
-
-    const onPressArrowRight = useCallback(
-      (add, month) => {
-        const newDate = getNewSelectedDate(month, true);
-        setSelectedValue(newDate);
-        add();
-      },
-      [getNewSelectedDate]
-    );
-
     const CustomHeaderTitle = (
       <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
         <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>

@@ -47,7 +47,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
     width,
     numberOfDays = 1,
     timelineLeftInset = 0,
-    testID,
+    testID
   } = props;
 
   const lastLongPressEventTime = useRef<NewEventTime>();
@@ -100,7 +100,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
   return (
     <>
       <TouchableWithoutFeedback onLongPress={handleBackgroundPress} onPressOut={handlePressOut}>
-        <View style={StyleSheet.absoluteFillObject} />
+        <View style={StyleSheet.absoluteFillObject}/>
       </TouchableWithoutFeedback>
       {unavailableHoursBlocks.map((block, index) => (
         <View
@@ -111,7 +111,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
             unavailableHoursColor ? {backgroundColor: unavailableHoursColor} : undefined,
             {left: timelineLeftInset}
           ]}
-        ></View>
+        />
       ))}
 
       {hours.map(({timeText, time}, index) => {
@@ -137,7 +137,7 @@ const TimelineHours = (props: TimelineHoursProps) => {
           </React.Fragment>
         );
       })}
-      {times(numberOfDays, (index) => <View key={index} style={[styles.verticalLine, {right: (index + 1) * width / numberOfDays}]} />)}
+      {times(numberOfDays, (index) => <View key={index} style={[styles.verticalLine, {right: (index + 1) * width / numberOfDays}]}/>)}
     </>
   );
 };

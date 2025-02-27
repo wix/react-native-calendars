@@ -13,7 +13,8 @@ import {
   ViewStyle,
   AccessibilityActionEvent,
   ColorValue,
-  Insets
+  Insets,
+  ViewProps
 } from 'react-native';
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import styleConstructor from './style';
@@ -73,6 +74,8 @@ export interface CalendarHeaderProps {
   numberOfDays?: number;
   /** Left inset for the timeline calendar header. Default = 72 */
   timelineLeftInset?: number;
+  /** Callback for header onLayout */
+  onHeaderLayout?: ViewProps['onLayout'];
 }
 
 const accessibilityActions = [
@@ -107,7 +110,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     importantForAccessibility,
     numberOfDays,
     current = '',
-    timelineLeftInset
+    timelineLeftInset,
+    onHeaderLayout
   } = props;
   
   const numberOfDaysCondition = useMemo(() => {
@@ -262,7 +266,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   };
 
   const renderWeekNumbersSpace = () => {
-    return showWeekNumbers && <View style={style.current.dayHeader} />;
+    return showWeekNumbers && <View style={style.current.dayHeader}/>;
   };
 
   const renderDayNames = () => {
@@ -289,6 +293,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       onAccessibilityAction={onAccessibilityAction}
       accessibilityElementsHidden={accessibilityElementsHidden} // iOS
       importantForAccessibility={importantForAccessibility} // Android
+      onLayout={onHeaderLayout}
     >
       <View style={headerStyle}>
         {_renderArrow('left')}

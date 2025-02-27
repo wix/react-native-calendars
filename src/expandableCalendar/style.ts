@@ -3,10 +3,7 @@ import * as defaultStyle from '../style';
 import {Theme} from '../types';
 import constants from '../commons/constants';
 
-
-export const HEADER_HEIGHT = 68;
 export const KNOB_CONTAINER_HEIGHT = 24;
-
 
 export default function styleConstructor(theme: Theme = {}) {
   const appStyle = {...defaultStyle, ...theme};
@@ -50,7 +47,7 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.expandableKnobColor
     },
     sectionText: {
-      fontWeight: 'bold', 
+      fontWeight: 'bold',
       fontSize: 12,
       lineHeight: 16,
       color: '#7a92a5',
@@ -78,8 +75,8 @@ export default function styleConstructor(theme: Theme = {}) {
       color: appStyle.monthTextColor
     },
     weekDayNames: {
-      flexDirection: 'row', 
-      justifyContent: 'space-between' 
+      flexDirection: 'row',
+      justifyContent: 'space-between'
     },
     dayHeader: {
       width: 32,
@@ -95,8 +92,7 @@ export default function styleConstructor(theme: Theme = {}) {
     weekContainer: {
       position: 'absolute',
       left: 0,
-      right: 0,
-      top: HEADER_HEIGHT + (constants.isAndroid ? 8 : 9), // align row on top of calendar's first row
+      right: 0
     },
     hidden: {
       opacity: 0
@@ -105,7 +101,7 @@ export default function styleConstructor(theme: Theme = {}) {
       opacity: 1
     },
     weekCalendar: {
-      marginTop: 12, 
+      marginTop: 12,
       marginBottom: -2
     },
     week: {
@@ -120,7 +116,7 @@ export default function styleConstructor(theme: Theme = {}) {
       paddingRight: 0
     },
     dayContainer: {
-      flex: 1, 
+      flex: 1,
       alignItems: 'center'
     },
     emptyDayContainer: {
@@ -135,13 +131,13 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     todayButtonContainer: {
       alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',
-      position: 'absolute', 
-      left: 20, 
-      right: 20, 
-      bottom : 0
+      position: 'absolute',
+      left: 20,
+      right: 20,
+      bottom: 0
     },
     todayButton: {
-      height: constants.isTablet ? 40 : 28, 
+      height: constants.isTablet ? 40 : 28,
       paddingHorizontal: constants.isTablet ? 20 : 12,
       borderRadius: constants.isTablet ? 20 : 14,
       flexDirection: appStyle.todayButtonPosition === 'right' ? 'row-reverse' : 'row',
@@ -162,12 +158,12 @@ export default function styleConstructor(theme: Theme = {}) {
     },
     todayButtonText: {
       color: appStyle.todayButtonTextColor,
-      fontSize: constants.isTablet ? appStyle.todayButtonFontSize + 2 : appStyle.todayButtonFontSize, 
+      fontSize: constants.isTablet ? appStyle.todayButtonFontSize + 2 : appStyle.todayButtonFontSize,
       fontWeight: appStyle.todayButtonFontWeight,
       fontFamily: appStyle.todayButtonFontFamily
     },
     todayButtonImage: {
-      tintColor: appStyle.todayButtonTextColor, 
+      tintColor: appStyle.todayButtonTextColor,
       marginLeft: appStyle.todayButtonPosition === 'right' ? 7 : undefined,
       marginRight: appStyle.todayButtonPosition === 'right' ? undefined : 7
     },

@@ -142,7 +142,7 @@ const Timeline = (props: TimelineProps) => {
     eventTapped,
     numberOfDays = 1,
     timelineLeftInset = 0,
-    testID,
+    testID
   } = props;
 
   const pageDates = useMemo(() => {
@@ -238,7 +238,7 @@ const Timeline = (props: TimelineProps) => {
     return (
       <React.Fragment key={dayIndex}>
         {renderEvents(dayIndex)}
-        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current} />}
+        {indexOfToday !== -1 && showNowIndicator && <NowIndicator width={width / numberOfDays} left={left} styles={styles.current}/>}
       </React.Fragment>
     );
   };

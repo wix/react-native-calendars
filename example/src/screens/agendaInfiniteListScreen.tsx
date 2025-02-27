@@ -54,7 +54,7 @@ const AgendaInfiniteListScreen = (props: Props) => {
             itemHeight: 80,
             titleHeight: 50,
             itemHeightByType: {
-              LongEvent: 120,
+              LongEvent: 120
             }
           }
         }
