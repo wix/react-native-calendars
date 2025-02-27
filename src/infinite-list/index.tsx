@@ -54,7 +54,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     layoutProvider,
     onScroll,
     onEndReached,
-    renderFooter,
+    renderFooter
   } = props;
 
   const dataProvider = useMemo(() => {

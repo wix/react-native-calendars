@@ -36,7 +36,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     current,
     theme,
     testID,
-    markedDates,
+    markedDates
   } = props;
   const context = useContext(CalendarContext);
   const {allowShadow = true, ...calendarListProps} = props;
@@ -105,7 +105,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         ...acc,
       ...(
         markings[dateString] && {[dateString]: markings[dateString]}
-      ),
+      )
       };
     }, {});
   }, []);
@@ -202,9 +202,9 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   const viewabilityConfigCallbackPairs = useRef([{
       viewabilityConfig: {
-        itemVisiblePercentThreshold: 20,
+        itemVisiblePercentThreshold: 20
       },
-      onViewableItemsChanged,
+      onViewableItemsChanged
     }]);
 
   return (
@@ -233,7 +233,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
             getItemLayout={getItemLayout}
             viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
             onEndReached={onEndReached}
-            onEndReachedThreshold={1/NUM_OF_ITEMS}
+            onEndReachedThreshold={1 / NUM_OF_ITEMS}
           />
       </View>
     </View>
@@ -267,7 +267,7 @@ function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays
 
 function getDatesArray(date: string, firstDay: number, numberOfDays?: number) {
   return [...Array(NUM_OF_ITEMS).keys()].map((index) => {
-    if(isCustomNumberOfDays(numberOfDays)) {
+    if (isCustomNumberOfDays(numberOfDays)) {
       return getDateForDayRange(date, index - NUMBER_OF_PAGES, numberOfDays as number);
     }
     return getDate(date, firstDay, index - NUMBER_OF_PAGES);

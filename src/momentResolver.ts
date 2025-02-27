@@ -4,7 +4,7 @@ let moment: any;
 export const getMoment = () => {
   if (!moment) {
     try {
-    moment = require('moment');
+      moment = require('moment');
     } catch {
       // Moment is not available
     }

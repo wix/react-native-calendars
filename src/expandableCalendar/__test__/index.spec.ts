@@ -34,7 +34,7 @@ const TestCase = ({
       date: dashedToday,
       onMonthChange,
       onDateChanged,
-      ...calendarContextProps,
+      ...calendarContextProps
     }
   });
 };
@@ -48,8 +48,8 @@ describe('ExpandableCalendar', () => {
     driver = new ExpandableCalendarDriver(testIdExpandableCalendar, TestCase({
       calendarContextProps: {
         onDateChanged,
-        onMonthChange,
-      },
+        onMonthChange
+      }
     }));
     jest.useFakeTimers();
   });
@@ -245,7 +245,7 @@ describe('ExpandableCalendar', () => {
       });
       it.each([['last', Direction.LEFT], ['next', Direction.RIGHT]])(`should call onDateChanged to %s week first day when pressing %s arrow`, (direction) => {
         const currentDay = today.getDay();
-        const expectedDate = today.clone().addDays(direction === Direction.LEFT ? - (currentDay + 7) : (7 - currentDay));
+        const expectedDate = today.clone().addDays(direction === Direction.LEFT ? -(currentDay + 7) : (7 - currentDay));
         driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
         expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
       });
@@ -282,8 +282,8 @@ describe('ExpandableCalendar', () => {
         calendarContextProps: {
           onDateChanged,
           onMonthChange,
-          date: toMarkingFormat(isToday ? today : today.clone().addDays(5)),
-        },
+          date: toMarkingFormat(isToday ? today : today.clone().addDays(5))
+        }
       });
       driver = new ExpandableCalendarDriver(testIdExpandableCalendar, component);
       driver.render();
@@ -298,8 +298,8 @@ describe('ExpandableCalendar', () => {
         calendarContextProps: {
           onDateChanged,
           onMonthChange,
-          date: toMarkingFormat(today.clone().addDays(5)),
-        },
+          date: toMarkingFormat(today.clone().addDays(5))
+        }
       });
       driver = new ExpandableCalendarDriver(testIdExpandableCalendar, component);
       driver.render();
@@ -312,8 +312,8 @@ describe('ExpandableCalendar', () => {
         calendarContextProps: {
           onDateChanged,
           onMonthChange,
-          date: toMarkingFormat(today.clone().addMonths(1)),
-        },
+          date: toMarkingFormat(today.clone().addMonths(1))
+        }
       });
       driver = new ExpandableCalendarDriver(testIdExpandableCalendar, component);
       driver.render();

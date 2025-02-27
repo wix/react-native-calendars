@@ -35,7 +35,7 @@ const Week = React.memo((props: WeekProps) => {
     style: propsStyle,
     numberOfDays = 1,
     timelineLeftInset,
-    testID,
+    testID
   } = props;
   const style = useRef(styleConstructor(theme));
 

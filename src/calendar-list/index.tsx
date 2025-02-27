@@ -102,6 +102,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     contentContainerStyle,
     onEndReachedThreshold,
     onEndReached,
+    onHeaderLayout,
     accessibilityElementsHidden,
     importantForAccessibility
   } = props;
@@ -109,10 +110,16 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const calendarProps = extractCalendarProps(props);
   const headerProps = extractHeaderProps(props);
   const calendarSize = horizontal ? calendarWidth : calendarHeight;
+  const shouldUseStaticHeader = staticHeader && horizontal;
 
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
   const shouldUseAndroidRTLFix = useMemo(() => constants.isAndroidRTL && horizontal, [horizontal]);
+  /**
+   * we render a lot of months in the calendar list and we need to measure the header only once
+   * so we use this ref to limit the header measurement to the first render
+   */
+  const shouldMeasureHeader = useRef(true);
 
   const style = useRef(styleConstructor(theme));
   const list = useRef();
@@ -227,7 +234,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, []);
 
   const isDateInRange = useCallback((date) => {
-    for(let i = -range.current; i <= range.current; i++) {
+    for (let i = -range.current; i <= range.current; i++) {
       const newMonth = currentMonth?.clone().addMonths(i, true);
       if (sameMonth(date, newMonth)) {
         return true;
@@ -240,7 +247,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
-    
+    const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+    shouldMeasureHeader.current = false;
     return (
       <CalendarListItem
         {...calendarProps}
@@ -254,12 +262,15 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
+        onHeaderLayout={onHeaderLayoutToPass}
       />
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
   const renderStaticHeader = () => {
-    if (staticHeader && horizontal) {
+    if (shouldUseStaticHeader) {
+      const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+      shouldMeasureHeader.current = false;
       return (
         <CalendarHeader
           {...headerProps}
@@ -267,6 +278,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}
+          onHeaderLayout={onHeaderLayoutToPass}
           accessibilityElementsHidden={accessibilityElementsHidden} // iOS
           importantForAccessibility={importantForAccessibility} // Android
         />
@@ -299,7 +311,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     {
       viewabilityConfig: viewabilityConfig.current,
       onViewableItemsChanged
-    },
+    }
   ]);
 
   return (
