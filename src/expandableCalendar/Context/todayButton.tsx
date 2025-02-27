@@ -143,7 +143,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
         onPress={onPress}
         disabled={disabled}
       >
-        <Animated.Image style={[style.current.todayButtonImage, {opacity: opacity.current}]} source={buttonIcon}/>
+        {buttonIcon ? (<Animated.Image style={[style.current.todayButtonImage, {opacity: opacity.current}]} source={buttonIcon}/>)  : null}
         <Animated.Text allowFontScaling={false} style={[style.current.todayButtonText, {opacity: opacity.current}]}>
           {today.current}
         </Animated.Text>
