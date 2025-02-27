@@ -240,7 +240,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         style={style.current.arrow}
         hitSlop={hitSlop}
         testID={`${testID}.${arrowId}`}
-        accessibilityLabel={arrowId}
+        importantForAccessibility={'no-hide-descendants'}
       >
         {renderArrow ? renderArrow(arrowDirection) : <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>}
       </TouchableOpacity>
@@ -268,6 +268,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         <View
           style={dayNamesStyle}
           testID={`${testID}.dayNames`}
+          importantForAccessibility={'no-hide-descendants'}
         >
           {renderWeekNumbersSpace()}
           {renderWeekDays}
@@ -289,7 +290,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     >
       <View style={headerStyle}>
         {_renderArrow('left')}
-        <View style={style.current.headerContainer}>
+        <View style={style.current.headerContainer} importantForAccessibility={'no-hide-descendants'}>
           {_renderHeader()}
           {renderIndicator()}
         </View>
