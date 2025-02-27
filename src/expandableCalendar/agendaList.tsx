@@ -42,11 +42,6 @@ const viewabilityConfig = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
-  //@ts-ignore
-  if (props.infiniteListProps) {
-    return <InfiniteAgendaList {...props}/>;
-  }
-  
   const {
     theme,
     sections,
@@ -225,6 +220,10 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
   const _keyExtractor = useCallback((item: any, index: number) => {
     return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
   }, [keyExtractor]);
+  
+  if (props.infiniteListProps) {
+    return <InfiniteAgendaList {...props}/>;
+  }
   
   return (
     <SectionList
