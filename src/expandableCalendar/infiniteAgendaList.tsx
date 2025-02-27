@@ -9,7 +9,7 @@ import XDate from 'xdate';
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {
   DefaultSectionT,
-  SectionListData,
+  SectionListData
 } from 'react-native';
 
 import {useDidUpdate} from '../hooks';
@@ -19,10 +19,10 @@ import {getDefaultLocale} from '../services';
 import {UpdateSources, todayString} from './commons';
 import styleConstructor from './style';
 import Context from './Context';
-import constants from "../commons/constants";
-import {parseDate} from "../interface";
-import {LayoutProvider} from "recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider";
-import {AgendaSectionHeader, AgendaListProps} from "./AgendaListsCommon";
+import constants from '../commons/constants';
+import {parseDate} from '../interface';
+import {LayoutProvider} from 'recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider';
+import {AgendaSectionHeader, AgendaListProps} from './AgendaListsCommon';
 
 /**
  * @description: AgendaList component that use InfiniteList to improve performance
@@ -96,7 +96,7 @@ const InfiniteAgendaList = ({
 
     for (let i = 0; i < sections.length; i++) {
       const titleDate = parseDate(sections[i].title);
-      if (isGTE(titleDate,cur)) {
+      if (isGTE(titleDate, cur)) {
         return dataIndex;
       }
       dataIndex += sections[i].data.length + 1;
@@ -149,7 +149,7 @@ const InfiniteAgendaList = ({
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
-      (index) => dataRef.current[index]?.isTitle ? 'title': dataRef.current[index]?.itemCustomHeightType ?? 'page',
+      (index) => dataRef.current[index]?.isTitle ? 'title' : dataRef.current[index]?.itemCustomHeightType ?? 'page',
       (type, dim) => {
         dim.width = constants.screenWidth;
         switch (type) {
@@ -178,8 +178,8 @@ const InfiniteAgendaList = ({
       nativeEvent: {
         contentOffset: rawEvent.nativeEvent.contentOffset,
         layoutMeasurement: rawEvent.nativeEvent.layoutMeasurement,
-        contentSize: rawEvent.nativeEvent.contentSize,
-      },
+        contentSize: rawEvent.nativeEvent.contentSize
+      }
     };
     onScroll?.(event as any);
   }, [onScroll]);

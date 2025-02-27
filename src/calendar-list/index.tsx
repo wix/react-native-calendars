@@ -231,7 +231,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, []);
 
   const isDateInRange = useCallback((date) => {
-    for(let i = -range.current; i <= range.current; i++) {
+    for (let i = -range.current; i <= range.current; i++) {
       const newMonth = currentMonth?.clone().addMonths(i, true);
       if (sameMonth(date, newMonth)) {
         return true;
@@ -308,7 +308,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     {
       viewabilityConfig: viewabilityConfig.current,
       onViewableItemsChanged
-    },
+    }
   ]);
 
   return (

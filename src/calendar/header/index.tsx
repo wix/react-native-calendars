@@ -266,7 +266,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   };
 
   const renderWeekNumbersSpace = () => {
-    return showWeekNumbers && <View style={style.current.dayHeader} />;
+    return showWeekNumbers && <View style={style.current.dayHeader}/>;
   };
 
   const renderDayNames = () => {

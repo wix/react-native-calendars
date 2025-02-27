@@ -113,7 +113,7 @@ export default class TimelineCalendarScreen extends Component {
     // end: 24,
     unavailableHours: [{start: 0, end: 6}, {start: 22, end: 24}],
     overlapEventsSpacing: 8,
-    rightEdgeSpacing: 24,
+    rightEdgeSpacing: 24
   };
 
   render() {
