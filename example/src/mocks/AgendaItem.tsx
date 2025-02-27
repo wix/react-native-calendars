@@ -3,7 +3,6 @@ import React, {useCallback} from 'react';
 import {StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import testIDs from '../testIDs';
 
-
 interface ItemProps {
   item: any;
 }
@@ -17,7 +16,7 @@ const AgendaItem = (props: ItemProps) => {
 
   const itemPressed = useCallback(() => {
     Alert.alert(item.title);
-  }, []);
+  }, [item]);
 
   if (isEmpty(item)) {
     return (
@@ -42,7 +41,6 @@ const AgendaItem = (props: ItemProps) => {
 };
 
 export default React.memo(AgendaItem);
-
 
 const styles = StyleSheet.create({
   item: {

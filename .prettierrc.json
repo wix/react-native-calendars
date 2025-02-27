@@ -1,8 +1,11 @@
 {
-  "singleQuote": true,
-  "printWidth": 120,
-  "bracketSpacing": false,
   "arrowParens": "avoid",
-  "trailingComma": "none",
-  "bracketSameLine": false
+  "bracketSameLine": false,
+  "bracketSpacing": false,
+  "endOfLine": "auto",
+  "printWidth": 120,
+  "proseWrap": "preserve",
+  "semicolons": true,
+  "singleQuote": true,
+  "trailingComma": "none"
 }

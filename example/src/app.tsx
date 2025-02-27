@@ -1,14 +1,12 @@
 import './wdyr'; // <--- must be first import
-import {Navigation} from 'react-native-navigation';
-// import {I18nManager} from 'react-native'; // <--- In order to test RTL
+import React from 'react';
+import {AppRegistry} from 'react-native';
 //@ts-expect-error
 import {LocaleConfig} from 'react-native-calendars';
-import {registerScreens} from './screens';
+import {name as appName} from '../app.json';
+import MenuScreen from './screens/menuScreen';
 
-// I18nManager.forceRTL(true); // <--- In order to test RTL
-registerScreens();
-// eslint-disable-next-line no-console
-console.ignoredYellowBox = ['Remote debugger'];
+/** Locale */
 
 LocaleConfig.locales['en'] = {
   formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy",
@@ -28,10 +26,9 @@ LocaleConfig.locales['en'] = {
   ],
   monthNamesShort: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
   dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
   // numbers: ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'] // <--- number localization example
 };
-
 LocaleConfig.locales['fr'] = {
   monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
   monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
@@ -39,7 +36,6 @@ LocaleConfig.locales['fr'] = {
   dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
   today: 'Aujourd\'hui'
 };
-
 LocaleConfig.locales['he'] = {
   formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy",
   monthNames: [
@@ -58,31 +54,11 @@ LocaleConfig.locales['he'] = {
   ],
   monthNamesShort: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ', 'יול', 'אוג', 'ספט', 'אוק', 'נוב', 'דצמ'],
   dayNames: ['ראון', 'שני', 'שלישי', 'קביעי', 'חמישי', 'שישי', 'שבת'],
-  dayNamesShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'],
+  dayNamesShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
 };
-
 LocaleConfig.defaultLocale = 'en';
 
-
-Navigation.events().registerAppLaunchedListener(() => {
-  Navigation.setRoot({
-    root: {
-      stack: {
-        children: [
-          {
-            component: {
-              name: 'Menu',
-              options: {
-                topBar: {
-                  title: {
-                    text: 'Wix RN Calendars'
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
-  });
-});
+export default function App() {
+  return <MenuScreen/>;
+}
+AppRegistry.registerComponent(appName, () => App);

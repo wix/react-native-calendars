@@ -54,7 +54,7 @@ const defaultProps = {
 };
 
 const TestCase = props => {
-  return <CalendarList {...defaultProps} {...props} />;
+  return <CalendarList {...defaultProps} {...props}/>;
 };
 
 describe('CalendarList', () => {
@@ -62,7 +62,7 @@ describe('CalendarList', () => {
     describe('past/futureScrollRange', () => {
       const driver = new CalendarListDriver(
         testIdCalendarList,
-        <TestCase pastScrollRange={pastScrollRange} futureScrollRange={futureScrollRange} />
+        <TestCase pastScrollRange={pastScrollRange} futureScrollRange={futureScrollRange}/>
       );
 
       beforeEach(() => {
@@ -77,7 +77,7 @@ describe('CalendarList', () => {
   });
 
   describe('Horizontal Mode', () => {
-    const driver = new CalendarListDriver(testIdCalendarList, <TestCase horizontal={true} staticHeader={true} />);
+    const driver = new CalendarListDriver(testIdCalendarList, <TestCase horizontal={true} staticHeader={true}/>);
 
     beforeEach(() => {
       jest.useFakeTimers();
