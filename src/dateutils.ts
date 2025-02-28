@@ -125,18 +125,26 @@ export function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
-  const days = month(date);
+const calculateDays = (dates: XDate[], from: XDate, to: XDate) => {
   let before: XDate[] = [];
   let after: XDate[] = [];
+  const days = dates.map(day => day.clone());
+  if (isLTE(from, days[0])) {
+    before = fromTo(from, days[0]);
+  }
+  if (isGTE(to, days[days.length - 1])) {
+    after = fromTo(days[days.length - 1], to);
+  }
+  return before.concat(days.slice(1, days.length - 1), after);
+};
+
+export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
+  const days = month(date);
 
   const fdow = (7 + firstDayOfWeek) % 7 || 7;
   const ldow = (fdow + 6) % 7;
 
-  firstDayOfWeek = firstDayOfWeek || 0;
-
   const from = days[0].clone();
-  const daysBefore = from.getDay();
 
   if (from.getDay() !== fdow) {
     from.addDays(-(from.getDay() + 7 - fdow) % 7);
@@ -148,21 +156,17 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
     to.addDays((ldow + 7 - day) % 7);
   }
 
-  const daysForSixWeeks = (daysBefore + days.length) / 6 >= 6;
+  const daysOnPage = calculateDays(days, from, to).length;
+  const daysForSixWeeks = daysOnPage / 7 >= 6;
 
   if (showSixWeeks && !daysForSixWeeks) {
+    if (42 - daysOnPage > 7) {
+      from.addDays(-7);
+    }
     to.addDays(7);
   }
 
-  if (isLTE(from, days[0])) {
-    before = fromTo(from, days[0]);
-  }
-
-  if (isGTE(to, days[days.length - 1])) {
-    after = fromTo(days[days.length - 1], to);
-  }
-
-  return before.concat(days.slice(1, days.length - 1), after);
+  return calculateDays(days, from, to);
 }
 
 export function isDateNotInRange(date: XDate, minDate: string, maxDate: string) {
