@@ -5,9 +5,12 @@ function getDate(date, firstDay, weekIndex, numberOfDays) {
     if (dayOfTheWeek < firstDay && firstDay > 0) {
         dayOfTheWeek = 7 + dayOfTheWeek;
     }
-    // Adjust to the start of the week
+    // Always adjust to the start of the week
     d.addDays(firstDay - dayOfTheWeek);
     // Add the appropriate number of weeks
     const newDate = numberOfDays && numberOfDays > 1 ? d.addDays(weekIndex * numberOfDays) : d.addWeeks(weekIndex);
-    return toMarkingFormat(newDate);
+    const today = new XDate();
+    const offsetFromNow = newDate.diffDays(today);
+    const isSameWeek = offsetFromNow > 0 && offsetFromNow < (numberOfDays ?? 7);
+    return toMarkingFormat(isSameWeek ? today : newDate);
 } 
