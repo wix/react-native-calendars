@@ -2,9 +2,9 @@ import isEmpty from 'lodash/isEmpty';
 import {MarkedDates} from '../../../src/types';
 
 const today = new Date().toISOString().split('T')[0];
-const fastDate = getPastDate(3);
+const pastDate = getPastDate(3);
 const futureDates = getFutureDates(12);
-const dates = [fastDate, today].concat(futureDates);
+const dates = [pastDate, today].concat(futureDates);
 
 function getFutureDates(numberOfDays: number) {
   const array: string[] = [];
