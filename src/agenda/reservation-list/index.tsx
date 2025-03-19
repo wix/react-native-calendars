@@ -107,37 +107,46 @@ class ReservationList extends Component<ReservationListProps, State> {
   }
 
   componentDidUpdate(prevProps: ReservationListProps) {
-    if (this.props.topDay && prevProps.topDay && prevProps !== this.props) {
+    if (this.props.topDay && prevProps.topDay) {
       if (!sameDate(prevProps.topDay, this.props.topDay)) {
         this.setState({reservations: []},
-          () => this.updateReservations(this.props)
+          () => this.updateReservations(this.props, prevProps) // Pass prevProps
         );
-      } else {
-        this.updateReservations(this.props);
+      } else if (
+        this.props.items !== prevProps.items ||
+        !sameDate(this.props.selectedDay, prevProps.selectedDay)
+      ) {
+        this.updateReservations(this.props, prevProps); // Pass prevProps
       }
     }
   }
-
   updateDataSource(reservations: DayAgenda[]) {
     this.setState({reservations});
   }
 
-  updateReservations(props: ReservationListProps) {
+  updateReservations(props: ReservationListProps, prevProps: ReservationListProps) {
     const {selectedDay, showOnlySelectedDayItems} = props;
-    const reservations = this.getReservations(props);
-    
+    const reservationsData = this.getReservations(props);
+    const newReservations = reservationsData.reservations;
+
     if (!showOnlySelectedDayItems && this.list && !sameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
-      for (let i = 0; i < reservations.scrollPosition; i++) {
+      for (let i = 0; i < reservationsData.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
       }
       this.scrollOver = false;
       this.list?.current?.scrollToOffset({offset: scrollPosition, animated: true});
     }
 
-    this.selectedDay = selectedDay;
-    this.updateDataSource(reservations.reservations);
+    // Check if reservations have actually changed
+    if (!this.state.reservations || !this.state.reservations.length || !newReservations.length || JSON.stringify(this.state.reservations) !== JSON.stringify(newReservations)) {
+      this.selectedDay = selectedDay;
+      this.updateDataSource(newReservations);
+    } else {
+      this.selectedDay = selectedDay;
+    }
   }
+
 
   getReservationsForDay(iterator: XDate, props: ReservationListProps) {
     const day = iterator.clone();
