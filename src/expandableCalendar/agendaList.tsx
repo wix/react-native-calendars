@@ -142,7 +142,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     return sectionTitle;
   }, []);
 
-  const scrollToSection = useCallback(debounce((d) => {
+  const scrollToSection = useCallback((d) => {
     const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
     if (isUndefined(sectionIndex)) {
       return;
@@ -160,7 +160,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  }, 100, {leading: false, trailing: true}), [viewOffset, sections]);
+  }, [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
@@ -179,7 +179,6 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
   const _onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!didScroll.current) {
       didScroll.current = true;
-      scrollToSection.cancel();
     }
     onScroll?.(event);
   }, [onScroll]);
