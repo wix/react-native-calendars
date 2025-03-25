@@ -17,7 +17,7 @@
     "declaration": true,
     "baseUrl": ".",
     "paths": {
-      "react-native-calendars": ["src/index.ts"]
+      "react-native-calendars": ["./src/index.ts"]
     }
   },
   "include": [

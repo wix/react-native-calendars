@@ -1,30 +1,35 @@
-import {ComponentDriver} from 'react-component-driver';
-import Day from '.';
+import {render, fireEvent} from '@testing-library/react-native';
 import {extractStyles} from '../../../testUtils';
 
-export class BasicDayDriver extends ComponentDriver {
-  constructor() {
-    super(Day);
+export class BasicDayDriver {
+  constructor(element) {
+    this.element = element;
+    this.renderTree = render(element);
+    this.testID = element.props.testID;
   }
 
-  tap() {
-    this.getComponent().props.onClick();
-    return this;
+  getProps() {
+    return this.element.props;
   }
 
   getAccessibilityLabel() {
-    return this.getComponent().props.accessibilityLabel.trim();
+    return this.getProps().accessibilityLabel.trim();
   }
 
   getStyle() {
-    return extractStyles(this.getComponent());
+    return extractStyles(this.element);
   }
 
-  getTextView() {
-    return this.getComponent().children.find(node => node.type === 'Text');
+  getText() {
+    return this.renderTree.getByTestId(`${this.testID}.text`).children[0];
   }
 
   getTextStyle() {
-    return extractStyles(this.getTextView());
+    return extractStyles(this.getText());
+  }
+
+  press() {
+    fireEvent.press(this.element);
+    return this;
   }
 }
