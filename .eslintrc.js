@@ -21,7 +21,7 @@ module.exports = {
   },
   plugins: ['react', 'react-native', 'jest', '@typescript-eslint'],
   rules: {
-  'prettier/prettier': ['warn'],
+    'prettier/prettier': ['warn'],
     'comma-dangle': ['error', 'never'],
     'curly': 'off',
     'eol-last': 'error',
