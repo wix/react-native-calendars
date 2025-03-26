@@ -1,21 +1,21 @@
-import PropTypes from 'prop-types';
-import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
-import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
-import {View, ViewStyle, StyleProp} from 'react-native';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StyleProp, View, ViewStyle } from 'react-native';
+import XDate from 'xdate';
 // @ts-expect-error
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
-import {page, isGTE, isLTE, sameMonth} from '../dateutils';
-import {xdateToData, parseDate, toMarkingFormat} from '../interface';
-import {getState} from '../day-state-manager';
-import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-import {DateData, Theme, MarkedDates, ContextProp} from '../types';
-import {useDidUpdate} from '../hooks';
-import styleConstructor from './style';
-import CalendarHeader, {CalendarHeaderProps} from './header';
-import Day, {DayProps} from './day/index';
+import { extractDayProps, extractHeaderProps } from '../componentUpdater';
+import { isGTE, isLTE, page, sameMonth } from '../dateutils';
+import { getState } from '../day-state-manager';
+import { useDidUpdate } from '../hooks';
+import { parseDate, toMarkingFormat, xdateToData } from '../interface';
+import { ContextProp, DateData, MarkedDates, Theme } from '../types';
 import BasicDay from './day/basic';
+import Day, { DayProps } from './day/index';
+import CalendarHeader, { CalendarHeaderProps } from './header';
+import styleConstructor from './style';
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
@@ -94,9 +94,13 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     style: propsStyle
   } = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
-  const style = useRef(styleConstructor(theme));
+  const [style, setStyle] = useState(styleConstructor(theme));
   const header = useRef();
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
+
+  useEffect(() => {
+    setStyle(styleConstructor(theme));
+}, [theme]);
 
   useEffect(() => {
     if (initialDate) {
@@ -173,7 +177,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const renderWeekNumber = (weekNumber: number) => {
     return (
-      <View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
+      <View style={style.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
           key={`week-${weekNumber}`}
           marking={weekNumberMarking.current}
@@ -191,14 +195,14 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     const dayProps = extractDayProps(props);
 
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer}/>;
+      return <View key={id} style={style.emptyDayContainer}/>;
     }
 
     const dateString = toMarkingFormat(day);
     const isControlled = isEmpty(props.context);
 
     return (
-      <View style={style.current.dayContainer} key={id}>
+      <View style={style.dayContainer} key={id}>
         <Day
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
@@ -224,7 +228,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     }
 
     return (
-      <View style={style.current.week} key={id}>
+      <View style={style.week} key={id}>
         {week}
       </View>
     );
@@ -239,7 +243,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
       weeks.push(renderWeek(days.splice(0, 7), weeks.length));
     }
 
-    return <View style={style.current.monthView}>{weeks}</View>;
+    return <View style={style.monthView}>{weeks}</View>;
   };
 
   const shouldDisplayIndicator = useMemo(() => {
@@ -280,7 +284,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   return (
     <GestureComponent {...gestureProps}>
       <View
-        style={[style.current.container, propsStyle]}
+        style={[style.container, propsStyle]}
         testID={testID}
         accessibilityElementsHidden={accessibilityElementsHidden} // iOS
         importantForAccessibility={importantForAccessibility} // Android
