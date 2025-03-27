@@ -1,4 +1,4 @@
-const XDate = require('xdate');
+import XDate from 'xdate';
 
 export function padNumber(n: number) {
   if (n < 10) {

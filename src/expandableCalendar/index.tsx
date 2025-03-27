@@ -32,6 +32,8 @@ import WeekCalendar from './WeekCalendar';
 import Context from './Context';
 import constants from '../commons/constants';
 import {UpdateSources} from './commons';
+import LEFT_ARROW from '../calendar/img/previous.png';
+import RIGHT_ARROW from'../calendar/img/next.png';
 
 export enum Positions {
   CLOSED = 'closed',
@@ -42,8 +44,7 @@ const BOUNCINESS = 6;
 const WEEK_HEIGHT = 46;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
-const LEFT_ARROW = require('../calendar/img/previous.png');
-const RIGHT_ARROW = require('../calendar/img/next.png');
+
 const knobHitSlop = {left: 10, right: 10, top: 10, bottom: 10};
 
 export interface ExpandableCalendarProps extends CalendarListProps {

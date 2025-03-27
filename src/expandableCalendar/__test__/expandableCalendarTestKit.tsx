@@ -7,7 +7,7 @@ import {
 } from 'react-native-calendars';
 import {toMarkingFormat} from '../../interface';
 
-const XDate = require('xdate');
+import XDate from 'xdate';
 
 const today = new XDate();
 export const testIdExpandableCalendar = 'myExpandableCalendar';

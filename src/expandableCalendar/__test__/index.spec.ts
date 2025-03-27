@@ -7,8 +7,7 @@ import {UpdateSources} from '../commons';
 import times from 'lodash/times';
 import {NUMBER_OF_PAGES} from '../WeekCalendar';
 import {CalendarContextProviderProps} from 'react-native-calendars';
-
-const XDate = require('xdate');
+import XDate from 'xdate';
 
 enum Direction {
   LEFT = 'left',

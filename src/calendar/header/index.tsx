@@ -19,6 +19,8 @@ import {
 import {formatNumbers, weekDayNames} from '../../dateutils';
 import styleConstructor from './style';
 import {Theme, Direction} from '../../types';
+import leftArrowIcon from '../img/previous.png';
+import rightArrowIcon from '../img/next.png';
 
 export interface CalendarHeaderProps {
   /** The current month presented in the calendar */
@@ -234,7 +236,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
-    const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
+    const imageSource = isLeft ? leftArrowIcon : rightArrowIcon;
     const renderArrowDirection = isLeft ? 'left' : 'right';   
       
     return (

@@ -12,8 +12,8 @@ import styleConstructor from '../style';
 import Context from './index';
 
 const TOP_POSITION = 65;
-const DOWN_ICON = require('../../img/down.png');
-const UP_ICON = require('../../img/up.png');
+import DOWN_ICON from '../../img/down.png';
+import UP_ICON from '../../img/up.png';
 
 export interface TodayButtonProps extends ViewProps {
   /** The opacity for the disabled button (0-1) */
