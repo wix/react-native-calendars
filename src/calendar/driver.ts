@@ -40,16 +40,6 @@ export class CalendarDriver {
 
   /** Header */
 
-  isTextExists(text) {
-    let node;
-    try {
-      node = this.renderTree.queryByText(text);
-    } catch (e) {
-      return false;
-    }
-    return !!node;
-  }
-
   getHeader() {
     return new CalendarHeaderDriver(this.element, `${this.testID}.header`);
   }
@@ -66,18 +56,19 @@ export class CalendarDriver {
   }
 
   isRootGestureRecognizer() {
-    const tree = this.queryElement(`${this.testID}.container`);
-    return !!tree?.props?.onSwipe;
+    const node = this.queryElement(`${this.testID}.container`);
+    return !!node?.props?.onSwipe;
   }
 
   swipe(direction) {
     // direction === 'left' ? this.getHeader().tapLeftArrow() : this.getHeader().tapRightArrow();
-    const tree = this.queryElement(`${this.testID}.container`);
+    const node = this.queryElement(`${this.testID}.container`);
     // console.log(this.element.props, tree?.props?.onSwipe);
     // tree?.props?.onSwipe?.(direction);
     // act(() => fireEvent(tree, 'onSwipe', direction));
-    act(() => tree?.props?.onSwipe?.(direction));
+    act(() => node?.props?.onSwipe?.(direction));
     // fireEvent(tree, 'onSwipe', direction);
+
   }
 
   swipeLeft() {
