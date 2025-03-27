@@ -1,10 +1,10 @@
 let moment: any;
 
 // Moment is an optional dependency
-export const getMoment = () => {
+export const getMoment = async () => {
   if (!moment) {
     try {
-      moment = require('moment');
+      moment = await import('moment');
     } catch {
       // Moment is not available
     }

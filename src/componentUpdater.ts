@@ -5,11 +5,11 @@ import {ReservationListProps} from './agenda/reservation-list';
 
 import {MarkingProps} from './calendar/day/marking';
 
-const get = require('lodash/get');
-const omit = require('lodash/omit');
-const pickBy = require('lodash/pickBy');
-const isEqual = require('lodash/isEqual');
-const includes = require('lodash/includes');
+import get from 'lodash/get';
+import omit from 'lodash/omit';
+import pickBy from 'lodash/pickBy';
+import isEqual from 'lodash/isEqual';
+import includes from 'lodash/includes';
 
 export function shouldUpdate(props: any, newProps: any, paths: string[]) {
   for (let i = 0; i < paths.length; i++) {
@@ -28,7 +28,7 @@ export function extractComponentProps(component: any, props: any, ignoreProps?: 
     const keys = Object.keys(componentPropTypes);
     const componentProps = omit(
       pickBy(props, (_value: any, key: any) => includes(keys, key)),
-      ignoreProps
+      ignoreProps || []
     );
     return componentProps;
   }

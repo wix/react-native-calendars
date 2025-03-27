@@ -1,5 +1,7 @@
-const XDate = require('xdate');
-const {toMarkingFormat} = require('./interface');
+import XDateClass from 'xdate';
+import {toMarkingFormat} from './interface';
+
+const XDate = XDateClass as any;
 
 const latinNumbersPattern = /[0-9]/g;
 
