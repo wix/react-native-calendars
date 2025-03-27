@@ -21,12 +21,11 @@ export class DayDriver {
   }
 
   getTextStyle() {
-    return extractStyles(this.getDayText());
+    return extractStyles(this.renderTree.getByTestId(`${this.testID}.text`));
   }
 
   getAccessibilityLabel() {
     const node = this.renderTree.getByTestId(this.testID);
-    console.log(node.props.accessibilityLabel);
     return node?.props?.accessibilityLabel.trim();
   }
 
