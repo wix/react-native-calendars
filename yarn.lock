@@ -2005,7 +2005,7 @@
   dependencies:
     "@types/react" "^17"
 
-"@types/react-test-renderer@^18.0.0":
+"@types/react-test-renderer@^18.2.0":
   version "18.3.1"
   resolved "https://registry.npmjs.org/@types/react-test-renderer/-/react-test-renderer-18.3.1.tgz#225bfe8d4ad7ee3b04c2fa27642bb74274a5961d"
   integrity sha512-vAhnk0tG2eGa37lkU9+s5SoroCsRI08xnsWFiAXOuPH2jqzMbcXvKExXViPi1P5fIklDeCvXqyrdmipFaSkZrA==
@@ -6904,11 +6904,6 @@ range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
-
-react-component-driver@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.npmjs.org/react-component-driver/-/react-component-driver-0.10.0.tgz#ee124807e5745710fc55b45211473ed79ed06cfd"
-  integrity sha512-f0NLqnSzUiU0lukznNWdIHiuahsuwXZ16aszCoWUHM18hajk6ZcUJ8BsQFA7EMOjSs8xf0B3b4WBIr2ehZYd3Q==
 
 react-devtools-core@^4.27.7:
   version "4.28.5"

@@ -1,6 +1,6 @@
 import React from 'react';
-import {advanceTo, clear as clearDate} from 'jest-date-mock';
-import {waitFor, render} from '@testing-library/react-native';
+import {advanceTo/* , clear */} from 'jest-date-mock';
+// import {waitFor} from '@testing-library/react-native';
 import {getDaysArray, partial} from '../../testUtils';
 import {CalendarDriver} from '../driver';
 import Calendar from '..';
@@ -24,8 +24,9 @@ describe('Calendar', () => {
   // });
 
   // afterEach(() => {
-  //   clearDate();
+  //   clear();
   // });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -350,7 +351,7 @@ describe('Calendar', () => {
       const drv = new CalendarDriver(<Calendar {...props} enableSwipeMonths/>);
       expect(drv.getHeader().getTitle()).toBe('April 2020');
       await drv.swipeLeft();
-      await waitFor(async () => expect(await drv.getHeader().getTitle()).toBe('May 2020'));
+      // await waitFor(async () => expect(await drv.getHeader().getTitle()).toBe('May 2020'));
       expect(drv.getHeader().getTitle()).toBe('May 2020');
     });
 
