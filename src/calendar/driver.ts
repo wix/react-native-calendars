@@ -1,4 +1,5 @@
-import {render, act, fireEvent} from '@testing-library/react-native';
+import {render, act} from '@testing-library/react-native';
+//@ts-ignore
 import {swipeDirections} from 'react-native-swipe-gestures';
 import {DayDriver} from './day/driver';
 import {CalendarHeaderDriver} from './header/driver';
@@ -68,7 +69,6 @@ export class CalendarDriver {
     // act(() => fireEvent(tree, 'onSwipe', direction));
     act(() => node?.props?.onSwipe?.(direction));
     // fireEvent(tree, 'onSwipe', direction);
-
   }
 
   swipeLeft() {
