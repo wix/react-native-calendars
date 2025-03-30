@@ -160,7 +160,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  }, 1000, {leading: false, trailing: true}), [viewOffset, sections]);
+  }, 1000, {leading: true, trailing: true}), [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
