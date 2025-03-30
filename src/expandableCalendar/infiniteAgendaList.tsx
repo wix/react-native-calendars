@@ -128,7 +128,7 @@ const InfiniteAgendaList = ({
     return sectionTitle;
   }, []);
 
-  const scrollToSection = useCallback((requestedDate) => {
+  const scrollToSection = useCallback(debounce((requestedDate) => {
     const sectionIndex = scrollToNextEvent ? getNextSectionIndex(requestedDate) : getSectionIndex(requestedDate);
     if (isUndefined(sectionIndex)) {
       return;
@@ -145,7 +145,7 @@ const InfiniteAgendaList = ({
         _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
       }, 500);
     }
-  }, [sections]);
+  }, 1000, {leading: true, trailing: true}), [sections]);
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
@@ -170,6 +170,7 @@ const InfiniteAgendaList = ({
   const _onScroll = useCallback((rawEvent: any) => {
     if (!didScroll.current) {
       didScroll.current = true;
+      scrollToSection.cancel();
     }
 
     // Convert to a format similar to NativeSyntheticEvent<NativeScrollEvent>

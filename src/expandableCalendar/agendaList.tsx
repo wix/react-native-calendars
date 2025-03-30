@@ -4,6 +4,7 @@ import get from 'lodash/get';
 import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
+import debounce from 'lodash/debounce';
 
 import XDate from 'xdate';
 
@@ -141,7 +142,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     return sectionTitle;
   }, []);
 
-  const scrollToSection = useCallback((d) => {
+  const scrollToSection = useCallback(debounce((d) => {
     const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
     if (isUndefined(sectionIndex)) {
       return;
@@ -159,7 +160,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  }, [viewOffset, sections]);
+  }, 1000, {leading: true, trailing: true}), [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
@@ -178,6 +179,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
   const _onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!didScroll.current) {
       didScroll.current = true;
+      scrollToSection.cancel();
     }
     onScroll?.(event);
   }, [onScroll]);
