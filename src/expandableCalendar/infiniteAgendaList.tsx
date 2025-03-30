@@ -145,7 +145,7 @@ const InfiniteAgendaList = ({
         _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
       }, 500);
     }
-  }, 1000, {leading: false, trailing: true}), [sections]);
+  }, 1000, {leading: true, trailing: true}), [sections]);
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(
