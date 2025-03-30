@@ -69,7 +69,6 @@ const Week = React.memo((props: WeekProps) => {
       }
     }
     const dayString = toMarkingFormat(day);
-    console.log('Week: ', dayProps.state);
 
     return (
       <View style={style.current.dayContainer} key={id}>

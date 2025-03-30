@@ -199,7 +199,6 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
     const dayProps = extractDayProps(props);
     const dateString = toMarkingFormat(day);
-    console.log('Calendar: ', dayProps.state);
 
     return (
       <View style={style.current.dayContainer} key={id}>
