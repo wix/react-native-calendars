@@ -63,6 +63,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
   const prevDate = useRef(date);
   const currDate = useRef(date); // for setDate only to keep prevDate up to date
   const [currentDate, setCurrentDate] = useState(date);
+  const [selectedDate, setSelectedDate] = useState(date);
   const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
 
   const wrapperStyle = useMemo(() => {
@@ -79,6 +80,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     prevDate.current = currDate.current;
     currDate.current = date;
     setCurrentDate(date);
+    setSelectedDate(date);
     setUpdateSource(updateSource);
 
     onDateChanged?.(date, updateSource);
@@ -98,6 +100,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     return {
       date: currentDate,
       prevDate: prevDate.current,
+      selectedDate,
       updateSource: updateSource,
       setDate: _setDate,
       setDisabled: _setDisabled,

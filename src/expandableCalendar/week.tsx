@@ -58,7 +58,7 @@ const Week = React.memo((props: WeekProps) => {
 
   const getDayState = (day: XDate) => {
     const isControlled = disableDaySelection;
-    return !isControlled && props.context?.date === toMarkingFormat(day) ? 'selected' : undefined;
+    return !isControlled && props.context?.selectedDate === toMarkingFormat(day) ? 'selected' : undefined;
   };
 
   const renderDay = (day: XDate, id: number) => {
