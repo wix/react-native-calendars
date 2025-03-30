@@ -150,7 +150,7 @@ const BasicDay = (props: BasicDayProps) => {
 
   const renderText = () => {
     return (
-      <Text allowFontScaling={false} style={getTextStyle()}>
+      <Text allowFontScaling={false} style={getTextStyle()} testID={`${testID}.text`}>
         {String(children)}
       </Text>
     );

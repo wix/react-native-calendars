@@ -89,7 +89,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     style: propsStyle,
     addMonth: propsAddMonth,
     month,
-    monthFormat,
+    monthFormat = 'MMMM yyyy',
     firstDay,
     hideDayNames,
     showWeekNumbers,
@@ -104,7 +104,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     displayLoadingIndicator,
     customHeaderTitle,
     renderHeader,
-    webAriaLevel,
+    webAriaLevel = 1,
     testID,
     accessibilityElementsHidden,
     importantForAccessibility,
@@ -193,7 +193,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       }
 
       return (
-        <Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
+        <Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''} testID={`${testID}.dayName_${day}`}>
           {day}
         </Text>
       );
