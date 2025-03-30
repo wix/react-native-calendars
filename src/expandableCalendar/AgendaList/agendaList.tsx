@@ -19,17 +19,17 @@ import {
   ViewToken
 } from 'react-native';
 
-import {useDidUpdate, useCombinedRefs} from '../hooks';
-import {getMoment} from '../momentResolver';
-import {isToday, isGTE, sameDate} from '../dateutils';
-import {parseDate} from '../interface';
-import {getDefaultLocale} from '../services';
-import {UpdateSources, todayString} from './commons';
-import constants from '../commons/constants';
-import styleConstructor from './style';
-import Context from './Context';
+import {useDidUpdate, useCombinedRefs} from '../../hooks';
+import {getMoment} from '../../momentResolver';
+import {isToday, isGTE, sameDate} from '../../dateutils';
+import {parseDate} from '../../interface';
+import {getDefaultLocale} from '../../services';
+import {UpdateSources, todayString} from '../commons';
+import constants from '../../commons/constants';
+import styleConstructor from '../style';
+import Context from '../Context';
 import InfiniteAgendaList from './infiniteAgendaList';
-import {AgendaListProps, AgendaSectionHeader} from './AgendaListsCommon';
+import {AgendaListProps, AgendaSectionHeader} from './commons';
 
 const viewabilityConfig = {
   itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
