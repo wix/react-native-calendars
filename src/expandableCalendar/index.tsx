@@ -31,7 +31,7 @@ import Week from './week';
 import WeekCalendar from './WeekCalendar';
 import Context from './Context';
 import constants from '../commons/constants';
-import {UpdateSources} from './commons';
+import {UpdateSources, CalendarNavigationTypes} from './commons';
 
 export enum Positions {
   CLOSED = 'closed',
@@ -643,3 +643,4 @@ ExpandableCalendar.defaultProps = {
   closeOnDayPress: true
 };
 ExpandableCalendar.positions = Positions;
+ExpandableCalendar.navigationTypes = CalendarNavigationTypes;

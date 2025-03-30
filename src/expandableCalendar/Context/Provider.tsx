@@ -1,3 +1,4 @@
+import {includes} from 'lodash';
 import XDate from 'xdate';
 
 import React, {useRef, useState, useCallback, useMemo} from 'react';
@@ -7,7 +8,7 @@ import {sameMonth} from '../../dateutils';
 import {xdateToData} from '../../interface';
 import {useDidUpdate} from '../../hooks';
 import {Theme, DateData} from '../../types';
-import {UpdateSources} from '../commons';
+import {UpdateSources, CalendarNavigationTypes} from '../commons';
 import styleConstructor from '../style';
 import CalendarContext from './index';
 import TodayButton, {TodayButtonImperativeMethods} from './todayButton';
@@ -23,6 +24,8 @@ export interface CalendarContextProviderProps extends ViewProps {
   onDateChanged?: (date: string, updateSource: UpdateSources) => void;
   /** Callback for month change event */
   onMonthChange?: (date: DateData, updateSource: UpdateSources) => void;
+  /** The calendar navigation type in which to disable the auto day selection (get options from ExpandableCalendar.navigationTypes) */
+  disableAutoDaySelection?: CalendarNavigationTypes[];
 
   /** Whether to show the today button */
   showTodayButton?: boolean;
@@ -49,6 +52,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     date,
     onDateChanged,
     onMonthChange,
+    disableAutoDaySelection,
     showTodayButton = false,
     disabledOpacity,
     todayBottomMargin,
@@ -80,7 +84,9 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     prevDate.current = currDate.current;
     currDate.current = date;
     setCurrentDate(date);
-    setSelectedDate(date);
+    if (!includes(disableAutoDaySelection, updateSource as string)) {
+      setSelectedDate(date);
+    }
     setUpdateSource(updateSource);
 
     onDateChanged?.(date, updateSource);

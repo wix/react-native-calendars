@@ -11,3 +11,12 @@ export enum UpdateSources {
   PAGE_SCROLL = 'pageScroll',
   WEEK_SCROLL = 'weekScroll'
 }
+
+export enum CalendarNavigationTypes {
+  AGENDA_SCROLL = UpdateSources.LIST_DRAG,
+  MONTH_SCROLL = UpdateSources.PAGE_SCROLL,
+  WEEK_SCROLL = UpdateSources.WEEK_SCROLL,
+  MONTH_ARROWS = UpdateSources.ARROW_PRESS,
+  WEEK_ARROWS = UpdateSources.WEEK_ARROW_PRESS,
+  TODAY_PRESS = UpdateSources.TODAY_PRESS
+}
