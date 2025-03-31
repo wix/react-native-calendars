@@ -122,7 +122,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const shouldMeasureHeader = useRef(true);
 
   const style = useRef(styleConstructor(theme));
-  const list = useRef();
+  const list = useRef<any>();
   const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current) || new XDate());
   const visibleMonth = useRef(currentMonth);
@@ -190,7 +190,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     }
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated});
     }
   };
@@ -201,7 +200,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const scrollAmount = calendarSize * (shouldUseAndroidRTLFix ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
   }, [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]);
@@ -225,7 +223,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     }
   }, [markedDates]);
 
-  const getItemLayout = useCallback((_: Array<XDate> | undefined | null, index: number) => {
+  const getItemLayout = useCallback((_: ArrayLike<XDate> | undefined | null, index: number) => {
     return {
       length: calendarSize,
       offset: calendarSize * index,
@@ -317,7 +315,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList
-        // @ts-expect-error
         ref={list}
         windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}

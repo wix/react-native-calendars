@@ -1,112 +1,185 @@
-import React, {useState} from 'react';
-import {Platform, StyleSheet, View, ScrollView, TouchableOpacity, Text, Image, I18nManager, Switch} from 'react-native';
-import {Navigation} from 'react-native-navigation';
+import React, {useState, useCallback} from 'react';
+import {I18nManager, StyleSheet, Modal, FlatList, SafeAreaView, View, TouchableOpacity, Text, Image, Switch} from 'react-native';
 import testIDs from '../testIDs';
+import CalendarScreen from './calendarScreen';
+import CalendarPlaygroundScreen from './calendarPlaygroundScreen';
+import AgendaScreen from './agendaScreen';
+import AgendaInfiniteListScreen from './agendaInfiniteListScreen';
+import CalendarListScreen from './calendarListScreen';
+import NewCalendarListScreen from './newCalendarListScreen';
+import ExpandableCalendarScreen from './expandableCalendarScreen';
+import TimelineCalendarScreen from './timelineCalendarScreen';
+import PlaygroundScreen from './playgroundScreen';
 
 const appIcon = require('../img/logo.png');
+const settingsIcon = require('../img/settings.png');
+const closeIcon = require('../img/close.png');
 
-interface Props {
-  componentId?: string;
-  weekView?: boolean;
-  horizontalView?: boolean;
-}
+const screens = [
+  {testID: testIDs.menu.CALENDARS, title: 'Calendar', screen: CalendarScreen},
+  {testID: testIDs.menu.CALENDARS, title: 'Calendar Playground', screen: CalendarPlaygroundScreen},
+  {testID: testIDs.menu.CALENDAR_LIST, title: 'Calendar List', screen: CalendarListScreen},
+  {testID: testIDs.menu.HORIZONTAL_LIST, title: 'Horizontal Calendar List', screen: CalendarListScreen, props: {horizontalView: true}},
+  {testID: testIDs.menu.HORIZONTAL_LIST, title: 'NEW Calendar List', screen: NewCalendarListScreen},
+  {testID: testIDs.menu.AGENDA, title: 'Agenda', screen: AgendaScreen},
+  {testID: testIDs.menu.AGENDA_INFINITE, title: 'Agenda Infinite List', screen: AgendaInfiniteListScreen},
+  {testID: testIDs.menu.EXPANDABLE_CALENDAR, title: 'Expandable Calendar', screen: ExpandableCalendarScreen},
+  {testID: testIDs.menu.TIMELINE_CALENDAR, title: 'Timeline Calendar', screen: TimelineCalendarScreen},
+  {testID: testIDs.menu.WEEK_CALENDAR, title: 'Week Calendar', screen: ExpandableCalendarScreen, props: {weekView: true}},
+  {testID: testIDs.menu.PLAYGROUND, title: 'Playground', screen: PlaygroundScreen}
+];
 
-const MenuScreen = (props: Props) => {
-  const {componentId} = props;
-  const [forceRTL, setForceRTL] = useState(false);
+const MenuScreen = () => {
+  const [forceRTL, setForceRTL] = useState(I18nManager.isRTL);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [nextScreen, setNextScreen] = useState(screens[0]);
 
-  const toggleRTL = (value) => {
+  const keyExtractor = (item: any) => `${item.title}-${item.testID}`;
+
+  const toggleRTL = useCallback((value) => {
     I18nManager.forceRTL(value);
     setForceRTL(value);
+  }, []);
+
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
   };
 
-  const renderEntry = (testID: string, title: string, screen: string, options?: any) => {
+  const onPress = useCallback(item => {
+    setNextScreen(item);
+    setShowModal(true);
+  }, []);
+
+  const renderSettings = () => {
     return (
-      <TouchableOpacity
-        testID={testID}
-        style={styles.menu}
-        onPress={() => openScreen(screen, options)}
-      >
-        <Text style={styles.menuText}>{title}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const pushScreen = (screen: string, props?: Props) => {
-    Navigation.push(componentId, {
-      component: {
-        name: screen,
-        passProps: props,
-        options: {
-          topBar: {
-            title: {
-              text: props?.weekView ? 'WeekCalendar' : screen
-            },
-            backButton: {
-              testID: 'back',
-              showTitle: false, // iOS only
-              color: Platform.OS === 'ios' ? '#2d4150' : undefined
-            }
-          }
-        }
-      }
-    });
-  };
-
-  const openScreen = (screen: string, options: any) => {
-    pushScreen(screen, options);
-  };
-
-  return (
-    <ScrollView>
-      <View style={styles.container} testID={testIDs.menu.CONTAINER}>
-        <Image source={appIcon} style={styles.image}/>
-        {renderEntry(testIDs.menu.CALENDARS, 'Calendar', 'CalendarScreen')}
-        {renderEntry(testIDs.menu.CALENDARS, 'Calendar Playground', 'CalendarPlaygroundScreen')}
-        {renderEntry(testIDs.menu.CALENDAR_LIST, 'Calendar List', 'CalendarListScreen')}
-        {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'Horizontal Calendar List', 'CalendarListScreen', {horizontalView: true})}
-        {renderEntry(testIDs.menu.HORIZONTAL_LIST, 'NEW Calendar List', 'NewCalendarListScreen')}
-        {renderEntry(testIDs.menu.AGENDA, 'Agenda', 'AgendaScreen')}
-        {renderEntry(testIDs.menu.AGENDA_INFINITE, 'Agenda Infinite List', 'AgendaInfiniteListScreen')}
-        {renderEntry(testIDs.menu.EXPANDABLE_CALENDAR, 'Expandable Calendar', 'ExpandableCalendarScreen')}
-        {renderEntry(testIDs.menu.TIMELINE_CALENDAR, 'Timeline Calendar', 'TimelineCalendarScreen')}
-        {renderEntry(testIDs.menu.WEEK_CALENDAR, 'Week Calendar', 'ExpandableCalendarScreen', {weekView: true})}
-        {renderEntry(testIDs.menu.PLAYGROUND, 'Playground', 'Playground')}
+      <View style={styles.settingsContainer}>
         <View style={styles.switchContainer}>
-          <Text>Force RTL</Text>
+          <Text style={styles.label}>Force RTL</Text>
           <Switch value={forceRTL} onValueChange={toggleRTL}/>
         </View>
       </View>
-    </ScrollView>
+    );
+  };
+
+  const renderModal = () => {
+    const ScreenComponent = nextScreen.screen;
+
+    return (
+      <Modal visible={showModal} animationType="slide">
+        <SafeAreaView style={styles.screenContainer}>
+          <View style={styles.topBar}>
+            <TouchableOpacity style={styles.topBarButton} onPress={() => setShowModal(false)}><Image source={closeIcon}/></TouchableOpacity>
+            <Text style={styles.topBarTitle}>{nextScreen.title}</Text>
+          </View>
+          <ScreenComponent {...nextScreen.props}/>
+        </SafeAreaView>
+      </Modal>
+    );
+  };
+
+  const renderItem = useCallback(({item}) => {
+    return (
+      <TouchableOpacity testID={item.testID} onPress={() => onPress(item)} style={styles.menu}>
+        <Text style={styles.menuText}>{item.title}</Text>
+      </TouchableOpacity>
+    );
+  }, []);
+
+  const renderHeader = () => {
+    return (
+      <View style={styles.header}>
+        <View style={styles.logoContainer}><Image source={appIcon} style={styles.logo}/></View>
+        <Text style={styles.title}>React Native Calendars</Text>
+        <TouchableOpacity onPress={toggleSettings}><Image source={settingsIcon} style={styles.settingsButton}/></TouchableOpacity>
+      </View>
+    );
+  };
+
+  return (
+    <SafeAreaView>
+      {renderHeader()}
+      {showSettings && renderSettings()}
+      <FlatList
+        data={screens}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        showsVerticalScrollIndicator={false}
+      />
+      {renderModal()}
+    </SafeAreaView>
   );
 };
 
 export default MenuScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  screenContainer: {
+    flex: 1
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    marginBottom: 24,
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black'
+  },
+  logoContainer: {
     alignItems: 'center'
   },
-  image: {
-    margin: 30,
-    width: 90,
-    height: 90
+  logo: {
+    width: 30,
+    height: 30
   },
   menu: {
-    width: 300,
-    padding: 10,
-    margin: 10,
-    alignItems: 'center',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#7a92a5'
+    margin: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth
   },
   menuText: {
     fontSize: 18,
-    color: '#2d4150'
+    color: 'black'
+  },
+  settingsButton: {
+    tintColor: 'black'
+  },
+  settingsContainer: {
+    position: 'absolute',
+    top: 38,
+    right: 0,
+    backgroundColor: 'lightgrey',
+    margin: 16,
+    padding: 16,
+    borderRadius: 4,
+    zIndex: 100
   },
   switchContainer: {
-    margin: 20
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  label: {
+    marginRight: 12,
+    fontSize: 16
+  },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 16,
+    paddingTop: 20,
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  topBarTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black'
+  },
+  topBarButton: {
+    marginLeft: 16,
+    marginRight: 6
   }
 });
