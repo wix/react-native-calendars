@@ -1,7 +1,7 @@
 import isEqual from 'lodash/isEqual';
 import React from 'react';
 import {DefaultSectionT, SectionListProps, Text, TextProps, ViewStyle} from 'react-native';
-import {Theme} from '../types';
+import {Theme} from '../../types';
 
 export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
   /** Specify theme properties to override specific styles for calendar parts */
