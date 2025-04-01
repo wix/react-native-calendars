@@ -1,11 +1,9 @@
 import inRange from 'lodash/inRange';
 import debounce from 'lodash/debounce';
 import noop from 'lodash/noop';
-
 import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
 import {ScrollViewProps} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
-
 import constants from '../commons/constants';
 import {useCombinedRefs} from '../hooks';
 
@@ -70,10 +68,10 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       }
     )
   );
-
+  
   const shouldFixRTL = useMemo(() => {
     return isHorizontal && constants.isRTL && (constants.isRN73() || constants.isAndroid);
-  }, []);
+  }, [isHorizontal]);
 
   const listRef = useCombinedRefs(ref);
   const pageIndex = useRef<number>();
@@ -93,7 +91,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
-  }, [data, disableScrollOnDataChange]);
+  }, [data, disableScrollOnDataChange, isHorizontal]);
 
   const _onScroll = useCallback(
     (event, offsetX, offsetY) => {
@@ -133,7 +131,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
       onScroll?.(event, offsetX, offsetY);
     },
-    [onScroll, onPageChange, data.length, reloadPagesDebounce]
+    [onScroll, onPageChange, data.length, reloadPagesDebounce, isHorizontal, shouldFixRTL]
   );
 
   const onMomentumScrollEnd = useCallback(
