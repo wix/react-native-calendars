@@ -1,8 +1,6 @@
 import XDate from 'xdate';
-
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
-
 import {sameWeek, onSameDateRange, getWeekDates} from '../../dateutils';
 import {toMarkingFormat} from '../../interface';
 import {DateData, MarkedDates} from '../../types';
@@ -50,6 +48,8 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const list = useRef<FlatList>(null);
   const currentIndex = useRef(NUMBER_OF_PAGES);
 
+  const shouldFixRTL = useMemo(() => !constants.isRN73() && constants.isAndroidRTL, []);
+
   useDidUpdate(() => {
     items.current = getDatesArray(date, firstDay, numberOfDays);
     setListData(items.current);
@@ -69,7 +69,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           }) :
           sameWeek(item, date, firstDay));
       if (pageIndex !== currentIndex.current) {
-        const adjustedIndexFrScroll = (constants.isAndroidRTL && !constants.isRN73()) ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex;
+        const adjustedIndexFrScroll = shouldFixRTL ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex;
         if (pageIndex >= 0) {
           visibleWeek.current = items.current[adjustedIndexFrScroll];
           currentIndex.current = adjustedIndexFrScroll;
@@ -80,7 +80,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({index: adjustedIndexFrScroll, animated: false});
       }
     }
-  }, [date, updateSource]);
+  }, [date, updateSource, shouldFixRTL]);
 
   const containerWidth = useMemo(() => {
     return calendarWidth ?? constants.screenWidth;
@@ -179,7 +179,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     const currItems = items.current;
     const newDate = viewableItems[0]?.item;
     if (newDate !== visibleWeek.current) {
-      if (constants.isAndroidRTL) {
+      if (shouldFixRTL) {
         //in android RTL the item we see is the one in the opposite direction
         const newDateOffset = -1 * (NUMBER_OF_PAGES - currItems.indexOf(newDate));
         const adjustedNewDate = currItems[NUMBER_OF_PAGES - newDateOffset];
@@ -198,7 +198,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
         }
       }
     }
-  }, [onEndReached]);
+  }, [onEndReached, shouldFixRTL]);
 
   const viewabilityConfigCallbackPairs = useRef([{
       viewabilityConfig: {
