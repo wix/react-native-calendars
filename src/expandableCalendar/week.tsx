@@ -56,6 +56,11 @@ const Week = React.memo((props: WeekProps) => {
   const dayProps = extractDayProps(props);
   const currXdate = useMemo(() => parseDate(current), [current]);
 
+  const getDayState = (day: XDate) => {
+    const isControlled = disableDaySelection;
+    return !isControlled && props.context?.selectedDate === toMarkingFormat(day) ? 'selected' : undefined;
+  };
+
   const renderDay = (day: XDate, id: number) => {
     // hide extra days
     if (current && hideExtraDays) {
@@ -64,13 +69,14 @@ const Week = React.memo((props: WeekProps) => {
       }
     }
     const dayString = toMarkingFormat(day);
+
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
           {...dayProps}
           testID={`${testID}.day_${dayString}`}
           date={dayString}
-          state={getState(day, currXdate, props, disableDaySelection)}
+          state={getDayState(day) || getState(day, currXdate, props)}
           marking={disableDaySelection ? {...markedDates?.[dayString], disableTouchEvent: true} : markedDates?.[dayString]}
           onPress={onDayPress}
           onLongPress={onDayLongPress}

@@ -36,6 +36,11 @@
       "description": "Handler which gets executed when the month changes"
     },
     {
+      "name": "disableAutoDaySelection",
+      "type": "CalendarNavigationTypes[]",
+      "description": "The calendar navigation type in which to disable the auto day selection (get options from ExpandableCalendar.navigationTypes)"
+    },
+    {
       "name": "showTodayButton",
       "type": "boolean",
       "description": "Whether to show the today button",
