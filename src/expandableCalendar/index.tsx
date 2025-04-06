@@ -260,7 +260,7 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
   }, [allowShadow, propsStyle, headerHeight]);
 
   const wrapperStyle = useMemo(() => {
-    return {height: deltaY};
+    return {height: deltaY, overflow: 'hidden'};
   }, [deltaY]);
 
   const numberOfDaysHeaderStyle = useMemo(() => {
