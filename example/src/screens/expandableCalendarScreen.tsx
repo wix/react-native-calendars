@@ -32,7 +32,7 @@ const ExpandableCalendarScreen = (props: Props) => {
   // }, []);
 
   const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item} />;
+    return <AgendaItem item={item}/>;
   }, []);
 
   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
@@ -57,7 +57,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
           <Text style={styles.headerTitle}>{date?.toString('MMMM yyyy')}</Text>
-          <Animated.Image source={CHEVRON} style={{transform: [{rotate: rotationInterpolate}]}} />
+          <Animated.Image source={CHEVRON} style={{transform: [{rotate: rotationInterpolate}]}}/>
         </TouchableOpacity>
       );
     },
@@ -75,7 +75,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       // todayBottomMargin={16}
     >
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current} />
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}

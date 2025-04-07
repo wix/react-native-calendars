@@ -5,7 +5,16 @@ import throttle from 'lodash/throttle';
 
 import XDate from 'xdate';
 
-import React, {useContext, useRef, useState, useEffect, useCallback, useMemo, ForwardRefRenderFunction, useImperativeHandle, forwardRef} from 'react';
+import React, {
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useImperativeHandle,
+  forwardRef
+} from 'react';
 import {
   AccessibilityInfo,
   PanResponder,
