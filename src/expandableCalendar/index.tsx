@@ -72,7 +72,7 @@ export interface ExpandableCalendarProps extends CalendarListProps {
 }
 
 type ExpandableCalendarRef = {
-  toggleCalendarPosition: () => void;
+  toggleCalendarPosition: () => boolean;
 };
 
 const headerStyleOverride = {
@@ -440,6 +440,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   const toggleCalendarPosition = useCallback(() => {
     bounceToPosition(isOpen ? closedHeight : openHeight.current);
+    return !isOpen;
   }, [isOpen, bounceToPosition, closedHeight]);
 
   useImperativeHandle(

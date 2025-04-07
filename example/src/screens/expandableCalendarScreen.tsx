@@ -1,10 +1,11 @@
 import React, {useRef, useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import {Animated, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from '../testIDs';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import AgendaItem from '../mocks/AgendaItem';
 import {getTheme, themeColor, lightThemeColor} from '../mocks/theme';
+import type XDate from 'xdate';
 
 const leftArrowIcon = require('../img/previous.png');
 const rightArrowIcon = require('../img/next.png');
@@ -13,7 +14,7 @@ const ITEMS: any[] = agendaItems;
 interface Props {
   weekView?: boolean;
 }
-
+const CHEVRON = require('../img/chevronUp.png');
 const ExpandableCalendarScreen = (props: Props) => {
   const {weekView} = props;
   const marked = useRef(getMarkedDates());
@@ -31,8 +32,37 @@ const ExpandableCalendarScreen = (props: Props) => {
   // }, []);
 
   const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item}/>;
+    return <AgendaItem item={item} />;
   }, []);
+
+  const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
+  const rotation = useRef(new Animated.Value(0));
+
+  const toggleCalendarExpansion = useCallback(() => {
+    const isOpen = calendarRef.current?.toggleCalendarPosition();
+    Animated.timing(rotation.current, {
+      toValue: isOpen ? 1 : 0,
+      duration: 200,
+      useNativeDriver: true,
+      easing: Easing.out(Easing.ease)
+    }).start();
+  }, []);
+
+  const renderHeader = useCallback(
+    (date?: XDate) => {
+      const rotationInterpolate = rotation.current.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '180deg']
+      });
+      return (
+        <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
+          <Text style={styles.headerTitle}>{date?.toString('MMMM yyyy')}</Text>
+          <Animated.Image source={CHEVRON} style={{transform: [{rotate: rotationInterpolate}]}} />
+        </TouchableOpacity>
+      );
+    },
+    [toggleCalendarExpansion]
+  );
 
   return (
     <CalendarProvider
@@ -45,10 +75,12 @@ const ExpandableCalendarScreen = (props: Props) => {
       // todayBottomMargin={16}
     >
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current} />
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}
+          renderHeader={renderHeader}
+          ref={calendarRef}
           // horizontal={false}
           // hideArrows
           // disablePan
@@ -86,8 +118,11 @@ const styles = StyleSheet.create({
     paddingRight: 20
   },
   header: {
-    backgroundColor: 'lightgrey'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
+  headerTitle: {fontSize: 16, fontWeight: 'bold', marginRight: 6},
   section: {
     backgroundColor: lightThemeColor,
     color: 'grey',
