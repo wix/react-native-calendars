@@ -98,7 +98,7 @@ const headerStyleOverride = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 
-const ExpandableCalendar: ForwardRefRenderFunction<ExpandableCalendarRef, ExpandableCalendarProps> = (props, ref) => {
+const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarProps>((props, ref) => {
   const _context = useContext(Context);
   const {date, setDate, numberOfDays, timelineLeftInset} = _context;
 
@@ -374,7 +374,6 @@ const ExpandableCalendar: ForwardRefRenderFunction<ExpandableCalendarRef, Expand
     _height.current = Number(_wrapperStyles.current.style.height);
     bounceToPosition();
   };
-
   const numberOfDaysCondition = useMemo(() => {
     return !numberOfDays || numberOfDays && numberOfDays <= 1;
   }, [numberOfDays]);
@@ -638,9 +637,9 @@ const ExpandableCalendar: ForwardRefRenderFunction<ExpandableCalendarRef, Expand
       )}
     </View>
   );
-};
+});
 
-export default Object.assign(forwardRef(ExpandableCalendar), {
+export default Object.assign(ExpandableCalendar, {
   displayName: 'ExpandableCalendar',
   positions: Positions,
   defaultProps: {
