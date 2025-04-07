@@ -1,5 +1,5 @@
 import times from 'lodash/times';
-import React, {useState, useCallback, useMemo, useRef} from 'react';
+import React, {forwardRef, useState, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch, Alert} from 'react-native';
 import {Calendar, CalendarUtils} from 'react-native-calendars';
 
@@ -368,7 +368,7 @@ const NewCalendarScreen = () => {
     setCustomHeaderNewMonth(false);
   };
 
-  const CustomHeader = React.forwardRef((props, ref) => {
+  const CustomHeader = forwardRef((props, ref) => {
     customHeaderProps.current = props;
     
     return (

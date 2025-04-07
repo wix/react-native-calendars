@@ -83,7 +83,7 @@ const accessibilityActions = [
   {name: 'decrement', label: 'decrement'}
 ];
 
-const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
+const CalendarHeader = (props: CalendarHeaderProps, ref) => {
   const {
     theme,
     style: propsStyle,
@@ -306,12 +306,13 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       {renderDayNames()}
     </View>
   );
-});
-
-export default CalendarHeader;
-CalendarHeader.displayName = 'CalendarHeader';
-CalendarHeader.defaultProps = {
-  monthFormat: 'MMMM yyyy',
-  webAriaLevel: 1,
-  arrowsHitSlop: 20
 };
+
+export default Object.assign(forwardRef(CalendarHeader), {
+  displayName: 'CalendarHeader',
+  defaultProps: {
+    monthFormat: 'MMMM yyyy',
+    webAriaLevel: 1,
+    arrowsHitSlop: 20
+  }
+});

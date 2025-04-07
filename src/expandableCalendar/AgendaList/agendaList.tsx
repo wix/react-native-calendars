@@ -41,7 +41,7 @@ const viewabilityConfig = {
  * @extends: SectionList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
+const AgendaList = (props: AgendaListProps, ref: any) => {
   const {
     theme,
     sections,
@@ -247,17 +247,16 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
   // _getItemLayout = (data, index) => {
   //   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
   // }
-});
-
-export default AgendaList;
-
-AgendaList.displayName = 'AgendaList';
-AgendaList.propTypes = {
-  dayFormat: PropTypes.string,
-  dayFormatter: PropTypes.func,
-  useMoment: PropTypes.bool,
-  markToday: PropTypes.bool,
-  // @ts-expect-error TODO Figure out why forwardRef causes error about the number type
-  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  avoidDateUpdates: PropTypes.bool
 };
+
+export default Object.assign(forwardRef(AgendaList), {
+  displayName: 'AgendaList',
+  propTypes: {
+    dayFormat: PropTypes.string,
+    dayFormatter: PropTypes.func,
+    useMoment: PropTypes.bool,
+    markToday: PropTypes.bool,
+    sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+    avoidDateUpdates: PropTypes.bool
+  }
+});

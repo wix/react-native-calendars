@@ -1,4 +1,4 @@
-import React, {useState, Fragment, useCallback, useMemo, useRef} from 'react';
+import React, {forwardRef, useState, Fragment, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {Calendar, CalendarUtils} from 'react-native-calendars';
 import testIDs from '../testIDs';
@@ -448,7 +448,7 @@ const CalendarScreen = () => {
   };
 
   const renderCalendarWithCustomHeader = () => {
-    const CustomHeader = React.forwardRef((props, ref) => {
+    const CustomHeader = forwardRef((props, ref) => {
       customHeaderProps.current = props;
 
       return (
