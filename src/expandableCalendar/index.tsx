@@ -72,7 +72,7 @@ export interface ExpandableCalendarProps extends CalendarListProps {
 }
 
 export type ExpandableCalendarRef = {
-  toggleCalendar: () => void;
+  toggleCalendarPosition: () => void;
 };
 
 const headerStyleOverride = {
@@ -446,7 +446,7 @@ const ExpandableCalendar: ForwardRefRenderFunction<ExpandableCalendarRef, Expand
   useImperativeHandle(
     ref,
     () => ({
-      toggleCalendar: toggleCalendarPosition
+      toggleCalendarPosition
     }),
     [toggleCalendarPosition]
   );
