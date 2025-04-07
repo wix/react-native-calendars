@@ -71,10 +71,6 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeOnDayPress?: boolean;
 }
 
-export type ExpandableCalendarRef = {
-  toggleCalendarPosition: () => void;
-};
-
 const headerStyleOverride = {
   stylesheet: {
     calendar: {
