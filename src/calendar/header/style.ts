@@ -63,7 +63,8 @@ export default function (theme: Theme = {}) {
       fontSize: appStyle.textDayHeaderFontSize,
       fontFamily: appStyle.textDayHeaderFontFamily,
       fontWeight: appStyle.textDayHeaderFontWeight,
-      color: appStyle.textSectionTitleColor
+      color: appStyle.textSectionTitleColor,
+      ...appStyle.textDayHeaderStyle
     },
     disabledDayHeader: {
       color: appStyle.textSectionTitleDisabledColor
