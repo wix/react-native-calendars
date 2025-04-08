@@ -5,7 +5,16 @@ import throttle from 'lodash/throttle';
 
 import XDate from 'xdate';
 
-import React, {useContext, useRef, useState, useEffect, useCallback, useMemo} from 'react';
+import React, {
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useImperativeHandle,
+  forwardRef
+} from 'react';
 import {
   AccessibilityInfo,
   PanResponder,
@@ -71,6 +80,10 @@ export interface ExpandableCalendarProps extends CalendarListProps {
   closeOnDayPress?: boolean;
 }
 
+type ExpandableCalendarRef = {
+  toggleCalendarPosition: () => boolean;
+};
+
 const headerStyleOverride = {
   stylesheet: {
     calendar: {
@@ -94,7 +107,7 @@ const headerStyleOverride = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 
-const ExpandableCalendar = (props: ExpandableCalendarProps) => {
+const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarProps>((props, ref) => {
   const _context = useContext(Context);
   const {date, setDate, numberOfDays, timelineLeftInset} = _context;
 
@@ -370,7 +383,6 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
     _height.current = Number(_wrapperStyles.current.style.height);
     bounceToPosition();
   };
-
   const numberOfDaysCondition = useMemo(() => {
     return !numberOfDays || numberOfDays && numberOfDays <= 1;
   }, [numberOfDays]);
@@ -437,7 +449,16 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
 
   const toggleCalendarPosition = useCallback(() => {
     bounceToPosition(isOpen ? closedHeight : openHeight.current);
+    return !isOpen;
   }, [isOpen, bounceToPosition, closedHeight]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      toggleCalendarPosition
+    }),
+    [toggleCalendarPosition]
+  );
 
   /** Events */
 
@@ -626,20 +647,20 @@ const ExpandableCalendar = (props: ExpandableCalendarProps) => {
       )}
     </View>
   );
-};
+});
 
-export default ExpandableCalendar;
-
-ExpandableCalendar.displayName = 'ExpandableCalendar';
-ExpandableCalendar.defaultProps = {
-  horizontal: true,
-  initialPosition: Positions.CLOSED,
-  firstDay: 0,
-  leftArrowImageSource: LEFT_ARROW,
-  rightArrowImageSource: RIGHT_ARROW,
-  allowShadow: true,
-  openThreshold: PAN_GESTURE_THRESHOLD,
-  closeThreshold: PAN_GESTURE_THRESHOLD,
-  closeOnDayPress: true
-};
-ExpandableCalendar.positions = Positions;
+export default Object.assign(ExpandableCalendar, {
+  displayName: 'ExpandableCalendar',
+  positions: Positions,
+  defaultProps: {
+    horizontal: true,
+    initialPosition: Positions.CLOSED,
+    firstDay: 0,
+    leftArrowImageSource: LEFT_ARROW,
+    rightArrowImageSource: RIGHT_ARROW,
+    allowShadow: true,
+    openThreshold: PAN_GESTURE_THRESHOLD,
+    closeThreshold: PAN_GESTURE_THRESHOLD,
+    closeOnDayPress: true
+  }
+});
