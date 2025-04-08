@@ -416,7 +416,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
         onCalendarToggled?.(_isOpen);
         setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
       });
-      closeHeader(_isOpen);
+      toggleAnimatedHeader(_isOpen);
     }
   };
 
@@ -425,12 +425,11 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
     updateNativeStyles();
   };
 
-  const closeHeader = (isOpen: boolean) => {
+  const toggleAnimatedHeader = (isOpen: boolean) => {
     headerDeltaY.current.setValue(Number(_headerStyles.style.top)); // set the start position for the animated value
-
-    if (!horizontal && !isOpen) {
+    if (!horizontal) {
       Animated.spring(headerDeltaY.current, {
-        toValue: 0,
+        toValue: isOpen ? -headerHeight : 0,
         speed: SPEED / 10,
         bounciness: 1,
         useNativeDriver: false
