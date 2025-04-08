@@ -96,7 +96,6 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "yarn@3.4.1",
   "resolutions": {
     "recyclerlistview@^4.0.0": "patch:recyclerlistview@npm%3A4.2.1#./.yarn/patches/recyclerlistview-npm-4.2.1-ff4e0c8a07.patch"
   }
