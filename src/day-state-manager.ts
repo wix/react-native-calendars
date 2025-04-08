@@ -3,7 +3,7 @@ const {toMarkingFormat} = require('./interface');
 
 export function getState(day: XDate, current: XDate, props: any, disableDaySelection: boolean) {
   const {minDate, maxDate, disabledByDefault, disabledByWeekDays, context} = props;
-  let state = '';
+  let state;
 
   if (!disableDaySelection && (context?.selectedDate ?? toMarkingFormat(current)) === toMarkingFormat(day)) {
     state = 'selected';
