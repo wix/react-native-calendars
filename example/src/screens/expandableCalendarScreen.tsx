@@ -73,6 +73,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       // disabledOpacity={0.6}
       theme={todayBtnTheme.current}
       // todayBottomMargin={16}
+      // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
     >
       {weekView ? (
         <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>

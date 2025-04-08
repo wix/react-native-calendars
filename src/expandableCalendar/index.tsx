@@ -40,7 +40,7 @@ import Week from './week';
 import WeekCalendar from './WeekCalendar';
 import Context from './Context';
 import constants from '../commons/constants';
-import {UpdateSources} from './commons';
+import {UpdateSources, CalendarNavigationTypes} from './commons';
 
 export enum Positions {
   CLOSED = 'closed',
@@ -316,7 +316,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
     }
   };
 
-  const scrollPage = useCallback((next: boolean) => {
+  const scrollPage = useCallback((next: boolean, updateSource = UpdateSources.PAGE_SCROLL) => {
     if (horizontal) {
       const d = parseDate(date);
 
@@ -339,7 +339,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
         }
       }
 
-      setDate?.(toMarkingFormat(d), UpdateSources.PAGE_SCROLL);
+      setDate?.(toMarkingFormat(d), updateSource);
     }
   }, [horizontal, isOpen, firstDay, numberOfDays, setDate, date]);
 
@@ -464,12 +464,12 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   const _onPressArrowLeft = useCallback((method: () => void, month?: XDate) => {
     onPressArrowLeft?.(method, month);
-    scrollPage(false);
+    scrollPage(false, isOpen ? UpdateSources.ARROW_PRESS: UpdateSources.WEEK_ARROW_PRESS);
   }, [onPressArrowLeft, scrollPage]);
 
   const _onPressArrowRight = useCallback((method: () => void, month?: XDate) => {
     onPressArrowRight?.(method, month);
-    scrollPage(true);
+    scrollPage(true, isOpen ? UpdateSources.ARROW_PRESS: UpdateSources.WEEK_ARROW_PRESS);
   }, [onPressArrowRight, scrollPage]);
 
   const _onDayPress = useCallback((value: DateData) => {
@@ -652,6 +652,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 export default Object.assign(ExpandableCalendar, {
   displayName: 'ExpandableCalendar',
   positions: Positions,
+  navigationTypes: CalendarNavigationTypes,
   defaultProps: {
     horizontal: true,
     initialPosition: Positions.CLOSED,
