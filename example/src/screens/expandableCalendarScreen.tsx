@@ -14,7 +14,7 @@ const ITEMS: any[] = agendaItems;
 interface Props {
   weekView?: boolean;
 }
-const CHEVRON = require('../img/chevronUp.png');
+const CHEVRON = require('../img/next.png');
 const ExpandableCalendarScreen = (props: Props) => {
   const {weekView} = props;
   const marked = useRef(getMarkedDates());
@@ -50,14 +50,14 @@ const ExpandableCalendarScreen = (props: Props) => {
 
   const renderHeader = useCallback(
     (date?: XDate) => {
-      const rotationInterpolate = rotation.current.interpolate({
+      const rotationInDegrees = rotation.current.interpolate({
         inputRange: [0, 1],
         outputRange: ['0deg', '180deg']
       });
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
           <Text style={styles.headerTitle}>{date?.toString('MMMM yyyy')}</Text>
-          <Animated.Image source={CHEVRON} style={{transform: [{rotate: rotationInterpolate}]}}/>
+          <Animated.Image source={CHEVRON} style={{transform: [{rotate: '-90deg'}, {rotate: rotationInDegrees}]}}/>
         </TouchableOpacity>
       );
     },
@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginVertical: 10
   },
   headerTitle: {fontSize: 16, fontWeight: 'bold', marginRight: 6},
   section: {
