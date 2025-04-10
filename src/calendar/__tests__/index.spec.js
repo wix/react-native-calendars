@@ -165,7 +165,7 @@ describe('Calendar', () => {
         const date = '2020-04-01';
         const fakeToday = new Date('2020-04-01T12:00:00.002Z');
         advanceTo(fakeToday);
-        const context = {date: '2020-04-02'};
+        const context = {selectedDate: '2020-04-02'};
         const drv = new CalendarDriver(<Calendar {...props} theme={{todayTextColor, todayBackgroundColor}} context={context}/>);
         expect(drv.getDay(date).getStyle()).toEqual(partial({backgroundColor: todayBackgroundColor, borderRadius: 16}));
         expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: todayTextColor}));
