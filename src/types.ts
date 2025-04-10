@@ -52,6 +52,7 @@ export interface Theme {
   textDayFontWeight?: TextStyle['fontWeight'];
   textMonthFontWeight?: TextStyle['fontWeight'];
   textDayHeaderFontWeight?: TextStyle['fontWeight'];
+  textDayHeaderStyle?: TextStyle;
   textDayFontSize?: number;
   textMonthFontSize?: number;
   textDayHeaderFontSize?: number;
