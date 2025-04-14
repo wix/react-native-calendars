@@ -50,6 +50,12 @@
       "type": "boolean",
       "description": "Whether to enable or disable vertical / horizontal scroll indicator",
       "default": "false"
+    },
+    {
+      "name": "inverted",
+      "type": "boolean",
+      "description": "Whether to invert the calendar",
+      "default": "false"
     }
   ]
 }
