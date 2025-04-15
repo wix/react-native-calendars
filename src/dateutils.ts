@@ -27,7 +27,7 @@ export function onSameDateRange({
   firstDay,
   secondDay,
   numberOfDays,
-  firstDateInRange,
+  firstDateInRange
 }: {
   firstDay: string;
   secondDay: string;

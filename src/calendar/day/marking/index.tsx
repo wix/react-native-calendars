@@ -119,7 +119,7 @@ const Marking = (props: MarkingProps) => {
       color = selected && item.selectedDotColor ? item.selectedDotColor : item.color;
     }
 
-    return <Dot {...dotProps} key={key} color={color} />;
+    return <Dot {...dotProps} key={key} color={color}/>;
   };
 
   return renderMarkingByType();

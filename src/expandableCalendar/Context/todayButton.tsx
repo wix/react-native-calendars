@@ -40,7 +40,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
     margin = 0,
     disabledOpacity = 0.3,
     theme,
-    style: propsStyle,
+    style: propsStyle
   } = props;
   const {date, setDate} = useContext(Context);
   const [disabled, setDisabled] = useState(false);

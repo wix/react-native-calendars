@@ -85,9 +85,9 @@ export default function PlaygroundScreen() {
   return (
     <>
       <View style={styles.buttonsContainer}>
-        <Button color={BLUE} title='Calendar' onPress={() => setElement(elements.CALENDAR)}/>
-        <Button color={BLUE} title='Calendar List' onPress={() => setElement(elements.LIST)}/>
-        <Button color={BLUE} title='Expandable' onPress={() => setElement(elements.EXPANDABLE)}/>
+        <Button color={BLUE} title="Calendar" onPress={() => setElement(elements.CALENDAR)}/>
+        <Button color={BLUE} title="Calendar List" onPress={() => setElement(elements.LIST)}/>
+        <Button color={BLUE} title="Expandable" onPress={() => setElement(elements.EXPANDABLE)}/>
       </View>
       <Text style={styles.text}>Selected Date: {selectedDate}</Text>
       <Profiler id={element}>

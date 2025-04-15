@@ -1,12 +1,10 @@
 // default values for app style (see all options for theme type in types.ts)
-
 const FOREGROUND_COLOR = 'white';
 const DEFAULT_TEXT_COLOR = '#2d4150';
 const SECONDARY_TEXT_COLOR = '#00BBF2';
 const AGENDA_TEXT_COLOR = '#7a92a5';
 const AGENDA_BG_COLOR = '#f2F4f5';
 const DISABLED_COLOR = '#d9e1e8';
-
 
 export const textDayFontFamily = 'System';
 export const textMonthFontFamily = 'System';
