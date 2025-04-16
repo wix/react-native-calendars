@@ -26,8 +26,7 @@ import {
   GestureResponderEvent,
   PanResponderGestureState,
   TouchableOpacity,
-  type LayoutChangeEvent,
-  Platform
+  type LayoutChangeEvent
 } from 'react-native';
 
 import {page} from '../dateutils';
@@ -142,10 +141,9 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   } = props;
 
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-  const isWeb = Platform.OS === 'web';
-  const [headerHeight, setHeaderHeight] = useState(isWeb ? 78 : 0);
+  const [headerHeight, setHeaderHeight] = useState(constants.isWeb ? 78 : 0);
   const onHeaderLayout = useCallback(({nativeEvent: {layout: {height}}}: LayoutChangeEvent) => {
-      !isWeb && setHeaderHeight(height);
+      !constants.isWeb && setHeaderHeight(height);
   }, []);
 
   /** Date */
