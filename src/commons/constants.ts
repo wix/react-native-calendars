@@ -10,11 +10,6 @@ const isTablet = (Platform as PlatformIOSStatic).isPad || (screenAspectRatio < 1
 const isAndroidRTL = isAndroid && isRTL;
 const isRN73 = () => !!Platform?.constants?.reactNativeVersion && Platform.constants.reactNativeVersion?.minor >= 73;
 const isWeb = Platform.OS === 'web';
-const getRNWebMinorVersion = () => {
-  const version = require('react-native-web/package.json').version;
-  const minorVersion = parseInt(version.split('.')[1], 10);
-  return minorVersion;
-};
 
 export default {
   screenWidth,
@@ -25,6 +20,5 @@ export default {
   isTablet,
   isAndroidRTL,
   isRN73,
-  isWeb,
-  getRNWebMinorVersion
+  isWeb
 };

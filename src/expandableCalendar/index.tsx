@@ -141,11 +141,10 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   } = props;
 
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-  const shouldPatchHeaderHeight = constants.isWeb && constants.getRNWebMinorVersion() <= 18;
-  const [headerHeight, setHeaderHeight] = useState(shouldPatchHeaderHeight ? 78 : 0);
+  const [headerHeight, setHeaderHeight] = useState(constants.isWeb ? 78 : 0);
   const onHeaderLayout = useCallback(({nativeEvent: {layout: {height}}}: LayoutChangeEvent) => {
-      !shouldPatchHeaderHeight && setHeaderHeight(height);
-  }, [shouldPatchHeaderHeight]);
+      !constants.isWeb && setHeaderHeight(height);
+  }, [constants.isWeb]);
 
   /** Date */
 
