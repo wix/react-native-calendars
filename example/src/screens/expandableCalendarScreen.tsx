@@ -64,6 +64,13 @@ const ExpandableCalendarScreen = (props: Props) => {
     [toggleCalendarExpansion]
   );
 
+  const onCalendarToggled = useCallback(
+    (isOpen: boolean) => {
+      rotation.current.setValue(isOpen ? 1 : 0);
+    },
+    [rotation]
+  );
+
   return (
     <CalendarProvider
       date={ITEMS[1]?.title}
@@ -82,6 +89,7 @@ const ExpandableCalendarScreen = (props: Props) => {
           testID={testIDs.expandableCalendar.CONTAINER}
           renderHeader={renderHeader}
           ref={calendarRef}
+          onCalendarToggled={onCalendarToggled}
           // horizontal={false}
           // hideArrows
           // disablePan

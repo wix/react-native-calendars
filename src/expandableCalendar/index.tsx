@@ -396,8 +396,8 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   /** Animated */
 
-  const bounceToPosition = (toValue = 0) => {
-    if (!disablePan) {
+  const bounceToPosition = (toValue = 0, manual = false) => {
+    if (!disablePan || manual) {
       const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
       let _isOpen = _height.current >= threshold;
       const newValue = _isOpen ? openHeight.current : closedHeight;
@@ -447,7 +447,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   }, [isOpen, closedHeight]);
 
   const toggleCalendarPosition = useCallback(() => {
-    bounceToPosition(isOpen ? closedHeight : openHeight.current);
+    bounceToPosition(isOpen ? closedHeight : openHeight.current, true);
     return !isOpen;
   }, [isOpen, bounceToPosition, closedHeight]);
 
