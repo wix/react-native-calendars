@@ -258,7 +258,10 @@ export default class Agenda extends Component<AgendaProps, State> {
     // scroll position actually changes (it would stay at 0, when scrolled to the top).
     this.setScrollPadPosition(this.initialScrollPadPosition(), false);
     // delay rendering calendar in full height because otherwise it still flickers sometimes
-    setTimeout(() => this.setState({calendarIsReady: true}), 0);
+    setTimeout(() => {
+      this.setState({calendarIsReady: true});
+      this.calendar?.current?.scrollToDay(this.state.selectedDay, this.calendarOffset(), false);
+    }, 0);
   };
 
   onCalendarListLayout = () => {
