@@ -473,6 +473,22 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   }, [onPressArrowRight, scrollPage]);
 
   const _onDayPress = useCallback((value: DateData) => {
+    const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
+    const _isOpen = _height.current >= threshold;
+    if (_isOpen) return;
+    if (numberOfDaysCondition) {
+      setDate?.(value.dateString, UpdateSources.DAY_PRESS);
+    }
+    if (closeOnDayPress) {
+      closeCalendar();
+    }
+    onDayPress?.(value);
+  }, [onDayPress, closeOnDayPress, closeCalendar, numberOfDaysCondition]);
+
+  const _onCalendarListDayPress = useCallback((value) => {
+    const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
+    const _isOpen = _height.current >= threshold;
+    if (!_isOpen) return;
     if (numberOfDaysCondition) {
       setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
@@ -608,7 +624,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
         current={date}
         theme={themeObject}
         ref={calendarList}
-        onDayPress={_onDayPress}
+        onDayPress={_onCalendarListDayPress}
         onVisibleMonthsChange={onVisibleMonthsChange}
         pagingEnabled
         scrollEnabled={isOpen}
