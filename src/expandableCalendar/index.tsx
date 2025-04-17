@@ -54,6 +54,7 @@ const PAN_GESTURE_THRESHOLD = 30;
 const LEFT_ARROW = require('../calendar/img/previous.png');
 const RIGHT_ARROW = require('../calendar/img/next.png');
 const knobHitSlop = {left: 10, right: 10, top: 10, bottom: 10};
+const DEFAULT_HEADER_HEIGHT = 78;
 
 export interface ExpandableCalendarProps extends CalendarListProps {
   /** the initial position of the calendar ('open' or 'closed') */
@@ -143,7 +144,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
   const onHeaderLayout = useCallback(({nativeEvent: {layout: {height}}}: LayoutChangeEvent) => {
-      setHeaderHeight(height);
+      setHeaderHeight(height || DEFAULT_HEADER_HEIGHT);
   }, []);
 
   /** Date */
