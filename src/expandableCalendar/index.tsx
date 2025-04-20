@@ -270,7 +270,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   const containerStyle = useMemo(() => {
     return [allowShadow && style.current.containerShadow, propsStyle, headerHeight === 0 && style.current.hidden, {overflow: 'hidden'} as const];
-  }, [allowShadow, propsStyle, headerHeight, screenReaderEnabled]);
+  }, [allowShadow, propsStyle, headerHeight]);
 
   const wrapperStyle = useMemo(() => {
     return {height: deltaY};
