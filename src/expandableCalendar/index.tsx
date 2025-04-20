@@ -269,7 +269,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   }, [isOpen, headerHeight]);
 
   const containerStyle = useMemo(() => {
-    return [allowShadow && style.current.containerShadow, propsStyle, headerHeight === 0 && !screenReaderEnabled  && style.current.hidden, {overflow: 'hidden'} as const];
+    return [allowShadow && style.current.containerShadow, propsStyle, headerHeight === 0 && style.current.hidden, {overflow: 'hidden'} as const];
   }, [allowShadow, propsStyle, headerHeight, screenReaderEnabled]);
 
   const wrapperStyle = useMemo(() => {
@@ -632,6 +632,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
           testID={`${testID}.calendarAccessible`}
           {...others}
           theme={themeObject}
+          onHeaderLayout={onHeaderLayout}
           onDayPress={_onDayPress}
           hideExtraDays
           renderArrow={_renderArrow}
