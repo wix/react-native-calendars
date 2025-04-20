@@ -633,6 +633,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
           testID={`${testID}.calendarAccessible`}
           {...others}
           theme={themeObject}
+          onHeaderLayout={onHeaderLayout}
           onDayPress={_onDayPress}
           hideExtraDays
           renderArrow={_renderArrow}
