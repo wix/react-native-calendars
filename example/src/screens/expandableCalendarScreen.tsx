@@ -52,12 +52,12 @@ const ExpandableCalendarScreen = (props: Props) => {
     (date?: XDate) => {
       const rotationInDegrees = rotation.current.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0deg', '180deg']
+        outputRange: ['0deg', '-180deg']
       });
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
           <Text style={styles.headerTitle}>{date?.toString('MMMM yyyy')}</Text>
-          <Animated.Image source={CHEVRON} style={{transform: [{rotate: '-90deg'}, {rotate: rotationInDegrees}]}}/>
+          <Animated.Image source={CHEVRON} style={{transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]}}/>
         </TouchableOpacity>
       );
     },
