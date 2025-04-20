@@ -452,10 +452,6 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
     return !isOpen;
   }, [isOpen, bounceToPosition, closedHeight]);
 
-  const onKnobPress = useCallback(() => {
-    bounceToPosition(isOpen ? closedHeight : openHeight.current, true);
-  }, [isOpen, closedHeight, bounceToPosition]);
-
   useImperativeHandle(
     ref,
     () => ({
@@ -569,7 +565,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   const renderKnob = () => {
     return (
       <View style={style.current.knobContainer} pointerEvents={'box-none'}>
-        <TouchableOpacity style={style.current.knob} testID={`${testID}.knob`} onPress={onKnobPress} hitSlop={knobHitSlop}/>
+        <TouchableOpacity style={style.current.knob} testID={`${testID}.knob`} onPress={toggleCalendarPosition} hitSlop={knobHitSlop}/>
       </View>
     );
   };
