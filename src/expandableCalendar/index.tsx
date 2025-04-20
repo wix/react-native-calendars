@@ -398,27 +398,25 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   /** Animated */
 
   const bounceToPosition = (toValue = 0) => {
-    if (!disablePan) {
-      const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
-      let _isOpen = _height.current >= threshold;
-      const newValue = _isOpen ? openHeight.current : closedHeight;
+    const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
+    let _isOpen = _height.current >= threshold;
+    const newValue = _isOpen ? openHeight.current : closedHeight;
 
-      deltaY.setValue(_height.current); // set the start position for the animated value
-      _height.current = toValue || newValue;
-      _isOpen = _height.current >= threshold; // re-check after _height.current was set
+    deltaY.setValue(_height.current); // set the start position for the animated value
+    _height.current = toValue || newValue;
+    _isOpen = _height.current >= threshold; // re-check after _height.current was set
 
-      resetWeekCalendarOpacity(_isOpen);
-      Animated.spring(deltaY, {
-        toValue: _height.current,
-        speed: SPEED,
-        bounciness: BOUNCINESS,
-        useNativeDriver: false
-      }).start(() => {
-        onCalendarToggled?.(_isOpen);
-        setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
-      });
-      toggleAnimatedHeader(_isOpen);
-    }
+    resetWeekCalendarOpacity(_isOpen);
+    Animated.spring(deltaY, {
+      toValue: _height.current,
+      speed: SPEED,
+      bounciness: BOUNCINESS,
+      useNativeDriver: false
+    }).start(() => {
+      onCalendarToggled?.(_isOpen);
+      setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
+    });
+    toggleAnimatedHeader(_isOpen);
   };
 
   const resetWeekCalendarOpacity = async (isOpen: boolean) => {
@@ -476,7 +474,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
     if (numberOfDaysCondition) {
       setDate?.(value.dateString, UpdateSources.DAY_PRESS);
     }
-    if (closeOnDayPress) {
+    if (closeOnDayPress && !disablePan) {
       closeCalendar();
     }
     onDayPress?.(value);
