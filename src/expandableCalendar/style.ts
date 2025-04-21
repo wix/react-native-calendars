@@ -156,6 +156,10 @@ export default function styleConstructor(theme: Theme = {}) {
         }
       })
     },
+    weekCalendarHeader: {
+      backgroundColor: appStyle.calendarBackground,
+      paddingHorizontal: 15
+    },
     todayButtonText: {
       color: appStyle.todayButtonTextColor,
       fontSize: constants.isTablet ? appStyle.todayButtonFontSize + 2 : appStyle.todayButtonFontSize,

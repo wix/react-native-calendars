@@ -2,15 +2,15 @@ import XDate from 'xdate';
 import React, {useCallback, useContext, useMemo, useRef, useState} from 'react';
 import {FlatList, View, ViewToken} from 'react-native';
 import {sameWeek, onSameDateRange, getWeekDates} from '../../dateutils';
-import {toMarkingFormat} from '../../interface';
+import {parseDate, toMarkingFormat} from '../../interface';
 import {DateData, MarkedDates} from '../../types';
 import styleConstructor from '../style';
-import {CalendarListProps} from '../../calendar-list';
+import {CalendarListProps, CalendarHeader} from '../../calendar-list';
 import WeekDaysNames from '../../commons/WeekDaysNames';
 import Week from '../week';
 import {UpdateSources} from '../commons';
 import constants from '../../commons/constants';
-import {extractCalendarProps} from '../../componentUpdater';
+import {extractCalendarProps, extractHeaderProps} from '../../componentUpdater';
 import CalendarContext from '../Context';
 import {useDidUpdate} from '../../hooks';
 
@@ -20,6 +20,7 @@ const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
   allowShadow?: boolean;
+  showHeader?: boolean;
 }
 
 /**
@@ -34,9 +35,11 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     current,
     theme,
     testID,
-    markedDates
+    markedDates,
+    showHeader
   } = props;
   const context = useContext(CalendarContext);
+  const headerProps = extractHeaderProps(props);
   const {allowShadow = true, ...calendarListProps} = props;
   const {style: propsStyle, onDayPress, firstDay = 0, ...others} = extractCalendarProps(calendarListProps);
   const {date, numberOfDays, updateSource, setDate, timelineLeftInset} = context;
@@ -47,6 +50,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
   const changedItems = useRef(constants.isRTL);
   const list = useRef<FlatList>(null);
   const currentIndex = useRef(NUMBER_OF_PAGES);
+  const currentMonth = parseDate(current);
 
   const shouldFixRTL = useMemo(() => !constants.isRN73() && constants.isAndroidRTL, []);
 
@@ -207,37 +211,48 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       onViewableItemsChanged
     }]);
 
-  return (
-    <View
-      testID={testID}
-      style={weekCalendarStyle}
-    >
-      {!hideDayNames && (
-        <View style={containerStyle}>
-          {renderWeekDaysNames}
+    const renderCalendarHeader = () => {
+      return (
+        <CalendarHeader
+          {...headerProps}
+          testID={`${testID}.staticHeader`}
+          style={style.current.weekCalendarHeader}
+          month={currentMonth}
+          accessibilityElementsHidden={true} // iOS
+          importantForAccessibility={'no-hide-descendants'} // Android
+        />
+      );
+    };
+
+    return (
+      <>
+        <View style={{backgroundColor: 'red'}}>
+        {showHeader && renderCalendarHeader()}
         </View>
-      )}
-      <View style={style.current.container}>
-          <FlatList
-            testID={`${testID}.list`}
-            ref={list}
-            style={style.current.container}
-            data={listData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            scrollEnabled
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            initialScrollIndex={NUMBER_OF_PAGES}
-            getItemLayout={getItemLayout}
-            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={1 / NUM_OF_ITEMS}
-          />
-      </View>
-    </View>
-  );
+        <View testID={testID} style={weekCalendarStyle}>
+          {!hideDayNames && <View style={containerStyle}>{renderWeekDaysNames}</View>}
+          <View style={style.current.container}>
+            <FlatList
+              testID={`${testID}.list`}
+              ref={list}
+              style={style.current.container}
+              data={listData}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled
+              scrollEnabled
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+              initialScrollIndex={NUMBER_OF_PAGES}
+              getItemLayout={getItemLayout}
+              viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+              onEndReached={onEndReached}
+              onEndReachedThreshold={1 / NUM_OF_ITEMS}
+            />
+          </View>
+        </View>
+      </>
+    );
 };
 
 function getDateForDayRange(date: string, weekIndex: number, numberOfDays: number) {
