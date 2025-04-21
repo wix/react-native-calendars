@@ -210,7 +210,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       },
       onViewableItemsChanged
     }]);
-
+    
     const renderCalendarHeader = () => {
       return (
         <CalendarHeader

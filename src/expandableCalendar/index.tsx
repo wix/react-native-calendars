@@ -150,9 +150,11 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
         layout: {height}
       }
     }: LayoutChangeEvent) => {
-      setHeaderHeight(height || DEFAULT_HEADER_HEIGHT);
+      if (height !== headerHeight) {
+        setHeaderHeight(height || DEFAULT_HEADER_HEIGHT);
+      }
     },
-    []
+    [headerHeight]
   );
 
   /** Date */
@@ -625,10 +627,12 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
         testID={`${testID}.weekCalendar`}
         firstDay={firstDay}
         {...others}
+        onHeaderLayout={onHeaderLayout}
         onPressArrowLeft={_onPressArrowLeft}
         onPressArrowRight={_onPressArrowRight}
         allowShadow={disableWeekScroll ? undefined : false}
         current={disableWeekScroll || disablePan ? date : undefined}
+        renderArrow={_renderArrow}
         theme={themeObject}
         style={calendarStyle}
         hideDayNames={true}
@@ -679,8 +683,9 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   const renderStaticCalendar = () => {
     return (
-      <View>
+      <View style={{height: isOpen ? openHeight.current : closedHeight}}>
         {isOpen ? renderCalendarList() : renderWeekCalendar()}
+        {!hideKnob && renderKnob()}
       </View>
     );
   };
