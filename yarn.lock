@@ -9903,6 +9903,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"recyclerlistview@patch:recyclerlistview@npm%3A4.2.1#./.yarn/patches/recyclerlistview-npm-4.2.1-ff4e0c8a07.patch::locator=react-native-calendars%40workspace%3A.":
+  version: 4.2.1
+  resolution: "recyclerlistview@patch:recyclerlistview@npm%3A4.2.1#./.yarn/patches/recyclerlistview-npm-4.2.1-ff4e0c8a07.patch::version=4.2.1&hash=da0b60&locator=react-native-calendars%40workspace%3A."
+  dependencies:
+    lodash.debounce: 4.0.8
+    prop-types: 15.8.1
+    ts-object-utils: 0.0.5
+  peerDependencies:
+    react: ">= 15.2.1"
+    react-native: ">= 0.30.0"
+  checksum: 5916f32257c5945a78977474f41042f95f4925cc457de2f6a2bc482193594b1d9fdd91af218ba89513bd33ce3dc37a99c28de501f3a78645d13aa6e491879f56
+  languageName: node
+  linkType: hard
+
 "reflect.getprototypeof@npm:^1.0.6, reflect.getprototypeof@npm:^1.0.9":
   version: 1.0.10
   resolution: "reflect.getprototypeof@npm:1.0.10"
