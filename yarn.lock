@@ -9678,7 +9678,7 @@ __metadata:
     react-recipes: ^1.4.0
     react-test-renderer: 18.2.0
     reassure: ^0.4.1
-    recyclerlistview: ^4.0.0
+    recyclerlistview: 4.2.1
     semver: 5.x.x
     shell-utils: 1.x.x
     typescript: 5.0.4
@@ -9889,7 +9889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"recyclerlistview@npm:^4.0.0":
+"recyclerlistview@npm:4.2.1":
   version: 4.2.1
   resolution: "recyclerlistview@npm:4.2.1"
   dependencies:

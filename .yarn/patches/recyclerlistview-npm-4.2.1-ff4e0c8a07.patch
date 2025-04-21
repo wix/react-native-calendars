@@ -1,0 +1,29 @@
+diff --git a/src/core/VirtualRenderer.ts b/src/core/VirtualRenderer.ts
+index d5ae0af..a89115a 100644
+--- a/src/core/VirtualRenderer.ts
++++ b/src/core/VirtualRenderer.ts
+@@ -1,3 +1,4 @@
++import { Platform, I18nManager } from "react-native";
+ import RecycleItemPool from "../utils/RecycleItemPool";
+ import { Dimension, BaseLayoutProvider } from "./dependencies/LayoutProvider";
+ import CustomError from "./exceptions/CustomError";
+@@ -8,6 +9,9 @@ import { ObjectUtil, Default } from "ts-object-utils";
+ import TSCast from "../utils/TSCast";
+ import { BaseDataProvider } from "./dependencies/DataProvider";
+ 
++const isRN73 = () => Platform.constants.reactNativeVersion?.minor >= 73;
++const isRTL = I18nManager.isRTL;
++
+ /***
+  * Renderer which keeps track of recyclable items and the currently rendered items. Notifies list view to re render if something changes, like scroll offset
+  */
+@@ -97,7 +101,8 @@ export default class VirtualRenderer {
+ 
+     public updateOffset(offsetX: number, offsetY: number, isActual: boolean, correction: WindowCorrection): void {
+         if (this._viewabilityTracker) {
+-            const offset = this._params && this._params.isHorizontal ? offsetX : offsetY;
++            const _offsetX = isRTL && isRN73() ? this.getLayoutDimension().width - offsetX : offsetX
++            const offset = this._params && this._params.isHorizontal ? _offsetX : offsetY;
+             if (!this._isViewTrackerRunning) {
+                 if (isActual) {
+                     this._viewabilityTracker.setActualOffset(offset);
