@@ -635,7 +635,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
         renderArrow={_renderArrow}
         theme={themeObject}
         style={calendarStyle}
-        hideDayNames={true}
+        hideDayNames={disablePan ? false : true}
         onDayPress={_onDayPress}
         accessibilityElementsHidden // iOS
         importantForAccessibility={'no-hide-descendants'} // Android
