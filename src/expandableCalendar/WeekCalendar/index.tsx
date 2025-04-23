@@ -220,6 +220,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
           month={currentMonth}
           accessibilityElementsHidden={true} // iOS
           importantForAccessibility={'no-hide-descendants'} // Android
+          hideDayNames={true}
         />
       );
     };

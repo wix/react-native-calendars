@@ -606,7 +606,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   const renderKnob = () => {
     return (
-      <View style={style.current.knobContainer} pointerEvents={'box-none'}>
+      <View style={[style.current.knobContainer, !disablePan && style.current.knobPosition]} pointerEvents={'box-none'}>
         <TouchableOpacity
           style={style.current.knob}
           testID={`${testID}.knob`}
@@ -623,7 +623,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
     const WeekComponent = disableWeekScroll ? Week : WeekCalendar;
     return (
       <WeekComponent
-        showHeader
+        showHeader={disablePan}
         testID={`${testID}.weekCalendar`}
         firstDay={firstDay}
         {...others}

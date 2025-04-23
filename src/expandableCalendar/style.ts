@@ -30,12 +30,14 @@ export default function styleConstructor(theme: Theme = {}) {
     container: {
       backgroundColor: appStyle.calendarBackground
     },
-    knobContainer: {
+    knobPosition: {
       position: 'absolute',
       left: 0,
       right: 0,
-      height: KNOB_CONTAINER_HEIGHT,
       bottom: 0,
+    },
+    knobContainer: {
+      height: KNOB_CONTAINER_HEIGHT,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: appStyle.calendarBackground
