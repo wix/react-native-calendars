@@ -1,28 +1,23 @@
 import PropTypes from 'prop-types';
-
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
-import InfiniteList from '../../infinite-list';
-
+import {LayoutProvider} from 'recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider';
 import XDate from 'xdate';
-
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
-import {
-  DefaultSectionT,
-  SectionListData
-} from 'react-native';
-
+import {DefaultSectionT, SectionListData} from 'react-native';
 import {useDidUpdate} from '../../hooks';
 import {getMoment} from '../../momentResolver';
 import {isGTE, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
+import constants from '../../commons/constants';
+import {parseDate} from '../../interface';
+import InfiniteList from '../../infinite-list';
 import {UpdateSources, todayString} from '../commons';
 import styleConstructor from '../style';
 import Context from '../Context';
-import constants from '../../commons/constants';
-import {parseDate} from '../../interface';
-import {LayoutProvider} from 'recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider';
 import {AgendaSectionHeader, AgendaListProps} from './commons';
+
+const SCROLL_DEBOUNCE = 1000;
 
 /**
  * @description: AgendaList component that use InfiniteList to improve performance
@@ -145,11 +140,10 @@ const InfiniteAgendaList = ({
         _onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
       }, 500);
     }
-  }, 1000, {leading: true, trailing: true}), [sections]);
+  }, SCROLL_DEBOUNCE, {leading: true, trailing: true}), [sections]);
 
-  const layoutProvider = useMemo(
-    () => new LayoutProvider(
-      (index) => dataRef.current[index]?.isTitle ? 'title' : dataRef.current[index]?.itemCustomHeightType ?? 'page',
+  const layoutProvider = useMemo(() => new LayoutProvider(
+    (index) => dataRef.current[index]?.isTitle ? 'title' : dataRef.current[index]?.itemCustomHeightType ?? 'page',
       (type, dim) => {
         dim.width = constants.screenWidth;
         switch (type) {
@@ -163,9 +157,7 @@ const InfiniteAgendaList = ({
             dim.height = infiniteListProps?.itemHeightByType?.[type] ?? infiniteListProps?.itemHeight ?? 80;
         }
       }
-    ),
-    []
-  );
+  ), []);
 
   const _onScroll = useCallback((rawEvent: any) => {
     if (!didScroll.current) {

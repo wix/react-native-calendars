@@ -1,42 +1,57 @@
+import type XDate from 'xdate';
 import React, {useRef, useCallback} from 'react';
-import {Animated, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Animated, Easing, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from '../testIDs';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import AgendaItem from '../mocks/AgendaItem';
 import {getTheme, themeColor, lightThemeColor} from '../mocks/theme';
-import type XDate from 'xdate';
 
 const leftArrowIcon = require('../img/previous.png');
 const rightArrowIcon = require('../img/next.png');
+const CHEVRON = require('../img/next.png');
 const ITEMS: any[] = agendaItems;
 
 interface Props {
   weekView?: boolean;
+  useInfiniteAgenda?: boolean;
 }
-const CHEVRON = require('../img/next.png');
+
 const ExpandableCalendarScreen = (props: Props) => {
-  const {weekView} = props;
+  const {weekView, useInfiniteAgenda} = props;
   const marked = useRef(getMarkedDates());
   const theme = useRef(getTheme());
   const todayBtnTheme = useRef({
     todayButtonTextColor: themeColor
   });
+  const getInfiniteListProps = () => {
+    if (useInfiniteAgenda) {
+      return {
+        itemHeight: 80,
+        titleHeight: 50,
+        itemHeightByType: {
+          LongEvent: 120
+        }
+      };
+    }
+  };
+  const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
+  const rotation = useRef(new Animated.Value(0));
 
   // const onDateChanged = useCallback((date, updateSource) => {
   //   console.log('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
   // }, []);
 
-  // const onMonthChange = useCallback(({dateString}) => {
-  //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
+  // const onMonthChange = useCallback(({dateString}, updateSource) => {
+  //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString, updateSource);
   // }, []);
 
-  const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item}/>;
-  }, []);
-
-  const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
-  const rotation = useRef(new Animated.Value(0));
+  const onCalendarToggled = useCallback(
+    (isOpen: boolean) => {
+      rotation.current.setValue(isOpen ? 1 : 0);
+    },
+    [rotation]
+  );
 
   const toggleCalendarExpansion = useCallback(() => {
     const isOpen = calendarRef.current?.toggleCalendarPosition();
@@ -64,12 +79,13 @@ const ExpandableCalendarScreen = (props: Props) => {
     [toggleCalendarExpansion]
   );
 
-  const onCalendarToggled = useCallback(
-    (isOpen: boolean) => {
-      rotation.current.setValue(isOpen ? 1 : 0);
-    },
-    [rotation]
-  );
+  const renderItem = useCallback(({item}: any) => {
+    if (useInfiniteAgenda) {
+      const isLongItem = item.itemCustomHeightType === 'LongEvent';
+      return <View style={{paddingTop: isLongItem ? 40 : 0}}><AgendaItem item={item}/></View>;
+    }
+    return <AgendaItem item={item}/>;
+  }, []);
 
   return (
     <CalendarProvider
@@ -87,9 +103,14 @@ const ExpandableCalendarScreen = (props: Props) => {
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}
-          renderHeader={renderHeader}
+          theme={theme.current}
+          firstDay={1}
+          markedDates={marked.current}
+          leftArrowImageSource={leftArrowIcon}
+          rightArrowImageSource={rightArrowIcon}
           ref={calendarRef}
           onCalendarToggled={onCalendarToggled}
+          renderHeader={renderHeader}
           // horizontal={false}
           // hideArrows
           // disablePan
@@ -98,12 +119,7 @@ const ExpandableCalendarScreen = (props: Props) => {
           // calendarStyle={styles.calendar}
           // headerStyle={styles.header} // for horizontal only
           // disableWeekScroll
-          theme={theme.current}
           // disableAllTouchEventsForDisabledDays
-          firstDay={1}
-          markedDates={marked.current}
-          leftArrowImageSource={leftArrowIcon}
-          rightArrowImageSource={rightArrowIcon}
           // animateScroll
           // closeOnDayPress={false}
         />
@@ -111,8 +127,9 @@ const ExpandableCalendarScreen = (props: Props) => {
       <AgendaList
         sections={ITEMS}
         renderItem={renderItem}
-        // scrollToNextEvent
         sectionStyle={styles.section}
+        infiniteListProps={getInfiniteListProps()}
+        // scrollToNextEvent
         // dayFormat={'yyyy-MM-d'}
       />
     </CalendarProvider>

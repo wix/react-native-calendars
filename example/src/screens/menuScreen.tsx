@@ -4,7 +4,6 @@ import testIDs from '../testIDs';
 import CalendarScreen from './calendarScreen';
 import CalendarPlaygroundScreen from './calendarPlaygroundScreen';
 import AgendaScreen from './agendaScreen';
-import AgendaInfiniteListScreen from './agendaInfiniteListScreen';
 import CalendarListScreen from './calendarListScreen';
 import NewCalendarListScreen from './newCalendarListScreen';
 import ExpandableCalendarScreen from './expandableCalendarScreen';
@@ -17,15 +16,15 @@ const closeIcon = require('../img/close.png');
 
 const screens = [
   {testID: testIDs.menu.CALENDARS, title: 'Calendar', screen: CalendarScreen},
-  {testID: testIDs.menu.CALENDARS, title: 'Calendar Playground', screen: CalendarPlaygroundScreen},
-  {testID: testIDs.menu.CALENDAR_LIST, title: 'Calendar List', screen: CalendarListScreen},
-  {testID: testIDs.menu.HORIZONTAL_LIST, title: 'Horizontal Calendar List', screen: CalendarListScreen, props: {horizontalView: true}},
-  {testID: testIDs.menu.HORIZONTAL_LIST, title: 'NEW Calendar List', screen: NewCalendarListScreen},
+  {testID: testIDs.menu.CALENDAR_LIST, title: 'CalendarList', screen: CalendarListScreen},
+  {testID: testIDs.menu.HORIZONTAL_LIST, title: 'Horizontal CalendarList', screen: CalendarListScreen, props: {horizontalView: true}},
+  {testID: testIDs.menu.HORIZONTAL_LIST, title: 'Infinite CalendarList', screen: NewCalendarListScreen},
+  {testID: testIDs.menu.EXPANDABLE_CALENDAR, title: 'ExpandableCalendar', screen: ExpandableCalendarScreen},
+  {testID: testIDs.menu.AGENDA_INFINITE, title: 'InfiniteAgendaList', screen: ExpandableCalendarScreen, props: {useInfiniteAgenda: true}},
+  {testID: testIDs.menu.WEEK_CALENDAR, title: 'WeekCalendar', screen: ExpandableCalendarScreen, props: {weekView: true}},
+  {testID: testIDs.menu.TIMELINE_CALENDAR, title: 'TimelineCalendar', screen: TimelineCalendarScreen},
   {testID: testIDs.menu.AGENDA, title: 'Agenda', screen: AgendaScreen},
-  {testID: testIDs.menu.AGENDA_INFINITE, title: 'Agenda Infinite List', screen: AgendaInfiniteListScreen},
-  {testID: testIDs.menu.EXPANDABLE_CALENDAR, title: 'Expandable Calendar', screen: ExpandableCalendarScreen},
-  {testID: testIDs.menu.TIMELINE_CALENDAR, title: 'Timeline Calendar', screen: TimelineCalendarScreen},
-  {testID: testIDs.menu.WEEK_CALENDAR, title: 'Week Calendar', screen: ExpandableCalendarScreen, props: {weekView: true}},
+  {testID: testIDs.menu.CALENDARS, title: 'Calendar Playground', screen: CalendarPlaygroundScreen},
   {testID: testIDs.menu.PLAYGROUND, title: 'Playground', screen: PlaygroundScreen}
 ];
 

@@ -1,13 +1,10 @@
 import PropTypes from 'prop-types';
-
 import get from 'lodash/get';
 import map from 'lodash/map';
 import isFunction from 'lodash/isFunction';
 import isUndefined from 'lodash/isUndefined';
 import debounce from 'lodash/debounce';
-
 import XDate from 'xdate';
-
 import React, {forwardRef, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import {
   SectionList,
@@ -18,19 +15,19 @@ import {
   LayoutChangeEvent,
   ViewToken
 } from 'react-native';
-
 import {useDidUpdate, useCombinedRefs} from '../../hooks';
 import {getMoment} from '../../momentResolver';
 import {isToday, isGTE, sameDate} from '../../dateutils';
 import {parseDate} from '../../interface';
 import {getDefaultLocale} from '../../services';
-import {UpdateSources, todayString} from '../commons';
 import constants from '../../commons/constants';
+import {UpdateSources, todayString} from '../commons';
 import styleConstructor from '../style';
 import Context from '../Context';
-import InfiniteAgendaList from './infiniteAgendaList';
 import {AgendaListProps, AgendaSectionHeader} from './commons';
+import InfiniteAgendaList from './infiniteAgendaList';
 
+const SCROLL_DEBOUNCE = 1000;
 const viewabilityConfig = {
   itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
 };
@@ -143,6 +140,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     if (isUndefined(sectionIndex)) {
       return;
     }
+    
     if (list?.current && sectionIndex !== undefined) {
       sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
       _topSection.current = sections[sectionIndex]?.title;
@@ -156,7 +154,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  }, 1000, {leading: true, trailing: true}), [viewOffset, sections]);
+  }, SCROLL_DEBOUNCE, {leading: true, trailing: true}), [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
