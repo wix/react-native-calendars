@@ -80,21 +80,30 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     }
   }, [date]);
 
+  const getUpdateSource = useCallback((updateSource: UpdateSources) => {
+    // NOTE: this comes to avoid breaking those how listen to the update source in onDateChanged and onMonthChange - remove on V2
+    if (updateSource === UpdateSources.ARROW_PRESS || updateSource === UpdateSources.WEEK_ARROW_PRESS) {
+      return UpdateSources.PAGE_SCROLL;
+    }
+    return updateSource;
+  }, []);
+
   const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
     prevDate.current = currDate.current;
     currDate.current = date;
+    
     setCurrentDate(date);
     if (!includes(disableAutoDaySelection, updateSource as string)) {
       setSelectedDate(date);
     }
     setUpdateSource(updateSource);
 
-    onDateChanged?.(date, updateSource);
-
+    const _updateSource = getUpdateSource(updateSource);
+    onDateChanged?.(date, _updateSource);
     if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
-      onMonthChange?.(xdateToData(new XDate(date)), updateSource);
+      onMonthChange?.(xdateToData(new XDate(date)), _updateSource);
     }
-  }, [onDateChanged, onMonthChange]);
+  }, [onDateChanged, onMonthChange, getUpdateSource]);
 
   const _setDisabled = useCallback((disabled: boolean) => {
     if (showTodayButton) {

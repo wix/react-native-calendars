@@ -185,8 +185,8 @@ describe('ExpandableCalendar', () => {
         jest.runAllTimers();
         const expectedDate = today.clone().setDate(1).addMonths(direction === Direction.RIGHT ? 1 : -1);
         driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
-        expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.ARROW_PRESS);
-        expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.ARROW_PRESS);
+        expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
+        expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
       it(`should call onDateChanged and onMonthChanged for first day in initial month when changing to initial month`, () => {
@@ -197,8 +197,8 @@ describe('ExpandableCalendar', () => {
         driver.pressOnHeaderArrow({left: true});
         jest.runAllTimers();
         const expectedDate = today.clone().setDate(1);
-        expect(onDateChanged).toHaveBeenNthCalledWith(2, toMarkingFormat(expectedDate), UpdateSources.ARROW_PRESS);
-        expect(onMonthChange).toHaveBeenNthCalledWith(2, xdateToData(expectedDate), UpdateSources.ARROW_PRESS);
+        expect(onDateChanged).toHaveBeenNthCalledWith(2, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
+        expect(onMonthChange).toHaveBeenNthCalledWith(2, xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
       it(`should navigate 6 months ahead and back successfully`, () => {
@@ -209,13 +209,13 @@ describe('ExpandableCalendar', () => {
         });
         jest.runAllTimers();
         const expectedFutureDate = today.clone().setDate(1).addMonths(6);
-        expect(onDateChanged).toHaveBeenNthCalledWith(6, toMarkingFormat(expectedFutureDate), UpdateSources.ARROW_PRESS);
-        expect(onMonthChange).toHaveBeenNthCalledWith(6, xdateToData(expectedFutureDate), UpdateSources.ARROW_PRESS);
+        expect(onDateChanged).toHaveBeenNthCalledWith(6, toMarkingFormat(expectedFutureDate), UpdateSources.PAGE_SCROLL);
+        expect(onMonthChange).toHaveBeenNthCalledWith(6, xdateToData(expectedFutureDate), UpdateSources.PAGE_SCROLL);
         times(6, () => driver.pressOnHeaderArrow({left: true}));
         jest.runAllTimers();
         const expectedDate = today.clone().setDate(1);
-        expect(onDateChanged).toHaveBeenNthCalledWith(12, toMarkingFormat(expectedDate), UpdateSources.ARROW_PRESS);
-        expect(onMonthChange).toHaveBeenNthCalledWith(12, xdateToData(expectedDate), UpdateSources.ARROW_PRESS);
+        expect(onDateChanged).toHaveBeenNthCalledWith(12, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
+        expect(onMonthChange).toHaveBeenNthCalledWith(12, xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
     });
   });
@@ -247,14 +247,14 @@ describe('ExpandableCalendar', () => {
         const currentDay = today.getDay();
         const expectedDate = today.clone().addDays(direction === Direction.LEFT ? -(currentDay + 7) : (7 - currentDay));
         driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
-        expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.WEEK_ARROW_PRESS);
+        expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
       it(`should call onDateChanged for first day of initial week when changing to initial week`, () => {
         driver.pressOnHeaderArrow({left: false});
         driver.pressOnHeaderArrow({left: true});
         const expectedDate = today.clone().addDays(-(today.getDay()));
-        expect(onDateChanged).toHaveBeenNthCalledWith(2, toMarkingFormat(expectedDate), UpdateSources.WEEK_ARROW_PRESS);
+        expect(onDateChanged).toHaveBeenNthCalledWith(2, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
       it('should fetch next weeks when in last week of the list', () => {
@@ -270,7 +270,7 @@ describe('ExpandableCalendar', () => {
         const diff = Math.ceil(((endOfMonth.getUTCDate() + 1) - today.getUTCDate()) / 7) + ((today.getUTCDay() > endOfMonth.getUTCDay()) ? 1 : 0);
         const expectedDate = today.clone().setDate(today.getDate() + 7 * diff - today.getDay());
         times(diff, () => driver.pressOnHeaderArrow({left: false}));
-        expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.WEEK_ARROW_PRESS);
+        expect(onMonthChange).toHaveBeenCalledWith(xdateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
     });
   });
