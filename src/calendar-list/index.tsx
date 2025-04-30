@@ -2,7 +2,8 @@ import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
-import {FlatList, FlatListProps, View, ViewStyle} from 'react-native';
+import {AccessibilityInfo, FlatList, FlatListProps, View, ViewStyle} from 'react-native';
+
 import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
 import {parseDate, toMarkingFormat, xdateToData} from '../interface';
 import {page, sameDate, sameMonth} from '../dateutils';
@@ -100,7 +101,9 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     contentContainerStyle,
     onEndReachedThreshold,
     onEndReached,
-    onHeaderLayout
+    onHeaderLayout,
+    accessibilityElementsHidden,
+    importantForAccessibility
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -164,6 +167,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const data = xdateToData(currMont);
       onMonthChange?.(data);
       onVisibleMonthsChange?.([data]);
+      AccessibilityInfo.announceForAccessibility(currMont.toString('MMMM yyyy'));
     }
   }, [currentMonth]);
 
@@ -271,9 +275,9 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}
-          accessibilityElementsHidden={true} // iOS
-          importantForAccessibility={'no-hide-descendants'} // Android
           onHeaderLayout={onHeaderLayoutToPass}
+          accessibilityElementsHidden={accessibilityElementsHidden} // iOS
+          importantForAccessibility={importantForAccessibility} // Android
         />
       );
     }

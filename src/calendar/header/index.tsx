@@ -231,11 +231,11 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     }
 
     const isLeft = direction === 'left';
-    const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
+    const arrowDirection = isLeft ? 'left' : 'right';   
+    const arrowId = `${arrowDirection}Arrow`;
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-    const renderArrowDirection = isLeft ? 'left' : 'right';   
       
     return (
       <TouchableOpacity
@@ -244,12 +244,9 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         style={style.current.arrow}
         hitSlop={hitSlop}
         testID={`${testID}.${arrowId}`}
+        importantForAccessibility={'no-hide-descendants'}
       >
-        {renderArrow ? (
-          renderArrow(renderArrowDirection)
-        ) : (
-          <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>
-        )}
+        {renderArrow ? renderArrow(arrowDirection) : <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>}
       </TouchableOpacity>
     );
   };
@@ -275,6 +272,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         <View
           style={dayNamesStyle}
           testID={`${testID}.dayNames`}
+          importantForAccessibility={'no-hide-descendants'}
         >
           {renderWeekNumbersSpace()}
           {renderWeekDays}
@@ -297,7 +295,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     >
       <View style={headerStyle}>
         {_renderArrow('left')}
-        <View style={style.current.headerContainer}>
+        <View style={style.current.headerContainer} importantForAccessibility={'no-hide-descendants'}>
           {_renderHeader()}
           {renderIndicator()}
         </View>
