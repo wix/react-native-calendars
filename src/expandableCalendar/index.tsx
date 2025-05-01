@@ -143,9 +143,21 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
-  const onHeaderLayout = useCallback(({nativeEvent: {layout: {height}}}: LayoutChangeEvent) => {
-      setHeaderHeight(height || DEFAULT_HEADER_HEIGHT);
-  }, []);
+
+  const shouldMeasureHeader = useRef(true);
+  const onHeaderLayout = useCallback(
+    ({
+      nativeEvent: {
+        layout: {height}
+      }
+    }: LayoutChangeEvent) => {
+      if (height !== headerHeight) {
+        setHeaderHeight(height || DEFAULT_HEADER_HEIGHT);
+      }
+      shouldMeasureHeader.current = false;
+    },
+    [headerHeight]
+  );
 
   /** Date */
 
@@ -637,7 +649,13 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
           renderArrow={_renderArrow}
         />
       ) : (
-        <Animated.View testID={`${testID}.expandableContainer`} ref={wrapper} style={wrapperStyle} {...panResponder.panHandlers}>
+        <Animated.View
+          testID={`${testID}.expandableContainer`}
+          ref={wrapper}
+          style={wrapperStyle}
+          onLayout={shouldMeasureHeader.current ? onHeaderLayout : undefined}
+          {...panResponder.panHandlers}
+        >
           {renderCalendarList()}
           {renderWeekCalendar()}
           {!hideKnob && renderKnob()}
