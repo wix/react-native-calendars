@@ -4,7 +4,7 @@ import times from 'lodash/times';
 import groupBy from 'lodash/groupBy';
 
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
 import constants from '../commons/constants';
 import {generateDay} from '../dateutils';
@@ -115,6 +115,11 @@ export interface TimelineProps {
   timelineLeftInset?: number;
   /** Identifier for testing */
   testID?: string;
+  /**
+   * Callback fired when the Timeline's internal ScrollView scrolls.
+   * Receives the native scroll event to allow consumers to track scroll position or implement custom behaviors.
+   */
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 const Timeline = (props: TimelineProps) => {
@@ -142,7 +147,8 @@ const Timeline = (props: TimelineProps) => {
     eventTapped,
     numberOfDays = 1,
     timelineLeftInset = 0,
-    testID
+    testID,
+    onScroll
   } = props;
 
   const pageDates = useMemo(() => {
@@ -252,6 +258,7 @@ const Timeline = (props: TimelineProps) => {
       showsVerticalScrollIndicator={false}
       {...scrollEvents}
       testID={testID}
+      onScroll={onScroll}
     >
       <TimelineHours
         start={start}
