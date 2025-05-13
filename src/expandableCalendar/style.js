@@ -1,7 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 import * as defaultStyle from '../style';
 import constants from '../commons/constants';
-export const HEADER_HEIGHT = 68;
 export const KNOB_CONTAINER_HEIGHT = 24;
 export default function styleConstructor(theme = {}) {
     const appStyle = { ...defaultStyle, ...theme };
@@ -89,8 +88,7 @@ export default function styleConstructor(theme = {}) {
         weekContainer: {
             position: 'absolute',
             left: 0,
-            right: 0,
-            top: HEADER_HEIGHT + (constants.isAndroid ? 8 : 9), // align row on top of calendar's first row
+            right: 0
         },
         hidden: {
             opacity: 0
@@ -131,7 +129,6 @@ export default function styleConstructor(theme = {}) {
             alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',
             position: 'absolute',
             left: 20,
-            right: 20,
             bottom: 0
         },
         todayButton: {

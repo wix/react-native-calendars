@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { View } from 'react-native';
+import { AccessibilityInfo, View } from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
@@ -35,6 +35,7 @@ const Calendar = (props) => {
         const _currentMonth = currentMonth.clone();
         onMonthChange?.(xdateToData(_currentMonth));
         onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
+        AccessibilityInfo.announceForAccessibility(_currentMonth.toString('MMMM yyyy'));
     }, [currentMonth]);
     const updateMonth = useCallback((newMonth) => {
         if (sameMonth(newMonth, currentMonth)) {
@@ -97,14 +98,14 @@ const Calendar = (props) => {
       </View>);
     };
     const renderDay = (day, id) => {
-        const dayProps = extractDayProps(props);
         if (!sameMonth(day, currentMonth) && hideExtraDays) {
             return <View key={id} style={style.current.emptyDayContainer}/>;
         }
+        const dayProps = extractDayProps(props);
         const dateString = toMarkingFormat(day);
-        const isControlled = isEmpty(props.context);
+        const disableDaySelection = isEmpty(props.context);
         return (<View style={style.current.dayContainer} key={id}>
-        <Day {...dayProps} testID={`${testID}.day_${dateString}`} date={dateString} state={getState(day, currentMonth, props, isControlled)} marking={markedDates?.[dateString]} onPress={_onDayPress} onLongPress={onLongPressDay}/>
+        <Day {...dayProps} testID={`${testID}.day_${dateString}`} date={dateString} state={getState(day, currentMonth, props, disableDaySelection)} marking={markedDates?.[dateString]} onPress={_onDayPress} onLongPress={onLongPressDay}/>
       </View>);
     };
     const renderWeek = (days, id) => {
@@ -149,7 +150,7 @@ const Calendar = (props) => {
         onSwipe: (direction) => onSwipe(direction)
     };
     const gestureProps = enableSwipeMonths ? swipeProps : undefined;
-    return (<GestureComponent {...gestureProps}>
+    return (<GestureComponent {...gestureProps} testID={`${testID}.container`}>
       <View style={[style.current.container, propsStyle]} testID={testID} accessibilityElementsHidden={accessibilityElementsHidden} // iOS
      importantForAccessibility={importantForAccessibility} // Android
     >
@@ -164,9 +165,6 @@ Calendar.propTypes = {
     ...CalendarHeader.propTypes,
     ...Day.propTypes,
     theme: PropTypes.object,
-    firstDay: PropTypes.number,
-    displayLoadingIndicator: PropTypes.bool,
-    showWeekNumbers: PropTypes.bool,
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
     current: PropTypes.string,
     initialDate: PropTypes.string,

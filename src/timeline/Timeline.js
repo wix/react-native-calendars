@@ -15,7 +15,7 @@ import EventBlock from './EventBlock';
 import NowIndicator from './NowIndicator';
 import useTimelineOffset from './useTimelineOffset';
 const Timeline = (props) => {
-    const { format24h = true, start = 0, end = 24, date = '', events, onEventPress, onBackgroundLongPress, onBackgroundLongPressOut, renderEvent, theme, scrollToFirst, scrollToNow, initialTime, showNowIndicator, scrollOffset, onChangeOffset, overlapEventsSpacing = 0, rightEdgeSpacing = 0, unavailableHours, unavailableHoursColor, eventTapped, numberOfDays = 1, timelineLeftInset = 0, testID, } = props;
+    const { format24h = true, start = 0, end = 24, date = '', events, onEventPress, onBackgroundLongPress, onBackgroundLongPressOut, renderEvent, theme, scrollToFirst, scrollToNow, initialTime, showNowIndicator, scrollOffset, onChangeOffset, overlapEventsSpacing = 0, rightEdgeSpacing = 0, unavailableHours, unavailableHoursColor, eventTapped, numberOfDays = 1, timelineLeftInset = 0, testID } = props;
     const pageDates = useMemo(() => {
         return typeof date === 'string' ? [date] : date;
     }, [date]);

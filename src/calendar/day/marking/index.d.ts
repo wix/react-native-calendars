@@ -9,16 +9,16 @@ export declare enum Markings {
     MULTI_PERIOD = "multi-period",
     CUSTOM = "custom"
 }
-declare type CustomStyle = {
+type CustomStyle = {
     container?: ViewStyle;
     text?: TextStyle;
 };
-declare type DOT = {
+type DOT = {
     key?: string;
     color: string;
     selectedDotColor?: string;
 };
-declare type PERIOD = {
+type PERIOD = {
     color: string;
     startingDay?: boolean;
     endingDay?: boolean;

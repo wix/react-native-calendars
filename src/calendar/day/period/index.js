@@ -2,12 +2,29 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useRef, useMemo } from 'react';
 import { TouchableWithoutFeedback, TouchableOpacity, Text, View } from 'react-native';
 import { xdateToData } from '../../../interface';
+import Marking from '../marking';
 import styleConstructor from './style';
-import Dot from '../dot';
 const PeriodDay = (props) => {
-    const { theme, marking, date, onPress, onLongPress, state, accessibilityLabel, testID, children } = props;
+    const { theme, date, onPress, onLongPress, marking, state, disableAllTouchEventsForDisabledDays, disableAllTouchEventsForInactiveDays, accessibilityLabel, children, testID } = props;
     const dateData = date ? xdateToData(date) : undefined;
     const style = useRef(styleConstructor(theme));
+    const isDisabled = typeof marking?.disabled !== 'undefined' ? marking.disabled : state === 'disabled';
+    const isInactive = typeof marking?.inactive !== 'undefined' ? marking.inactive : state === 'inactive';
+    const isToday = typeof marking?.today !== 'undefined' ? marking.today : state === 'today';
+    const shouldDisableTouchEvent = () => {
+        const { disableTouchEvent } = marking || {};
+        let disableTouch = false;
+        if (typeof disableTouchEvent === 'boolean') {
+            disableTouch = disableTouchEvent;
+        }
+        else if (typeof disableAllTouchEventsForDisabledDays === 'boolean' && isDisabled) {
+            disableTouch = disableAllTouchEventsForDisabledDays;
+        }
+        else if (typeof disableAllTouchEventsForInactiveDays === 'boolean' && isInactive) {
+            disableTouch = disableAllTouchEventsForInactiveDays;
+        }
+        return disableTouch;
+    };
     const markingStyle = useMemo(() => {
         const defaultStyle = { textStyle: {}, containerStyle: {} };
         if (!marking) {
@@ -46,13 +63,14 @@ const PeriodDay = (props) => {
     }, [marking]);
     const containerStyle = useMemo(() => {
         const containerStyle = [style.current.base];
-        if (state === 'today') {
+        if (isToday) {
             containerStyle.push(style.current.today);
         }
         if (marking) {
             containerStyle.push({
                 borderRadius: 17,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                paddingTop: 5
             });
             const start = markingStyle.startingDay;
             const end = markingStyle.endingDay;
@@ -67,16 +85,16 @@ const PeriodDay = (props) => {
             }
         }
         return containerStyle;
-    }, [marking, state]);
+    }, [marking, isDisabled, isInactive, isToday]);
     const textStyle = useMemo(() => {
         const textStyle = [style.current.text];
-        if (state === 'disabled') {
+        if (isDisabled) {
             textStyle.push(style.current.disabledText);
         }
-        else if (state === 'inactive') {
+        else if (isInactive) {
             textStyle.push(style.current.inactiveText);
         }
-        else if (state === 'today') {
+        else if (isToday) {
             textStyle.push(style.current.todayText);
         }
         if (marking) {
@@ -85,7 +103,7 @@ const PeriodDay = (props) => {
             }
         }
         return textStyle;
-    }, [marking, state]);
+    }, [marking, isDisabled, isInactive, isToday]);
     const fillerStyles = useMemo(() => {
         const leftFillerStyle = { backgroundColor: undefined };
         const rightFillerStyle = { backgroundColor: undefined };
@@ -105,6 +123,12 @@ const PeriodDay = (props) => {
         }
         return { leftFillerStyle, rightFillerStyle, fillerStyle };
     }, [marking]);
+    const _onPress = useCallback(() => {
+        onPress?.(dateData);
+    }, [onPress, date]);
+    const _onLongPress = useCallback(() => {
+        onLongPress?.(dateData);
+    }, [onLongPress, date]);
     const renderFillers = () => {
         if (marking) {
             return (<View style={[style.current.fillers, fillerStyles.fillerStyle]}>
@@ -113,23 +137,24 @@ const PeriodDay = (props) => {
         </View>);
         }
     };
-    const _onPress = useCallback(() => {
-        onPress?.(dateData);
-    }, [onPress]);
-    const _onLongPress = useCallback(() => {
-        onLongPress?.(dateData);
-    }, [onLongPress]);
+    const renderMarking = () => {
+        if (marking) {
+            const { marked, dotColor } = marking;
+            return (<Marking type={'dot'} theme={theme} marked={marked} disabled={isDisabled} inactive={isInactive} today={isToday} dotColor={dotColor}/>);
+        }
+    };
+    const renderText = () => {
+        return (<Text allowFontScaling={false} style={textStyle}>
+        {String(children)}
+      </Text>);
+    };
     const Component = marking ? TouchableWithoutFeedback : TouchableOpacity;
-    return (<Component testID={testID} onPress={_onPress} onLongPress={_onLongPress} disabled={marking?.disableTouchEvent} accessible accessibilityRole={marking?.disableTouchEvent ? undefined : 'button'} accessibilityLabel={accessibilityLabel}>
-      <View style={style.current.wrapper}>
+    return (<Component testID={testID} disabled={shouldDisableTouchEvent()} onPress={!shouldDisableTouchEvent() ? _onPress : undefined} onLongPress={!shouldDisableTouchEvent() ? _onLongPress : undefined} accessible accessibilityRole={isDisabled ? undefined : 'button'} accessibilityLabel={accessibilityLabel}>
+      <View style={style.current.container}>
         {renderFillers()}
         <View style={containerStyle}>
-          <Text allowFontScaling={false} style={textStyle}>
-            {String(children)}
-          </Text>
-          <View style={style.current.dotContainer}>
-            <Dot theme={theme} color={marking?.dotColor} marked={marking?.marked}/>
-          </View>
+          {renderText()}
+          {renderMarking()}
         </View>
       </View>
     </Component>);

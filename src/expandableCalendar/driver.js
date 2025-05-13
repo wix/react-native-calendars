@@ -38,7 +38,10 @@ export class ExpandableCalendarDriver {
         return this.renderTree?.queryByTestId(this.knobTestID);
     }
     toggleKnob() {
-        fireEvent(this.getKnob(), 'onPress');
+        const knob = this.getKnob();
+        if (knob) {
+            fireEvent(knob, 'onPress');
+        }
     }
     /** CalendarList */
     getCalendarList() {

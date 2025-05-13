@@ -54,17 +54,16 @@ export declare function extractHeaderProps(props: CalendarProps): {
     current: string | undefined;
     timelineLeftInset: number | undefined;
     testID: string | undefined;
+    onHeaderLayout: ((event: import("react-native/types").LayoutChangeEvent) => void) | undefined;
 };
 export declare function extractCalendarProps(props: CalendarListProps): {
     theme?: import("./types").Theme | undefined;
-    firstDay?: number | undefined;
-    displayLoadingIndicator?: boolean | undefined;
-    showWeekNumbers?: boolean | undefined;
     style?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     current?: string | undefined;
     initialDate?: string | undefined;
     minDate?: string | undefined;
     maxDate?: string | undefined;
+    allowSelectionOutOfRange?: boolean | undefined;
     markedDates?: import("./types").MarkedDates | undefined;
     hideExtraDays?: boolean | undefined;
     showSixWeeks?: boolean | undefined;
@@ -74,12 +73,16 @@ export declare function extractCalendarProps(props: CalendarListProps): {
     onVisibleMonthsChange?: ((months: import("./types").DateData[]) => void) | undefined;
     disableMonthChange?: boolean | undefined;
     enableSwipeMonths?: boolean | undefined;
-    disabledByDefault?: boolean | undefined;
     headerStyle?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     customHeader?: any;
-    allowSelectionOutOfRange?: boolean | undefined;
+    disabledByDefault?: boolean | undefined;
+    disabledByWeekDays?: number[] | undefined;
+    testID?: string | undefined;
     month?: import("xdate") | undefined;
     addMonth?: ((num: number) => void) | undefined;
+    firstDay?: number | undefined;
+    displayLoadingIndicator?: boolean | undefined;
+    showWeekNumbers?: boolean | undefined;
     monthFormat?: string | undefined;
     hideDayNames?: boolean | undefined;
     hideArrows?: boolean | undefined;
@@ -93,11 +96,11 @@ export declare function extractCalendarProps(props: CalendarListProps): {
     renderHeader?: ((date?: import("xdate") | undefined) => import("react").ReactNode) | undefined;
     customHeaderTitle?: JSX.Element | undefined;
     webAriaLevel?: number | undefined;
-    testID?: string | undefined;
     accessibilityElementsHidden?: boolean | undefined;
     importantForAccessibility?: "auto" | "yes" | "no" | "no-hide-descendants" | undefined;
     numberOfDays?: number | undefined;
     timelineLeftInset?: number | undefined;
+    onHeaderLayout?: ((event: import("react-native/types").LayoutChangeEvent) => void) | undefined;
     dayComponent?: import("react").ComponentType<import("./calendar/day").DayProps & {
         date?: import("./types").DateData | undefined;
     }> | undefined;
@@ -193,7 +196,7 @@ export declare function extractCalendarProps(props: CalendarListProps): {
     accessibilityLanguage?: string | undefined;
     columnWrapperStyle?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     extraData?: any;
-    getItemLayout?: ((data: any[] | null | undefined, index: number) => {
+    getItemLayout?: ((data: ArrayLike<any> | null | undefined, index: number) => {
         length: number;
         offset: number;
         index: number;
@@ -208,7 +211,7 @@ export declare function extractCalendarProps(props: CalendarListProps): {
         changed: import("react-native/types").ViewToken[];
     }) => void) | null | undefined;
     refreshing?: boolean | null | undefined;
-    viewabilityConfig?: any;
+    viewabilityConfig?: import("react-native/types").ViewabilityConfig | undefined;
     fadingEdgeLength?: number | undefined;
     ItemSeparatorComponent?: import("react").ComponentType<any> | null | undefined;
     ListEmptyComponent?: import("react").ComponentType<any> | import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null | undefined;
@@ -227,12 +230,16 @@ export declare function extractCalendarProps(props: CalendarListProps): {
         highestMeasuredFrameIndex: number;
         averageItemLength: number;
     }) => void) | undefined;
+    onStartReached?: ((info: {
+        distanceFromStart: number;
+    }) => void) | null | undefined;
+    onStartReachedThreshold?: number | null | undefined;
     progressViewOffset?: number | undefined;
     renderScrollComponent?: ((props: import("react-native/types").ScrollViewProps) => import("react").ReactElement<import("react-native/types").ScrollViewProps, string | import("react").JSXElementConstructor<any>>) | undefined;
     updateCellsBatchingPeriod?: number | undefined;
     viewabilityConfigCallbackPairs?: import("react-native/types").ViewabilityConfigCallbackPairs | undefined;
     windowSize?: number | undefined;
-    CellRendererComponent?: import("react").ComponentType<any> | undefined;
+    CellRendererComponent?: import("react").ComponentType<import("react-native/types").CellRendererProps<any>> | null | undefined;
     contentContainerStyle?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     decelerationRate?: number | "normal" | "fast" | undefined;
     invertStickyHeaders?: boolean | undefined;
@@ -298,14 +305,12 @@ export declare function extractCalendarListProps(props: AgendaProps): {
     showScrollIndicator?: boolean | undefined;
     animateScroll?: boolean | undefined;
     theme?: import("./types").Theme | undefined;
-    firstDay?: number | undefined;
-    displayLoadingIndicator?: boolean | undefined;
-    showWeekNumbers?: boolean | undefined;
     style?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     current?: string | undefined;
     initialDate?: string | undefined;
     minDate?: string | undefined;
     maxDate?: string | undefined;
+    allowSelectionOutOfRange?: boolean | undefined;
     markedDates?: import("./types").MarkedDates | undefined;
     hideExtraDays?: boolean | undefined;
     showSixWeeks?: boolean | undefined;
@@ -315,12 +320,16 @@ export declare function extractCalendarListProps(props: AgendaProps): {
     onVisibleMonthsChange?: ((months: import("./types").DateData[]) => void) | undefined;
     disableMonthChange?: boolean | undefined;
     enableSwipeMonths?: boolean | undefined;
-    disabledByDefault?: boolean | undefined;
     headerStyle?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     customHeader?: any;
-    allowSelectionOutOfRange?: boolean | undefined;
+    disabledByDefault?: boolean | undefined;
+    disabledByWeekDays?: number[] | undefined;
+    testID?: string | undefined;
     month?: import("xdate") | undefined;
     addMonth?: ((num: number) => void) | undefined;
+    firstDay?: number | undefined;
+    displayLoadingIndicator?: boolean | undefined;
+    showWeekNumbers?: boolean | undefined;
     monthFormat?: string | undefined;
     hideDayNames?: boolean | undefined;
     hideArrows?: boolean | undefined;
@@ -334,11 +343,11 @@ export declare function extractCalendarListProps(props: AgendaProps): {
     renderHeader?: ((date?: import("xdate") | undefined) => import("react").ReactNode) | undefined;
     customHeaderTitle?: JSX.Element | undefined;
     webAriaLevel?: number | undefined;
-    testID?: string | undefined;
     accessibilityElementsHidden?: boolean | undefined;
     importantForAccessibility?: "auto" | "yes" | "no" | "no-hide-descendants" | undefined;
     numberOfDays?: number | undefined;
     timelineLeftInset?: number | undefined;
+    onHeaderLayout?: ((event: import("react-native/types").LayoutChangeEvent) => void) | undefined;
     dayComponent?: import("react").ComponentType<import("./calendar/day").DayProps & {
         date?: import("./types").DateData | undefined;
     }> | undefined;
@@ -435,7 +444,7 @@ export declare function extractCalendarListProps(props: AgendaProps): {
     columnWrapperStyle?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     keyboardShouldPersistTaps?: boolean | "never" | "always" | "handled" | undefined;
     extraData?: any;
-    getItemLayout?: ((data: any[] | null | undefined, index: number) => {
+    getItemLayout?: ((data: ArrayLike<any> | null | undefined, index: number) => {
         length: number;
         offset: number;
         index: number;
@@ -445,17 +454,13 @@ export declare function extractCalendarListProps(props: AgendaProps): {
     keyExtractor?: ((item: any, index: number) => string) | undefined;
     legacyImplementation?: boolean | undefined;
     numColumns?: number | undefined;
-    onEndReached?: ((info: {
-        distanceFromEnd: number;
-    }) => void) | null | undefined;
-    onEndReachedThreshold?: number | null | undefined;
     onRefresh?: ((() => void) & (() => void)) | undefined;
     onViewableItemsChanged?: ((info: {
         viewableItems: import("react-native/types").ViewToken[];
         changed: import("react-native/types").ViewToken[];
     }) => void) | null | undefined;
     refreshing?: boolean | undefined;
-    viewabilityConfig?: any;
+    viewabilityConfig?: import("react-native/types").ViewabilityConfig | undefined;
     fadingEdgeLength?: number | undefined;
     ItemSeparatorComponent?: import("react").ComponentType<any> | null | undefined;
     ListEmptyComponent?: import("react").ComponentType<any> | import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null | undefined;
@@ -469,17 +474,25 @@ export declare function extractCalendarListProps(props: AgendaProps): {
     getItemCount?: ((data: any) => number) | undefined;
     inverted?: boolean | null | undefined;
     maxToRenderPerBatch?: number | undefined;
+    onEndReached?: ((info: {
+        distanceFromEnd: number;
+    }) => void) | null | undefined;
+    onEndReachedThreshold?: number | null | undefined;
     onScrollToIndexFailed?: ((info: {
         index: number;
         highestMeasuredFrameIndex: number;
         averageItemLength: number;
     }) => void) | undefined;
+    onStartReached?: ((info: {
+        distanceFromStart: number;
+    }) => void) | null | undefined;
+    onStartReachedThreshold?: number | null | undefined;
     progressViewOffset?: number | undefined;
     renderScrollComponent?: ((props: import("react-native/types").ScrollViewProps) => import("react").ReactElement<import("react-native/types").ScrollViewProps, string | import("react").JSXElementConstructor<any>>) | undefined;
     updateCellsBatchingPeriod?: number | undefined;
     viewabilityConfigCallbackPairs?: import("react-native/types").ViewabilityConfigCallbackPairs | undefined;
     windowSize?: number | undefined;
-    CellRendererComponent?: import("react").ComponentType<any> | undefined;
+    CellRendererComponent?: import("react").ComponentType<import("react-native/types").CellRendererProps<any>> | null | undefined;
     contentContainerStyle?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
     decelerationRate?: number | "normal" | "fast" | undefined;
     invertStickyHeaders?: boolean | undefined;

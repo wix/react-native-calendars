@@ -7,8 +7,9 @@ interface UseTimelinePagesProps {
     date: string;
     listRef: RefObject<any>;
     numberOfDays: number;
+    shouldFixRTL: boolean;
 }
-declare const UseTimelinePages: ({ date, listRef, numberOfDays }: UseTimelinePagesProps) => {
+declare const UseTimelinePages: ({ date, listRef, numberOfDays, shouldFixRTL }: UseTimelinePagesProps) => {
     resetPages: (date: string) => void;
     resetPagesDebounce: import("lodash").DebouncedFunc<(date: string) => void>;
     scrollToPage: (pageIndex: number) => void;

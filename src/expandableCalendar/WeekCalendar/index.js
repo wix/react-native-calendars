@@ -19,7 +19,7 @@ const NUM_OF_ITEMS = NUMBER_OF_PAGES * 2 + 1; // NUMBER_OF_PAGES before + NUMBER
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const WeekCalendar = (props) => {
-    const { calendarWidth, hideDayNames, current, theme, testID, markedDates, } = props;
+    const { calendarWidth, hideDayNames, current, theme, testID, markedDates } = props;
     const context = useContext(CalendarContext);
     const { allowShadow = true, ...calendarListProps } = props;
     const { style: propsStyle, onDayPress, firstDay = 0, ...others } = extractCalendarProps(calendarListProps);
@@ -31,6 +31,7 @@ const WeekCalendar = (props) => {
     const changedItems = useRef(constants.isRTL);
     const list = useRef(null);
     const currentIndex = useRef(NUMBER_OF_PAGES);
+    const shouldFixRTL = useMemo(() => !constants.isRN73() && constants.isAndroidRTL, []);
     useDidUpdate(() => {
         items.current = getDatesArray(date, firstDay, numberOfDays);
         setListData(items.current);
@@ -48,7 +49,7 @@ const WeekCalendar = (props) => {
                 }) :
                 sameWeek(item, date, firstDay));
             if (pageIndex !== currentIndex.current) {
-                const adjustedIndexFrScroll = constants.isAndroidRTL ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex;
+                const adjustedIndexFrScroll = shouldFixRTL ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex;
                 if (pageIndex >= 0) {
                     visibleWeek.current = items.current[adjustedIndexFrScroll];
                     currentIndex.current = adjustedIndexFrScroll;
@@ -60,7 +61,7 @@ const WeekCalendar = (props) => {
                 pageIndex <= 0 ? onEndReached() : list?.current?.scrollToIndex({ index: adjustedIndexFrScroll, animated: false });
             }
         }
-    }, [date, updateSource]);
+    }, [date, updateSource, shouldFixRTL]);
     const containerWidth = useMemo(() => {
         return calendarWidth ?? constants.screenWidth;
     }, [calendarWidth]);
@@ -81,7 +82,7 @@ const WeekCalendar = (props) => {
             const dateString = toMarkingFormat(date);
             return {
                 ...acc,
-                ...(markings[dateString] && { [dateString]: markings[dateString] }),
+                ...(markings[dateString] && { [dateString]: markings[dateString] })
             };
         }, {});
     }, []);
@@ -128,7 +129,7 @@ const WeekCalendar = (props) => {
         const currItems = items.current;
         const newDate = viewableItems[0]?.item;
         if (newDate !== visibleWeek.current) {
-            if (constants.isAndroidRTL) {
+            if (shouldFixRTL) {
                 //in android RTL the item we see is the one in the opposite direction
                 const newDateOffset = -1 * (NUMBER_OF_PAGES - currItems.indexOf(newDate));
                 const adjustedNewDate = currItems[NUMBER_OF_PAGES - newDateOffset];
@@ -148,12 +149,12 @@ const WeekCalendar = (props) => {
                 }
             }
         }
-    }, [onEndReached]);
+    }, [onEndReached, shouldFixRTL]);
     const viewabilityConfigCallbackPairs = useRef([{
             viewabilityConfig: {
-                itemVisiblePercentThreshold: 20,
+                itemVisiblePercentThreshold: 20
             },
-            onViewableItemsChanged,
+            onViewableItemsChanged
         }]);
     return (<View testID={testID} style={weekCalendarStyle}>
       {!hideDayNames && (<View style={containerStyle}>

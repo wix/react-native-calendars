@@ -9,7 +9,7 @@ const accessibilityActions = [
     { name: 'decrement', label: 'decrement' }
 ];
 const CalendarHeader = forwardRef((props, ref) => {
-    const { theme, style: propsStyle, addMonth: propsAddMonth, month, monthFormat, firstDay, hideDayNames, showWeekNumbers, hideArrows, renderArrow, onPressArrowLeft, onPressArrowRight, arrowsHitSlop = 20, disableArrowLeft, disableArrowRight, disabledDaysIndexes, displayLoadingIndicator, customHeaderTitle, renderHeader, webAriaLevel, testID, accessibilityElementsHidden, importantForAccessibility, numberOfDays, current = '', timelineLeftInset } = props;
+    const { theme, style: propsStyle, addMonth: propsAddMonth, month, monthFormat = 'MMMM yyyy', firstDay, hideDayNames, showWeekNumbers, hideArrows, renderArrow, onPressArrowLeft, onPressArrowRight, arrowsHitSlop = 20, disableArrowLeft, disableArrowRight, disabledDaysIndexes, displayLoadingIndicator, customHeaderTitle, renderHeader, webAriaLevel = 1, testID, accessibilityElementsHidden, importantForAccessibility, numberOfDays, current = '', timelineLeftInset, onHeaderLayout } = props;
     const numberOfDaysCondition = useMemo(() => {
         return numberOfDays && numberOfDays > 1;
     }, [numberOfDays]);
@@ -73,7 +73,7 @@ const CalendarHeader = forwardRef((props, ref) => {
             if (style.current[dayTextAtIndex]) {
                 dayStyle.push(style.current[dayTextAtIndex]);
             }
-            return (<Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''}>
+            return (<Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''} testID={`${testID}.dayName_${day}`}>
           {day}
         </Text>);
         });
@@ -97,13 +97,13 @@ const CalendarHeader = forwardRef((props, ref) => {
             return <View />;
         }
         const isLeft = direction === 'left';
-        const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
+        const arrowDirection = isLeft ? 'left' : 'right';
+        const arrowId = `${arrowDirection}Arrow`;
         const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
         const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
         const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-        const renderArrowDirection = isLeft ? 'left' : 'right';
-        return (<TouchableOpacity onPress={onPress} disabled={shouldDisable} style={style.current.arrow} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
-        {renderArrow ? (renderArrow(renderArrowDirection)) : (<Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>)}
+        return (<TouchableOpacity onPress={onPress} disabled={shouldDisable} style={style.current.arrow} hitSlop={hitSlop} testID={`${testID}.${arrowId}`} importantForAccessibility={'no-hide-descendants'}>
+        {renderArrow ? renderArrow(arrowDirection) : <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>}
       </TouchableOpacity>);
     };
     const renderIndicator = () => {
@@ -116,7 +116,7 @@ const CalendarHeader = forwardRef((props, ref) => {
     };
     const renderDayNames = () => {
         if (!hideDayNames) {
-            return (<View style={dayNamesStyle} testID={`${testID}.dayNames`}>
+            return (<View style={dayNamesStyle} testID={`${testID}.dayNames`} importantForAccessibility={'no-hide-descendants'}>
           {renderWeekNumbersSpace()}
           {renderWeekDays}
         </View>);
@@ -124,10 +124,10 @@ const CalendarHeader = forwardRef((props, ref) => {
     };
     return (<View testID={testID} style={propsStyle} accessible accessibilityRole={'adjustable'} accessibilityActions={accessibilityActions} onAccessibilityAction={onAccessibilityAction} accessibilityElementsHidden={accessibilityElementsHidden} // iOS
      importantForAccessibility={importantForAccessibility} // Android
-    >
+     onLayout={onHeaderLayout}>
       <View style={headerStyle}>
         {_renderArrow('left')}
-        <View style={style.current.headerContainer}>
+        <View style={style.current.headerContainer} importantForAccessibility={'no-hide-descendants'}>
           {_renderHeader()}
           {renderIndicator()}
         </View>

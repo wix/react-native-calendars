@@ -1,5 +1,4 @@
 import { Theme } from '../types';
-export declare const HEADER_HEIGHT = 68;
 export declare const KNOB_CONTAINER_HEIGHT = 24;
 export default function styleConstructor(theme?: Theme): {
     containerShadow: {
@@ -93,7 +92,6 @@ export default function styleConstructor(theme?: Theme): {
         position: "absolute";
         left: number;
         right: number;
-        top: number;
     };
     hidden: {
         opacity: number;
@@ -136,7 +134,6 @@ export default function styleConstructor(theme?: Theme): {
         alignItems: "flex-start" | "flex-end";
         position: "absolute";
         left: number;
-        right: number;
         bottom: number;
     };
     todayButton: {

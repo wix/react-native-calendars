@@ -6,6 +6,7 @@ const isIOS = Platform.OS === 'ios';
 const screenAspectRatio = screenWidth < screenHeight ? screenHeight / screenWidth : screenWidth / screenHeight;
 const isTablet = Platform.isPad || (screenAspectRatio < 1.6 && Math.max(screenWidth, screenHeight) >= 900);
 const isAndroidRTL = isAndroid && isRTL;
+const isRN73 = () => !!Platform?.constants?.reactNativeVersion && Platform.constants.reactNativeVersion?.minor >= 73;
 export default {
     screenWidth,
     screenHeight,
@@ -13,5 +14,6 @@ export default {
     isAndroid,
     isIOS,
     isTablet,
-    isAndroidRTL
+    isAndroidRTL,
+    isRN73
 };

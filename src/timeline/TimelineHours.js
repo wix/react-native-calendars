@@ -8,7 +8,7 @@ import { buildUnavailableHoursBlocks, HOUR_BLOCK_HEIGHT } from './Packer';
 const dimensionWidth = constants.screenWidth;
 const EVENT_DIFF = 20;
 const TimelineHours = (props) => {
-    const { format24h, start = 0, end = 24, date, unavailableHours, unavailableHoursColor, styles, onBackgroundLongPress, onBackgroundLongPressOut, width, numberOfDays = 1, timelineLeftInset = 0, testID, } = props;
+    const { format24h, start = 0, end = 24, date, unavailableHours, unavailableHoursColor, styles, onBackgroundLongPress, onBackgroundLongPressOut, width, numberOfDays = 1, timelineLeftInset = 0, testID } = props;
     const lastLongPressEventTime = useRef();
     // const offset = this.calendarHeight / (end - start);
     const offset = HOUR_BLOCK_HEIGHT;
@@ -60,7 +60,7 @@ const TimelineHours = (props) => {
                 block,
                 unavailableHoursColor ? { backgroundColor: unavailableHoursColor } : undefined,
                 { left: timelineLeftInset }
-            ]}></View>))}
+            ]}/>))}
 
       {hours.map(({ timeText, time }, index) => {
             return (<React.Fragment key={time}>

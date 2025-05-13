@@ -7,7 +7,7 @@ import constants from '../commons/constants';
 import { useCombinedRefs } from '../hooks';
 const dataProviderMaker = (items) => new DataProvider((item1, item2) => item1 !== item2).cloneWithRows(items);
 const InfiniteList = (props, ref) => {
-    const { isHorizontal, renderItem, data, reloadPages = noop, pageWidth = constants.screenWidth, pageHeight = constants.screenHeight, onPageChange, onReachEdge, onReachNearEdge, onReachNearEdgeThreshold, initialPageIndex = 0, initialOffset, extendedState, scrollViewProps, positionIndex = 0, disableScrollOnDataChange, onEndReachedThreshold, onVisibleIndicesChanged, layoutProvider, onScroll, onEndReached, renderFooter, } = props;
+    const { isHorizontal, renderItem, data, reloadPages = noop, pageWidth = constants.screenWidth, pageHeight = constants.screenHeight, onPageChange, onReachEdge, onReachNearEdge, onReachNearEdgeThreshold, initialPageIndex = 0, initialOffset, extendedState, scrollViewProps, positionIndex = 0, disableScrollOnDataChange, onEndReachedThreshold, onVisibleIndicesChanged, layoutProvider, onScroll, onEndReached, renderFooter } = props;
     const dataProvider = useMemo(() => {
         return dataProviderMaker(data);
     }, [data]);
@@ -15,9 +15,9 @@ const InfiniteList = (props, ref) => {
         dim.width = pageWidth;
         dim.height = pageHeight;
     }));
-    const shouldUseAndroidRTLFix = useMemo(() => {
-        return constants.isAndroidRTL && isHorizontal;
-    }, []);
+    const shouldFixRTL = useMemo(() => {
+        return isHorizontal && constants.isRTL && (constants.isRN73() || constants.isAndroid);
+    }, [isHorizontal]);
     const listRef = useCombinedRefs(ref);
     const pageIndex = useRef();
     const isOnEdge = useRef(false);
@@ -29,17 +29,17 @@ const InfiniteList = (props, ref) => {
             return;
         }
         setTimeout(() => {
-            const x = isHorizontal ? constants.isAndroidRTL ? Math.floor(data.length / 2) + 1 : Math.floor(data.length / 2) * pageWidth : 0;
+            const x = isHorizontal ? shouldFixRTL ? Math.floor(data.length / 2) + 1 : Math.floor(data.length / 2) * pageWidth : 0;
             const y = isHorizontal ? 0 : positionIndex * pageHeight;
             // @ts-expect-error
             listRef.current?.scrollToOffset?.(x, y, false);
         }, 0);
-    }, [data, disableScrollOnDataChange]);
+    }, [data, disableScrollOnDataChange, isHorizontal]);
     const _onScroll = useCallback((event, offsetX, offsetY) => {
         reloadPagesDebounce?.cancel();
         const contentOffset = event.nativeEvent.contentOffset;
         const y = contentOffset.y;
-        const x = shouldUseAndroidRTLFix ? (pageWidth * data.length - contentOffset.x) : contentOffset.x;
+        const x = shouldFixRTL ? (pageWidth * data.length - contentOffset.x) : contentOffset.x;
         const newPageIndex = Math.round(isHorizontal ? x / pageWidth : y / pageHeight);
         if (pageIndex.current !== newPageIndex) {
             if (pageIndex.current !== undefined) {
@@ -64,7 +64,7 @@ const InfiniteList = (props, ref) => {
             pageIndex.current = newPageIndex;
         }
         onScroll?.(event, offsetX, offsetY);
-    }, [onScroll, onPageChange, data.length, reloadPagesDebounce]);
+    }, [onScroll, onPageChange, data.length, reloadPagesDebounce, isHorizontal, shouldFixRTL]);
     const onMomentumScrollEnd = useCallback(event => {
         if (pageIndex.current) {
             if (isOnEdge.current) {
@@ -95,6 +95,6 @@ const InfiniteList = (props, ref) => {
     }, [pageHeight]);
     return (<RecyclerListView 
     // @ts-expect-error
-    ref={listRef} isHorizontal={isHorizontal} disableRecycling={shouldUseAndroidRTLFix} rowRenderer={renderItem} dataProvider={dataProvider} layoutProvider={layoutProvider ?? _layoutProvider.current} extendedState={extendedState} initialRenderIndex={initialOffset ? undefined : initialPageIndex} initialOffset={initialOffset} renderAheadOffset={5 * pageWidth} onScroll={_onScroll} style={style} scrollViewProps={scrollViewPropsMemo} onEndReached={onEndReached} onEndReachedThreshold={onEndReachedThreshold} onVisibleIndicesChanged={onVisibleIndicesChanged} renderFooter={renderFooter}/>);
+    ref={listRef} isHorizontal={isHorizontal} rowRenderer={renderItem} dataProvider={dataProvider} layoutProvider={layoutProvider ?? _layoutProvider.current} extendedState={extendedState} initialRenderIndex={initialOffset ? undefined : initialPageIndex} initialOffset={initialOffset} renderAheadOffset={5 * pageWidth} onScroll={_onScroll} style={style} scrollViewProps={scrollViewPropsMemo} onEndReached={onEndReached} onEndReachedThreshold={onEndReachedThreshold} onVisibleIndicesChanged={onVisibleIndicesChanged} renderFooter={renderFooter}/>);
 };
 export default forwardRef(InfiniteList);

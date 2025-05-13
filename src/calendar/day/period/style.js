@@ -4,16 +4,19 @@ const FILLER_HEIGHT = 34;
 export default function styleConstructor(theme = {}) {
     const appStyle = { ...defaultStyle, ...theme };
     return StyleSheet.create({
-        wrapper: {
-            alignItems: 'center',
+        container: {
             alignSelf: 'stretch',
-            marginLeft: -1
+            alignItems: 'center'
         },
         base: {
             width: 38,
             height: FILLER_HEIGHT,
             alignItems: 'center',
             justifyContent: 'center'
+        },
+        today: {
+            backgroundColor: appStyle.todayBackgroundColor,
+            borderRadius: 17
         },
         fillers: {
             position: 'absolute',
@@ -37,18 +40,11 @@ export default function styleConstructor(theme = {}) {
             fontFamily: appStyle.textDayFontFamily,
             fontWeight: appStyle.textDayFontWeight,
             color: appStyle.dayTextColor,
-            backgroundColor: 'rgba(255, 255, 255, 0)'
-        },
-        dotContainer: {
-            position: 'absolute',
-            bottom: 3
-        },
-        today: {
-            backgroundColor: appStyle.todayBackgroundColor
+            backgroundColor: 'rgba(0, 0, 0, 0)'
         },
         todayText: {
             fontWeight: '500',
-            color: theme.todayTextColor || appStyle.dayTextColor
+            color: theme.todayTextColor
         },
         selectedText: {
             color: appStyle.selectedDayTextColor

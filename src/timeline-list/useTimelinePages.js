@@ -7,7 +7,7 @@ import { generateDay } from '../dateutils';
 export const PAGES_COUNT = 100;
 export const NEAR_EDGE_THRESHOLD = 10;
 export const INITIAL_PAGE = Math.floor(PAGES_COUNT / 2);
-const UseTimelinePages = ({ date, listRef, numberOfDays }) => {
+const UseTimelinePages = ({ date, listRef, numberOfDays, shouldFixRTL }) => {
     const pagesRef = useRef(times(PAGES_COUNT, i => {
         return generateDay(date, numberOfDays * (i - Math.floor(PAGES_COUNT / 2)));
     }));
@@ -30,7 +30,7 @@ const UseTimelinePages = ({ date, listRef, numberOfDays }) => {
         return !inRange(index, 1, PAGES_COUNT - 1);
     }, []);
     const scrollToPage = (pageIndex) => {
-        listRef.current?.scrollToOffset(constants.isAndroidRTL ? ((PAGES_COUNT - 1 - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
+        listRef.current?.scrollToOffset(shouldFixRTL ? ((PAGES_COUNT - 1 - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
     };
     const resetPages = (date) => {
         pagesRef.current = times(PAGES_COUNT, i => {

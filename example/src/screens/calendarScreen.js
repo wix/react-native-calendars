@@ -2,7 +2,7 @@ import React, { useState, Fragment, useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { Calendar, CalendarUtils } from 'react-native-calendars';
 import testIDs from '../testIDs';
-const INITIAL_DATE = '2022-07-06';
+const INITIAL_DATE = '2024-11-06';
 const CalendarScreen = () => {
     const [selected, setSelected] = useState(INITIAL_DATE);
     const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
@@ -30,25 +30,25 @@ const CalendarScreen = () => {
     }, [selected]);
     const renderCalendarWithSelectableDate = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with selectable date</Text>
+        <Text style={styles.text}>Selectable date</Text>
         <Calendar testID={testIDs.calendars.FIRST} enableSwipeMonths current={INITIAL_DATE} style={styles.calendar} onDayPress={onDayPress} markedDates={marked}/>
       </Fragment>);
     };
-    const renderCalendarWithWeekNumbers = () => {
+    const renderCalendarWithWeekNumbersAndSpinner = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with week numbers</Text>
-        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers/>
+        <Text style={styles.text}>Week numbers and spinner</Text>
+        <Calendar style={styles.calendar} hideExtraDays showWeekNumbers displayLoadingIndicator/>
       </Fragment>);
     };
     const renderCalendarWithMinAndMaxDates = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with min and max dates</Text>
+        <Text style={styles.text}>Min and max dates</Text>
         <Calendar style={styles.calendar} hideExtraDays current={INITIAL_DATE} minDate={getDate(-6)} maxDate={getDate(6)} disableAllTouchEventsForDisabledDays/>
       </Fragment>);
     };
     const renderCalendarWithMarkedDatesAndHiddenArrows = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with marked dates and hidden arrows</Text>
+        <Text style={styles.text}>Marked dates and hidden arrows</Text>
         <Calendar style={styles.calendar} current={INITIAL_DATE} hideExtraDays firstDay={1} markedDates={{
                 [getDate(6)]: { selected: true, marked: true, disableTouchEvent: true },
                 [getDate(7)]: { selected: true, marked: true, dotColor: 'red' },
@@ -60,7 +60,7 @@ const CalendarScreen = () => {
     };
     const renderCalendarWithMultiDotMarking = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with multi-dot marking</Text>
+        <Text style={styles.text}>Multi-dot marking</Text>
         <Calendar style={styles.calendar} current={INITIAL_DATE} markingType={'multi-dot'} markedDates={{
                 [getDate(2)]: {
                     selected: true,
@@ -79,15 +79,15 @@ const CalendarScreen = () => {
             }}/>
       </Fragment>);
     };
-    const renderCalendarWithPeriodMarkingAndSpinner = () => {
+    const renderCalendarWithThemeAndDisabledDays = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with period marking and spinner</Text>
+        <Text style={styles.text}>Custom theme and disabled Wednesdays</Text>
         <Calendar 
         // style={styles.calendar}
-        current={INITIAL_DATE} minDate={getDate(-5)} displayLoadingIndicator markingType={'period'} theme={{
+        current={INITIAL_DATE} minDate={getDate(-5)} displayLoadingIndicator theme={{
                 calendarBackground: '#333248',
                 textSectionTitleColor: 'white',
-                textSectionTitleDisabledColor: 'gray',
+                textSectionTitleDisabledColor: 'pink',
                 dayTextColor: 'red',
                 todayTextColor: 'white',
                 selectedDayTextColor: 'white',
@@ -108,7 +108,7 @@ const CalendarScreen = () => {
                         }
                     }
                 }
-            }} markedDates={{
+            }} markingType={'period'} markedDates={{
                 [getDate(-2)]: { disabled: true },
                 [getDate(1)]: { textColor: 'pink' },
                 [getDate(2)]: { textColor: 'pink' },
@@ -118,12 +118,12 @@ const CalendarScreen = () => {
                 [getDate(25)]: { startingDay: true, color: 'gray' },
                 [getDate(26)]: { color: 'gray' },
                 [getDate(27)]: { endingDay: true, color: 'gray' }
-            }}/>
+            }} firstDay={1} disabledDaysIndexes={[1]} disabledByWeekDays={[1]} disableAllTouchEventsForDisabledDays onDayPress={(day) => console.warn(`${day.dateString} pressed`)}/>
       </Fragment>);
     };
     const renderCalendarWithPeriodMarkingAndDotMarking = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with period marking and dot marking</Text>
+        <Text style={styles.text}>Marking and dot marking</Text>
         <Calendar current={INITIAL_DATE} minDate={getDate(-14)} markingType={'period'} markedDates={{
                 [INITIAL_DATE]: { marked: true, dotColor: '#50cebb' },
                 [getDate(4)]: { marked: true, dotColor: '#50cebb' },
@@ -136,7 +136,7 @@ const CalendarScreen = () => {
                     }
                 },
                 [getDate(11)]: { color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white' },
-                [getDate(12)]: { color: '#70d7c7', inactive: true },
+                [getDate(12)]: { color: '#70d7c7', inactive: true, marked: true },
                 [getDate(13)]: {
                     endingDay: true,
                     color: '#50cebb',
@@ -144,12 +144,13 @@ const CalendarScreen = () => {
                     customContainerStyle: {
                         borderTopRightRadius: 5,
                         borderBottomRightRadius: 5,
-                        backgroundColor: "green"
+                        backgroundColor: 'green'
                     }
                 },
                 [getDate(25)]: { inactive: true, disableTouchEvent: true }
-            }} disabledDaysIndexes={[0, 6]} theme={{
+            }} theme={{
                 textInactiveColor: '#a68a9f',
+                inactiveDotColor: '#a68a9f',
                 textSectionTitleDisabledColor: 'grey',
                 textSectionTitleColor: '#319e8e',
                 arrowColor: '#319e8e'
@@ -158,7 +159,7 @@ const CalendarScreen = () => {
     };
     const renderCalendarWithMultiPeriodMarking = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with multi-period marking</Text>
+        <Text style={styles.text}>Multi-period marking</Text>
         <Calendar style={styles.calendar} current={INITIAL_DATE} markingType={'multi-period'} markedDates={{
                 [INITIAL_DATE]: {
                     periods: [
@@ -185,7 +186,7 @@ const CalendarScreen = () => {
     };
     const renderCalendarWithCustomMarkingType = () => {
         return (<Fragment>
-        <Text style={styles.text}>Custom calendar with custom marking type</Text>
+        <Text style={styles.text}>Custom marking type</Text>
         <Calendar style={styles.calendar} hideExtraDays current={INITIAL_DATE} minDate={INITIAL_DATE} markingType={'custom'} markedDates={{
                 [INITIAL_DATE]: {
                     customStyles: {
@@ -273,7 +274,7 @@ const CalendarScreen = () => {
     };
     const renderCalendarWithCustomDay = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with custom day component</Text>
+        <Text style={styles.text}>Custom day component</Text>
         <Calendar style={[styles.calendar, styles.customCalendar]} dayComponent={({ date, state }) => {
                 return (<View>
                 <Text style={[styles.customDay, state === 'disabled' ? styles.disabledText : styles.defaultText]}>
@@ -283,30 +284,30 @@ const CalendarScreen = () => {
             }}/>
       </Fragment>);
     };
+    const [selectedValue, setSelectedValue] = useState(new Date());
+    const getNewSelectedDate = useCallback((date, shouldAdd) => {
+        const newMonth = new Date(date).getMonth();
+        const month = shouldAdd ? newMonth + 1 : newMonth - 1;
+        const newDate = new Date(selectedValue.setMonth(month));
+        const newSelected = new Date(newDate.setDate(1));
+        return newSelected;
+    }, [selectedValue]);
+    const onPressArrowLeft = useCallback((subtract, month) => {
+        const newDate = getNewSelectedDate(month, false);
+        setSelectedValue(newDate);
+        subtract();
+    }, [getNewSelectedDate]);
+    const onPressArrowRight = useCallback((add, month) => {
+        const newDate = getNewSelectedDate(month, true);
+        setSelectedValue(newDate);
+        add();
+    }, [getNewSelectedDate]);
     const renderCalendarWithCustomHeaderTitle = () => {
-        const [selectedValue, setSelectedValue] = useState(new Date());
-        const getNewSelectedDate = useCallback((date, shouldAdd) => {
-            const newMonth = new Date(date).getMonth();
-            const month = shouldAdd ? newMonth + 1 : newMonth - 1;
-            const newDate = new Date(selectedValue.setMonth(month));
-            const newSelected = new Date(newDate.setDate(1));
-            return newSelected;
-        }, [selectedValue]);
-        const onPressArrowLeft = useCallback((subtract, month) => {
-            const newDate = getNewSelectedDate(month, false);
-            setSelectedValue(newDate);
-            subtract();
-        }, [getNewSelectedDate]);
-        const onPressArrowRight = useCallback((add, month) => {
-            const newDate = getNewSelectedDate(month, true);
-            setSelectedValue(newDate);
-            add();
-        }, [getNewSelectedDate]);
         const CustomHeaderTitle = (<TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
         <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
       </TouchableOpacity>);
         return (<Fragment>
-        <Text style={styles.text}>Calendar with custom header title</Text>
+        <Text style={styles.text}>Custom header title</Text>
         <Calendar style={styles.calendar} customHeaderTitle={CustomHeaderTitle} onPressArrowLeft={onPressArrowLeft} onPressArrowRight={onPressArrowRight}/>
       </Fragment>);
     };
@@ -341,13 +342,13 @@ const CalendarScreen = () => {
         </View>);
         });
         return (<Fragment>
-        <Text style={styles.text}>Calendar with custom header component</Text>
+        <Text style={styles.text}>Custom header component</Text>
         <Calendar initialDate={INITIAL_DATE} testID={testIDs.calendars.LAST} style={[styles.calendar, styles.customCalendar]} customHeader={CustomHeader}/>
       </Fragment>);
     };
     const renderCalendarWithInactiveDays = () => {
         return (<Fragment>
-        <Text style={styles.text}>Calendar with inactive days</Text>
+        <Text style={styles.text}>Inactive days</Text>
         <Calendar style={styles.calendar} disableAllTouchEventsForInactiveDays current={INITIAL_DATE} markedDates={{
                 [getDate(3)]: {
                     inactive: true
@@ -361,7 +362,7 @@ const CalendarScreen = () => {
     const renderExamples = () => {
         return (<Fragment>
         {renderCalendarWithSelectableDate()}
-        {renderCalendarWithWeekNumbers()}
+        {renderCalendarWithWeekNumbersAndSpinner()}
         {renderCalendarWithMinAndMaxDates()}
         {renderCalendarWithCustomDay()}
         {renderCalendarWithInactiveDays()}
@@ -369,7 +370,7 @@ const CalendarScreen = () => {
         {renderCalendarWithCustomHeader()}
         {renderCalendarWithMarkedDatesAndHiddenArrows()}
         {renderCalendarWithMultiDotMarking()}
-        {renderCalendarWithPeriodMarkingAndSpinner()}
+        {renderCalendarWithThemeAndDisabledDays()}
         {renderCalendarWithPeriodMarkingAndDotMarking()}
         {renderCalendarWithMultiPeriodMarking()}
         {renderCalendarWithCustomMarkingType()}

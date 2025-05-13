@@ -1,8 +1,8 @@
 import isEmpty from 'lodash/isEmpty';
 const today = new Date().toISOString().split('T')[0];
-const fastDate = getPastDate(3);
+const pastDate = getPastDate(3);
 const futureDates = getFutureDates(12);
-const dates = [fastDate, today].concat(futureDates);
+const dates = [pastDate, today].concat(futureDates);
 function getFutureDates(numberOfDays) {
     const array = [];
     for (let index = 1; index <= numberOfDays; index++) {
@@ -24,7 +24,7 @@ function getPastDate(numberOfDays) {
 export const agendaItems = [
     {
         title: dates[0],
-        data: [{ hour: '12am', duration: '1h', title: 'First Yoga' }, { hour: '9am', duration: '1h', title: 'Long Yoga', itemCustomHeightType: 'LongEvent' }],
+        data: [{ hour: '12am', duration: '1h', title: 'First Yoga' }, { hour: '9am', duration: '1h', title: 'Long Yoga', itemCustomHeightType: 'LongEvent' }]
     },
     {
         title: dates[1],

@@ -14,7 +14,7 @@ function arePropsEqual(prevProps, nextProps) {
     return isEqual(prevContext, nextContext) && isEqual(prevMarkings, nextMarkings) && isEqual(prevOthers, nextOthers);
 }
 const Week = React.memo((props) => {
-    const { theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset, testID, } = props;
+    const { theme, current, firstDay, hideExtraDays, markedDates, onDayPress, onDayLongPress, style: propsStyle, numberOfDays = 1, timelineLeftInset, testID } = props;
     const style = useRef(styleConstructor(theme));
     const disableDaySelection = useMemo(() => {
         return !!numberOfDays && numberOfDays > 1;

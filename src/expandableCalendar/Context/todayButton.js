@@ -16,7 +16,7 @@ const TodayButton = (props, ref) => {
             disable(shouldDisable);
         }
     }));
-    const { margin = 0, disabledOpacity = 0.3, theme, style: propsStyle, } = props;
+    const { margin = 0, disabledOpacity = 0.3, theme, style: propsStyle } = props;
     const { date, setDate } = useContext(Context);
     const [disabled, setDisabled] = useState(false);
     const style = useRef(styleConstructor(theme));

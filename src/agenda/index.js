@@ -23,7 +23,7 @@ const KNOB_HEIGHT = 24;
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/agenda.gif
  */
-export default class Agenda extends Component {
+class Agenda extends Component {
     static displayName = 'Agenda';
     static propTypes = {
         ...CalendarList.propTypes,
@@ -242,7 +242,7 @@ export default class Agenda extends Component {
                 ...reservationListProps,
                 selectedDay: this.state.selectedDay,
                 topDay: this.state.topDay,
-                onDayChange: this.onDayChange,
+                onDayChange: this.onDayChange
             });
         }
         return (<ReservationList {...reservationListProps} ref={this.list} selectedDay={this.state.selectedDay} topDay={this.state.topDay} onDayChange={this.onDayChange}/>);
@@ -320,7 +320,7 @@ export default class Agenda extends Component {
         const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT : openCalendarScrollPadPosition) - KNOB_HEIGHT;
         const scrollPadStyle = {
             height: KNOB_HEIGHT,
-            top: scrollPadPosition,
+            top: scrollPadPosition
         };
         return (<View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
         <View style={this.style.reservations}>{this.renderReservations()}</View>
@@ -340,3 +340,4 @@ export default class Agenda extends Component {
       </View>);
     }
 }
+export default Agenda;

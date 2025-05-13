@@ -53,7 +53,7 @@ export function extractDayProps(props) {
     return dayProps;
 }
 export function extractHeaderProps(props) {
-    const { month, addMonth, theme, firstDay, displayLoadingIndicator, showWeekNumbers, monthFormat, hideDayNames, hideArrows, renderArrow, onPressArrowLeft, onPressArrowRight, disableArrowLeft, disableArrowRight, disabledDaysIndexes, renderHeader, customHeaderTitle, webAriaLevel, numberOfDays, current, timelineLeftInset, testID } = props;
+    const { month, addMonth, theme, firstDay, displayLoadingIndicator, showWeekNumbers, monthFormat, hideDayNames, hideArrows, renderArrow, onPressArrowLeft, onPressArrowRight, disableArrowLeft, disableArrowRight, disabledDaysIndexes, renderHeader, customHeaderTitle, webAriaLevel, numberOfDays, current, timelineLeftInset, testID, onHeaderLayout } = props;
     const headerProps = {
         month,
         addMonth,
@@ -76,7 +76,8 @@ export function extractHeaderProps(props) {
         numberOfDays,
         current,
         timelineLeftInset,
-        testID
+        testID,
+        onHeaderLayout
     };
     return headerProps;
 }
@@ -110,7 +111,7 @@ export function extractReservationListProps(props) {
     // ReservationList props
     items, selectedDay, topDay, onDayChange, showOnlySelectedDayItems, renderEmptyData, onScroll, onScrollBeginDrag, onScrollEndDrag, onMomentumScrollBegin, onMomentumScrollEnd, refreshControl, refreshing, onRefresh, reservationsKeyExtractor, 
     // Reservation props
-    date, item, theme, rowHasChanged, renderDay, renderItem, renderEmptyDate, } = props;
+    date, item, theme, rowHasChanged, renderDay, renderItem, renderEmptyDate } = props;
     const ReservationListProps = {
         // ReservationList props
         items,
@@ -135,7 +136,7 @@ export function extractReservationListProps(props) {
         rowHasChanged,
         renderDay,
         renderItem,
-        renderEmptyDate,
+        renderEmptyDate
     };
     return ReservationListProps;
 }

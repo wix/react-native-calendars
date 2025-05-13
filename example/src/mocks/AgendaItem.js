@@ -9,7 +9,7 @@ const AgendaItem = (props) => {
     }, []);
     const itemPressed = useCallback(() => {
         Alert.alert(item.title);
-    }, []);
+    }, [item]);
     if (isEmpty(item)) {
         return (<View style={styles.emptyItem}>
         <Text style={styles.emptyItemText}>No Events Planned Today</Text>

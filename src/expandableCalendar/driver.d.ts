@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { ReactTestInstance } from 'react-test-renderer';
 export declare class ExpandableCalendarDriver {
     testID: string;
     element: React.ReactElement;
@@ -8,27 +7,27 @@ export declare class ExpandableCalendarDriver {
     constructor(testID: string, element: React.ReactElement);
     render(element?: React.ReactElement<any, string | React.JSXElementConstructor<any>>): ReturnType<typeof render>;
     /** Container */
-    getExpandableContainer(): ReactTestInstance;
+    getExpandableContainer(): import("react-test-renderer").ReactTestInstance;
     isCalendarExpanded(): boolean;
     /** Header */
-    getRightArrow(): ReactTestInstance;
-    getLeftArrow(): ReactTestInstance;
+    getRightArrow(): import("react-test-renderer").ReactTestInstance;
+    getLeftArrow(): import("react-test-renderer").ReactTestInstance;
     /** Knob and Position */
     get knobTestID(): string;
-    getKnob(): ReactTestInstance | null;
+    getKnob(): import("react-test-renderer").ReactTestInstance | null;
     toggleKnob(): void;
     /** CalendarList */
-    getCalendarList(): ReactTestInstance;
+    getCalendarList(): import("react-test-renderer").ReactTestInstance;
     getDayTestID(date: string): string;
-    getDay(date: string): ReactTestInstance;
+    getDay(date: string): import("react-test-renderer").ReactTestInstance;
     selectDay(date: string): void;
     /** WeekCalendar */
-    getWeekCalendar(): ReactTestInstance;
+    getWeekCalendar(): import("react-test-renderer").ReactTestInstance;
     getWeekDayTestID(date: string): string;
-    getWeekDay(date: string): ReactTestInstance;
+    getWeekDay(date: string): import("react-test-renderer").ReactTestInstance;
     selectWeekDay(date: string): void;
     /** today button */
-    getTodayButton(): ReactTestInstance | undefined;
+    getTodayButton(): import("react-test-renderer").ReactTestInstance | undefined;
     /** actions */
     pressOnTodayButton(): void;
     pressOnHeaderArrow({ left }?: {

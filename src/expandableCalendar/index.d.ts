@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { CalendarListProps } from '../calendar-list';
+import { CalendarNavigationTypes } from './commons';
 export declare enum Positions {
     CLOSED = "closed",
     OPEN = "open"
@@ -29,16 +30,13 @@ export interface ExpandableCalendarProps extends CalendarListProps {
     /** Whether to close the calendar on day press. Default = true */
     closeOnDayPress?: boolean;
 }
-/**
- * @description: Expandable calendar component
- * @note: Should be wrapped with 'CalendarProvider'
- * @extends: CalendarList
- * @extendslink: docs/CalendarList
- * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
- */
-declare const ExpandableCalendar: {
-    (props: ExpandableCalendarProps): React.JSX.Element;
+type ExpandableCalendarRef = {
+    toggleCalendarPosition: () => boolean;
+};
+declare const _default: React.ForwardRefExoticComponent<ExpandableCalendarProps & React.RefAttributes<ExpandableCalendarRef>> & {
     displayName: string;
+    positions: typeof Positions;
+    navigationTypes: typeof CalendarNavigationTypes;
     defaultProps: {
         horizontal: boolean;
         initialPosition: Positions;
@@ -50,6 +48,5 @@ declare const ExpandableCalendar: {
         closeThreshold: number;
         closeOnDayPress: boolean;
     };
-    positions: typeof Positions;
 };
-export default ExpandableCalendar;
+export default _default;

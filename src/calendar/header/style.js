@@ -11,7 +11,7 @@ export default function (theme = {}) {
             paddingLeft: 10,
             paddingRight: 10,
             marginTop: 6,
-            alignItems: 'center',
+            alignItems: 'center'
         },
         partialHeader: {
             paddingHorizontal: 15
@@ -47,7 +47,7 @@ export default function (theme = {}) {
         week: {
             marginTop: 7,
             flexDirection: 'row',
-            justifyContent: 'space-around',
+            justifyContent: 'space-around'
         },
         partialWeek: {
             paddingRight: 0

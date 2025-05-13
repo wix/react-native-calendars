@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { StyleProp, ViewStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent } from 'react-native';
 import { ReservationProps } from './reservation';
 import { AgendaEntry, AgendaSchedule, DayAgenda } from '../../types';
-export declare type ReservationListProps = ReservationProps & {
+export type ReservationListProps = ReservationProps & {
     /** the list of items that have to be displayed in agenda. If you want to render item as empty date
     the value of date key kas to be an empty array []. If there exists no value for date key it is
     considered that the date in question is not yet loaded */

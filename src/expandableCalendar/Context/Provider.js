@@ -1,3 +1,4 @@
+import { includes } from 'lodash';
 import XDate from 'xdate';
 import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
@@ -13,12 +14,13 @@ import TodayButton from './todayButton';
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const CalendarProvider = (props) => {
-    const { theme, date, onDateChanged, onMonthChange, showTodayButton = false, disabledOpacity, todayBottomMargin, todayButtonStyle, style: propsStyle, numberOfDays, timelineLeftInset = 72, children } = props;
+    const { theme, date, onDateChanged, onMonthChange, disableAutoDaySelection, showTodayButton = false, disabledOpacity, todayBottomMargin, todayButtonStyle, style: propsStyle, numberOfDays, timelineLeftInset = 72, children } = props;
     const style = useRef(styleConstructor(theme));
     const todayButton = useRef();
     const prevDate = useRef(date);
     const currDate = useRef(date); // for setDate only to keep prevDate up to date
     const [currentDate, setCurrentDate] = useState(date);
+    const [selectedDate, setSelectedDate] = useState(date);
     const [updateSource, setUpdateSource] = useState(UpdateSources.CALENDAR_INIT);
     const wrapperStyle = useMemo(() => {
         return [style.current.contextWrapper, propsStyle];
@@ -28,16 +30,27 @@ const CalendarProvider = (props) => {
             _setDate(date, UpdateSources.PROP_UPDATE);
         }
     }, [date]);
+    const getUpdateSource = useCallback((updateSource) => {
+        // NOTE: this comes to avoid breaking those how listen to the update source in onDateChanged and onMonthChange - remove on V2
+        if (updateSource === UpdateSources.ARROW_PRESS || updateSource === UpdateSources.WEEK_ARROW_PRESS) {
+            return UpdateSources.PAGE_SCROLL;
+        }
+        return updateSource;
+    }, []);
     const _setDate = useCallback((date, updateSource) => {
         prevDate.current = currDate.current;
         currDate.current = date;
         setCurrentDate(date);
-        setUpdateSource(updateSource);
-        onDateChanged?.(date, updateSource);
-        if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
-            onMonthChange?.(xdateToData(new XDate(date)), updateSource);
+        if (!includes(disableAutoDaySelection, updateSource)) {
+            setSelectedDate(date);
         }
-    }, [onDateChanged, onMonthChange]);
+        setUpdateSource(updateSource);
+        const _updateSource = getUpdateSource(updateSource);
+        onDateChanged?.(date, _updateSource);
+        if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
+            onMonthChange?.(xdateToData(new XDate(date)), _updateSource);
+        }
+    }, [onDateChanged, onMonthChange, getUpdateSource]);
     const _setDisabled = useCallback((disabled) => {
         if (showTodayButton) {
             todayButton.current?.disable(disabled);
@@ -47,6 +60,7 @@ const CalendarProvider = (props) => {
         return {
             date: currentDate,
             prevDate: prevDate.current,
+            selectedDate,
             updateSource: updateSource,
             setDate: _setDate,
             setDisabled: _setDisabled,

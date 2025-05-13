@@ -11,11 +11,12 @@ import useTimelinePages, { INITIAL_PAGE, NEAR_EDGE_THRESHOLD, PAGES_COUNT } from
 import constants from '../commons/constants';
 const TimelineList = (props) => {
     const { timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime } = props;
+    const shouldFixRTL = useMemo(() => constants.isRTL && (constants.isRN73() || constants.isAndroid), []); // isHorizontal = true
     const { date, updateSource, setDate, numberOfDays = 1, timelineLeftInset } = useContext(Context);
     const listRef = useRef();
     const prevDate = useRef(date);
     const [timelineOffset, setTimelineOffset] = useState();
-    const { pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange } = useTimelinePages({ date, listRef, numberOfDays });
+    const { pages, pagesRef, resetPages, resetPagesDebounce, scrollToPageDebounce, shouldResetPages, isOutOfRange } = useTimelinePages({ date, listRef, numberOfDays, shouldFixRTL });
     const scrollToCurrentDate = useCallback((date) => {
         const datePageIndex = pagesRef.current.indexOf(date);
         if (updateSource !== UpdateSources.LIST_DRAG) {
@@ -28,7 +29,9 @@ const TimelineList = (props) => {
         }
         prevDate.current = date;
     }, [updateSource]);
-    const initialOffset = useMemo(() => constants.isAndroidRTL ? constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE, []);
+    const initialOffset = useMemo(() => {
+        return shouldFixRTL ? constants.screenWidth * (PAGES_COUNT - INITIAL_PAGE - 1) : constants.screenWidth * INITIAL_PAGE;
+    }, [shouldFixRTL]);
     useEffect(() => {
         if (date !== prevDate.current) {
             scrollToCurrentDate(date);
@@ -45,11 +48,11 @@ const TimelineList = (props) => {
         }
     }, []);
     const onPageChange = useCallback(throttle((pageIndex) => {
-        const newDate = pages[constants.isAndroidRTL ? pageIndex - 1 : pageIndex];
+        const newDate = pages[shouldFixRTL ? pageIndex - 1 : pageIndex];
         if (newDate !== prevDate.current) {
             setDate(newDate, UpdateSources.LIST_DRAG);
         }
-    }, 0), [pages]);
+    }, 0), [pages, shouldFixRTL]);
     const onReachNearEdge = useCallback(() => {
         shouldResetPages.current = true;
     }, []);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ViewStyle, ViewProps, StyleProp } from 'react-native';
 import { Theme, DateData } from '../../types';
-import { UpdateSources } from '../commons';
+import { UpdateSources, CalendarNavigationTypes } from '../commons';
 export interface CalendarContextProviderProps extends ViewProps {
     /** Initial date in 'yyyy-MM-dd' format. Default = now */
     date: string;
@@ -13,6 +13,8 @@ export interface CalendarContextProviderProps extends ViewProps {
     onDateChanged?: (date: string, updateSource: UpdateSources) => void;
     /** Callback for month change event */
     onMonthChange?: (date: DateData, updateSource: UpdateSources) => void;
+    /** The calendar navigation type in which to disable the auto day selection (get options from ExpandableCalendar.navigationTypes) */
+    disableAutoDaySelection?: CalendarNavigationTypes[];
     /** Whether to show the today button */
     showTodayButton?: boolean;
     /** Today button's top position */

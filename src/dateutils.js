@@ -20,7 +20,7 @@ export function sameDate(a, b) {
         return a?.getFullYear() === b?.getFullYear() && a?.getMonth() === b?.getMonth() && a?.getDate() === b?.getDate();
     }
 }
-export function onSameDateRange({ firstDay, secondDay, numberOfDays, firstDateInRange, }) {
+export function onSameDateRange({ firstDay, secondDay, numberOfDays, firstDateInRange }) {
     const aDate = new XDate(firstDay);
     const bDate = new XDate(secondDay);
     const firstDayDate = new XDate(firstDateInRange);

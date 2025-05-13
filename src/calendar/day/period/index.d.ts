@@ -4,11 +4,13 @@ import { Theme, DayState, DateData } from '../../../types';
 import { MarkingProps } from '../marking';
 export interface PeriodDayProps extends ViewProps {
     theme?: Theme;
-    date?: string;
-    marking?: MarkingProps;
     state?: DayState;
+    marking?: MarkingProps;
     onPress?: (date?: DateData) => void;
     onLongPress?: (date?: DateData) => void;
+    date?: string;
+    disableAllTouchEventsForDisabledDays?: boolean;
+    disableAllTouchEventsForInactiveDays?: boolean;
     accessibilityLabel?: string;
     testID?: string;
 }

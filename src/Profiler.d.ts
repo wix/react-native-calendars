@@ -1,5 +1,5 @@
 import React, { ProfilerProps as RProfilerProps, PropsWithChildren } from 'react';
-export declare type ProfilerProps = Pick<RProfilerProps, 'id'>;
+export type ProfilerProps = Pick<RProfilerProps, 'id'>;
 export default class Profiler extends React.Component<PropsWithChildren<ProfilerProps>> {
     onRender: (...profileData: any[]) => void;
     render(): React.JSX.Element;

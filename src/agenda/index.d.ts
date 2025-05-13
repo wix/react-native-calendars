@@ -4,7 +4,7 @@ import { Animated, ViewStyle, LayoutChangeEvent, NativeSyntheticEvent, NativeScr
 import { DateData, AgendaSchedule } from '../types';
 import { CalendarListProps } from '../calendar-list';
 import ReservationList, { ReservationListProps } from './reservation-list';
-export declare type AgendaProps = CalendarListProps & ReservationListProps & {
+export type AgendaProps = CalendarListProps & ReservationListProps & {
     /** the list of items that have to be displayed in agenda. If you want to render item as empty date
     the value of date key kas to be an empty array []. If there exists no value for date key it is
     considered that the date in question is not yet loaded */
@@ -26,7 +26,7 @@ export declare type AgendaProps = CalendarListProps & ReservationListProps & {
     /** Whether the knob should always be visible (when hideKnob = false) */
     showClosingKnob?: boolean;
 };
-declare type State = {
+type State = {
     scrollY: Animated.Value;
     calendarIsReady: boolean;
     calendarScrollable: boolean;
@@ -82,13 +82,11 @@ export default class Agenda extends Component<AgendaProps, State> {
         staticHeader?: React.Validator<boolean | null | undefined> | undefined;
         showScrollIndicator?: React.Validator<boolean | null | undefined> | undefined;
         animateScroll?: React.Validator<boolean | null | undefined> | undefined;
-        firstDay?: React.Validator<number | null | undefined> | undefined;
-        displayLoadingIndicator?: React.Validator<boolean | null | undefined> | undefined;
-        showWeekNumbers?: React.Validator<boolean | null | undefined> | undefined;
         current?: React.Validator<string | null | undefined> | undefined;
         initialDate?: React.Validator<string | null | undefined> | undefined;
         minDate?: React.Validator<string | null | undefined> | undefined;
         maxDate?: React.Validator<string | null | undefined> | undefined;
+        allowSelectionOutOfRange?: React.Validator<boolean | null | undefined> | undefined;
         markedDates?: React.Validator<import("../types").MarkedDates | null | undefined> | undefined;
         hideExtraDays?: React.Validator<boolean | null | undefined> | undefined;
         showSixWeeks?: React.Validator<boolean | null | undefined> | undefined;
@@ -98,12 +96,16 @@ export default class Agenda extends Component<AgendaProps, State> {
         onVisibleMonthsChange?: React.Validator<((months: DateData[]) => void) | null | undefined> | undefined;
         disableMonthChange?: React.Validator<boolean | null | undefined> | undefined;
         enableSwipeMonths?: React.Validator<boolean | null | undefined> | undefined;
-        disabledByDefault?: React.Validator<boolean | null | undefined> | undefined;
         headerStyle?: React.Validator<import("react-native/types").StyleProp<ViewStyle>> | undefined;
         customHeader?: React.Validator<any> | undefined;
-        allowSelectionOutOfRange?: React.Validator<boolean | null | undefined> | undefined;
+        disabledByDefault?: React.Validator<boolean | null | undefined> | undefined;
+        disabledByWeekDays?: React.Validator<number[] | null | undefined> | undefined;
+        testID?: React.Validator<string | null | undefined> | undefined;
         month?: React.Validator<XDate | null | undefined> | undefined;
         addMonth?: React.Validator<((num: number) => void) | null | undefined> | undefined;
+        firstDay?: React.Validator<number | null | undefined> | undefined;
+        displayLoadingIndicator?: React.Validator<boolean | null | undefined> | undefined;
+        showWeekNumbers?: React.Validator<boolean | null | undefined> | undefined;
         monthFormat?: React.Validator<string | null | undefined> | undefined;
         hideDayNames?: React.Validator<boolean | null | undefined> | undefined;
         hideArrows?: React.Validator<boolean | null | undefined> | undefined;
@@ -117,11 +119,11 @@ export default class Agenda extends Component<AgendaProps, State> {
         renderHeader?: React.Validator<((date?: XDate | undefined) => React.ReactNode) | null | undefined> | undefined;
         customHeaderTitle?: React.Validator<JSX.Element | null | undefined> | undefined;
         webAriaLevel?: React.Validator<number | null | undefined> | undefined;
-        testID?: React.Validator<string | null | undefined> | undefined;
         accessibilityElementsHidden?: React.Validator<boolean | null | undefined> | undefined;
         importantForAccessibility?: React.Validator<"auto" | "yes" | "no" | "no-hide-descendants" | null | undefined> | undefined;
         numberOfDays?: React.Validator<number | null | undefined> | undefined;
         timelineLeftInset?: React.Validator<number | null | undefined> | undefined;
+        onHeaderLayout?: React.Validator<((event: LayoutChangeEvent) => void) | null | undefined> | undefined;
         dayComponent?: React.Validator<React.ComponentType<import("../calendar/day").DayProps & {
             date?: DateData | undefined;
         }> | null | undefined> | undefined;
@@ -218,7 +220,7 @@ export default class Agenda extends Component<AgendaProps, State> {
         columnWrapperStyle?: React.Validator<import("react-native/types").StyleProp<ViewStyle>> | undefined;
         keyboardShouldPersistTaps?: React.Validator<boolean | "never" | "always" | "handled" | null | undefined> | undefined;
         extraData?: React.Validator<any> | undefined;
-        getItemLayout?: React.Validator<((data: any[] | null | undefined, index: number) => {
+        getItemLayout?: React.Validator<((data: ArrayLike<any> | null | undefined, index: number) => {
             length: number;
             offset: number;
             index: number;
@@ -228,15 +230,11 @@ export default class Agenda extends Component<AgendaProps, State> {
         keyExtractor?: React.Validator<((item: any, index: number) => string) | null | undefined> | undefined;
         legacyImplementation?: React.Validator<boolean | null | undefined> | undefined;
         numColumns?: React.Validator<number | null | undefined> | undefined;
-        onEndReached?: React.Validator<((info: {
-            distanceFromEnd: number;
-        }) => void) | null | undefined> | undefined;
-        onEndReachedThreshold?: React.Validator<number | null | undefined> | undefined;
         onViewableItemsChanged?: React.Validator<((info: {
             viewableItems: import("react-native/types").ViewToken[];
             changed: import("react-native/types").ViewToken[];
         }) => void) | null | undefined> | undefined;
-        viewabilityConfig?: React.Validator<any> | undefined;
+        viewabilityConfig?: React.Validator<import("react-native/types").ViewabilityConfig | null | undefined> | undefined;
         fadingEdgeLength?: React.Validator<number | null | undefined> | undefined;
         ItemSeparatorComponent?: React.Validator<React.ComponentType<any> | null | undefined> | undefined;
         ListEmptyComponent?: React.Validator<React.ComponentType<any> | React.ReactElement<any, string | React.JSXElementConstructor<any>> | null | undefined> | undefined;
@@ -250,17 +248,25 @@ export default class Agenda extends Component<AgendaProps, State> {
         getItemCount?: React.Validator<((data: any) => number) | null | undefined> | undefined;
         inverted?: React.Validator<boolean | null | undefined> | undefined;
         maxToRenderPerBatch?: React.Validator<number | null | undefined> | undefined;
+        onEndReached?: React.Validator<((info: {
+            distanceFromEnd: number;
+        }) => void) | null | undefined> | undefined;
+        onEndReachedThreshold?: React.Validator<number | null | undefined> | undefined;
         onScrollToIndexFailed?: React.Validator<((info: {
             index: number;
             highestMeasuredFrameIndex: number;
             averageItemLength: number;
         }) => void) | null | undefined> | undefined;
+        onStartReached?: React.Validator<((info: {
+            distanceFromStart: number;
+        }) => void) | null | undefined> | undefined;
+        onStartReachedThreshold?: React.Validator<number | null | undefined> | undefined;
         progressViewOffset?: React.Validator<number | null | undefined> | undefined;
         renderScrollComponent?: React.Validator<((props: import("react-native/types").ScrollViewProps) => React.ReactElement<import("react-native/types").ScrollViewProps, string | React.JSXElementConstructor<any>>) | null | undefined> | undefined;
         updateCellsBatchingPeriod?: React.Validator<number | null | undefined> | undefined;
         viewabilityConfigCallbackPairs?: React.Validator<import("react-native/types").ViewabilityConfigCallbackPairs | null | undefined> | undefined;
         windowSize?: React.Validator<number | null | undefined> | undefined;
-        CellRendererComponent?: React.Validator<React.ComponentType<any> | null | undefined> | undefined;
+        CellRendererComponent?: React.Validator<React.ComponentType<import("react-native/types").CellRendererProps<any>> | null | undefined> | undefined;
         contentContainerStyle?: React.Validator<import("react-native/types").StyleProp<ViewStyle>> | undefined;
         decelerationRate?: React.Validator<number | "normal" | "fast" | null | undefined> | undefined;
         invertStickyHeaders?: React.Validator<boolean | null | undefined> | undefined;

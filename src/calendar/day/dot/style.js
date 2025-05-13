@@ -20,13 +20,13 @@ export default function styleConstructor(theme = {}) {
             backgroundColor: appStyle.selectedDotColor
         },
         disabledDot: {
-            backgroundColor: appStyle.disabledDotColor || appStyle.dotColor
+            backgroundColor: appStyle.disabledDotColor
         },
         inactiveDot: {
-            backgroundColor: appStyle.inactiveDotColor || appStyle.dotColor
+            backgroundColor: appStyle.inactiveDotColor
         },
         todayDot: {
-            backgroundColor: appStyle.todayDotColor || appStyle.dotColor
+            backgroundColor: appStyle.todayDotColor
         },
         ...(theme['stylesheet.dot'] || {})
     });
