@@ -1,7 +1,7 @@
 import {getDefaultLocale} from './services';
 
 export const extractStyles = node => {
-  if (!node || !node.props || !node.props.style) {
+  if (!node?.props?.style) {
     return {};
   }
   const {style} = node.props;

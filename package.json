@@ -5,7 +5,7 @@
   "types": "src/index.d.ts",
   "description": "React Native Calendar Components",
   "scripts": {
-    "build": "xcodebuild -project ios/CalendarsExample.xcodeproj build",
+    "build": "yarn build:tsc && yarn build:docs",
     "build:ts": "tsc",
     "build:dev": "tsc --noEmit",
     "build:docs": "node ./scripts/build-docs.js",
@@ -37,6 +37,7 @@
     "lodash": "^4.17.15",
     "memoize-one": "^5.2.1",
     "prop-types": "^15.5.10",
+    "react-native-safe-area-context": "4.5.0",
     "react-native-swipe-gestures": "^1.0.5",
     "recyclerlistview": "^4.0.0",
     "xdate": "^0.8.0"
@@ -46,68 +47,53 @@
     "@babel/eslint-parser": "^7.13.4",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@react-native-community/eslint-config": "^3.2.0",
+    "@react-native/babel-preset": "0.73.21",
+    "@react-native/eslint-config": "0.73.2",
+    "@react-native/metro-config": "0.73.5",
+    "@react-native/typescript-config": "0.73.1",
     "@testing-library/react-native": "^11.0.0",
     "@tsconfig/docusaurus": "^1.0.4",
-    "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^29.2.1",
     "@types/lodash": "^4.14.170",
-    "@types/react": "^18.0.24",
-    "@types/react-test-renderer": "^18.0.0",
+    "@types/react": "^18.2.6",
     "@types/react-native": "^0.64.19",
+    "@types/react-test-renderer": "^18.2.0",
     "@types/xdate": "^0.8.32",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "@welldone-software/why-did-you-render": "^6.0.3",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^29.2.1",
+    "babel-jest": "^29.6.3",
+    "babel-plugin-module-resolver": "^5.0.2",
     "detox": "^18.0.0",
-    "eslint": "^8.19.0",
+    "eslint": "8.19.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jest": "^26.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-native": "^4.0.0",
+    "eslint-plugin-testing-library": "^7.1.1",
     "husky": "^4.2.5",
-    "jest": "^29.2.1",
+    "jest": "^29.6.3",
     "jest-date-mock": "^1.0.8",
     "lint-staged": "^10.2.11",
     "metro-react-native-babel-preset": "0.73.7",
     "mocha": "^7.1.0",
-    "prettier": "^2.4.1",
+    "prettier": "2.8.8",
+    "prettier-eslint": "^16.3.0",
     "react": "18.2.0",
-    "react-component-driver": "^0.10.0",
-    "react-native": "0.71.2",
-    "react-native-navigation": "7.32.1",
+    "react-native": "0.73.11",
     "react-recipes": "^1.4.0",
     "react-test-renderer": "18.2.0",
     "reassure": "^0.4.1",
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
-    "typescript": "4.8.4"
+    "typescript": "5.0.4"
   },
   "optionalDependencies": {
     "moment": "^2.29.4"
   },
-  "jest": {
-    "preset": "react-native",
-    "setupFiles": [
-      "jest-date-mock",
-      "./jest-setup.js"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts}"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(@react-native|react-native|react-native-swipe-gestures)/)"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+  "engines": {
+    "node": ">=18"
   }
 }
