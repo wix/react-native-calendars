@@ -111,7 +111,7 @@ const AgendaList = forwardRef((props, ref) => {
                 animated: true,
                 sectionIndex: sectionIndex,
                 itemIndex: 1,
-                viewPosition: 0,
+                viewPosition: 0, // position at the top
                 viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
             });
         }
@@ -186,6 +186,7 @@ AgendaList.propTypes = {
     dayFormatter: PropTypes.func,
     useMoment: PropTypes.bool,
     markToday: PropTypes.bool,
+    // @ts-expect-error
     sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     avoidDateUpdates: PropTypes.bool
 };

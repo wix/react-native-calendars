@@ -1,4 +1,3 @@
-/// <reference types="lodash" />
 import { RefObject } from 'react';
 export declare const PAGES_COUNT = 100;
 export declare const NEAR_EDGE_THRESHOLD = 10;

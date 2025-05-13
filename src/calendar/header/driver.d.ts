@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { render } from '@testing-library/react-native';
 export declare class CalendarHeaderDriver {
     testID: string;

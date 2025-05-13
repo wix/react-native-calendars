@@ -1,4 +1,3 @@
-/// <reference types="xdate" />
 import { ViewStyle, TextStyle } from 'react-native';
 import { MarkingProps } from './calendar/day/marking';
 import { CalendarContextProps } from './expandableCalendar/Context';

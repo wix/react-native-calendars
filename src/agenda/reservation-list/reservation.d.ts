@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, { Component } from 'react';
 import { Theme, AgendaEntry } from '../../types';
@@ -18,13 +19,13 @@ export interface ReservationProps {
 declare class Reservation extends Component<ReservationProps> {
     static displayName: string;
     static propTypes: {
-        date: any;
-        item: any;
-        theme: any;
-        rowHasChanged: any;
-        renderDay: any;
-        renderItem: any;
-        renderEmptyDate: any;
+        date: PropTypes.Requireable<any>;
+        item: PropTypes.Requireable<any>;
+        theme: PropTypes.Requireable<object>;
+        rowHasChanged: PropTypes.Requireable<(...args: any[]) => any>;
+        renderDay: PropTypes.Requireable<(...args: any[]) => any>;
+        renderItem: PropTypes.Requireable<(...args: any[]) => any>;
+        renderEmptyDate: PropTypes.Requireable<(...args: any[]) => any>;
     };
     style: any;
     constructor(props: ReservationProps);

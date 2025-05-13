@@ -50,11 +50,14 @@ class ReservationList extends Component {
     componentDidMount() {
         this.updateDataSource(this.getReservations(this.props).reservations);
     }
-    componentDidUpdate(prevProps) {
-        if (this.props.topDay && prevProps.topDay && prevProps !== this.props) {
-            // this.setState({reservations: []},
-            //   () => this.updateReservations(this.props)
-            // );
+    componentDidUpdate(prevProps, _prevState) {
+        const { items, selectedDay, showOnlySelectedDayItems, topDay } = this.props;
+        const itemsChanged = prevProps.items !== items;
+        const selectedDayChanged = selectedDay && prevProps.selectedDay && !sameDate(selectedDay, prevProps.selectedDay);
+        const showOnlyChanged = prevProps.showOnlySelectedDayItems !== showOnlySelectedDayItems;
+        const topDayChanged = topDay && prevProps.topDay && !sameDate(topDay, prevProps.topDay);
+        if (itemsChanged || selectedDayChanged || showOnlyChanged || topDayChanged) {
+            this.updateReservations(this.props);
         }
     }
     updateDataSource(reservations) {
@@ -181,7 +184,7 @@ class ReservationList extends Component {
     };
     render() {
         const { items, selectedDay, theme, style } = this.props;
-        if (!items || selectedDay && !items[toMarkingFormat(selectedDay)]) {
+        if (!items || (selectedDay && !items[toMarkingFormat(selectedDay)])) {
             if (isFunction(this.props.renderEmptyData)) {
                 return this.props.renderEmptyData?.();
             }

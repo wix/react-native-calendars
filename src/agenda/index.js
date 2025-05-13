@@ -23,7 +23,7 @@ const KNOB_HEIGHT = 24;
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/agenda.js
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/agenda.gif
  */
-class Agenda extends Component {
+export default class Agenda extends Component {
     static displayName = 'Agenda';
     static propTypes = {
         ...CalendarList.propTypes,
@@ -35,7 +35,7 @@ class Agenda extends Component {
         onDayChange: PropTypes.func,
         renderKnob: PropTypes.func,
         renderList: PropTypes.func,
-        selected: PropTypes.any,
+        selected: PropTypes.any, //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
         hideKnob: PropTypes.bool,
         showClosingKnob: PropTypes.bool
     };
@@ -340,4 +340,3 @@ class Agenda extends Component {
       </View>);
     }
 }
-export default Agenda;

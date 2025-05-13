@@ -1,4 +1,3 @@
-/// <reference types="xdate" />
 export declare function sameMonth(a?: XDate, b?: XDate): boolean;
 export declare function sameDate(a?: XDate, b?: XDate): boolean;
 export declare function onSameDateRange({ firstDay, secondDay, numberOfDays, firstDateInRange }: {

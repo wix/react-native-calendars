@@ -47,7 +47,7 @@ export default function styleConstructor(theme = {}) {
             fontSize: 12,
             lineHeight: 16,
             color: '#7a92a5',
-            paddingTop: 24,
+            paddingTop: 24, // 8
             paddingBottom: 8,
             paddingLeft: 20,
             paddingRight: 20,

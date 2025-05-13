@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, { Component } from 'react';
 import { StyleProp, ViewStyle, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent } from 'react-native';
@@ -42,28 +43,28 @@ interface State {
 declare class ReservationList extends Component<ReservationListProps, State> {
     static displayName: string;
     static propTypes: {
-        items: any;
-        selectedDay: any;
-        topDay: any;
-        onDayChange: any;
-        showOnlySelectedDayItems: any;
-        renderEmptyData: any;
-        onScroll: any;
-        onScrollBeginDrag: any;
-        onScrollEndDrag: any;
-        onMomentumScrollBegin: any;
-        onMomentumScrollEnd: any;
-        refreshControl: any;
-        refreshing: any;
-        onRefresh: any;
-        reservationsKeyExtractor: any;
-        date: any;
-        item: any; /** onScroll FlatList event */
-        theme: any;
-        rowHasChanged: any;
-        renderDay: any;
-        renderItem: any;
-        renderEmptyDate: any;
+        items: PropTypes.Requireable<object>;
+        selectedDay: PropTypes.Requireable<XDate>;
+        topDay: PropTypes.Requireable<XDate>;
+        onDayChange: PropTypes.Requireable<(...args: any[]) => any>;
+        showOnlySelectedDayItems: PropTypes.Requireable<boolean>;
+        renderEmptyData: PropTypes.Requireable<(...args: any[]) => any>;
+        onScroll: PropTypes.Requireable<(...args: any[]) => any>;
+        onScrollBeginDrag: PropTypes.Requireable<(...args: any[]) => any>;
+        onScrollEndDrag: PropTypes.Requireable<(...args: any[]) => any>;
+        onMomentumScrollBegin: PropTypes.Requireable<(...args: any[]) => any>;
+        onMomentumScrollEnd: PropTypes.Requireable<(...args: any[]) => any>;
+        refreshControl: PropTypes.Requireable<PropTypes.ReactElementLike>;
+        refreshing: PropTypes.Requireable<boolean>;
+        onRefresh: PropTypes.Requireable<(...args: any[]) => any>;
+        reservationsKeyExtractor: PropTypes.Requireable<(...args: any[]) => any>;
+        date: PropTypes.Requireable<any>;
+        item: PropTypes.Requireable<any>;
+        theme: PropTypes.Requireable<object>;
+        rowHasChanged: PropTypes.Requireable<(...args: any[]) => any>;
+        renderDay: PropTypes.Requireable<(...args: any[]) => any>;
+        renderItem: PropTypes.Requireable<(...args: any[]) => any>;
+        renderEmptyDate: PropTypes.Requireable<(...args: any[]) => any>;
     };
     static defaultProps: {
         refreshing: boolean;
@@ -76,7 +77,7 @@ declare class ReservationList extends Component<ReservationListProps, State> {
     private list;
     constructor(props: ReservationListProps);
     componentDidMount(): void;
-    componentDidUpdate(prevProps: ReservationListProps): void;
+    componentDidUpdate(prevProps: ReservationListProps, _prevState: State): void;
     updateDataSource(reservations: DayAgenda[]): void;
     updateReservations(props: ReservationListProps): void;
     getReservationsForDay(iterator: XDate, props: ReservationListProps): false | {

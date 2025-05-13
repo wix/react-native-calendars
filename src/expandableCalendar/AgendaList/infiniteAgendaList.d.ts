@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { AgendaListProps } from './commons';
 /**
@@ -7,15 +8,15 @@ import { AgendaListProps } from './commons';
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 declare const InfiniteAgendaList: {
-    ({ theme, sections, scrollToNextEvent, avoidDateUpdates, onScroll, renderSectionHeader, sectionStyle, dayFormatter, dayFormat, useMoment, markToday, infiniteListProps, renderItem, onEndReached, onEndReachedThreshold, ...others }: Omit<AgendaListProps, 'viewOffset'>): React.JSX.Element;
+    ({ theme, sections, scrollToNextEvent, avoidDateUpdates, onScroll, renderSectionHeader, sectionStyle, dayFormatter, dayFormat, useMoment, markToday, infiniteListProps, renderItem, onEndReached, onEndReachedThreshold, ...others }: Omit<AgendaListProps, "viewOffset">): React.JSX.Element;
     displayName: string;
     propTypes: {
-        dayFormat: any;
-        dayFormatter: any;
-        useMoment: any;
-        markToday: any;
-        sectionStyle: any;
-        avoidDateUpdates: any;
+        dayFormat: PropTypes.Requireable<string>;
+        dayFormatter: PropTypes.Requireable<(...args: any[]) => any>;
+        useMoment: PropTypes.Requireable<boolean>;
+        markToday: PropTypes.Requireable<boolean>;
+        sectionStyle: PropTypes.Requireable<NonNullable<number | object | null | undefined>>;
+        avoidDateUpdates: PropTypes.Requireable<boolean>;
     };
 };
 export default InfiniteAgendaList;

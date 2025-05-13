@@ -1,4 +1,3 @@
-/// <reference types="xdate" />
 export declare function padNumber(n: number): string | number;
 export declare function xdateToData(date: XDate | string): {
     year: any;

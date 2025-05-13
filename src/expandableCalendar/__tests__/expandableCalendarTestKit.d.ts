@@ -6,6 +6,6 @@ export declare const expandableCalendarTestIDs: (testId: string) => {
     rightArrow: string;
 };
 export declare const generateExpandableCalendarWithContext: ({ expandableCalendarProps, calendarContextProps }?: {
-    expandableCalendarProps?: Partial<ExpandableCalendarProps> | undefined;
-    calendarContextProps?: Partial<CalendarContextProviderProps> | undefined;
+    expandableCalendarProps?: Partial<ExpandableCalendarProps>;
+    calendarContextProps?: Partial<CalendarContextProviderProps>;
 }) => React.JSX.Element;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { ViewProps } from 'react-native';
 import { Theme, DayState, DateData } from '../../../types';
@@ -18,12 +19,12 @@ declare const PeriodDay: {
     (props: PeriodDayProps): React.JSX.Element;
     displayName: string;
     propTypes: {
-        state: any;
-        marking: any;
-        theme: any;
-        onPress: any;
-        onLongPress: any;
-        date: any;
+        state: PropTypes.Requireable<string>;
+        marking: PropTypes.Requireable<any>;
+        theme: PropTypes.Requireable<object>;
+        onPress: PropTypes.Requireable<(...args: any[]) => any>;
+        onLongPress: PropTypes.Requireable<(...args: any[]) => any>;
+        date: PropTypes.Requireable<string>;
     };
 };
 export default PeriodDay;

@@ -36,7 +36,7 @@ const headerStyleOverride = {
             header: {
                 week: {
                     marginTop: 7,
-                    marginBottom: -4,
+                    marginBottom: -4, // reduce space between dayNames and first line of dates
                     flexDirection: 'row',
                     justifyContent: 'space-around'
                 }

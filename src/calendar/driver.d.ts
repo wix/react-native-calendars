@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { render } from '@testing-library/react-native';
 import { DayDriver } from './day/driver';
 import { CalendarHeaderDriver } from './header/driver';
