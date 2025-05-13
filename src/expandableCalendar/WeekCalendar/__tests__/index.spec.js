@@ -12,12 +12,12 @@ const defaultProps = {
 };
 
 const TestCase = props => {
-  return <WeekCalendar {...defaultProps} {...props} />;
+  return <WeekCalendar {...defaultProps} {...props}/>;
 };
 
 describe('WeekCalendar', () => {
   describe('Week', () => {
-    const driver = new WeekCalendarDriver(testIdWeekCalendar, <TestCase />);
+    const driver = new WeekCalendarDriver(testIdWeekCalendar, <TestCase/>);
 
     beforeEach(() => {
       jest.useFakeTimers();

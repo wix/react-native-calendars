@@ -21,7 +21,7 @@ module.exports = {
   },
   artifacts: {
     plugins: {
-      uiHierarchy: process.env.JENKINS_CI ? "enabled" : undefined,
+      uiHierarchy: process.env.JENKINS_CI ? "enabled" : undefined
     }
   },
   testRunner: "mocha"

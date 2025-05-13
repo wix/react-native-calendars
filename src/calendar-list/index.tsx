@@ -1,9 +1,8 @@
 import findIndex from 'lodash/findIndex';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-
 import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
-import {FlatList, FlatListProps, View, ViewStyle} from 'react-native';
+import {AccessibilityInfo, FlatList, FlatListProps, View, ViewStyle} from 'react-native';
 
 import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
 import {parseDate, toMarkingFormat, xdateToData} from '../interface';
@@ -101,19 +100,28 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     /** FlatList props */
     contentContainerStyle,
     onEndReachedThreshold,
-    onEndReached
+    onEndReached,
+    onHeaderLayout,
+    accessibilityElementsHidden,
+    importantForAccessibility
   } = props;
 
   const calendarProps = extractCalendarProps(props);
   const headerProps = extractHeaderProps(props);
   const calendarSize = horizontal ? calendarWidth : calendarHeight;
+  const shouldUseStaticHeader = staticHeader && horizontal;
 
   const [currentMonth, setCurrentMonth] = useState(parseDate(current));
 
-  const shouldUseAndroidRTLFix = useMemo(() => constants.isAndroidRTL && horizontal, [horizontal]);
+  const shouldFixRTL = useMemo(() => !constants.isRN73() && constants.isAndroidRTL && horizontal, [horizontal]);
+  /**
+   * we render a lot of months in the calendar list and we need to measure the header only once
+   * so we use this ref to limit the header measurement to the first render
+   */
+  const shouldMeasureHeader = useRef(true);
 
   const style = useRef(styleConstructor(theme));
-  const list = useRef();
+  const list = useRef<any>();
   const range = useRef(horizontal ? 1 : 3);
   const initialDate = useRef(parseDate(current) || new XDate());
   const visibleMonth = useRef(currentMonth);
@@ -159,6 +167,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const data = xdateToData(currMont);
       onMonthChange?.(data);
       onVisibleMonthsChange?.([data]);
+      AccessibilityInfo.announceForAccessibility(currMont.toString('MMMM yyyy'));
     }
   }, [currentMonth]);
 
@@ -180,7 +189,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     }
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated});
     }
   };
@@ -188,13 +196,12 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const scrollToMonth = useCallback((date: XDate | string) => {
     const scrollTo = parseDate(date);
     const diffMonths = Math.round(initialDate?.current?.clone().setDate(1).diffMonths(scrollTo?.clone().setDate(1)));
-    const scrollAmount = calendarSize * (shouldUseAndroidRTLFix ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
+    const scrollAmount = calendarSize * (shouldFixRTL ? pastScrollRange - diffMonths : pastScrollRange + diffMonths);
 
     if (scrollAmount !== 0) {
-      // @ts-expect-error
       list?.current?.scrollToOffset({offset: scrollAmount, animated: animateScroll});
     }
-  }, [calendarSize, shouldUseAndroidRTLFix, pastScrollRange, animateScroll]);
+  }, [calendarSize, shouldFixRTL, pastScrollRange, animateScroll]);
 
   const addMonth = useCallback((count: number) => {
     const day = currentMonth?.clone().addMonths(count, true);
@@ -215,7 +222,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     }
   }, [markedDates]);
 
-  const getItemLayout = useCallback((_: Array<XDate> | undefined | null, index: number) => {
+  const getItemLayout = useCallback((_: ArrayLike<XDate> | undefined | null, index: number) => {
     return {
       length: calendarSize,
       offset: calendarSize * index,
@@ -224,7 +231,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, []);
 
   const isDateInRange = useCallback((date) => {
-    for(let i = -range.current; i <= range.current; i++) {
+    for (let i = -range.current; i <= range.current; i++) {
       const newMonth = currentMonth?.clone().addMonths(i, true);
       if (sameMonth(date, newMonth)) {
         return true;
@@ -237,6 +244,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     const dateString = toMarkingFormat(item);
     const [year, month] = dateString.split('-');
     const testId = `${testID}.item_${year}-${month}`;
+    const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+    shouldMeasureHeader.current = false;
     return (
       <CalendarListItem
         {...calendarProps}
@@ -250,12 +259,15 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         calendarHeight={calendarHeight}
         scrollToMonth={scrollToMonth}
         visible={isDateInRange(item)}
+        onHeaderLayout={onHeaderLayoutToPass}
       />
     );
   }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
 
   const renderStaticHeader = () => {
-    if (staticHeader && horizontal) {
+    if (shouldUseStaticHeader) {
+      const onHeaderLayoutToPass = shouldMeasureHeader.current ? onHeaderLayout : undefined;
+      shouldMeasureHeader.current = false;
       return (
         <CalendarHeader
           {...headerProps}
@@ -263,8 +275,9 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
           style={staticHeaderStyle}
           month={currentMonth}
           addMonth={addMonth}
-          accessibilityElementsHidden={true} // iOS
-          importantForAccessibility={'no-hide-descendants'} // Android
+          onHeaderLayout={onHeaderLayoutToPass}
+          accessibilityElementsHidden={accessibilityElementsHidden} // iOS
+          importantForAccessibility={importantForAccessibility} // Android
         />
       );
     }
@@ -278,7 +291,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
     const newVisibleMonth = parseDate(viewableItems[0]?.item);
-    if (shouldUseAndroidRTLFix) {
+    if (shouldFixRTL) {
       const centerIndex = items.findIndex((item) => isEqual(parseDate(current), item));
       const adjustedOffset = centerIndex - items.findIndex((item) => isEqual(newVisibleMonth, item));
       visibleMonth.current = items[centerIndex + adjustedOffset];
@@ -289,21 +302,20 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         setCurrentMonth(visibleMonth.current);
       }
     }
-  }, [items, shouldUseAndroidRTLFix, current]);
+  }, [items, shouldFixRTL, current]);
 
   const viewabilityConfigCallbackPairs = useRef([
     {
       viewabilityConfig: viewabilityConfig.current,
       onViewableItemsChanged
-    },
+    }
   ]);
 
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList
-        // @ts-expect-error
         ref={list}
-        windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined}
+        windowSize={shouldFixRTL ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}
         showsVerticalScrollIndicator={showScrollIndicator}
         showsHorizontalScrollIndicator={showScrollIndicator}

@@ -1,11 +1,9 @@
 import inRange from 'lodash/inRange';
 import debounce from 'lodash/debounce';
 import noop from 'lodash/noop';
-
 import React, {forwardRef, useCallback, useEffect, useMemo, useRef} from 'react';
 import {ScrollViewProps} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps} from 'recyclerlistview';
-
 import constants from '../commons/constants';
 import {useCombinedRefs} from '../hooks';
 
@@ -54,7 +52,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     layoutProvider,
     onScroll,
     onEndReached,
-    renderFooter,
+    renderFooter
   } = props;
 
   const dataProvider = useMemo(() => {
@@ -70,9 +68,10 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       }
     )
   );
-  const shouldUseAndroidRTLFix = useMemo(() => {
-    return constants.isAndroidRTL && isHorizontal;
-  }, []);
+  
+  const shouldFixRTL = useMemo(() => {
+    return isHorizontal && constants.isRTL && (constants.isRN73() || constants.isAndroid);
+  }, [isHorizontal]);
 
   const listRef = useCombinedRefs(ref);
   const pageIndex = useRef<number>();
@@ -87,12 +86,12 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
     }
 
     setTimeout(() => {
-      const x = isHorizontal ? constants.isAndroidRTL ? Math.floor(data.length / 2) + 1 : Math.floor(data.length / 2) * pageWidth : 0;
+      const x = isHorizontal ? shouldFixRTL ? Math.floor(data.length / 2) + 1 : Math.floor(data.length / 2) * pageWidth : 0;
       const y = isHorizontal ? 0 : positionIndex * pageHeight;
       // @ts-expect-error
       listRef.current?.scrollToOffset?.(x, y, false);
     }, 0);
-  }, [data, disableScrollOnDataChange]);
+  }, [data, disableScrollOnDataChange, isHorizontal]);
 
   const _onScroll = useCallback(
     (event, offsetX, offsetY) => {
@@ -100,7 +99,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
       const contentOffset = event.nativeEvent.contentOffset;
       const y = contentOffset.y;
-      const x = shouldUseAndroidRTLFix ? (pageWidth * data.length - contentOffset.x) : contentOffset.x;
+      const x = shouldFixRTL ? (pageWidth * data.length - contentOffset.x) : contentOffset.x;
       const newPageIndex = Math.round(isHorizontal ? x / pageWidth : y / pageHeight);
       if (pageIndex.current !== newPageIndex) {
         if (pageIndex.current !== undefined) {
@@ -132,7 +131,7 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
 
       onScroll?.(event, offsetX, offsetY);
     },
-    [onScroll, onPageChange, data.length, reloadPagesDebounce]
+    [onScroll, onPageChange, data.length, reloadPagesDebounce, isHorizontal, shouldFixRTL]
   );
 
   const onMomentumScrollEnd = useCallback(
@@ -175,7 +174,6 @@ const InfiniteList = (props: InfiniteListProps, ref: any) => {
       // @ts-expect-error
       ref={listRef}
       isHorizontal={isHorizontal}
-      disableRecycling={shouldUseAndroidRTLFix}
       rowRenderer={renderItem}
       dataProvider={dataProvider}
       layoutProvider={layoutProvider ?? _layoutProvider.current}
