@@ -41,7 +41,8 @@ class ReservationList extends Component {
         super(props);
         this.style = styleConstructor(props.theme);
         this.state = {
-            reservations: []
+            reservations: [],
+            version: 0
         };
         this.heights = [];
         this.selectedDay = props.selectedDay;
@@ -61,8 +62,11 @@ class ReservationList extends Component {
         }
     }
     updateDataSource(reservations) {
-        console.log('updating data source');
-        this.setState({ reservations });
+        this.setState(prev => ({
+            ...prev,
+            reservations,
+            version: prev.version + 1
+        }));
     }
     updateReservations(props) {
         const { selectedDay, showOnlySelectedDayItems } = props;
@@ -191,7 +195,7 @@ class ReservationList extends Component {
             }
             return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
         }
-        return (<FlatList ref={this.list} style={style} contentContainerStyle={this.style.content} data={this.state.reservations} renderItem={this.renderRow} keyExtractor={this.keyExtractor} showsVerticalScrollIndicator={false} scrollEventThrottle={200} onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture} onScroll={this.onScroll} refreshControl={this.props.refreshControl} refreshing={this.props.refreshing} onRefresh={this.props.onRefresh} onScrollBeginDrag={this.props.onScrollBeginDrag} onScrollEndDrag={this.props.onScrollEndDrag} onMomentumScrollBegin={this.props.onMomentumScrollBegin} onMomentumScrollEnd={this.props.onMomentumScrollEnd}/>);
+        return (<FlatList ref={this.list} style={style} contentContainerStyle={this.style.content} data={this.state.reservations} renderItem={this.renderRow} keyExtractor={this.keyExtractor} extraData={this.state.version} showsVerticalScrollIndicator={false} scrollEventThrottle={200} onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture} onScroll={this.onScroll} refreshControl={this.props.refreshControl} refreshing={this.props.refreshing} onRefresh={this.props.onRefresh} onScrollBeginDrag={this.props.onScrollBeginDrag} onScrollEndDrag={this.props.onScrollEndDrag} onMomentumScrollBegin={this.props.onMomentumScrollBegin} onMomentumScrollEnd={this.props.onMomentumScrollEnd}/>);
     }
 }
 export default ReservationList;

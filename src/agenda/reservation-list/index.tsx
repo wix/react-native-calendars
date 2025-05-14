@@ -59,6 +59,7 @@ export type ReservationListProps = ReservationProps & {
 
 interface State {
   reservations: DayAgenda[];
+  version: number;
 }
 
 class ReservationList extends Component<ReservationListProps, State> {
@@ -102,7 +103,8 @@ class ReservationList extends Component<ReservationListProps, State> {
     this.style = styleConstructor(props.theme);
 
     this.state = {
-      reservations: []
+      reservations: [],
+      version: 0
     };
 
     this.heights = [];
@@ -130,8 +132,11 @@ class ReservationList extends Component<ReservationListProps, State> {
   }
 
   updateDataSource(reservations: DayAgenda[]) {
-    console.log('updating data source');
-    this.setState({reservations});
+    this.setState(prev => ({
+      ...prev,
+      reservations,
+      version: prev.version + 1
+    }));
   }
 
   updateReservations(props: ReservationListProps) {
@@ -290,6 +295,7 @@ class ReservationList extends Component<ReservationListProps, State> {
         data={this.state.reservations}
         renderItem={this.renderRow}
         keyExtractor={this.keyExtractor}
+        extraData={this.state.version}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={200}
         onMoveShouldSetResponderCapture={this.onMoveShouldSetResponderCapture}

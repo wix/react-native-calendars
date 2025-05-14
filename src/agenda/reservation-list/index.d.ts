@@ -39,6 +39,7 @@ export type ReservationListProps = ReservationProps & {
 };
 interface State {
     reservations: DayAgenda[];
+    version: number;
 }
 declare class ReservationList extends Component<ReservationListProps, State> {
     static displayName: string;
