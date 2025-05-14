@@ -53,16 +53,15 @@ class ReservationList extends Component {
     componentDidUpdate(prevProps, _prevState) {
         const { items, selectedDay, showOnlySelectedDayItems, topDay } = this.props;
         const itemsChanged = prevProps.items !== items;
-        console.log('itemsChanged', itemsChanged);
         const selectedDayChanged = selectedDay && prevProps.selectedDay && !sameDate(selectedDay, prevProps.selectedDay);
         const showOnlyChanged = prevProps.showOnlySelectedDayItems !== showOnlySelectedDayItems;
         const topDayChanged = topDay && prevProps.topDay && !sameDate(topDay, prevProps.topDay);
         if (itemsChanged || selectedDayChanged || showOnlyChanged || topDayChanged) {
-            console.log('updating reservations');
             this.updateReservations(this.props);
         }
     }
     updateDataSource(reservations) {
+        console.log('updating data source');
         this.setState({ reservations });
     }
     updateReservations(props) {
