@@ -132,6 +132,7 @@ class ReservationList extends Component<ReservationListProps, State> {
   }
 
   updateDataSource(reservations: DayAgenda[]) {
+    console.log('updateDataSource', this.state.version);
     this.setState(prev => ({
       ...prev,
       reservations,

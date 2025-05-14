@@ -62,6 +62,7 @@ class ReservationList extends Component {
         }
     }
     updateDataSource(reservations) {
+        console.log('updateDataSource', this.state.version);
         this.setState(prev => ({
             ...prev,
             reservations,
