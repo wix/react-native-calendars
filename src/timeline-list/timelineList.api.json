@@ -1,0 +1,47 @@
+{
+  "name": "TimelineList",
+  "description": "TimelineList component",
+  "images": [
+    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/timeline-calendar.gif?raw=true"
+  ],
+  "extends": ["InfiniteList"],
+  "extendsLink": ["https://github.com/wix/react-native-calendars/blob/1.1311.1/src/infinite-list/index.tsx"],
+  "example": "https://github.com/wix/react-native-calendars/blob/1.1311.1/example/src/screens/timelineCalendarScreen.tsx",
+  "props": [
+    {
+      "name": "events",
+      "type": "{[date: string]: TimelineProps['events']}",
+      "description": "Map of all timeline events ({[date]: events})"
+    },
+    {
+      "name": "timelineProps",
+      "type": "Omit<TimelineProps, 'events' | 'scrollToFirst' | 'showNowIndicator' | 'scrollToNow' | 'initialTime'>",
+      "description": "General timeline props to pass to each timeline item"
+    },
+    {
+      "name": "renderItem",
+      "type": "(timelineProps: TimelineProps, info: TimelineListRenderItemInfo) => JSX.Element",
+      "description": "Pass to render a custom Timeline item"
+    },
+    {
+      "name": "scrollToFirst",
+      "type": "boolean",
+      "description": "Should scroll to first event of the day"
+    },
+    {
+      "name": "showNowIndicator",
+      "type": "boolean",
+      "description": "Should show now indicator (shown only on 'today' timeline)"
+    },
+    {
+      "name": "scrollToNow",
+      "type": "boolean",
+      "description": "Should initially scroll to current time (relevant only for 'today' timeline)"
+    },
+    {
+      "name": "initialTime",
+      "type": "TimelineProps['initialTime']",
+      "description": "Should initially scroll to a specific time (relevant only for NOT 'today' timelines)"
+    }
+  ]
+}
