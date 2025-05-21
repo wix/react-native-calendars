@@ -133,7 +133,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     );
   },[firstDay, _onDayPress, context, date, markedDates]);
 
-  const keyExtractor = useCallback((item) => item, []);
+  const keyExtractor = useCallback((item, index) => `${item}-${index}`, []);
 
   const renderWeekDaysNames = useMemo(() => {
     return (
