@@ -166,6 +166,6 @@ export default function styleConstructor(theme: Theme = {}) {
       marginLeft: appStyle.todayButtonPosition === 'right' ? 7 : undefined,
       marginRight: appStyle.todayButtonPosition === 'right' ? undefined : 7
     },
-    ...(theme?.stylesheet?.expandable?.main || {})
+    ...(theme.stylesheet?.expandable?.main ?? {})
   });
 }
