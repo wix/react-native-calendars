@@ -249,7 +249,6 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     return (
       <CalendarListItem
         {...calendarProps}
-        renderHeader={shouldUseStaticHeader ? undefined : calendarProps.renderHeader}
         testID={testId}
         markedDates={getMarkedDatesForItem(item)}
         item={item}
