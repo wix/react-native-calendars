@@ -57,7 +57,7 @@ export interface CalendarHeaderProps {
   /** Apply custom disable color to selected day names indexes */
   disabledDaysIndexes?: number[];
   /** Replace default title with custom one. the function receive a date as parameter */
-  renderHeader?: (date?: XDate) => ReactNode; //TODO: replace with string
+  renderHeader?: (date?: XDate, info?: Pick<CalendarHeaderProps, 'testID'>) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
   /** Test ID */
@@ -204,7 +204,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
 
     if (renderHeader) {
-      return renderHeader(month);
+      return renderHeader(month, {testID});
     }
 
     if (customHeaderTitle) {
