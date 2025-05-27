@@ -95,5 +95,19 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "recyclerlistview": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true,
+          "jsxRuntime": "classic"
+        }
+      ],
+      "typescript"
+    ]
   }
 }
