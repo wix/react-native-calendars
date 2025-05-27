@@ -133,7 +133,6 @@ export default function styleConstructor(theme: Theme = {}) {
       alignItems: appStyle.todayButtonPosition === 'right' ? 'flex-end' : 'flex-start',
       position: 'absolute',
       left: 20,
-      right: 20,
       bottom: 0
     },
     todayButton: {

@@ -9678,7 +9678,7 @@ __metadata:
     react-recipes: ^1.4.0
     react-test-renderer: 18.2.0
     reassure: ^0.4.1
-    recyclerlistview: 4.2.1
+    recyclerlistview: "patch:recyclerlistview@npm%3A4.2.1#./.yarn/patches/recyclerlistview-npm-4.2.1-ff4e0c8a07.patch"
     semver: 5.x.x
     shell-utils: 1.x.x
     typescript: 5.0.4
