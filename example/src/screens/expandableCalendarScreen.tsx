@@ -1,5 +1,5 @@
 import React, {useRef, useCallback} from 'react';
-import {Animated, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Animated, Button, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from '../testIDs';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
@@ -32,7 +32,7 @@ const ExpandableCalendarScreen = (props: Props) => {
   // }, []);
 
   const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item}/>;
+    return <AgendaItem item={item} />;
   }, []);
 
   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
@@ -57,7 +57,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
           <Text style={styles.headerTitle}>{date?.toString('MMMM yyyy')}</Text>
-          <Animated.Image source={CHEVRON} style={{transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]}}/>
+          <Animated.Image source={CHEVRON} style={{transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]}} />
         </TouchableOpacity>
       );
     },
@@ -83,16 +83,16 @@ const ExpandableCalendarScreen = (props: Props) => {
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
     >
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current} />
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}
-          renderHeader={renderHeader}
+          // renderHeader={renderHeader}
           ref={calendarRef}
-          onCalendarToggled={onCalendarToggled}
+          // onCalendarToggled={onCalendarToggled}
           // horizontal={false}
           // hideArrows
-          // disablePan
+          disablePan
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           // calendarStyle={styles.calendar}
@@ -115,6 +115,7 @@ const ExpandableCalendarScreen = (props: Props) => {
         sectionStyle={styles.section}
         // dayFormat={'yyyy-MM-d'}
       />
+      <Button title='Button' onPress={() => toggleCalendarExpansion()} />
     </CalendarProvider>
   );
 };
