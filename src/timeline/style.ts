@@ -15,7 +15,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
   return StyleSheet.create({
     container: {
       backgroundColor: appStyle.calendarBackground,
-      ...appStyle.timelineContainer,
+      ...appStyle.timelineContainer
     },
     contentStyle: {
       backgroundColor: appStyle.calendarBackground,
@@ -42,7 +42,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
     },
     nowIndicatorLine: {
       height: 1,
-      backgroundColor: NOW_INDICATOR_COLOR, 
+      backgroundColor: NOW_INDICATOR_COLOR,
       ...appStyle.nowIndicatorLine,
       position: 'absolute',
       left: 0,
@@ -87,7 +87,7 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       flexDirection: 'column',
       alignItems: 'flex-start',
       overflow: 'hidden',
-      minHeight: 25,
+      minHeight: 25
     },
     eventTitle: {
       color: EVENT_TEXT_COLOR,

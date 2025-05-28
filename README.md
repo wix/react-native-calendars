@@ -5,8 +5,7 @@
 ## A declarative cross-platform React Native calendar component for iOS and Android.
 
 [![Version](https://img.shields.io/npm/v/react-native-calendars.svg)](https://www.npmjs.com/package/react-native-calendars)
-[![Build Status](https://travis-ci.org/wix/react-native-calendars.svg?branch=master)](https://travis-ci.org/wix/react-native-calendars)
-
+[![Build status](https://badge.buildkite.com/1a911fa39db2518a615b73f3dc18ec0938a66403f2ad66f79b.svg)](https://buildkite.com/wix-mobile-oss/react-native-calendars)
 <br>
 
 This module includes information on how to use this customizable **React Native** calendar component.
@@ -40,7 +39,7 @@ $ git clone git@github.com:wix/react-native-calendars.git
 
 $ cd react-native-calendars
 
-$ npm install
+$ yarn install
 
 $ cd ios && pod install && cd ..
 
@@ -57,14 +56,6 @@ Here's how to get started with react-native-calendars in your React Native proje
 
 ### Install the package:
 
-Using `npm`:
-
-```
-$ npm install --save react-native-calendars
-```
-
-Using `Yarn`:
-
 ```
 $ yarn add react-native-calendars
 ```
@@ -80,7 +71,7 @@ Basic usage examples of the library
 ### Importing the `Calendar` component
 
 ```javascript
-import {`[Calendar](#calendar), [CalendarList](#calendarlist), [Agenda](#agenda)`} from 'react-native-calendars';
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 ```
 
 ### Use the `Calendar` component in your app:
@@ -168,20 +159,6 @@ LocaleConfig.locales['fr'] = {
     'Novembre',
     'Décembre'
   ],
-  monthNames: [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre'
-  ],
   monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
   dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
   dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
@@ -211,13 +188,6 @@ export default App;
 ### Adding a global theme to the calendar:
 
 ```javascript
-import React, { useState } from 'react';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-
-const App = () => {
-  const [selected, setSelected] = useState('');
-
-  return (
     <Calendar
       style={{
         borderWidth: 1,
@@ -232,7 +202,9 @@ const App = () => {
         selectedDayTextColor: '#ffffff',
         todayTextColor: '#00adf5',
         dayTextColor: '#2d4150',
-        textDisabledColor: '#d9e
+        textDisabledColor: '#dd99ee'
+      }}
+    </Calendar>
 ```
 
 ## Customized Calendar Examples
@@ -296,7 +268,7 @@ We welcome contributions to react-native-calendars.
 
 If you have an idea for a new feature or have discovered a bug, please open an issue.
 
-Please `npm run test` and `npm run lint` before pushing changes.
+Please `yarn test` and `yarn lint` before pushing changes.
 
 Don't forget to add a **title** and a **description** explaining the issue you're trying to solve and your proposed solution.
 

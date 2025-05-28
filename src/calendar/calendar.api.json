@@ -12,6 +12,11 @@
   "example": "https://github.com/wix/react-native-calendars/blob/master/example/src/screens/calendars.tsx",
   "props": [
     {
+      "name": "testID",
+      "type": "string",
+      "description": "Test ID"
+    },
+    {
       "name": "theme",
       "type": "Theme",
       "description": "Specify theme properties to override specific styles for calendar parts"
@@ -47,6 +52,11 @@
       "description": "Maximum date that can be selected, dates after maxDate will be grayed out"
     },
     {
+      "name": "allowSelectionOutOfRange",
+      "type": "boolean",
+      "description": "Whether to allow selection of dates before minDate or after maxDate"
+    },
+    {
       "name": "firstDay",
       "type": "number",
       "description": "If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday"
@@ -79,7 +89,7 @@
     {
       "name": "disableMonthChange",
       "type": "boolean",
-      "description": "Whether to disable changing month when click on days of other months (when hideExtraDays is false)"
+      "description": "Whether to disable changing month when click on days of other months (when hideExtraDays = false)"
     },
     {
       "name": "enableSwipeMonths",
@@ -92,9 +102,9 @@
       "description": "Whether to disable days by default"
     },
     {
-      "name": "allowSelectionOutOfRange",
-      "type": "boolean",
-      "description": "Whether to allow selection of dates before minDate or after maxDate"
+      "name": "disabledByWeekDays",
+      "type": "number[]",
+      "description": "Disable dates by days of the week (Sunday=0)"
     },
     {
       "name": "onDayPress",

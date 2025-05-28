@@ -1,12 +1,10 @@
 // default values for app style (see all options for theme type in types.ts)
-
 const FOREGROUND_COLOR = 'white';
 const DEFAULT_TEXT_COLOR = '#2d4150';
 const SECONDARY_TEXT_COLOR = '#00BBF2';
 const AGENDA_TEXT_COLOR = '#7a92a5';
 const AGENDA_BG_COLOR = '#f2F4f5';
 const DISABLED_COLOR = '#d9e1e8';
-
 
 export const textDayFontFamily = 'System';
 export const textMonthFontFamily = 'System';
@@ -40,9 +38,9 @@ export const textDisabledColor = DISABLED_COLOR;
 export const textInactiveColor = DISABLED_COLOR;
 export const dotColor = SECONDARY_TEXT_COLOR;
 export const selectedDotColor = FOREGROUND_COLOR;
-export const disabledDotColor = undefined;
-export const inactiveDotColor = undefined;
-export const todayDotColor = undefined;
+export const disabledDotColor = DISABLED_COLOR;
+export const inactiveDotColor = DISABLED_COLOR;
+export const todayDotColor = SECONDARY_TEXT_COLOR;
 export const arrowColor = SECONDARY_TEXT_COLOR;
 export const disabledArrowColor = DISABLED_COLOR;
 export const monthTextColor = DEFAULT_TEXT_COLOR;

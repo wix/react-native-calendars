@@ -5,6 +5,7 @@ export default {
     CALENDAR_LIST: 'calendar_list_btn',
     HORIZONTAL_LIST: 'horizontal_list_btn',
     AGENDA: 'agenda_btn',
+    AGENDA_INFINITE: 'agenda_infinite_btn',
     EXPANDABLE_CALENDAR: 'expandable_calendar_btn',
     WEEK_CALENDAR: 'week_calendar_btn',
     TIMELINE_CALENDAR: 'timeline_calendar_btn',

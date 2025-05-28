@@ -10,7 +10,6 @@ ios/
 android/
 index.android.js
 index.ios.js
-jest-setup.js
 
 .nvmrc
 .*ignore

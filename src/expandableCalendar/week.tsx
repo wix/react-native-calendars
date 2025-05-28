@@ -35,7 +35,7 @@ const Week = React.memo((props: WeekProps) => {
     style: propsStyle,
     numberOfDays = 1,
     timelineLeftInset,
-    testID,
+    testID
   } = props;
   const style = useRef(styleConstructor(theme));
 
@@ -64,6 +64,7 @@ const Week = React.memo((props: WeekProps) => {
       }
     }
     const dayString = toMarkingFormat(day);
+
     return (
       <View style={style.current.dayContainer} key={id}>
         <Day
