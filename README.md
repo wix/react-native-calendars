@@ -204,7 +204,7 @@ export default App;
         dayTextColor: '#2d4150',
         textDisabledColor: '#dd99ee'
       }}
-    </Calendar>
+    />
 ```
 
 ## Customized Calendar Examples
