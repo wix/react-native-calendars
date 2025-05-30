@@ -482,7 +482,7 @@ export default class Agenda extends Component<AgendaProps, State> {
           onTouchEnd={this.onTouchEnd}
           onScrollBeginDrag={this.onStartDrag}
           onScrollEndDrag={this.onSnapAfterDrag}
-          onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}], {useNativeDriver: true})}
+          onScroll={Animated.event([{nativeEvent: {contentOffset: {y: this.state.scrollY}}}], {useNativeDriver: false})}
         >
           <View
             testID={AGENDA_CALENDAR_KNOB}
