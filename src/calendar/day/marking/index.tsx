@@ -6,6 +6,7 @@ import {Theme, MarkingTypes} from '../../../types';
 import {extractDotProps} from '../../../componentUpdater';
 import styleConstructor from './style';
 import Dot, {DotProps} from '../dot';
+import Plus from '../plus';
 
 export enum Markings {
   DOT = 'dot',
@@ -50,6 +51,8 @@ export interface MarkingProps extends DotProps {
   dotColor?: string;
   //multi-dot
   dots?: DOT[];
+  showPlus?: boolean;
+  plusColor?: string;
   //multi-period
   periods?: PERIOD[];
   startingDay?: boolean;
@@ -59,7 +62,7 @@ export interface MarkingProps extends DotProps {
 }
 
 const Marking = (props: MarkingProps) => {
-  const {theme, type, dots, periods, selected, dotColor} = props;
+  const {theme, type, dots, periods, selected, dotColor, showPlus, plusColor} = props;
   const style = useRef(styleConstructor(theme));
 
   const getItems = (items?: DOT[] | PERIOD[]) => {
@@ -68,6 +71,17 @@ const Marking = (props: MarkingProps) => {
       const validItems = filter(items, function (o: DOT | PERIOD) {
         return o.color;
       });
+
+      if (type === Markings.MULTI_DOT && showPlus) {
+        const maxDots = 3;
+        const displayDots = validItems.slice(0, maxDots);
+        const hasExtraDots = validItems.length > maxDots;
+        const rendered = displayDots.map((item, index) => renderDot(index, item))
+        if (hasExtraDots) {
+          rendered.push(renderDot(undefined, { extra: true, key: 'extra' }));
+        }
+        return rendered;
+      }
 
       return validItems.map((item, index) => {
         return type === Markings.MULTI_DOT ? renderDot(index, item) : renderPeriod(index, item);
@@ -111,12 +125,16 @@ const Marking = (props: MarkingProps) => {
     const dotProps = extractDotProps(props);
     let key = index;
     let color = dotColor;
+    let plusSignColor = plusColor;
 
     if (item) {
       if (item.key) {
         key = item.key;
       }
       color = selected && item.selectedDotColor ? item.selectedDotColor : item.color;
+    }
+    if (item && item.extra && showPlus) {
+      return <Plus {...dotProps} key={key} color={plusSignColor} marked />;
     }
 
     return <Dot {...dotProps} key={key} color={color}/>;
