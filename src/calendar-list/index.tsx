@@ -15,6 +15,7 @@ import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
 import isEqual from 'lodash/isEqual';
+export {CalendarHeader};
 
 const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;
