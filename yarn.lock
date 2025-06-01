@@ -3119,9 +3119,9 @@ __metadata:
   linkType: hard
 
 "abbrev@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "abbrev@npm:3.0.1"
-  checksum: e70b209f5f408dd3a3bbd0eec4b10a2ffd64704a4a3821d0969d84928cc490a8eb60f85b78a95622c1841113edac10161c62e52f5e7d0027aa26786a8136e02e
+  version: 3.0.0
+  resolution: "abbrev@npm:3.0.0"
+  checksum: 2500075b5ef85e97c095ab6ab2ea640dcf90bb388f46398f4d347b296f53399f984ec9462c74bee81df6bba56ef5fd9dbc2fb29076b1feb0023e0f52d43eb984
   languageName: node
   linkType: hard
 
@@ -5593,15 +5593,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fdir@npm:^6.4.4":
-  version: 6.4.4
-  resolution: "fdir@npm:6.4.4"
+"fdir@npm:^6.4.3":
+  version: 6.4.3
+  resolution: "fdir@npm:6.4.3"
   peerDependencies:
     picomatch: ^3 || ^4
   peerDependenciesMeta:
     picomatch:
       optional: true
-  checksum: 79043610236579ffbd0647c508b43bd030a2d034a17c43cf96813a00e8e92e51acdb115c6ddecef3b5812cc2692b976155b4f6413e51e3761f1e772fa019a321
+  checksum: fa53e13c63e8c14add5b70fd47e28267dd5481ebbba4b47720ec25aae7d10a800ef0f2e33de350faaf63c10b3d7b64138925718832220d593f75e724846c736d
   languageName: node
   linkType: hard
 
@@ -9678,7 +9678,7 @@ __metadata:
     react-recipes: ^1.4.0
     react-test-renderer: 18.2.0
     reassure: ^0.4.1
-    recyclerlistview: ^4.0.0
+    recyclerlistview: "patch:recyclerlistview@npm%3A4.2.1#./.yarn/patches/recyclerlistview-npm-4.2.1-ff4e0c8a07.patch"
     semver: 5.x.x
     shell-utils: 1.x.x
     typescript: 5.0.4
@@ -9889,7 +9889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"recyclerlistview@npm:^4.0.0":
+"recyclerlistview@npm:4.2.1":
   version: 4.2.1
   resolution: "recyclerlistview@npm:4.2.1"
   dependencies:
@@ -9900,6 +9900,20 @@ __metadata:
     react: ">= 15.2.1"
     react-native: ">= 0.30.0"
   checksum: 48e84937f803ac2acb510b2bc36b3ef1ea9c5383540a832f80c87d7e7f933b26c59e4ffc2d7de529be55e14a8d551c4f6660a450ad220142f351e6bf6e630450
+  languageName: node
+  linkType: hard
+
+"recyclerlistview@patch:recyclerlistview@npm%3A4.2.1#./.yarn/patches/recyclerlistview-npm-4.2.1-ff4e0c8a07.patch::locator=react-native-calendars%40workspace%3A.":
+  version: 4.2.1
+  resolution: "recyclerlistview@patch:recyclerlistview@npm%3A4.2.1#./.yarn/patches/recyclerlistview-npm-4.2.1-ff4e0c8a07.patch::version=4.2.1&hash=753c42&locator=react-native-calendars%40workspace%3A."
+  dependencies:
+    lodash.debounce: 4.0.8
+    prop-types: 15.8.1
+    ts-object-utils: 0.0.5
+  peerDependencies:
+    react: ">= 15.2.1"
+    react-native: ">= 0.30.0"
+  checksum: de57f1d21a9c091f44a94247e57ee00d49e863cdd4ba7bc1bf45d965f10bd0aaefd238ba216e0bce40c43911df713ef62913ccc1f482bb005d4aeeb1930ca594
   languageName: node
   linkType: hard
 
@@ -11237,12 +11251,12 @@ __metadata:
   linkType: hard
 
 "tinyglobby@npm:^0.2.12":
-  version: 0.2.13
-  resolution: "tinyglobby@npm:0.2.13"
+  version: 0.2.12
+  resolution: "tinyglobby@npm:0.2.12"
   dependencies:
-    fdir: ^6.4.4
+    fdir: ^6.4.3
     picomatch: ^4.0.2
-  checksum: 3a2e87a2518cb3616057b0aa58be4f17771ae78c6890556516ae1e631f8ce4cfee1ba1dcb62fcc54a64e2bdd6c3104f4f3d021e1a3e3f8fb0875bca380b913e5
+  checksum: ef9357fa1b2b661afdccd315cb4995f5f36bce948faaace68aae85fe57bdd8f837883045c88efc50d3186bac6586e4ae2f31026b9a3aac061b884217e6092e23
   languageName: node
   linkType: hard
 
