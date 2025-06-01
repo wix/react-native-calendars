@@ -45,7 +45,6 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
-    
-    ...(theme['stylesheet.day.basic'] || {})
+    ...(theme.stylesheet?.day?.basic ?? {})
   });
 }
