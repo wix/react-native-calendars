@@ -76,7 +76,7 @@ const Marking = (props: MarkingProps) => {
         const maxDots = 3;
         const displayDots = validItems.slice(0, maxDots);
         const hasExtraDots = validItems.length > maxDots;
-        const rendered = displayDots.map((item, index) => renderDot(index, item))
+        const rendered = displayDots.map((item, index) => renderDot(index, item));
         if (hasExtraDots) {
           rendered.push(renderDot(undefined, { extra: true, key: 'extra' }));
         }
@@ -125,7 +125,7 @@ const Marking = (props: MarkingProps) => {
     const dotProps = extractDotProps(props);
     let key = index;
     let color = dotColor;
-    let plusSignColor = plusColor;
+    const plusSignColor = plusColor;
 
     if (item) {
       if (item.key) {
@@ -134,7 +134,7 @@ const Marking = (props: MarkingProps) => {
       color = selected && item.selectedDotColor ? item.selectedDotColor : item.color;
     }
     if (item && item.extra && showPlus) {
-      return <Plus {...dotProps} key={key} color={plusSignColor} marked />;
+      return <Plus {...dotProps} key={key} color={plusSignColor} marked/>;
     }
 
     return <Dot {...dotProps} key={key} color={color}/>;
