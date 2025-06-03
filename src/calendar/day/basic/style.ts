@@ -23,7 +23,6 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.selectedDayBackgroundColor,
       borderRadius: 16
     },
-    
     text: {
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
@@ -45,7 +44,20 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
-    
+    sunday: {},
+    sundayText: {},
+    monday: {},
+    mondayText: {},
+    tuesday: {},
+    tuesdayText: {},
+    wednesday: {},
+    wednesdayText: {},
+    thursday: {},
+    thursdayText: {},
+    friday: {},
+    fridayText: {},
+    saturday: {},
+    saturdayText: {},
     ...(theme['stylesheet.day.basic'] || {})
   });
 }

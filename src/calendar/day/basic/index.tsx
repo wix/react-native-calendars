@@ -5,7 +5,6 @@ import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
 import Marking, {MarkingProps} from '../marking';
 import styleConstructor from './style';
 
-
 export interface BasicDayProps extends ViewProps {
   /** Theme object */
   theme?: Theme;
@@ -57,7 +56,15 @@ const BasicDay = (props: BasicDayProps) => {
   const isMultiDot = markingType === Marking.markings.MULTI_DOT;
   const isMultiPeriod = markingType === Marking.markings.MULTI_PERIOD;
   const isCustom = markingType === Marking.markings.CUSTOM;
-
+  const weekDayStyles = {
+    0: 'sunday',
+    1: 'monday',
+    2: 'tuesday',
+    3: 'wednesday',
+    4: 'thursday',
+    5: 'friday',
+    6: 'saturday'
+  };
   const shouldDisableTouchEvent = () => {
     const {disableTouchEvent} = _marking;
     let disableTouch = false;
@@ -83,6 +90,8 @@ const BasicDay = (props: BasicDayProps) => {
       }
     } else if (isToday) {
       styles.push(style.current.today);
+    } else if (typeof dateData?.weekDay === 'number' && weekDayStyles[dateData?.weekDay]) {
+      styles.push(style.current[weekDayStyles[dateData?.weekDay]]);
     }
 
     //Custom marking type
@@ -111,6 +120,11 @@ const BasicDay = (props: BasicDayProps) => {
       styles.push(style.current.todayText);
     } else if (isInactive) {
       styles.push(style.current.inactiveText);
+    } else if (typeof dateData?.weekDay === 'number' && weekDayStyles[dateData?.weekDay]) {
+      const weekDayNumberTextStyle = `${weekDayStyles[dateData?.weekDay]}Text`;
+      if (style.current[weekDayNumberTextStyle]) {
+        styles.push(style.current[weekDayNumberTextStyle]);
+      }
     }
 
     // Custom marking type
