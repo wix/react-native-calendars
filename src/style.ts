@@ -24,6 +24,8 @@ export const todayButtonFontSize = 14;
 export const textDayStyle = undefined;
 export const dotStyle = undefined;
 export const arrowStyle = undefined;
+export const plusStyle = undefined;
+export const plusTextStyle = undefined;
 
 export const calendarBackground = FOREGROUND_COLOR;
 
@@ -41,6 +43,7 @@ export const selectedDotColor = FOREGROUND_COLOR;
 export const disabledDotColor = DISABLED_COLOR;
 export const inactiveDotColor = DISABLED_COLOR;
 export const todayDotColor = SECONDARY_TEXT_COLOR;
+export const plusColor = '#808080';
 export const arrowColor = SECONDARY_TEXT_COLOR;
 export const disabledArrowColor = DISABLED_COLOR;
 export const monthTextColor = DEFAULT_TEXT_COLOR;

@@ -15,6 +15,10 @@ export interface BasicDayProps extends ViewProps {
   marking?: MarkingProps;
   /** Date marking style ('dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom'). Default = 'dot' */
   markingType?: MarkingTypes;
+  /** Show plus sign for multi-dot marking type */
+  showPlus?: boolean;
+  /** Plus sign color */
+  plusColor?: string;
   /** onPress callback */
   onPress?: (date?: DateData) => void;
   /** onLongPress callback */
@@ -39,6 +43,8 @@ const BasicDay = (props: BasicDayProps) => {
     onLongPress,
     markingType,
     marking,
+    showPlus, 
+    plusColor,
     state,
     disableAllTouchEventsForDisabledDays,
     disableAllTouchEventsForInactiveDays,
@@ -144,6 +150,8 @@ const BasicDay = (props: BasicDayProps) => {
         dotColor={dotColor}
         dots={dots}
         periods={periods}
+        showPlus={showPlus} 
+        plusColor={plusColor}
       />
     );
   };
