@@ -1,9 +1,7 @@
 {
   "name": "CalendarList",
   "description": "Calendar list component",
-  "images": [
-    "https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif?raw=true"
-  ],
+  "images": ["https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar-list.gif?raw=true"],
   "extends": ["Calendar", "FlatList"],
   "extendsLink": [
     "https://github.com/wix/react-native-calendars/blob/master/src/calendar/index.tsx",
@@ -49,6 +47,12 @@
       "name": "showScrollIndicator",
       "type": "boolean",
       "description": "Whether to enable or disable vertical / horizontal scroll indicator",
+      "default": "false"
+    },
+    {
+      "name": "descendingOrder",
+      "type": "boolean",
+      "description": "Whether to load the calendar list items in descending order (most recent month at the top)",
       "default": "false"
     }
   ]
