@@ -1,0 +1,29 @@
+diff --git a/dist/reactnative/core/VirtualRenderer.js b/dist/reactnative/core/VirtualRenderer.js
+@@ -1,11 +1,16 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
++import {Platform, I18nManager} from 'react-native';
+ var RecycleItemPool_1 = require("../utils/RecycleItemPool");
+ var CustomError_1 = require("./exceptions/CustomError");
+ var RecyclerListViewExceptions_1 = require("./exceptions/RecyclerListViewExceptions");
+ var ViewabilityTracker_1 = require("./ViewabilityTracker");
+ var ts_object_utils_1 = require("ts-object-utils");
+ var TSCast_1 = require("../utils/TSCast");
++
++var isRN73 = () => Platform.constants.reactNativeVersion?.minor >= 73;
++var isRTL = I18nManager.isRTL;
++
+ var VirtualRenderer = /** @class */ (function () {
+     function VirtualRenderer(renderStackChanged, scrollOnNextUpdate, fetchStableId, isRecyclingEnabled) {
+         var _this = this;
+\ No newline at end of file
+@@ -73,7 +78,8 @@
+     };
+     VirtualRenderer.prototype.updateOffset = function (offsetX, offsetY, isActual, correction) {
+         if (this._viewabilityTracker) {
+-            var offset = this._params && this._params.isHorizontal ? offsetX : offsetY;
++            const _offsetX = isRTL && isRN73() ? this.getLayoutDimension().width - offsetX : offsetX
++            var offset = this._params && this._params.isHorizontal ? _offsetX : offsetY;
+             if (!this._isViewTrackerRunning) {
+                 if (isActual) {
+                     this._viewabilityTracker.setActualOffset(offset);
