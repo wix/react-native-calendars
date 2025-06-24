@@ -191,15 +191,16 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
   const [position, setPosition] = useState(numberOfDays ? Positions.CLOSED : initialPosition);
   const isOpen = position === Positions.OPEN;
-  const getOpenHeight = () => {
+  const getOpenHeight = useCallback(() => {
     if (!horizontal) {
       return Math.max(constants.screenHeight, constants.screenWidth);
     }
     return headerHeight + (WEEK_HEIGHT * (numberOfWeeks.current)) + (hideKnob ? 0 : KNOB_CONTAINER_HEIGHT);
-  };
+  }, [headerHeight, horizontal, hideKnob, numberOfWeeks]);
+
   const openHeight = useRef(getOpenHeight());
   const closedHeight = useMemo(() => headerHeight + WEEK_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob, headerHeight]);
-  const startHeight = useMemo(() => isOpen ? openHeight.current : closedHeight, [closedHeight, isOpen]);
+  const startHeight = useMemo(() => isOpen ? getOpenHeight() : closedHeight, [closedHeight, isOpen, getOpenHeight]);
   const _height = useRef(startHeight);
   const deltaY = useMemo(() => new Animated.Value(startHeight), [startHeight]);
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -headerHeight : 0));
@@ -207,6 +208,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   useEffect(() => {
     _height.current = startHeight;
     deltaY.setValue(startHeight);
+    _wrapperStyles.current.style.height = startHeight;
   }, [startHeight]);
 
   useEffect(() => {
