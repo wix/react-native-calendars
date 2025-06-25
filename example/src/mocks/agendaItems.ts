@@ -1,4 +1,4 @@
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'es-toolkit/compat';
 import {MarkedDates} from '../../../src/types';
 
 const today = new Date().toISOString().split('T')[0];

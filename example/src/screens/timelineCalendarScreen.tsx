@@ -1,7 +1,3 @@
-import groupBy from 'lodash/groupBy';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-
 import React, {Component} from 'react';
 import {Alert} from 'react-native';
 import {
@@ -14,6 +10,7 @@ import {
 } from 'react-native-calendars';
 
 import {timelineEvents, getDate} from '../mocks/timelineEvents';
+import { filter, find, groupBy } from 'es-toolkit/compat';
 
 const INITIAL_TIME = {hour: 9, minutes: 0};
 const EVENTS: TimelineEventProps[] = timelineEvents;

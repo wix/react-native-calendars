@@ -1,4 +1,4 @@
-import filter from 'lodash/filter';
+import { filter } from 'es-toolkit/compat';
 import React, {useRef} from 'react';
 import {View, ViewStyle, TextStyle, StyleProp} from 'react-native';
 

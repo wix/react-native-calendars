@@ -1,10 +1,8 @@
+import { debounce, isUndefined } from 'es-toolkit/compat';
 import PropTypes from 'prop-types';
-
-import isUndefined from 'lodash/isUndefined';
-import debounce from 'lodash/debounce';
-import InfiniteList from '../../infinite-list';
-
 import XDate from 'xdate';
+
+import InfiniteList from '../../infinite-list';
 
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {

@@ -1,4 +1,4 @@
-import findIndex from 'lodash/findIndex';
+import { findIndex, isEqual } from 'es-toolkit/compat';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
@@ -14,7 +14,6 @@ import styleConstructor from './style';
 import Calendar, {CalendarProps} from '../calendar';
 import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
-import isEqual from 'lodash/isEqual';
 
 const CALENDAR_WIDTH = constants.screenWidth;
 const CALENDAR_HEIGHT = 360;

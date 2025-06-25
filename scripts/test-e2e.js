@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const includes = require('lodash/includes');
+const { includes } = require('es-toolkit/compat');
 const exec = require('shell-utils').exec;
 
 const release = includes(process.argv, '--release');

@@ -1,10 +1,10 @@
+import { times } from 'es-toolkit/compat';
 import {ExpandableCalendarProps, Positions} from '../index';
 import {toMarkingFormat, xdateToData} from '../../interface';
 import {ExpandableCalendarDriver} from '../driver';
 import {generateExpandableCalendarWithContext, testIdExpandableCalendar} from './expandableCalendarTestKit';
 import {getMonthTitle} from '../../testUtils';
 import {UpdateSources} from '../commons';
-import times from 'lodash/times';
 import {NUMBER_OF_PAGES} from '../WeekCalendar';
 import {CalendarContextProviderProps} from 'react-native-calendars';
 

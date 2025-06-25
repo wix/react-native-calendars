@@ -1,7 +1,7 @@
+import { isEqual, isEqualWith } from 'es-toolkit/compat';
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
 import {View} from 'react-native';
-import isEqual from 'lodash/isEqual';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
@@ -20,7 +20,7 @@ function arePropsEqual(prevProps: WeekProps, nextProps: WeekProps) {
   const {context: prevContext, markedDates: prevMarkings, ...prevOthers} = prevProps;
   const {context: nextContext, markedDates: nextMarkings, ...nextOthers} = nextProps;
 
-  return isEqual(prevContext, nextContext) && isEqual(prevMarkings, nextMarkings) && isEqual(prevOthers, nextOthers);
+  return isEqualWith(prevContext, nextContext) && isEqual(prevMarkings, nextMarkings) && isEqual(prevOthers, nextOthers);
 }
 
 const Week = React.memo((props: WeekProps) => {
