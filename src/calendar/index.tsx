@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
 import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
-import {View, ViewStyle, StyleProp} from 'react-native';
+import {AccessibilityInfo, View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
@@ -108,6 +108,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     const _currentMonth = currentMonth.clone();
     onMonthChange?.(xdateToData(_currentMonth));
     onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
+    AccessibilityInfo.announceForAccessibility(_currentMonth.toString('MMMM yyyy'));
   }, [currentMonth]);
 
   const updateMonth = useCallback((newMonth: XDate) => {
@@ -188,14 +189,13 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   };
 
   const renderDay = (day: XDate, id: number) => {
-    const dayProps = extractDayProps(props);
-
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
       return <View key={id} style={style.current.emptyDayContainer}/>;
     }
 
+    const dayProps = extractDayProps(props);
     const dateString = toMarkingFormat(day);
-    const isControlled = isEmpty(props.context);
+    const disableDaySelection = isEmpty(props.context);
 
     return (
       <View style={style.current.dayContainer} key={id}>
@@ -203,7 +203,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
           date={dateString}
-          state={getState(day, currentMonth, props, isControlled)}
+          state={getState(day, currentMonth, props, disableDaySelection)}
           marking={markedDates?.[dateString]}
           onPress={_onDayPress}
           onLongPress={onLongPressDay}

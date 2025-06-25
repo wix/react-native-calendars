@@ -184,7 +184,7 @@ const InfiniteAgendaList = ({
     onScroll?.(event as any);
   }, [onScroll]);
 
-  const _onVisibleIndicesChanged = useCallback(debounce((all: number[]) => {
+  const _onVisibleIndicesChanged = useCallback((all: number[]) => {
     if (all && all.length && !sectionScroll.current) {
       const topItemIndex = all[0];
       const topSection = data[findItemTitleIndex(topItemIndex)];
@@ -196,7 +196,7 @@ const InfiniteAgendaList = ({
         }
       }
     }
-  }, infiniteListProps?.visibleIndicesChangedDebounce ?? 1000, {leading: false, trailing: true},), [avoidDateUpdates, setDate, data]);
+  }, [avoidDateUpdates, setDate, data]);
 
   const findItemTitleIndex = useCallback((itemIndex: number) => {
     let titleIndex = itemIndex;
