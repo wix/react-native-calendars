@@ -37,6 +37,6 @@ export default function styleConstructor(theme: Theme = {}) {
     indicator: {
       marginTop: 80
     },
-    ...(theme['stylesheet.agenda.list'] || {})
+    ...(theme.stylesheet?.agenda?.list ?? {})
   });
 }

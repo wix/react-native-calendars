@@ -52,6 +52,6 @@ export default function styleConstructor(theme: Theme = {}) {
       width: '100%',
       alignSelf: 'center'
     },
-    ...(theme['stylesheet.agenda.main'] || {})
+    ...(theme.stylesheet?.agenda?.main ?? {})
   });
 }

@@ -60,7 +60,6 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
-    
-    ...(theme['stylesheet.day.period'] || {})
+    ...(theme.stylesheet?.day?.period ?? {})
   });
 }

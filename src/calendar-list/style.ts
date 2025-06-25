@@ -33,6 +33,6 @@ export default function getStyle(theme: Theme = {}) {
       backgroundColor: appStyle.calendarBackground,
       paddingHorizontal: 15
     },
-    ...(theme['stylesheet.calendar-list.main'] || {})
+    ...(theme.stylesheet?.['calendar-list']?.main ?? {})
   });
 }
