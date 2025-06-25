@@ -324,7 +324,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
       const d = parseDate(date);
 
       if (isOpen) {
-        d.setDate(1);
+        d.setDate(1, CalendarNavigationTypes.MONTH_SCROLL);
         d.addMonths(next ? 1 : -1);
       } else {
         let dayOfTheWeek = d.getDay();
