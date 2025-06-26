@@ -20,7 +20,6 @@ import {
 } from 'react-native';
 
 import {useDidUpdate, useCombinedRefs} from '../../hooks';
-import {getMoment} from '../../momentResolver';
 import {isToday, isGTE, sameDate} from '../../dateutils';
 import {parseDate} from '../../interface';
 import {getDefaultLocale} from '../../services';
@@ -30,6 +29,7 @@ import styleConstructor from '../style';
 import Context from '../Context';
 import InfiniteAgendaList from './infiniteAgendaList';
 import {AgendaListProps, AgendaSectionHeader} from './commons';
+import dayjs from 'dayjs';
 
 const viewabilityConfig = {
   itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
@@ -57,7 +57,6 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     keyExtractor,
     dayFormatter,
     dayFormat = 'dddd, MMM d',
-    useMoment,
     markToday = true,
     onViewableItemsChanged
   } = props;
@@ -121,12 +120,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     if (dayFormatter) {
       sectionTitle = dayFormatter(title);
     } else if (dayFormat) {
-      if (useMoment) {
-        const moment = getMoment();
-        sectionTitle = moment(title).format(dayFormat);
-      } else {
-        sectionTitle = new XDate(title).toString(dayFormat);
-      }
+			sectionTitle = dayjs(title).format(dayFormat);
     }
 
     if (markToday) {
@@ -255,7 +249,6 @@ AgendaList.displayName = 'AgendaList';
 AgendaList.propTypes = {
   dayFormat: PropTypes.string,
   dayFormatter: PropTypes.func,
-  useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
   // @ts-expect-error TODO Figure out why forwardRef causes error about the number type
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),

@@ -117,7 +117,7 @@ Handler which gets executed when visible month changes in calendar
 
 ### monthFormat
 
-Month format for the header's title. Formatting values: http://arshaw.com/xdate/#Formatting  
+Month format for the header's title. Formatting values: <https://day.js.org/docs/en/display/format>  
 <span style={{color: 'grey'}}>string</span>
 
 ### hideDayNames
@@ -214,7 +214,7 @@ Whether to disable all touch events for inactive days (can be override with 'dis
   onDayLongPress={day => {
     console.log('selected day', day);
   }}
-  // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+  // Month format in calendar title. Formatting values: https://day.js.org/docs/en/display/format
   monthFormat={'yyyy MM'}
   // Handler which gets executed when visible month changes in calendar. Default = undefined
   onMonthChange={month => {

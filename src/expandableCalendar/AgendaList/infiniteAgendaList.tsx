@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 
 import {useDidUpdate} from '../../hooks';
-import {getMoment} from '../../momentResolver';
 import {isGTE, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 import {UpdateSources, todayString} from '../commons';
@@ -23,6 +22,7 @@ import constants from '../../commons/constants';
 import {parseDate} from '../../interface';
 import {LayoutProvider} from 'recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider';
 import {AgendaSectionHeader, AgendaListProps} from './commons';
+import dayjs from 'dayjs';
 
 /**
  * @description: AgendaList component that use InfiniteList to improve performance
@@ -40,7 +40,6 @@ const InfiniteAgendaList = ({
   sectionStyle,
   dayFormatter,
   dayFormat = 'dddd, MMM d',
-  useMoment,
   markToday = true,
   infiniteListProps,
   renderItem,
@@ -111,12 +110,7 @@ const InfiniteAgendaList = ({
     if (dayFormatter) {
       sectionTitle = dayFormatter(title);
     } else if (dayFormat) {
-      if (useMoment) {
-        const moment = getMoment();
-        sectionTitle = moment(title).format(dayFormat);
-      } else {
-        sectionTitle = new XDate(title).toString(dayFormat);
-      }
+      sectionTitle = dayjs(title).format(dayFormat);
     }
 
     if (markToday) {
@@ -267,7 +261,6 @@ InfiniteAgendaList.displayName = 'InfiniteAgendaList';
 InfiniteAgendaList.propTypes = {
   dayFormat: PropTypes.string,
   dayFormatter: PropTypes.func,
-  useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   avoidDateUpdates: PropTypes.bool

@@ -1,7 +1,7 @@
+import dayjs from 'dayjs';
 import inRange from 'lodash/inRange';
-import XDate from 'xdate';
 import constants from '../commons/constants';
-import {Event, PackedEvent} from './EventBlock';
+import { Event, PackedEvent } from './EventBlock';
 
 type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {
@@ -33,15 +33,15 @@ function buildEvent(
   width: number,
   {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions
 ): PackedEvent {
-  const startTime = new XDate(event.start);
-  const endTime = event.end ? new XDate(event.end) : new XDate(startTime).addHours(1);
+  const startTime = dayjs(event.start);
+  const endTime = event.end ? dayjs(event.end) : dayjs(startTime).add(1, 'hour');
 
-  const dayStartTime = new XDate(startTime).clearTime();
+  const dayStartTime = dayjs(startTime).startOf('day');
 
   return {
     ...event,
-    top: (dayStartTime.diffHours(startTime) - dayStart) * hourBlockHeight,
-    height: startTime.diffHours(endTime) * hourBlockHeight,
+    top: (dayStartTime.diff(startTime, 'hour') - dayStart) * hourBlockHeight,
+    height: startTime.diff(endTime, 'hour') * hourBlockHeight,
     width,
     left
   };

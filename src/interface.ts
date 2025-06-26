@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 const XDate = require('xdate');
 
 export function padNumber(n: number) {
@@ -41,12 +43,12 @@ export function parseDate(d?: any) {
   }
 }
 
-export function toMarkingFormat(d: XDate) {
-  if (!isNaN(d.getTime())) {
-    const year = `${d.getFullYear()}`;
-    const month = d.getMonth() + 1;
+export function toMarkingFormat(d: Dayjs) {
+  if (!isNaN(d.valueOf())) {
+    const year = `${d.year()}`;
+    const month = d.month() + 1;
     const doubleDigitMonth = month < 10 ? `0${month}` : `${month}`;
-    const day = d.getDate();
+    const day = d.get('day');
     const doubleDigitDay = day < 10 ? `0${day}` : `${day}`;
     return year + '-' + doubleDigitMonth + '-' + doubleDigitDay;
   }

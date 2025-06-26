@@ -27,11 +27,6 @@
       "description": "A function to custom format the section header's title"
     },
     {
-      "name": "useMoment",
-      "type": "boolean",
-      "description": "Whether to use moment.js for date string formatting"
-    },
-    {
       "name": "markToday",
       "type": "boolean",
       "description": "Whether to mark today's title with the 'Today, ...' string",
