@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-const _ = require('lodash');
 const fs = require('fs');
 const semver = require('semver');
 const exec = require('shell-utils').exec;
 const cp = require('child_process');
+const { includes } = require('es-toolkit/compat');
 
 let IS_SNAPSHOT;
 let IS_HOTFIX;
@@ -91,7 +91,7 @@ function tryPublishAndTag(version) {
       console.log(`Released version ${theCandidate}`);
       return;
     } catch (err) {
-      const alreadyPublished = _.includes(err.toString(), 'You cannot publish over the previously published version');
+      const alreadyPublished = includes(err.toString(), 'You cannot publish over the previously published version');
       if (!alreadyPublished) {
         throw err;
       }

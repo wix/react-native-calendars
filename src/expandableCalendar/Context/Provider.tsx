@@ -1,4 +1,4 @@
-import {includes} from 'lodash';
+import { includes } from 'es-toolkit/compat';
 import XDate from 'xdate';
 
 import React, {useRef, useState, useCallback, useMemo} from 'react';

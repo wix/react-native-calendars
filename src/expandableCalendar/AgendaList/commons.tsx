@@ -1,4 +1,4 @@
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import React from 'react';
 import {DefaultSectionT, SectionListProps, Text, TextProps, ViewStyle} from 'react-native';
 import {Theme} from '../../types';

@@ -1,6 +1,4 @@
-import range from 'lodash/range';
-import times from 'lodash/times';
-
+import { range, times } from 'es-toolkit/compat';
 import React, {useCallback, useMemo, useRef} from 'react';
 import {View, Text, TouchableWithoutFeedback, ViewStyle, TextStyle, StyleSheet} from 'react-native';
 

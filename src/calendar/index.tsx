@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'es-toolkit/compat';
 import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
 import {AccessibilityInfo, View, ViewStyle, StyleProp} from 'react-native';
 // @ts-expect-error

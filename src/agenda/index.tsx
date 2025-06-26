@@ -1,7 +1,7 @@
-import isFunction from 'lodash/isFunction';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import memoize from 'memoize-one';
+import { isFunction } from 'es-toolkit/compat';
 
 import React, {Component} from 'react';
 import {

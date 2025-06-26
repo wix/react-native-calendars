@@ -1,7 +1,4 @@
-import isUndefined from 'lodash/isUndefined';
-import isDate from 'lodash/isDate';
-import isString from 'lodash/isString';
-import isNumber from 'lodash/isNumber';
+import { isDate, isNumber, isString, isUndefined } from 'es-toolkit/compat';
 import XDate from 'xdate';
 
 const {getLocale} = require('../dateutils');

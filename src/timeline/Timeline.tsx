@@ -1,8 +1,4 @@
-import min from 'lodash/min';
-import map from 'lodash/map';
-import times from 'lodash/times';
-import groupBy from 'lodash/groupBy';
-
+import { groupBy, map, min, times } from 'es-toolkit/compat';
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {View, ScrollView} from 'react-native';
 

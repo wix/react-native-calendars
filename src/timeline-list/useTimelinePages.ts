@@ -1,8 +1,6 @@
 import {RefObject, useCallback, useEffect, useRef, useState} from 'react';
 
-import inRange from 'lodash/inRange';
-import times from 'lodash/times';
-import debounce from 'lodash/debounce';
+import { debounce, inRange, times } from 'es-toolkit/compat';
 
 import constants from '../commons/constants';
 import {generateDay} from '../dateutils';

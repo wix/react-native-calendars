@@ -1,4 +1,4 @@
-import times from 'lodash/times';
+import { times } from 'es-toolkit/compat';
 import React, {useState, useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, View, ScrollView, Text, TouchableOpacity, Switch, Alert} from 'react-native';
 import {Calendar, CalendarUtils} from 'react-native-calendars';

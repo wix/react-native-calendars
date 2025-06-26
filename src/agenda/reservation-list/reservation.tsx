@@ -1,4 +1,4 @@
-import isFunction from 'lodash/isFunction';
+import { isFunction } from 'es-toolkit/compat';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 

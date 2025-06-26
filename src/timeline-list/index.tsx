@@ -1,6 +1,5 @@
-import throttle from 'lodash/throttle';
-import flatten from 'lodash/flatten';
-import dropRight from 'lodash/dropRight';
+
+import { dropRight, flatten, throttle } from 'es-toolkit/compat';
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {isToday, generateDay} from '../dateutils';
 import InfiniteList from '../infinite-list';

@@ -1,7 +1,7 @@
+import { isEqual } from 'es-toolkit/compat';
 import XDate from 'xdate';
 import React, {useRef, useMemo, useCallback} from 'react';
 import {View} from 'react-native';
-import isEqual from 'lodash/isEqual';
 
 import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';

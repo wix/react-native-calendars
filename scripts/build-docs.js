@@ -1,5 +1,5 @@
-const _ = require('lodash');
 const childProcess = require('child_process');
+const { last, split } = require('es-toolkit/compat');
 const fs = require('fs');
 
 const COMPONENTS_DOCS_DIR = './docsRNC/docs';
@@ -28,7 +28,7 @@ if (components) {
       if (component.extendsLink) {
         extendsText = `[${extendsText}](${component.extendsLink})`;
       } else {
-        const extendedComponentName = _.last(_.split(extendsText, '/'));
+        const extendedComponentName = last(split(extendsText, '/'));
         extendsText = `[${extendedComponentName}](/docs/${extendsText})`;
       }
       content += `:::info\n`;
