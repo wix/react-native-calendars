@@ -188,9 +188,11 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     );
   };
 
-  const renderDay = (day: XDate, id: number) => {
+  const renderDay = (day: XDate) => {
+    const key = `${currentMonth.toISOString()}-${day.getDate()}`;
+
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer}/>;
+      return <View key={key} style={style.current.emptyDayContainer}/>;
     }
 
     const dayProps = extractDayProps(props);
@@ -198,7 +200,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     const disableDaySelection = isEmpty(props.context);
 
     return (
-      <View style={style.current.dayContainer} key={id}>
+      <View style={style.current.dayContainer} key={key}>
         <Day
           {...dayProps}
           testID={`${testID}.day_${dateString}`}
@@ -212,11 +214,12 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     );
   };
 
-  const renderWeek = (days: XDate[], id: number) => {
+  const renderWeek = (days: XDate[]) => {
     const week: JSX.Element[] = [];
+    const key = `${currentMonth.toISOString()}-${days[0].getDate()}`;
 
-    days.forEach((day: XDate, id2: number) => {
-      week.push(renderDay(day, id2));
+    days.forEach((day: XDate) => {
+      week.push(renderDay(day));
     }, this);
 
     if (props.showWeekNumbers) {
@@ -224,7 +227,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     }
 
     return (
-      <View style={style.current.week} key={id}>
+      <View style={style.current.week} key={key}>
         {week}
       </View>
     );
@@ -236,7 +239,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     const weeks: JSX.Element[] = [];
 
     while (days.length) {
-      weeks.push(renderWeek(days.splice(0, 7), weeks.length));
+      weeks.push(renderWeek(days.splice(0, 7)));
     }
 
     return <View style={style.current.monthView}>{weeks}</View>;
