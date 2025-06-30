@@ -189,7 +189,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   };
 
   const renderDay = (day: XDate) => {
-    const key = String(day);
+    const key = `${currentMonth.toISOString()}-${day.getDate()}`;
 
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
       return <View key={key} style={style.current.emptyDayContainer}/>;
@@ -216,7 +216,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const renderWeek = (days: XDate[]) => {
     const week: JSX.Element[] = [];
-    const key = String(days[0]);
+    const key = `${currentMonth.toISOString()}-${days[0].getDate()}`;
 
     days.forEach((day: XDate) => {
       week.push(renderDay(day));
