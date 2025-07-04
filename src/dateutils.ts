@@ -1,26 +1,26 @@
-const XDate = require('xdate');
-const {toMarkingFormat} = require('./interface');
+import dayjs, { type Dayjs } from "dayjs";
+import isTodayPlugin from 'dayjs/plugin/isToday';
 
-const latinNumbersPattern = /[0-9]/g;
+dayjs.extend(isTodayPlugin)
 
-function isValidXDate(date: any) {
-  return date && (date instanceof XDate);
+export type CustomDate = Dayjs
+
+function isValidDate(date: any) {
+  return date && dayjs(date).isValid()
 }
 
-export function sameMonth(a?: XDate, b?: XDate) {
-  if (!isValidXDate(a) || !isValidXDate(b)) {
+export function sameMonth(a?: CustomDate, b?: CustomDate) {
+  if (!isValidDate(a) || !isValidDate(b)) {
     return false;
-  } else {
-    return a?.getFullYear() === b?.getFullYear() && a?.getMonth() === b?.getMonth();
   }
+	return a?.isSame(b, 'year') && a?.isSame(b, 'month')
 }
 
-export function sameDate(a?: XDate, b?: XDate) {
-  if (!isValidXDate(a) || !isValidXDate(b)) {
+export function sameDate(a?: CustomDate, b?: CustomDate) {
+   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
-  } else {
-    return a?.getFullYear() === b?.getFullYear() && a?.getMonth() === b?.getMonth() && a?.getDate() === b?.getDate();
   }
+	return a?.isSame(b, 'date')
 }
 
 export function onSameDateRange({
@@ -53,43 +53,24 @@ export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
 }
 
 export function isPastDate(date: string) {
-  const today = new XDate();
-  const d = new XDate(date);
-
-  if (today.getFullYear() > d.getFullYear()) {
-    return true;
-  }
-  if (today.getFullYear() === d.getFullYear()) {
-    if (today.getMonth() > d.getMonth()) {
-      return true;
-    }
-    if (today.getMonth() === d.getMonth()) {
-      if (today.getDate() > d.getDate()) {
-        return true;
-      }
-    }
-  }
-  return false;
+  const today = dayjs()
+  return dayjs(date).isAfter(today);
 }
 
-export function isToday(date?: XDate | string) {
-  const d = date instanceof XDate ? date : new XDate(date);
-  return sameDate(d, XDate.today());
+export function isToday(date?: any) {
+  return dayjs(date).isToday()
 }
 
-export function isGTE(a: XDate, b: XDate) {
-  if (a && b) {
-    return b.diffDays(a) > -1;
-  }
+export function isGTE(a: CustomDate, b: CustomDate) {
+  return a.isAfter(b)
 }
 
-export function isLTE(a: XDate, b: XDate) {
-  if (a && b) {
-    return a.diffDays(b) > -1;
-  }
+export function isLTE(a: CustomDate, b: CustomDate) {
+  return a.isBefore(b)
 }
 
 export function formatNumbers(date: any) {
+	const latinNumbersPattern = /[0-9]/g;
   const numbers = getLocale().numbers;
   return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
 }
@@ -169,7 +150,7 @@ export function isDateNotInRange(date: XDate, minDate: string, maxDate: string) 
   return (minDate && !isGTE(date, new XDate(minDate))) || (maxDate && !isLTE(date, new XDate(maxDate)));
 }
 
-export function getWeekDates(date: string, firstDay = 0, format?: string) {
+export function getWeekDates(date: string, firstDay = 0, format?: string): CustomDate[] | undefined {
   const d: XDate = new XDate(date);
   if (date && d.valid()) {
     const daysArray = [d];
@@ -207,7 +188,7 @@ export function getPartialWeekDates(date?: string, numberOfDays = 7) {
   let index = 0;
   const partialWeek: string[] = [];
   while (index < numberOfDays) {
-    partialWeek.push(generateDay(date || new XDate(), index));
+    partialWeek.push(generateDay(date || getToday(), index));
     index++;
   }
   return partialWeek;
@@ -220,4 +201,105 @@ export function generateDay(originDate: string | XDate, daysOffset = 0) {
 
 export function getLocale() {
   return XDate.locales[XDate.defaultLocale];
+}
+
+export function padNumber(n: number) {
+  if (n < 10) {
+    return '0' + n;
+  }
+  return n;
+}
+
+export function xdateToData(date: XDate | string) {
+  const d = date instanceof XDate ? date : new XDate(date);
+  const dateString = toMarkingFormat(d);
+  return {
+    year: d.getFullYear(),
+    month: d.getMonth() + 1,
+    day: d.getDate(),
+    timestamp: new XDate(dateString, true).getTime(),
+    dateString: dateString
+  };
+}
+
+export function parseDate(d?: any) {
+  if (!d) {
+    return;
+  } else if (d.timestamp) {
+    // conventional data timestamp
+    return new XDate(d.timestamp, true);
+  } else if (d instanceof XDate) {
+    // xdate
+    return new XDate(toMarkingFormat(d), true);
+  } else if (d.getTime) {
+    // javascript date
+    const dateString = d.getFullYear() + '-' + padNumber(d.getMonth() + 1) + '-' + padNumber(d.getDate());
+    return new XDate(dateString, true);
+  } else if (d.year) {
+    const dateString = d.year + '-' + padNumber(d.month) + '-' + padNumber(d.day);
+    return new XDate(dateString, true);
+  } else if (d) {
+    // timestamp number or date formatted as string
+    return new XDate(d, true);
+  }
+}
+
+export function toMarkingFormat(d: CustomDate) {
+  if (isNaN(getDateInMs(d))) {
+		return 'Invalid Date';
+	}
+  const year = `${getYear(d)}`;
+  const month = getMonth(d) + 1;
+  const doubleDigitMonth = month < 10 ? `0${month}` : `${month}`;
+  const day = getDay(d);
+  const doubleDigitDay = day < 10 ? `0${day}` : `${day}`;
+  return year + '-' + doubleDigitMonth + '-' + doubleDigitDay;
+}
+
+export function getDate(date) {
+	return dayjs(date)
+}
+
+export function getToday() {
+	return dayjs()
+}
+
+export function getTodayInMarkingFormat() {
+	return toMarkingFormat(getToday())
+}
+
+export function formatDate(date, formatPattern: string) {
+	return dayjs(date).format(formatPattern);
+}
+
+export function getDay(date: CustomDate) {
+	return date.get('day');
+}
+
+export function getMonth(date: CustomDate) {
+	return date.month();
+}
+
+export function getYear(date: CustomDate) {
+	return date.year();
+}
+
+export function getDateInMs(date: CustomDate) {
+	return date.valueOf()
+}
+
+export function getCurrentDate() {
+	return dayjs()
+}
+
+export function getStartOfDay(date: CustomDate) {
+	return dayjs(date).startOf('day')
+}
+
+export function addHourToDate(date, manyHours: number) {
+	return dayjs(date).add(manyHours, 'hour')
+}
+
+export function getDiffInHour(start: CustomDate, end: CustomDate) {
+	return start.diff(end, 'hour')
 }

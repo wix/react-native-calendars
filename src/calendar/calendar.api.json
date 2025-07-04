@@ -129,7 +129,7 @@
     {
       "name": "monthFormat",
       "type": "string",
-      "description": "Month format for the header's title. Formatting values: http://arshaw.com/xdate/#Formatting",
+      "description": "Month format for the header's title. Formatting values: https://day.js.org/docs/en/display/format",
       "default": "MMMM yyyy"
     },
     {

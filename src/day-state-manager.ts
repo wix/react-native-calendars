@@ -1,7 +1,6 @@
-const {isToday, isDateNotInRange, sameMonth} = require('./dateutils');
-const {toMarkingFormat} = require('./interface');
+import { CustomDate, getDay, isDateNotInRange, isToday, sameMonth, toMarkingFormat } from "./dateutils";
 
-export function getState(day: XDate, current: XDate, props: any, disableDaySelection: boolean) {
+export function getState(day: CustomDate, current: CustomDate, props: any, disableDaySelection: boolean) {
   const {minDate, maxDate, disabledByDefault, disabledByWeekDays, context} = props;
   let state;
 
@@ -15,7 +14,7 @@ export function getState(day: XDate, current: XDate, props: any, disableDaySelec
     state = 'disabled';
   } else if (!sameMonth(day, current)) {
     state = 'disabled';
-  } else if (disabledByWeekDays && disabledByWeekDays.indexOf(day.getDay()) !== -1) {
+  } else if (disabledByWeekDays && disabledByWeekDays.indexOf(getDay(day)) !== -1) {
     state = 'disabled';
   }
 

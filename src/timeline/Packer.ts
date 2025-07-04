@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import inRange from 'lodash/inRange';
 import constants from '../commons/constants';
 import { Event, PackedEvent } from './EventBlock';
+import { addHourToDate, getDate, getDiffInHour, getStartOfDay } from 'src/dateutils';
 
 type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {
@@ -33,15 +33,15 @@ function buildEvent(
   width: number,
   {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions
 ): PackedEvent {
-  const startTime = dayjs(event.start);
-  const endTime = event.end ? dayjs(event.end) : dayjs(startTime).add(1, 'hour');
+  const startTime = getDate(event.start);
+  const endTime = event.end ? getDate(event.end) : addHourToDate(startTime, 1);
 
-  const dayStartTime = dayjs(startTime).startOf('day');
+  const dayStartTime = getStartOfDay(startTime);
 
   return {
     ...event,
-    top: (dayStartTime.diff(startTime, 'hour') - dayStart) * hourBlockHeight,
-    height: startTime.diff(endTime, 'hour') * hourBlockHeight,
+    top: (getDiffInHour(dayStartTime, startTime) - dayStart) * hourBlockHeight,
+    height: getDiffInHour(startTime, endTime) * hourBlockHeight,
     width,
     left
   };
