@@ -1,7 +1,7 @@
 import inRange from 'lodash/inRange';
 import constants from '../commons/constants';
-import { Event, PackedEvent } from './EventBlock';
-import { addHourToDate, getDate, getDiffInHour, getStartOfDay } from 'src/dateutils';
+import {Event, PackedEvent} from './EventBlock';
+import {addHourToDate, getDate, getDiffInHour, getStartOfDay} from 'src/dateutils';
 
 type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {

@@ -20,7 +20,9 @@ describe('services', function () {
     });
 
     it('should throw "Invalid Date" for invalid JS Date', function () {
-      expect(() => {getCalendarDateString(new Date('30/03/2020'));}).toThrow(throwMessage);
+      expect(() => {
+        getCalendarDateString(new Date('30/03/2020'));
+      }).toThrow(throwMessage);
     });
 
     it('should return dashed date for timestamp number', function () {

@@ -49,7 +49,11 @@ const UseTimelinePages = ({date, listRef, numberOfDays, shouldFixRTL}: UseTimeli
   }, []);
 
   const scrollToPage = (pageIndex: number) => {
-    listRef.current?.scrollToOffset(shouldFixRTL ? ((PAGES_COUNT - 1 - pageIndex) * constants.screenWidth) : (pageIndex * constants.screenWidth), 0, false);
+    listRef.current?.scrollToOffset(
+      shouldFixRTL ? (PAGES_COUNT - 1 - pageIndex) * constants.screenWidth : pageIndex * constants.screenWidth,
+      0,
+      false
+    );
   };
 
   const resetPages = (date: string) => {

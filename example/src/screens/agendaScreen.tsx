@@ -57,7 +57,7 @@ export default class AgendaScreen extends Component<State> {
 
         if (!items[strTime]) {
           items[strTime] = [];
-          
+
           const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
             items[strTime].push({
@@ -68,7 +68,7 @@ export default class AgendaScreen extends Component<State> {
           }
         }
       }
-      
+
       const newItems: AgendaSchedule = {};
       Object.keys(items).forEach(key => {
         newItems[key] = items[key];
@@ -79,7 +79,7 @@ export default class AgendaScreen extends Component<State> {
     }, 1000);
   };
 
-  renderDay = (day) => {
+  renderDay = day => {
     if (day) {
       return <Text style={styles.customDay}>{day.getDay()}</Text>;
     }

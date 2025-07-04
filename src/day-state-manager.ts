@@ -1,4 +1,4 @@
-import { CustomDate, getDay, isDateNotInRange, isToday, sameMonth, toMarkingFormat } from "./dateutils";
+import {CustomDate, getDay, isDateNotInRange, isToday, sameMonth, toMarkingFormat} from './dateutils';
 
 export function getState(day: CustomDate, current: CustomDate, props: any, disableDaySelection: boolean) {
   const {minDate, maxDate, disabledByDefault, disabledByWeekDays, context} = props;
