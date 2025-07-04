@@ -250,11 +250,20 @@ export function dateToData(date: CustomDate | string) {
     month: getMonth(d) + 1,
     day: getDay(d),
     timestamp: getDateInMs(dateString),
-    dateString: dateString
+    dateString
   };
 }
 
 export function parseDate(d?) {
+  if (d?.timestamp) {
+    return getDate(d.timestamp);
+  }
+  if (d?.year) {
+    return buildDate(d?.year, padNumber(d?.month), padNumber(d?.day));
+  }
+  if (d?.dateString) {
+    return getDate(d.dateString);
+  }
   return getDate(d);
 }
 
@@ -387,6 +396,6 @@ export function getISODateString(date) {
   return dayjs(date).toISOString();
 }
 
-export function buildDate(year: number, month: number, day: number) {
+export function buildDate(year: number | string, month: number | string, day: number | string) {
   return dayjs({year, month, day});
 }

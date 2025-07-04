@@ -6,6 +6,7 @@ import Day from '../calendar/day/index';
 import {extractDayProps} from '../componentUpdater';
 import {
   type CustomDate,
+  getCurrentDate,
   getDate,
   getPartialWeekDates,
   getWeekDates,
@@ -95,7 +96,7 @@ const Week = React.memo((props: WeekProps) => {
     const week: JSX.Element[] = [];
 
     if (dates) {
-      const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
+      const todayIndex = dates?.indexOf(parseDate(getCurrentDate()) as CustomDate & string) || -1;
       const sliced = dates.slice(todayIndex, numberOfDays);
       const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
       datesToRender.forEach((day: CustomDate | string, id: number) => {
