@@ -1,26 +1,25 @@
-import PropTypes from 'prop-types';
-
-import debounce from 'lodash/debounce';
-import isUndefined from 'lodash/isUndefined';
-import InfiniteList from '../../infinite-list';
-
-
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import {
-	DefaultSectionT,
-	SectionListData
-} from 'react-native';
-
-import { LayoutProvider } from 'recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider';
-import constants from '../../commons/constants';
-import { formatDate, getDate, isGTE, isToday } from '../../dateutils';
-import { useDidUpdate } from '../../hooks';
-import { parseDate } from '../../interface';
-import { getDefaultLocale } from '../../services';
-import { UpdateSources, todayString } from '../commons';
-import Context from '../Context';
-import styleConstructor from '../style';
-import { AgendaListProps, AgendaSectionHeader } from './commons';
+import debounce from "lodash/debounce";
+import isUndefined from "lodash/isUndefined";
+import PropTypes from "prop-types";
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
+import type { DefaultSectionT, SectionListData } from "react-native";
+import { LayoutProvider } from "recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider";
+import constants from "../../commons/constants";
+import { formatDate, getDate, isGTE, isToday } from "../../dateutils";
+import { useDidUpdate } from "../../hooks";
+import InfiniteList from "../../infinite-list";
+import { getDefaultLocale } from "../../services";
+import Context from "../Context";
+import { todayString, UpdateSources } from "../commons";
+import styleConstructor from "../style";
+import { type AgendaListProps, AgendaSectionHeader } from "./commons";
 
 /**
  * @description: AgendaList component that use InfiniteList to improve performance
@@ -37,14 +36,14 @@ const InfiniteAgendaList = ({
 	renderSectionHeader,
 	sectionStyle,
 	dayFormatter,
-	dayFormat = 'dddd, MMM d',
+	dayFormat = "dddd, MMM d",
 	markToday = true,
 	infiniteListProps,
 	renderItem,
 	onEndReached,
 	onEndReachedThreshold,
 	...others
-}: Omit<AgendaListProps, 'viewOffset'>) => {
+}: Omit<AgendaListProps, "viewOffset">) => {
 	const { date, updateSource, setDate } = useContext(Context);
 
 	const style = useRef(styleConstructor(theme));
@@ -71,7 +70,10 @@ const InfiniteAgendaList = ({
 
 	useDidUpdate(() => {
 		// NOTE: on first init data should set first section to the current date!!!
-		if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
+		if (
+			updateSource !== UpdateSources.LIST_DRAG &&
+			updateSource !== UpdateSources.CALENDAR_INIT
+		) {
 			scrollToSection(date);
 		}
 	}, [date]);
@@ -120,113 +122,150 @@ const InfiniteAgendaList = ({
 		return sectionTitle;
 	}, []);
 
-	const scrollToSection = useCallback(debounce((requestedDate) => {
-		const sectionIndex = scrollToNextEvent ? getNextSectionIndex(requestedDate) : getSectionIndex(requestedDate);
-		if (isUndefined(sectionIndex)) {
-			return;
-		}
-
-		if (list?.current && sectionIndex !== undefined) {
-			sectionScroll.current = true; // to avoid setDate() in _onVisibleIndicesChanged
-			if (requestedDate !== _topSection.current) {
-				_topSection.current = sections[findItemTitleIndex(sectionIndex)]?.title;
-				list.current?.scrollToIndex(sectionIndex, true);
-			}
-
-			setTimeout(() => {
-				_onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
-			}, 500);
-		}
-	}, 1000, { leading: true, trailing: true }), [sections]);
-
-	const layoutProvider = useMemo(
-		() => new LayoutProvider(
-			(index) => dataRef.current[index]?.isTitle ? 'title' : dataRef.current[index]?.itemCustomHeightType ?? 'page',
-			(type, dim) => {
-				dim.width = constants.screenWidth;
-				switch (type) {
-					case 'title':
-						dim.height = infiniteListProps?.titleHeight ?? 60;
-						break;
-					case 'page':
-						dim.height = infiniteListProps?.itemHeight ?? 80;
-						break;
-					default:
-						dim.height = infiniteListProps?.itemHeightByType?.[type] ?? infiniteListProps?.itemHeight ?? 80;
+	const scrollToSection = useCallback(
+		debounce(
+			(requestedDate) => {
+				const sectionIndex = scrollToNextEvent
+					? getNextSectionIndex(requestedDate)
+					: getSectionIndex(requestedDate);
+				if (isUndefined(sectionIndex)) {
+					return;
 				}
-			}
+
+				if (list?.current && sectionIndex !== undefined) {
+					sectionScroll.current = true; // to avoid setDate() in _onVisibleIndicesChanged
+					if (requestedDate !== _topSection.current) {
+						_topSection.current =
+							sections[findItemTitleIndex(sectionIndex)]?.title;
+						list.current?.scrollToIndex(sectionIndex, true);
+					}
+
+					setTimeout(() => {
+						_onMomentumScrollEnd(); // the RecyclerListView doesn't trigger onMomentumScrollEnd when calling scrollToSection
+					}, 500);
+				}
+			},
+			1000,
+			{ leading: true, trailing: true },
 		),
-		[]
+		[sections],
 	);
 
-	const _onScroll = useCallback((rawEvent: any) => {
-		if (!didScroll.current) {
-			didScroll.current = true;
-			scrollToSection.cancel();
-		}
+	const layoutProvider = useMemo(
+		() =>
+			new LayoutProvider(
+				(index) =>
+					dataRef.current[index]?.isTitle
+						? "title"
+						: (dataRef.current[index]?.itemCustomHeightType ?? "page"),
+				(type, dim) => {
+					dim.width = constants.screenWidth;
+					switch (type) {
+						case "title":
+							dim.height = infiniteListProps?.titleHeight ?? 60;
+							break;
+						case "page":
+							dim.height = infiniteListProps?.itemHeight ?? 80;
+							break;
+						default:
+							dim.height =
+								infiniteListProps?.itemHeightByType?.[type] ??
+								infiniteListProps?.itemHeight ??
+								80;
+					}
+				},
+			),
+		[],
+	);
 
-		// Convert to a format similar to NativeSyntheticEvent<NativeScrollEvent>
-		const event = {
-			nativeEvent: {
-				contentOffset: rawEvent.nativeEvent.contentOffset,
-				layoutMeasurement: rawEvent.nativeEvent.layoutMeasurement,
-				contentSize: rawEvent.nativeEvent.contentSize
+	const _onScroll = useCallback(
+		(rawEvent: any) => {
+			if (!didScroll.current) {
+				didScroll.current = true;
+				scrollToSection.cancel();
 			}
-		};
-		onScroll?.(event as any);
-	}, [onScroll]);
 
-	const _onVisibleIndicesChanged = useCallback((all: number[]) => {
-		if (all && all.length && !sectionScroll.current) {
-			const topItemIndex = all[0];
-			const topSection = data[findItemTitleIndex(topItemIndex)];
-			if (topSection && topSection !== _topSection.current) {
-				_topSection.current = topSection.title;
-				if (didScroll.current && !avoidDateUpdates) {
-					// to avoid setDate() on first load (while setting the initial context.date value)
-					setDate?.(topSection.title, UpdateSources.LIST_DRAG);
+			// Convert to a format similar to NativeSyntheticEvent<NativeScrollEvent>
+			const event = {
+				nativeEvent: {
+					contentOffset: rawEvent.nativeEvent.contentOffset,
+					layoutMeasurement: rawEvent.nativeEvent.layoutMeasurement,
+					contentSize: rawEvent.nativeEvent.contentSize,
+				},
+			};
+			onScroll?.(event as any);
+		},
+		[onScroll],
+	);
+
+	const _onVisibleIndicesChanged = useCallback(
+		(all: number[]) => {
+			if (all && all.length && !sectionScroll.current) {
+				const topItemIndex = all[0];
+				const topSection = data[findItemTitleIndex(topItemIndex)];
+				if (topSection && topSection !== _topSection.current) {
+					_topSection.current = topSection.title;
+					if (didScroll.current && !avoidDateUpdates) {
+						// to avoid setDate() on first load (while setting the initial context.date value)
+						setDate?.(topSection.title, UpdateSources.LIST_DRAG);
+					}
 				}
 			}
-		}
-	}, [avoidDateUpdates, setDate, data]);
+		},
+		[avoidDateUpdates, setDate, data],
+	);
 
-	const findItemTitleIndex = useCallback((itemIndex: number) => {
-		let titleIndex = itemIndex;
-		while (titleIndex > 0 && !data[titleIndex]?.isTitle) {
-			titleIndex--;
-		}
+	const findItemTitleIndex = useCallback(
+		(itemIndex: number) => {
+			let titleIndex = itemIndex;
+			while (titleIndex > 0 && !data[titleIndex]?.isTitle) {
+				titleIndex--;
+			}
 
-		return titleIndex;
-	}, [data]);
+			return titleIndex;
+		},
+		[data],
+	);
 
 	const _onMomentumScrollEnd = useCallback(() => {
 		sectionScroll.current = false;
 	}, []);
 
-	const headerTextStyle = useMemo(() => [style.current.sectionText, sectionStyle], [sectionStyle]);
+	const headerTextStyle = useMemo(
+		() => [style.current.sectionText, sectionStyle],
+		[sectionStyle],
+	);
 
-	const _renderSectionHeader = useCallback((info: { section: SectionListData<any, DefaultSectionT> }) => {
-		const title = info?.section?.title;
+	const _renderSectionHeader = useCallback(
+		(info: { section: SectionListData<any, DefaultSectionT> }) => {
+			const title = info?.section?.title;
 
-		if (renderSectionHeader) {
-			return renderSectionHeader(title);
-		}
+			if (renderSectionHeader) {
+				return renderSectionHeader(title);
+			}
 
-		const headerTitle = getSectionTitle(title);
-		return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} />;
-	}, [headerTextStyle]);
+			const headerTitle = getSectionTitle(title);
+			return (
+				<AgendaSectionHeader title={headerTitle} style={headerTextStyle} />
+			);
+		},
+		[headerTextStyle],
+	);
 
-	const _renderItem = useCallback((_type: any, item: any) => {
-		if (item?.isTitle) {
-			return _renderSectionHeader({ section: item });
-		}
+	const _renderItem = useCallback(
+		(_type: any, item: any) => {
+			if (item?.isTitle) {
+				return _renderSectionHeader({ section: item });
+			}
 
-		if (renderItem) {
-			return renderItem({ item } as any);
-		}
+			if (renderItem) {
+				return renderItem({ item } as any);
+			}
 
-		return <></>;
-	}, [renderItem]);
+			return <></>;
+		},
+		[renderItem],
+	);
 
 	const _onEndReached = useCallback(() => {
 		if (onEndReached) {
@@ -243,7 +282,11 @@ const InfiniteAgendaList = ({
 			layoutProvider={layoutProvider}
 			onScroll={_onScroll}
 			onVisibleIndicesChanged={_onVisibleIndicesChanged}
-			scrollViewProps={{ nestedScrollEnabled: true, ...others, onMomentumScrollEnd: _onMomentumScrollEnd }}
+			scrollViewProps={{
+				nestedScrollEnabled: true,
+				...others,
+				onMomentumScrollEnd: _onMomentumScrollEnd,
+			}}
 			onEndReached={_onEndReached}
 			onEndReachedThreshold={onEndReachedThreshold as number | undefined}
 			disableScrollOnDataChange
@@ -252,14 +295,17 @@ const InfiniteAgendaList = ({
 	);
 };
 
-
 export default InfiniteAgendaList;
 
-InfiniteAgendaList.displayName = 'InfiniteAgendaList';
+InfiniteAgendaList.displayName = "InfiniteAgendaList";
 InfiniteAgendaList.propTypes = {
 	dayFormat: PropTypes.string,
 	dayFormatter: PropTypes.func,
 	markToday: PropTypes.bool,
-	sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-	avoidDateUpdates: PropTypes.bool
+	sectionStyle: PropTypes.oneOfType([
+		PropTypes.object,
+		PropTypes.number,
+		PropTypes.array,
+	]),
+	avoidDateUpdates: PropTypes.bool,
 };
