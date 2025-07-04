@@ -1,3 +1,4 @@
+import {act} from '@testing-library/react-native';
 import times from 'lodash/times';
 import type {CalendarContextProviderProps} from 'react-native-calendars';
 import {
@@ -134,16 +135,21 @@ describe('ExpandableCalendar', () => {
 
     it('should expand expandable header ', () => {
       driver.toggleKnob();
-      jest.runAllTimers();
-
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(driver.isCalendarExpanded()).toBe(true);
     });
 
     it('should day press close expandable header', () => {
       driver.toggleKnob();
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       driver.selectDay(dashedToday);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(driver.isCalendarExpanded()).toBe(false);
     });
 
@@ -153,9 +159,13 @@ describe('ExpandableCalendar', () => {
         TestCase({expandableCalendarProps: {closeOnDayPress: false}})
       );
       driver.toggleKnob();
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       driver.selectDay(dashedToday);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(driver.isCalendarExpanded()).toBe(true);
     });
   });
@@ -173,7 +183,9 @@ describe('ExpandableCalendar', () => {
           expandableCalendarProps: {initialPosition: Positions.OPEN}
         })
       );
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(driver.isCalendarExpanded()).toBe(false);
     });
 
@@ -222,7 +234,9 @@ describe('ExpandableCalendar', () => {
         `should call onDateChanged and onMonthChanged to next month first day when pressing the %s arrow`,
         (direction: Direction) => {
           driver.toggleKnob();
-          jest.runAllTimers();
+          act(() => {
+            jest.runAllTimers();
+          });
           const expectedDate = addMonthsToDate(addDaysToDate(today, 1), direction === Direction.RIGHT ? 1 : -1);
           driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
           expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
@@ -232,11 +246,17 @@ describe('ExpandableCalendar', () => {
 
       it(`should call onDateChanged and onMonthChanged for first day in initial month when changing to initial month`, () => {
         driver.toggleKnob();
-        jest.runAllTimers();
+        act(() => {
+          jest.runAllTimers();
+        });
         driver.pressOnHeaderArrow({left: false});
-        jest.runAllTimers();
+        act(() => {
+          jest.runAllTimers();
+        });
         driver.pressOnHeaderArrow({left: true});
-        jest.runAllTimers();
+        act(() => {
+          jest.runAllTimers();
+        });
         const expectedDate = setDayOfMonth(today, 1);
         expect(onDateChanged).toHaveBeenNthCalledWith(2, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
         expect(onMonthChange).toHaveBeenNthCalledWith(2, dateToData(expectedDate), UpdateSources.PAGE_SCROLL);
@@ -244,11 +264,15 @@ describe('ExpandableCalendar', () => {
 
       it(`should navigate 6 months ahead and back successfully`, () => {
         driver.toggleKnob();
-        jest.runAllTimers();
+        act(() => {
+          jest.runAllTimers();
+        });
         times(6, () => {
           driver.pressOnHeaderArrow({left: false});
         });
-        jest.runAllTimers();
+        act(() => {
+          jest.runAllTimers();
+        });
         const expectedFutureDate = addMonthsToDate(setDayOfMonth(today, 1), 6);
         expect(onDateChanged).toHaveBeenNthCalledWith(
           6,
@@ -257,7 +281,9 @@ describe('ExpandableCalendar', () => {
         );
         expect(onMonthChange).toHaveBeenNthCalledWith(6, dateToData(expectedFutureDate), UpdateSources.PAGE_SCROLL);
         times(6, () => driver.pressOnHeaderArrow({left: true}));
-        jest.runAllTimers();
+        act(() => {
+          jest.runAllTimers();
+        });
         const expectedDate = setDayOfMonth(today, 1);
         expect(onDateChanged).toHaveBeenNthCalledWith(12, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
         expect(onMonthChange).toHaveBeenNthCalledWith(12, dateToData(expectedDate), UpdateSources.PAGE_SCROLL);

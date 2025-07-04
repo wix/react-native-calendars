@@ -156,12 +156,12 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, [propsStyle]);
 
   const initialDateIndex = useMemo(() => {
-    return findIndex(items, item => item.toString() === initialDate.current?.toString());
+    return findIndex(items, item => getDateAsString(item) === getDateAsString(initialDate.current));
   }, [items]);
 
   const getDateIndex = useCallback(
     (date: string) => {
-      return findIndex(items, item => item.toString() === date.toString());
+      return findIndex(items, item => getDateAsString(item) === getDateAsString(date));
     },
     [items]
   );

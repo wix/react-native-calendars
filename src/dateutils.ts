@@ -1,4 +1,4 @@
-import dayjs, {Dayjs} from 'dayjs';
+import dayjs, {type Dayjs} from 'dayjs';
 import customParseFormatPlugin from 'dayjs/plugin/customParseFormat';
 import isSameOrAfterPlugin from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBeforePlugin from 'dayjs/plugin/isSameOrBefore';
@@ -23,13 +23,17 @@ dayjs.extend(objectSupportPlugin);
 
 export type CustomDate = Dayjs;
 
-export const LocaleConfig: {defaultLocale: string; locales: Record<string, any>} = setupLocale();
+export const LocaleConfig: {
+  defaultLocale: string;
+  locales: Record<string, any>;
+} = setupLocale();
 
 function setupLocale() {
-  require(`dayjs/locale/${LocaleConfig.defaultLocale}`);
+  const defaultLocale = LocaleConfig?.defaultLocale || 'en';
+  require(`dayjs/locale/${defaultLocale}`);
   return {
     locales: {
-      [LocaleConfig.defaultLocale]: {
+      [defaultLocale]: {
         monthNames: dayjs.months(),
         monthNamesShort: dayjs.monthsShort(),
         dayNames: dayjs.weekdays(),
@@ -39,7 +43,7 @@ function setupLocale() {
         formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy"
       }
     },
-    defaultLocale: dayjs.locale(LocaleConfig.defaultLocale || 'en')
+    defaultLocale: dayjs.locale(defaultLocale)
   };
 }
 
@@ -87,8 +91,7 @@ export function onSameDateRange({
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
   const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
-  const element = weekDates instanceof Dayjs ? getDate(b) : b;
-  return weekDates.includes(element as Dayjs & string);
+  return weekDates.includes(getDate(b) as Dayjs & string);
 }
 
 export function isPastDate(date: string) {
