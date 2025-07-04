@@ -173,12 +173,12 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   }, [current]);
 
   useDidUpdate(() => {
-    const currMont = currentMonth?.clone();
-    if (currMont) {
-      const data = dateToData(currMont);
+    const currMonth = currentMonth;
+    if (currMonth) {
+      const data = dateToData(currMonth);
       onMonthChange?.(data);
       onVisibleMonthsChange?.([data]);
-      AccessibilityInfo.announceForAccessibility(formatDate(currMont, 'MMMM yyyy'));
+      AccessibilityInfo.announceForAccessibility(formatDate(currMonth, 'MMMM yyyy'));
     }
   }, [currentMonth]);
 

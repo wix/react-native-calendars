@@ -1,7 +1,7 @@
 import React, {useCallback, useRef} from 'react';
 import {Animated, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {AgendaList, CalendarProvider, ExpandableCalendar, WeekCalendar} from 'react-native-calendars';
-import {CustomDate, formatDate} from '../../../src/dateutils';
+import {type CustomDate, formatDate} from '../../../src/dateutils';
 import AgendaItem from '../mocks/AgendaItem';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import {getTheme, lightThemeColor, themeColor} from '../mocks/theme';
@@ -57,7 +57,12 @@ const ExpandableCalendarScreen = (props: Props) => {
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
           <Text style={styles.headerTitle}>{formatDate(date, 'MMMM yyyy')}</Text>
-          <Animated.Image source={CHEVRON} style={{transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]}} />
+          <Animated.Image
+            source={CHEVRON}
+            style={{
+              transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]
+            }}
+          />
         </TouchableOpacity>
       );
     },
@@ -83,7 +88,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
     >
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current} />
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}

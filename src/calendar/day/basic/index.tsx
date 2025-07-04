@@ -1,8 +1,8 @@
 import React, {Fragment, useCallback, useRef} from 'react';
-import {Text, TouchableOpacity, View, ViewProps} from 'react-native';
-import {dateToData} from 'src/dateutils';
-import {DateData, DayState, MarkingTypes, Theme} from '../../../types';
-import Marking, {MarkingProps} from '../marking';
+import {Text, TouchableOpacity, View, type ViewProps} from 'react-native';
+import {dateToData} from '../../../dateutils';
+import type {DateData, DayState, MarkingTypes, Theme} from '../../../types';
+import Marking, {type MarkingProps} from '../marking';
 import styleConstructor from './style';
 
 export interface BasicDayProps extends ViewProps {

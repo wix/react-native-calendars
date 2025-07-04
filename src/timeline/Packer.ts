@@ -1,7 +1,7 @@
 import inRange from 'lodash/inRange';
 import constants from '../commons/constants';
-import {Event, PackedEvent} from './EventBlock';
-import {addHourToDate, getDate, getDiffInHour, getStartOfDay} from 'src/dateutils';
+import {addHourToDate, getDate, getDiffInHour, getStartOfDay} from '../dateutils';
+import type {Event, PackedEvent} from './EventBlock';
 
 type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {
@@ -101,7 +101,7 @@ export function populateEvents(_events: Event[], populateOptions: PopulateOption
 
   const events: PartialPackedEvent[] = _events
     .map((ev: Event, index: number) => ({...ev, index: index}))
-    .sort(function (a: Event, b: Event) {
+    .sort((a: Event, b: Event) => {
       if (a.start < b.start) return -1;
       if (a.start > b.start) return 1;
       if (a.end < b.end) return -1;
@@ -109,7 +109,7 @@ export function populateEvents(_events: Event[], populateOptions: PopulateOption
       return 0;
     });
 
-  events.forEach(function (ev) {
+  events.forEach(ev => {
     // Reset recent overlapping event group and start a new one
     if (lastEnd !== null && ev.start >= lastEnd) {
       packOverlappingEventGroup(columns, calculatedEvents, populateOptions);

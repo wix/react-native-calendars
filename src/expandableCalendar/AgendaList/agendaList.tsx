@@ -5,29 +5,29 @@ import isUndefined from 'lodash/isUndefined';
 import map from 'lodash/map';
 import PropTypes from 'prop-types';
 
-import React, {forwardRef, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
+import React, { forwardRef, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import {
-  type DefaultSectionT,
-  type LayoutChangeEvent,
-  type NativeScrollEvent,
-  type NativeSyntheticEvent,
-  SectionList,
-  type SectionListData,
-  type ViewToken
+	type DefaultSectionT,
+	type LayoutChangeEvent,
+	type NativeScrollEvent,
+	type NativeSyntheticEvent,
+	SectionList,
+	type SectionListData,
+	type ViewToken
 } from 'react-native';
 
 import constants from '../../commons/constants';
-import {formatDate, getDate, isGTE, isToday, sameDate} from '../../dateutils';
-import {useCombinedRefs, useDidUpdate} from '../../hooks';
-import {getDefaultLocale} from '../../services';
+import { formatDate, getDate, isGTE, isToday, parseDate, sameDate } from '../../dateutils';
+import { useCombinedRefs, useDidUpdate } from '../../hooks';
+import { getDefaultLocale } from '../../services';
 import Context from '../Context';
-import {todayString, UpdateSources} from '../commons';
+import { todayString, UpdateSources } from '../commons';
 import styleConstructor from '../style';
-import {type AgendaListProps, AgendaSectionHeader} from './commons';
+import { type AgendaListProps, AgendaSectionHeader } from './commons';
 import InfiniteAgendaList from './infiniteAgendaList';
 
 const viewabilityConfig = {
-  itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
+	itemVisiblePercentThreshold: 20 // 50 means if 50% of the item is visible
 };
 
 /**
@@ -37,243 +37,243 @@ const viewabilityConfig = {
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
 const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
-  const {
-    theme,
-    sections,
-    scrollToNextEvent,
-    viewOffset = 0,
-    avoidDateUpdates,
-    onScroll,
-    onMomentumScrollBegin,
-    onMomentumScrollEnd,
-    onScrollToIndexFailed,
-    renderSectionHeader,
-    sectionStyle,
-    keyExtractor,
-    dayFormatter,
-    dayFormat = 'dddd, MMM d',
-    markToday = true,
-    onViewableItemsChanged
-  } = props;
+	const {
+		theme,
+		sections,
+		scrollToNextEvent,
+		viewOffset = 0,
+		avoidDateUpdates,
+		onScroll,
+		onMomentumScrollBegin,
+		onMomentumScrollEnd,
+		onScrollToIndexFailed,
+		renderSectionHeader,
+		sectionStyle,
+		keyExtractor,
+		dayFormatter,
+		dayFormat = 'dddd, MMM d',
+		markToday = true,
+		onViewableItemsChanged
+	} = props;
 
-  const {date, updateSource, setDate, setDisabled} = useContext(Context);
+	const { date, updateSource, setDate, setDisabled } = useContext(Context);
 
-  const style = useRef(styleConstructor(theme));
-  const list = useCombinedRefs(ref);
-  const _topSection = useRef(sections[0]?.title);
-  const didScroll = useRef(false);
-  const sectionScroll = useRef(false);
-  const sectionHeight = useRef(0);
+	const style = useRef(styleConstructor(theme));
+	const list = useCombinedRefs(ref);
+	const _topSection = useRef(sections[0]?.title);
+	const didScroll = useRef(false);
+	const sectionScroll = useRef(false);
+	const sectionHeight = useRef(0);
 
-  useEffect(() => {
-    if (date !== _topSection.current) {
-      setTimeout(() => {
-        scrollToSection(date);
-      }, 500);
-    }
-  }, []);
+	useEffect(() => {
+		if (date !== _topSection.current) {
+			setTimeout(() => {
+				scrollToSection(date);
+			}, 500);
+		}
+	}, []);
 
-  useDidUpdate(() => {
-    // NOTE: on first init data should set first section to the current date!!!
-    if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
-      scrollToSection(date);
-    }
-  }, [date]);
+	useDidUpdate(() => {
+		// NOTE: on first init data should set first section to the current date!!!
+		if (updateSource !== UpdateSources.LIST_DRAG && updateSource !== UpdateSources.CALENDAR_INIT) {
+			scrollToSection(date);
+		}
+	}, [date]);
 
-  const getSectionIndex = (date: string) => {
-    let i;
-    map(sections, (section, index) => {
-      // NOTE: sections titles should match current date format!!!
-      if (section.title === date) {
-        i = index;
-      }
-    });
-    return i;
-  };
+	const getSectionIndex = (date: string) => {
+		let i;
+		map(sections, (section, index) => {
+			// NOTE: sections titles should match current date format!!!
+			if (section.title === date) {
+				i = index;
+			}
+		});
+		return i;
+	};
 
-  const getNextSectionIndex = (date: string) => {
-    let i = 0;
-    for (let j = 1; j < sections.length; j++) {
-      const prev = parseDate(sections[j - 1]?.title);
-      const next = parseDate(sections[j]?.title);
-      const cur = getDate(date);
-      if (isGTE(cur, prev) && isGTE(next, cur)) {
-        i = sameDate(prev, cur) ? j - 1 : j;
-        break;
-      } else if (isGTE(cur, next)) {
-        i = j;
-      }
-    }
-    return i;
-  };
+	const getNextSectionIndex = (date: string) => {
+		let i = 0;
+		for (let j = 1; j < sections.length; j++) {
+			const prev = parseDate(sections[j - 1]?.title);
+			const next = parseDate(sections[j]?.title);
+			const cur = getDate(date);
+			if (isGTE(cur, prev) && isGTE(next, cur)) {
+				i = sameDate(prev, cur) ? j - 1 : j;
+				break;
+			} else if (isGTE(cur, next)) {
+				i = j;
+			}
+		}
+		return i;
+	};
 
-  const getSectionTitle = useCallback((title: string) => {
-    if (!title) return;
+	const getSectionTitle = useCallback((title: string) => {
+		if (!title) return;
 
-    let sectionTitle = title;
+		let sectionTitle = title;
 
-    if (dayFormatter) {
-      sectionTitle = dayFormatter(title);
-    } else if (dayFormat) {
-      sectionTitle = formatDate(title, dayFormat);
-    }
+		if (dayFormatter) {
+			sectionTitle = dayFormatter(title);
+		} else if (dayFormat) {
+			sectionTitle = formatDate(title, dayFormat);
+		}
 
-    if (markToday) {
-      const string = getDefaultLocale().today || todayString;
-      const today = isToday(title);
-      sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
-    }
+		if (markToday) {
+			const string = getDefaultLocale().today || todayString;
+			const today = isToday(title);
+			sectionTitle = today ? `${string}, ${sectionTitle}` : sectionTitle;
+		}
 
-    return sectionTitle;
-  }, []);
+		return sectionTitle;
+	}, []);
 
-  const scrollToSection = useCallback(
-    debounce(
-      d => {
-        const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
-        if (isUndefined(sectionIndex)) {
-          return;
-        }
-        if (list?.current && sectionIndex !== undefined) {
-          sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
-          _topSection.current = sections[sectionIndex]?.title;
+	const scrollToSection = useCallback(
+		debounce(
+			d => {
+				const sectionIndex = scrollToNextEvent ? getNextSectionIndex(d) : getSectionIndex(d);
+				if (isUndefined(sectionIndex)) {
+					return;
+				}
+				if (list?.current && sectionIndex !== undefined) {
+					sectionScroll.current = true; // to avoid setDate() in onViewableItemsChanged
+					_topSection.current = sections[sectionIndex]?.title;
 
-          // @ts-expect-error should be fixed when we fix the typings of the ref.
-          list?.current.scrollToLocation({
-            animated: true,
-            sectionIndex: sectionIndex,
-            itemIndex: 1,
-            viewPosition: 0, // position at the top
-            viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
-          });
-        }
-      },
-      1000,
-      {leading: true, trailing: true}
-    ),
-    [viewOffset, sections]
-  );
+					// @ts-expect-error should be fixed when we fix the typings of the ref.
+					list?.current.scrollToLocation({
+						animated: true,
+						sectionIndex: sectionIndex,
+						itemIndex: 1,
+						viewPosition: 0, // position at the top
+						viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
+					});
+				}
+			},
+			1000,
+			{ leading: true, trailing: true }
+		),
+		[viewOffset, sections]
+	);
 
-  const _onViewableItemsChanged = useCallback(
-    (info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
-      if (info?.viewableItems && !sectionScroll.current) {
-        const topSection = get(info?.viewableItems[0], 'section.title');
-        if (topSection && topSection !== _topSection.current) {
-          _topSection.current = topSection;
-          if (didScroll.current && !avoidDateUpdates) {
-            // to avoid setDate() on first load (while setting the initial context.date value)
-            setDate?.(_topSection.current, UpdateSources.LIST_DRAG);
-          }
-        }
-      }
-      onViewableItemsChanged?.(info);
-    },
-    [avoidDateUpdates, setDate, onViewableItemsChanged]
-  );
+	const _onViewableItemsChanged = useCallback(
+		(info: { viewableItems: Array<ViewToken>; changed: Array<ViewToken> }) => {
+			if (info?.viewableItems && !sectionScroll.current) {
+				const topSection = get(info?.viewableItems[0], 'section.title');
+				if (topSection && topSection !== _topSection.current) {
+					_topSection.current = topSection;
+					if (didScroll.current && !avoidDateUpdates) {
+						// to avoid setDate() on first load (while setting the initial context.date value)
+						setDate?.(_topSection.current, UpdateSources.LIST_DRAG);
+					}
+				}
+			}
+			onViewableItemsChanged?.(info);
+		},
+		[avoidDateUpdates, setDate, onViewableItemsChanged]
+	);
 
-  const _onScroll = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (!didScroll.current) {
-        didScroll.current = true;
-        scrollToSection.cancel();
-      }
-      onScroll?.(event);
-    },
-    [onScroll]
-  );
+	const _onScroll = useCallback(
+		(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+			if (!didScroll.current) {
+				didScroll.current = true;
+				scrollToSection.cancel();
+			}
+			onScroll?.(event);
+		},
+		[onScroll]
+	);
 
-  const _onMomentumScrollBegin = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      setDisabled?.(true);
-      onMomentumScrollBegin?.(event);
-    },
-    [onMomentumScrollBegin, setDisabled]
-  );
+	const _onMomentumScrollBegin = useCallback(
+		(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+			setDisabled?.(true);
+			onMomentumScrollBegin?.(event);
+		},
+		[onMomentumScrollBegin, setDisabled]
+	);
 
-  const _onMomentumScrollEnd = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      // when list momentum ends AND when scrollToSection scroll ends
-      sectionScroll.current = false;
-      setDisabled?.(false);
-      onMomentumScrollEnd?.(event);
-    },
-    [onMomentumScrollEnd, setDisabled]
-  );
+	const _onMomentumScrollEnd = useCallback(
+		(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+			// when list momentum ends AND when scrollToSection scroll ends
+			sectionScroll.current = false;
+			setDisabled?.(false);
+			onMomentumScrollEnd?.(event);
+		},
+		[onMomentumScrollEnd, setDisabled]
+	);
 
-  const headerTextStyle = useMemo(() => [style.current.sectionText, sectionStyle], [sectionStyle]);
+	const headerTextStyle = useMemo(() => [style.current.sectionText, sectionStyle], [sectionStyle]);
 
-  const _onScrollToIndexFailed = useCallback(
-    (info: {index: number; highestMeasuredFrameIndex: number; averageItemLength: number}) => {
-      if (onScrollToIndexFailed) {
-        onScrollToIndexFailed(info);
-      } else {
-        console.log('onScrollToIndexFailed info: ', info);
-      }
-    },
-    [onScrollToIndexFailed]
-  );
+	const _onScrollToIndexFailed = useCallback(
+		(info: { index: number; highestMeasuredFrameIndex: number; averageItemLength: number }) => {
+			if (onScrollToIndexFailed) {
+				onScrollToIndexFailed(info);
+			} else {
+				console.log('onScrollToIndexFailed info: ', info);
+			}
+		},
+		[onScrollToIndexFailed]
+	);
 
-  const onHeaderLayout = useCallback((event: LayoutChangeEvent) => {
-    sectionHeight.current = event.nativeEvent.layout.height;
-  }, []);
+	const onHeaderLayout = useCallback((event: LayoutChangeEvent) => {
+		sectionHeight.current = event.nativeEvent.layout.height;
+	}, []);
 
-  const _renderSectionHeader = useCallback(
-    (info: {section: SectionListData<any, DefaultSectionT>}) => {
-      const title = info?.section?.title;
+	const _renderSectionHeader = useCallback(
+		(info: { section: SectionListData<any, DefaultSectionT> }) => {
+			const title = info?.section?.title;
 
-      if (renderSectionHeader) {
-        return renderSectionHeader(title);
-      }
+			if (renderSectionHeader) {
+				return renderSectionHeader(title);
+			}
 
-      const headerTitle = getSectionTitle(title);
-      return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
-    },
-    [headerTextStyle]
-  );
+			const headerTitle = getSectionTitle(title);
+			return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout} />;
+		},
+		[headerTextStyle]
+	);
 
-  const _keyExtractor = useCallback(
-    (item: any, index: number) => {
-      return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
-    },
-    [keyExtractor]
-  );
+	const _keyExtractor = useCallback(
+		(item: any, index: number) => {
+			return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
+		},
+		[keyExtractor]
+	);
 
-  if (props.infiniteListProps) {
-    return <InfiniteAgendaList {...props} />;
-  }
+	if (props.infiniteListProps) {
+		return <InfiniteAgendaList {...props} />;
+	}
 
-  return (
-    <SectionList
-      stickySectionHeadersEnabled
-      {...props}
-      // @ts-expect-error
-      ref={list}
-      keyExtractor={_keyExtractor}
-      showsVerticalScrollIndicator={false}
-      onViewableItemsChanged={_onViewableItemsChanged}
-      viewabilityConfig={viewabilityConfig}
-      renderSectionHeader={_renderSectionHeader}
-      onScroll={_onScroll}
-      onMomentumScrollBegin={_onMomentumScrollBegin}
-      onMomentumScrollEnd={_onMomentumScrollEnd}
-      onScrollToIndexFailed={_onScrollToIndexFailed}
-      // getItemLayout={_getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
-    />
-  );
+	return (
+		<SectionList
+			stickySectionHeadersEnabled
+			{...props}
+			// @ts-expect-error
+			ref={list}
+			keyExtractor={_keyExtractor}
+			showsVerticalScrollIndicator={false}
+			onViewableItemsChanged={_onViewableItemsChanged}
+			viewabilityConfig={viewabilityConfig}
+			renderSectionHeader={_renderSectionHeader}
+			onScroll={_onScroll}
+			onMomentumScrollBegin={_onMomentumScrollBegin}
+			onMomentumScrollEnd={_onMomentumScrollEnd}
+			onScrollToIndexFailed={_onScrollToIndexFailed}
+		// getItemLayout={_getItemLayout} // onViewableItemsChanged is not updated when list scrolls!!!
+		/>
+	);
 
-  // _getItemLayout = (data, index) => {
-  //   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
-  // }
+	// _getItemLayout = (data, index) => {
+	//   return {length: constants.screenWidth, offset: constants.screenWidth * index, index};
+	// }
 });
 
 export default AgendaList;
 
 AgendaList.displayName = 'AgendaList';
 AgendaList.propTypes = {
-  dayFormat: PropTypes.string,
-  dayFormatter: PropTypes.func,
-  markToday: PropTypes.bool,
-  // @ts-expect-error TODO Figure out why forwardRef causes error about the number type
-  sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  avoidDateUpdates: PropTypes.bool
+	dayFormat: PropTypes.string,
+	dayFormatter: PropTypes.func,
+	markToday: PropTypes.bool,
+	// @ts-expect-error TODO Figure out why forwardRef causes error about the number type
+	sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+	avoidDateUpdates: PropTypes.bool
 };

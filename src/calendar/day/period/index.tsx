@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import React, {useCallback, useMemo, useRef} from 'react';
 import {
-  StyleProp,
+  type StyleProp,
   Text,
-  TextStyle,
+  type TextStyle,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  ViewProps,
-  ViewStyle
+  type ViewProps,
+  type ViewStyle
 } from 'react-native';
-import {dateToData} from 'src/dateutils';
-import {DateData, DayState, Theme} from '../../../types';
-import Marking, {MarkingProps} from '../marking';
+import {dateToData} from '../../../dateutils';
+import type {DateData, DayState, Theme} from '../../../types';
+import Marking, {type MarkingProps} from '../marking';
 import styleConstructor from './style';
 
 export interface PeriodDayProps extends ViewProps {
@@ -127,9 +127,13 @@ const PeriodDay = (props: PeriodDayProps) => {
       const start = markingStyle.startingDay;
       const end = markingStyle.endingDay;
       if (start && !end) {
-        containerStyle.push({backgroundColor: markingStyle.startingDay?.backgroundColor});
+        containerStyle.push({
+          backgroundColor: markingStyle.startingDay?.backgroundColor
+        });
       } else if ((end && !start) || (end && start)) {
-        containerStyle.push({backgroundColor: markingStyle.endingDay?.backgroundColor});
+        containerStyle.push({
+          backgroundColor: markingStyle.endingDay?.backgroundColor
+        });
       }
 
       if (markingStyle.containerStyle) {
@@ -192,8 +196,8 @@ const PeriodDay = (props: PeriodDayProps) => {
     if (marking) {
       return (
         <View style={[style.current.fillers, fillerStyles.fillerStyle]}>
-          <View style={[style.current.leftFiller, fillerStyles.leftFillerStyle]} />
-          <View style={[style.current.rightFiller, fillerStyles.rightFillerStyle]} />
+          <View style={[style.current.leftFiller, fillerStyles.leftFillerStyle]}/>
+          <View style={[style.current.rightFiller, fillerStyles.rightFillerStyle]}/>
         </View>
       );
     }
