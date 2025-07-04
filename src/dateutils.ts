@@ -23,10 +23,25 @@ dayjs.extend(objectSupportPlugin);
 
 export type CustomDate = Dayjs;
 
-export const LocaleConfig = {
-  locales: {},
-  defaultLocale: 'en'
-};
+export const LocaleConfig: {defaultLocale: string; locales: Record<string, any>} = setupLocale();
+
+function setupLocale() {
+  require(`dayjs/locale/${LocaleConfig.defaultLocale}`);
+  return {
+    locales: {
+      [LocaleConfig.defaultLocale]: {
+        monthNames: dayjs.months(),
+        monthNamesShort: dayjs.monthsShort(),
+        dayNames: dayjs.weekdays(),
+        dayNamesShort: dayjs.weekdaysShort(),
+        today: 'Today',
+        numbers: [],
+        formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy"
+      }
+    },
+    defaultLocale: dayjs.locale(LocaleConfig.defaultLocale || 'en')
+  };
+}
 
 export function isValidDate(date) {
   return dayjs(date).isValid();
@@ -94,7 +109,7 @@ export function isLTE(a: CustomDate, b: CustomDate) {
 
 export function formatNumbers(date) {
   const latinNumbersPattern = /[0-9]/g;
-  const numbers = getLocale();
+  const numbers = getLocale()?.numbers;
   return numbers ? date.toString().replace(latinNumbersPattern, char => numbers[+char]) : date;
 }
 
@@ -228,7 +243,7 @@ export function generateDay(originDate: string | CustomDate, daysOffset = 0) {
 }
 
 export function getLocale() {
-  return dayjs().locale();
+  return LocaleConfig.locales[LocaleConfig.defaultLocale];
 }
 
 export function weekDaysShort() {
@@ -386,10 +401,10 @@ export function getWeekOfYear(date) {
 }
 
 export function getDateAsString(date?): string {
-  if (date) {
-    return dayjs(date).toString();
+  if (!date) {
+    return getCurrentDate().toString();
   }
-  return getCurrentDate().toString();
+  return dayjs(date).toString();
 }
 
 export function getISODateString(date) {

@@ -7,8 +7,8 @@ import {getLocale, padNumber, parseDate, toMarkingFormat} from '../dateutils';
 
 export function getCalendarDateString(date?: Date | string | number) {
   if (!isUndefined(date)) {
-    if (isDate(date) && !isNaN(date.getFullYear())) {
-      return date.getFullYear() + '-' + padNumber(date.getMonth() + 1) + '-' + padNumber(date.getDate());
+    if (isDate(date) && !Number.isNaN(date.getFullYear())) {
+      return `${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}`;
     } else if (isString(date) || isNumber(date)) {
       return toMarkingFormat(parseDate(date));
     }
@@ -16,7 +16,7 @@ export function getCalendarDateString(date?: Date | string | number) {
   }
 }
 
-export function getDefaultLocale(): any {
+export function getDefaultLocale() {
   return getLocale();
 }
 

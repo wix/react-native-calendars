@@ -1,6 +1,5 @@
-import './wdyr'; // <--- must be first import
-import React from 'react';
 import {AppRegistry} from 'react-native';
+import './wdyr'; // <--- must be first import
 //@ts-expect-error
 import {LocaleConfig} from 'react-native-calendars';
 import {name as appName} from '../app.json';
@@ -72,6 +71,6 @@ LocaleConfig.locales.he = {
 LocaleConfig.defaultLocale = 'en';
 
 export default function App() {
-  return <MenuScreen/>;
+  return <MenuScreen />;
 }
 AppRegistry.registerComponent(appName, () => App);
