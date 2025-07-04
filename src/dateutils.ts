@@ -7,6 +7,7 @@ import localeDataPlugin from 'dayjs/plugin/localeData';
 import localizedFormatPlugin from 'dayjs/plugin/localizedFormat';
 import objectSupportPlugin from 'dayjs/plugin/objectSupport';
 import timezonePlugin from 'dayjs/plugin/timezone';
+import updateLocalePlugin from 'dayjs/plugin/updateLocale';
 import utcPlugin from 'dayjs/plugin/utc';
 import weekOfYearPlugin from 'dayjs/plugin/weekOfYear';
 
@@ -20,6 +21,7 @@ dayjs.extend(weekOfYearPlugin);
 dayjs.extend(utcPlugin);
 dayjs.extend(timezonePlugin);
 dayjs.extend(objectSupportPlugin);
+dayjs.extend(updateLocalePlugin);
 
 export type CustomDate = Dayjs;
 
@@ -286,13 +288,13 @@ export function parseDate(d?) {
 }
 
 export function toMarkingFormat(d) {
-  if (Number.isNaN(getDateInMs(d))) {
+  if (!isValidDate(d)) {
     return 'Invalid Date';
   }
-  const year = `${getYear(d)}`;
-  const month = getMonth(d) + 1;
-  const doubleDigitMonth = month < 10 ? `0${month}` : `${month}`;
+  const year = getYear(d);
+  const month = getMonth(d);
   const day = getDay(d);
+  const doubleDigitMonth = month < 10 ? `0${month}` : `${month}`;
   const doubleDigitDay = day < 10 ? `0${day}` : `${day}`;
   return `${year}-${doubleDigitMonth}-${doubleDigitDay}`;
 }
@@ -318,11 +320,11 @@ export function formatDate(date, formatPattern: string, locale?: string) {
 }
 
 export function getDay(date) {
-  return dayjs(date).get('day');
+  return dayjs(date).date();
 }
 
 export function getDayOfWeek(date) {
-  return dayjs(date).day();
+  return dayjs(date).day() + 1;
 }
 
 export function getMonth(date?: CustomDate | string) {
@@ -340,7 +342,7 @@ export function getYear(date?: CustomDate | string) {
 }
 
 export function getDateInMs(date: CustomDate | string) {
-  return dayjs(date).valueOf();
+  return dayjs(date).unix();
 }
 
 export function getTimezoneOffset(date) {
@@ -348,7 +350,7 @@ export function getTimezoneOffset(date) {
 }
 
 export function getUTCDate(date: CustomDate) {
-  return date.utc().valueOf();
+  return date.utc().unix();
 }
 
 export function getUTCDayOfWeek(date: CustomDate) {
