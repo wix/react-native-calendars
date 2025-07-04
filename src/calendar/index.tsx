@@ -252,7 +252,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
     days.forEach((day: CustomDate, id2: number) => {
       week.push(renderDay(day, id2));
-    }, this);
+    });
 
     if (props.showWeekNumbers) {
       week.unshift(renderWeekNumber(getWeekOfYear(days[days.length - 1])));

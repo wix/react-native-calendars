@@ -50,6 +50,9 @@ function setupLocale() {
 }
 
 export function isValidDate(date) {
+  if (!date) {
+    return false;
+  }
   return dayjs(date).isValid();
 }
 
@@ -57,14 +60,14 @@ export function sameMonth(a?: CustomDate, b?: CustomDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
-  return a?.isSame(b, 'year') && a?.isSame(b, 'month');
+  return dayjs(a)?.isSame(dayjs(b), 'year') && dayjs(a)?.isSame(dayjs(b), 'month');
 }
 
 export function sameDate(a?: CustomDate, b?: CustomDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
-  return a?.isSame(b, 'date');
+  return dayjs(a)?.isSame(dayjs(b), 'date');
 }
 
 export function onSameDateRange({
@@ -105,11 +108,17 @@ export function isToday(date) {
 }
 
 export function isGTE(a: CustomDate, b: CustomDate) {
-  return a.isSameOrAfter(b);
+  if (!isValidDate(a) || !isValidDate(b)) {
+    return undefined;
+  }
+  return dayjs(a).isSameOrAfter(dayjs(b));
 }
 
 export function isLTE(a: CustomDate, b: CustomDate) {
-  return a.isSameOrBefore(b);
+  if (!isValidDate(a) || !isValidDate(b)) {
+    return undefined;
+  }
+  return dayjs(a).isSameOrBefore(dayjs(b));
 }
 
 export function formatNumbers(date) {
@@ -267,7 +276,7 @@ export function dateToData(date: CustomDate | string) {
   const dateString = toMarkingFormat(d);
   return {
     year: getYear(d),
-    month: getMonth(d) + 1,
+    month: getMonth(d),
     day: getDay(d),
     timestamp: getDateInMs(dateString),
     dateString
@@ -275,6 +284,9 @@ export function dateToData(date: CustomDate | string) {
 }
 
 export function parseDate(d?) {
+  if (!d || !isValidDate(d)) {
+    return undefined;
+  }
   if (d?.timestamp) {
     return getDate(d.timestamp);
   }
@@ -314,9 +326,9 @@ export function getTodayInMarkingFormat() {
 export function formatDate(date, formatPattern: string, locale?: string) {
   let parsedDate = parseDate(date);
   if (locale) {
-    parsedDate = parsedDate.locale(locale);
+    parsedDate = parsedDate?.locale(locale);
   }
-  return parsedDate.format(formatPattern);
+  return parsedDate?.format(formatPattern);
 }
 
 export function getDay(date) {
@@ -342,7 +354,7 @@ export function getYear(date?: CustomDate | string) {
 }
 
 export function getDateInMs(date: CustomDate | string) {
-  return dayjs(date).unix();
+  return dayjs(date).valueOf();
 }
 
 export function getTimezoneOffset(date) {
@@ -350,7 +362,7 @@ export function getTimezoneOffset(date) {
 }
 
 export function getUTCDate(date: CustomDate) {
-  return date.utc().unix();
+  return date.utc().valueOf();
 }
 
 export function getUTCDayOfWeek(date: CustomDate) {
