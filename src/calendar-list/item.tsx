@@ -62,8 +62,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
 
   const _onPressArrowLeft = useCallback(
     (method: () => void, month?: CalendarsDate) => {
-      let monthClone = getDate(month);
-      if (monthClone) {
+      if (month) {
+        let monthClone = getDate(month);
         if (onPressArrowLeft) {
           onPressArrowLeft(method, monthClone);
         } else if (scrollToMonth) {
@@ -82,8 +82,8 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
 
   const _onPressArrowRight = useCallback(
     (method: () => void, month?: CalendarsDate) => {
-      let monthClone = getDate(month);
-      if (monthClone) {
+      if (month) {
+        let monthClone = getDate(month);
         if (onPressArrowRight) {
           onPressArrowRight(method, monthClone);
         } else if (scrollToMonth) {

@@ -25,6 +25,14 @@ dayjs.extend(updateLocalePlugin);
 
 export type CalendarsDate = Dayjs | string | number | Date;
 
+export type DateToData = {
+  year: number;
+  month: number;
+  day: number;
+  timestamp: number;
+  dateString: string;
+};
+
 export const LocaleConfig: {
   defaultLocale: string;
   locales: Record<string, any>;
@@ -109,14 +117,14 @@ export function isToday(date) {
 
 export function isGTE(a: CalendarsDate, b: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
-    return undefined;
+    return false;
   }
   return dayjs(a).isSameOrAfter(dayjs(b));
 }
 
 export function isLTE(a: CalendarsDate, b: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
-    return undefined;
+    return false;
   }
   return dayjs(a).isSameOrBefore(dayjs(b));
 }
@@ -271,7 +279,7 @@ export function padNumber(n: number) {
   return n;
 }
 
-export function dateToData(date: CalendarsDate | string) {
+export function dateToData(date: CalendarsDate | string): DateToData {
   const d = getDate(date);
   const dateString = toMarkingFormat(d);
   return {
@@ -284,9 +292,9 @@ export function dateToData(date: CalendarsDate | string) {
 }
 
 export function parseDate(d?) {
-  if (!d || !isValidDate(d)) {
-    return undefined;
-  }
+  // if (!d || !isValidDate(d)) {
+  // 	return undefined;
+  // }
   if (d?.timestamp) {
     return getDate(d.timestamp);
   }
@@ -315,7 +323,7 @@ export function getCurrentDate() {
   return dayjs();
 }
 
-export function getDate(date: CalendarsDate) {
+export function getDate(date: CalendarsDate | undefined | null) {
   return dayjs(date);
 }
 
@@ -323,7 +331,7 @@ export function getTodayInMarkingFormat() {
   return toMarkingFormat(getCurrentDate());
 }
 
-export function formatDate(date: CalendarsDate, formatPattern: string, locale?: string) {
+export function formatDate(date: CalendarsDate | DateToData, formatPattern: string, locale?: string) {
   let parsedDate = parseDate(date);
   if (locale) {
     parsedDate = parsedDate?.locale(locale);
