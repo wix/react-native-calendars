@@ -216,11 +216,11 @@ describe('dateutils', () => {
 
       days = page(buildDate(2014, 2, 1));
       for (i = 0, len = days.length - 1; i < len; i++) {
-        expect(days[i].diffDays(days[i + 1])).toBe(1);
+        expect(getDiffInDays(days[i], days[i + 1])).toBe(1);
       }
       days = page(buildDate(2014, 9, 1));
       for (i = 0, len = days.length - 1; i < len; i++) {
-        expect(days[i].diffDays(days[i + 1])).toBe(1);
+        expect(getDiffInDays(days[i], days[i + 1])).toBe(1);
       }
     });
   });

@@ -69,7 +69,7 @@ const CalendarList = (props: CalendarListProps) => {
       if (!month) {
         return -1;
       }
-      return items.findIndex(item => item.includes(formatDate(month, 'yyyy-MM')));
+      return items.findIndex(item => item.includes(formatDate(month, 'YYYY-MM')));
     },
     [items]
   );

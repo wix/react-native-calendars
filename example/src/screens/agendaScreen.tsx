@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {Agenda, DateData, AgendaEntry, AgendaSchedule} from 'react-native-calendars';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Agenda, type AgendaEntry, type AgendaSchedule, type DateData} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 interface State {
@@ -37,7 +37,7 @@ export default class AgendaScreen extends Component<State> {
         //    '2017-05-24': {startingDay: true, color: 'gray'},
         //    '2017-05-25': {color: 'gray'},
         //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-        // monthFormat={'yyyy'}
+        // monthFormat={'YYYY'}
         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
         // renderDay={this.renderDay}
         // hideExtraDays={false}
@@ -83,7 +83,7 @@ export default class AgendaScreen extends Component<State> {
     if (day) {
       return <Text style={styles.customDay}>{day.getDay()}</Text>;
     }
-    return <View style={styles.dayItem}/>;
+    return <View style={styles.dayItem} />;
   };
 
   renderItem = (reservation: AgendaEntry, isFirst: boolean) => {

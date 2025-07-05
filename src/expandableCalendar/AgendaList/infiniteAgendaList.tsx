@@ -29,7 +29,7 @@ const InfiniteAgendaList = ({
   renderSectionHeader,
   sectionStyle,
   dayFormatter,
-  dayFormat = 'dddd, MMM d',
+  dayFormat = 'dddd, MMM D',
   markToday = true,
   infiniteListProps,
   renderItem,

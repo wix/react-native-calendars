@@ -10,8 +10,6 @@ import {
   getDayOfMonth,
   getDayOfWeek,
   getMonth,
-  getUTCDayOfMonth,
-  getUTCDayOfWeek,
   getYear,
   setDayOfMonth,
   toMarkingFormat
@@ -342,8 +340,8 @@ describe('ExpandableCalendar', () => {
       it('should call onMonthChange when new week first day is in a different month', () => {
         const endOfMonth = buildDate(getYear(), getMonth(), 0);
         const diff =
-          Math.ceil(getUTCDayOfMonth(endOfMonth) + 1 - getUTCDayOfMonth(today) / 7) +
-          (getUTCDayOfWeek(today) > getUTCDayOfWeek(endOfMonth) ? 1 : 0);
+          Math.ceil(getDayOfMonth(endOfMonth, true) + 1 - getDayOfMonth(today, true) / 7) +
+          (getDayOfWeek(today, true) > getDayOfWeek(endOfMonth, true) ? 1 : 0);
         const expectedDate = setDayOfMonth(today, getDayOfMonth(today) + 7 * diff - getDayOfWeek(today));
         times(diff, () => driver.pressOnHeaderArrow({left: false}));
         expect(onMonthChange).toHaveBeenCalledWith(dateToData(expectedDate), UpdateSources.PAGE_SCROLL);

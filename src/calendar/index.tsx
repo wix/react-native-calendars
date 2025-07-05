@@ -121,10 +121,14 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   }, [initialDate]);
 
   useDidUpdate(() => {
+    if (!currentMonth) {
+      console.log(`UNDEfINED - ${currentMonth}`);
+    }
     const _currentMonth = getDate(currentMonth);
-    onMonthChange?.(dateToData(_currentMonth));
-    onVisibleMonthsChange?.([dateToData(_currentMonth)]);
-    AccessibilityInfo.announceForAccessibility(formatDate(_currentMonth, 'MMMM yyyy'));
+    const currentMonthToData = dateToData(_currentMonth);
+    onMonthChange?.(currentMonthToData);
+    onVisibleMonthsChange?.([currentMonthToData]);
+    AccessibilityInfo.announceForAccessibility(formatDate(_currentMonth, 'MMMM YYYY'));
   }, [currentMonth]);
 
   const updateMonth = useCallback(

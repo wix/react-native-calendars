@@ -588,7 +588,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   };
 
   const renderAnimatedHeader = () => {
-    const monthYear = formatDate(getDate(date), 'MMMM yyyy');
+    const monthYear = formatDate(getDate(date), 'MMMM YYYY');
     return (
       <Animated.View ref={header} style={animatedHeaderStyle} pointerEvents={'none'}>
         <Text allowFontScaling={false} style={style.current.headerTitle}>

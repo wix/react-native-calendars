@@ -1,4 +1,4 @@
-import dayjs, {type Dayjs} from 'dayjs';
+import dayjs, {type ConfigType} from 'dayjs';
 import customParseFormatPlugin from 'dayjs/plugin/customParseFormat';
 import isSameOrAfterPlugin from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBeforePlugin from 'dayjs/plugin/isSameOrBefore';
@@ -23,7 +23,7 @@ dayjs.extend(timezonePlugin);
 dayjs.extend(objectSupportPlugin);
 dayjs.extend(updateLocalePlugin);
 
-export type CalendarsDate = Dayjs | string | number | Date;
+export type CalendarsDate = ConfigType;
 
 export type DateToData = {
   year: number;
@@ -50,7 +50,7 @@ function setupLocale() {
         dayNamesShort: dayjs.weekdaysShort(),
         today: 'Today',
         numbers: [],
-        formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy"
+        formatAccessibilityLabel: "dddd D 'of' MMMM 'of' YYYY"
       }
     },
     defaultLocale: dayjs.locale(defaultLocale)
@@ -103,8 +103,8 @@ export function onSameDateRange({
 }
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
-  const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
-  return weekDates.includes(getDate(b) as Dayjs & string);
+  const weekDates = getWeekDates(a, firstDayOfWeek, 'YYYY-MM-DD');
+  return weekDates.includes(getDate(b));
 }
 
 export function isPastDate(date: string) {
@@ -132,7 +132,9 @@ export function isLTE(a: CalendarsDate, b: CalendarsDate) {
 export function formatNumbers(date) {
   const latinNumbersPattern = /[0-9]/g;
   const numbers = getLocale()?.numbers;
-  return numbers ? date.toString().replace(latinNumbersPattern, char => numbers[+char]) : date;
+  return Array.isArray(numbers) && numbers.length > 0
+    ? date.toString().replace(latinNumbersPattern, char => numbers[+char])
+    : date;
 }
 
 function fromTo(a: CalendarsDate, b: CalendarsDate) {
@@ -288,23 +290,28 @@ export function dateToData(date: CalendarsDate | string): DateToData {
   };
 }
 
-export function parseDate(d?) {
-  // if (!d || !isValidDate(d)) {
-  // 	return undefined;
-  // }
-  if (d?.timestamp) {
-    return getDate(d.timestamp);
-  }
-  if (d?.year) {
-    return buildDate(d?.year, padNumber(d?.month), padNumber(d?.day));
-  }
-  if (d?.dateString) {
-    return getDate(d.dateString);
-  }
-  return getDate(d);
+function isStrOrNumber(value) {
+  return typeof value === 'string' || typeof value === 'number';
 }
 
-export function toMarkingFormat(d) {
+export function parseDate(d?) {
+  if (!isValidDate(d)) {
+    return undefined;
+  }
+  const isUTC = true;
+  if (d?.timestamp && isStrOrNumber(d.timestamp)) {
+    return getDate(d.timestamp, isUTC);
+  }
+  if (d?.year && isStrOrNumber(d.year)) {
+    return buildDate(d?.year, padNumber(d?.month), padNumber(d?.day), isUTC);
+  }
+  if (d?.dateString && isStrOrNumber(d.dateString)) {
+    return getDate(d.dateString, isUTC);
+  }
+  return getDate(d, isUTC);
+}
+
+export function toMarkingFormat(d: CalendarsDate) {
   if (!isValidDate(d)) {
     return 'Invalid Date';
   }
@@ -320,7 +327,10 @@ export function getCurrentDate() {
   return dayjs();
 }
 
-export function getDate(date: CalendarsDate | undefined | null) {
+export function getDate(date: CalendarsDate, isUTC = false) {
+  if (isUTC) {
+    return dayjs(date).utc();
+  }
   return dayjs(date);
 }
 
@@ -336,11 +346,17 @@ export function formatDate(date: CalendarsDate | DateToData, formatPattern: stri
   return parsedDate?.format(formatPattern);
 }
 
-export function getDayOfMonth(date: CalendarsDate) {
+export function getDayOfMonth(date: CalendarsDate, isUTC = false) {
+  if (isUTC) {
+    return dayjs(date).utc().date();
+  }
   return dayjs(date).date();
 }
 
-export function getDayOfWeek(date: CalendarsDate) {
+export function getDayOfWeek(date: CalendarsDate, isUTC = false) {
+  if (isUTC) {
+    return dayjs(date).utc().day();
+  }
   return dayjs(date).day();
 }
 
@@ -358,24 +374,15 @@ export function getYear(date?: CalendarsDate) {
   return dayjs(date).year();
 }
 
-export function getDateInMs(date: CalendarsDate) {
+export function getDateInMs(date: CalendarsDate, isUTC = false) {
+  if (isUTC) {
+    return dayjs(date).utc().valueOf();
+  }
   return dayjs(date).valueOf();
 }
 
 export function getTimezoneOffset(date: CalendarsDate) {
   return dayjs(date).utcOffset();
-}
-
-export function getUTCDate(date: CalendarsDate) {
-  return dayjs(date).utc().valueOf();
-}
-
-export function getUTCDayOfWeek(date: CalendarsDate) {
-  return dayjs(date).utc().day();
-}
-
-export function getUTCDayOfMonth(date: CalendarsDate) {
-  return dayjs(date).utc().date();
 }
 
 export function getStartOfDay(date: CalendarsDate) {
@@ -437,6 +444,9 @@ export function getISODateString(date: CalendarsDate) {
   return dayjs(date).toISOString();
 }
 
-export function buildDate(year: number | string, month: number | string, day: number | string) {
+export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
+  if (isUTC) {
+    return dayjs.utc({year, month, day});
+  }
   return dayjs({year, month, day});
 }

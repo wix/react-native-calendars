@@ -12,7 +12,7 @@ import CalendarContext from './index';
 import TodayButton, {TodayButtonImperativeMethods} from './todayButton';
 
 export interface CalendarContextProviderProps extends ViewProps {
-  /** Initial date in 'yyyy-MM-dd' format. Default = now */
+  /** Initial date in 'YYYY-MM-DD' format. Default = now */
   date: string; //TODO: rename 'initialDate'
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;

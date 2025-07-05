@@ -51,7 +51,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     sectionStyle,
     keyExtractor,
     dayFormatter,
-    dayFormat = 'dddd, MMM d',
+    dayFormat = 'dddd, MMM D',
     markToday = true,
     onViewableItemsChanged
   } = props;

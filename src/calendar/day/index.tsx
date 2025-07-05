@@ -58,7 +58,7 @@ const Day = React.memo((props: DayProps) => {
 
   const getAccessibilityLabel = useMemo(() => {
     const today = getDefaultLocale().today || 'today';
-    const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd d MMMM yyyy';
+    const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd D MMMM YYYY';
 
     return `${_isToday ? today : ''} ${formatDate(_date, formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
   }, [_date, marking, _isToday]);

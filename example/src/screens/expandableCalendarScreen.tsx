@@ -56,7 +56,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       });
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
-          <Text style={styles.headerTitle}>{formatDate(date, 'MMMM yyyy')}</Text>
+          <Text style={styles.headerTitle}>{formatDate(date, 'MMMM YYYY')}</Text>
           <Animated.Image
             source={CHEVRON}
             style={{
@@ -118,7 +118,7 @@ const ExpandableCalendarScreen = (props: Props) => {
         renderItem={renderItem}
         // scrollToNextEvent
         sectionStyle={styles.section}
-        // dayFormat={'yyyy-MM-d'}
+        // dayFormat={'YYYY-MM-D'}
       />
     </CalendarProvider>
   );

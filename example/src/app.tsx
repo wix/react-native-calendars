@@ -8,7 +8,7 @@ import MenuScreen from './screens/menuScreen';
 /** Locale */
 
 LocaleConfig.locales.en = {
-  formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy",
+  formatAccessibilityLabel: "dddd D 'of' MMMM 'of' YYYY",
   monthNames: [
     'January',
     'February',
@@ -49,7 +49,7 @@ LocaleConfig.locales.fr = {
   today: "Aujourd'hui"
 };
 LocaleConfig.locales.he = {
-  formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy",
+  formatAccessibilityLabel: "dddd D 'of' MMMM 'of' YYYY",
   monthNames: [
     'ינואר',
     'פברואר',
