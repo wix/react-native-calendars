@@ -148,12 +148,12 @@ function fromTo(a: CalendarsDate, b: CalendarsDate) {
 
 export function month(date: CalendarsDate) {
   // exported for tests only
-  const days = dayjs(date).daysInMonth();
-  const daysArr: number[] = [];
-  for (let i = 1; i <= days; i += 1) {
-    daysArr.push(i);
-  }
-  return daysArr;
+  const year = getYear(date);
+  const month = getMonth(date);
+  const days = getDayOfMonth(date);
+  const firstDay = buildDate(year, month, 1);
+  const lastDay = buildDate(year, month, days);
+  return fromTo(firstDay, lastDay);
 }
 
 export function weekDayNames(firstDayOfWeek = 0) {
@@ -176,25 +176,22 @@ export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = fal
   const fdow = (7 + firstDayOfWeek) % 7 || 7;
   const ldow = (fdow + 6) % 7;
 
-  firstDayOfWeek = firstDayOfWeek || 0;
-
-  const from = getDate(days[0]);
+  let from = getDate(days[0]);
   const daysBefore = getDayOfWeek(from);
 
   if (daysBefore !== fdow) {
-    addDaysToDate(from, -(daysBefore + 7 - fdow) % 7);
+    from = addDaysToDate(from, -(daysBefore + 7 - fdow) % 7);
   }
 
-  const to = getDate(days[days.length - 1]);
+  let to = getDate(days[days.length - 1]);
   const day = getDayOfWeek(to);
   if (day !== ldow) {
-    addDaysToDate(to, (ldow + 7 - day) % 7);
+    to = addDaysToDate(to, (ldow + 7 - day) % 7);
   }
 
   const daysForSixWeeks = (daysBefore + days.length) / 6 >= 6;
-
   if (showSixWeeks && !daysForSixWeeks) {
-    addDaysToDate(to, 7);
+    to = addDaysToDate(to, 7);
   }
 
   const firstDate = getDate(days[0]);

@@ -185,7 +185,7 @@ describe('dateutils', () => {
 
   describe('page()', () => {
     it('2014 March', () => {
-      const days = page(buildDate(2014, 2, 23, true));
+      const days = page(buildDate(2014, 2, 23));
       expect(days.length).toBe(42);
       expect(days[0].toString()).toBe(buildDate(2014, 1, 23).toString());
       expect(days[days.length - 1].toString()).toBe(buildDate(2014, 3, 5).toString());
