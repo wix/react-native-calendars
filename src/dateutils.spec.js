@@ -84,17 +84,17 @@ describe('dateutils', () => {
     it('a is undefined', () => {
       const a = undefined;
       const b = buildDate(2014, 1, 20);
-      expect(isLTE(b, a)).toBe(undefined);
+      expect(isLTE(b, a)).toBe(false);
     });
 
     it('b is undefined', () => {
       const a = buildDate(2013, 12, 31);
       const b = undefined;
-      expect(isLTE(b, a)).toBe(undefined);
+      expect(isLTE(b, a)).toBe(false);
     });
 
     it('both are undefined', () => {
-      expect(isLTE(undefined, undefined)).toBe(undefined);
+      expect(isLTE(undefined, undefined)).toBe(false);
     });
 
     it('2014-01-20 >= 2013-12-31', () => {
@@ -127,17 +127,17 @@ describe('dateutils', () => {
     it('a is undefined', () => {
       const a = undefined;
       const b = buildDate(2014, 1, 20);
-      expect(isGTE(b, a)).toBe(undefined);
+      expect(isGTE(b, a)).toBe(false);
     });
 
     it('b is undefined', () => {
       const a = buildDate(2013, 12, 31);
       const b = undefined;
-      expect(isGTE(b, a)).toBe(undefined);
+      expect(isGTE(b, a)).toBe(false);
     });
 
     it('both are undefined', () => {
-      expect(isGTE(undefined, undefined)).toBe(undefined);
+      expect(isGTE(undefined, undefined)).toBe(false);
     });
 
     it('2014-01-20 >= 2013-12-31', () => {
