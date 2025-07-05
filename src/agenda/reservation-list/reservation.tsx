@@ -4,7 +4,7 @@ import type React from 'react';
 import {Component} from 'react';
 import {Text, View} from 'react-native';
 
-import {type CustomDate, getDateInMs, getDay, isToday} from '../../dateutils';
+import {type CustomDate, getDateInMs, getDayOfMonth, getDayOfWeek, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 import {RESERVATION_DATE} from '../../testIDs';
 import type {AgendaEntry, Theme} from '../../types';
@@ -85,10 +85,10 @@ class Reservation extends Component<ReservationProps> {
       return (
         <View style={this.style.day} testID={RESERVATION_DATE}>
           <Text allowFontScaling={false} style={[this.style.dayNum, today]}>
-            {getDay(date)}
+            {getDayOfMonth(date)}
           </Text>
           <Text allowFontScaling={false} style={[this.style.dayText, today]}>
-            {dayNames ? dayNames[getDay(date)] : undefined}
+            {dayNames ? dayNames[getDayOfWeek(date)] : undefined}
           </Text>
         </View>
       );

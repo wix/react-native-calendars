@@ -6,7 +6,7 @@ import {
   addMonthsToDate,
   type CustomDate,
   getDate,
-  getDay,
+  getDayOfMonth,
   getMonth,
   setDayOfMonth,
   subtractMonthsToDate,
@@ -71,7 +71,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
           const previousMonth = subtractMonthsToDate(monthClone, 1);
           // Make sure we actually get the previous month, not just 30 days before currentMonth.
           while (getMonth(previousMonth) === currentMonth) {
-            monthClone = setDayOfMonth(monthClone, getDay(monthClone) - 1);
+            monthClone = setDayOfMonth(monthClone, getDayOfMonth(monthClone) - 1);
           }
           scrollToMonth(monthClone);
         }

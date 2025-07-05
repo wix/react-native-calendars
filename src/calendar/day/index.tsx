@@ -3,7 +3,7 @@ import omit from 'lodash/omit';
 import some from 'lodash/some';
 import React, {useMemo} from 'react';
 
-import {dateToData, formatDate, formatNumbers, getCurrentDate, getDate, getDay, isToday} from '../../dateutils';
+import {dateToData, formatDate, formatNumbers, getCurrentDate, getDate, getDayOfMonth, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 import type {DateData} from '../../types';
 import BasicDay, {type BasicDayProps} from './basic';
@@ -69,7 +69,7 @@ const Day = React.memo((props: DayProps) => {
   return (
     //@ts-expect-error
     <Component {...props} accessibilityLabel={getAccessibilityLabel} {...dayComponentProps}>
-      {formatNumbers(getDay(_date))}
+      {formatNumbers(getDayOfMonth(_date))}
     </Component>
   );
 }, areEqual);

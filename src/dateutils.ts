@@ -171,14 +171,14 @@ export function page(date: CustomDate, firstDayOfWeek = 0, showSixWeeks = false)
   firstDayOfWeek = firstDayOfWeek || 0;
 
   const from = getDate(days[0]);
-  const daysBefore = getDay(from);
+  const daysBefore = getDayOfWeek(from);
 
   if (daysBefore !== fdow) {
     addDaysToDate(from, -(daysBefore + 7 - fdow) % 7);
   }
 
   const to = getDate(days[days.length - 1]);
-  const day = getDay(to);
+  const day = getDayOfWeek(to);
   if (day !== ldow) {
     addDaysToDate(to, (ldow + 7 - day) % 7);
   }
@@ -212,7 +212,7 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
   const daysArray: CustomDate[] = [];
   if (date && isValidDate(date)) {
     daysArray.push(d);
-    let dayOfTheWeek = getDay(d) - firstDay;
+    let dayOfTheWeek = getDayOfWeek(d) - firstDay;
     if (dayOfTheWeek < 0) {
       // to handle firstDay > 0
       dayOfTheWeek = 7 + dayOfTheWeek;
@@ -277,7 +277,7 @@ export function dateToData(date: CustomDate | string) {
   return {
     year: getYear(d),
     month: getMonth(d),
-    day: getDay(d),
+    day: getDayOfMonth(d),
     timestamp: getDateInMs(dateString),
     dateString
   };
@@ -305,7 +305,7 @@ export function toMarkingFormat(d) {
   }
   const year = getYear(d);
   const month = getMonth(d);
-  const day = getDay(d);
+  const day = getDayOfMonth(d);
   const doubleDigitMonth = month < 10 ? `0${month}` : `${month}`;
   const doubleDigitDay = day < 10 ? `0${day}` : `${day}`;
   return `${year}-${doubleDigitMonth}-${doubleDigitDay}`;
@@ -331,12 +331,12 @@ export function formatDate(date, formatPattern: string, locale?: string) {
   return parsedDate?.format(formatPattern);
 }
 
-export function getDay(date) {
+export function getDayOfMonth(date) {
   return dayjs(date).date();
 }
 
 export function getDayOfWeek(date) {
-  return dayjs(date).day() + 1;
+  return dayjs(date).day();
 }
 
 export function getMonth(date?: CustomDate | string) {

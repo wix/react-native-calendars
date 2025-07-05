@@ -37,7 +37,7 @@ import {
   type CustomDate,
   formatDate,
   getDate,
-  getDay,
+  getDayOfWeek,
   getMonth,
   getYear,
   page,
@@ -344,7 +344,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
           d = setDayOfMonth(d, 1);
           d = addMonthsToDate(d, next ? 1 : -1);
         } else {
-          let dayOfTheWeek = getDay(d);
+          let dayOfTheWeek = getDayOfWeek(d);
 
           if (dayOfTheWeek < firstDay && firstDay > 0) {
             dayOfTheWeek = 7 + dayOfTheWeek;

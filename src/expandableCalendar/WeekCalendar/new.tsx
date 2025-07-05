@@ -8,7 +8,7 @@ import {
   addDaysToDate,
   addWeeksToDate,
   getDate as getDateFromUtils,
-  getDay,
+  getDayOfMonth,
   sameWeek,
   toMarkingFormat
 } from '../../dateutils';
@@ -153,7 +153,7 @@ function getDate(date: string, firstDay: number, weekIndex: number) {
   // const d = getDateFromUtils(current || context.date);
   const d = getDateFromUtils(date);
   // get the first day of the week as date (for the on scroll mark)
-  let dayOfTheWeek = getDay(d);
+  let dayOfTheWeek = getDayOfMonth(d);
   if (dayOfTheWeek < firstDay && firstDay > 0) {
     dayOfTheWeek = 7 + dayOfTheWeek;
   }

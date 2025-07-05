@@ -7,7 +7,7 @@ import {
   buildDate,
   dateToData,
   getCurrentDate,
-  getDay,
+  getDayOfMonth,
   getDayOfWeek,
   getMonth,
   getUTCDayOfMonth,
@@ -318,7 +318,7 @@ describe('ExpandableCalendar', () => {
         ['last', Direction.LEFT],
         ['next', Direction.RIGHT]
       ])(`should call onDateChanged to %s week first day when pressing %s arrow`, direction => {
-        const currentDay = getDay(today);
+        const currentDay = getDayOfWeek(today);
         const expectedDate = addDaysToDate(today, direction === Direction.LEFT ? -(currentDay + 7) : 7 - currentDay);
         driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
         expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
@@ -327,13 +327,13 @@ describe('ExpandableCalendar', () => {
       it(`should call onDateChanged for first day of initial week when changing to initial week`, () => {
         driver.pressOnHeaderArrow({left: false});
         driver.pressOnHeaderArrow({left: true});
-        const expectedDate = addDaysToDate(today, -getDay(today));
+        const expectedDate = addDaysToDate(today, -getDayOfWeek(today));
         expect(onDateChanged).toHaveBeenNthCalledWith(2, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
       it('should fetch next weeks when in last week of the list', () => {
         times(NUMBER_OF_PAGES + 1, () => driver.pressOnHeaderArrow({left: false}));
-        const currentDay = getDay(getCurrentDate());
+        const currentDay = getDayOfWeek(getCurrentDate());
         const expectedDate = addDaysToDate(today, 7 * (NUMBER_OF_PAGES + 1) - currentDay);
         const day = driver.getWeekDay(toMarkingFormat(expectedDate));
         expect(day).toBeDefined();
@@ -344,7 +344,7 @@ describe('ExpandableCalendar', () => {
         const diff =
           Math.ceil(getUTCDayOfMonth(endOfMonth) + 1 - getUTCDayOfMonth(today) / 7) +
           (getUTCDayOfWeek(today) > getUTCDayOfWeek(endOfMonth) ? 1 : 0);
-        const expectedDate = setDayOfMonth(today, getDay(today) + 7 * diff - getDayOfWeek(today));
+        const expectedDate = setDayOfMonth(today, getDayOfMonth(today) + 7 * diff - getDayOfWeek(today));
         times(diff, () => driver.pressOnHeaderArrow({left: false}));
         expect(onMonthChange).toHaveBeenCalledWith(dateToData(expectedDate), UpdateSources.PAGE_SCROLL);
       });
