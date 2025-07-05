@@ -105,7 +105,7 @@ export function onSameDateRange({
 }
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
-  return dayjs(a).weekday(firstDayOfWeek).isSame(b, 'week');
+  return dayjs(a).weekday(firstDayOfWeek).isSame(dayjs(b).weekday(firstDayOfWeek), 'week');
 }
 
 export function isPastDate(date: string) {
