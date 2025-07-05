@@ -2,6 +2,7 @@ import {
   buildDate,
   generateDay,
   getCurrentDate,
+  getDiffInDays,
   isGTE,
   isLTE,
   isPastDate,
