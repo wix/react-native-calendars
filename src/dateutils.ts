@@ -1,4 +1,4 @@
-import dayjs, {type ConfigType} from 'dayjs';
+import dayjs, {type Dayjs} from 'dayjs';
 import customParseFormatPlugin from 'dayjs/plugin/customParseFormat';
 import isSameOrAfterPlugin from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBeforePlugin from 'dayjs/plugin/isSameOrBefore';
@@ -9,6 +9,7 @@ import objectSupportPlugin from 'dayjs/plugin/objectSupport';
 import timezonePlugin from 'dayjs/plugin/timezone';
 import updateLocalePlugin from 'dayjs/plugin/updateLocale';
 import utcPlugin from 'dayjs/plugin/utc';
+import weekdayPlugin from 'dayjs/plugin/weekday';
 import weekOfYearPlugin from 'dayjs/plugin/weekOfYear';
 
 dayjs.extend(customParseFormatPlugin);
@@ -22,8 +23,9 @@ dayjs.extend(utcPlugin);
 dayjs.extend(timezonePlugin);
 dayjs.extend(objectSupportPlugin);
 dayjs.extend(updateLocalePlugin);
+dayjs.extend(weekdayPlugin);
 
-export type CalendarsDate = ConfigType;
+export type CalendarsDate = Dayjs | Date | string | number;
 
 export type DateToData = {
   year: number;
@@ -103,8 +105,7 @@ export function onSameDateRange({
 }
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
-  const weekDates = getWeekDates(a, firstDayOfWeek, 'YYYY-MM-DD');
-  return weekDates.includes(getDate(b));
+  return dayjs(a).weekday(firstDayOfWeek).isSame(b, 'week');
 }
 
 export function isPastDate(date: string) {
@@ -119,14 +120,14 @@ export function isGTE(a: CalendarsDate, b: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
-  return dayjs(a).isSameOrAfter(dayjs(b));
+  return dayjs(a).isSameOrAfter(dayjs(b), 'day');
 }
 
 export function isLTE(a: CalendarsDate, b: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
-  return dayjs(a).isSameOrBefore(dayjs(b));
+  return dayjs(a).isSameOrBefore(dayjs(b), 'day');
 }
 
 export function formatNumbers(date) {
