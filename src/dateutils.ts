@@ -23,7 +23,7 @@ dayjs.extend(timezonePlugin);
 dayjs.extend(objectSupportPlugin);
 dayjs.extend(updateLocalePlugin);
 
-export type CustomDate = Dayjs;
+export type CalendarsDate = Dayjs | string | number | Date;
 
 export const LocaleConfig: {
   defaultLocale: string;
@@ -56,14 +56,14 @@ export function isValidDate(date) {
   return dayjs(date).isValid();
 }
 
-export function sameMonth(a?: CustomDate, b?: CustomDate) {
+export function sameMonth(a?: CalendarsDate, b?: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
   return dayjs(a)?.isSame(dayjs(b), 'year') && dayjs(a)?.isSame(dayjs(b), 'month');
 }
 
-export function sameDate(a?: CustomDate, b?: CustomDate) {
+export function sameDate(a?: CalendarsDate, b?: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
@@ -107,14 +107,14 @@ export function isToday(date) {
   return dayjs(date).isToday();
 }
 
-export function isGTE(a: CustomDate, b: CustomDate) {
+export function isGTE(a: CalendarsDate, b: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return undefined;
   }
   return dayjs(a).isSameOrAfter(dayjs(b));
 }
 
-export function isLTE(a: CustomDate, b: CustomDate) {
+export function isLTE(a: CalendarsDate, b: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return undefined;
   }
@@ -127,10 +127,10 @@ export function formatNumbers(date) {
   return numbers ? date.toString().replace(latinNumbersPattern, char => numbers[+char]) : date;
 }
 
-function fromTo(a: CustomDate, b: CustomDate) {
-  const days: CustomDate[] = [];
-  let from = +a;
-  const to = +b;
+function fromTo(a: CalendarsDate, b: CalendarsDate) {
+  const days: CalendarsDate[] = [];
+  let from = getDateInMs(a);
+  const to = getDateInMs(b);
 
   for (; from <= to; from = getDateInMs(addDaysToDate(from, 1))) {
     days.push(getDate(from));
@@ -138,7 +138,7 @@ function fromTo(a: CustomDate, b: CustomDate) {
   return days;
 }
 
-export function month(date: CustomDate) {
+export function month(date: CalendarsDate) {
   // exported for tests only
   const days = dayjs(date).daysInMonth();
   const daysArr: number[] = [];
@@ -157,13 +157,13 @@ export function weekDayNames(firstDayOfWeek = 0) {
   return weekDaysNames;
 }
 
-export function page(date: CustomDate, firstDayOfWeek = 0, showSixWeeks = false) {
+export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = false) {
   if (!date) {
     return [];
   }
   const days = month(date);
-  let before: CustomDate[] = [];
-  let after: CustomDate[] = [];
+  let before: CalendarsDate[] = [];
+  let after: CalendarsDate[] = [];
 
   const fdow = (7 + firstDayOfWeek) % 7 || 7;
   const ldow = (fdow + 6) % 7;
@@ -203,13 +203,13 @@ export function page(date: CustomDate, firstDayOfWeek = 0, showSixWeeks = false)
   return before.concat(slicedDays, after);
 }
 
-export function isDateNotInRange(date: CustomDate, minDate: string, maxDate: string) {
+export function isDateNotInRange(date: CalendarsDate, minDate: string, maxDate: string) {
   return (minDate && !isGTE(date, getDate(minDate))) || (maxDate && !isLTE(date, getDate(maxDate)));
 }
 
 export function getWeekDates(date: string, firstDay = 0, format?: string) {
   const d = getDate(date);
-  const daysArray: CustomDate[] = [];
+  const daysArray: CalendarsDate[] = [];
   if (date && isValidDate(date)) {
     daysArray.push(d);
     let dayOfTheWeek = getDayOfWeek(d) - firstDay;
@@ -251,7 +251,7 @@ export function getPartialWeekDates(date?: string, numberOfDays = 7) {
   return partialWeek;
 }
 
-export function generateDay(originDate: string | CustomDate, daysOffset = 0) {
+export function generateDay(originDate: string | CalendarsDate, daysOffset = 0) {
   const baseDate = getDate(originDate);
   return toMarkingFormat(addDaysToDate(baseDate, daysOffset));
 }
@@ -271,7 +271,7 @@ export function padNumber(n: number) {
   return n;
 }
 
-export function dateToData(date: CustomDate | string) {
+export function dateToData(date: CalendarsDate | string) {
   const d = getDate(date);
   const dateString = toMarkingFormat(d);
   return {
@@ -315,7 +315,7 @@ export function getCurrentDate() {
   return dayjs();
 }
 
-export function getDate(date) {
+export function getDate(date: CalendarsDate) {
   return dayjs(date);
 }
 
@@ -323,7 +323,7 @@ export function getTodayInMarkingFormat() {
   return toMarkingFormat(getCurrentDate());
 }
 
-export function formatDate(date, formatPattern: string, locale?: string) {
+export function formatDate(date: CalendarsDate, formatPattern: string, locale?: string) {
   let parsedDate = parseDate(date);
   if (locale) {
     parsedDate = parsedDate?.locale(locale);
@@ -331,104 +331,104 @@ export function formatDate(date, formatPattern: string, locale?: string) {
   return parsedDate?.format(formatPattern);
 }
 
-export function getDayOfMonth(date) {
+export function getDayOfMonth(date: CalendarsDate) {
   return dayjs(date).date();
 }
 
-export function getDayOfWeek(date) {
+export function getDayOfWeek(date: CalendarsDate) {
   return dayjs(date).day();
 }
 
-export function getMonth(date?: CustomDate | string) {
+export function getMonth(date?: CalendarsDate) {
   if (!date) {
     return getCurrentDate().month() + 1;
   }
   return dayjs(date).month() + 1;
 }
 
-export function getYear(date?: CustomDate | string) {
+export function getYear(date?: CalendarsDate) {
   if (!date) {
     return getCurrentDate().year();
   }
   return dayjs(date).year();
 }
 
-export function getDateInMs(date: CustomDate | string) {
+export function getDateInMs(date: CalendarsDate) {
   return dayjs(date).valueOf();
 }
 
-export function getTimezoneOffset(date) {
+export function getTimezoneOffset(date: CalendarsDate) {
   return dayjs(date).utcOffset();
 }
 
-export function getUTCDate(date: CustomDate) {
-  return date.utc().valueOf();
+export function getUTCDate(date: CalendarsDate) {
+  return dayjs(date).utc().valueOf();
 }
 
-export function getUTCDayOfWeek(date: CustomDate) {
-  return date.utc().day();
+export function getUTCDayOfWeek(date: CalendarsDate) {
+  return dayjs(date).utc().day();
 }
 
-export function getUTCDayOfMonth(date: CustomDate) {
-  return date.utc().date();
+export function getUTCDayOfMonth(date: CalendarsDate) {
+  return dayjs(date).utc().date();
 }
 
-export function getStartOfDay(date: CustomDate) {
+export function getStartOfDay(date: CalendarsDate) {
   return dayjs(date).startOf('day');
 }
 
-export function addHourToDate(date, manyHours: number) {
+export function addHourToDate(date: CalendarsDate, manyHours: number) {
   return dayjs(date).add(manyHours, 'hour');
 }
 
-export function addDaysToDate(date, manyDays: number) {
+export function addDaysToDate(date: CalendarsDate, manyDays: number) {
   return dayjs(date).add(manyDays, 'day');
 }
 
-export function addWeeksToDate(date, manyWeeks: number) {
+export function addWeeksToDate(date: CalendarsDate, manyWeeks: number) {
   return dayjs(date).add(manyWeeks, 'week');
 }
 
-export function subtractDaysToDate(date, manyDays: number) {
+export function subtractDaysToDate(date: CalendarsDate, manyDays: number) {
   return dayjs(date).subtract(manyDays, 'day');
 }
 
-export function addMonthsToDate(date, manyMonths: number) {
+export function addMonthsToDate(date: CalendarsDate, manyMonths: number) {
   return dayjs(date).add(manyMonths, 'month');
 }
 
-export function subtractMonthsToDate(date, manyMonths: number) {
+export function subtractMonthsToDate(date: CalendarsDate, manyMonths: number) {
   return dayjs(date).subtract(manyMonths, 'month');
 }
 
-export function getDiffInHour(start: CustomDate, end: CustomDate) {
-  return start.diff(end, 'hour');
+export function getDiffInHour(start: CalendarsDate, end: CalendarsDate) {
+  return dayjs(start).diff(dayjs(end), 'hour');
 }
 
-export function getDiffInDays(start: CustomDate, end: CustomDate) {
-  return start.diff(end, 'day');
+export function getDiffInDays(start: CalendarsDate, end: CalendarsDate) {
+  return dayjs(start).diff(dayjs(end), 'day');
 }
 
-export function getDiffInMonths(start: CustomDate, end: CustomDate) {
-  return start.diff(end, 'month');
+export function getDiffInMonths(start: CalendarsDate, end: CalendarsDate) {
+  return dayjs(start).diff(dayjs(end), 'month');
 }
 
-export function setDayOfMonth(date, dayOfMonth: number) {
+export function setDayOfMonth(date: CalendarsDate, dayOfMonth: number) {
   return dayjs(date).date(dayOfMonth);
 }
 
-export function getWeekOfYear(date) {
+export function getWeekOfYear(date: CalendarsDate) {
   return dayjs(date).week();
 }
 
-export function getDateAsString(date?): string {
+export function getDateAsString(date?: CalendarsDate): string {
   if (!date) {
     return getCurrentDate().toString();
   }
   return dayjs(date).toString();
 }
 
-export function getISODateString(date) {
+export function getISODateString(date: CalendarsDate) {
   return dayjs(date).toISOString();
 }
 

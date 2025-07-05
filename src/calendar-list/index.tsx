@@ -9,7 +9,7 @@ import constants from '../commons/constants';
 import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
 import {
   addMonthsToDate,
-  type CustomDate,
+  type CalendarsDate,
   dateToData,
   formatDate,
   getCurrentDate,
@@ -53,8 +53,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
 }
 
 export interface CalendarListImperativeMethods {
-  scrollToDay: (date: CustomDate | string, offset: number, animated: boolean) => void;
-  scrollToMonth: (date: CustomDate | string) => void;
+  scrollToDay: (date: CalendarsDate | string, offset: number, animated: boolean) => void;
+  scrollToMonth: (date: CalendarsDate | string) => void;
 }
 
 /**
@@ -66,10 +66,10 @@ export interface CalendarListImperativeMethods {
  */
 const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   useImperativeHandle(ref, () => ({
-    scrollToDay: (date: CustomDate | string, offset: number, animated: boolean) => {
+    scrollToDay: (date: CalendarsDate | string, offset: number, animated: boolean) => {
       scrollToDay(date, offset, animated);
     },
-    scrollToMonth: (date: CustomDate | string) => {
+    scrollToMonth: (date: CalendarsDate | string) => {
       scrollToMonth(date);
     }
   }));
@@ -138,7 +138,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   const initialDate = useRef(parseDate(current) || getCurrentDate());
   const visibleMonth = useRef(currentMonth);
 
-  const items: CustomDate[] = useMemo(() => {
+  const items: CalendarsDate[] = useMemo(() => {
     const months: any[] = [];
     for (let i = 0; i <= pastScrollRange + futureScrollRange; i++) {
       const rangeDate = addMonthsToDate(initialDate.current, i - pastScrollRange);
@@ -182,7 +182,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     }
   }, [currentMonth]);
 
-  const scrollToDay = (date: CustomDate | string, offset: number, animated: boolean) => {
+  const scrollToDay = (date: CalendarsDate | string, offset: number, animated: boolean) => {
     const scrollTo = parseDate(date);
     const diffMonths = Math.round(getDiffInMonths(setDayOfMonth(initialDate?.current, 1), setDayOfMonth(scrollTo, 1)));
     let scrollAmount = calendarSize * pastScrollRange + diffMonths * calendarSize + (offset || 0);
@@ -205,7 +205,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   };
 
   const scrollToMonth = useCallback(
-    (date: CustomDate | string) => {
+    (date: CalendarsDate | string) => {
       const scrollTo = parseDate(date);
       const diffMonths = Math.round(
         getDiffInMonths(setDayOfMonth(initialDate?.current, 1), setDayOfMonth(scrollTo, 1))
@@ -235,7 +235,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   );
 
   const getMarkedDatesForItem = useCallback(
-    (item?: CustomDate) => {
+    (item?: CalendarsDate) => {
       if (markedDates && item) {
         for (const [key, _] of Object.entries(markedDates)) {
           if (sameMonth(getDate(key), getDate(item))) {
@@ -247,7 +247,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     [markedDates]
   );
 
-  const getItemLayout = useCallback((_: ArrayLike<CustomDate> | undefined | null, index: number) => {
+  const getItemLayout = useCallback((_: ArrayLike<CalendarsDate> | undefined | null, index: number) => {
     return {
       length: calendarSize,
       offset: calendarSize * index,
@@ -269,7 +269,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
   );
 
   const renderItem = useCallback(
-    ({item}: {item: CustomDate}) => {
+    ({item}: {item: CalendarsDate}) => {
       const dateString = toMarkingFormat(item);
       const [year, month] = dateString.split('-');
       const testId = `${testID}.item_${year}-${month}`;

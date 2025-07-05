@@ -16,7 +16,15 @@ import {
 import CalendarList, {type CalendarListImperativeMethods, type CalendarListProps} from '../calendar-list';
 import WeekDaysNames from '../commons/WeekDaysNames';
 import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
-import {type CustomDate, dateToData, getCurrentDate, getDate, sameDate, sameMonth, toMarkingFormat} from '../dateutils';
+import {
+  type CalendarsDate,
+  dateToData,
+  getCurrentDate,
+  getDate,
+  sameDate,
+  sameMonth,
+  toMarkingFormat
+} from '../dateutils';
 import {getCalendarDateString} from '../services';
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import type {AgendaSchedule, DateData} from '../types';
@@ -56,8 +64,8 @@ type State = {
   calendarIsReady: boolean;
   calendarScrollable: boolean;
   firstReservationLoad: boolean;
-  selectedDay: CustomDate;
-  topDay: CustomDate;
+  selectedDay: CalendarsDate;
+  topDay: CalendarsDate;
 };
 
 /**
@@ -90,7 +98,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   private viewWidth: number;
   private scrollTimeout?: ReturnType<typeof setTimeout>;
   private headerState: string;
-  private currentMonth: CustomDate;
+  private currentMonth: CalendarsDate;
   private knobTracker: VelocityTracker;
   private _isMounted: boolean | undefined;
   private scrollPad: React.RefObject<any> = React.createRef();
@@ -320,7 +328,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     }
   };
 
-  onDayChange = (day: CustomDate) => {
+  onDayChange = (day: CalendarsDate) => {
     const withAnimation = sameMonth(day, this.state.selectedDay);
     this.calendar?.current?.scrollToDay(day, this.calendarOffset(), withAnimation);
 
@@ -377,7 +385,7 @@ export default class Agenda extends Component<AgendaProps, State> {
     let knob: JSX.Element | null = <View style={this.style.knobContainer} />;
 
     if (!hideKnob) {
-      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
+      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
       knob =
         !this.state.calendarScrollable || showClosingKnob ? (
           <View style={this.style.knobContainer}>
@@ -389,7 +397,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   }
 
   renderWeekDaysNames = () => {
-    return <WeekDaysNames firstDay={this.props.firstDay} style={this.style.dayHeader}/>;
+    return <WeekDaysNames firstDay={this.props.firstDay} style={this.style.dayHeader} />;
   };
 
   renderWeekNumbersSpace = () => {

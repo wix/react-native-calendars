@@ -16,7 +16,7 @@ import {
 import {extractReservationProps} from '../../componentUpdater';
 import {
   addDaysToDate,
-  type CustomDate,
+  type CalendarsDate,
   getCurrentDate,
   getDate,
   getDateInMs,
@@ -32,12 +32,12 @@ export type ReservationListProps = ReservationProps & {
 	the value of date key kas to be an empty array []. If there exists no value for date key it is
 	considered that the date in question is not yet loaded */
   items?: AgendaSchedule;
-  selectedDay?: CustomDate;
-  topDay?: CustomDate;
+  selectedDay?: CalendarsDate;
+  topDay?: CalendarsDate;
   /** Show items only for the selected date. Default = false */
   showOnlySelectedDayItems?: boolean;
   /** callback that gets called when day changes while scrolling agenda list */
-  onDayChange?: (day: CustomDate) => void;
+  onDayChange?: (day: CalendarsDate) => void;
   /** specify what should be rendered instead of ActivityIndicator */
   renderEmptyData?: () => JSX.Element;
   style?: StyleProp<ViewStyle>;
@@ -97,7 +97,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
   private style: {[key: string]: ViewStyle | TextStyle};
   private heights: number[];
-  private selectedDay?: CustomDate;
+  private selectedDay?: CalendarsDate;
   private scrollOver: boolean;
   private list: React.RefObject<FlatList> = React.createRef();
 
@@ -153,7 +153,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     this.updateDataSource(reservations.reservations);
   }
 
-  getReservationsForDay(iterator: CustomDate, props: ReservationListProps) {
+  getReservationsForDay(iterator: CalendarsDate, props: ReservationListProps) {
     const day = getDate(iterator);
     const res = props.items?.[toMarkingFormat(day)];
 
@@ -265,7 +265,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
     return (
       <View onLayout={this.onRowLayoutChange.bind(this, index)}>
-        <Reservation {...reservationProps} item={item.reservation} date={item.date}/>
+        <Reservation {...reservationProps} item={item.reservation} date={item.date} />
       </View>
     );
   };
@@ -281,7 +281,7 @@ class ReservationList extends Component<ReservationListProps, State> {
       if (isFunction(this.props.renderEmptyData)) {
         return this.props.renderEmptyData?.();
       }
-      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
+      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor} />;
     }
 
     return (

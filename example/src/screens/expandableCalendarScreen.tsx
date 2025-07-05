@@ -1,7 +1,7 @@
 import React, {useCallback, useRef} from 'react';
 import {Animated, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {AgendaList, CalendarProvider, ExpandableCalendar, WeekCalendar} from 'react-native-calendars';
-import {type CustomDate, formatDate} from '../../../src/dateutils';
+import {type CalendarsDate, formatDate} from '../../../src/dateutils';
 import AgendaItem from '../mocks/AgendaItem';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import {getTheme, lightThemeColor, themeColor} from '../mocks/theme';
@@ -49,7 +49,7 @@ const ExpandableCalendarScreen = (props: Props) => {
   }, []);
 
   const renderHeader = useCallback(
-    (date?: CustomDate) => {
+    (date?: CalendarsDate) => {
       const rotationInDegrees = rotation.current.interpolate({
         inputRange: [0, 1],
         outputRange: ['0deg', '-180deg']
@@ -88,7 +88,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
     >
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current} />
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}

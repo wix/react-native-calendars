@@ -4,25 +4,25 @@ import type React from 'react';
 import {Component} from 'react';
 import {Text, View} from 'react-native';
 
-import {type CustomDate, getDateInMs, getDayOfMonth, getDayOfWeek, isToday} from '../../dateutils';
+import {type CalendarsDate, getDateInMs, getDayOfMonth, getDayOfWeek, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 import {RESERVATION_DATE} from '../../testIDs';
 import type {AgendaEntry, Theme} from '../../types';
 import styleConstructor from './style';
 
 export interface ReservationProps {
-  date?: CustomDate;
+  date?: CalendarsDate;
   item?: AgendaEntry;
   /** Specify theme properties to override specific styles for item's parts. Default = {} */
   theme?: Theme;
   /** specify your item comparison function for increased performance */
   rowHasChanged?: (a: AgendaEntry, b: AgendaEntry) => boolean;
   /** specify how each date should be rendered. date can be undefined if the item is not first in that day */
-  renderDay?: (date?: CustomDate, item?: AgendaEntry) => JSX.Element;
+  renderDay?: (date?: CalendarsDate, item?: AgendaEntry) => JSX.Element;
   /** specify how each item should be rendered in agenda */
   renderItem?: (reservation: AgendaEntry, isFirst: boolean) => React.Component | JSX.Element;
   /** specify how empty date content with no items should be rendered */
-  renderEmptyDate?: (date?: CustomDate) => React.Component | JSX.Element;
+  renderEmptyDate?: (date?: CalendarsDate) => React.Component | JSX.Element;
 }
 
 class Reservation extends Component<ReservationProps> {

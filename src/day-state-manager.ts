@@ -1,6 +1,6 @@
-import {type CustomDate, getDayOfWeek, isDateNotInRange, isToday, sameMonth, toMarkingFormat} from './dateutils';
+import {type CalendarsDate, getDayOfWeek, isDateNotInRange, isToday, sameMonth, toMarkingFormat} from './dateutils';
 
-export function getState(day: CustomDate, current: CustomDate, props: any, disableDaySelection: boolean) {
+export function getState(day: CalendarsDate, current: CalendarsDate, props: any, disableDaySelection: boolean) {
   const {minDate, maxDate, disabledByDefault, disabledByWeekDays, context} = props;
   let state;
 

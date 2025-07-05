@@ -8,7 +8,7 @@ import constants from '../commons/constants';
 import {extractDayProps, extractHeaderProps} from '../componentUpdater';
 import {
   addMonthsToDate,
-  type CustomDate,
+  type CalendarsDate,
   dateToData,
   formatDate,
   getCurrentDate,
@@ -128,7 +128,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   }, [currentMonth]);
 
   const updateMonth = useCallback(
-    (newMonth: CustomDate) => {
+    (newMonth: CalendarsDate) => {
       if (sameMonth(newMonth, currentMonth)) {
         return;
       }
@@ -223,7 +223,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     );
   };
 
-  const renderDay = (day: CustomDate, id: number) => {
+  const renderDay = (day: CalendarsDate, id: number) => {
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
       return <View key={id} style={style.current.emptyDayContainer} />;
     }
@@ -247,10 +247,10 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     );
   };
 
-  const renderWeek = (days: CustomDate[], id: number) => {
+  const renderWeek = (days: CalendarsDate[], id: number) => {
     const week: JSX.Element[] = [];
 
-    days.forEach((day: CustomDate, id2: number) => {
+    days.forEach((day: CalendarsDate, id2: number) => {
       week.push(renderDay(day, id2));
     });
 

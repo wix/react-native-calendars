@@ -6,7 +6,7 @@ import constants from '../commons/constants';
 import {extractHeaderProps} from '../componentUpdater';
 import {
   addMonthsToDate,
-  type CustomDate,
+  type CalendarsDate,
   formatDate,
   getDateAsString,
   getDate as getDateFromUtils,
@@ -65,7 +65,7 @@ const CalendarList = (props: CalendarListProps) => {
   }, [currentMonth]);
 
   const getMonthIndex = useCallback(
-    (month?: CustomDate) => {
+    (month?: CalendarsDate) => {
       if (!month) {
         return -1;
       }
@@ -89,7 +89,7 @@ const CalendarList = (props: CalendarListProps) => {
   );
 
   const updateMonth = useCallback(
-    (count: number, month?: CustomDate) => {
+    (count: number, month?: CalendarsDate) => {
       if (month) {
         const next = addMonthsToDate(month, count);
         const nextNext = addMonthsToDate(month, count * 2);
@@ -103,7 +103,7 @@ const CalendarList = (props: CalendarListProps) => {
   );
 
   const scrollToNextMonth = useCallback(
-    (method: () => void, month?: CustomDate) => {
+    (method: () => void, month?: CalendarsDate) => {
       if (calendarProps?.onPressArrowLeft) {
         calendarProps?.onPressArrowLeft?.(method, month);
       } else {
@@ -114,7 +114,7 @@ const CalendarList = (props: CalendarListProps) => {
   );
 
   const scrollToPreviousMonth = useCallback(
-    (method: () => void, month?: CustomDate) => {
+    (method: () => void, month?: CalendarsDate) => {
       if (calendarProps?.onPressArrowRight) {
         calendarProps?.onPressArrowRight?.(method, month);
       } else {

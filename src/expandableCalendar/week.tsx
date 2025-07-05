@@ -5,7 +5,7 @@ import type {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
 import {extractDayProps} from '../componentUpdater';
 import {
-  type CustomDate,
+  type CalendarsDate,
   getCurrentDate,
   getDate,
   getPartialWeekDates,
@@ -65,7 +65,7 @@ const Week = React.memo((props: WeekProps) => {
   const dayProps = extractDayProps(props);
   const currDate = useMemo(() => parseDate(current), [current]);
 
-  const renderDay = (day: CustomDate, id: number) => {
+  const renderDay = (day: CalendarsDate, id: number) => {
     // hide extra days
     if (current && hideExtraDays) {
       if (!sameMonth(day, currDate)) {
@@ -96,10 +96,10 @@ const Week = React.memo((props: WeekProps) => {
     const week: JSX.Element[] = [];
 
     if (dates) {
-      const todayIndex = dates?.indexOf(parseDate(getCurrentDate()) as CustomDate & string) || -1;
+      const todayIndex = dates?.indexOf(parseDate(getCurrentDate()) as CalendarsDate & string) || -1;
       const sliced = dates.slice(todayIndex, numberOfDays);
       const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
-      datesToRender.forEach((day: CustomDate | string, id: number) => {
+      datesToRender.forEach((day: CalendarsDate | string, id: number) => {
         const d = getDate(day);
         week.push(renderDay(d, id));
       }, this);

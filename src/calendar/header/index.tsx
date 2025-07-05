@@ -14,13 +14,13 @@ import {
   type ViewProps,
   type ViewStyle
 } from 'react-native';
-import {type CustomDate, formatDate, formatNumbers, getDayOfWeek, weekDayNames} from '../../dateutils';
+import {type CalendarsDate, formatDate, formatNumbers, getDayOfWeek, weekDayNames} from '../../dateutils';
 import type {Direction, Theme} from '../../types';
 import styleConstructor from './style';
 
 export interface CalendarHeaderProps {
   /** The current month presented in the calendar */
-  month?: CustomDate;
+  month?: CalendarsDate;
   /** A callback for when a month is changed from the headers arrows */
   addMonth?: (num: number) => void;
 
@@ -43,9 +43,9 @@ export interface CalendarHeaderProps {
   /** Replace default arrows with custom ones (direction = 'left' | 'right') */
   renderArrow?: (direction: Direction) => ReactNode;
   /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
-  onPressArrowLeft?: (method: () => void, month?: CustomDate) => void; //TODO: replace with string
+  onPressArrowLeft?: (method: () => void, month?: CalendarsDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
-  onPressArrowRight?: (method: () => void, month?: CustomDate) => void; //TODO: replace with string
+  onPressArrowRight?: (method: () => void, month?: CalendarsDate) => void; //TODO: replace with string
   /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected. Default = 20 */
   arrowsHitSlop?: Insets | number;
   /** Disable left arrow */
@@ -55,7 +55,7 @@ export interface CalendarHeaderProps {
   /** Apply custom disable color to selected day names indexes */
   disabledDaysIndexes?: number[];
   /** Replace default title with custom one. the function receive a date as parameter */
-  renderHeader?: (date?: CustomDate, info?: Pick<CalendarHeaderProps, 'testID'>) => ReactNode; //TODO: replace with string
+  renderHeader?: (date?: CalendarsDate, info?: Pick<CalendarHeaderProps, 'testID'>) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
   /** Test ID */

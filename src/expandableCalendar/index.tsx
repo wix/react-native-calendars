@@ -34,7 +34,7 @@ import WeekDaysNames from '../commons/WeekDaysNames';
 import {
   addDaysToDate,
   addMonthsToDate,
-  type CustomDate,
+  type CalendarsDate,
   formatDate,
   getDate,
   getDayOfWeek,
@@ -491,7 +491,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   /** Events */
 
   const _onPressArrowLeft = useCallback(
-    (method: () => void, month?: CustomDate) => {
+    (method: () => void, month?: CalendarsDate) => {
       onPressArrowLeft?.(method, month);
       scrollPage(false, isOpen ? UpdateSources.ARROW_PRESS : UpdateSources.WEEK_ARROW_PRESS);
     },
@@ -499,7 +499,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   );
 
   const _onPressArrowRight = useCallback(
-    (method: () => void, month?: CustomDate) => {
+    (method: () => void, month?: CalendarsDate) => {
       onPressArrowRight?.(method, month);
       scrollPage(true, isOpen ? UpdateSources.ARROW_PRESS : UpdateSources.WEEK_ARROW_PRESS);
     },

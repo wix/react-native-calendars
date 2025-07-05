@@ -1,5 +1,5 @@
 import constants from '../../commons/constants';
-import {CustomDate, generateDay, getCurrentDate} from '../../dateutils';
+import {type CalendarsDate, generateDay, getCurrentDate} from '../../dateutils';
 
 export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
   let time = yPosition / hourBlockHeight;
@@ -14,7 +14,7 @@ export function calcDateByPosition(
   xPosition: number,
   timelineLeftInset: number,
   numberOfDays = 1,
-  firstDate: string | CustomDate = getCurrentDate()
+  firstDate: string | CalendarsDate = getCurrentDate()
 ) {
   const timelineWidth = constants.screenWidth - timelineLeftInset;
   const dayWidth = timelineWidth / numberOfDays;

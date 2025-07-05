@@ -4,7 +4,7 @@ import Calendar, {type CalendarProps} from '../calendar';
 import {extractCalendarProps} from '../componentUpdater';
 import {
   addMonthsToDate,
-  type CustomDate,
+  type CalendarsDate,
   getDate,
   getDayOfMonth,
   getMonth,
@@ -21,7 +21,7 @@ export type CalendarListItemProps = CalendarProps & {
   calendarHeight?: number;
   horizontal?: boolean;
   theme?: Theme;
-  scrollToMonth?: (date: CustomDate) => void;
+  scrollToMonth?: (date: CalendarsDate) => void;
   visible?: boolean;
 };
 
@@ -61,7 +61,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   }, [calendarStyle]);
 
   const _onPressArrowLeft = useCallback(
-    (method: () => void, month?: CustomDate) => {
+    (method: () => void, month?: CalendarsDate) => {
       let monthClone = getDate(month);
       if (monthClone) {
         if (onPressArrowLeft) {
@@ -81,7 +81,7 @@ const CalendarListItem = React.memo((props: CalendarListItemProps) => {
   );
 
   const _onPressArrowRight = useCallback(
-    (method: () => void, month?: CustomDate) => {
+    (method: () => void, month?: CalendarsDate) => {
       let monthClone = getDate(month);
       if (monthClone) {
         if (onPressArrowRight) {
