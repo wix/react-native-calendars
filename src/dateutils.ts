@@ -105,7 +105,9 @@ export function onSameDateRange({
 }
 
 export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
-  return dayjs(a).weekday(firstDayOfWeek).isSame(dayjs(b).weekday(firstDayOfWeek), 'week');
+  const format = 'YYYY-MM-DD';
+  const weekDates = getWeekDates(a, firstDayOfWeek, format);
+  return weekDates?.includes(formatDate(getDate(b), format) as string);
 }
 
 export function isPastDate(date: string) {
@@ -243,7 +245,7 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
     }
 
     if (format) {
-      return daysArray.map(d => formatDate(d, format));
+      return daysArray.map(d => formatDate(d, format) as string);
     }
   }
   return daysArray;
@@ -448,7 +450,10 @@ export function getISODateString(date: CalendarsDate) {
   return dayjs(date).toISOString();
 }
 
-export function getTotalDaysInMonth(date: CalendarsDate) {
+export function getTotalDaysInMonth(date?: CalendarsDate) {
+  if (!date) {
+    return getCurrentDate().daysInMonth();
+  }
   return dayjs(date).daysInMonth();
 }
 

@@ -4,12 +4,13 @@ import type {CalendarContextProviderProps} from 'react-native-calendars';
 import {
   addDaysToDate,
   addMonthsToDate,
-  buildDate,
+  buildDatetime,
   dateToData,
   getCurrentDate,
   getDayOfMonth,
   getDayOfWeek,
   getMonth,
+  getTotalDaysInMonth,
   getYear,
   setDayOfMonth,
   toMarkingFormat
@@ -338,7 +339,7 @@ describe('ExpandableCalendar', () => {
       });
 
       it('should call onMonthChange when new week first day is in a different month', () => {
-        const endOfMonth = buildDate(getYear(), getMonth(), 0);
+        const endOfMonth = buildDatetime(getYear(), getMonth() + 1, 0, 0, 0, 0, true);
         const diff =
           Math.ceil(getDayOfMonth(endOfMonth, true) + 1 - getDayOfMonth(today, true) / 7) +
           (getDayOfWeek(today, true) > getDayOfWeek(endOfMonth, true) ? 1 : 0);
