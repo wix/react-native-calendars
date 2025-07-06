@@ -21,7 +21,9 @@ import {
   sameDate,
   sameMonth,
   setDayOfMonth,
-  toMarkingFormat
+  subtractMonthsToDate,
+  toMarkingFormat,
+  turnNumberPositive
 } from '../dateutils';
 import {useDidUpdate} from '../hooks';
 import type {ContextProp} from '../types';
@@ -224,7 +226,10 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
 
   const addMonth = useCallback(
     (count: number) => {
-      const day = addMonthsToDate(currentMonth, count);
+      const day =
+        count >= 0
+          ? addMonthsToDate(currentMonth, count)
+          : subtractMonthsToDate(currentMonth, turnNumberPositive(count));
       if (sameMonth(day, currentMonth) || getDateIndex(getDateAsString(day)) === -1) {
         return;
       }

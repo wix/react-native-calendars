@@ -45,7 +45,8 @@ import {
   setDayOfMonth,
   subtractDaysToDate,
   subtractMonthsToDate,
-  toMarkingFormat
+  toMarkingFormat,
+  turnNumberPositive
 } from '../dateutils';
 import type {DateData, Direction} from '../types';
 import {CalendarNavigationTypes, UpdateSources} from './commons';
@@ -358,7 +359,10 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
               d = next ? addDaysToDate(d, daysToAdd) : subtractDaysToDate(d, daysToAdd);
             } else {
               const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-              d = firstDayOfWeek >= 0 ? addDaysToDate(d, firstDayOfWeek) : subtractDaysToDate(d, +firstDayOfWeek);
+              d =
+                firstDayOfWeek >= 0
+                  ? addDaysToDate(d, firstDayOfWeek)
+                  : subtractDaysToDate(d, turnNumberPositive(firstDayOfWeek));
             }
           }
         }
@@ -401,7 +405,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
       if (!isOpen) {
         _weekCalendarStyles.style.opacity = Math.min(1, Math.max(1 - gestureState.dy / 100, 0));
       } else if (gestureState.dy < 0) {
-        _weekCalendarStyles.style.opacity = Math.max(0, Math.min(Math.abs(gestureState.dy / 200), 1));
+        _weekCalendarStyles.style.opacity = Math.max(0, Math.min(turnNumberPositive(gestureState.dy / 200), 1));
       }
     }
 

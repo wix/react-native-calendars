@@ -1,6 +1,6 @@
 import inRange from 'lodash/inRange';
 import constants from '../commons/constants';
-import {addHourToDate, getDate, getDiffInHour, getStartOfDay} from '../dateutils';
+import {addHourToDate, getDate, getDiffInHour, getStartOfDay, turnNumberPositive} from '../dateutils';
 import type {Event, PackedEvent} from './EventBlock';
 
 type PartialPackedEvent = Event & {index: number};
@@ -39,8 +39,8 @@ function buildEvent(
 
   return {
     ...event,
-    top: (Math.abs(getDiffInHour(dayStartTime, startTime)) - dayStart) * hourBlockHeight,
-    height: Math.abs(getDiffInHour(startTime, endTime)) * hourBlockHeight,
+    top: (turnNumberPositive(getDiffInHour(dayStartTime, startTime)) - dayStart) * hourBlockHeight,
+    height: turnNumberPositive(getDiffInHour(startTime, endTime)) * hourBlockHeight,
     width,
     left
   };

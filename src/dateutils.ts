@@ -265,6 +265,10 @@ export function padNumber(n: number) {
   return n;
 }
 
+export function turnNumberPositive(value: number) {
+  return Math.abs(value);
+}
+
 export function dateToData(date: CalendarsDate | string): DateToData {
   const d = getDate(date);
   const dateString = toMarkingFormat(d);
@@ -299,10 +303,7 @@ export function parseDate(d?) {
 }
 
 export function toMarkingFormat(d) {
-  if (!isValidDate(d)) {
-    return 'Invalid Date';
-  }
-  return formatDate(d, 'YYYY-MM-DD') as string;
+  return formatDate(d, 'YYYY-MM-DD');
 }
 
 export function getCurrentDate(isUTC = false) {
@@ -327,6 +328,9 @@ export function formatDate(
   let parsedDate = parseDate(date);
   if (!parsedDate) {
     return 'Invalid Date';
+  }
+  if (typeof parsedDate === 'string') {
+    return parsedDate;
   }
   if (locale) {
     parsedDate = parsedDate?.locale(locale);
