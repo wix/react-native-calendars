@@ -302,12 +302,7 @@ export function toMarkingFormat(d) {
   if (!isValidDate(d)) {
     return 'Invalid Date';
   }
-  const year = getYear(d);
-  const month = getMonth(d);
-  const day = getDayOfMonth(d);
-  const doubleDigitMonth = month < 10 ? `0${month}` : month;
-  const doubleDigitDay = day < 10 ? `0${day}` : day;
-  return `${year}-${doubleDigitMonth}-${doubleDigitDay}`;
+  return formatDate(d, 'YYYY-MM-DD') as string;
 }
 
 export function getCurrentDate(isUTC = false) {
@@ -324,11 +319,11 @@ export function getDate(date: CalendarsDate, isUTC = false) {
   return dayjs(date);
 }
 
-export function getTodayInMarkingFormat() {
-  return toMarkingFormat(getCurrentDate());
-}
-
-export function formatDate(date: CalendarsDate | DateToData, formatPattern: string, locale?: string) {
+export function formatDate(
+  date: CalendarsDate | DateToData | undefined | null,
+  formatPattern: string,
+  locale?: string
+) {
   let parsedDate = parseDate(date);
   if (locale) {
     parsedDate = parsedDate?.locale(locale);

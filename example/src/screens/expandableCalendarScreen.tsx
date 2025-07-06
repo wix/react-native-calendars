@@ -31,7 +31,7 @@ const ExpandableCalendarScreen = (props: Props) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);
 
-  const renderItem = useCallback(({item}: any) => {
+  const renderItem = useCallback(({item}) => {
     return <AgendaItem item={item} />;
   }, []);
 

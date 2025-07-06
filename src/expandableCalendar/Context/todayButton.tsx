@@ -1,10 +1,10 @@
 import React, {forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Animated, StyleProp, TouchableOpacity, ViewProps, ViewStyle} from 'react-native';
+import {Animated, type StyleProp, TouchableOpacity, type ViewProps, type ViewStyle} from 'react-native';
 
-import {getTodayInMarkingFormat, isPastDate, isToday} from '../../dateutils';
+import {getCurrentDate, isPastDate, isToday, toMarkingFormat} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
-import {Theme} from '../../types';
-import {UpdateSources, todayString} from '../commons';
+import type {Theme} from '../../types';
+import {todayString, UpdateSources} from '../commons';
 import styleConstructor from '../style';
 import Context from './index';
 
@@ -121,13 +121,13 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
   };
 
   const onPress = useCallback(() => {
-    setDate(getTodayInMarkingFormat(), UpdateSources.TODAY_PRESS);
+    setDate(toMarkingFormat(getCurrentDate()), UpdateSources.TODAY_PRESS);
   }, [setDate]);
 
   return (
     <Animated.View style={[style.current.todayButtonContainer, {transform: [{translateY: buttonY.current}]}]}>
       <TouchableOpacity style={[style.current.todayButton, propsStyle]} onPress={onPress} disabled={disabled}>
-        <Animated.Image style={[style.current.todayButtonImage, {opacity: opacity.current}]} source={buttonIcon} />
+        <Animated.Image style={[style.current.todayButtonImage, {opacity: opacity.current}]} source={buttonIcon}/>
         <Animated.Text allowFontScaling={false} style={[style.current.todayButtonText, {opacity: opacity.current}]}>
           {today.current}
         </Animated.Text>
