@@ -1,16 +1,16 @@
 import {
-  buildDate,
-  buildDatetime,
-  generateDay,
-  getCurrentDate,
-  getDiffInDays,
-  isGTE,
-  isLTE,
-  isPastDate,
-  month,
-  page,
-  sameMonth,
-  sameWeek
+	buildDate,
+	buildDatetime,
+	generateDay,
+	getCurrentDate,
+	getDiffInDays,
+	isGTE,
+	isLTE,
+	isPastDate,
+	month,
+	page,
+	sameMonth,
+	sameWeek
 } from './dateutils';
 
 describe('dateutils', () => {
@@ -188,6 +188,7 @@ describe('dateutils', () => {
   describe('page()', () => {
     it('2014 March', () => {
       const days = page(buildDate(2014, 2, 23, true));
+
       expect(days.length).toBe(42);
       expect(days[0].toString()).toBe(buildDatetime(2014, 1, 23, 0, 0, 0, true).toString());
       expect(days[days.length - 1].toString()).toBe(buildDatetime(2014, 3, 5, 0, 0, 0, true).toString());

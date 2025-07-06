@@ -142,11 +142,10 @@ export function formatNumbers(date: CalendarsDate) {
 
 function fromTo(a: CalendarsDate, b: CalendarsDate) {
   const days: CalendarsDate[] = [];
-  let from = getDateInMs(a);
-  const to = getDateInMs(b);
-
-  for (; from <= to; from = getDateInMs(addDaysToDate(from, 1), true)) {
-    days.push(getDate(from, true));
+  let current = getDate(a);
+  while (isLTE(current, b)) {
+    days.push(current);
+    current = addDaysToDate(current, 1);
   }
   return days;
 }
@@ -172,44 +171,31 @@ export function weekDayNames(firstDayOfWeek = 0) {
 
 export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = false) {
   const days = month(date);
-  let before: CalendarsDate[] = [];
-  let after: CalendarsDate[] = [];
 
-  firstDayOfWeek = firstDayOfWeek || 0;
-
-  const fdow = (7 + firstDayOfWeek) % 7 || 7;
+  const fdow = (7 + firstDayOfWeek) % 7;
   const ldow = (fdow + 6) % 7;
 
-  let from = days[0];
-  const daysBefore = getDayOfWeek(from);
-
-  if (daysBefore !== fdow) {
-    from = addDaysToDate(from, -(daysBefore + 7 - fdow) % 7);
+  const firstDayOfMonth = getDate(days[0]);
+  let from = firstDayOfMonth;
+  const currentFromDayOfWeek = getDayOfWeek(firstDayOfMonth);
+  if (currentFromDayOfWeek !== fdow) {
+    const daysToSubtract = (currentFromDayOfWeek - fdow + 7) % 7;
+    from = subtractDaysToDate(from, daysToSubtract);
   }
 
   let to = getDate(days[days.length - 1]);
-  const day = getDayOfWeek(to);
-  if (day !== ldow) {
-    to = addDaysToDate(to, (ldow + 7 - day) % 7);
+  const currentToDayOfWeek = getDayOfWeek(to);
+  if (currentToDayOfWeek !== ldow) {
+    const daysToAdd = (ldow - currentToDayOfWeek + 7) % 7;
+    to = addDaysToDate(to, daysToAdd);
   }
 
-  const daysForSixWeeks = (daysBefore + days.length) / 6 >= 6;
+  const daysForSixWeeks = (currentFromDayOfWeek + days.length) / 6 >= 6;
   if (showSixWeeks && !daysForSixWeeks) {
     to = addDaysToDate(to, 7);
   }
 
-  const firstDate = days[0];
-  if (isLTE(from, firstDate)) {
-    before = fromTo(from, firstDate);
-  }
-
-  const lastDate = days[days.length - 1];
-  if (isGTE(to, lastDate)) {
-    after = fromTo(lastDate, to);
-  }
-
-  const slicedDays = days.slice(1, days.length - 1);
-  return before.concat(slicedDays, after);
+  return fromTo(from, to);
 }
 
 export function isDateNotInRange(date: CalendarsDate, minDate: string, maxDate: string) {
