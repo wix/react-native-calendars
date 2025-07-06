@@ -1,5 +1,6 @@
 import {
   buildDate,
+  buildDatetime,
   generateDay,
   getCurrentDate,
   getDiffInDays,
@@ -117,8 +118,8 @@ describe('dateutils', () => {
     });
 
     it('works for dates that differ by less than a day', () => {
-      const a = buildDate(2014, 9, 30, 0, 1, 0);
-      const b = buildDate(2014, 9, 30, 1, 0, 1);
+      const a = buildDatetime(2014, 9, 30, 0, 1, 0);
+      const b = buildDatetime(2014, 9, 30, 1, 0, 1);
       expect(isLTE(a, b)).toBe(true);
       expect(isLTE(b, a)).toBe(true);
     });

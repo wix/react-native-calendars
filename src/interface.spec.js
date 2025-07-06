@@ -81,7 +81,7 @@ describe('interface', () => {
   describe('toMarkingFormat()', () => {
     it('should convert date to YYYY-MM-DD format string', () => {
       const time = 1479772800000;
-      const testDate = getDate(time);
+      const testDate = getDate(time, true);
       expect(toMarkingFormat(testDate)).toEqual(formatDate(testDate, 'YYYY-MM-DD'));
     });
   });

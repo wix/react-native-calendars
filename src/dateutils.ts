@@ -52,7 +52,7 @@ function setupLocale() {
         dayNamesShort: dayjs.weekdaysShort(),
         today: 'Today',
         numbers: [],
-        formatAccessibilityLabel: "dddd D 'of' MMMM 'of' YYYY"
+        formatAccessibilityLabel: 'dddd D MMMM YYYY'
       }
     },
     defaultLocale: dayjs.locale(defaultLocale)
@@ -274,7 +274,7 @@ export function weekDaysShort() {
 
 export function padNumber(n: number) {
   if (n < 10) {
-    return `0${n} `;
+    return `0${n}`;
   }
   return n;
 }
@@ -319,8 +319,8 @@ export function toMarkingFormat(d) {
   const year = getYear(d);
   const month = getMonth(d);
   const day = getDayOfMonth(d);
-  const doubleDigitMonth = month < 10 ? `0${month}` : `${month}`;
-  const doubleDigitDay = day < 10 ? `0${day}` : `${day}`;
+  const doubleDigitMonth = month < 10 ? `0${month}` : month;
+  const doubleDigitDay = day < 10 ? `0${day}` : day;
   return `${year}-${doubleDigitMonth}-${doubleDigitDay}`;
 }
 
@@ -458,4 +458,12 @@ export function buildDate(year: number | string, month: number | string, day: nu
     return dayjs.utc({year, month: actualMonth, day});
   }
   return dayjs({year, month: actualMonth, day});
+}
+
+export function buildDatetime(year, month, day, hour, minute, second, isUTC = false) {
+  const actualMonth = Number(month) - 1;
+  if (isUTC) {
+    return dayjs.utc({year, month: actualMonth, day, hour, minute, second});
+  }
+  return dayjs({year, month: actualMonth, day, hour, minute, second});
 }

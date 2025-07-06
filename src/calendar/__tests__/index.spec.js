@@ -209,7 +209,7 @@ describe('Calendar', () => {
         const date = '2020-04-01';
         const fakeToday = new Date('2020-04-01T12:00:00.002Z');
         advanceTo(fakeToday);
-        expect(drv.getDay(date).getAccessibilityLabel()).toBe('today Wednesday 1 April 2020');
+        expect(drv.getDay(date).getAccessibilityLabel()).toBe('Today Wednesday 1 April 2020');
       });
 
       it('should have correct label for selected date with no markings', () => {
