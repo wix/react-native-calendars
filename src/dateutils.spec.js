@@ -161,8 +161,8 @@ describe('dateutils', () => {
     });
 
     it('works for dates that differ by less than a day', () => {
-      const a = buildDate(2014, 9, 30, 0, 1, 0);
-      const b = buildDate(2014, 9, 30, 1, 0, 1);
+      const a = buildDatetime(2014, 9, 30, 0, 1, 0);
+      const b = buildDatetime(2014, 9, 30, 1, 0, 1);
       expect(isGTE(a, b)).toBe(true);
       expect(isGTE(b, a)).toBe(true);
     });

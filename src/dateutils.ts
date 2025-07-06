@@ -286,7 +286,7 @@ export function dateToData(date: CalendarsDate | string): DateToData {
     year: getYear(d),
     month: getMonth(d),
     day: getDayOfMonth(d),
-    timestamp: getDateInMs(dateString),
+    timestamp: getDateInMs(dateString, true),
     dateString
   };
 }
