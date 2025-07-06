@@ -15,7 +15,7 @@ const CalendarScreen = () => {
     return CalendarUtils.getCalendarDateString(newDate);
   };
 
-  const onDayPress = useCallback((day) => {
+  const onDayPress = useCallback(day => {
     setSelected(day.dateString);
   }, []);
 
@@ -176,7 +176,7 @@ const CalendarScreen = () => {
           disabledDaysIndexes={[1]}
           disabledByWeekDays={[1]}
           disableAllTouchEventsForDisabledDays
-          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
+          onDayPress={day => console.warn(`${day.dateString} pressed`)}
         />
       </Fragment>
     );
@@ -217,12 +217,12 @@ const CalendarScreen = () => {
           }}
           theme={{
             textInactiveColor: '#a68a9f',
-            inactiveDotColor: '#a68a9f'
-,           textSectionTitleDisabledColor: 'grey',
+            inactiveDotColor: '#a68a9f',
+            textSectionTitleDisabledColor: 'grey',
             textSectionTitleColor: '#319e8e',
             arrowColor: '#319e8e'
           }}
-          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
+          onDayPress={day => console.warn(`${day.dateString} pressed`)}
         />
       </Fragment>
     );
@@ -414,7 +414,9 @@ const CalendarScreen = () => {
   const renderCalendarWithCustomHeaderTitle = () => {
     const CustomHeaderTitle = (
       <TouchableOpacity style={styles.customTitleContainer} onPress={() => console.warn('Tapped!')}>
-        <Text style={styles.customTitle}>{selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}</Text>
+        <Text style={styles.customTitle}>
+          {selectedValue.getMonth() + 1}-{selectedValue.getFullYear()}
+        </Text>
       </TouchableOpacity>
     );
 

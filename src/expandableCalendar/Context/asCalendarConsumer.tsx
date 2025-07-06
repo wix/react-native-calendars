@@ -2,9 +2,7 @@ import React, {Component, Ref} from 'react';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import CalendarContext from './index';
 
-
 function asCalendarConsumer<PROPS>(WrappedComponent: React.ComponentType<any>): React.ComponentClass<PROPS> {
-
   class CalendarConsumer extends Component {
     contentRef: any;
 

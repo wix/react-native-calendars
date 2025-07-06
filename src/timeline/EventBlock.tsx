@@ -1,6 +1,6 @@
-import XDate from 'xdate';
 import React, {useCallback, useMemo} from 'react';
-import {View, Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
+import {Text, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {formatDate} from '../dateutils';
 
 export interface Event {
   id?: string;
@@ -69,7 +69,7 @@ const EventBlock = (props: EventBlockProps) => {
           ) : null}
           {numberOfLines > 2 ? (
             <Text style={styles.eventTimes} numberOfLines={1}>
-              {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
+              {formatDate(event.start, formatTime)} - {formatDate(event.end, formatTime)}
             </Text>
           ) : null}
         </View>

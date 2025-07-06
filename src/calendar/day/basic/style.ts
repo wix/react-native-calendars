@@ -23,7 +23,7 @@ export default function styleConstructor(theme: Theme = {}) {
       backgroundColor: appStyle.selectedDayBackgroundColor,
       borderRadius: 16
     },
-    
+
     text: {
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
@@ -45,7 +45,7 @@ export default function styleConstructor(theme: Theme = {}) {
     inactiveText: {
       color: appStyle.textInactiveColor
     },
-    
+
     ...(theme['stylesheet.day.basic'] || {})
   });
 }
