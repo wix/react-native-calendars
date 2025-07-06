@@ -325,6 +325,9 @@ export function formatDate(
   locale?: string
 ) {
   let parsedDate = parseDate(date);
+  if (!parsedDate) {
+    return 'Invalid Date';
+  }
   if (locale) {
     parsedDate = parsedDate?.locale(locale);
   }
