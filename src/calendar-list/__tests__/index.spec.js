@@ -1,14 +1,25 @@
-import React from 'react';
-import CalendarList from '../index';
-import {CalendarListDriver} from '../driver';
 //@ts-expect-error
 import {getMonthTitle} from '../../testUtils';
+import {CalendarListDriver} from '../driver';
+import CalendarList from '../index';
 
 const CURRENT = '2022-09-09';
 const NEXT_MONTH = '2022-10-09';
 const PREV_MONTH = '2022-08-09';
-const nextMonthData = {dateString: '2022-10-09', day: 9, month: 10, timestamp: 1665284400000, year: 2022};
-const prevMonthData = {dateString: '2022-08-09', day: 9, month: 8, timestamp: 1660014000000, year: 2022};
+const nextMonthData = {
+  dateString: '2022-10-09',
+  day: 9,
+  month: 10,
+  timestamp: 1665273600000,
+  year: 2022
+};
+const prevMonthData = {
+  dateString: '2022-08-09',
+  day: 9,
+  month: 8,
+  timestamp: 1660003200000,
+  year: 2022
+};
 
 const testIdCalendarList = 'myCalendarList';
 const onMonthChangeMock = jest.fn();
@@ -54,7 +65,7 @@ const defaultProps = {
 };
 
 const TestCase = props => {
-  return <CalendarList {...defaultProps} {...props}/>;
+  return <CalendarList {...defaultProps} {...props} />;
 };
 
 describe('CalendarList', () => {

@@ -327,14 +327,14 @@ export function toMarkingFormat(d) {
 
 export function getCurrentDate(isUTC = false) {
   if (isUTC) {
-    return dayjs().utc();
+    return dayjs.utc();
   }
   return dayjs();
 }
 
 export function getDate(date: CalendarsDate, isUTC = false) {
   if (isUTC) {
-    return dayjs(date).utc();
+    return dayjs.utc(date);
   }
   return dayjs(date);
 }
@@ -353,14 +353,14 @@ export function formatDate(date: CalendarsDate | DateToData, formatPattern: stri
 
 export function getDayOfMonth(date: CalendarsDate, isUTC = false) {
   if (isUTC) {
-    return dayjs(date).utc().date();
+    return dayjs.utc(date).date();
   }
   return dayjs(date).date();
 }
 
 export function getDayOfWeek(date: CalendarsDate, isUTC = false) {
   if (isUTC) {
-    return dayjs(date).utc().day();
+    return dayjs.utc(date).day();
   }
   return dayjs(date).day();
 }
@@ -381,7 +381,7 @@ export function getYear(date?: CalendarsDate) {
 
 export function getDateInMs(date: CalendarsDate, isUTC = false) {
   if (isUTC) {
-    return dayjs(date).utc().valueOf();
+    return dayjs.utc(date).valueOf();
   }
   return dayjs(date).valueOf();
 }
