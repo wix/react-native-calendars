@@ -10,9 +10,9 @@ import {
   getDayOfMonth,
   getDayOfWeek,
   getMonth,
-  getTotalDaysInMonth,
   getYear,
   setDayOfMonth,
+  subtractMonthsToDate,
   toMarkingFormat
 } from '../../dateutils';
 import {getMonthTitle} from '../../testUtils';
@@ -236,7 +236,11 @@ describe('ExpandableCalendar', () => {
           act(() => {
             jest.runAllTimers();
           });
-          const expectedDate = addMonthsToDate(addDaysToDate(today, 1), direction === Direction.RIGHT ? 1 : -1);
+          const monthWithDaySet = setDayOfMonth(today, 1);
+          const expectedDate =
+            direction === Direction.RIGHT
+              ? addMonthsToDate(monthWithDaySet, 1)
+              : subtractMonthsToDate(monthWithDaySet, 1);
           driver.pressOnHeaderArrow({left: direction === Direction.LEFT});
           expect(onDateChanged).toHaveBeenCalledWith(toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
           expect(onMonthChange).toHaveBeenCalledWith(dateToData(expectedDate), UpdateSources.PAGE_SCROLL);

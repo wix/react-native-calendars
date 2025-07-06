@@ -111,7 +111,7 @@ export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
 }
 
 export function isPastDate(date: string) {
-  return dayjs(date).isBefore(getCurrentDate());
+  return dayjs(date).isBefore(getCurrentDate(), 'date');
 }
 
 export function isToday(date) {
@@ -132,7 +132,7 @@ export function isLTE(a: CalendarsDate, b: CalendarsDate) {
   return dayjs(a).isSameOrBefore(dayjs(b), 'day');
 }
 
-export function formatNumbers(date) {
+export function formatNumbers(date: CalendarsDate) {
   const latinNumbersPattern = /[0-9]/g;
   const numbers = getLocale()?.numbers;
   return Array.isArray(numbers) && numbers.length > 0
@@ -171,17 +171,16 @@ export function weekDayNames(firstDayOfWeek = 0) {
 }
 
 export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = false) {
-  if (!date) {
-    return [];
-  }
   const days = month(date);
   let before: CalendarsDate[] = [];
   let after: CalendarsDate[] = [];
 
+  firstDayOfWeek = firstDayOfWeek || 0;
+
   const fdow = (7 + firstDayOfWeek) % 7 || 7;
   const ldow = (fdow + 6) % 7;
 
-  let from = getDate(days[0]);
+  let from = days[0];
   const daysBefore = getDayOfWeek(from);
 
   if (daysBefore !== fdow) {
@@ -199,12 +198,12 @@ export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = fal
     to = addDaysToDate(to, 7);
   }
 
-  const firstDate = getDate(days[0]);
+  const firstDate = days[0];
   if (isLTE(from, firstDate)) {
     before = fromTo(from, firstDate);
   }
 
-  const lastDate = getDate(days[days.length - 1]);
+  const lastDate = days[days.length - 1];
   if (isGTE(to, lastDate)) {
     after = fromTo(lastDate, to);
   }
