@@ -172,12 +172,11 @@ export function weekDayNames(firstDayOfWeek = 0) {
 export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = false) {
   const days = month(date);
 
-  const fdow = (7 + firstDayOfWeek) % 7;
+  const fdow = (7 + (firstDayOfWeek | 0)) % 7;
   const ldow = (fdow + 6) % 7;
 
-  const firstDayOfMonth = getDate(days[0]);
-  let from = firstDayOfMonth;
-  const currentFromDayOfWeek = getDayOfWeek(firstDayOfMonth);
+  let from = getDate(days[0]);
+  const currentFromDayOfWeek = getDayOfWeek(from);
   if (currentFromDayOfWeek !== fdow) {
     const daysToSubtract = (currentFromDayOfWeek - fdow + 7) % 7;
     from = subtractDaysToDate(from, daysToSubtract);
