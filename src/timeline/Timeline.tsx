@@ -1,21 +1,20 @@
-import min from 'lodash/min';
-import map from 'lodash/map';
-import times from 'lodash/times';
 import groupBy from 'lodash/groupBy';
+import map from 'lodash/map';
+import min from 'lodash/min';
+import times from 'lodash/times';
 
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 
 import constants from '../commons/constants';
-import {generateDay} from '../dateutils';
-import {getCalendarDateString} from '../services';
-import {Theme} from '../types';
-import styleConstructor from './style';
-import {populateEvents, HOUR_BLOCK_HEIGHT, UnavailableHours} from './Packer';
-import {calcTimeOffset} from './helpers/presenter';
-import TimelineHours, {TimelineHoursProps} from './TimelineHours';
+import {generateDay, toMarkingFormat} from '../dateutils';
+import type {Theme} from '../types';
 import EventBlock, {Event, PackedEvent} from './EventBlock';
+import {calcTimeOffset} from './helpers/presenter';
 import NowIndicator from './NowIndicator';
+import {HOUR_BLOCK_HEIGHT, populateEvents, type UnavailableHours} from './Packer';
+import styleConstructor from './style';
+import TimelineHours, {type TimelineHoursProps} from './TimelineHours';
 import useTimelineOffset from './useTimelineOffset';
 
 export interface TimelineProps {
@@ -149,7 +148,7 @@ const Timeline = (props: TimelineProps) => {
     return typeof date === 'string' ? [date] : date;
   }, [date]);
   const groupedEvents = useMemo(() => {
-    return groupBy(events, e => getCalendarDateString(e.start));
+    return groupBy(events, e => toMarkingFormat(e.start));
   }, [events]);
   const pageEvents = useMemo(() => {
     return map(pageDates, d => groupedEvents[d] || []);
@@ -158,7 +157,11 @@ const Timeline = (props: TimelineProps) => {
   const calendarHeight = useRef((end - start) * HOUR_BLOCK_HEIGHT);
   const styles = useRef(styleConstructor(theme || props.styles, calendarHeight.current));
 
-  const {scrollEvents} = useTimelineOffset({onChangeOffset, scrollOffset, scrollViewRef: scrollView});
+  const {scrollEvents} = useTimelineOffset({
+    onChangeOffset,
+    scrollOffset,
+    scrollViewRef: scrollView
+  });
 
   const width = useMemo(() => {
     return constants.screenWidth - timelineLeftInset;

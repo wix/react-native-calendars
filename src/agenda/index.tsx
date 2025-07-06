@@ -25,7 +25,6 @@ import {
   sameMonth,
   toMarkingFormat
 } from '../dateutils';
-import {getCalendarDateString} from '../services';
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
 import type {AgendaSchedule, DateData} from '../types';
 import {VelocityTracker} from '../velocityTracker';
@@ -368,7 +367,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       <CalendarList
         {...calendarListProps}
         ref={this.calendar}
-        current={getCalendarDateString(this.currentMonth.toString())}
+        current={toMarkingFormat(this.currentMonth)}
         markedDates={this.generateMarkings(this.state.selectedDay, markedDates, items)}
         calendarWidth={this.viewWidth}
         scrollEnabled={this.state.calendarScrollable}

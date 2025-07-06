@@ -1,19 +1,10 @@
-import isDate from 'lodash/isDate';
-import isNumber from 'lodash/isNumber';
-import isString from 'lodash/isString';
-import isUndefined from 'lodash/isUndefined';
-
-import {getLocale, padNumber, parseDate, toMarkingFormat} from '../dateutils';
+import {getLocale, toMarkingFormat} from '../dateutils';
 
 export function getCalendarDateString(date?: Date | string | number) {
-  if (!isUndefined(date)) {
-    if (isDate(date) && !Number.isNaN(date.getFullYear())) {
-      return `${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}`;
-    } else if (isString(date) || isNumber(date)) {
-      return toMarkingFormat(parseDate(date));
-    }
-    throw 'Invalid Date';
+  if (!date) {
+    return undefined;
   }
+  return toMarkingFormat(date);
 }
 
 export function getDefaultLocale() {

@@ -63,14 +63,14 @@ export function isValidDate(date) {
   if (!date) {
     return false;
   }
-  return dayjs(date).isValid();
+  return getDate(date).isValid();
 }
 
 export function sameMonth(a?: CalendarsDate, b?: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
-  return dayjs(a)?.isSame(dayjs(b), 'year') && dayjs(a)?.isSame(dayjs(b), 'month');
+  return dayjs(a)?.isSame(dayjs(b), 'month');
 }
 
 export function sameDate(a?: CalendarsDate, b?: CalendarsDate) {
@@ -110,12 +110,12 @@ export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
   return weekDates?.includes(formatDate(getDate(b), format) as string);
 }
 
-export function isPastDate(date: string) {
-  return dayjs(date).isBefore(getCurrentDate(), 'date');
+export function isPastDate(date: string, isUTC = false) {
+  return getDate(date, isUTC).isBefore(getCurrentDate(isUTC), 'date');
 }
 
-export function isToday(date) {
-  return dayjs(date).isToday();
+export function isToday(date, isUTC = false) {
+  return getDate(date, isUTC).isToday();
 }
 
 export function isGTE(a: CalendarsDate, b: CalendarsDate) {
@@ -132,7 +132,7 @@ export function isLTE(a: CalendarsDate, b: CalendarsDate) {
   return dayjs(a).isSameOrBefore(dayjs(b), 'day');
 }
 
-export function formatNumbers(date: CalendarsDate) {
+export function formatNumbers(date: string | number) {
   const latinNumbersPattern = /[0-9]/g;
   const numbers = getLocale()?.numbers;
   return Array.isArray(numbers) && numbers.length > 0

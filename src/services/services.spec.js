@@ -19,10 +19,8 @@ describe('services', () => {
       expect(getCalendarDateString(new Date('30 Mar 2020'))).toEqual(expectedFormattedDate);
     });
 
-    it('should throw "Invalid Date" for invalid JS Date', () => {
-      expect(() => {
-        getCalendarDateString(new Date('30/03/2020'));
-      }).toThrow(throwMessage);
+    it('should return "Invalid Date" for invalid JS Date', () => {
+      expect(getCalendarDateString(new Date('30/03/2020'))).toEqual(throwMessage);
     });
 
     it('should return dashed date for timestamp number', () => {
@@ -30,7 +28,7 @@ describe('services', () => {
     });
 
     it('should return epoch date for invalid timestamp number', () => {
-      expect(getCalendarDateString(666)).toEqual(epochDate);
+      expect(getCalendarDateString(123)).toEqual(epochDate);
     });
 
     it('should return dashed date for slashed date string', () => {
