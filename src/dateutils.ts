@@ -194,7 +194,7 @@ export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = fal
     to = addDaysToDate(to, 7);
   }
 
-  return fromTo(from, to);
+  return fromTo(from, to).sort((a, b) => getDateInMs(a, true) - getDateInMs(b, true));
 }
 
 export function isDateNotInRange(date: CalendarsDate, minDate: string, maxDate: string) {
@@ -395,15 +395,19 @@ export function subtractMonthsToDate(date: CalendarsDate, manyMonths: number, is
 }
 
 export function getDiffInHour(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
-  return getDate(start, isUTC).diff(getDate(end, isUTC), 'hour', true);
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'hour', true);
+}
+
+export function getDiffInMinutes(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'minute', true);
 }
 
 export function getDiffInDays(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
-  return getDate(start, isUTC).diff(getDate(end, isUTC), 'day');
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'day');
 }
 
 export function getDiffInMonths(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
-  return getDate(start, isUTC).diff(getDate(end, isUTC), 'month');
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'month');
 }
 
 export function setDayOfMonth(date: CalendarsDate, dayOfMonth: number, isUTC = false) {

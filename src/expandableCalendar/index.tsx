@@ -43,6 +43,8 @@ import {
   page,
   parseDate,
   setDayOfMonth,
+  subtractDaysToDate,
+  subtractMonthsToDate,
   toMarkingFormat
 } from '../dateutils';
 import type {DateData, Direction} from '../types';
@@ -343,7 +345,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
         if (d) {
           if (isOpen) {
             d = setDayOfMonth(d, 1);
-            d = addMonthsToDate(d, next ? 1 : -1);
+            d = next ? addMonthsToDate(d, 1) : subtractMonthsToDate(d, 1);
           } else {
             let dayOfTheWeek = getDayOfWeek(d);
 
@@ -353,10 +355,10 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
 
             if (numberOfDays) {
               const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
-              d = addDaysToDate(d, next ? daysToAdd : -daysToAdd);
+              d = next ? addDaysToDate(d, daysToAdd) : subtractDaysToDate(d, daysToAdd);
             } else {
               const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-              d = addDaysToDate(d, firstDayOfWeek);
+              d = firstDayOfWeek >= 0 ? addDaysToDate(d, firstDayOfWeek) : subtractDaysToDate(d, +firstDayOfWeek);
             }
           }
         }

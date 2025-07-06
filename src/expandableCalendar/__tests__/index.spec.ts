@@ -12,6 +12,7 @@ import {
   getMonth,
   getYear,
   setDayOfMonth,
+  subtractDaysToDate,
   subtractMonthsToDate,
   toMarkingFormat
 } from '../../dateutils';
@@ -330,7 +331,7 @@ describe('ExpandableCalendar', () => {
       it(`should call onDateChanged for first day of initial week when changing to initial week`, () => {
         driver.pressOnHeaderArrow({left: false});
         driver.pressOnHeaderArrow({left: true});
-        const expectedDate = addDaysToDate(today, -getDayOfWeek(today));
+        const expectedDate = subtractDaysToDate(today, getDayOfWeek(today));
         expect(onDateChanged).toHaveBeenNthCalledWith(2, toMarkingFormat(expectedDate), UpdateSources.PAGE_SCROLL);
       });
 
