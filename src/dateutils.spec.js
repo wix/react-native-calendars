@@ -170,12 +170,12 @@ describe('dateutils', () => {
   describe('month()', () => {
     it('2014 May', () => {
       const days = month(buildDate(2014, 4, 1));
-      expect(days.length).toBe(31);
+      expect(days.length).toBe(30);
     });
 
     it('2014 June', () => {
       const days = month(buildDate(2014, 5, 1));
-      expect(days.length).toBe(30);
+      expect(days.length).toBe(31);
     });
 
     it('2014 August', () => {

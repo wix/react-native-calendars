@@ -340,22 +340,24 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
       if (horizontal) {
         let d = parseDate(date);
 
-        if (isOpen) {
-          d = setDayOfMonth(d, 1);
-          d = addMonthsToDate(d, next ? 1 : -1);
-        } else {
-          let dayOfTheWeek = getDayOfWeek(d);
-
-          if (dayOfTheWeek < firstDay && firstDay > 0) {
-            dayOfTheWeek = 7 + dayOfTheWeek;
-          }
-
-          if (numberOfDays) {
-            const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
-            addDaysToDate(d, next ? daysToAdd : -daysToAdd);
+        if (d) {
+          if (isOpen) {
+            d = setDayOfMonth(d, 1);
+            d = addMonthsToDate(d, next ? 1 : -1);
           } else {
-            const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-            addDaysToDate(d, firstDayOfWeek);
+            let dayOfTheWeek = getDayOfWeek(d);
+
+            if (dayOfTheWeek < firstDay && firstDay > 0) {
+              dayOfTheWeek = 7 + dayOfTheWeek;
+            }
+
+            if (numberOfDays) {
+              const daysToAdd = numberOfDays <= 1 ? 7 : numberOfDays;
+              d = addDaysToDate(d, next ? daysToAdd : -daysToAdd);
+            } else {
+              const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
+              d = addDaysToDate(d, firstDayOfWeek);
+            }
           }
         }
 

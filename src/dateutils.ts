@@ -143,8 +143,8 @@ function fromTo(a: CalendarsDate, b: CalendarsDate) {
   let from = getDateInMs(a);
   const to = getDateInMs(b);
 
-  for (; from <= to; from = getDateInMs(addDaysToDate(from, 1))) {
-    days.push(getDate(from));
+  for (; from <= to; from = getDateInMs(addDaysToDate(from, 1), true)) {
+    days.push(getDate(from, true));
   }
   return days;
 }
@@ -153,9 +153,9 @@ export function month(date: CalendarsDate) {
   // exported for tests only
   const year = getYear(date);
   const month = getMonth(date);
-  const days = getDayOfMonth(date);
-  const firstDay = buildDate(year, month, 1);
-  const lastDay = buildDate(year, month, days);
+  const totalDays = getTotalDaysInMonth(date);
+  const firstDay = buildDate(year, month, 1, true);
+  const lastDay = buildDate(year, month, totalDays, true);
   return fromTo(firstDay, lastDay);
 }
 
@@ -207,7 +207,7 @@ export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = fal
     after = fromTo(lastDate, to);
   }
 
-  const slicedDays = days.slice(1, days.length - 1).map(day => getDate(day));
+  const slicedDays = days.slice(1, days.length - 1);
   return before.concat(slicedDays, after);
 }
 
@@ -274,7 +274,7 @@ export function weekDaysShort() {
 
 export function padNumber(n: number) {
   if (n < 10) {
-    return `0${n}`;
+    return `0${n} `;
   }
   return n;
 }
@@ -312,7 +312,7 @@ export function parseDate(d?) {
   return getDate(d, isUTC);
 }
 
-export function toMarkingFormat(d: CalendarsDate) {
+export function toMarkingFormat(d) {
   if (!isValidDate(d)) {
     return 'Invalid Date';
   }
@@ -324,7 +324,10 @@ export function toMarkingFormat(d: CalendarsDate) {
   return `${year}-${doubleDigitMonth}-${doubleDigitDay}`;
 }
 
-export function getCurrentDate() {
+export function getCurrentDate(isUTC = false) {
+  if (isUTC) {
+    return dayjs().utc();
+  }
   return dayjs();
 }
 
@@ -445,9 +448,14 @@ export function getISODateString(date: CalendarsDate) {
   return dayjs(date).toISOString();
 }
 
+export function getTotalDaysInMonth(date: CalendarsDate) {
+  return dayjs(date).daysInMonth();
+}
+
 export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
+  const actualMonth = Number(month) - 1;
   if (isUTC) {
-    return dayjs.utc({year, month, day});
+    return dayjs.utc({year, month: actualMonth, day});
   }
-  return dayjs({year, month, day});
+  return dayjs({year, month: actualMonth, day});
 }
