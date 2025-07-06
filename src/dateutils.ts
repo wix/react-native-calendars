@@ -352,108 +352,99 @@ export function formatDate(date: CalendarsDate | DateToData, formatPattern: stri
 }
 
 export function getDayOfMonth(date: CalendarsDate, isUTC = false) {
-  if (isUTC) {
-    return dayjs.utc(date).date();
-  }
-  return dayjs(date).date();
+  return getDate(date, isUTC).date();
 }
 
 export function getDayOfWeek(date: CalendarsDate, isUTC = false) {
-  if (isUTC) {
-    return dayjs.utc(date).day();
-  }
-  return dayjs(date).day();
+  return getDate(date, isUTC).day();
 }
 
 export function getMonth(date?: CalendarsDate) {
   if (!date) {
     return getCurrentDate().month() + 1;
   }
-  return dayjs(date).month() + 1;
+  return getDate(date).month() + 1;
 }
 
 export function getYear(date?: CalendarsDate) {
   if (!date) {
     return getCurrentDate().year();
   }
-  return dayjs(date).year();
+  return getDate(date).year();
 }
 
 export function getDateInMs(date: CalendarsDate, isUTC = false) {
-  if (isUTC) {
-    return dayjs.utc(date).valueOf();
-  }
-  return dayjs(date).valueOf();
+  return getDate(date, isUTC).valueOf();
 }
 
-export function getTimezoneOffset(date: CalendarsDate) {
-  return dayjs(date).utcOffset();
+export function getTimezoneOffset(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).utcOffset();
 }
 
-export function getStartOfDay(date: CalendarsDate) {
-  return dayjs(date).startOf('day');
+export function getStartOfDay(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).startOf('day');
 }
 
-export function addHourToDate(date: CalendarsDate, manyHours: number) {
-  return dayjs(date).add(manyHours, 'hour');
+export function addHourToDate(date: CalendarsDate, manyHours: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyHours, 'hour');
 }
 
-export function addDaysToDate(date: CalendarsDate, manyDays: number) {
-  return dayjs(date).add(manyDays, 'day');
+export function addDaysToDate(date: CalendarsDate, manyDays: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyDays, 'day');
 }
 
-export function addWeeksToDate(date: CalendarsDate, manyWeeks: number) {
-  return dayjs(date).add(manyWeeks, 'week');
+export function addWeeksToDate(date: CalendarsDate, manyWeeks: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyWeeks, 'week');
 }
 
-export function subtractDaysToDate(date: CalendarsDate, manyDays: number) {
-  return dayjs(date).subtract(manyDays, 'day');
+export function subtractDaysToDate(date: CalendarsDate, manyDays: number, isUTC = false) {
+  return getDate(date, isUTC).subtract(manyDays, 'day');
 }
 
-export function addMonthsToDate(date: CalendarsDate, manyMonths: number) {
-  return dayjs(date).add(manyMonths, 'month');
+export function addMonthsToDate(date: CalendarsDate, manyMonths: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyMonths, 'month');
 }
 
-export function subtractMonthsToDate(date: CalendarsDate, manyMonths: number) {
-  return dayjs(date).subtract(manyMonths, 'month');
+export function subtractMonthsToDate(date: CalendarsDate, manyMonths: number, isUTC = false) {
+  return getDate(date, isUTC).subtract(manyMonths, 'month');
 }
 
-export function getDiffInHour(start: CalendarsDate, end: CalendarsDate) {
-  return dayjs(start).diff(dayjs(end), 'hour');
+export function getDiffInHour(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(start, isUTC).diff(getDate(end, isUTC), 'hour', true);
 }
 
-export function getDiffInDays(start: CalendarsDate, end: CalendarsDate) {
-  return dayjs(start).diff(dayjs(end), 'day');
+export function getDiffInDays(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(start, isUTC).diff(getDate(end, isUTC), 'day');
 }
 
-export function getDiffInMonths(start: CalendarsDate, end: CalendarsDate) {
-  return dayjs(start).diff(dayjs(end), 'month');
+export function getDiffInMonths(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(start, isUTC).diff(getDate(end, isUTC), 'month');
 }
 
-export function setDayOfMonth(date: CalendarsDate, dayOfMonth: number) {
-  return dayjs(date).date(dayOfMonth);
+export function setDayOfMonth(date: CalendarsDate, dayOfMonth: number, isUTC = false) {
+  return getDate(date, isUTC).date(dayOfMonth);
 }
 
-export function getWeekOfYear(date: CalendarsDate) {
-  return dayjs(date).week();
+export function getWeekOfYear(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).week();
 }
 
-export function getDateAsString(date?: CalendarsDate): string {
+export function getDateAsString(date?: CalendarsDate, isUTC = false) {
   if (!date) {
-    return getCurrentDate().toString();
+    return getCurrentDate(isUTC).toString();
   }
-  return dayjs(date).toString();
+  return getDate(date, isUTC).toString();
 }
 
-export function getISODateString(date: CalendarsDate) {
-  return dayjs(date).toISOString();
+export function getISODateString(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).toISOString();
 }
 
-export function getTotalDaysInMonth(date?: CalendarsDate) {
+export function getTotalDaysInMonth(date?: CalendarsDate, isUTC = false) {
   if (!date) {
-    return getCurrentDate().daysInMonth();
+    return getCurrentDate(isUTC).daysInMonth();
   }
-  return dayjs(date).daysInMonth();
+  return getDate(date, isUTC).daysInMonth();
 }
 
 export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
