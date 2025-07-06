@@ -9,7 +9,7 @@ import {
   addWeeksToDate,
   getCurrentDate,
   getDate as getDateFromUtils,
-  getDayOfMonth,
+  getDayOfWeek,
   getDiffInDays,
   getWeekDates,
   onSameDateRange,
@@ -256,7 +256,7 @@ function getDateForDayRange(date: string, weekIndex: number, numberOfDays: numbe
 function getDate(date: string, firstDay: number, weekIndex: number, numberOfDays?: number) {
   let d = getDateFromUtils(date);
   // get the first day of the week as date (for the on scroll mark)
-  let dayOfTheWeek = getDayOfMonth(d);
+  let dayOfTheWeek = getDayOfWeek(d);
   if (dayOfTheWeek < firstDay && firstDay > 0) {
     dayOfTheWeek = 7 + dayOfTheWeek;
   }
