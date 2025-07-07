@@ -9,15 +9,22 @@ import {
   isPastDate,
   isSameMonth,
   isSameWeek,
+  LocaleConfig,
   month,
   page
 } from './dateutils';
 
 describe('dateutils', () => {
+  describe('confirm LocaleConfig returns ', () => {
+    it('should return en and es locales', () => {
+      LocaleConfig.defaultLocale = 'es';
+      expect(Object.keys(LocaleConfig.locales)).toEqual(['en', 'es']);
+    });
+  });
   describe('isSameMonth()', () => {
     it('2014-01-01 === 2014-01-10', () => {
-      const a = buildDate(2014, 0, 1);
-      const b = buildDate(2014, 0, 10);
+      const a = buildDate(2014, 1, 1);
+      const b = buildDate(2014, 1, 10);
       expect(isSameMonth(a, b)).toEqual(true);
     });
     // it('for non-Date instances is false', function () {

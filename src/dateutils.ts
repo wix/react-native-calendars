@@ -35,6 +35,18 @@ export type DateToData = {
   dateString: string;
 };
 
+export const DATE_FORMATS = {
+  YYYY_MM: 'YYYY MM',
+  YYYY_MM_D: 'YYYY-MM-D',
+  YYYY_MM_DD: 'YYYY-MM-DD',
+  HH_mm: 'HH:mm',
+  hh_mm_A: 'hh:mm A',
+  MMM_YY: 'MMM YY',
+  dddd_D_MMMM_YYYY: 'dddd D MMMM YYYY',
+  dddd_MMM_D: 'dddd, MMM D',
+  MMMM_YYYY: 'MMMM YYYY'
+};
+
 export const LocaleConfig = setupLocale();
 
 function setupLocale() {
@@ -68,18 +80,6 @@ function setupLocale() {
   };
 }
 
-export const DATE_FORMATS = {
-  YYYY_MM: 'YYYY MM',
-  YYYY_MM_D: 'YYYY-MM-D',
-  YYYY_MM_DD: 'YYYY-MM-DD',
-  HH_mm: 'HH:mm',
-  hh_mm_A: 'hh:mm A',
-  MMM_YY: 'MMM YY',
-  dddd_D_MMMM_YYYY: 'dddd D MMMM YYYY',
-  dddd_MMM_D: 'dddd, MMM D',
-  MMMM_YYYY: 'MMMM YYYY'
-};
-
 export function isValidDate(date) {
   if (!date) {
     return false;
@@ -91,14 +91,14 @@ export function isSameMonth(a?: CalendarsDate, b?: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
-  return dayjs(a)?.isSame(dayjs(b), 'month');
+  return getDate(a as CalendarsDate).isSame(getDate(b as CalendarsDate), 'month');
 }
 
 export function isSameDate(a?: CalendarsDate, b?: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
-  return dayjs(a)?.isSame(dayjs(b), 'date');
+  return getDate(a as CalendarsDate).isSame(getDate(b as CalendarsDate), 'date');
 }
 
 export function onSameDateRange({
