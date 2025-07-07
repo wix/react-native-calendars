@@ -439,6 +439,9 @@ export function getTotalDaysInMonth(date?: CalendarsDate, isUTC = false) {
 }
 
 export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
+  if (Number(month) < 1 || Number(month) > 12) {
+    throw new Error('Month must be between 1 and 12');
+  }
   const actualMonth = Number(month) - 1;
   if (isUTC) {
     return dayjs.utc({year, month: actualMonth, day});
@@ -446,7 +449,18 @@ export function buildDate(year: number | string, month: number | string, day: nu
   return dayjs({year, month: actualMonth, day});
 }
 
-export function buildDatetime(year, month, day, hour, minute, second, isUTC = false) {
+export function buildDatetime(
+  year: number | string,
+  month: number | string,
+  day: number | string,
+  hour: number | string,
+  minute: number | string,
+  second: number | string,
+  isUTC = false
+) {
+  if (Number(month) < 1 || Number(month) > 12) {
+    throw new Error('Month must be between 1 and 12');
+  }
   const actualMonth = Number(month) - 1;
   if (isUTC) {
     return dayjs.utc({year, month: actualMonth, day, hour, minute, second});
