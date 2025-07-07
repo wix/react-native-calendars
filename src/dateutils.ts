@@ -35,27 +35,36 @@ export type DateToData = {
   dateString: string;
 };
 
-export const LocaleConfig: {
-  defaultLocale: string;
-  locales: Record<string, any>;
-} = setupLocale();
+export const LocaleConfig = setupLocale();
 
 function setupLocale() {
-  const defaultLocale = LocaleConfig?.defaultLocale || dayjs.locale();
-  require(`dayjs/locale/${defaultLocale}`);
+  const defaultLocale = dayjs.locale();
+  const locales: Record<string, any> = {};
+
+  function setLocale(locale: string) {
+    try {
+      require(`dayjs/locale/${locale}`);
+    } catch {}
+    dayjs.locale(locale);
+    locales[locale] = {
+      monthNames: dayjs.months(),
+      monthNamesShort: dayjs.monthsShort(),
+      dayNames: dayjs.weekdays(),
+      dayNamesShort: dayjs.weekdaysShort(),
+      today: 'Today',
+      numbers: [],
+      formatAccessibilityLabel: 'dddd D MMMM YYYY'
+    };
+  }
+  setLocale(defaultLocale);
   return {
-    locales: {
-      [defaultLocale]: {
-        monthNames: dayjs.months(),
-        monthNamesShort: dayjs.monthsShort(),
-        dayNames: dayjs.weekdays(),
-        dayNamesShort: dayjs.weekdaysShort(),
-        today: 'Today',
-        numbers: [],
-        formatAccessibilityLabel: 'dddd D MMMM YYYY'
-      }
+    get defaultLocale() {
+      return defaultLocale;
     },
-    defaultLocale: dayjs.locale(defaultLocale)
+    set defaultLocale(value: string) {
+      setLocale(value);
+    },
+    locales
   };
 }
 
