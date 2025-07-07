@@ -1,16 +1,22 @@
-import XDate from 'xdate';
-import React, {useRef, useMemo, useCallback} from 'react';
-import {View} from 'react-native';
 import isEqual from 'lodash/isEqual';
-
-import {getPartialWeekDates, getWeekDates, sameMonth} from '../dateutils';
-import {parseDate, toMarkingFormat} from '../interface';
-import {getState} from '../day-state-manager';
-import {extractDayProps} from '../componentUpdater';
-import styleConstructor from './style';
-import {CalendarProps} from '../calendar';
+import React, {useCallback, useMemo, useRef} from 'react';
+import {View} from 'react-native';
+import type {CalendarProps} from '../calendar';
 import Day from '../calendar/day/index';
-import {CalendarContextProps} from './Context';
+import {extractDayProps} from '../componentUpdater';
+import {
+  type CalendarsDate,
+  getCurrentDate,
+  getDate,
+  getPartialWeekDates,
+  getWeekDates,
+  isSameMonth,
+  parseDate,
+  toMarkingFormat
+} from '../dateutils';
+import {getState} from '../day-state-manager';
+import type {CalendarContextProps} from './Context';
+import styleConstructor from './style';
 
 export type WeekProps = CalendarProps & {
   context?: CalendarContextProps;
@@ -43,24 +49,27 @@ const Week = React.memo((props: WeekProps) => {
     return !!numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
 
-  const getWeek = useCallback((date?: string) => {
-    if (date) {
-      return getWeekDates(date, firstDay);
-    }
-  }, [firstDay]);
+  const getWeek = useCallback(
+    (date?: string) => {
+      if (date) {
+        return getWeekDates(date, firstDay);
+      }
+    },
+    [firstDay]
+  );
 
   const partialWeekStyle = useMemo(() => {
     return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
   }, [timelineLeftInset]);
 
   const dayProps = extractDayProps(props);
-  const currXdate = useMemo(() => parseDate(current), [current]);
+  const currDate = useMemo(() => parseDate(current), [current]);
 
-  const renderDay = (day: XDate, id: number) => {
+  const renderDay = (day: CalendarsDate, id: number) => {
     // hide extra days
     if (current && hideExtraDays) {
-      if (!sameMonth(day, currXdate)) {
-        return <View key={id} style={style.current.emptyDayContainer}/>;
+      if (!isSameMonth(day, currDate)) {
+        return <View key={id} style={style.current.emptyDayContainer} />;
       }
     }
     const dayString = toMarkingFormat(day);
@@ -71,8 +80,10 @@ const Week = React.memo((props: WeekProps) => {
           {...dayProps}
           testID={`${testID}.day_${dayString}`}
           date={dayString}
-          state={getState(day, currXdate, props, disableDaySelection)}
-          marking={disableDaySelection ? {...markedDates?.[dayString], disableTouchEvent: true} : markedDates?.[dayString]}
+          state={getState(day, currDate, props, disableDaySelection)}
+          marking={
+            disableDaySelection ? {...markedDates?.[dayString], disableTouchEvent: true} : markedDates?.[dayString]
+          }
           onPress={onDayPress}
           onLongPress={onDayLongPress}
         />
@@ -85,11 +96,11 @@ const Week = React.memo((props: WeekProps) => {
     const week: JSX.Element[] = [];
 
     if (dates) {
-      const todayIndex = dates?.indexOf(parseDate(new Date())) || -1;
+      const todayIndex = dates?.indexOf(parseDate(getCurrentDate()) as CalendarsDate & string) || -1;
       const sliced = dates.slice(todayIndex, numberOfDays);
       const datesToRender = numberOfDays > 1 && todayIndex > -1 ? sliced : dates;
-      datesToRender.forEach((day: XDate | string, id: number) => {
-        const d = day instanceof XDate ? day : new XDate(day);
+      datesToRender.forEach((day: CalendarsDate | string, id: number) => {
+        const d = getDate(day);
         week.push(renderDay(d, id));
       }, this);
     }

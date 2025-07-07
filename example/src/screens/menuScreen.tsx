@@ -1,5 +1,16 @@
 import React, {useState, useCallback} from 'react';
-import {I18nManager, StyleSheet, Modal, FlatList, SafeAreaView, View, TouchableOpacity, Text, Image, Switch} from 'react-native';
+import {
+  I18nManager,
+  StyleSheet,
+  Modal,
+  FlatList,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+  Text,
+  Image,
+  Switch
+} from 'react-native';
 import testIDs from '../testIDs';
 import CalendarScreen from './calendarScreen';
 import CalendarPlaygroundScreen from './calendarPlaygroundScreen';
@@ -19,13 +30,23 @@ const screens = [
   {testID: testIDs.menu.CALENDARS, title: 'Calendar', screen: CalendarScreen},
   {testID: testIDs.menu.CALENDARS, title: 'Calendar Playground', screen: CalendarPlaygroundScreen},
   {testID: testIDs.menu.CALENDAR_LIST, title: 'Calendar List', screen: CalendarListScreen},
-  {testID: testIDs.menu.HORIZONTAL_LIST, title: 'Horizontal Calendar List', screen: CalendarListScreen, props: {horizontalView: true}},
+  {
+    testID: testIDs.menu.HORIZONTAL_LIST,
+    title: 'Horizontal Calendar List',
+    screen: CalendarListScreen,
+    props: {horizontalView: true}
+  },
   {testID: testIDs.menu.HORIZONTAL_LIST, title: 'NEW Calendar List', screen: NewCalendarListScreen},
   {testID: testIDs.menu.AGENDA, title: 'Agenda', screen: AgendaScreen},
   {testID: testIDs.menu.AGENDA_INFINITE, title: 'Agenda Infinite List', screen: AgendaInfiniteListScreen},
   {testID: testIDs.menu.EXPANDABLE_CALENDAR, title: 'Expandable Calendar', screen: ExpandableCalendarScreen},
   {testID: testIDs.menu.TIMELINE_CALENDAR, title: 'Timeline Calendar', screen: TimelineCalendarScreen},
-  {testID: testIDs.menu.WEEK_CALENDAR, title: 'Week Calendar', screen: ExpandableCalendarScreen, props: {weekView: true}},
+  {
+    testID: testIDs.menu.WEEK_CALENDAR,
+    title: 'Week Calendar',
+    screen: ExpandableCalendarScreen,
+    props: {weekView: true}
+  },
   {testID: testIDs.menu.PLAYGROUND, title: 'Playground', screen: PlaygroundScreen}
 ];
 
@@ -37,7 +58,7 @@ const MenuScreen = () => {
 
   const keyExtractor = (item: any) => `${item.title}-${item.testID}`;
 
-  const toggleRTL = useCallback((value) => {
+  const toggleRTL = useCallback(value => {
     I18nManager.forceRTL(value);
     setForceRTL(value);
   }, []);
@@ -69,7 +90,9 @@ const MenuScreen = () => {
       <Modal visible={showModal} animationType="slide">
         <SafeAreaView style={styles.screenContainer}>
           <View style={styles.topBar}>
-            <TouchableOpacity style={styles.topBarButton} onPress={() => setShowModal(false)}><Image source={closeIcon}/></TouchableOpacity>
+            <TouchableOpacity style={styles.topBarButton} onPress={() => setShowModal(false)}>
+              <Image source={closeIcon}/>
+            </TouchableOpacity>
             <Text style={styles.topBarTitle}>{nextScreen.title}</Text>
           </View>
           <ScreenComponent {...nextScreen.props}/>
@@ -89,9 +112,13 @@ const MenuScreen = () => {
   const renderHeader = () => {
     return (
       <View style={styles.header}>
-        <View style={styles.logoContainer}><Image source={appIcon} style={styles.logo}/></View>
+        <View style={styles.logoContainer}>
+          <Image source={appIcon} style={styles.logo}/>
+        </View>
         <Text style={styles.title}>React Native Calendars</Text>
-        <TouchableOpacity onPress={toggleSettings}><Image source={settingsIcon} style={styles.settingsButton}/></TouchableOpacity>
+        <TouchableOpacity onPress={toggleSettings}>
+          <Image source={settingsIcon} style={styles.settingsButton}/>
+        </TouchableOpacity>
       </View>
     );
   };

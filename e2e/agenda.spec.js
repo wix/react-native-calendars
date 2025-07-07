@@ -1,6 +1,6 @@
 import testIDs from '../example/src/testIDs';
 
-const {SELECT_DATE_SLOT, RESERVATION_DATE} = require('../src/testIDs');
+import { RESERVATION_DATE, SELECT_DATE_SLOT } from '../src/testIDs';
 
 describe('Agenda', () => {
   beforeEach(async () => {
