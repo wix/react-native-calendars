@@ -21,8 +21,8 @@ import {
   dateToData,
   getCurrentDate,
   getDate,
-  sameDate,
-  sameMonth,
+  isSameDate,
+  isSameMonth,
   toMarkingFormat
 } from '../dateutils';
 import {AGENDA_CALENDAR_KNOB} from '../testIDs';
@@ -145,9 +145,9 @@ export default class Agenda extends Component<AgendaProps, State> {
   componentDidUpdate(prevProps: AgendaProps, prevState: State) {
     const newSelectedDate = this.getSelectedDate(this.props.selected);
 
-    if (!sameDate(newSelectedDate, prevState.selectedDay)) {
+    if (!isSameDate(newSelectedDate, prevState.selectedDay)) {
       const prevSelectedDate = this.getSelectedDate(prevProps.selected);
-      if (!sameDate(newSelectedDate, prevSelectedDate)) {
+      if (!isSameDate(newSelectedDate, prevSelectedDate)) {
         this.setState({selectedDay: newSelectedDate});
         this.calendar?.current?.scrollToDay(newSelectedDate, this.calendarOffset(), true);
       }
@@ -328,7 +328,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   onDayChange = (day: CalendarsDate) => {
-    const withAnimation = sameMonth(day, this.state.selectedDay);
+    const withAnimation = isSameMonth(day, this.state.selectedDay);
     this.calendar?.current?.scrollToDay(day, this.calendarOffset(), withAnimation);
 
     this.setState({selectedDay: day});

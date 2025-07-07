@@ -9,7 +9,7 @@ import {
   addWeeksToDate,
   getDate as getDateFromUtils,
   getDayOfMonth,
-  sameWeek,
+  isSameWeek,
   toMarkingFormat
 } from '../../dateutils';
 import CalendarContext from '../../expandableCalendar/Context';
@@ -58,7 +58,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   useEffect(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
-      const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
+      const pageIndex = items.findIndex(item => isSameWeek(item, date, firstDay));
       // @ts-expect-error
       list.current?.scrollToOffset?.(pageIndex * containerWidth, 0, false);
     }
@@ -94,7 +94,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       const {allowShadow, ...calendarListProps} = props;
       const {/* style,  */ ...others} = extractCalendarProps(calendarListProps);
 
-      const isSameWeek = sameWeek(item, date, firstDay);
+      const isSameWeek = isSameWeek(item, date, firstDay);
 
       return (
         <Week

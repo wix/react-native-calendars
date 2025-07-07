@@ -1,15 +1,15 @@
 import {includes} from 'lodash';
 
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {StyleProp, View, ViewProps, ViewStyle} from 'react-native';
+import {type StyleProp, View, type ViewProps, type ViewStyle} from 'react-native';
 
-import {dateToData, getDate, sameMonth} from '../../dateutils';
+import {dateToData, getDate, isSameMonth} from '../../dateutils';
 import {useDidUpdate} from '../../hooks';
-import {DateData, Theme} from '../../types';
-import {CalendarNavigationTypes, UpdateSources} from '../commons';
+import type {DateData, Theme} from '../../types';
+import {type CalendarNavigationTypes, UpdateSources} from '../commons';
 import styleConstructor from '../style';
 import CalendarContext from './index';
-import TodayButton, {TodayButtonImperativeMethods} from './todayButton';
+import TodayButton, {type TodayButtonImperativeMethods} from './todayButton';
 
 export interface CalendarContextProviderProps extends ViewProps {
   /** Initial date in 'YYYY-MM-DD' format. Default = now */
@@ -99,7 +99,7 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
 
       const _updateSource = getUpdateSource(updateSource);
       onDateChanged?.(date, _updateSource);
-      if (!sameMonth(getDate(date), getDate(prevDate.current))) {
+      if (!isSameMonth(getDate(date), getDate(prevDate.current))) {
         onMonthChange?.(dateToData(getDate(date)), _updateSource);
       }
     },

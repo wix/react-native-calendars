@@ -16,9 +16,9 @@ import {
   getWeekOfYear,
   isGTE,
   isLTE,
+  isSameMonth,
   page,
   parseDate,
-  sameMonth,
   setDayOfMonth,
   subtractDaysToDate,
   toMarkingFormat
@@ -130,7 +130,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const updateMonth = useCallback(
     (newMonth: CalendarsDate) => {
-      if (sameMonth(newMonth, currentMonth)) {
+      if (isSameMonth(newMonth, currentMonth)) {
         return;
       }
       setCurrentMonth(newMonth);
@@ -225,7 +225,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   };
 
   const renderDay = (day: CalendarsDate, id: number) => {
-    if (!sameMonth(day, currentMonth) && hideExtraDays) {
+    if (!isSameMonth(day, currentMonth) && hideExtraDays) {
       return <View key={id} style={style.current.emptyDayContainer} />;
     }
 

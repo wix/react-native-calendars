@@ -1,4 +1,4 @@
-import {type CalendarsDate, getDayOfWeek, isDateNotInRange, isToday, sameMonth, toMarkingFormat} from './dateutils';
+import {type CalendarsDate, getDayOfWeek, isDateNotInRange, isSameMonth, isToday, toMarkingFormat} from './dateutils';
 
 export function getState(day: CalendarsDate, current: CalendarsDate, props: any, disableDaySelection: boolean) {
   const {minDate, maxDate, disabledByDefault, disabledByWeekDays, context} = props;
@@ -12,7 +12,7 @@ export function getState(day: CalendarsDate, current: CalendarsDate, props: any,
     state = 'disabled';
   } else if (isDateNotInRange(day, minDate, maxDate)) {
     state = 'disabled';
-  } else if (!sameMonth(day, current)) {
+  } else if (!isSameMonth(day, current)) {
     state = 'disabled';
   } else if (disabledByWeekDays && disabledByWeekDays.indexOf(getDayOfWeek(day)) !== -1) {
     state = 'disabled';

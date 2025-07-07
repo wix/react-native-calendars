@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import constants from '../../commons/constants';
-import {formatDate, getDate, isGTE, isToday, parseDate, sameDate} from '../../dateutils';
+import {formatDate, getDate, isGTE, isSameDate, isToday, parseDate} from '../../dateutils';
 import {useCombinedRefs, useDidUpdate} from '../../hooks';
 import {getDefaultLocale} from '../../services';
 import Context from '../Context';
@@ -98,7 +98,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
       const next = parseDate(sections[j]?.title);
       const cur = getDate(date);
       if (isGTE(cur, prev) && isGTE(next, cur)) {
-        i = sameDate(prev, cur) ? j - 1 : j;
+        i = isSameDate(prev, cur) ? j - 1 : j;
         break;
       } else if (isGTE(cur, next)) {
         i = j;
@@ -226,7 +226,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
       }
 
       const headerTitle = getSectionTitle(title);
-      return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout} />;
+      return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
     },
     [headerTextStyle]
   );

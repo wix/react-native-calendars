@@ -12,8 +12,8 @@ import {
   getDayOfWeek,
   getDiffInDays,
   getWeekDates,
+  isSameWeek,
   onSameDateRange,
-  sameWeek,
   toMarkingFormat
 } from '../../dateutils';
 import {useDidUpdate} from '../../hooks';
@@ -69,7 +69,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
               numberOfDays: numberOfDays as number,
               firstDateInRange: item
             })
-          : sameWeek(item, date, firstDay)
+          : isSameWeek(item, date, firstDay)
       );
       if (pageIndex !== currentIndex.current) {
         const adjustedIndexFrScroll = shouldFixRTL ? NUM_OF_ITEMS - 1 - pageIndex : pageIndex;
@@ -125,7 +125,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   const renderItem = useCallback(
     ({item}: {item: string}) => {
-      const currentContext = sameWeek(date, item, firstDay) ? context : undefined;
+      const currentContext = isSameWeek(date, item, firstDay) ? context : undefined;
       const markings = getCurrentWeekMarkings(item, markedDates);
 
       return (

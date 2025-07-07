@@ -7,63 +7,63 @@ import {
   isGTE,
   isLTE,
   isPastDate,
+  isSameMonth,
+  isSameWeek,
   month,
-  page,
-  sameMonth,
-  sameWeek
+  page
 } from './dateutils';
 
 describe('dateutils', () => {
-  describe('sameMonth()', () => {
+  describe('isSameMonth()', () => {
     it('2014-01-01 === 2014-01-10', () => {
       const a = buildDate(2014, 0, 1);
       const b = buildDate(2014, 0, 10);
-      expect(sameMonth(a, b)).toEqual(true);
+      expect(isSameMonth(a, b)).toEqual(true);
     });
     // it('for non-Date instances is false', function () {
-    //   expect(sameMonth('a', 'b')).toEqual(false);
-    //   expect(sameMonth(123, 345)).toEqual(false);
-    //   expect(sameMonth(null, false)).toEqual(false);
+    //   expect(isSameMonth('a', 'b')).toEqual(false);
+    //   expect(isSameMonth(123, 345)).toEqual(false);
+    //   expect(isSameMonth(null, false)).toEqual(false);
 
     //   const a = buildDate(2014, 0, 1, true);
     //   const b = buildDate(2014, 0, 10, true);
-    //   expect(sameMonth(a, undefined)).toEqual(false);
-    //   expect(sameMonth(null, b)).toEqual(false);
+    //   expect(isSameMonth(a, undefined)).toEqual(false);
+    //   expect(isSameMonth(null, b)).toEqual(false);
     // });
   });
 
-  describe('sameWeek()', () => {
-    it('Expect sameWeek to return true, for two days on the same week', () => {
+  describe('isSameWeek()', () => {
+    it('Expect isSameWeek to return true, for two days on the same week', () => {
       const a = '2021-01-05';
       const b = '2021-01-06';
-      expect(sameWeek(a, b, 1)).toBe(true);
+      expect(isSameWeek(a, b, 1)).toBe(true);
     });
 
-    it('Expect sameWeek to return true, for two days on the same week, when', () => {
+    it('Expect isSameWeek to return true, for two days on the same week, when', () => {
       const date = '2021-01-01';
       const prevDate = '2021-01-02';
-      expect(sameWeek(prevDate, date, 1)).toBe(true);
+      expect(isSameWeek(prevDate, date, 1)).toBe(true);
     });
 
-    // it('Expect sameWeek to return false, on non Date values', () => {
-    //   expect(sameWeek('a', 'a')).toBe(undefined);
-    //   expect(sameWeek(1, 1)).toBe(false);
-    //   expect(sameWeek(false, false)).toBe(undefined);
-    //   expect(sameWeek(true, true)).toBe(false);
+    // it('Expect isSameWeek to return false, on non Date values', () => {
+    //   expect(isSameWeek('a', 'a')).toBe(undefined);
+    //   expect(isSameWeek(1, 1)).toBe(false);
+    //   expect(isSameWeek(false, false)).toBe(undefined);
+    //   expect(isSameWeek(true, true)).toBe(false);
     // });
 
-    it('Expect sameWeek to return true, on first date is after second date', () => {
+    it('Expect isSameWeek to return true, on first date is after second date', () => {
       const a = '2021-01-07';
       const b = '2021-01-05';
-      expect(sameWeek(a, b, 1)).toBe(true);
+      expect(isSameWeek(a, b, 1)).toBe(true);
     });
 
-    it('Expect sameWeek to return false, on Sunday when firstDay is Monday', () => {
+    it('Expect isSameWeek to return false, on Sunday when firstDay is Monday', () => {
       const a = '2021-01-04';
       const b = '2021-01-05';
-      expect(sameWeek(a, b, 1)).toBe(true);
+      expect(isSameWeek(a, b, 1)).toBe(true);
 
-      expect(sameWeek(a, b, 2)).toBe(false);
+      expect(isSameWeek(a, b, 2)).toBe(false);
     });
   });
 

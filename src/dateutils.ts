@@ -41,7 +41,7 @@ export const LocaleConfig: {
 } = setupLocale();
 
 function setupLocale() {
-  const defaultLocale = LocaleConfig?.defaultLocale || 'en';
+  const defaultLocale = LocaleConfig?.defaultLocale || dayjs.locale();
   require(`dayjs/locale/${defaultLocale}`);
   return {
     locales: {
@@ -66,14 +66,14 @@ export function isValidDate(date) {
   return getDate(date).isValid();
 }
 
-export function sameMonth(a?: CalendarsDate, b?: CalendarsDate) {
+export function isSameMonth(a?: CalendarsDate, b?: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
   return dayjs(a)?.isSame(dayjs(b), 'month');
 }
 
-export function sameDate(a?: CalendarsDate, b?: CalendarsDate) {
+export function isSameDate(a?: CalendarsDate, b?: CalendarsDate) {
   if (!isValidDate(a) || !isValidDate(b)) {
     return false;
   }
@@ -104,7 +104,7 @@ export function onSameDateRange({
   return aWeek === bWeek;
 }
 
-export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
+export function isSameWeek(a: string, b: string, firstDayOfWeek: number) {
   const format = 'YYYY-MM-DD';
   const weekDates = getWeekDates(a, firstDayOfWeek, format);
   return weekDates?.includes(formatDate(getDate(b), format) as string);
@@ -267,6 +267,10 @@ export function padNumber(n: number) {
 
 export function turnNumberPositive(value: number) {
   return Math.abs(value);
+}
+
+export function turnNumberNegative(value: number) {
+  return -Math.abs(value);
 }
 
 export function dateToData(date: CalendarsDate | string): DateToData {
@@ -439,10 +443,11 @@ export function getTotalDaysInMonth(date?: CalendarsDate, isUTC = false) {
 }
 
 export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
-  if (Number(month) < 1 || Number(month) > 12) {
+  const monthAsNumber = Number(month);
+  if (monthAsNumber < 1 || monthAsNumber > 12) {
     throw new Error('Month must be between 1 and 12');
   }
-  const actualMonth = Number(month) - 1;
+  const actualMonth = monthAsNumber - 1;
   if (isUTC) {
     return dayjs.utc({year, month: actualMonth, day});
   }
@@ -458,10 +463,11 @@ export function buildDatetime(
   second: number | string,
   isUTC = false
 ) {
-  if (Number(month) < 1 || Number(month) > 12) {
+  const monthAsNumber = Number(month);
+  if (monthAsNumber < 1 || monthAsNumber > 12) {
     throw new Error('Month must be between 1 and 12');
   }
-  const actualMonth = Number(month) - 1;
+  const actualMonth = monthAsNumber - 1;
   if (isUTC) {
     return dayjs.utc({year, month: actualMonth, day, hour, minute, second});
   }

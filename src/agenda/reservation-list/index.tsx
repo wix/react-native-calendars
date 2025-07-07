@@ -20,7 +20,7 @@ import {
   getCurrentDate,
   getDate,
   getDateInMs,
-  sameDate,
+  isSameDate,
   toMarkingFormat
 } from '../../dateutils';
 import type {AgendaEntry, AgendaSchedule, DayAgenda} from '../../types';
@@ -121,7 +121,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
   componentDidUpdate(prevProps: ReservationListProps) {
     if (this.props.topDay && prevProps.topDay && prevProps !== this.props) {
-      if (!sameDate(prevProps.topDay, this.props.topDay)) {
+      if (!isSameDate(prevProps.topDay, this.props.topDay)) {
         this.setState({reservations: []}, () => this.updateReservations(this.props));
       } else {
         this.updateReservations(this.props);
@@ -137,7 +137,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     const {selectedDay, showOnlySelectedDayItems} = props;
     const reservations = this.getReservations(props);
 
-    if (!showOnlySelectedDayItems && this.list && !sameDate(selectedDay, this.selectedDay)) {
+    if (!showOnlySelectedDayItems && this.list && !isSameDate(selectedDay, this.selectedDay)) {
       let scrollPosition = 0;
       for (let i = 0; i < reservations.scrollPosition; i++) {
         scrollPosition += this.heights[i] || 0;
@@ -240,7 +240,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
     const day = row.date;
     if (day) {
-      if (!sameDate(day, this.selectedDay) && this.scrollOver) {
+      if (!isSameDate(day, this.selectedDay) && this.scrollOver) {
         this.selectedDay = day;
         this.props.onDayChange?.(day);
       }

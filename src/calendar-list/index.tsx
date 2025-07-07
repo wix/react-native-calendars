@@ -16,10 +16,10 @@ import {
   getDate,
   getDateAsString,
   getDiffInMonths,
+  isSameDate,
+  isSameMonth,
   page,
   parseDate,
-  sameDate,
-  sameMonth,
   setDayOfMonth,
   subtractMonthsToDate,
   toMarkingFormat,
@@ -194,7 +194,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const days = page(scrollTo, firstDay);
       for (let i = 0; i < days.length; i++) {
         week = Math.floor(i / 7);
-        if (sameDate(days[i], scrollTo)) {
+        if (isSameDate(days[i], scrollTo)) {
           scrollAmount += 46 * week;
           break;
         }
@@ -230,7 +230,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         count >= 0
           ? addMonthsToDate(currentMonth, count)
           : subtractMonthsToDate(currentMonth, turnNumberPositive(count));
-      if (sameMonth(day, currentMonth) || getDateIndex(getDateAsString(day)) === -1) {
+      if (isSameMonth(day, currentMonth) || getDateIndex(getDateAsString(day)) === -1) {
         return;
       }
       scrollToMonth(day);
@@ -243,7 +243,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     (item?: CalendarsDate) => {
       if (markedDates && item) {
         for (const [key, _] of Object.entries(markedDates)) {
-          if (sameMonth(getDate(key), getDate(item))) {
+          if (isSameMonth(getDate(key), getDate(item))) {
             return markedDates;
           }
         }
@@ -264,7 +264,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     date => {
       for (let i = -range.current; i <= range.current; i++) {
         const newMonth = addMonthsToDate(currentMonth, i);
-        if (sameMonth(date, newMonth)) {
+        if (isSameMonth(date, newMonth)) {
           return true;
         }
       }
@@ -334,7 +334,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
         visibleMonth.current = items[centerIndex + adjustedOffset];
         setCurrentMonth(visibleMonth.current);
       } else {
-        if (!sameDate(visibleMonth?.current, newVisibleMonth)) {
+        if (!isSameDate(visibleMonth?.current, newVisibleMonth)) {
           visibleMonth.current = newVisibleMonth;
           setCurrentMonth(visibleMonth.current);
         }

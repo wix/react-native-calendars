@@ -10,8 +10,8 @@ import {
   getDate,
   getPartialWeekDates,
   getWeekDates,
+  isSameMonth,
   parseDate,
-  sameMonth,
   toMarkingFormat
 } from '../dateutils';
 import {getState} from '../day-state-manager';
@@ -68,7 +68,7 @@ const Week = React.memo((props: WeekProps) => {
   const renderDay = (day: CalendarsDate, id: number) => {
     // hide extra days
     if (current && hideExtraDays) {
-      if (!sameMonth(day, currDate)) {
+      if (!isSameMonth(day, currDate)) {
         return <View key={id} style={style.current.emptyDayContainer} />;
       }
     }
