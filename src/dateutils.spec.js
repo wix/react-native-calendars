@@ -16,6 +16,10 @@ import {
 
 describe('dateutils', () => {
   describe('confirm LocaleConfig returns ', () => {
+    it('should return en locale', () => {
+      LocaleConfig.defaultLocale = 'en';
+      expect(Object.keys(LocaleConfig.locales)).toEqual(['en']);
+    });
     it('should return en and es locales', () => {
       LocaleConfig.defaultLocale = 'es';
       expect(Object.keys(LocaleConfig.locales)).toEqual(['en', 'es']);
