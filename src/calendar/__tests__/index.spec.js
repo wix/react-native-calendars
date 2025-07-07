@@ -1,5 +1,6 @@
 import {advanceTo /* , clear */} from 'jest-date-mock';
 import React from 'react';
+import {DATE_FORMATS} from '../../dateutils';
 import {getDaysArray, partial} from '../../testUtils';
 // import {waitFor} from '@testing-library/react-native';
 import Calendar from '..';
@@ -48,8 +49,7 @@ describe('Calendar', () => {
     });
 
     it('test driver header title format', () => {
-      const monthFormat = 'MMM YY';
-      const driver = new CalendarDriver(<Calendar {...props} monthFormat={monthFormat}/>);
+      const driver = new CalendarDriver(<Calendar {...props} monthFormat={DATE_FORMATS.MMM_YY}/>);
       expect(driver.getHeader().getTitle()).toEqual('Apr 20');
     });
 

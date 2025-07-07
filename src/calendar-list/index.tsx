@@ -10,6 +10,7 @@ import {extractCalendarProps, extractHeaderProps} from '../componentUpdater';
 import {
   addMonthsToDate,
   type CalendarsDate,
+  DATE_FORMATS,
   dateToData,
   formatDate,
   getCurrentDate,
@@ -180,7 +181,7 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       const data = dateToData(currMonth);
       onMonthChange?.(data);
       onVisibleMonthsChange?.([data]);
-      AccessibilityInfo.announceForAccessibility(formatDate(currMonth, 'MMMM YYYY'));
+      AccessibilityInfo.announceForAccessibility(formatDate(currMonth, DATE_FORMATS.MMMM_YYYY));
     }
   }, [currentMonth]);
 

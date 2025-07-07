@@ -14,7 +14,7 @@ import {
   type ViewProps,
   type ViewStyle
 } from 'react-native';
-import {type CalendarsDate, formatDate, formatNumbers, getDayOfWeek, weekDayNames} from '../../dateutils';
+import {type CalendarsDate, DATE_FORMATS, formatDate, formatNumbers, getDayOfWeek, weekDayNames} from '../../dateutils';
 import type {Direction, Theme} from '../../types';
 import styleConstructor from './style';
 
@@ -87,7 +87,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     style: propsStyle,
     addMonth: propsAddMonth,
     month,
-    monthFormat = 'MMMM YYYY',
+    monthFormat = DATE_FORMATS.MMMM_YYYY,
     firstDay,
     hideDayNames,
     showWeekNumbers,
@@ -315,7 +315,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 export default CalendarHeader;
 CalendarHeader.displayName = 'CalendarHeader';
 CalendarHeader.defaultProps = {
-  monthFormat: 'MMMM YYYY',
+  monthFormat: DATE_FORMATS.MMMM_YYYY,
   webAriaLevel: 1,
   arrowsHitSlop: 20
 };

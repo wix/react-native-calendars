@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import constants from '../../commons/constants';
-import {formatDate, getDate, isGTE, isSameDate, isToday, parseDate} from '../../dateutils';
+import {DATE_FORMATS, formatDate, getDate, isGTE, isSameDate, isToday, parseDate} from '../../dateutils';
 import {useCombinedRefs, useDidUpdate} from '../../hooks';
 import {getDefaultLocale} from '../../services';
 import Context from '../Context';
@@ -51,7 +51,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
     sectionStyle,
     keyExtractor,
     dayFormatter,
-    dayFormat = 'dddd, MMM D',
+    dayFormat = DATE_FORMATS.dddd_MMM_D,
     markToday = true,
     onViewableItemsChanged
   } = props;
@@ -226,7 +226,7 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
       }
 
       const headerTitle = getSectionTitle(title);
-      return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout}/>;
+      return <AgendaSectionHeader title={headerTitle} style={headerTextStyle} onLayout={onHeaderLayout} />;
     },
     [headerTextStyle]
   );

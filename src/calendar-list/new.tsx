@@ -7,6 +7,7 @@ import {extractHeaderProps} from '../componentUpdater';
 import {
   addMonthsToDate,
   type CalendarsDate,
+  DATE_FORMATS,
   formatDate,
   getDateAsString,
   getDate as getDateFromUtils,
@@ -69,7 +70,7 @@ const CalendarList = (props: CalendarListProps) => {
       if (!month) {
         return -1;
       }
-      return items.findIndex(item => item.includes(formatDate(month, 'YYYY-MM')));
+      return items.findIndex(item => item.includes(formatDate(month, DATE_FORMATS.YYYY_MM)));
     },
     [items]
   );

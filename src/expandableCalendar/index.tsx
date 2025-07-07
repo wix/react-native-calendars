@@ -35,6 +35,7 @@ import {
   addDaysToDate,
   addMonthsToDate,
   type CalendarsDate,
+  DATE_FORMATS,
   formatDate,
   getDate,
   getDayOfWeek,
@@ -596,7 +597,7 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   };
 
   const renderAnimatedHeader = () => {
-    const monthYear = formatDate(getDate(date), 'MMMM YYYY');
+    const monthYear = formatDate(getDate(date), DATE_FORMATS.MMMM_YYYY);
     return (
       <Animated.View ref={header} style={animatedHeaderStyle} pointerEvents={'none'}>
         <Text allowFontScaling={false} style={style.current.headerTitle}>

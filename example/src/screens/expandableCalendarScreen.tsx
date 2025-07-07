@@ -118,7 +118,7 @@ const ExpandableCalendarScreen = (props: Props) => {
         renderItem={renderItem}
         // scrollToNextEvent
         sectionStyle={styles.section}
-        // dayFormat={'YYYY-MM-D'}
+        // dayFormat={DATE_FORMATS.YYYY_MM_D}
       />
     </CalendarProvider>
   );

@@ -3,7 +3,16 @@ import omit from 'lodash/omit';
 import some from 'lodash/some';
 import React, {useMemo} from 'react';
 
-import {dateToData, formatDate, formatNumbers, getCurrentDate, getDate, getDayOfMonth, isToday} from '../../dateutils';
+import {
+  DATE_FORMATS,
+  dateToData,
+  formatDate,
+  formatNumbers,
+  getCurrentDate,
+  getDate,
+  getDayOfMonth,
+  isToday
+} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 import type {DateData} from '../../types';
 import BasicDay, {type BasicDayProps} from './basic';
@@ -58,7 +67,7 @@ const Day = React.memo((props: DayProps) => {
 
   const getAccessibilityLabel = useMemo(() => {
     const today = getDefaultLocale().today || 'today';
-    const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || 'dddd D MMMM YYYY';
+    const formatAccessibilityLabel = getDefaultLocale().formatAccessibilityLabel || DATE_FORMATS.dddd_D_MMMM_YYYY;
 
     return `${_isToday ? today : ''} ${formatDate(_date, formatAccessibilityLabel)} ${markingAccessibilityLabel}`;
   }, [_date, marking, _isToday]);

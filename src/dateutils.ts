@@ -53,7 +53,7 @@ function setupLocale() {
       dayNamesShort: dayjs.weekdaysShort(),
       today: 'Today',
       numbers: [],
-      formatAccessibilityLabel: 'dddd D MMMM YYYY'
+      formatAccessibilityLabel: DATE_FORMATS.dddd_D_MMMM_YYYY
     };
   }
   setLocale(defaultLocale);
@@ -67,6 +67,18 @@ function setupLocale() {
     locales
   };
 }
+
+export const DATE_FORMATS = {
+  YYYY_MM: 'YYYY MM',
+  YYYY_MM_D: 'YYYY-MM-D',
+  YYYY_MM_DD: 'YYYY-MM-DD',
+  HH_mm: 'HH:mm',
+  hh_mm_A: 'hh:mm A',
+  MMM_YY: 'MMM YY',
+  dddd_D_MMMM_YYYY: 'dddd D MMMM YYYY',
+  dddd_MMM_D: 'dddd, MMM D',
+  MMMM_YYYY: 'MMMM YYYY'
+};
 
 export function isValidDate(date) {
   if (!date) {
@@ -114,9 +126,8 @@ export function onSameDateRange({
 }
 
 export function isSameWeek(a: string, b: string, firstDayOfWeek: number) {
-  const format = 'YYYY-MM-DD';
-  const weekDates = getWeekDates(a, firstDayOfWeek, format);
-  return weekDates?.includes(formatDate(getDate(b), format) as string);
+  const weekDates = getWeekDates(a, firstDayOfWeek, DATE_FORMATS.YYYY_MM_DD);
+  return weekDates?.includes(formatDate(getDate(b), DATE_FORMATS.YYYY_MM_DD) as string);
 }
 
 export function isPastDate(date: string, isUTC = false) {
@@ -316,7 +327,7 @@ export function parseDate(d?) {
 }
 
 export function toMarkingFormat(d) {
-  return formatDate(d, 'YYYY-MM-DD');
+  return formatDate(d, DATE_FORMATS.YYYY_MM_DD);
 }
 
 export function getCurrentDate(isUTC = false) {

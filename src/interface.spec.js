@@ -1,4 +1,5 @@
 import {
+  DATE_FORMATS,
   dateToData,
   formatDate,
   getDate,
@@ -29,7 +30,7 @@ describe('interface', () => {
 
     it('should accept dateString as argument', () => {
       const date = parseDate('2012-03-16');
-      expect(formatDate(date, 'YYYY-MM-DD')).toEqual('2012-03-16');
+      expect(formatDate(date, DATE_FORMATS.YYYY_MM_DD)).toEqual('2012-03-16');
       expect(getTimezoneOffset(date)).toEqual(0);
     });
 
@@ -49,7 +50,7 @@ describe('interface', () => {
     it('should accept Date as argument', () => {
       const testDate = new Date(2015, 5, 5, 12, 0);
       const date = parseDate(testDate);
-      expect(formatDate(date, 'YYYY-MM-DD')).toEqual('2015-06-05');
+      expect(formatDate(date, DATE_FORMATS.YYYY_MM_DD)).toEqual('2015-06-05');
     });
 
     it('should accept data as argument', () => {
@@ -59,7 +60,7 @@ describe('interface', () => {
         day: 6
       };
       const date = parseDate(testDate);
-      expect(formatDate(date, 'YYYY-MM-DD')).toEqual('2015-05-06');
+      expect(formatDate(date, DATE_FORMATS.YYYY_MM_DD)).toEqual('2015-05-06');
     });
   });
 
@@ -82,7 +83,7 @@ describe('interface', () => {
     it('should convert date to YYYY-MM-DD format string', () => {
       const time = 1479772800000;
       const testDate = getDate(time, true);
-      expect(toMarkingFormat(testDate)).toEqual(formatDate(testDate, 'YYYY-MM-DD'));
+      expect(toMarkingFormat(testDate)).toEqual(formatDate(testDate, DATE_FORMATS.YYYY_MM_DD));
     });
   });
 });

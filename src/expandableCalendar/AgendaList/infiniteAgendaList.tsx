@@ -5,7 +5,7 @@ import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} fr
 import type {DefaultSectionT, SectionListData} from 'react-native';
 import {LayoutProvider} from 'recyclerlistview/dist/reactnative/core/dependencies/LayoutProvider';
 import constants from '../../commons/constants';
-import {formatDate, getDate, isGTE, isToday, parseDate} from '../../dateutils';
+import {DATE_FORMATS, formatDate, getDate, isGTE, isToday, parseDate} from '../../dateutils';
 import {useDidUpdate} from '../../hooks';
 import InfiniteList from '../../infinite-list';
 import {getDefaultLocale} from '../../services';
@@ -29,7 +29,7 @@ const InfiniteAgendaList = ({
   renderSectionHeader,
   sectionStyle,
   dayFormatter,
-  dayFormat = 'dddd, MMM D',
+  dayFormat = DATE_FORMATS.dddd_MMM_D,
   markToday = true,
   infiniteListProps,
   renderItem,
