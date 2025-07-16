@@ -75,28 +75,16 @@ export interface Theme {
   arrowWidth?: number;
   weekVerticalMargin?: number;
   reservationsBackgroundColor?: string;
-  stylesheet?: {
-    calendar?: {
-      main?: object;
-      header?: object;
-    };
-    day?: {
-      basic?: object;
-      period?: object;
-    };
-    dot?: object;
-    marking?: object;
-    'calendar-list'?: {
-      main?: object;
-    };
-    agenda?: {
-      main?: object;
-      list?: object;
-    };
-    expandable?: {
-      main?: object;
-    };
-  };
+  'stylesheet.calendar.main'?: object;
+  'stylesheet.calendar.header'?: object;
+  'stylesheet.day.basic'?: object;
+  'stylesheet.day.period'?: object;
+  'stylesheet.dot'?: object;
+  'stylesheet.marking'?: object;
+  'calendar-list.main'?: object;
+  'stylesheet.agenda.main'?: object;
+  'stylesheet.agenda.list'?: object;
+  'stylesheet.expandable.main'?: object;
 }
 
 export type AgendaEntry = {
