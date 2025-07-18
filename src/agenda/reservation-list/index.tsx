@@ -19,7 +19,7 @@ import {
   type CalendarsDate,
   getCurrentDate,
   getDate,
-  getDateInMs,
+  getDateTimestamp,
   isSameDate,
   toMarkingFormat
 } from '../../dateutils';
@@ -186,7 +186,7 @@ class ReservationList extends Component<ReservationListProps, State> {
     if (this.state.reservations && this.state.reservations.length) {
       let iterator = getDate(this.state.reservations[0].date);
       if (iterator) {
-        while (getDateInMs(iterator) < getDateInMs(selectedDay)) {
+        while (getDateTimestamp(iterator) < getDateTimestamp(selectedDay)) {
           const res = this.getReservationsForDay(iterator, props);
           if (!res) {
             reservations = [];

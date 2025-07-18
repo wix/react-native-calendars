@@ -4,7 +4,7 @@ import type React from 'react';
 import {Component} from 'react';
 import {Text, View} from 'react-native';
 
-import {type CalendarsDate, getDateInMs, getDayOfMonth, getDayOfWeek, isToday} from '../../dateutils';
+import {type CalendarsDate, getDateTimestamp, getDayOfMonth, getDayOfWeek, isToday} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
 import {RESERVATION_DATE} from '../../testIDs';
 import type {AgendaEntry, Theme} from '../../types';
@@ -56,7 +56,7 @@ class Reservation extends Component<ReservationProps> {
     if (!d1 && !d2) {
       changed = false;
     } else if (d1 && d2) {
-      if (getDateInMs(d1) !== getDateInMs(d2)) {
+      if (getDateTimestamp(d1) !== getDateTimestamp(d2)) {
         changed = true;
       } else if (!r1 && !r2) {
         changed = false;

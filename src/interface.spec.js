@@ -3,7 +3,7 @@ import {
   dateToData,
   formatDate,
   getDate,
-  getDateInMs,
+  getDateTimestamp,
   getISODateString,
   getTimezoneOffset,
   parseDate,
@@ -24,7 +24,7 @@ describe('interface', () => {
 
     it('should accept UTC timestamp as argument', () => {
       const date = parseDate(1479832134398);
-      expect(getDateInMs(date, true)).toEqual(1479832134398);
+      expect(getDateTimestamp(date, true)).toEqual(1479832134398);
       expect(getTimezoneOffset(date)).toEqual(0);
     });
 
@@ -36,7 +36,7 @@ describe('interface', () => {
 
     it('should expect object with UTC timestamp as argument', () => {
       const date = parseDate(1479832134398);
-      expect(getDateInMs(date)).toEqual(1479832134398);
+      expect(getDateTimestamp(date)).toEqual(1479832134398);
       expect(getTimezoneOffset(date)).toEqual(0);
     });
 

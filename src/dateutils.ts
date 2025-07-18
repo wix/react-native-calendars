@@ -115,9 +115,9 @@ export function onSameDateRange({
   const aDate = getDate(firstDay);
   const bDate = getDate(secondDay);
   const firstDayDate = getDate(firstDateInRange);
-  const firstDayDateMs = getDateInMs(firstDayDate);
-  const aDiff = getDateInMs(aDate) - firstDayDateMs;
-  const bDiff = getDateInMs(bDate) - firstDayDateMs;
+  const firstDayDateMs = getDateTimestamp(firstDayDate);
+  const aDiff = getDateTimestamp(aDate) - firstDayDateMs;
+  const bDiff = getDateTimestamp(bDate) - firstDayDateMs;
   const aTotalDays = Math.ceil(aDiff / (1000 * 3600 * 24));
   const bTotalDays = Math.ceil(bDiff / (1000 * 3600 * 24));
   const aWeek = Math.floor(aTotalDays / numberOfDays);
@@ -214,7 +214,7 @@ export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = fal
     to = addDaysToDate(to, 7);
   }
 
-  return fromTo(from, to).sort((a, b) => getDateInMs(a, true) - getDateInMs(b, true));
+  return fromTo(from, to).sort((a, b) => getDateTimestamp(a, true) - getDateTimestamp(b, true));
 }
 
 export function isDateNotInRange(date: CalendarsDate, minDate: string, maxDate: string) {
@@ -300,7 +300,7 @@ export function dateToData(date: CalendarsDate | string): DateToData {
     year: getYear(d),
     month: getMonth(d),
     day: getDayOfMonth(d),
-    timestamp: getDateInMs(dateString, true),
+    timestamp: getDateTimestamp(dateString, true),
     dateString
   };
 }
@@ -384,7 +384,7 @@ export function getYear(date?: CalendarsDate) {
   return getDate(date).year();
 }
 
-export function getDateInMs(date: CalendarsDate, isUTC = false) {
+export function getDateTimestamp(date: CalendarsDate, isUTC = false) {
   return getDate(date, isUTC).valueOf();
 }
 
