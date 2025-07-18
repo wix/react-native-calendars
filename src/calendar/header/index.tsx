@@ -1,31 +1,29 @@
 import includes from 'lodash/includes';
-import XDate from 'xdate';
-
-import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {forwardRef, Fragment, type ReactNode, useCallback, useImperativeHandle, useMemo, useRef} from 'react';
 import {
+  type AccessibilityActionEvent,
   ActivityIndicator,
+  type ColorValue,
+  Image,
+  type Insets,
   Platform,
-  View,
+  type StyleProp,
   Text,
   TouchableOpacity,
-  Image,
-  StyleProp,
-  ViewStyle,
-  AccessibilityActionEvent,
-  ColorValue,
-  Insets,
-  ViewProps
+  View,
+  type ViewProps,
+  type ViewStyle
 } from 'react-native';
-import {formatNumbers, weekDayNames} from '../../dateutils';
+import {type CalendarsDate, DATE_FORMATS, formatDate, formatNumbers, getDayOfWeek, weekDayNames} from '../../dateutils';
+import type {Direction, Theme} from '../../types';
 import styleConstructor from './style';
-import {Theme, Direction} from '../../types';
 
 export interface CalendarHeaderProps {
   /** The current month presented in the calendar */
-  month?: XDate;
+  month?: CalendarsDate;
   /** A callback for when a month is changed from the headers arrows */
   addMonth?: (num: number) => void;
-  
+
   /** The current date presented */
   current?: string;
   /** Specify theme properties to override specific styles for calendar parts */
@@ -36,7 +34,7 @@ export interface CalendarHeaderProps {
   displayLoadingIndicator?: boolean;
   /** Show week numbers. Default = false */
   showWeekNumbers?: boolean;
-  /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
+  /** Month format in the title. Formatting values: https://day.js.org/docs/en/display/format */
   monthFormat?: string;
   /** Hide day names */
   hideDayNames?: boolean;
@@ -45,9 +43,9 @@ export interface CalendarHeaderProps {
   /** Replace default arrows with custom ones (direction = 'left' | 'right') */
   renderArrow?: (direction: Direction) => ReactNode;
   /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
-  onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
+  onPressArrowLeft?: (method: () => void, month?: CalendarsDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
-  onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
+  onPressArrowRight?: (method: () => void, month?: CalendarsDate) => void; //TODO: replace with string
   /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected. Default = 20 */
   arrowsHitSlop?: Insets | number;
   /** Disable left arrow */
@@ -57,7 +55,7 @@ export interface CalendarHeaderProps {
   /** Apply custom disable color to selected day names indexes */
   disabledDaysIndexes?: number[];
   /** Replace default title with custom one. the function receive a date as parameter */
-  renderHeader?: (date?: XDate, info?: Pick<CalendarHeaderProps, 'testID'>) => ReactNode; //TODO: replace with string
+  renderHeader?: (date?: CalendarsDate, info?: Pick<CalendarHeaderProps, 'testID'>) => ReactNode; //TODO: replace with string
   /** Replace default title with custom element */
   customHeaderTitle?: JSX.Element;
   /** Test ID */
@@ -89,7 +87,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     style: propsStyle,
     addMonth: propsAddMonth,
     month,
-    monthFormat = 'MMMM yyyy',
+    monthFormat = DATE_FORMATS.MMMM_YYYY,
     firstDay,
     hideDayNames,
     showWeekNumbers,
@@ -113,7 +111,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     timelineLeftInset,
     onHeaderLayout
   } = props;
-  
+
   const numberOfDaysCondition = useMemo(() => {
     return numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
@@ -130,11 +128,16 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const hitSlop: Insets | undefined = useMemo(
     () =>
       typeof arrowsHitSlop === 'number'
-        ? {top: arrowsHitSlop, left: arrowsHitSlop, bottom: arrowsHitSlop, right: arrowsHitSlop}
+        ? {
+            top: arrowsHitSlop,
+            left: arrowsHitSlop,
+            bottom: arrowsHitSlop,
+            right: arrowsHitSlop
+          }
         : arrowsHitSlop,
     [arrowsHitSlop]
   );
-  
+
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -162,21 +165,24 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     return addMonth();
   }, [onPressArrowRight, addMonth, month]);
 
-  const onAccessibilityAction = useCallback((event: AccessibilityActionEvent) => {
-    switch (event.nativeEvent.actionName) {
-      case 'decrement':
-        onPressLeft();
-        break;
-      case 'increment':
-        onPressRight();
-        break;
-      default:
-        break;
-    }
-  }, [onPressLeft, onPressRight]);
+  const onAccessibilityAction = useCallback(
+    (event: AccessibilityActionEvent) => {
+      switch (event.nativeEvent.actionName) {
+        case 'decrement':
+          onPressLeft();
+          break;
+        case 'increment':
+          onPressRight();
+          break;
+        default:
+          break;
+      }
+    },
+    [onPressLeft, onPressRight]
+  );
 
   const renderWeekDays = useMemo(() => {
-    const dayOfTheWeek = new XDate(current).getDay();
+    const dayOfTheWeek = getDayOfWeek(current);
     const weekDaysNames = numberOfDaysCondition ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
     const dayNames = numberOfDaysCondition ? weekDaysNames.slice(0, numberOfDays) : weekDaysNames;
 
@@ -193,7 +199,14 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       }
 
       return (
-        <Text allowFontScaling={false} key={index} style={dayStyle} numberOfLines={1} accessibilityLabel={''} testID={`${testID}.dayName_${day}`}>
+        <Text
+          allowFontScaling={false}
+          key={index}
+          style={dayStyle}
+          numberOfLines={1}
+          accessibilityLabel={''}
+          testID={`${testID}.dayName_${day}`}
+        >
           {day}
         </Text>
       );
@@ -213,13 +226,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
     return (
       <Fragment>
-        <Text
-          allowFontScaling={false}
-          style={style.current.monthText}
-          testID={`${testID}.title`}
-          {...webProps}
-        >
-          {formatNumbers(month?.toString(monthFormat))}
+        <Text allowFontScaling={false} style={style.current.monthText} testID={`${testID}.title`} {...webProps}>
+          {formatNumbers(formatDate(month, monthFormat))}
         </Text>
       </Fragment>
     );
@@ -227,16 +235,16 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
   const _renderArrow = (direction: Direction) => {
     if (hideArrows) {
-      return <View/>;
+      return <View />;
     }
 
     const isLeft = direction === 'left';
-    const arrowDirection = isLeft ? 'left' : 'right';   
+    const arrowDirection = isLeft ? 'left' : 'right';
     const arrowId = `${arrowDirection}Arrow`;
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
-    const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
+    const onPress = !shouldDisable ? (isLeft ? onPressLeft : onPressRight) : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-      
+
     return (
       <TouchableOpacity
         onPress={onPress}
@@ -246,34 +254,32 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         testID={`${testID}.${arrowId}`}
         importantForAccessibility={'no-hide-descendants'}
       >
-        {renderArrow ? renderArrow(arrowDirection) : <Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>}
+        {renderArrow ? (
+          renderArrow(arrowDirection)
+        ) : (
+          <Image
+            source={imageSource}
+            style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}
+          />
+        )}
       </TouchableOpacity>
     );
   };
 
   const renderIndicator = () => {
     if (displayLoadingIndicator) {
-      return (
-        <ActivityIndicator
-          color={theme?.indicatorColor as ColorValue}
-          testID={`${testID}.loader`}
-        />
-      );
+      return <ActivityIndicator color={theme?.indicatorColor as ColorValue} testID={`${testID}.loader`}/>;
     }
   };
 
   const renderWeekNumbersSpace = () => {
-    return showWeekNumbers && <View style={style.current.dayHeader}/>;
+    return showWeekNumbers && <View style={style.current.dayHeader} />;
   };
 
   const renderDayNames = () => {
     if (!hideDayNames) {
       return (
-        <View
-          style={dayNamesStyle}
-          testID={`${testID}.dayNames`}
-          importantForAccessibility={'no-hide-descendants'}
-        >
+        <View style={dayNamesStyle} testID={`${testID}.dayNames`} importantForAccessibility={'no-hide-descendants'}>
           {renderWeekNumbersSpace()}
           {renderWeekDays}
         </View>
@@ -309,7 +315,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 export default CalendarHeader;
 CalendarHeader.displayName = 'CalendarHeader';
 CalendarHeader.defaultProps = {
-  monthFormat: 'MMMM yyyy',
+  monthFormat: DATE_FORMATS.MMMM_YYYY,
   webAriaLevel: 1,
   arrowsHitSlop: 20
 };

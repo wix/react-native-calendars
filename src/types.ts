@@ -1,6 +1,7 @@
-import {ViewStyle, TextStyle} from 'react-native';
-import {MarkingProps} from './calendar/day/marking';
-import {CalendarContextProps} from './expandableCalendar/Context';
+import type {TextStyle, ViewStyle} from 'react-native';
+import type {MarkingProps} from './calendar/day/marking';
+import type {CalendarsDate} from './dateutils';
+import type {CalendarContextProps} from './expandableCalendar/Context';
 
 export type ContextProp = {
   context?: CalendarContextProps;
@@ -111,5 +112,5 @@ export type AgendaSchedule = {
 
 export interface DayAgenda {
   reservation?: AgendaEntry;
-  date?: XDate;
+  date?: CalendarsDate;
 }

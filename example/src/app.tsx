@@ -1,6 +1,5 @@
-import './wdyr'; // <--- must be first import
-import React from 'react';
 import {AppRegistry} from 'react-native';
+import './wdyr'; // <--- must be first import
 //@ts-expect-error
 import {LocaleConfig} from 'react-native-calendars';
 import {name as appName} from '../app.json';
@@ -8,8 +7,8 @@ import MenuScreen from './screens/menuScreen';
 
 /** Locale */
 
-LocaleConfig.locales['en'] = {
-  formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy",
+LocaleConfig.locales.en = {
+  formatAccessibilityLabel: 'dddd D MMMM YYYY',
   monthNames: [
     'January',
     'February',
@@ -29,15 +28,28 @@ LocaleConfig.locales['en'] = {
   dayNamesShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
   // numbers: ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'] // <--- number localization example
 };
-LocaleConfig.locales['fr'] = {
-  monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-  monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
-  dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-  dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
-  today: 'Aujourd\'hui'
+LocaleConfig.locales.fr = {
+  monthNames: [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ],
+  monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+  dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+  dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+  today: "Aujourd'hui"
 };
-LocaleConfig.locales['he'] = {
-  formatAccessibilityLabel: "dddd d 'of' MMMM 'of' yyyy",
+LocaleConfig.locales.he = {
+  formatAccessibilityLabel: 'dddd D MMMM YYYY',
   monthNames: [
     'ינואר',
     'פברואר',
@@ -59,6 +71,6 @@ LocaleConfig.locales['he'] = {
 LocaleConfig.defaultLocale = 'en';
 
 export default function App() {
-  return <MenuScreen/>;
+  return <MenuScreen />;
 }
 AppRegistry.registerComponent(appName, () => App);

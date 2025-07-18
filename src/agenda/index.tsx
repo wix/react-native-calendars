@@ -1,65 +1,70 @@
 import isFunction from 'lodash/isFunction';
-import PropTypes from 'prop-types';
-import XDate from 'xdate';
 import memoize from 'memoize-one';
+import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
 import {
-  View,
-  Dimensions,
   Animated,
-  ViewStyle,
-  LayoutChangeEvent,
-  NativeSyntheticEvent,
-  NativeScrollEvent
+  Dimensions,
+  type LayoutChangeEvent,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+  View,
+  type ViewStyle
 } from 'react-native';
 
-import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
-import {xdateToData, toMarkingFormat} from '../interface';
-import {sameDate, sameMonth} from '../dateutils';
-import {AGENDA_CALENDAR_KNOB} from '../testIDs';
-import {VelocityTracker} from '../velocityTracker';
-import {DateData, AgendaSchedule} from '../types';
-import {getCalendarDateString} from '../services';
-import styleConstructor from './style';
+import CalendarList, {type CalendarListImperativeMethods, type CalendarListProps} from '../calendar-list';
 import WeekDaysNames from '../commons/WeekDaysNames';
-import CalendarList, {CalendarListProps, CalendarListImperativeMethods} from '../calendar-list';
-import ReservationList, {ReservationListProps}  from './reservation-list';
-
+import {extractCalendarListProps, extractReservationListProps} from '../componentUpdater';
+import {
+  type CalendarsDate,
+  dateToData,
+  getCurrentDate,
+  getDate,
+  isSameDate,
+  isSameMonth,
+  toMarkingFormat
+} from '../dateutils';
+import {AGENDA_CALENDAR_KNOB} from '../testIDs';
+import type {AgendaSchedule, DateData} from '../types';
+import {VelocityTracker} from '../velocityTracker';
+import ReservationList, {type ReservationListProps} from './reservation-list';
+import styleConstructor from './style';
 
 const HEADER_HEIGHT = 104;
 const KNOB_HEIGHT = 24;
 
-export type AgendaProps = CalendarListProps & ReservationListProps & {
-  /** the list of items that have to be displayed in agenda. If you want to render item as empty date
-  the value of date key kas to be an empty array []. If there exists no value for date key it is
-  considered that the date in question is not yet loaded */
-  items?: AgendaSchedule;
-  /** callback that gets called when items for a certain month should be loaded (month became visible) */
-  loadItemsForMonth?: (data: DateData) => void;
-  /** callback that fires when the calendar is opened or closed */
-  onCalendarToggled?: (enabled: boolean) => void;
-  /** callback that gets called when day changes while scrolling agenda list */
-  onDayChange?: (data: DateData) => void;
-  /** specify how agenda knob should look like */
-  renderKnob?: () => JSX.Element;
-  /** override inner list with a custom implemented component */
-  renderList?: (listProps: ReservationListProps) => JSX.Element;
-  /** initially selected day */
-  selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
-  /** Hide knob button. Default = false */
-  hideKnob?: boolean;
-  /** Whether the knob should always be visible (when hideKnob = false) */
-  showClosingKnob?: boolean;
-}
+export type AgendaProps = CalendarListProps &
+  ReservationListProps & {
+    /** the list of items that have to be displayed in agenda. If you want to render item as empty date
+	the value of date key kas to be an empty array []. If there exists no value for date key it is
+	considered that the date in question is not yet loaded */
+    items?: AgendaSchedule;
+    /** callback that gets called when items for a certain month should be loaded (month became visible) */
+    loadItemsForMonth?: (data: DateData) => void;
+    /** callback that fires when the calendar is opened or closed */
+    onCalendarToggled?: (enabled: boolean) => void;
+    /** callback that gets called when day changes while scrolling agenda list */
+    onDayChange?: (data: DateData) => void;
+    /** specify how agenda knob should look like */
+    renderKnob?: () => JSX.Element;
+    /** override inner list with a custom implemented component */
+    renderList?: (listProps: ReservationListProps) => JSX.Element;
+    /** initially selected day */
+    selected?: string; //TODO: Should be renamed 'selectedDay' and inherited from ReservationList
+    /** Hide knob button. Default = false */
+    hideKnob?: boolean;
+    /** Whether the knob should always be visible (when hideKnob = false) */
+    showClosingKnob?: boolean;
+  };
 
 type State = {
   scrollY: Animated.Value;
   calendarIsReady: boolean;
   calendarScrollable: boolean;
   firstReservationLoad: boolean;
-  selectedDay: XDate;
-  topDay: XDate;
+  selectedDay: CalendarsDate;
+  topDay: CalendarsDate;
 };
 
 /**
@@ -92,7 +97,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   private viewWidth: number;
   private scrollTimeout?: ReturnType<typeof setTimeout>;
   private headerState: string;
-  private currentMonth: XDate;
+  private currentMonth: CalendarsDate;
   private knobTracker: VelocityTracker;
   private _isMounted: boolean | undefined;
   private scrollPad: React.RefObject<any> = React.createRef();
@@ -121,7 +126,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       topDay: this.getSelectedDate(props.selected)
     };
 
-    this.currentMonth = this.state.selectedDay.clone();
+    this.currentMonth = this.state.selectedDay;
 
     this.knobTracker = new VelocityTracker();
     this.state.scrollY.addListener(({value}) => this.knobTracker.add(value));
@@ -140,9 +145,9 @@ export default class Agenda extends Component<AgendaProps, State> {
   componentDidUpdate(prevProps: AgendaProps, prevState: State) {
     const newSelectedDate = this.getSelectedDate(this.props.selected);
 
-    if (!sameDate(newSelectedDate, prevState.selectedDay)) {
+    if (!isSameDate(newSelectedDate, prevState.selectedDay)) {
       const prevSelectedDate = this.getSelectedDate(prevProps.selected);
-      if (!sameDate(newSelectedDate, prevSelectedDate)) {
+      if (!isSameDate(newSelectedDate, prevSelectedDate)) {
         this.setState({selectedDay: newSelectedDate});
         this.calendar?.current?.scrollToDay(newSelectedDate, this.calendarOffset(), true);
       }
@@ -159,7 +164,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   }
 
   getSelectedDate(date?: string) {
-    return date ? new XDate(date) : new XDate(true);
+    return date ? getDate(date) : getCurrentDate();
   }
 
   calendarOffset() {
@@ -203,11 +208,9 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   loadReservations(props: AgendaProps) {
     if ((!props.items || !Object.keys(props.items).length) && !this.state.firstReservationLoad) {
-      this.setState({firstReservationLoad: true},
-        () => {
-          this.props.loadItemsForMonth?.(xdateToData(this.state.selectedDay));
-        }
-      );
+      this.setState({firstReservationLoad: true}, () => {
+        this.props.loadItemsForMonth?.(dateToData(this.state.selectedDay));
+      });
     }
   }
 
@@ -216,24 +219,24 @@ export default class Agenda extends Component<AgendaProps, State> {
   };
 
   chooseDay(d: DateData, optimisticScroll: boolean) {
-    const day = new XDate(d.dateString);
+    const day = getDate(d.dateString);
 
     this.setState({
       calendarScrollable: false,
-      selectedDay: day.clone()
+      selectedDay: day
     });
 
     this.props.onCalendarToggled?.(false);
 
     if (!optimisticScroll) {
-      this.setState({topDay: day.clone()});
+      this.setState({topDay: day});
     }
 
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
     this.calendar?.current?.scrollToDay(day, this.calendarOffset(), true);
 
-    this.props.loadItemsForMonth?.(xdateToData(day));
-    this.props.onDayPress?.(xdateToData(day));
+    this.props.loadItemsForMonth?.(dateToData(day));
+    this.props.onDayPress?.(dateToData(day));
   }
 
   generateMarkings = memoize((selectedDay, markedDates, items) => {
@@ -249,7 +252,10 @@ export default class Agenda extends Component<AgendaProps, State> {
     }
 
     const key = toMarkingFormat(selectedDay);
-    return {...markedDates, [key]: {...(markedDates[key] || {}), ...{selected: true}}};
+    return {
+      ...markedDates,
+      [key]: {...(markedDates[key] || {}), ...{selected: true}}
+    };
   });
 
   onScrollPadLayout = () => {
@@ -321,13 +327,13 @@ export default class Agenda extends Component<AgendaProps, State> {
     }
   };
 
-  onDayChange = (day: XDate) => {
-    const withAnimation = sameMonth(day, this.state.selectedDay);
+  onDayChange = (day: CalendarsDate) => {
+    const withAnimation = isSameMonth(day, this.state.selectedDay);
     this.calendar?.current?.scrollToDay(day, this.calendarOffset(), withAnimation);
 
     this.setState({selectedDay: day});
 
-    this.props.onDayChange?.(xdateToData(day));
+    this.props.onDayChange?.(dateToData(day));
   };
 
   renderReservations() {
@@ -361,7 +367,7 @@ export default class Agenda extends Component<AgendaProps, State> {
       <CalendarList
         {...calendarListProps}
         ref={this.calendar}
-        current={getCalendarDateString(this.currentMonth.toString())}
+        current={toMarkingFormat(this.currentMonth)}
         markedDates={this.generateMarkings(this.state.selectedDay, markedDates, items)}
         calendarWidth={this.viewWidth}
         scrollEnabled={this.state.calendarScrollable}
@@ -375,30 +381,26 @@ export default class Agenda extends Component<AgendaProps, State> {
 
   renderKnob() {
     const {showClosingKnob, hideKnob, renderKnob} = this.props;
-    let knob: JSX.Element | null = <View style={this.style.knobContainer}/>;
+    let knob: JSX.Element | null = <View style={this.style.knobContainer} />;
 
     if (!hideKnob) {
-      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob}/>;
-      knob = !this.state.calendarScrollable || showClosingKnob ? (
-        <View style={this.style.knobContainer}>
-          <View ref={this.knob}>{knobView}</View>
-        </View>
-      ) : null;
+      const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
+      knob =
+        !this.state.calendarScrollable || showClosingKnob ? (
+          <View style={this.style.knobContainer}>
+            <View ref={this.knob}>{knobView}</View>
+          </View>
+        ) : null;
     }
     return knob;
   }
 
   renderWeekDaysNames = () => {
-    return (
-      <WeekDaysNames
-        firstDay={this.props.firstDay}
-        style={this.style.dayHeader}
-      />
-    );
+    return <WeekDaysNames firstDay={this.props.firstDay} style={this.style.dayHeader} />;
   };
 
   renderWeekNumbersSpace = () => {
-    return this.props.showWeekNumbers && <View style={this.style.dayHeader}/>;
+    return this.props.showWeekNumbers && <View style={this.style.dayHeader} />;
   };
 
   render() {

@@ -1,21 +1,36 @@
-import PropTypes from 'prop-types';
-import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
-import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
-import {AccessibilityInfo, View, ViewStyle, StyleProp} from 'react-native';
+import PropTypes from 'prop-types';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {AccessibilityInfo, type StyleProp, View, type ViewStyle} from 'react-native';
 // @ts-expect-error
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
-import {page, isGTE, isLTE, sameMonth} from '../dateutils';
-import {xdateToData, parseDate, toMarkingFormat} from '../interface';
+import {extractDayProps, extractHeaderProps} from '../componentUpdater';
+import {
+  addMonthsToDate,
+  type CalendarsDate,
+  DATE_FORMATS,
+  dateToData,
+  formatDate,
+  getCurrentDate,
+  getDate,
+  getWeekOfYear,
+  isGTE,
+  isLTE,
+  isSameMonth,
+  page,
+  parseDate,
+  setDayOfMonth,
+  subtractDaysToDate,
+  toMarkingFormat
+} from '../dateutils';
 import {getState} from '../day-state-manager';
-import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-import {DateData, Theme, MarkedDates, ContextProp} from '../types';
 import {useDidUpdate} from '../hooks';
-import styleConstructor from './style';
-import CalendarHeader, {CalendarHeaderProps} from './header';
-import Day, {DayProps} from './day/index';
+import type {ContextProp, DateData, MarkedDates, Theme} from '../types';
 import BasicDay from './day/basic';
+import Day, {type DayProps} from './day/index';
+import CalendarHeader, {type CalendarHeaderProps} from './header';
+import styleConstructor from './style';
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
   /** Specify theme properties to override specific styles for calendar parts */
@@ -93,7 +108,9 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     testID,
     style: propsStyle
   } = props;
-  const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
+  const [currentMonth, setCurrentMonth] = useState(
+    current || initialDate ? parseDate(current || initialDate) : getCurrentDate()
+  );
   const style = useRef(styleConstructor(theme));
   const header = useRef();
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
@@ -105,46 +122,63 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   }, [initialDate]);
 
   useDidUpdate(() => {
-    const _currentMonth = currentMonth.clone();
-    onMonthChange?.(xdateToData(_currentMonth));
-    onVisibleMonthsChange?.([xdateToData(_currentMonth)]);
-    AccessibilityInfo.announceForAccessibility(_currentMonth.toString('MMMM yyyy'));
+    const _currentMonth = getDate(currentMonth);
+    const currentMonthToData = dateToData(_currentMonth);
+    onMonthChange?.(currentMonthToData);
+    onVisibleMonthsChange?.([currentMonthToData]);
+    AccessibilityInfo.announceForAccessibility(formatDate(_currentMonth, DATE_FORMATS.MMMM_YYYY));
   }, [currentMonth]);
 
-  const updateMonth = useCallback((newMonth: XDate) => {
-    if (sameMonth(newMonth, currentMonth)) {
-      return;
-    }
-    setCurrentMonth(newMonth);
-  }, [currentMonth]);
-
-  const addMonth = useCallback((count: number) => {
-    const newMonth = currentMonth.clone().addMonths(count, true);
-    updateMonth(newMonth);
-  }, [currentMonth, updateMonth]);
-
-  const handleDayInteraction = useCallback((date: DateData, interaction?: (date: DateData) => void) => {
-    const day = new XDate(date.dateString);
-
-    if (allowSelectionOutOfRange || !(minDate && !isGTE(day, new XDate(minDate))) && !(maxDate && !isLTE(day, new XDate(maxDate)))) {
-      if (!disableMonthChange) {
-        updateMonth(day);
+  const updateMonth = useCallback(
+    (newMonth: CalendarsDate) => {
+      if (isSameMonth(newMonth, currentMonth)) {
+        return;
       }
-      if (interaction) {
-        interaction(date);
+      setCurrentMonth(newMonth);
+    },
+    [currentMonth]
+  );
+
+  const addMonth = useCallback(
+    (count: number) => {
+      const newMonth = addMonthsToDate(currentMonth, count);
+      updateMonth(newMonth);
+    },
+    [currentMonth, updateMonth]
+  );
+
+  const handleDayInteraction = useCallback(
+    (date: DateData, interaction?: (date: DateData) => void) => {
+      const day = getDate(date.dateString);
+
+      if (
+        allowSelectionOutOfRange ||
+        (!(minDate && !isGTE(day, getDate(minDate))) && !(maxDate && !isLTE(day, getDate(maxDate))))
+      ) {
+        if (!disableMonthChange) {
+          updateMonth(day);
+        }
+        if (interaction) {
+          interaction(date);
+        }
       }
-    }
-  }, [minDate, maxDate, allowSelectionOutOfRange, disableMonthChange, updateMonth]);
+    },
+    [minDate, maxDate, allowSelectionOutOfRange, disableMonthChange, updateMonth]
+  );
 
-  const _onDayPress = useCallback((date?: DateData) => {
-    if (date)
-    handleDayInteraction(date, onDayPress);
-  }, [handleDayInteraction, onDayPress]);
+  const _onDayPress = useCallback(
+    (date?: DateData) => {
+      if (date) handleDayInteraction(date, onDayPress);
+    },
+    [handleDayInteraction, onDayPress]
+  );
 
-  const onLongPressDay = useCallback((date?: DateData) => {
-    if (date)
-    handleDayInteraction(date, onDayLongPress);
-  }, [handleDayInteraction, onDayLongPress]);
+  const onLongPressDay = useCallback(
+    (date?: DateData) => {
+      if (date) handleDayInteraction(date, onDayLongPress);
+    },
+    [handleDayInteraction, onDayLongPress]
+  );
 
   const onSwipeLeft = useCallback(() => {
     // @ts-expect-error
@@ -156,21 +190,24 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     header.current?.onPressLeft();
   }, [header]);
 
-  const onSwipe = useCallback((gestureName: string) => {
-    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+  const onSwipe = useCallback(
+    (gestureName: string) => {
+      const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
 
-    switch (gestureName) {
-      case SWIPE_UP:
-      case SWIPE_DOWN:
-        break;
-      case SWIPE_LEFT:
-        constants.isRTL ? onSwipeRight() : onSwipeLeft();
-        break;
-      case SWIPE_RIGHT:
-        constants.isRTL ? onSwipeLeft() : onSwipeRight();
-        break;
-    }
-  }, [onSwipeLeft, onSwipeRight]);
+      switch (gestureName) {
+        case SWIPE_UP:
+        case SWIPE_DOWN:
+          break;
+        case SWIPE_LEFT:
+          constants.isRTL ? onSwipeRight() : onSwipeLeft();
+          break;
+        case SWIPE_RIGHT:
+          constants.isRTL ? onSwipeLeft() : onSwipeRight();
+          break;
+      }
+    },
+    [onSwipeLeft, onSwipeRight]
+  );
 
   const renderWeekNumber = (weekNumber: number) => {
     return (
@@ -188,9 +225,9 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     );
   };
 
-  const renderDay = (day: XDate, id: number) => {
-    if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer}/>;
+  const renderDay = (day: CalendarsDate, id: number) => {
+    if (!isSameMonth(day, currentMonth) && hideExtraDays) {
+      return <View key={id} style={style.current.emptyDayContainer} />;
     }
 
     const dayProps = extractDayProps(props);
@@ -212,15 +249,15 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     );
   };
 
-  const renderWeek = (days: XDate[], id: number) => {
+  const renderWeek = (days: CalendarsDate[], id: number) => {
     const week: JSX.Element[] = [];
 
-    days.forEach((day: XDate, id2: number) => {
+    days.forEach((day: CalendarsDate, id2: number) => {
       week.push(renderDay(day, id2));
-    }, this);
+    });
 
     if (props.showWeekNumbers) {
-      week.unshift(renderWeekNumber(days[days.length - 1].getWeek()));
+      week.unshift(renderWeekNumber(getWeekOfYear(days[days.length - 1])));
     }
 
     return (
@@ -244,7 +281,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const shouldDisplayIndicator = useMemo(() => {
     if (currentMonth) {
-      const lastMonthOfDay = toMarkingFormat(currentMonth.clone().addMonths(1, true).setDate(1).addDays(-1));
+      const lastMonthOfDay = toMarkingFormat(subtractDaysToDate(setDayOfMonth(addMonthsToDate(currentMonth, 1), 1), 1));
       if (displayLoadingIndicator && !markedDates?.[lastMonthOfDay]) {
         return true;
       }

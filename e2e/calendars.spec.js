@@ -1,6 +1,6 @@
 import testIDs from '../example/src/testIDs';
 
-const {HEADER_MONTH_NAME, CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} = require('../src/testIDs');
+import { CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW, HEADER_MONTH_NAME } from '../src/testIDs';
 
 describe('Calendars', () => {
   const FIRST_CALENDAR = testIDs.calendars.FIRST;

@@ -1,7 +1,7 @@
 import inRange from 'lodash/inRange';
-import XDate from 'xdate';
 import constants from '../commons/constants';
-import {Event, PackedEvent} from './EventBlock';
+import {addHourToDate, getDate, getDiffInHour, getStartOfDay, turnNumberPositive} from '../dateutils';
+import type {Event, PackedEvent} from './EventBlock';
 
 type PartialPackedEvent = Event & {index: number};
 interface PopulateOptions {
@@ -33,15 +33,14 @@ function buildEvent(
   width: number,
   {dayStart = 0, hourBlockHeight = HOUR_BLOCK_HEIGHT}: PopulateOptions
 ): PackedEvent {
-  const startTime = new XDate(event.start);
-  const endTime = event.end ? new XDate(event.end) : new XDate(startTime).addHours(1);
-
-  const dayStartTime = new XDate(startTime).clearTime();
+  const startTime = getDate(event.start, true);
+  const endTime = event.end ? getDate(event.end, true) : addHourToDate(startTime, 1);
+  const dayStartTime = getStartOfDay(startTime);
 
   return {
     ...event,
-    top: (dayStartTime.diffHours(startTime) - dayStart) * hourBlockHeight,
-    height: startTime.diffHours(endTime) * hourBlockHeight,
+    top: (turnNumberPositive(getDiffInHour(dayStartTime, startTime)) - dayStart) * hourBlockHeight,
+    height: turnNumberPositive(getDiffInHour(startTime, endTime)) * hourBlockHeight,
     width,
     left
   };
@@ -101,7 +100,7 @@ export function populateEvents(_events: Event[], populateOptions: PopulateOption
 
   const events: PartialPackedEvent[] = _events
     .map((ev: Event, index: number) => ({...ev, index: index}))
-    .sort(function (a: Event, b: Event) {
+    .sort((a: Event, b: Event) => {
       if (a.start < b.start) return -1;
       if (a.start > b.start) return 1;
       if (a.end < b.end) return -1;
@@ -109,7 +108,7 @@ export function populateEvents(_events: Event[], populateOptions: PopulateOption
       return 0;
     });
 
-  events.forEach(function (ev) {
+  events.forEach(ev => {
     // Reset recent overlapping event group and start a new one
     if (lastEnd !== null && ev.start >= lastEnd) {
       packOverlappingEventGroup(columns, calculatedEvents, populateOptions);

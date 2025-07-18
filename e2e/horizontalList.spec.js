@@ -1,6 +1,6 @@
 import testIDs from '../example/src/testIDs';
 
-const {HEADER_MONTH_NAME} = require('../src/testIDs');
+import { HEADER_MONTH_NAME } from '../src/testIDs';
 
 describe('Horizontal Calendar List', () => {
   const FIRST_CALENDAR = `${testIDs.horizontalList.CONTAINER}_1526428800000`;

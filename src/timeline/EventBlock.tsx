@@ -1,6 +1,6 @@
-import XDate from 'xdate';
 import React, {useCallback, useMemo} from 'react';
-import {View, Text, TextStyle, TouchableOpacity, ViewStyle} from 'react-native';
+import {Text, type TextStyle, TouchableOpacity, View, type ViewStyle} from 'react-native';
+import {DATE_FORMATS, formatDate} from '../dateutils';
 
 export interface Event {
   id?: string;
@@ -38,7 +38,7 @@ const EventBlock = (props: EventBlockProps) => {
   // Fixing the number of lines for the event title makes this calculation easier.
   // However it would make sense to overflow the title to a new line if needed
   const numberOfLines = Math.floor(event.height / TEXT_LINE_HEIGHT);
-  const formatTime = format24h ? 'HH:mm' : 'hh:mm A';
+  const formatTime = format24h ? DATE_FORMATS.HH_mm : DATE_FORMATS.hh_mm_A;
   const eventStyle = useMemo(() => {
     return {
       left: event.left,
@@ -69,7 +69,7 @@ const EventBlock = (props: EventBlockProps) => {
           ) : null}
           {numberOfLines > 2 ? (
             <Text style={styles.eventTimes} numberOfLines={1}>
-              {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
+              {formatDate(event.start, formatTime)} - {formatDate(event.end, formatTime)}
             </Text>
           ) : null}
         </View>

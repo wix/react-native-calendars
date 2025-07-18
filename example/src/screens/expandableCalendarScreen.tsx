@@ -1,11 +1,11 @@
-import React, {useRef, useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {Animated, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
-import testIDs from '../testIDs';
-import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
+import {AgendaList, CalendarProvider, ExpandableCalendar, WeekCalendar} from 'react-native-calendars';
+import {type CalendarsDate, formatDate} from '../../../src/dateutils';
 import AgendaItem from '../mocks/AgendaItem';
-import {getTheme, themeColor, lightThemeColor} from '../mocks/theme';
-import type XDate from 'xdate';
+import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
+import {getTheme, lightThemeColor, themeColor} from '../mocks/theme';
+import testIDs from '../testIDs';
 
 const leftArrowIcon = require('../img/previous.png');
 const rightArrowIcon = require('../img/next.png');
@@ -31,8 +31,8 @@ const ExpandableCalendarScreen = (props: Props) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);
 
-  const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item}/>;
+  const renderItem = useCallback(({item}) => {
+    return <AgendaItem item={item} />;
   }, []);
 
   const calendarRef = useRef<{toggleCalendarPosition: () => boolean}>(null);
@@ -49,15 +49,20 @@ const ExpandableCalendarScreen = (props: Props) => {
   }, []);
 
   const renderHeader = useCallback(
-    (date?: XDate) => {
+    (date?: CalendarsDate) => {
       const rotationInDegrees = rotation.current.interpolate({
         inputRange: [0, 1],
         outputRange: ['0deg', '-180deg']
       });
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
-          <Text style={styles.headerTitle}>{date?.toString('MMMM yyyy')}</Text>
-          <Animated.Image source={CHEVRON} style={{transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]}}/>
+          <Text style={styles.headerTitle}>{formatDate(date, 'MMMM YYYY')}</Text>
+          <Animated.Image
+            source={CHEVRON}
+            style={{
+              transform: [{rotate: '90deg'}, {rotate: rotationInDegrees}]
+            }}
+          />
         </TouchableOpacity>
       );
     },
@@ -83,7 +88,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       // disableAutoDaySelection={[ExpandableCalendar.navigationTypes.MONTH_SCROLL, ExpandableCalendar.navigationTypes.MONTH_ARROWS]}
     >
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current} />
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}
@@ -113,7 +118,7 @@ const ExpandableCalendarScreen = (props: Props) => {
         renderItem={renderItem}
         // scrollToNextEvent
         sectionStyle={styles.section}
-        // dayFormat={'yyyy-MM-d'}
+        // dayFormat={DATE_FORMATS.YYYY_MM_D}
       />
     </CalendarProvider>
   );

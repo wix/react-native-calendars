@@ -1,13 +1,10 @@
-import XDate from 'xdate';
+import React, {forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef, useState} from 'react';
+import {Animated, type StyleProp, TouchableOpacity, type ViewProps, type ViewStyle} from 'react-native';
 
-import React, {forwardRef, useImperativeHandle, useEffect, useRef, useState, useContext, useCallback} from 'react';
-import {Animated, TouchableOpacity, ViewStyle, ViewProps, StyleProp} from 'react-native';
-
-import {Theme} from '../../types';
+import {getCurrentDate, isPastDate, isToday, toMarkingFormat} from '../../dateutils';
 import {getDefaultLocale} from '../../services';
-import {toMarkingFormat} from '../../interface';
-import {isToday, isPastDate} from '../../dateutils';
-import {UpdateSources, todayString} from '../commons';
+import type {Theme} from '../../types';
+import {todayString, UpdateSources} from '../commons';
 import styleConstructor from '../style';
 import Context from './index';
 
@@ -36,12 +33,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
     }
   }));
 
-  const {
-    margin = 0,
-    disabledOpacity = 0.3,
-    theme,
-    style: propsStyle
-  } = props;
+  const {margin = 0, disabledOpacity = 0.3, theme, style: propsStyle} = props;
   const {date, setDate} = useContext(Context);
   const [disabled, setDisabled] = useState(false);
   const style = useRef(styleConstructor(theme));
@@ -105,7 +97,7 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
       useNativeDriver: true
     };
   };
-  
+
   const getOpacityAnimation = () => {
     return {
       toValue: disabled ? disabledOpacity : 1,
@@ -128,21 +120,13 @@ const TodayButton = (props: TodayButtonProps, ref: any) => {
     }).start();
   };
 
-  const getTodayDate = () => {
-    return toMarkingFormat(new XDate());
-  };
-
   const onPress = useCallback(() => {
-    setDate(getTodayDate(), UpdateSources.TODAY_PRESS);
+    setDate(toMarkingFormat(getCurrentDate()), UpdateSources.TODAY_PRESS);
   }, [setDate]);
 
   return (
     <Animated.View style={[style.current.todayButtonContainer, {transform: [{translateY: buttonY.current}]}]}>
-      <TouchableOpacity
-        style={[style.current.todayButton, propsStyle]}
-        onPress={onPress}
-        disabled={disabled}
-      >
+      <TouchableOpacity style={[style.current.todayButton, propsStyle]} onPress={onPress} disabled={disabled}>
         <Animated.Image style={[style.current.todayButtonImage, {opacity: opacity.current}]} source={buttonIcon}/>
         <Animated.Text allowFontScaling={false} style={[style.current.todayButtonText, {opacity: opacity.current}]}>
           {today.current}

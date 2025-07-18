@@ -36,15 +36,7 @@ export function extractComponentProps(component: any, props: any, ignoreProps?: 
 }
 
 export function extractDotProps(props: MarkingProps) {
-  const {
-    theme,
-    color,
-    marked,
-    selected,
-    disabled,
-    inactive,
-    today
-  } = props;
+  const {theme, color, marked, selected, disabled, inactive, today} = props;
 
   const dotProps = {
     theme,
@@ -173,7 +165,6 @@ export function extractCalendarProps(props: CalendarListProps) {
 }
 
 export function extractCalendarListProps(props: AgendaProps) {
-
   const {
     // Agenda props
     loadItemsForMonth,
@@ -270,15 +261,7 @@ export function extractReservationListProps(props: AgendaProps) {
 }
 
 export function extractReservationProps(props: ReservationListProps) {
-  const {
-    date,
-    item,
-    theme,
-    rowHasChanged,
-    renderDay,
-    renderItem,
-    renderEmptyDate
-  } = props;
+  const {date, item, theme, rowHasChanged, renderDay, renderItem, renderEmptyDate} = props;
 
   const reservationProps = {
     date,

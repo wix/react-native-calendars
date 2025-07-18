@@ -1,26 +1,104 @@
-const XDate = require('xdate');
-const {toMarkingFormat} = require('./interface');
+import dayjs, {type Dayjs} from 'dayjs';
+import customParseFormatPlugin from 'dayjs/plugin/customParseFormat';
+import isSameOrAfterPlugin from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBeforePlugin from 'dayjs/plugin/isSameOrBefore';
+import isTodayPlugin from 'dayjs/plugin/isToday';
+import localeDataPlugin from 'dayjs/plugin/localeData';
+import localizedFormatPlugin from 'dayjs/plugin/localizedFormat';
+import objectSupportPlugin from 'dayjs/plugin/objectSupport';
+import timezonePlugin from 'dayjs/plugin/timezone';
+import updateLocalePlugin from 'dayjs/plugin/updateLocale';
+import utcPlugin from 'dayjs/plugin/utc';
+import weekdayPlugin from 'dayjs/plugin/weekday';
+import weekOfYearPlugin from 'dayjs/plugin/weekOfYear';
 
-const latinNumbersPattern = /[0-9]/g;
+dayjs.extend(customParseFormatPlugin);
+dayjs.extend(isSameOrAfterPlugin);
+dayjs.extend(isSameOrBeforePlugin);
+dayjs.extend(isTodayPlugin);
+dayjs.extend(localeDataPlugin);
+dayjs.extend(localizedFormatPlugin);
+dayjs.extend(weekOfYearPlugin);
+dayjs.extend(utcPlugin);
+dayjs.extend(timezonePlugin);
+dayjs.extend(objectSupportPlugin);
+dayjs.extend(updateLocalePlugin);
+dayjs.extend(weekdayPlugin);
 
-function isValidXDate(date: any) {
-  return date && (date instanceof XDate);
+export type CalendarsDate = Dayjs | Date | string | number;
+
+export type DateToData = {
+  year: number;
+  month: number;
+  day: number;
+  timestamp: number;
+  dateString: string;
+};
+
+export const DATE_FORMATS = {
+  YYYY_MM: 'YYYY MM',
+  YYYY_MM_D: 'YYYY-MM-D',
+  YYYY_MM_DD: 'YYYY-MM-DD',
+  HH_mm: 'HH:mm',
+  hh_mm_A: 'hh:mm A',
+  MMM_YY: 'MMM YY',
+  dddd_D_MMMM_YYYY: 'dddd D MMMM YYYY',
+  dddd_MMM_D: 'dddd, MMM D',
+  MMMM_YYYY: 'MMMM YYYY'
+};
+
+export const LocaleConfig = setupLocale();
+
+function setupLocale() {
+  const defaultLocale = dayjs.locale();
+  const locales: Record<string, any> = {};
+
+  function setLocale(locale: string) {
+    try {
+      require(`dayjs/locale/${locale}`);
+    } catch {}
+    dayjs.locale(locale);
+    locales[locale] = {
+      monthNames: dayjs.months(),
+      monthNamesShort: dayjs.monthsShort(),
+      dayNames: dayjs.weekdays(),
+      dayNamesShort: dayjs.weekdaysShort(),
+      today: 'Today',
+      numbers: [],
+      formatAccessibilityLabel: DATE_FORMATS.dddd_D_MMMM_YYYY
+    };
+  }
+  setLocale(defaultLocale);
+  return {
+    get defaultLocale() {
+      return defaultLocale;
+    },
+    set defaultLocale(value: string) {
+      setLocale(value);
+    },
+    locales
+  };
 }
 
-export function sameMonth(a?: XDate, b?: XDate) {
-  if (!isValidXDate(a) || !isValidXDate(b)) {
+export function isValidDate(date) {
+  if (!date) {
     return false;
-  } else {
-    return a?.getFullYear() === b?.getFullYear() && a?.getMonth() === b?.getMonth();
   }
+  return getDate(date).isValid();
 }
 
-export function sameDate(a?: XDate, b?: XDate) {
-  if (!isValidXDate(a) || !isValidXDate(b)) {
+export function isSameMonth(a?: CalendarsDate, b?: CalendarsDate) {
+  if (!isValidDate(a) || !isValidDate(b)) {
     return false;
-  } else {
-    return a?.getFullYear() === b?.getFullYear() && a?.getMonth() === b?.getMonth() && a?.getDate() === b?.getDate();
   }
+  return getDate(a as CalendarsDate).isSame(getDate(b as CalendarsDate), 'month');
+}
+
+export function isSameDate(a?: CalendarsDate, b?: CalendarsDate) {
+  if (!isValidDate(a) || !isValidDate(b)) {
+    return false;
+  }
+  return getDate(a as CalendarsDate).isSame(getDate(b as CalendarsDate), 'date');
 }
 
 export function onSameDateRange({
@@ -33,12 +111,13 @@ export function onSameDateRange({
   secondDay: string;
   numberOfDays: number;
   firstDateInRange: string;
-}){
-  const aDate = new XDate(firstDay);
-  const bDate = new XDate(secondDay);
-  const firstDayDate = new XDate(firstDateInRange);
-  const aDiff = aDate.getTime() - firstDayDate.getTime();
-  const bDiff = bDate.getTime() - firstDayDate.getTime();
+}) {
+  const aDate = getDate(firstDay);
+  const bDate = getDate(secondDay);
+  const firstDayDate = getDate(firstDateInRange);
+  const firstDayDateMs = getDateTimestamp(firstDayDate);
+  const aDiff = getDateTimestamp(aDate) - firstDayDateMs;
+  const bDiff = getDateTimestamp(bDate) - firstDayDateMs;
   const aTotalDays = Math.ceil(aDiff / (1000 * 3600 * 24));
   const bTotalDays = Math.ceil(bDiff / (1000 * 3600 * 24));
   const aWeek = Math.floor(aTotalDays / numberOfDays);
@@ -46,134 +125,108 @@ export function onSameDateRange({
   return aWeek === bWeek;
 }
 
-export function sameWeek(a: string, b: string, firstDayOfWeek: number) {
-  const weekDates = getWeekDates(a, firstDayOfWeek, 'yyyy-MM-dd');
-  const element = weekDates instanceof XDate ? new XDate(b) : b;
-  return weekDates?.includes(element);
+export function isSameWeek(a: string, b: string, firstDayOfWeek: number) {
+  const weekDates = getWeekDates(a, firstDayOfWeek, DATE_FORMATS.YYYY_MM_DD);
+  return weekDates?.includes(formatDate(getDate(b), DATE_FORMATS.YYYY_MM_DD) as string);
 }
 
-export function isPastDate(date: string) {
-  const today = new XDate();
-  const d = new XDate(date);
+export function isPastDate(date: string, isUTC = false) {
+  return getDate(date, isUTC).isBefore(getCurrentDate(isUTC), 'date');
+}
 
-  if (today.getFullYear() > d.getFullYear()) {
-    return true;
+export function isToday(date, isUTC = false) {
+  return getDate(date, isUTC).isToday();
+}
+
+export function isGTE(a: CalendarsDate, b: CalendarsDate) {
+  if (!isValidDate(a) || !isValidDate(b)) {
+    return false;
   }
-  if (today.getFullYear() === d.getFullYear()) {
-    if (today.getMonth() > d.getMonth()) {
-      return true;
-    }
-    if (today.getMonth() === d.getMonth()) {
-      if (today.getDate() > d.getDate()) {
-        return true;
-      }
-    }
+  return dayjs(a).isSameOrAfter(dayjs(b), 'day');
+}
+
+export function isLTE(a: CalendarsDate, b: CalendarsDate) {
+  if (!isValidDate(a) || !isValidDate(b)) {
+    return false;
   }
-  return false;
+  return dayjs(a).isSameOrBefore(dayjs(b), 'day');
 }
 
-export function isToday(date?: XDate | string) {
-  const d = date instanceof XDate ? date : new XDate(date);
-  return sameDate(d, XDate.today());
+export function formatNumbers(date: string | number) {
+  const latinNumbersPattern = /[0-9]/g;
+  const numbers = getLocale()?.numbers;
+  return Array.isArray(numbers) && numbers.length > 0
+    ? date.toString().replace(latinNumbersPattern, char => numbers[+char])
+    : date;
 }
 
-export function isGTE(a: XDate, b: XDate) {
-  if (a && b) {
-    return b.diffDays(a) > -1;
-  }
-}
-
-export function isLTE(a: XDate, b: XDate) {
-  if (a && b) {
-    return a.diffDays(b) > -1;
-  }
-}
-
-export function formatNumbers(date: any) {
-  const numbers = getLocale().numbers;
-  return numbers ? date.toString().replace(latinNumbersPattern, (char: any) => numbers[+char]) : date;
-}
-
-function fromTo(a: XDate, b: XDate): XDate[] {
-  const days: XDate[] = [];
-  let from = +a;
-  const to = +b;
-
-  for (; from <= to; from = new XDate(from, true).addDays(1).getTime()) {
-    days.push(new XDate(from, true));
+function fromTo(a: CalendarsDate, b: CalendarsDate) {
+  const days: CalendarsDate[] = [];
+  let current = getDate(a);
+  while (isLTE(current, b)) {
+    days.push(current);
+    current = addDaysToDate(current, 1);
   }
   return days;
 }
 
-export function month(date: XDate) { // exported for tests only
-  const year = date.getFullYear(),
-    month = date.getMonth();
-  const days = new XDate(year, month + 1, 0).getDate();
-
-  const firstDay: XDate = new XDate(year, month, 1, 0, 0, 0, true);
-  const lastDay: XDate = new XDate(year, month, days, 0, 0, 0, true);
-
+export function month(date: CalendarsDate) {
+  // exported for tests only
+  const year = getYear(date);
+  const month = getMonth(date);
+  const totalDays = getTotalDaysInMonth(date);
+  const firstDay = buildDate(year, month, 1, true);
+  const lastDay = buildDate(year, month, totalDays, true);
   return fromTo(firstDay, lastDay);
 }
 
 export function weekDayNames(firstDayOfWeek = 0) {
-  let weekDaysNames = getLocale().dayNamesShort;
+  const weekDaysNames = weekDaysShort();
   const dayShift = firstDayOfWeek % 7;
   if (dayShift) {
-    weekDaysNames = weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));
+    return weekDaysNames.slice(dayShift).concat(weekDaysNames.slice(0, dayShift));
   }
   return weekDaysNames;
 }
 
-export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
+export function page(date: CalendarsDate, firstDayOfWeek = 0, showSixWeeks = false) {
   const days = month(date);
-  let before: XDate[] = [];
-  let after: XDate[] = [];
 
-  const fdow = (7 + firstDayOfWeek) % 7 || 7;
+  const fdow = (7 + (firstDayOfWeek | 0)) % 7;
   const ldow = (fdow + 6) % 7;
 
-  firstDayOfWeek = firstDayOfWeek || 0;
-
-  const from = days[0].clone();
-  const daysBefore = from.getDay();
-
-  if (from.getDay() !== fdow) {
-    from.addDays(-(from.getDay() + 7 - fdow) % 7);
+  let from = getDate(days[0]);
+  const currentFromDayOfWeek = getDayOfWeek(from);
+  if (currentFromDayOfWeek !== fdow) {
+    const daysToSubtract = (currentFromDayOfWeek - fdow + 7) % 7;
+    from = subtractDaysToDate(from, daysToSubtract);
   }
 
-  const to = days[days.length - 1].clone();
-  const day = to.getDay();
-  if (day !== ldow) {
-    to.addDays((ldow + 7 - day) % 7);
+  let to = getDate(days[days.length - 1]);
+  const currentToDayOfWeek = getDayOfWeek(to);
+  if (currentToDayOfWeek !== ldow) {
+    const daysToAdd = (ldow - currentToDayOfWeek + 7) % 7;
+    to = addDaysToDate(to, daysToAdd);
   }
 
-  const daysForSixWeeks = (daysBefore + days.length) / 6 >= 6;
-
+  const daysForSixWeeks = (currentFromDayOfWeek + days.length) / 6 >= 6;
   if (showSixWeeks && !daysForSixWeeks) {
-    to.addDays(7);
+    to = addDaysToDate(to, 7);
   }
 
-  if (isLTE(from, days[0])) {
-    before = fromTo(from, days[0]);
-  }
-
-  if (isGTE(to, days[days.length - 1])) {
-    after = fromTo(days[days.length - 1], to);
-  }
-
-  return before.concat(days.slice(1, days.length - 1), after);
+  return fromTo(from, to).sort((a, b) => getDateTimestamp(a, true) - getDateTimestamp(b, true));
 }
 
-export function isDateNotInRange(date: XDate, minDate: string, maxDate: string) {
-  return (minDate && !isGTE(date, new XDate(minDate))) || (maxDate && !isLTE(date, new XDate(maxDate)));
+export function isDateNotInRange(date: CalendarsDate, minDate: string, maxDate: string) {
+  return (minDate && !isGTE(date, getDate(minDate))) || (maxDate && !isLTE(date, getDate(maxDate)));
 }
 
 export function getWeekDates(date: string, firstDay = 0, format?: string) {
-  const d: XDate = new XDate(date);
-  if (date && d.valid()) {
-    const daysArray = [d];
-    let dayOfTheWeek = d.getDay() - firstDay;
+  const d = getDate(date);
+  const daysArray: CalendarsDate[] = [];
+  if (date && isValidDate(date)) {
+    daysArray.push(d);
+    let dayOfTheWeek = getDayOfWeek(d) - firstDay;
     if (dayOfTheWeek < 0) {
       // to handle firstDay > 0
       dayOfTheWeek = 7 + dayOfTheWeek;
@@ -182,7 +235,7 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
     let newDate = d;
     let index = dayOfTheWeek - 1;
     while (index >= 0) {
-      newDate = newDate.clone().addDays(-1);
+      newDate = subtractDaysToDate(newDate, 1);
       daysArray.unshift(newDate);
       index -= 1;
     }
@@ -190,34 +243,253 @@ export function getWeekDates(date: string, firstDay = 0, format?: string) {
     newDate = d;
     index = dayOfTheWeek + 1;
     while (index < 7) {
-      newDate = newDate.clone().addDays(1);
+      newDate = addDaysToDate(newDate, 1);
       daysArray.push(newDate);
       index += 1;
     }
 
     if (format) {
-      return daysArray.map(d => d.toString(format));
+      return daysArray.map(d => formatDate(d, format) as string);
     }
-
-    return daysArray;
   }
+  return daysArray;
 }
 
 export function getPartialWeekDates(date?: string, numberOfDays = 7) {
   let index = 0;
   const partialWeek: string[] = [];
   while (index < numberOfDays) {
-    partialWeek.push(generateDay(date || new XDate(), index));
+    partialWeek.push(generateDay(date || getCurrentDate(), index));
     index++;
   }
   return partialWeek;
 }
 
-export function generateDay(originDate: string | XDate, daysOffset = 0) {
-  const baseDate = originDate instanceof XDate ? originDate : new XDate(originDate);
-  return toMarkingFormat(baseDate.clone().addDays(daysOffset));
+export function generateDay(originDate: string | CalendarsDate, daysOffset = 0) {
+  const baseDate = getDate(originDate);
+  return toMarkingFormat(addDaysToDate(baseDate, daysOffset));
 }
 
 export function getLocale() {
-  return XDate.locales[XDate.defaultLocale];
+  return LocaleConfig.locales[LocaleConfig.defaultLocale];
+}
+
+export function weekDaysShort() {
+  return dayjs.weekdaysShort();
+}
+
+export function padNumber(n: number) {
+  if (n < 10) {
+    return `0${n}`;
+  }
+  return n;
+}
+
+export function turnNumberPositive(value: number) {
+  return Math.abs(value);
+}
+
+export function turnNumberNegative(value: number) {
+  return -Math.abs(value);
+}
+
+export function dateToData(date: CalendarsDate | string): DateToData {
+  const d = getDate(date);
+  const dateString = toMarkingFormat(d);
+  return {
+    year: getYear(d),
+    month: getMonth(d),
+    day: getDayOfMonth(d),
+    timestamp: getDateTimestamp(dateString, true),
+    dateString
+  };
+}
+
+function isStrOrNumber(value) {
+  return typeof value === 'string' || typeof value === 'number';
+}
+
+export function parseDate(d?) {
+  if (!isValidDate(d)) {
+    return undefined;
+  }
+  const isUTC = true;
+  if (d?.timestamp && isStrOrNumber(d.timestamp)) {
+    return getDate(d.timestamp, isUTC);
+  }
+  if (d?.year && isStrOrNumber(d.year)) {
+    return buildDate(d?.year, padNumber(d?.month), padNumber(d?.day), isUTC);
+  }
+  if (d?.dateString && isStrOrNumber(d.dateString)) {
+    return getDate(d.dateString, isUTC);
+  }
+  return getDate(d, isUTC);
+}
+
+export function toMarkingFormat(d) {
+  return formatDate(d, DATE_FORMATS.YYYY_MM_DD);
+}
+
+export function getCurrentDate(isUTC = false) {
+  if (isUTC) {
+    return dayjs.utc();
+  }
+  return dayjs();
+}
+
+export function getDate(date: CalendarsDate, isUTC = false) {
+  if (isUTC) {
+    return dayjs.utc(date);
+  }
+  return dayjs(date);
+}
+
+export function formatDate(
+  date: CalendarsDate | DateToData | undefined | null,
+  formatPattern: string,
+  locale?: string
+) {
+  let parsedDate = parseDate(date);
+  if (!parsedDate) {
+    return 'Invalid Date';
+  }
+  if (typeof parsedDate === 'string') {
+    return parsedDate;
+  }
+  if (locale) {
+    parsedDate = parsedDate?.locale(locale);
+  }
+  return parsedDate?.format(formatPattern);
+}
+
+export function getDayOfMonth(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).date();
+}
+
+export function getDayOfWeek(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).day();
+}
+
+export function getMonth(date?: CalendarsDate) {
+  if (!date) {
+    return getCurrentDate().month() + 1;
+  }
+  return getDate(date).month() + 1;
+}
+
+export function getYear(date?: CalendarsDate) {
+  if (!date) {
+    return getCurrentDate().year();
+  }
+  return getDate(date).year();
+}
+
+export function getDateTimestamp(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).valueOf();
+}
+
+export function getTimezoneOffset(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).utcOffset();
+}
+
+export function getStartOfDay(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).startOf('day');
+}
+
+export function addHourToDate(date: CalendarsDate, manyHours: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyHours, 'hour');
+}
+
+export function addDaysToDate(date: CalendarsDate, manyDays: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyDays, 'day');
+}
+
+export function addWeeksToDate(date: CalendarsDate, manyWeeks: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyWeeks, 'week');
+}
+
+export function subtractDaysToDate(date: CalendarsDate, manyDays: number, isUTC = false) {
+  return getDate(date, isUTC).subtract(manyDays, 'day');
+}
+
+export function addMonthsToDate(date: CalendarsDate, manyMonths: number, isUTC = false) {
+  return getDate(date, isUTC).add(manyMonths, 'month');
+}
+
+export function subtractMonthsToDate(date: CalendarsDate, manyMonths: number, isUTC = false) {
+  return getDate(date, isUTC).subtract(manyMonths, 'month');
+}
+
+export function getDiffInHour(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'hour', true);
+}
+
+export function getDiffInMinutes(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'minute', true);
+}
+
+export function getDiffInDays(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'day');
+}
+
+export function getDiffInMonths(start: CalendarsDate, end: CalendarsDate, isUTC = false) {
+  return getDate(end, isUTC).diff(getDate(start, isUTC), 'month');
+}
+
+export function setDayOfMonth(date: CalendarsDate, dayOfMonth: number, isUTC = false) {
+  return getDate(date, isUTC).date(dayOfMonth);
+}
+
+export function getWeekOfYear(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).week();
+}
+
+export function getDateAsString(date?: CalendarsDate, isUTC = false) {
+  if (!date) {
+    return getCurrentDate(isUTC).toString();
+  }
+  return getDate(date, isUTC).toString();
+}
+
+export function getISODateString(date: CalendarsDate, isUTC = false) {
+  return getDate(date, isUTC).toISOString();
+}
+
+export function getTotalDaysInMonth(date?: CalendarsDate, isUTC = false) {
+  if (!date) {
+    return getCurrentDate(isUTC).daysInMonth();
+  }
+  return getDate(date, isUTC).daysInMonth();
+}
+
+export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
+  const monthAsNumber = Number(month);
+  if (monthAsNumber < 1 || monthAsNumber > 12) {
+    throw new Error('Month must be between 1 and 12');
+  }
+  const actualMonth = monthAsNumber - 1;
+  if (isUTC) {
+    return dayjs.utc({year, month: actualMonth, day});
+  }
+  return dayjs({year, month: actualMonth, day});
+}
+
+export function buildDatetime(
+  year: number | string,
+  month: number | string,
+  day: number | string,
+  hour: number | string,
+  minute: number | string,
+  second: number | string,
+  isUTC = false
+) {
+  const monthAsNumber = Number(month);
+  if (monthAsNumber < 1 || monthAsNumber > 12) {
+    throw new Error('Month must be between 1 and 12');
+  }
+  const actualMonth = monthAsNumber - 1;
+  if (isUTC) {
+    return dayjs.utc({year, month: actualMonth, day, hour, minute, second});
+  }
+  return dayjs({year, month: actualMonth, day, hour, minute, second});
 }

@@ -1,10 +1,9 @@
 import React, {Fragment, useCallback, useRef} from 'react';
-import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
-import {xdateToData} from '../../../interface';
-import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
-import Marking, {MarkingProps} from '../marking';
+import {Text, TouchableOpacity, View, type ViewProps} from 'react-native';
+import {dateToData} from '../../../dateutils';
+import type {DateData, DayState, MarkingTypes, Theme} from '../../../types';
+import Marking, {type MarkingProps} from '../marking';
 import styleConstructor from './style';
-
 
 export interface BasicDayProps extends ViewProps {
   /** Theme object */
@@ -46,7 +45,7 @@ const BasicDay = (props: BasicDayProps) => {
     children,
     testID
   } = props;
-  const dateData = date ? xdateToData(date) : undefined;
+  const dateData = date ? dateToData(date) : undefined;
   const style = useRef(styleConstructor(theme));
 
   const _marking = marking || {};

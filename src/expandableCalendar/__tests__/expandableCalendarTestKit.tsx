@@ -5,11 +5,8 @@ import {
   ExpandableCalendar,
   ExpandableCalendarProps
 } from 'react-native-calendars';
-import {toMarkingFormat} from '../../interface';
+import {getCurrentDate, toMarkingFormat} from '../../dateutils';
 
-const XDate = require('xdate');
-
-const today = new XDate();
 export const testIdExpandableCalendar = 'myExpandableCalendar';
 
 export const expandableCalendarTestIDs = (testId: string) => {
@@ -26,7 +23,7 @@ export const generateExpandableCalendarWithContext = ({
   calendarContextProps?: Partial<CalendarContextProviderProps>;
 } = {}) => {
   const defaultContextProps: CalendarContextProviderProps = {
-    date: toMarkingFormat(today),
+    date: toMarkingFormat(getCurrentDate()),
     showTodayButton: true
   };
   const defaultExpandableCalendarProps: ExpandableCalendarProps = {
@@ -35,7 +32,7 @@ export const generateExpandableCalendarWithContext = ({
 
   return (
     <CalendarProvider {...defaultContextProps} {...calendarContextProps}>
-      <ExpandableCalendar {...defaultExpandableCalendarProps} {...expandableCalendarProps}/>
+      <ExpandableCalendar {...defaultExpandableCalendarProps} {...expandableCalendarProps} />
     </CalendarProvider>
   );
 };
