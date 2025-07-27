@@ -10,6 +10,7 @@ import NewCalendarListScreen from './newCalendarListScreen';
 import ExpandableCalendarScreen from './expandableCalendarScreen';
 import TimelineCalendarScreen from './timelineCalendarScreen';
 import PlaygroundScreen from './playgroundScreen';
+import { agendaKnobColor } from '../../../src/style';
 
 const appIcon = require('../img/logo.png');
 const settingsIcon = require('../img/settings.png');
@@ -121,9 +122,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
-    marginBottom: 24,
-    borderBottomWidth: StyleSheet.hairlineWidth
+    paddingTop: 16,
+    paddingBottom: 5,
+    marginBottom: 14,
   },
   title: {
     fontSize: 16,
@@ -138,15 +139,23 @@ const styles = StyleSheet.create({
     height: 30
   },
   menu: {
-    margin: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth
+    marginLeft: 76,
+    marginBottom: 12,
+    marginRight: 16,
+    marginTop: 16,
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    backgroundColor: 'orange',
+    width: 250,
   },
   menuText: {
     fontSize: 18,
-    color: 'black'
+    color: 'white'
   },
   settingsButton: {
-    tintColor: 'black'
+    tintColor: 'orange',
   },
   settingsContainer: {
     position: 'absolute',
@@ -171,7 +180,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 16,
     paddingTop: 20,
-    borderBottomWidth: StyleSheet.hairlineWidth
   },
   topBarTitle: {
     fontSize: 20,
