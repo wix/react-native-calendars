@@ -1,7 +1,7 @@
 import React, {useCallback, useRef} from 'react';
 import {Animated, Easing, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {AgendaList, CalendarProvider, ExpandableCalendar, WeekCalendar} from 'react-native-calendars';
-import {type CalendarsDate, formatDate} from '../../../src/dateutils';
+import {type CalendarsDate} from '../../../src/dateutils';
 import AgendaItem from '../mocks/AgendaItem';
 import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
 import {getTheme, lightThemeColor, themeColor} from '../mocks/theme';
@@ -56,7 +56,7 @@ const ExpandableCalendarScreen = (props: Props) => {
       });
       return (
         <TouchableOpacity style={styles.header} onPress={toggleCalendarExpansion}>
-          <Text style={styles.headerTitle}>{formatDate(date, 'MMMM YYYY')}</Text>
+          <Text style={styles.headerTitle}>{date?.toString('MMMM yyyy')}</Text>
           <Animated.Image
             source={CHEVRON}
             style={{

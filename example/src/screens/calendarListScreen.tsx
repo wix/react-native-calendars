@@ -82,7 +82,7 @@ const theme = {
 };
 
 function renderCustomHeader(date: any) {
-  const header = date.toString('MMMM YYYY');
+  const header = date.toString('MMMM yyyy');
   const [month, year] = header.split(' ');
   const textStyle: TextStyle = {
     fontSize: 18,
