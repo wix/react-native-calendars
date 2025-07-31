@@ -1,4 +1,4 @@
-import dayjs, {type Dayjs} from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 import customParseFormatPlugin from 'dayjs/plugin/customParseFormat';
 import isSameOrAfterPlugin from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBeforePlugin from 'dayjs/plugin/isSameOrBefore';
@@ -462,12 +462,18 @@ export function getTotalDaysInMonth(date?: CalendarsDate, isUTC = false) {
   return getDate(date, isUTC).daysInMonth();
 }
 
-export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
-  const monthAsNumber = Number(month);
+function handleMonth(month: number | string) {
+	// dayjs handles month staring from zero, but to keep a pattern, this library are from 1-12.
+	// buildDate, buildDatetime and getMonth fns.
+	const monthAsNumber = Number(month);
   if (monthAsNumber < 1 || monthAsNumber > 12) {
     throw new Error('Month must be between 1 and 12');
   }
-  const actualMonth = monthAsNumber - 1;
+  return monthAsNumber - 1;
+}
+
+export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
+  const actualMonth = handleMonth(month);
   if (isUTC) {
     return dayjs.utc({year, month: actualMonth, day});
   }
@@ -483,11 +489,7 @@ export function buildDatetime(
   second: number | string,
   isUTC = false
 ) {
-  const monthAsNumber = Number(month);
-  if (monthAsNumber < 1 || monthAsNumber > 12) {
-    throw new Error('Month must be between 1 and 12');
-  }
-  const actualMonth = monthAsNumber - 1;
+  const actualMonth = handleMonth(month);
   if (isUTC) {
     return dayjs.utc({year, month: actualMonth, day, hour, minute, second});
   }
