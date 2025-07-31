@@ -16,7 +16,7 @@ import {
 import {extractReservationProps} from '../../componentUpdater';
 import {
   addDaysToDate,
-  type CalendarsDate,
+  CalendarsDate,
   getCurrentDate,
   getDate,
   getDateTimestamp,
@@ -72,8 +72,8 @@ class ReservationList extends Component<ReservationListProps, State> {
   static propTypes = {
     ...Reservation.propTypes,
     items: PropTypes.object,
-    selectedDay: PropTypes.string,
-    topDay: PropTypes.string,
+    selectedDay: PropTypes.instanceOf(CalendarsDate),
+    topDay: PropTypes.instanceOf(CalendarsDate),
     onDayChange: PropTypes.func,
 
     showOnlySelectedDayItems: PropTypes.bool,

@@ -1,4 +1,4 @@
-import dayjs, { type Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import customParseFormatPlugin from 'dayjs/plugin/customParseFormat';
 import isSameOrAfterPlugin from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBeforePlugin from 'dayjs/plugin/isSameOrBefore';
@@ -26,6 +26,8 @@ dayjs.extend(updateLocalePlugin);
 dayjs.extend(weekdayPlugin);
 
 export type CalendarsDate = Dayjs | Date | string | number;
+
+export const CalendarsDate = Dayjs;
 
 export type DateToData = {
   year: number;
