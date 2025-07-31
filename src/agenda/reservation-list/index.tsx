@@ -92,7 +92,7 @@ class ReservationList extends Component<ReservationListProps, State> {
 
   static defaultProps = {
     refreshing: false,
-    selectedDay: getCurrentDate()
+    selectedDay: getCurrentDate(true)
   };
 
   private style: {[key: string]: ViewStyle | TextStyle};

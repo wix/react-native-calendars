@@ -164,7 +164,7 @@ export default class Agenda extends Component<AgendaProps, State> {
   }
 
   getSelectedDate(date?: string) {
-    return date ? getDate(date) : getCurrentDate();
+    return date ? getDate(date) : getCurrentDate(true);
   }
 
   calendarOffset() {
