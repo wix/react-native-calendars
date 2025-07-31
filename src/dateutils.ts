@@ -134,7 +134,7 @@ export function isPastDate(date: string, isUTC = false) {
   return getDate(date, isUTC).isBefore(getCurrentDate(isUTC), 'date');
 }
 
-export function isToday(date, isUTC = false) {
+export function isToday(date: CalendarsDate, isUTC = false) {
   return getDate(date, isUTC).isToday();
 }
 
@@ -305,7 +305,7 @@ export function dateToData(date: CalendarsDate | string): DateToData {
   };
 }
 
-function isStrOrNumber(value) {
+function isStrOrNumber(value: string | number) {
   return typeof value === 'string' || typeof value === 'number';
 }
 
