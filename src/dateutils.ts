@@ -333,17 +333,11 @@ export function toMarkingFormat(d) {
 }
 
 export function getCurrentDate(isUTC = false) {
-  if (isUTC) {
-    return dayjs.utc();
-  }
-  return dayjs();
+  return isUTC ? dayjs.utc() : dayjs();
 }
 
 export function getDate(date: CalendarsDate, isUTC = false) {
-  if (isUTC) {
-    return dayjs.utc(date);
-  }
-  return dayjs(date);
+  return isUTC ? dayjs.utc(date) : dayjs(date);
 }
 
 export function formatDate(
