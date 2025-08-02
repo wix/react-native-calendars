@@ -463,10 +463,8 @@ function handleMonth(month: number | string) {
 
 export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
   const actualMonth = handleMonth(month);
-  if (isUTC) {
-    return dayjs.utc({year, month: actualMonth, day});
-  }
-  return dayjs({year, month: actualMonth, day});
+  const dateObj = {year, month: actualMonth, day}
+  return isUTC ? dayjs.utc(dateObj) : dayjs(dateObj);
 }
 
 export function buildDatetime(
@@ -479,8 +477,6 @@ export function buildDatetime(
   isUTC = false
 ) {
   const actualMonth = handleMonth(month);
-  if (isUTC) {
-    return dayjs.utc({year, month: actualMonth, day, hour, minute, second});
-  }
-  return dayjs({year, month: actualMonth, day, hour, minute, second});
+  const datetimeObj = {year, month: actualMonth, day, hour, minute, second}
+  return isUTC ? dayjs.utc(datetimeObj) : dayjs(datetimeObj);
 }
