@@ -208,47 +208,47 @@ describe('dateutils', () => {
 
   describe('month()', () => {
     it('2014 May', () => {
-      const days = month(buildDate(2014, 4, 1));
+      const days = month(buildDate({year: 2014, month:4, day:1}));
       expect(days.length).toBe(30);
     });
 
     it('2014 June', () => {
-      const days = month(buildDate(2014, 5, 1));
+      const days = month(buildDate({year: 2014, month: 5, day: 1}));
       expect(days.length).toBe(31);
     });
 
     it('2014 August', () => {
-      const days = month(buildDate(2014, 7, 1));
+      const days = month(buildDate({year: 2014, month: 7, day: 1}));
       expect(days.length).toBe(31);
     });
   });
 
   describe('page()', () => {
     it('2014 March', () => {
-      const days = page(buildDate(2014, 3, 23, true));
+      const days = page(buildDate({year: 2014, month: 3, day: 23, isUTC: true}));
 
       expect(days.length).toBe(42);
-      expect(days[0].toString()).toBe(buildDatetime(2014, 2, 23, 0, 0, 0, true).toString());
-      expect(days[days.length - 1].toString()).toBe(buildDatetime(2014, 4, 5, 0, 0, 0, true).toString());
+      expect(days[0].toString()).toBe(buildDatetime({year: 2014, month: 2, day: 23, isUTC: true}).toString());
+      expect(days[days.length - 1].toString()).toBe(buildDatetime({year: 2014, month: 4, day: 5, isUTC: true}).toString());
     });
 
     it('2014 May', () => {
-      const days = page(buildDate(2014, 5, 23));
+      const days = page(buildDate({year: 2014, month: 5, day: 23}));
       expect(days.length).toBe(35);
     });
 
     it('2014 June', () => {
-      const days = page(buildDate(2014, 6, 23));
+      const days = page(buildDate({year: 2014, month: 6, day: 23}));
       expect(days.length).toBe(35);
     });
 
     it('2014 August', () => {
-      const days = page(buildDate(2014, 8, 23));
+      const days = page(buildDate({year: 2014, month: 8, day: 23}));
       expect(days.length).toBe(42);
     });
 
     it('2014 October', () => {
-      const days = page(buildDate(2014, 10, 21));
+      const days = page(buildDate({year: 2014, month: 10, day: 21}));
       expect(days.length).toBe(35);
     });
 
