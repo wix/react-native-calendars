@@ -11,7 +11,7 @@ import updateLocalePlugin from 'dayjs/plugin/updateLocale';
 import utcPlugin from 'dayjs/plugin/utc';
 import weekdayPlugin from 'dayjs/plugin/weekday';
 import weekOfYearPlugin from 'dayjs/plugin/weekOfYear';
-import { DateData } from './types';
+import type { DateData } from './types';
 
 dayjs.extend(customParseFormatPlugin);
 dayjs.extend(isSameOrAfterPlugin);
