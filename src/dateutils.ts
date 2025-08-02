@@ -11,6 +11,7 @@ import updateLocalePlugin from 'dayjs/plugin/updateLocale';
 import utcPlugin from 'dayjs/plugin/utc';
 import weekdayPlugin from 'dayjs/plugin/weekday';
 import weekOfYearPlugin from 'dayjs/plugin/weekOfYear';
+import { DateData } from './types';
 
 dayjs.extend(customParseFormatPlugin);
 dayjs.extend(isSameOrAfterPlugin);
@@ -28,14 +29,6 @@ dayjs.extend(weekdayPlugin);
 export type CalendarsDate = Dayjs | Date | string | number;
 
 export const CalendarsDate = Dayjs;
-
-export type DateToData = {
-  year: number;
-  month: number;
-  day: number;
-  timestamp: number;
-  dateString: string;
-};
 
 export const DATE_FORMATS = {
   YYYY_MM: 'YYYY MM',
@@ -295,7 +288,7 @@ export function turnNumberNegative(value: number) {
   return -Math.abs(value);
 }
 
-export function dateToData(date: CalendarsDate | string): DateToData {
+export function dateToData(date: CalendarsDate | string): DateData {
   const d = getDate(date);
   const dateString = toMarkingFormat(d);
   return {
@@ -341,7 +334,7 @@ export function getDate(date: CalendarsDate, isUTC = false) {
 }
 
 export function formatDate(
-  date: CalendarsDate | DateToData | undefined | null,
+  date: CalendarsDate | DateData | undefined | null,
   formatPattern: string,
   locale?: string
 ) {
