@@ -26,8 +26,8 @@ describe('dateutils', () => {
   });
   describe('isSameMonth()', () => {
     it('2014-01-01 === 2014-01-10', () => {
-      const a = buildDate(2014, 1, 1);
-      const b = buildDate(2014, 1, 10);
+      const a = buildDate({year: 2014, month: 1, day: 1});
+      const b = buildDate({year: 2014, month: 1, day: 10});
       expect(isSameMonth(a, b)).toEqual(true);
     });
     // it('for non-Date instances is false', function () {
@@ -95,12 +95,12 @@ describe('dateutils', () => {
   describe('isLTE()', () => {
     it('a is undefined', () => {
       const a = undefined;
-      const b = buildDate(2014, 1, 20);
+      const b = buildDate({year: 2014, month: 1, day: 20});
       expect(isLTE(b, a)).toBe(false);
     });
 
     it('b is undefined', () => {
-      const a = buildDate(2013, 12, 31);
+      const a = buildDate({year: 2013, month: 12, day: 31});
       const b = undefined;
       expect(isLTE(b, a)).toBe(false);
     });
@@ -110,26 +110,40 @@ describe('dateutils', () => {
     });
 
     it('2014-01-20 >= 2013-12-31', () => {
-      const a = buildDate(2013, 12, 31);
-      const b = buildDate(2014, 1, 20);
+      const a = buildDate({year: 2013, month: 12, day: 31});
+      const b = buildDate({year: 2014, month: 1, day: 20});
       expect(isLTE(a, b)).toBe(true);
     });
 
     it('2014-10-20 >= 2014-10-19', () => {
-      const a = buildDate(2014, 10, 19);
-      const b = buildDate(2014, 10, 20);
+      const a = buildDate({year: 2014, month: 10, day: 19});
+      const b = buildDate({year: 2014, month: 10, day: 20});
       expect(isLTE(a, b)).toBe(true);
     });
 
     it('2014-10-20 >= 2014-09-30', () => {
-      const a = buildDate(2014, 9, 30);
-      const b = buildDate(2014, 10, 20);
+      const a = buildDate({year: 2014, month: 9, day: 30});
+      const b = buildDate({year: 2014, month: 10, day: 20});
       expect(isLTE(a, b)).toBe(true);
     });
 
     it('works for dates that differ by less than a day', () => {
-      const a = buildDatetime(2014, 9, 30, 0, 1, 0);
-      const b = buildDatetime(2014, 9, 30, 1, 0, 1);
+      const a = buildDatetime({
+        year: 2014,
+        month: 9,
+        day: 30,
+        hour: 0,
+        minute: 1,
+        second: 0
+      });
+      const b = buildDatetime({
+        year: 2014,
+        month: 9,
+        day: 30,
+        hour: 1,
+        minute: 0,
+        second: 1
+      });
       expect(isLTE(a, b)).toBe(true);
       expect(isLTE(b, a)).toBe(true);
     });
@@ -138,12 +152,12 @@ describe('dateutils', () => {
   describe('isGTE()', () => {
     it('a is undefined', () => {
       const a = undefined;
-      const b = buildDate(2014, 1, 20);
+      const b = buildDate({year: 2014, month: 1, day: 20});
       expect(isGTE(b, a)).toBe(false);
     });
 
     it('b is undefined', () => {
-      const a = buildDate(2013, 12, 31);
+      const a = buildDate({year: 2013, month: 12, day: 31});
       const b = undefined;
       expect(isGTE(b, a)).toBe(false);
     });
@@ -153,26 +167,40 @@ describe('dateutils', () => {
     });
 
     it('2014-01-20 >= 2013-12-31', () => {
-      const a = buildDate(2013, 12, 31);
-      const b = buildDate(2014, 1, 20);
+      const a = buildDate({year: 2013, month: 12, day: 31});
+      const b = buildDate({year: 2014, month: 1, day: 20});
       expect(isGTE(b, a)).toBe(true);
     });
 
     it('2014-10-20 >= 2014-10-19', () => {
-      const a = buildDate(2014, 10, 19);
-      const b = buildDate(2014, 10, 20);
+      const a = buildDate({year: 2014, month: 10, day: 19});
+      const b = buildDate({year: 2014, month: 10, day: 20});
       expect(isGTE(b, a)).toBe(true);
     });
 
     it('2014-10-20 >= 2014-09-30', () => {
-      const a = buildDate(2014, 9, 30);
-      const b = buildDate(2014, 10, 20);
+      const a = buildDate({year: 2014, month: 9, day: 30});
+      const b = buildDate({year: 2014, month: 10, day: 20});
       expect(isGTE(b, a)).toBe(true);
     });
 
     it('works for dates that differ by less than a day', () => {
-      const a = buildDatetime(2014, 9, 30, 0, 1, 0);
-      const b = buildDatetime(2014, 9, 30, 1, 0, 1);
+      const a = buildDatetime({
+        year: 2014,
+        month: 9,
+        day: 30,
+        hour: 0,
+        minute: 1,
+        second: 0
+      });
+      const b = buildDatetime({
+        year: 2014,
+        month: 9,
+        day: 30,
+        hour: 1,
+        minute: 0,
+        second: 1
+      });
       expect(isGTE(a, b)).toBe(true);
       expect(isGTE(b, a)).toBe(true);
     });
@@ -227,11 +255,11 @@ describe('dateutils', () => {
     it('has all days in ascending order', () => {
       let days, i, len;
 
-      days = page(buildDate(2014, 2, 1));
+      days = page(buildDate({year: 2014, month: 2, day: 1}));
       for (i = 0, len = days.length - 1; i < len; i++) {
         expect(getDiffInDays(days[i], days[i + 1])).toBe(1);
       }
-      days = page(buildDate(2014, 9, 1));
+      days = page(buildDate({year: 2014, month: 9, day: 1}));
       for (i = 0, len = days.length - 1; i < len; i++) {
         expect(getDiffInDays(days[i], days[i + 1])).toBe(1);
       }

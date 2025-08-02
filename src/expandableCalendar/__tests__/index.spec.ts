@@ -345,7 +345,15 @@ describe('ExpandableCalendar', () => {
       });
 
       it('should call onMonthChange when new week first day is in a different month', () => {
-        const endOfMonth = buildDatetime(getYear(), getMonth(), getTotalDaysInMonth(), 0, 0, 0, true);
+        const endOfMonth = buildDatetime({
+          year: getYear(),
+          month: getMonth(),
+          day: getTotalDaysInMonth(),
+          hour: 0,
+          minute: 0,
+          second: 0,
+          isUTC: true
+        });
         const diff =
           Math.ceil((getDayOfMonth(endOfMonth, true) - getDayOfMonth(today, true)) / 7) +
           (getDayOfWeek(today, true) > getDayOfWeek(endOfMonth, true) ? 1 : 0);

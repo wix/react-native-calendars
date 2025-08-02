@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 import customParseFormatPlugin from 'dayjs/plugin/customParseFormat';
 import isSameOrAfterPlugin from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBeforePlugin from 'dayjs/plugin/isSameOrBefore';
@@ -11,7 +11,7 @@ import updateLocalePlugin from 'dayjs/plugin/updateLocale';
 import utcPlugin from 'dayjs/plugin/utc';
 import weekdayPlugin from 'dayjs/plugin/weekday';
 import weekOfYearPlugin from 'dayjs/plugin/weekOfYear';
-import type { DateData } from './types';
+import type {BuildDate, BuildDateTime, DateData} from './types';
 
 dayjs.extend(customParseFormatPlugin);
 dayjs.extend(isSameOrAfterPlugin);
@@ -333,11 +333,7 @@ export function getDate(date: CalendarsDate, isUTC = false) {
   return isUTC ? dayjs.utc(date) : dayjs(date);
 }
 
-export function formatDate(
-  date: CalendarsDate | DateData | undefined | null,
-  formatPattern: string,
-  locale?: string
-) {
+export function formatDate(date: CalendarsDate | DateData | undefined | null, formatPattern: string, locale?: string) {
   let parsedDate = parseDate(date);
   if (!parsedDate) {
     return 'Invalid Date';
@@ -452,31 +448,23 @@ export function getTotalDaysInMonth(date?: CalendarsDate, isUTC = false) {
 }
 
 function handleMonth(month: number | string) {
-	// dayjs handles month staring from zero, but to keep a pattern, this library are from 1-12.
-	// buildDate, buildDatetime and getMonth fns.
-	const monthAsNumber = Number(month);
+  // dayjs handles month staring from zero, but to keep a pattern, this library are from 1-12.
+  // buildDate, buildDatetime and getMonth fns.
+  const monthAsNumber = Number(month);
   if (monthAsNumber < 1 || monthAsNumber > 12) {
     throw new Error('Month must be between 1 and 12');
   }
   return monthAsNumber - 1;
 }
 
-export function buildDate(year: number | string, month: number | string, day: number | string, isUTC = false) {
+export function buildDate({year, month, day, isUTC = false}: BuildDate) {
   const actualMonth = handleMonth(month);
-  const dateObj = {year, month: actualMonth, day}
+  const dateObj = {year, month: actualMonth, day};
   return isUTC ? dayjs.utc(dateObj) : dayjs(dateObj);
 }
 
-export function buildDatetime(
-  year: number | string,
-  month: number | string,
-  day: number | string,
-  hour: number | string,
-  minute: number | string,
-  second: number | string,
-  isUTC = false
-) {
+export function buildDatetime({year, month, day, hour, minute, second, isUTC = false}: BuildDateTime) {
   const actualMonth = handleMonth(month);
-  const datetimeObj = {year, month: actualMonth, day, hour, minute, second}
+  const datetimeObj = {year, month: actualMonth, day, hour, minute, second};
   return isUTC ? dayjs.utc(datetimeObj) : dayjs(datetimeObj);
 }

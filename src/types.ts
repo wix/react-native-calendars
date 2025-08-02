@@ -19,6 +19,17 @@ export type DateData = {
   timestamp: number;
   dateString: string;
 };
+export type BuildDate = {
+  isUTC?: boolean;
+  year: number | string;
+  month: number | string;
+  day: number | string;
+};
+export type BuildDateTime = {
+  hour: string | number;
+  minute: string | number;
+  second: string | number;
+} & BuildDate;
 export interface Theme {
   timelineContainer?: object;
   contentStyle?: ViewStyle;
