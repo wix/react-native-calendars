@@ -170,8 +170,8 @@ export function month(date: CalendarsDate) {
   const year = getYear(date);
   const month = getMonth(date);
   const totalDays = getTotalDaysInMonth(date);
-  const firstDay = buildDate(year, month, 1, true);
-  const lastDay = buildDate(year, month, totalDays, true);
+  const firstDay = buildDate({year, month, day: 1, isUTC: true});
+  const lastDay = buildDate({year, month, day: totalDays, isUTC: true});
   return fromTo(firstDay, lastDay);
 }
 
@@ -313,7 +313,7 @@ export function parseDate(d?) {
     return getDate(d.timestamp, isUTC);
   }
   if (d?.year && isStrOrNumber(d.year)) {
-    return buildDate(d?.year, padNumber(d?.month), padNumber(d?.day), isUTC);
+    return buildDate({year: d?.year, month: padNumber(d?.month), day: padNumber(d?.day), isUTC: true});
   }
   if (d?.dateString && isStrOrNumber(d.dateString)) {
     return getDate(d.dateString, isUTC);
@@ -459,12 +459,12 @@ function handleMonth(month: number | string) {
 
 export function buildDate({year, month, day, isUTC = false}: BuildDate) {
   const actualMonth = handleMonth(month);
-  const dateObj = {year, month: actualMonth, day};
-  return isUTC ? dayjs.utc(dateObj) : dayjs(dateObj);
+  const dateObj: any = {year, month: actualMonth, day};
+  return isUTC ? getDate(dateObj, true) : getDate(dateObj);
 }
 
 export function buildDatetime({year, month, day, hour, minute, second, isUTC = false}: BuildDateTime) {
   const actualMonth = handleMonth(month);
-  const datetimeObj = {year, month: actualMonth, day, hour, minute, second};
-  return isUTC ? dayjs.utc(datetimeObj) : dayjs(datetimeObj);
+  const datetimeObj: any = {year, month: actualMonth, day, hour, minute, second};
+  return isUTC ? getDate(datetimeObj, true) : getDate(datetimeObj);
 }
