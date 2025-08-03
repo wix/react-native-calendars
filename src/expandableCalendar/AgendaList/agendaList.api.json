@@ -19,17 +19,12 @@
     {
       "name": "dayFormat",
       "type": "string",
-      "description": "Day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting"
+      "description": "Day format in section title. Formatting values: https://day.js.org/docs/en/display/format"
     },
     {
       "name": "dayFormatter",
       "type": "(arg0: string) => string",
       "description": "A function to custom format the section header's title"
-    },
-    {
-      "name": "useMoment",
-      "type": "boolean",
-      "description": "Whether to use moment.js for date string formatting"
     },
     {
       "name": "markToday",

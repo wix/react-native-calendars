@@ -1,19 +1,23 @@
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {View} from 'react-native';
-import XDate from 'xdate';
-
-import InfiniteList from '../../infinite-list';
-import Week from '../week';
-import WeekDaysNames from '../../commons/WeekDaysNames';
-import {CalendarListProps} from '../../calendar-list';
-import CalendarContext from '../../expandableCalendar/Context';
-import styleConstructor from '../style';
-import {toMarkingFormat} from '../../interface';
-import {extractCalendarProps} from '../../componentUpdater';
+import type {CalendarListProps} from '../../calendar-list';
 import constants from '../../commons/constants';
+import WeekDaysNames from '../../commons/WeekDaysNames';
+import {extractCalendarProps} from '../../componentUpdater';
+import {
+  addDaysToDate,
+  addWeeksToDate,
+  getDate as getDateFromUtils,
+  getDayOfMonth,
+  isSameWeek,
+  toMarkingFormat
+} from '../../dateutils';
+import CalendarContext from '../../expandableCalendar/Context';
+import InfiniteList from '../../infinite-list';
+import type {DateData} from '../../types';
 import {UpdateSources} from '../commons';
-import {sameWeek} from '../../dateutils';
-import {DateData} from '../../types';
+import styleConstructor from '../style';
+import Week from '../week';
 
 export interface WeekCalendarProps extends CalendarListProps {
   /** whether to have shadow/elevation for the calendar */
@@ -24,7 +28,17 @@ const NUMBER_OF_PAGES = 50;
 const DEFAULT_PAGE_HEIGHT = 48;
 
 const WeekCalendar = (props: WeekCalendarProps) => {
-  const {current, firstDay = 0, markedDates, allowShadow = true, hideDayNames, theme, calendarWidth, calendarHeight = DEFAULT_PAGE_HEIGHT, testID} = props;
+  const {
+    current,
+    firstDay = 0,
+    markedDates,
+    allowShadow = true,
+    hideDayNames,
+    theme,
+    calendarWidth,
+    calendarHeight = DEFAULT_PAGE_HEIGHT,
+    testID
+  } = props;
   const context = useContext(CalendarContext);
   const {date, updateSource} = context;
   const style = useRef(styleConstructor(theme));
@@ -44,7 +58,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
 
   useEffect(() => {
     if (updateSource !== UpdateSources.WEEK_SCROLL) {
-      const pageIndex = items.findIndex(item => sameWeek(item, date, firstDay));
+      const pageIndex = items.findIndex(item => isSameWeek(item, date, firstDay));
       // @ts-expect-error
       list.current?.scrollToOffset?.(pageIndex * containerWidth, 0, false);
     }
@@ -80,7 +94,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
       const {allowShadow, ...calendarListProps} = props;
       const {/* style,  */ ...others} = extractCalendarProps(calendarListProps);
 
-      const isSameWeek = sameWeek(item, date, firstDay);
+      const isSameWeek = isSameWeek(item, date, firstDay);
 
       return (
         <Week
@@ -105,7 +119,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
     >
       {!hideDayNames && (
         <View style={[style.current.week, style.current.weekCalendar]}>
-          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader}/>
+          <WeekDaysNames firstDay={firstDay} style={style.current.dayHeader} />
         </View>
       )}
       <View>
@@ -136,17 +150,17 @@ export default WeekCalendar;
 
 // function getDate({current, context, firstDay = 0}: WeekCalendarProps, weekIndex: number) {
 function getDate(date: string, firstDay: number, weekIndex: number) {
-  // const d = new XDate(current || context.date);
-  const d = new XDate(date);
+  // const d = getDateFromUtils(current || context.date);
+  const d = getDateFromUtils(date);
   // get the first day of the week as date (for the on scroll mark)
-  let dayOfTheWeek = d.getDay();
+  let dayOfTheWeek = getDayOfMonth(d);
   if (dayOfTheWeek < firstDay && firstDay > 0) {
     dayOfTheWeek = 7 + dayOfTheWeek;
   }
 
   // leave the current date in the visible week as is
-  const dd = weekIndex === 0 ? d : d.addDays(firstDay - dayOfTheWeek);
-  const newDate = dd.addWeeks(weekIndex);
+  const dd = weekIndex === 0 ? d : addDaysToDate(d, firstDay - dayOfTheWeek);
+  const newDate = addWeeksToDate(dd, weekIndex);
   return toMarkingFormat(newDate);
 }
 

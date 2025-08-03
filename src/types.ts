@@ -1,6 +1,7 @@
-import {ViewStyle, TextStyle} from 'react-native';
-import {MarkingProps} from './calendar/day/marking';
-import {CalendarContextProps} from './expandableCalendar/Context';
+import type {TextStyle, ViewStyle} from 'react-native';
+import type {MarkingProps} from './calendar/day/marking';
+import type {CalendarsDate} from './dateutils';
+import type {CalendarContextProps} from './expandableCalendar/Context';
 
 export type ContextProp = {
   context?: CalendarContextProps;
@@ -18,6 +19,17 @@ export type DateData = {
   timestamp: number;
   dateString: string;
 };
+export type BuildDate = {
+  isUTC?: boolean;
+  year: number | string;
+  month: number | string;
+  day: number | string;
+};
+export type BuildDateTime = {
+  hour: string | number;
+  minute: string | number;
+  second: string | number;
+} & BuildDate;
 export interface Theme {
   timelineContainer?: object;
   contentStyle?: ViewStyle;
@@ -111,5 +123,5 @@ export type AgendaSchedule = {
 
 export interface DayAgenda {
   reservation?: AgendaEntry;
-  date?: XDate;
+  date?: CalendarsDate;
 }

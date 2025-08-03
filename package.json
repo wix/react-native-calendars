@@ -33,14 +33,14 @@
   "author": "Wix.com",
   "license": "MIT",
   "dependencies": {
+    "dayjs": "^1.11.13",
     "hoist-non-react-statics": "^3.3.1",
     "lodash": "^4.17.15",
     "memoize-one": "^5.2.1",
     "prop-types": "^15.5.10",
     "react-native-safe-area-context": "4.5.0",
     "react-native-swipe-gestures": "^1.0.5",
-    "recyclerlistview": "^4.0.0",
-    "xdate": "^0.8.0"
+    "recyclerlistview": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -58,7 +58,6 @@
     "@types/react": "^18.2.6",
     "@types/react-native": "^0.64.19",
     "@types/react-test-renderer": "^18.2.0",
-    "@types/xdate": "^0.8.32",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "@welldone-software/why-did-you-render": "^6.0.3",
@@ -89,9 +88,6 @@
     "semver": "5.x.x",
     "shell-utils": "1.x.x",
     "typescript": "5.0.4"
-  },
-  "optionalDependencies": {
-    "moment": "^2.29.4"
   },
   "engines": {
     "node": ">=18"

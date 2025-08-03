@@ -1,6 +1,6 @@
-import React, {useState, useMemo, useCallback} from 'react';
-import {StyleSheet, Text, View, TextStyle} from 'react-native';
-import {CalendarList, DateData} from 'react-native-calendars';
+import React, {useCallback, useMemo, useState} from 'react';
+import {StyleSheet, Text, type TextStyle, View} from 'react-native';
+import {CalendarList, type DateData} from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const RANGE = 24;

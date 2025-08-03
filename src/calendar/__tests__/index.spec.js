@@ -1,9 +1,10 @@
+import {advanceTo /* , clear */} from 'jest-date-mock';
 import React from 'react';
-import {advanceTo/* , clear */} from 'jest-date-mock';
-// import {waitFor} from '@testing-library/react-native';
+import {DATE_FORMATS} from '../../dateutils';
 import {getDaysArray, partial} from '../../testUtils';
-import {CalendarDriver} from '../driver';
+// import {waitFor} from '@testing-library/react-native';
 import Calendar from '..';
+import {CalendarDriver} from '../driver';
 
 const TEST_ID = 'calendar';
 const date = '2020-04-01';
@@ -33,34 +34,33 @@ describe('Calendar', () => {
 
   describe('Sanity', () => {
     it('test driver', () => {
-      const drv = new CalendarDriver(<Calendar {...props}/>);
+      const drv = new CalendarDriver(<Calendar {...props} />);
       expect(drv).toBeTruthy();
     });
 
     it('test driver header', () => {
-      const drv = new CalendarDriver(<Calendar {...props}/>);
+      const drv = new CalendarDriver(<Calendar {...props} />);
       expect(drv.getHeader()).toBeTruthy();
     });
 
     it('test driver header title', () => {
-      const drv = new CalendarDriver(<Calendar {...props}/>);
+      const drv = new CalendarDriver(<Calendar {...props} />);
       expect(drv.getHeader().getTitle()).toEqual('April 2020');
     });
 
     it('test driver header title format', () => {
-      const monthFormat = 'MMM yy';
-      const driver = new CalendarDriver(<Calendar {...props} monthFormat={monthFormat}/>);
+      const driver = new CalendarDriver(<Calendar {...props} monthFormat={DATE_FORMATS.MMM_YY}/>);
       expect(driver.getHeader().getTitle()).toEqual('Apr 20');
     });
 
     it('test driver day', () => {
-      const drv = new CalendarDriver(<Calendar {...props}/>);
+      const drv = new CalendarDriver(<Calendar {...props} />);
       expect(drv.getDay()).toBeTruthy();
       expect(drv.getDay('2020-04-09').getDayText()).toBe('9');
     });
 
     it('getDays', () => {
-      const drv = new CalendarDriver(<Calendar {...props} hideExtraDays/>);
+      const drv = new CalendarDriver(<Calendar {...props} hideExtraDays />);
       expect(drv.getDays()).toEqual(getDaysArray(1, 30));
     });
 
@@ -78,12 +78,12 @@ describe('Calendar', () => {
       expectedDays.push(...getDaysArray(29, 31)); // March
       expectedDays.push(...getDaysArray(1, 30)); // April
       expectedDays.push(...getDaysArray(1, 2)); // May
-      const drv = new CalendarDriver(<Calendar {...props}/>);
+      const drv = new CalendarDriver(<Calendar {...props} />);
       expect(drv.getDays()).toEqual(expectedDays);
     });
 
     it('should not include extra days with `hideExtraDays={true}` prop', () => {
-      const drv = new CalendarDriver(<Calendar {...props} hideExtraDays/>);
+      const drv = new CalendarDriver(<Calendar {...props} hideExtraDays />);
       expect(drv.getDays()).toEqual(getDaysArray(1, 30));
     });
 
@@ -102,13 +102,15 @@ describe('Calendar', () => {
     });
 
     it('should render calendar with week numbers with `showWeekNumbers={true}` prop', () => {
-      const drv = new CalendarDriver(<Calendar {...props} showWeekNumbers/>);
+      const drv = new CalendarDriver(<Calendar {...props} showWeekNumbers />);
       expect(drv.getWeekNumbers()).toEqual(['14', '15', '16', '17', '18']);
     });
 
     it('should gray out dates not in interval between `minDate` and `maxDate`', () => {
       const textDisabledColor = '#AAAAAA';
-      const drv = new CalendarDriver(<Calendar {...props} minDate={'2020-04-10'} maxDate={'2020-04-11'} theme={{textDisabledColor}}/>);
+      const drv = new CalendarDriver(
+        <Calendar {...props} minDate={'2020-04-10'} maxDate={'2020-04-11'} theme={{textDisabledColor}}/>
+      );
 
       // Disabled dates
       expect(drv.getDay('2020-04-09').getTextStyle()).toEqual(partial({color: textDisabledColor}));
@@ -120,7 +122,16 @@ describe('Calendar', () => {
     });
 
     it('should disable touch events for disabled dates with `disableAllTouchEventsForDisabledDays`', () => {
-      const drv = new CalendarDriver(<Calendar {...props} onDayPress={onDayPress} markedDates={{[date]: {disabled: true}}} disableAllTouchEventsForDisabledDays/>);
+      const drv = new CalendarDriver(
+        (
+          <Calendar
+            {...props}
+            onDayPress={onDayPress}
+            markedDates={{[date]: {disabled: true}}}
+            disableAllTouchEventsForDisabledDays
+          />
+        )
+      );
       drv.getDay(date).tap();
       expect(onDayPress).not.toHaveBeenCalled();
     });
@@ -140,7 +151,9 @@ describe('Calendar', () => {
       });
 
       it('should not invoke `onDayPress` on dates with disabled touch events', () => {
-        const drv = new CalendarDriver(<Calendar {...props} onDayPress={onDayPress} markedDates={{[date]: {disableTouchEvent: true}}}/>);
+        const drv = new CalendarDriver(
+          <Calendar {...props} onDayPress={onDayPress} markedDates={{[date]: {disableTouchEvent: true}}}/>
+        );
         drv.getDay(date).tap();
         expect(onDayPress).not.toHaveBeenCalled();
       });
@@ -148,14 +161,25 @@ describe('Calendar', () => {
       it('should mark selected day', () => {
         const selectedColor = '#AAAAAA';
         const selectedTextColor = '#BBBBBB';
-        const drv = new CalendarDriver(<Calendar {...props} markedDates={{[date]: {selected: true, selectedColor, selectedTextColor}}}/>);
+        const drv = new CalendarDriver(
+          (
+            <Calendar
+              {...props}
+              markedDates={{
+                [date]: {selected: true, selectedColor, selectedTextColor}
+              }}
+            />
+          )
+        );
         expect(drv.getDay(date).getStyle()).toEqual(partial({backgroundColor: selectedColor, borderRadius: 16}));
         expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: selectedTextColor}));
       });
 
       it('should mark disabled day', () => {
         const textDisabledColor = '#AAAAAA';
-        const drv = new CalendarDriver(<Calendar {...props} theme={{textDisabledColor}} markedDates={{[date]: {disabled: true}}}/>);
+        const drv = new CalendarDriver(
+          <Calendar {...props} theme={{textDisabledColor}} markedDates={{[date]: {disabled: true}}}/>
+        );
         expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: textDisabledColor}));
       });
 
@@ -166,7 +190,9 @@ describe('Calendar', () => {
         const fakeToday = new Date('2020-04-01T12:00:00.002Z');
         advanceTo(fakeToday);
         const context = {selectedDate: '2020-04-02'};
-        const drv = new CalendarDriver(<Calendar {...props} theme={{todayTextColor, todayBackgroundColor}} context={context}/>);
+        const drv = new CalendarDriver(
+          <Calendar {...props} theme={{todayTextColor, todayBackgroundColor}} context={context}/>
+        );
         expect(drv.getDay(date).getStyle()).toEqual(partial({backgroundColor: todayBackgroundColor, borderRadius: 16}));
         expect(drv.getDay(date).getTextStyle()).toEqual(partial({color: todayTextColor}));
       });
@@ -174,16 +200,16 @@ describe('Calendar', () => {
 
     describe('Accessibility labels', () => {
       it('should have default accessibility label', () => {
-        const drv = new CalendarDriver(<Calendar {...props}/>);
+        const drv = new CalendarDriver(<Calendar {...props} />);
         expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe('Friday 10 April 2020');
       });
 
       it('should have correct label for today date', () => {
-        const drv = new CalendarDriver(<Calendar {...props}/>);
+        const drv = new CalendarDriver(<Calendar {...props} />);
         const date = '2020-04-01';
         const fakeToday = new Date('2020-04-01T12:00:00.002Z');
         advanceTo(fakeToday);
-        expect(drv.getDay(date).getAccessibilityLabel()).toBe('today Wednesday 1 April 2020');
+        expect(drv.getDay(date).getAccessibilityLabel()).toBe('Today Wednesday 1 April 2020');
       });
 
       it('should have correct label for selected date with no markings', () => {
@@ -194,7 +220,9 @@ describe('Calendar', () => {
       });
 
       it('should have correct label for selected date with markings', () => {
-        const drv = new CalendarDriver(<Calendar {...props} markedDates={{'2020-04-10': {selected: true, marked: true}}}/>);
+        const drv = new CalendarDriver(
+          <Calendar {...props} markedDates={{'2020-04-10': {selected: true, marked: true}}}/>
+        );
         expect(drv.getDay('2020-04-10').getAccessibilityLabel()).toBe(
           'Friday 10 April 2020 selected You have entries for this day'
         );
@@ -227,7 +255,7 @@ describe('Calendar', () => {
 
     it('should render month name and year in header', () => {
       const text = 'April 2020';
-      const drv = new CalendarDriver(<Calendar {...props}/>);
+      const drv = new CalendarDriver(<Calendar {...props} />);
       expect(drv.getHeader().getTitle()).toBe(text);
       expect(drv.getHeader().isTextExists(text)).toBeTruthy();
     });
@@ -260,30 +288,32 @@ describe('Calendar', () => {
         markedDates[string] = {};
         date.setDate(date.getDate() + 1);
       }
-      const drv = new CalendarDriver(<Calendar {...props} current={'2020-04-01'} markedDates={markedDates} displayLoadingIndicator/>);
+      const drv = new CalendarDriver(
+        <Calendar {...props} current={'2020-04-01'} markedDates={markedDates} displayLoadingIndicator/>
+      );
       expect(drv.getHeader().getLoadingIndicator()).toBeUndefined();
     });
 
     describe('Week days', () => {
       it('should render day names', () => {
-        const drv = new CalendarDriver(<Calendar {...props}/>);
+        const drv = new CalendarDriver(<Calendar {...props} />);
         expect(drv.getHeader().getDayNames()).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
       });
 
       it('should support custom first day via `firstDay` prop', () => {
-        const drv = new CalendarDriver(<Calendar {...props} firstDay={4}/>);
+        const drv = new CalendarDriver(<Calendar {...props} firstDay={4} />);
         expect(drv.getHeader().getDayNames()).toEqual(['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed']);
       });
 
       it('should not render day names with `hideDayNames={true}`', () => {
-        const drv = new CalendarDriver(<Calendar {...props} hideDayNames/>);
+        const drv = new CalendarDriver(<Calendar {...props} hideDayNames />);
         expect(drv.getHeader().getDayNames()).toEqual([]);
       });
     });
 
     describe('Arrows', () => {
       it('should not have arrows with `hideArrows={true}` prop', () => {
-        const drv = new CalendarDriver(<Calendar {...props} hideArrows/>);
+        const drv = new CalendarDriver(<Calendar {...props} hideArrows />);
         expect(drv.getHeader().getLeftArrow()).toBeUndefined();
         expect(drv.getHeader().getRightArrow()).toBeUndefined();
       });
@@ -303,7 +333,16 @@ describe('Calendar', () => {
       });
 
       it('should have right arrow working but left arrow disabled with `disableArrowLeft` prop', () => {
-        const drv = new CalendarDriver(<Calendar {...props} disableArrowLeft onPressArrowLeft={onPressArrowLeft} onPressArrowRight={onPressArrowRight}/>);
+        const drv = new CalendarDriver(
+          (
+            <Calendar
+              {...props}
+              disableArrowLeft
+              onPressArrowLeft={onPressArrowLeft}
+              onPressArrowRight={onPressArrowRight}
+            />
+          )
+        );
         drv.getHeader().tapLeftArrow();
         expect(onPressArrowLeft).not.toHaveBeenCalled();
         // expect(drv.getHeader().getTitle()).toBe('April 2020');
@@ -313,7 +352,16 @@ describe('Calendar', () => {
       });
 
       it('should have left arrow working but right arrow disabled with `disableArrowRight` prop', () => {
-        const drv = new CalendarDriver(<Calendar {...props} disableArrowRight onPressArrowLeft={onPressArrowLeft} onPressArrowRight={onPressArrowRight}/>);
+        const drv = new CalendarDriver(
+          (
+            <Calendar
+              {...props}
+              disableArrowRight
+              onPressArrowLeft={onPressArrowLeft}
+              onPressArrowRight={onPressArrowRight}
+            />
+          )
+        );
         drv.getHeader().tapRightArrow();
         expect(onPressArrowRight).not.toHaveBeenCalled();
         // expect(drv.getHeader().getTitle()).toBe('April 2020');
@@ -333,12 +381,12 @@ describe('Calendar', () => {
 
   describe('Gesture Recognizer', () => {
     it('should not have `GestureRecognizer` root view by default', () => {
-      const drv = new CalendarDriver(<Calendar {...props}/>);
+      const drv = new CalendarDriver(<Calendar {...props} />);
       expect(drv.isRootGestureRecognizer()).toBe(false);
     });
 
     it('should have `GestureRecognizer` root view with `enableSwipeMonths={true}` prop', () => {
-      const drv = new CalendarDriver(<Calendar {...props} enableSwipeMonths/>);
+      const drv = new CalendarDriver(<Calendar {...props} enableSwipeMonths />);
       expect(drv.isRootGestureRecognizer()).toBe(true);
     });
 
@@ -348,7 +396,7 @@ describe('Calendar', () => {
     });
 
     it.skip('should go forward on left swipe', async () => {
-      const drv = new CalendarDriver(<Calendar {...props} enableSwipeMonths/>);
+      const drv = new CalendarDriver(<Calendar {...props} enableSwipeMonths />);
       expect(drv.getHeader().getTitle()).toBe('April 2020');
       await drv.swipeLeft();
       // await waitFor(async () => expect(await drv.getHeader().getTitle()).toBe('May 2020'));
@@ -356,7 +404,7 @@ describe('Calendar', () => {
     });
 
     it.skip('should go back on right swipe', () => {
-      const drv = new CalendarDriver(<Calendar {...props} enableSwipeMonths/>);
+      const drv = new CalendarDriver(<Calendar {...props} enableSwipeMonths />);
       expect(drv.getHeader().getTitle()).toBe('April 2020');
       drv.swipeRight();
       expect(drv.getHeader().getTitle()).toBe('March 2020');

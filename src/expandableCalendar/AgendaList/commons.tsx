@@ -6,13 +6,10 @@ import {Theme} from '../../types';
 export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> {
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
-  /** day format in section title. Formatting values: http://arshaw.com/xdate/#Formatting */
+  /** day format in section title. Formatting values: https://day.js.org/docs/en/display/format#docsNav */
   dayFormat?: string;
-  /** a function to custom format the section header's title */
+  /** a function to custom format the section header's title. */
   dayFormatter?: (arg0: string) => string;
-  /** whether to use moment.js for date string formatting
-   * (remember to pass 'dayFormat' with appropriate format, like 'dddd, MMM D') */
-  useMoment?: boolean;
   /** whether to mark today's title with the "Today, ..." string. Default = true */
   markToday?: boolean;
   /** style passed to the section view */

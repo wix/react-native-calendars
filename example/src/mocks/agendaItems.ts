@@ -28,7 +28,10 @@ function getPastDate(numberOfDays: number) {
 export const agendaItems = [
   {
     title: dates[0],
-    data: [{hour: '12am', duration: '1h', title: 'First Yoga'}, {hour: '9am', duration: '1h', title: 'Long Yoga', itemCustomHeightType: 'LongEvent'}]
+    data: [
+      {hour: '12am', duration: '1h', title: 'First Yoga'},
+      {hour: '9am', duration: '1h', title: 'Long Yoga', itemCustomHeightType: 'LongEvent'}
+    ]
   },
   {
     title: dates[1],
@@ -64,9 +67,7 @@ export const agendaItems = [
   },
   {
     title: dates[6],
-    data: [
-      {hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}
-    ]
+    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]
   },
   {
     title: dates[7],
@@ -91,9 +92,7 @@ export const agendaItems = [
   },
   {
     title: dates[10],
-    data: [
-      {hour: '12am', duration: '1h', title: 'Last Yoga'}
-    ]
+    data: [{hour: '12am', duration: '1h', title: 'Last Yoga'}]
   },
   {
     title: dates[11],
@@ -105,15 +104,11 @@ export const agendaItems = [
   },
   {
     title: dates[12],
-    data: [
-      {hour: '12am', duration: '1h', title: 'Last Yoga'}
-    ]
+    data: [{hour: '12am', duration: '1h', title: 'Last Yoga'}]
   },
   {
     title: dates[13],
-    data: [
-      {hour: '12am', duration: '1h', title: 'Last Yoga'}
-    ]
+    data: [{hour: '12am', duration: '1h', title: 'Last Yoga'}]
   }
 ];
 

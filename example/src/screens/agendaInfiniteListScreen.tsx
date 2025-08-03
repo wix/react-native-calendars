@@ -1,10 +1,10 @@
-import React, {useRef, useCallback} from 'react';
+import {useCallback, useRef} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
-import testIDs from '../testIDs';
-import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
+import {AgendaList, CalendarProvider, ExpandableCalendar, WeekCalendar} from 'react-native-calendars';
 import AgendaItem from '../mocks/AgendaItem';
-import {getTheme, themeColor, lightThemeColor} from '../mocks/theme';
+import {agendaItems, getMarkedDates} from '../mocks/agendaItems';
+import {getTheme, lightThemeColor, themeColor} from '../mocks/theme';
+import testIDs from '../testIDs';
 
 const leftArrowIcon = require('../img/previous.png');
 const rightArrowIcon = require('../img/next.png');
@@ -24,17 +24,17 @@ const AgendaInfiniteListScreen = (props: Props) => {
 
   const renderItem = useCallback(({item}: any) => {
     const isLongItem = item.itemCustomHeightType === 'LongEvent';
-    return <View style={{paddingTop: isLongItem ? 40 : 0}}><AgendaItem item={item}/></View>;
+    return (
+      <View style={{paddingTop: isLongItem ? 40 : 0}}>
+        <AgendaItem item={item}/>
+      </View>
+    );
   }, []);
 
   return (
-    <CalendarProvider
-      date={ITEMS[1]?.title}
-      showTodayButton
-      theme={todayBtnTheme.current}
-    >
+    <CalendarProvider date={ITEMS[1]?.title} showTodayButton theme={todayBtnTheme.current}>
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current} />
       ) : (
         <ExpandableCalendar
           testID={testIDs.expandableCalendar.CONTAINER}
@@ -49,15 +49,13 @@ const AgendaInfiniteListScreen = (props: Props) => {
         sections={ITEMS}
         renderItem={renderItem}
         sectionStyle={styles.section}
-        infiniteListProps={
-          {
-            itemHeight: 80,
-            titleHeight: 50,
-            itemHeightByType: {
-              LongEvent: 120
-            }
+        infiniteListProps={{
+          itemHeight: 80,
+          titleHeight: 50,
+          itemHeightByType: {
+            LongEvent: 120
           }
-        }
+        }}
       />
     </CalendarProvider>
   );

@@ -1,6 +1,5 @@
-import XDate from 'xdate';
 import constants from '../../commons/constants';
-import {generateDay} from '../../dateutils';
+import {type CalendarsDate, generateDay, getCurrentDate} from '../../dateutils';
 
 export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
   let time = yPosition / hourBlockHeight;
@@ -11,7 +10,12 @@ export function calcTimeByPosition(yPosition: number, hourBlockHeight: number) {
   return {hour, minutes};
 }
 
-export function calcDateByPosition(xPosition: number, timelineLeftInset: number, numberOfDays = 1, firstDate: string | XDate = new XDate()) {
+export function calcDateByPosition(
+  xPosition: number,
+  timelineLeftInset: number,
+  numberOfDays = 1,
+  firstDate: string | CalendarsDate = getCurrentDate()
+) {
   const timelineWidth = constants.screenWidth - timelineLeftInset;
   const dayWidth = timelineWidth / numberOfDays;
   const positionIndex = Math.floor((xPosition - timelineLeftInset) / dayWidth);

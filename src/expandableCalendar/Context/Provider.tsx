@@ -1,20 +1,18 @@
 import {includes} from 'lodash';
-import XDate from 'xdate';
 
-import React, {useRef, useState, useCallback, useMemo} from 'react';
-import {View, ViewStyle, ViewProps, StyleProp} from 'react-native';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {type StyleProp, View, type ViewProps, type ViewStyle} from 'react-native';
 
-import {sameMonth} from '../../dateutils';
-import {xdateToData} from '../../interface';
+import {dateToData, getDate, isSameMonth} from '../../dateutils';
 import {useDidUpdate} from '../../hooks';
-import {Theme, DateData} from '../../types';
-import {UpdateSources, CalendarNavigationTypes} from '../commons';
+import type {DateData, Theme} from '../../types';
+import {type CalendarNavigationTypes, UpdateSources} from '../commons';
 import styleConstructor from '../style';
 import CalendarContext from './index';
-import TodayButton, {TodayButtonImperativeMethods} from './todayButton';
+import TodayButton, {type TodayButtonImperativeMethods} from './todayButton';
 
 export interface CalendarContextProviderProps extends ViewProps {
-  /** Initial date in 'yyyy-MM-dd' format. Default = now */
+  /** Initial date in 'YYYY-MM-DD' format. Default = now */
   date: string; //TODO: rename 'initialDate'
   /** Specify theme properties to override specific styles for calendar parts */
   theme?: Theme;
@@ -88,28 +86,34 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
     return updateSource;
   }, []);
 
-  const _setDate = useCallback((date: string, updateSource: UpdateSources) => {
-    prevDate.current = currDate.current;
-    currDate.current = date;
-    
-    setCurrentDate(date);
-    if (!includes(disableAutoDaySelection, updateSource as string)) {
-      setSelectedDate(date);
-    }
-    setUpdateSource(updateSource);
+  const _setDate = useCallback(
+    (date: string, updateSource: UpdateSources) => {
+      prevDate.current = currDate.current;
+      currDate.current = date;
 
-    const _updateSource = getUpdateSource(updateSource);
-    onDateChanged?.(date, _updateSource);
-    if (!sameMonth(new XDate(date), new XDate(prevDate.current))) {
-      onMonthChange?.(xdateToData(new XDate(date)), _updateSource);
-    }
-  }, [onDateChanged, onMonthChange, getUpdateSource]);
+      setCurrentDate(date);
+      if (!includes(disableAutoDaySelection, updateSource as string)) {
+        setSelectedDate(date);
+      }
+      setUpdateSource(updateSource);
 
-  const _setDisabled = useCallback((disabled: boolean) => {
-    if (showTodayButton) {
-      todayButton.current?.disable(disabled);
-    }
-  }, [showTodayButton]);
+      const _updateSource = getUpdateSource(updateSource);
+      onDateChanged?.(date, _updateSource);
+      if (!isSameMonth(getDate(date), getDate(prevDate.current))) {
+        onMonthChange?.(dateToData(getDate(date)), _updateSource);
+      }
+    },
+    [onDateChanged, onMonthChange, getUpdateSource]
+  );
+
+  const _setDisabled = useCallback(
+    (disabled: boolean) => {
+      if (showTodayButton) {
+        todayButton.current?.disable(disabled);
+      }
+    },
+    [showTodayButton]
+  );
 
   const contextValue = useMemo(() => {
     return {
@@ -138,7 +142,9 @@ const CalendarProvider = (props: CalendarContextProviderProps) => {
 
   return (
     <CalendarContext.Provider value={contextValue}>
-      <View style={wrapperStyle} key={numberOfDays}>{children}</View>
+      <View style={wrapperStyle} key={numberOfDays}>
+        {children}
+      </View>
       {showTodayButton && renderTodayButton()}
     </CalendarContext.Provider>
   );
