@@ -142,7 +142,7 @@ const TimelineList = (props: TimelineListProps) => {
 
       return (
         <>
-          <Timeline {..._timelineProps}/>
+          <Timeline {..._timelineProps} key={item}/>
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text>*/}
         </>
