@@ -140,7 +140,6 @@ export default App;
 ### Configuring the locale:
 
 ```javascript
-import {LocaleConfig} from 'react-native-calendars';
 import React, {useState} from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 
