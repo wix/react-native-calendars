@@ -270,6 +270,13 @@ class ReservationList extends Component<ReservationListProps, State> {
       return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
     }
 
+    // Prevent FlatList from rendering with empty data to avoid React Native bug
+    // where FlatList gets stuck and won't render items added later.
+    // See: https://github.com/facebook/react-native/issues/39421
+    if (!this.state.reservations || this.state.reservations.length === 0) {
+      return <ActivityIndicator style={this.style.indicator} color={theme?.indicatorColor}/>;
+    }
+
     return (
       <FlatList
         ref={this.list}
