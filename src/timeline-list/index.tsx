@@ -123,7 +123,6 @@ const TimelineList = (props: TimelineListProps) => {
       const numberOfDaysToDrop = (7 - numberOfDays);
       const _timelineProps = {
         ...timelineProps,
-        key: item,
         date: dropRight(weekDates, numberOfDaysToDrop),
         events: flatten(dropRight(weekEvents, numberOfDaysToDrop)),
         scrollToNow: _isToday && isInitialPage && scrollToNow,
@@ -142,7 +141,7 @@ const TimelineList = (props: TimelineListProps) => {
 
       return (
         <>
-          <Timeline {..._timelineProps}/>
+          <Timeline key={item} {..._timelineProps}/>
           {/* NOTE: Keeping this for easy debugging */}
           {/* <Text style={{position: 'absolute'}}>{item}</Text>*/}
         </>
