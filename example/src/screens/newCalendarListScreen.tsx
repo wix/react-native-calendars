@@ -1,6 +1,6 @@
-import React, {useMemo, useState, useCallback} from 'react';
-import {StyleSheet, View, Switch, Text} from 'react-native';
-import {NewCalendarList} from 'react-native-calendars';
+import React, { useMemo, useState, useCallback } from 'react';
+import { StyleSheet, View, Switch, Text } from 'react-native';
+import { NewCalendarList } from 'react-native-calendars';
 import testIDs from '../testIDs';
 
 const initialDate = '2020-05-16';
@@ -8,7 +8,7 @@ const initialDate = '2020-05-16';
 const NewCalendarListScreen = () => {
   const [selected, setSelected] = useState(initialDate);
   const [isHorizontal, setIsHorizontal] = useState(false);
-  
+
   const onValueChange = useCallback((value) => {
     setIsHorizontal(value);
   }, [isHorizontal]);
@@ -38,14 +38,15 @@ const NewCalendarListScreen = () => {
     <View style={styles.container}>
       <View style={styles.switchView}>
         <Text style={styles.switchText}>Horizontal</Text>
-        <Switch value={isHorizontal} onValueChange={onValueChange}/>
+        <Switch value={isHorizontal} onValueChange={onValueChange} />
       </View>
       <NewCalendarList
         key={Number(isHorizontal)} // only for this example - to force rerender
         horizontal={isHorizontal}
-        staticHeader  
+        numberOfPages={2}
+        staticHeader
         // initialDate={initialDate}
-        // scrollRange={10}
+        scrollRange={2}
         calendarProps={calendarProps}
         testID={testIDs.horizontalList.CONTAINER}
       />
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   switchView: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     height: 70,
     padding: 10,
     paddingBottom: 30,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     zIndex: 100
   },
   switchText: {
-    marginRight: 20, 
+    marginRight: 20,
     fontSize: 16
   }
 });
