@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import isEmpty from 'lodash/isEmpty';
-import React, {useRef, useState, useEffect, useCallback, useMemo} from 'react';
-import {AccessibilityInfo, View, ViewStyle, StyleProp} from 'react-native';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import { AccessibilityInfo, View, ViewStyle, StyleProp } from 'react-native';
 // @ts-expect-error
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import constants from '../commons/constants';
-import {page, isGTE, isLTE, sameMonth} from '../dateutils';
-import {xdateToData, parseDate, toMarkingFormat} from '../interface';
-import {getState} from '../day-state-manager';
-import {extractHeaderProps, extractDayProps} from '../componentUpdater';
-import {DateData, Theme, MarkedDates, ContextProp} from '../types';
-import {useDidUpdate} from '../hooks';
+import { page, isGTE, isLTE, sameMonth } from '../dateutils';
+import { xdateToData, parseDate, toMarkingFormat } from '../interface';
+import { getState } from '../day-state-manager';
+import { extractHeaderProps, extractDayProps } from '../componentUpdater';
+import { DateData, Theme, MarkedDates, ContextProp } from '../types';
+import { useDidUpdate } from '../hooks';
 import styleConstructor from './style';
-import CalendarHeader, {CalendarHeaderProps} from './header';
-import Day, {DayProps} from './day/index';
+import CalendarHeader, { CalendarHeaderProps } from './header';
+import Day, { DayProps } from './day/index';
 import BasicDay from './day/basic';
 
 export interface CalendarProps extends CalendarHeaderProps, DayProps {
@@ -96,7 +96,10 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
   const style = useRef(styleConstructor(theme));
   const header = useRef();
-  const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
+  const weekNumberMarking = useRef({ disabled: true, disableTouchEvent: true });
+  useEffect(() => {
+    style.current = styleConstructor(theme);
+  }, [theme]);
 
   useEffect(() => {
     if (initialDate) {
@@ -138,26 +141,26 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
   const _onDayPress = useCallback((date?: DateData) => {
     if (date)
-    handleDayInteraction(date, onDayPress);
+      handleDayInteraction(date, onDayPress);
   }, [handleDayInteraction, onDayPress]);
 
   const onLongPressDay = useCallback((date?: DateData) => {
     if (date)
-    handleDayInteraction(date, onDayLongPress);
+      handleDayInteraction(date, onDayLongPress);
   }, [handleDayInteraction, onDayLongPress]);
 
   const onSwipeLeft = useCallback(() => {
     // @ts-expect-error
     header.current?.onPressRight();
-  }, [header]);
+  }, []);
 
   const onSwipeRight = useCallback(() => {
     // @ts-expect-error
     header.current?.onPressLeft();
-  }, [header]);
+  }, []);
 
   const onSwipe = useCallback((gestureName: string) => {
-    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+    const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
 
     switch (gestureName) {
       case SWIPE_UP:
@@ -172,13 +175,24 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     }
   }, [onSwipeLeft, onSwipeRight]);
 
-  const renderWeekNumber = (weekNumber: number) => {
+  // Memoize day props extraction - only recalculate when relevant props change
+  const dayProps = useMemo(() => extractDayProps(props), [
+    props.theme,
+    props.markingType,
+    props.dayComponent,
+    props.disableAllTouchEventsForDisabledDays,
+    props.disableAllTouchEventsForInactiveDays,
+    props.testID
+  ]);
+
+  const disableDaySelection = useMemo(() => isEmpty(props.context), [props.context]);
+
+  const renderWeekNumber = useCallback((weekNumber: number) => {
     return (
       <View style={style.current.dayContainer} key={`week-container-${weekNumber}`}>
         <BasicDay
           key={`week-${weekNumber}`}
           marking={weekNumberMarking.current}
-          // state='disabled'
           theme={theme}
           testID={`${testID}.weekNumber_${weekNumber}`}
         >
@@ -186,16 +200,14 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         </BasicDay>
       </View>
     );
-  };
+  }, [theme, testID]);
 
-  const renderDay = (day: XDate, id: number) => {
+  const renderDay = useCallback((day: XDate, id: number) => {
     if (!sameMonth(day, currentMonth) && hideExtraDays) {
-      return <View key={id} style={style.current.emptyDayContainer}/>;
+      return <View key={id} style={style.current.emptyDayContainer} />;
     }
 
-    const dayProps = extractDayProps(props);
     const dateString = toMarkingFormat(day);
-    const disableDaySelection = isEmpty(props.context);
 
     return (
       <View style={style.current.dayContainer} key={id}>
@@ -210,14 +222,14 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         />
       </View>
     );
-  };
+  }, [dayProps, currentMonth, hideExtraDays, markedDates, disableDaySelection, props, testID, _onDayPress, onLongPressDay]);
 
-  const renderWeek = (days: XDate[], id: number) => {
+  const renderWeek = useCallback((days: XDate[], id: number) => {
     const week: JSX.Element[] = [];
 
     days.forEach((day: XDate, id2: number) => {
       week.push(renderDay(day, id2));
-    }, this);
+    });
 
     if (props.showWeekNumbers) {
       week.unshift(renderWeekNumber(days[days.length - 1].getWeek()));
@@ -228,19 +240,24 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         {week}
       </View>
     );
-  };
+  }, [renderDay, renderWeekNumber, props.showWeekNumbers]);
 
-  const renderMonth = () => {
+  // Memoize the days array calculation
+  const monthDays = useMemo(() => {
     const shouldShowSixWeeks = showSixWeeks && !hideExtraDays;
-    const days = page(currentMonth, firstDay, shouldShowSixWeeks);
+    return page(currentMonth, firstDay, shouldShowSixWeeks);
+  }, [currentMonth, firstDay, showSixWeeks, hideExtraDays]);
+
+  const renderMonth = useMemo(() => {
     const weeks: JSX.Element[] = [];
+    const days = [...monthDays]; // Create a copy to avoid mutating the memoized array
 
     while (days.length) {
       weeks.push(renderWeek(days.splice(0, 7), weeks.length));
     }
 
     return <View style={style.current.monthView}>{weeks}</View>;
-  };
+  }, [monthDays, renderWeek]);
 
   const shouldDisplayIndicator = useMemo(() => {
     if (currentMonth) {
@@ -252,8 +269,24 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     return false;
   }, [currentMonth, displayLoadingIndicator, markedDates]);
 
-  const renderHeader = () => {
-    const headerProps = extractHeaderProps(props);
+  // Memoize header props extraction
+  const headerProps = useMemo(() => extractHeaderProps(props), [
+    props.theme,
+    props.firstDay,
+    props.hideArrows,
+    props.onPressArrowLeft,
+    props.onPressArrowRight,
+    props.renderArrow,
+    props.disableArrowLeft,
+    props.disableArrowRight,
+    props.monthFormat,
+    props.hideDayNames,
+    props.showWeekNumbers,
+    props.customHeaderTitle,
+    props.testID
+  ]);
+
+  const renderHeader = useMemo(() => {
     const ref = customHeader ? undefined : header;
     const CustomHeader = customHeader;
     const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
@@ -269,13 +302,16 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         displayLoadingIndicator={shouldDisplayIndicator}
       />
     );
-  };
+  }, [headerProps, customHeader, testID, headerStyle, currentMonth, addMonth, shouldDisplayIndicator]);
 
   const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
-  const swipeProps = {
-    onSwipe: (direction: string) => onSwipe(direction)
-  };
-  const gestureProps = enableSwipeMonths ? swipeProps : undefined;
+
+  const gestureProps = useMemo(() => {
+    if (!enableSwipeMonths) return undefined;
+    return {
+      onSwipe: (direction: string) => onSwipe(direction)
+    };
+  }, [enableSwipeMonths, onSwipe]);
 
   return (
     <GestureComponent {...gestureProps} testID={`${testID}.container`}>
@@ -285,8 +321,8 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         accessibilityElementsHidden={accessibilityElementsHidden} // iOS
         importantForAccessibility={importantForAccessibility} // Android
       >
-        {renderHeader()}
-        {renderMonth()}
+        {renderHeader}
+        {renderMonth}
       </View>
     </GestureComponent>
   );
