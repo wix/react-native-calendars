@@ -220,11 +220,11 @@ const AgendaList = forwardRef((props: AgendaListProps, ref: any) => {
   const _keyExtractor = useCallback((item: any, index: number) => {
     return isFunction(keyExtractor) ? keyExtractor(item, index) : String(index);
   }, [keyExtractor]);
-  
+
   if (props.infiniteListProps) {
     return <InfiniteAgendaList {...props}/>;
   }
-  
+
   return (
     <SectionList
       stickySectionHeadersEnabled
@@ -257,7 +257,7 @@ AgendaList.propTypes = {
   dayFormatter: PropTypes.func,
   useMoment: PropTypes.bool,
   markToday: PropTypes.bool,
-  // @ts-expect-error TODO Figure out why forwardRef causes error about the number type
+  // @ts-expect-error
   sectionStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   avoidDateUpdates: PropTypes.bool
 };
