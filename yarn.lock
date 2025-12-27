@@ -9673,7 +9673,6 @@ __metadata:
     prop-types: "npm:^15.5.10"
     react: "npm:18.2.0"
     react-native: "npm:0.73.11"
-    react-native-safe-area-context: "npm:4.5.0"
     react-native-swipe-gestures: "npm:^1.0.5"
     react-recipes: "npm:^1.4.0"
     react-test-renderer: "npm:18.2.0"
@@ -9683,21 +9682,13 @@ __metadata:
     shell-utils: "npm:1.x.x"
     typescript: "npm:5.0.4"
     xdate: "npm:^0.8.0"
+  peerDependencies:
+    react-native-safe-area-context: ">=4.5.0"
   dependenciesMeta:
     moment:
       optional: true
   languageName: unknown
   linkType: soft
-
-"react-native-safe-area-context@npm:4.5.0":
-  version: 4.5.0
-  resolution: "react-native-safe-area-context@npm:4.5.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/cd9dfe25803b7b120940c243d9c9f10b0b61d262ad5875245909cdbf0025684241189b2796d35028519fee0e7a94e6f47bcaf2e23fc7801875d5f633a7778296
-  languageName: node
-  linkType: hard
 
 "react-native-swipe-gestures@npm:^1.0.5":
   version: 1.0.5
