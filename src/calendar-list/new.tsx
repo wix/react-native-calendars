@@ -1,10 +1,10 @@
 import XDate from 'xdate';
-import React, {useCallback, useEffect, useRef, useState, useMemo} from 'react';
-import {View, ScrollViewProps, ScrollView} from 'react-native';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import { View, ScrollViewProps, ScrollView } from 'react-native';
 import constants from '../commons/constants';
-import {toMarkingFormat} from '../interface';
-import {extractHeaderProps} from '../componentUpdater';
-import Calendar, {CalendarProps} from '../calendar';
+import { toMarkingFormat } from '../interface';
+import { extractHeaderProps } from '../componentUpdater';
+import Calendar, { CalendarProps } from '../calendar';
 import CalendarHeader from '../calendar/header';
 import InfiniteList from '../infinite-list';
 import styleConstructor from './style';
@@ -24,6 +24,9 @@ export interface CalendarListProps {
   calendarProps?: CalendarProps;
   /** Identifier for testing */
   testID?: string;
+  calendarHeight?: number;
+  numberOfPages?: number;
+
 }
 
 const NUMBER_OF_PAGES = 50;
@@ -32,9 +35,9 @@ const CALENDAR_HEIGHT = 360;
 const CalendarList = (props: CalendarListProps) => {
   const {
     initialDate,
-    horizontal, 
+    horizontal,
     scrollRange = NUMBER_OF_PAGES,
-    staticHeader, 
+    staticHeader,
     scrollViewProps,
     calendarProps,
     testID
@@ -45,10 +48,9 @@ const CalendarList = (props: CalendarListProps) => {
   const [positionIndex, setPositionIndex] = useState(scrollRange);
 
   /** Static Header */
-
   const [currentMonth, setCurrentMonth] = useState(initialDate || items[scrollRange]);
   const shouldRenderStaticHeader = staticHeader && horizontal;
-  const headerProps = extractHeaderProps(props);
+  const headerProps = extractHeaderProps(calendarProps || {});
   const staticHeaderStyle = useMemo(() => {
     return [style.current.staticHeader, calendarProps?.headerStyle];
   }, [calendarProps?.headerStyle]);
@@ -102,7 +104,7 @@ const CalendarList = (props: CalendarListProps) => {
     }
   }, [updateMonth]);
 
-  const onPageChange = useCallback((pageIndex: number, _: number, info: {scrolledByUser: boolean}) => {
+  const onPageChange = useCallback((pageIndex: number, _: number, info: { scrolledByUser: boolean }) => {
     if (shouldRenderStaticHeader && info.scrolledByUser) {
       setCurrentMonth(items[pageIndex]);
     }
@@ -143,7 +145,7 @@ const CalendarList = (props: CalendarListProps) => {
     const array: string[] = [...items];
     const startingDate = items[index];
     const shouldAppend = index > scrollRange;
-    
+
     if (startingDate) {
       if (shouldAppend) {
         for (let i = 2; i <= scrollRange; i++) {
@@ -165,7 +167,7 @@ const CalendarList = (props: CalendarListProps) => {
   /** List */
 
   const listContainerStyle = useMemo(() => {
-    return [style.current.flatListContainer, {flex: horizontal ? undefined : 1}];
+    return [style.current.flatListContainer, { flex: horizontal ? undefined : 1 }];
   }, [style, horizontal]);
 
   const scrollProps = useMemo(() => {
@@ -180,17 +182,16 @@ const CalendarList = (props: CalendarListProps) => {
     return (
       <Calendar
         {...calendarProps}
-        {...headerProps}
         initialDate={item}
         disableMonthChange
         hideArrows={!horizontal}
         onPressArrowRight={scrollToNextMonth}
-        onPressArrowLeft={scrollToPreviousMonth} 
+        onPressArrowLeft={scrollToPreviousMonth}
         hideExtraDays={calendarProps?.hideExtraDays || true}
         style={[style.current.calendar, calendarProps?.style]}
         headerStyle={horizontal ? calendarProps?.headerStyle : undefined}
         testID={`${testID}_${item}`}
-        // context={context}
+      // context={context}
       />
     );
   }, [calendarProps, scrollToNextMonth, scrollToPreviousMonth]);
@@ -203,13 +204,13 @@ const CalendarList = (props: CalendarListProps) => {
         data={items}
         renderItem={renderItem}
         reloadPages={reloadPages}
-        onReachNearEdgeThreshold={Math.round(NUMBER_OF_PAGES * 0.4)}
+        onReachNearEdgeThreshold={props.numberOfPages ?? Math.round(NUMBER_OF_PAGES * 0.4)}
         extendedState={calendarProps?.markedDates}
         isHorizontal={horizontal}
         style={style.current.container}
         initialPageIndex={scrollRange}
         positionIndex={positionIndex}
-        pageHeight={CALENDAR_HEIGHT}
+        pageHeight={props.calendarHeight ?? CALENDAR_HEIGHT}
         pageWidth={constants.screenWidth}
         onPageChange={onPageChange}
         scrollViewProps={scrollProps}
@@ -224,10 +225,10 @@ export default CalendarList;
 function getDate(date: string, index: number) {
   const d = new XDate(date);
   d.addMonths(index, true);
-  
+
   // if (index !== 0) {
-    d.setDate(1);
-    // }
+  d.setDate(1);
+  // }
   return toMarkingFormat(d);
 }
 
