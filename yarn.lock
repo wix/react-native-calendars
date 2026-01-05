@@ -9682,8 +9682,6 @@ __metadata:
     shell-utils: "npm:1.x.x"
     typescript: "npm:5.0.4"
     xdate: "npm:^0.8.0"
-  peerDependencies:
-    react-native-safe-area-context: ">=4.5.0"
   dependenciesMeta:
     moment:
       optional: true
