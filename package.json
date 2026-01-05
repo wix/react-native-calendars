@@ -41,9 +41,6 @@
     "recyclerlistview": "^4.0.0",
     "xdate": "^0.8.0"
   },
-  "peerDependencies": {
-    "react-native-safe-area-context": ">=4.5.0"
-  },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/eslint-parser": "^7.13.4",
