@@ -54,6 +54,7 @@ const CalendarListScreen = (props: Props) => {
       horizontal={horizontalView}
       pagingEnabled={horizontalView}
       staticHeader={horizontalView}
+      descendingOrder={false}
     />
   );
 };
