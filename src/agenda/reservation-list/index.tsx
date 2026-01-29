@@ -262,8 +262,9 @@ class ReservationList extends Component<ReservationListProps, State> {
 
   render() {
     const {items, selectedDay, theme, style} = this.props;
-    
-    if (!items || selectedDay && !items[toMarkingFormat(selectedDay)]) {
+    const noItems = !items || selectedDay && !items[toMarkingFormat(selectedDay)];
+    const noReservations = !this.state.reservations || this.state.reservations.length === 0;
+    if (noItems || noReservations) {
       if (isFunction(this.props.renderEmptyData)) {
         return this.props.renderEmptyData?.();
       }
