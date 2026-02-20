@@ -205,7 +205,7 @@ const Timeline = (props: TimelineProps) => {
         onEventPress?.(event);
       }
     },
-    [onEventPress, eventTapped]
+    [onEventPress, eventTapped, packedEvents]
   );
 
   const renderEvents = (dayIndex: number) => {
