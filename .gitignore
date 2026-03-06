@@ -1,7 +1,6 @@
 node_modules
 npm-debug.log
 .idea
-.vscode
 package-lock.json
 
 # OSX
@@ -77,3 +76,4 @@ ios/Podfile.lock
 
 # testing
 /coverage
+config.bat
