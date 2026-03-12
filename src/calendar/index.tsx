@@ -99,10 +99,11 @@ const Calendar = (props: CalendarProps & ContextProp) => {
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
 
   useEffect(() => {
-    if (initialDate) {
-      setCurrentMonth(parseDate(initialDate));
+    const newDate = current || initialDate;
+    if (newDate) {
+      setCurrentMonth(parseDate(newDate));
     }
-  }, [initialDate]);
+  }, [current, initialDate]);
 
   useDidUpdate(() => {
     const _currentMonth = currentMonth.clone();
