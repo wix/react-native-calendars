@@ -136,7 +136,6 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
   firstDayOfWeek = firstDayOfWeek || 0;
 
   const from = days[0].clone();
-  const daysBefore = from.getDay();
 
   if (from.getDay() !== fdow) {
     from.addDays(-(from.getDay() + 7 - fdow) % 7);
@@ -148,10 +147,11 @@ export function page(date: XDate, firstDayOfWeek = 0, showSixWeeks = false) {
     to.addDays((ldow + 7 - day) % 7);
   }
 
-  const daysForSixWeeks = (daysBefore + days.length) / 6 >= 6;
-
-  if (showSixWeeks && !daysForSixWeeks) {
-    to.addDays(7);
+  if (showSixWeeks) {
+    const spanDays = from.diffDays(to) + 1;
+    if (spanDays < 42) {
+      to.addDays(7);
+    }
   }
 
   if (isLTE(from, days[0])) {
