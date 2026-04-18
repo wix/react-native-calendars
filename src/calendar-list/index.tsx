@@ -38,6 +38,8 @@ export interface CalendarListProps extends CalendarProps, Omit<FlatListProps<any
   showScrollIndicator?: boolean;
   /** Whether to animate the auto month scroll */
   animateScroll?: boolean;
+  /** Optional fling speed limit for platforms that support this prop */
+  flingSpeedLimit?: number;
 }
 
 export interface CalendarListImperativeMethods {
@@ -103,7 +105,8 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
     onEndReached,
     onHeaderLayout,
     accessibilityElementsHidden,
-    importantForAccessibility
+    importantForAccessibility,
+    flingSpeedLimit
   } = props;
 
   const calendarProps = extractCalendarProps(props);
@@ -310,11 +313,13 @@ const CalendarList = (props: CalendarListProps & ContextProp, ref: any) => {
       onViewableItemsChanged
     }
   ]);
+  const extraFlatListProps = typeof flingSpeedLimit === 'number' ? {flingSpeedLimit} : {};
 
   return (
     <View style={style.current.flatListContainer} testID={testID}>
       <FlatList
         ref={list}
+        {...extraFlatListProps}
         windowSize={shouldFixRTL ? pastScrollRange + futureScrollRange + 1 : undefined}
         style={listStyle}
         showsVerticalScrollIndicator={showScrollIndicator}
@@ -368,5 +373,6 @@ CalendarList.propTypes = {
   keyExtractor: PropTypes.func,
   onEndReachedThreshold: PropTypes.number,
   onEndReached: PropTypes.func,
-  nestedScrollEnabled: PropTypes.bool
+  nestedScrollEnabled: PropTypes.bool,
+  flingSpeedLimit: PropTypes.number
 };
