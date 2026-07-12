@@ -1,4 +1,4 @@
-import {includes} from 'lodash';
+import includes from 'lodash/includes';
 import XDate from 'xdate';
 
 import React, {useRef, useState, useCallback, useMemo} from 'react';
