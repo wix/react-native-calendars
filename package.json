@@ -23,6 +23,7 @@
     "clean": "rm yarn-lock && rm -rf ./node_modules && yarn",
     "pod-install": "pod install --project-directory=ios"
   },
+  "files": ["src", "!src/**/__tests__"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wix/react-native-calendars"
