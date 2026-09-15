@@ -10,6 +10,14 @@ import Timeline, {TimelineProps} from '../timeline/Timeline';
 import useTimelinePages, {INITIAL_PAGE, NEAR_EDGE_THRESHOLD, PAGES_COUNT} from './useTimelinePages';
 import constants from '../commons/constants';
 
+// On the New Architecture (Fabric), both iOS and Android resolve the wrong page and jump when the
+// horizontal pager relies on the library's Android-derived RTL offset handling (shouldFixRTL): iOS
+// converts RTL scroll offsets asymmetrically and timing-dependently, and Android's RTL scroll model
+// differs too. In that case InfiniteList keeps its scroll container LTR and mirrors the page order in
+// JS, and this list runs its plain LTR code path.
+const mirrorRTL =
+  constants.isRTL && !!(globalThis as {nativeFabricUIManager?: unknown}).nativeFabricUIManager;
+
 export interface TimelineListRenderItemInfo {
   item: string;
   index: number;
@@ -51,7 +59,7 @@ export interface TimelineListProps {
 
 const TimelineList = (props: TimelineListProps) => {
   const {timelineProps, events, renderItem, showNowIndicator, scrollToFirst, scrollToNow, initialTime} = props;
-  const shouldFixRTL = useMemo(() => constants.isRTL && (constants.isRN73() || constants.isAndroid), []); // isHorizontal = true
+  const shouldFixRTL = useMemo(() => !mirrorRTL && constants.isRTL && (constants.isRN73() || constants.isAndroid), []); // isHorizontal = true
   const {date, updateSource, setDate, numberOfDays = 1, timelineLeftInset} = useContext(Context);
   const listRef = useRef<any>();
   const prevDate = useRef(date);
@@ -154,6 +162,7 @@ const TimelineList = (props: TimelineListProps) => {
   return (
     <InfiniteList
       isHorizontal
+      rtlViaLtrContainer={mirrorRTL}
       ref={listRef}
       data={pages}
       renderItem={renderPage}
