@@ -55,18 +55,14 @@ class Reservation extends Component<ReservationProps> {
     const r2 = nextProps.item;
     
     let changed = true;
-    if (!d1 && !d2) {
-      changed = false;
-    } else if (d1 && d2) {
-      if (d1.getTime() !== d2.getTime()) {
+    if ((!d1 && !d2) || (d1 && d2)) {
+      if (d1 && d2 && d1.getTime() !== d2.getTime()) {
         changed = true;
       } else if (!r1 && !r2) {
         changed = false;
       } else if (r1 && r2) {
-        if ((!d1 && !d2) || (d1 && d2)) {
-          if (isFunction(this.props.rowHasChanged)) {
-            changed = this.props.rowHasChanged(r1, r2);
-          }
+        if (isFunction(this.props.rowHasChanged)) {
+          changed = this.props.rowHasChanged(r1, r2);
         }
       }
     }
