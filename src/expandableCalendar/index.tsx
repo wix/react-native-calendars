@@ -190,6 +190,9 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   /** Position */
 
   const [position, setPosition] = useState(numberOfDays ? Positions.CLOSED : initialPosition);
+  const settledPosition = useRef(position);
+  const isAnimating = useRef(false);
+  const animationId = useRef(0);
   const isOpen = position === Positions.OPEN;
   const getOpenHeight = useCallback(() => {
     if (!horizontal) {
@@ -202,14 +205,27 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   const closedHeight = useMemo(() => headerHeight + WEEK_HEIGHT + (hideKnob || Number(numberOfDays) > 1 ? 0 : KNOB_CONTAINER_HEIGHT), [numberOfDays, hideKnob, headerHeight]);
   const startHeight = useMemo(() => isOpen ? getOpenHeight() : closedHeight, [closedHeight, isOpen, getOpenHeight]);
   const _height = useRef(startHeight);
-  const deltaY = useMemo(() => new Animated.Value(startHeight), [startHeight]);
+  // A completion callback may start another toggle before React commits position.
+  const deltaY = useRef(new Animated.Value(startHeight)).current;
   const headerDeltaY = useRef(new Animated.Value(isOpen ? -headerHeight : 0));
 
   useEffect(() => {
+    settledPosition.current = position;
+    if (isAnimating.current) {
+      return;
+    }
     _height.current = startHeight;
     deltaY.setValue(startHeight);
     _wrapperStyles.current.style.height = startHeight;
-  }, [startHeight]);
+  }, [startHeight, position, deltaY]);
+
+  useEffect(
+    () => () => {
+      animationId.current += 1;
+      deltaY.stopAnimation();
+    },
+    [deltaY]
+  );
 
   useEffect(() => {
     openHeight.current = getOpenHeight();
@@ -400,25 +416,47 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   /** Animated */
 
   const bounceToPosition = (toValue = 0) => {
-    const threshold = isOpen ? openHeight.current - closeThreshold : closedHeight + openThreshold;
+    const threshold =
+      settledPosition.current === Positions.OPEN ? openHeight.current - closeThreshold : closedHeight + openThreshold;
     let _isOpen = _height.current >= threshold;
     const newValue = _isOpen ? openHeight.current : closedHeight;
 
+    const currentAnimationId = ++animationId.current;
+    isAnimating.current = true;
     deltaY.setValue(_height.current); // set the start position for the animated value
     _height.current = toValue || newValue;
     _isOpen = _height.current >= threshold; // re-check after _height.current was set
 
-    resetWeekCalendarOpacity(_isOpen);
+    const targetPosition = _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN;
+    // Hide the week overlay before opening, but reveal it only after closing.
+    if (_isOpen) {
+      resetWeekCalendarOpacity(true);
+    }
+    toggleAnimatedHeader(_isOpen);
     Animated.spring(deltaY, {
       toValue: _height.current,
       speed: SPEED,
       bounciness: BOUNCINESS,
       useNativeDriver: false
-    }).start(() => {
+    }).start(({finished}) => {
+      if (currentAnimationId !== animationId.current) {
+        return;
+      }
+      isAnimating.current = false;
+      if (!finished) {
+        deltaY.stopAnimation(value => {
+          if (currentAnimationId === animationId.current) {
+            _height.current = value;
+          }
+        });
+        resetWeekCalendarOpacity(settledPosition.current === Positions.OPEN);
+        return;
+      }
+      settledPosition.current = targetPosition;
+      setPosition(targetPosition);
+      resetWeekCalendarOpacity(_isOpen);
       onCalendarToggled?.(_isOpen);
-      setPosition(() => _height.current === closedHeight ? Positions.CLOSED : Positions.OPEN);
     });
-    toggleAnimatedHeader(_isOpen);
   };
 
   const resetWeekCalendarOpacity = async (isOpen: boolean) => {
@@ -448,9 +486,13 @@ const ExpandableCalendar = forwardRef<ExpandableCalendarRef, ExpandableCalendarP
   }, [isOpen, closedHeight]);
 
   const toggleCalendarPosition = useCallback(() => {
-    bounceToPosition(isOpen ? closedHeight : openHeight.current);
-    return !isOpen;
-  }, [isOpen, bounceToPosition, closedHeight]);
+    if (isAnimating.current) {
+      return _height.current !== closedHeight;
+    }
+    const nextIsOpen = settledPosition.current !== Positions.OPEN;
+    bounceToPosition(nextIsOpen ? openHeight.current : closedHeight);
+    return nextIsOpen;
+  }, [bounceToPosition, closedHeight]);
 
   useImperativeHandle(
     ref,
